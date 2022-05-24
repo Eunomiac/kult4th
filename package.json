@@ -4,6 +4,7 @@
 	"description": "An implementation of Kult: Divinity Lost (4th Edition), based on the original Kult 4E Foundry system by Tom LaPorta.",
 	"scripts": {
 		"build all": "gulp",
+		"emit types": "gulp types",
 		"codehawk": "codehawk ts"
 	},
 	"browserslist": [

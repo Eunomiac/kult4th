@@ -11,7 +11,6 @@
 		"types": [
 			"move",
 			"attack",
-			"passive",
 			"advantage",
 			"disadvantage",
 			"darksecret",
@@ -51,15 +50,6 @@
 			"baseHarm": 0,
 			"effect": "",
 			"ammo": 0,
-			"isCustom": true,
-			"pdfLink": ""
-		},
-		"passive": {
-			"description": "",
-			"trigger": "",
-			"optionsList": [],
-			"autoEffectCode": "",
-			"details": "",
 			"isCustom": true,
 			"pdfLink": ""
 		},

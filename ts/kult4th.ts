@@ -1,37 +1,30 @@
-import kult4eitemsheet from "./modules/sheets/kult4eitemsheet.js";
-import kult4ePCsheet from "./modules/sheets/kult4ePCsheet.js";
-import kult4eNPCsheet from "./modules/sheets/kult4eNPCsheet.js";
-import kult4eActor from "./modules/sheets/kult4eActor.js";
+import K4Actor from "./documents/K4Actor.js";
+import K4Item from "./documents/K4Item.js";
+import K4ItemSheet from "./documents/K4ItemSheet.js";
+import K4PCSheet from "./documents/K4PCSheet.js";
+import K4NPCSheet from "./documents/K4NPCSheet.js";
 
-Oh shit go to https://kult.tools/npcGen/ and copy their cool blur effect from the Bookmark button (top left) for the character sheet!
+// Oh shit go to https://kult.tools/npcGen/ and copy their cool blur effect from the Bookmark button (top left) for the character sheet!
 
-async function preloadHandlebarTemplates() {
-    const templatepaths =["systems/kult4th/templates/partials/move-card.hbs",
-    "systems/kult4th/templates/partials/darksecret-card.hbs",
-    "systems/kult4th/templates/partials/relationship-card.hbs",
-    "systems/kult4th/templates/partials/weapon-card.hbs",
-    "systems/kult4th/templates/partials/gear-card.hbs",
-    "systems/kult4th/templates/partials/advantage-card.hbs",
-    "systems/kult4th/templates/partials/disadvantage-card.hbs"];
-    return loadTemplates(templatepaths);
-};
+Hooks.once("init", () => {
+	console.log("Initializing Kult 4E");
 
-Hooks.once("init", function() {
-console.log("Initializing Kult 4E");
-CONFIG.Actor.documentClass = kult4eActor;
-Items.unregisterSheet("core", ItemSheet);
-Actors.unregisterSheet("core", ActorSheet);
-Items.registerSheet("kult4th", kult4eitemsheet, {makeDefault: true});
-Actors.registerSheet("kult4th", kult4ePCsheet, {makeDefault: true});
-Actors.registerSheet("kult4th", kult4eNPCsheet, {makeDefault: false});
+	CONFIG.Actor.documentClass = K4Actor;
+	Actors.unregisterSheet("core", ActorSheet);
+	Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
+	Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: false});
 
-preloadHandlebarTemplates();
-});
+	CONFIG.Item.documentClass = K4Item;
+	Items.unregisterSheet("core", ItemSheet);
+	Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
-Hooks.once("ready", () => {
-    // Listen for dice icon click
-    const diceIconSelector = '#chat-controls i.fas.fa-dice-d20';
-    $(document).on('click', diceIconSelector, () => {
-        console.log(`Dice Icon Works`);
-    });
+	loadTemplates([
+		"systems/kult4th/templates/partials/move-card.hbs",
+		"systems/kult4th/templates/partials/darksecret-card.hbs",
+		"systems/kult4th/templates/partials/relationship-card.hbs",
+		"systems/kult4th/templates/partials/weapon-card.hbs",
+		"systems/kult4th/templates/partials/gear-card.hbs",
+		"systems/kult4th/templates/partials/advantage-card.hbs",
+		"systems/kult4th/templates/partials/disadvantage-card.hbs"
+	]);
 });

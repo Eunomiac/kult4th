@@ -183,7 +183,7 @@ const subGroup = (array, groupSize) => {
 
 const ISDEPLOYING = false;
 const ISANALYZING = false;
-const ISGENERATINGTYPEFILES = false;
+const ISGENERATINGTYPEFILES = true;
 const SYSTEM = "kult4th";
 const SYSTEMNAME = "Kult: Divinity Lost";
 
@@ -282,7 +282,7 @@ const PIPES = {
 		}
 		return pipeline;
 	},
-	tsProject: typescript.createProject("tsconfig.json", {declaration: ISGENERATINGTYPEFILES}),
+	tsProject: typescript.createProject("tsconfig.json", {declaration: ISGENERATINGTYPEFILES, emitDeclarationOnly: ISGENERATINGTYPEFILES}),
 	// terser: () => plumber().pipe(terser, {
 	// 	parse: {},
 	// 	compress: {},
