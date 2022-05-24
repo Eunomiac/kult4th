@@ -1,0 +1,118 @@
+{
+	"Actor": {
+		"types": [
+			"PC",
+			"NPC"
+		],
+		"PC": {},
+		"NPC": {}
+	},
+	"Item": {
+		"types": [
+			"move",
+			"attack",
+			"passive",
+			"advantage",
+			"disadvantage",
+			"darksecret",
+			"weapon",
+			"relation",
+			"gear"
+		],
+		"move": {
+			"description": "",
+			"trigger": "",
+			"attribute": "",
+			"completeSuccess": {
+				"result": "",
+				"optionsList": [],
+				"edges": 0,
+				"hold": 0
+			},
+			"partialSuccess": {
+				"result": "",
+				"optionsList": [],
+				"edges": 0,
+				"hold": 0
+			},
+			"failure": {
+				"result": "",
+				"optionsList": [],
+				"edges": 0,
+				"hold": 0
+			},
+			"sourceItem": "",
+			"edges": [],
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"attack": {
+			"distance": "arm",
+			"baseHarm": 0,
+			"effect": "",
+			"ammo": 0,
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"passive": {
+			"description": "",
+			"trigger": "",
+			"optionsList": [],
+			"autoEffectCode": "",
+			"details": "",
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"weapon": {
+			"exampleTypes": "",
+			"weaponType": "",
+			"description": "",
+			"details": "",
+			"attacks": [],
+			"ammo": {
+				"min": 0,
+				"max": 0,
+				"value": 0
+			},
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"advantage": {
+			"description": "",
+			"attribute": "",
+			"optionsList": [],
+			"details": "",
+			"moves": [],
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"disadvantage": {
+			"description": "",
+			"optionsList": [],
+			"details": "",
+			"moves": [],
+			"currentHold": 0,
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"darksecret": {
+			"description": "",
+			"suggestedDrives": [],
+			"drive": "",
+			"details": "",
+			"playerNotes": "",
+			"gmNotes": ""
+		},
+		"relation": {
+			"target": "",
+			"description": "",
+			"details": "",
+			"strength": {
+				"min": 0,
+				"max": 2,
+				"value": 0
+			}
+		},
+		"gear": {}
+	}
+}
