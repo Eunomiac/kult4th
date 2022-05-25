@@ -1,0 +1,15 @@
+& {
+	font-size: 12px;
+
+	.message-header { }
+
+	.message-content {
+		.move-name:nth-child(2) {
+			background: linear-gradient(90deg, var(--bg), var(--red-fg) 35%, var(--red-fg) 65%, var(--bg));
+			line-height: 27px;
+			height: 24px;
+			color: var(--bg);
+			font-weight: bold;
+		}
+	}
+}

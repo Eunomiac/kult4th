@@ -1,0 +1,91 @@
+@function rotateToTarget($targetColor, $sourceColor) {
+	$targetHue: hue($targetColor);
+	$sourceHue: hue($sourceColor);
+	$deltaHue: $targetHue - $sourceHue;
+	@return adjust-hue($sourceColor, $deltaHue);
+}
+
+
+// Golds
+$gold: #9b8d68; // System
+$gold-darkest: #262000;
+$gold-dark: #8d762a; // System
+$gold-grey: #7a7971; // System
+$gold-bright: #fff3b5;
+$gold-bright50: rgba(255, 242, 179, 0.5);
+$gold-glow: #ffdd00; // System
+
+// @debug "Gold" hue($gold);
+// @debug "G-Darkest" hue($gold-darkest);
+// @debug "G-Dark" hue($gold-dark);
+// @debug "G-Grey" hue($gold-grey);
+// @debug "G-Bright" hue($gold-bright);
+// @debug "G-Glow" hue($gold-glow);
+
+$gold: #9b8d68; // System
+$gold-darkest: #261c00;
+$gold-dark: #8d722a; // System
+$gold-grey: #7a7871; // System
+$gold-bright: #ffebb5;
+$gold-glow: #ffb900; // System
+
+// @debug "Rotate" rotateToTarget($gold, $gold-glow);
+
+
+// $test: #ffb6b5;
+// $gold: #9b8d68; // System
+// $gold-darkest: #262000;
+// $gold-dark: #8d762a; // System
+// $gold-grey: #7a7971; // System
+// $gold-bright: #fff3b5;
+// $gold-glow: #ffdd00; // System
+
+// Reds
+$red: #9b201f; // System
+$red-dark: #6d1616; // System
+$red-bright: #ff2020;
+$red-grey: #782e22; // System
+$red-grey50: rgba(120, 46, 34, 0.5);
+
+// Other
+$cyan: rgb(151, 223, 244); // System
+$blue: rgb(96, 174, 255);
+$mauve: rgb(130, 96, 255);
+
+// Contrast
+$darkest: rgb(0, 0, 0);
+$dark: rgb(34, 34, 34);
+$dim: rgb(68, 68, 68);
+$grey: rgb(128, 128, 128);
+$bright: rgb(170, 170, 170);
+$brightest: rgb(255, 255, 255);
+
+// Variables
+
+* {
+	--bg: #{$darkest};
+
+	--gold-fg: #{$gold};
+	--gold-bright: #{$gold-bright};
+	--gold-bright50: #{$gold-bright50};
+	--gold-dim: #{$gold-dark};
+	--gold-dark: #{$gold-darkest};
+	--gold-fade: #{$gold-grey};
+	--gold-glow: #{$gold-glow};
+
+	--red-fg: #{$red};
+	--red-bright: #{$red-bright};
+	--red-dim: #{$red-dark};
+	--red-fade: #{$red-grey};
+	--red-fade50: #{$red-grey50};
+
+	--grey-fg: #{$grey};
+	--grey-bright: #{$bright};
+	--grey-brightest: #{$brightest};
+	--grey-dim: #{$dim};
+	--grey-dark: #{$dark};
+
+	--blue-fg: #{$blue};
+
+	--cyan-glow: #{$cyan};
+}

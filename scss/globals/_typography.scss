@@ -1,0 +1,20 @@
+@font-face {
+	font-family: Infidel;
+	src: url("../assets/fonts/infidel.ttf");
+}
+
+@font-face {
+	font-family: Alverata;
+	src: url("../assets/fonts/alverata.ttf");
+}
+
+@font-face {
+	font-family: 'Caslon Antique';
+	src: url("../assets/fonts/caslon-antique.ttf");
+}
+
+* {
+	--font-primary: Alverata;
+	--font-display: Infidel;
+	--font-longtext: "Caslon Antique";
+}

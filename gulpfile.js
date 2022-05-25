@@ -183,20 +183,20 @@ const subGroup = (array, groupSize) => {
 
 const ISDEPLOYING = false;
 const ISANALYZING = false;
-const ISGENERATINGTYPEFILES = true;
+const ISGENERATINGTYPEFILES = false;
 const SYSTEM = "kult4th";
 const SYSTEMNAME = "Kult: Divinity Lost";
 
 // #region ████████ CONFIGURATION: Banner Headers, Source/Destination Globs, Build Behavior ████████
-const dateStringFull = ISDEPLOYING ? ` █ ${new Date().toString().match(/\b[A-Z][a-z]+ \d+ \d+/u).shift()} ` : "";
+const dateStringFull = ISDEPLOYING ? `█ ${new Date().toString().match(/\b[A-Z][a-z]+ \d+ \d+/u).shift()} █` : "██";
 const dateStringMin = ISDEPLOYING ? ` (${new Date().getFullYear()})` : "";
 const BANNERTEMPLATE = {
-	full: `/*~ ****▌███████████████████████████████████████████████████████████████████████████▐**** *\\
-|*     ▌█░░░░░░░░░ ${SYSTEMNAME} for Foundry VTT ░░░░░░░░░░░█▐     *|
-|*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌█ <%= package.license %> License █ v<%= package.version %>${dateStringFull}█▐     *|
-|*     ▌████░░░░ <%= package.url %> ░░░░█████▐     *|
-\\* ****▌███████████████████████████████████████████████████████████████████████████▐**** */\r\n\r\n`,
+	full: `/*~ ****▌███████████████████████████████████████████████████████████████████████████▐****  *\\
+|*      ▌█░░░░░░░░░ ${SYSTEMNAME} for Foundry VTT ░░░░░░░░░░░█▐      *|
+|*      ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐      *|
+|*      ▌█ <%= package.license %> License █ v<%= package.version %> ${dateStringFull}▐      *|
+|*      ▌████░░░░ <%= package.repository.url %> ░░░░█████▐      *|
+\\*  ****▌███████████████████████████████████████████████████████████████████████████▐****  */\r\n\r\n`,
 	min: [
 		`/*~ ▌██░░ <%= package.name %> v<%= package.version %>${dateStringMin}`,
 		"<%= package.license %> License",
@@ -211,8 +211,8 @@ const BUILDFILES = {
 		[`./dist/${SYSTEM}/scripts/`]: ["scripts/**/*.js"]
 	},
 	css: {
-		[`./dist/${SYSTEM}/css/`]: ["styles/**/*.scss"],
-		"./css/": ["styles/**/*.scss"]
+		[`./dist/${SYSTEM}/css/`]: ["scss/**/*.scss"],
+		"./css/": ["scss/**/*.scss"]
 	},
 	hbs: {
 		[`./dist/${SYSTEM}/templates/`]: ["templates/**/*.hbs"]
@@ -242,9 +242,9 @@ const REGEXPPATTERNS = {
 	]),
 	js: new Map([
 		[/(\r\n)?\s*?(\/\*DEVCODE\*\/.*?\/\*!DEVCODE\*\/)\s*?(\r\n)?/gsm, ""], // Strip developer code
-		[/\/\* \*{4}▌.*?▐\*{4} \*\//s, padHeaderLines], // Pad header lines to same length
+		[/\/\*~\s*\*{4}▌.*?▐\*{4}\s*\*\//s, padHeaderLines], // Pad header lines to same length
 		[/(\r?\n?)[ \t]*\/\*{1,2}(?!~)(?:.|\r?\n|\r)*?\*\/[ \t]*(\r?\n?)/g, "$1$2"], // Strip multi-line comments unless they beginning with '/*~' or '/**~'
-		[/(\r?\n?)[ \t]*\/\/~.*?$/gm, "$1"], // Strip single-line comments unless they begin with '//~'
+		[/(\r?\n?)[ \t]*\/\/(?!~) .*?$/gm, "$1"], // Strip single-line comments unless they begin with '//~'
 		[/[ \t]*\/\/[ \t]*eslint.*$/gm, ""], // Strip eslint enable/disable single-line comments
 		[/[ \t]*\/\/[ \t]*@ts.*$/gm, ""], // Strip TypeScript expect-error comments
 		[/[ \t]*\/\*[ \t]*eslint[^*]*\*\/[ \t]*/g, ""], // Strip eslint enable/disable mult-line comments
@@ -254,8 +254,8 @@ const REGEXPPATTERNS = {
 		[/#reg.*? /gs, ""], // Convert region headers to standard headers
 		[/(\r?\n?)[ \t]*\/\/ #endreg.*[ \t]*\r?\n?/g, "\r\n"], // Remove region footers
 		[/(\r?\n[ \t]*(?=\r?\n)){2,}/g, "\r\n"], // Strip excess blank lines
-		[/[ \t]*\r?\n$/g, ""], // Strip whitespace from end of files
-		[/^[ \t]*\r?\n/g, ""] // Strip whitespace from start of files
+		[/[ \t]*\r?\n$/, ""], // Strip whitespace from end of files
+		[/^[ \t]*\r?\n/, ""] // Strip whitespace from start of files
 	])
 };
 const PIPES = {

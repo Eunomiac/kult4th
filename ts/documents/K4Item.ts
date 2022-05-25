@@ -12,12 +12,14 @@ export enum K4ItemType {
 }
 
 class K4Item<Type extends K4ItemType> extends Item {
-	declare data: K4ItemSchema<Type>;
+	declare data: K4ItemData<Type>;
 	override get type(): Type { return super.type as Type }
 }
 
-interface K4ItemSchema<Type extends K4ItemType> extends ItemData {
+interface K4ItemData<Type extends K4ItemType> extends ItemData {
 	sourceItem: K4Item<K4ItemType> | ""
 }
+
+type K4Props = keyof K4ItemData<K4ItemType.move>;
 
 export default K4Item;

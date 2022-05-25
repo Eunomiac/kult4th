@@ -14,6 +14,9 @@ Hooks.once("init", () => {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("kult4th", K4ItemSheet, { makeDefault: true });
     loadTemplates([
+        "systems/kult4th/templates/sheets/pc-sheet.hbs",
+        "systems/kult4th/templates/sheets/npc-sheet.hbs",
+        "systems/kult4th/templates/partials/darksecret-card.hbs",
         "systems/kult4th/templates/partials/move-card.hbs",
         "systems/kult4th/templates/partials/darksecret-card.hbs",
         "systems/kult4th/templates/partials/relationship-card.hbs",
