@@ -13,7 +13,6 @@ import K4ItemSheet from '../../documents/K4ItemSheet';
 declare global {
 	type SmallInt = -10 | -9 | -8 | -7 | -6 | -5 | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-
 	type K4Constructor = ConstructorOf<K4Actor> | ConstructorOf<K4Item<K4ItemType>> | ConstructorOf<K4PCSheet> | ConstructorOf<K4NPCSheet> | ConstructorOf<K4ItemSheet>;
 
 	type ActorData = ACTORDATA.ActorData;

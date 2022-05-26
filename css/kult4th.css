@@ -25,6 +25,22 @@
   src: url("../assets/fonts/infidel.ttf"); }
 
 @font-face {
+  font-family: InfidelA;
+  src: url("../assets/fonts/Infidel-A.ttf"); }
+
+@font-face {
+  font-family: InfidelB;
+  src: url("../assets/fonts/Infidel-B.ttf"); }
+
+@font-face {
+  font-family: InfidelC;
+  src: url("../assets/fonts/Infidel-C.ttf"); }
+
+@font-face {
+  font-family: InfidelD;
+  src: url("../assets/fonts/Infidel-D.ttf"); }
+
+@font-face {
   font-family: Alverata;
   src: url("../assets/fonts/alverata.ttf"); }
 

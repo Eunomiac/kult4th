@@ -17,7 +17,9 @@ class K4Item<Type extends K4ItemType> extends Item {
 }
 
 interface K4ItemData<Type extends K4ItemType> extends ItemData {
-	sourceItem: K4Item<K4ItemType> | ""
+	data: ItemData["data"] & {
+		sourceItem: K4Item<K4ItemType> | ""
+	}
 }
 
 type K4Props = keyof K4ItemData<K4ItemType.move>;

@@ -1,4 +1,15 @@
+import C from "../scripts/constants.js";
 export default class K4PCSheet extends ActorSheet {
+    static get defaultOptions() {
+        return mergeObject(super.defaultOptions, {
+            classes: [C.SYSTEM_ID, "actor", "sheet"],
+            height: 1000,
+            tabs: [
+                { navSelector: ".tabButton", contentSelector: ".tab-section", initial: "Front" }
+            ],
+            width: 800
+        });
+    }
     get template() { return "systems/kult4th/templates/sheets/pc-sheet.hbs"; }
     get actor() { return super.actor; }
     async getData() {

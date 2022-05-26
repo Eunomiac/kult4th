@@ -1,7 +1,19 @@
 import {ConfiguredDocumentClass, ToObjectFalseType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
+import C from "../scripts/constants.js";
 import K4Actor from "./K4Actor.js";
 
 export default class K4PCSheet extends ActorSheet<K4PCSheet.Options, K4PCSheet.Data> {
+
+	static override get defaultOptions(): K4PCSheet.Options {
+		return mergeObject(super.defaultOptions, {
+			classes: [C.SYSTEM_ID, "actor", "sheet"],
+			height: 1000,
+			tabs: [
+				{navSelector: ".tabButton", contentSelector: ".tab-section", initial: "Front"}
+			],
+			width: 800
+		});
+	}
 	override get template() { return "systems/kult4th/templates/sheets/pc-sheet.hbs" }
 
 	override get actor() { return super.actor as K4Actor }

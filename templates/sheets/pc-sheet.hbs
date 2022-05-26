@@ -1,20 +1,21 @@
 {{log this}}
-<form class="{{cssClass}} kult-sheet kult-overrides-sheet" autocomplete="off">
+<form class="{{cssClass}}" autocomplete="off">
 	<div class="sheet-lock-button">
 		<a class="sheet-lock" title="Lock/Unlock Sheet">
 			<i class="fas fa-lock{{#if isSheetOpen}}-open{{/if}}"></i>
 		</a>
 	</div>
   <header class="sheet-header">
-    <script src="systems/kult4e/scripts/delete.js"></script>
-    <script src="systems/kult4e/scripts/getAttribute.js"></script>
+    {{!-- <script src="systems/kult4th/scripts/delete.js"></script>
+    <script src="systems/kult4th/scripts/getAttribute.js"></script> --}}
 		<div class="header-container">
 			<img class="picture" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
 			<div class="title">
 				<input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Name" />
-				<select class="character-archetype" name="flags.kult4eoverrides.archetype" value="{{flags.kult4eoverrides.archetype}}">
-				{{#select flags.kult4eoverrides.archetype}}
+				<select class="character-archetype" name="flags.kult4th.archetype" value="{{flags.kult4th.archetype}}">
+				{{#select flags.kult4th.archetype}}
 					<option name="" value="" selected hidden disabled>Archetype</option>
+					<option class="sleeper" value="sleeper">the Sleeper</option>
 					<option class="aware-header" value="null" disabled>T H E&nbsp;&nbsp;&nbsp;A W A R E</option>
 					<option value="academic">the Academic</option>
 					<option value="agent">the Agent</option>
@@ -36,12 +37,17 @@
 					<option value="scientist">the Scientist</option>
 					<option value="seeker">the Seeker</option>
 					<option value="veteran">the Veteran</option>
-					<option value="sleeper">the Sleeper</option>
+					<option value="customAware">Custom Aware Archetype</option>
 					<option class="enlightened-header" value="null" disabled>T H E&nbsp;&nbsp;&nbsp;E N L I G H T E N E D</option>
 					<option class="enlightened" value="abomination">the Abomination</option>
 					<option class="enlightened" value="deathMagician">the Death Magician</option>
 					<option class="enlightened" value="disciple">the Disciple</option>
+					<option class="enlightened" value="dreamMagician">the Dream Magician</option>
+					<option class="enlightened" value="madnessMagician">the Madness Magician</option>
+					<option class="enlightened" value="passionMagician">the Passion Magician</option>
 					<option class="enlightened" value="revenant">the Revenant</option>
+					<option class="enlightened" value="timeAndSpaceMagician">the Time & Space Magician</option>
+					<option class="enlightened" value="customEnlightened">Custom Enlightened Archetype</option>
         {{/select}}
         </select>
 			</div>
@@ -57,7 +63,7 @@
 				{{else}}
 					<div class="spec">
 						<label class="spec-label">XP:</label>
-						<input class="spec-input" name="flags.kult4eoverrides.xp" type="number" value="{{flags.kult4eoverrides.xp}}" placeholder="0">
+						<input class="spec-input" name="flags.kult4th.xp" type="number" value="{{flags.kult4th.xp}}" placeholder="0">
 					</div>
 				{{/if}}
         <div class="spec">
@@ -110,17 +116,17 @@
   <div id="Front" class="stats-section {{actor.id}}-tab tab-section">
 		<div class="top-section">
 			<div class="dramatic-hook">
-				<input type="checkbox" data-dtype="Boolean" name="flags.kult4eoverrides.dramaticHookChecks.0" {{checked flags.kult4eoverrides.dramaticHookChecks.[0]}} />
-				<span>{{flags.kult4eoverrides.dramaticHooks.[0]}}</span>
+				<input type="checkbox" data-dtype="Boolean" name="flags.kult4th.dramaticHookChecks.0" {{checked flags.kult4th.dramaticHookChecks.[0]}} />
+				<span>{{flags.kult4th.dramaticHooks.[0]}}</span>
 			</div>
 			<div class="dramatic-hook">
-				<input type="checkbox" data-dtype="Boolean" name="flags.kult4eoverrides.dramaticHookChecks.1" {{checked flags.kult4eoverrides.dramaticHookChecks.[1]}} />
-				<span>{{flags.kult4eoverrides.dramaticHooks.[1]}}</span>
+				<input type="checkbox" data-dtype="Boolean" name="flags.kult4th.dramaticHookChecks.1" {{checked flags.kult4th.dramaticHookChecks.[1]}} />
+				<span>{{flags.kult4th.dramaticHooks.[1]}}</span>
 			</div>
 		</div>
     <div class="middle-section">
       <div class="attribute-column">
-				<div class="section-label">{{localize "kult4eOverrides.Attributes"}}</div>
+				<div class="section-label">{{localize "kult4th.Attributes"}}</div>
         <table class="attribute-box" style="table-layout: fixed; width: 160px; height:400px;">
           <tr>
             <td></td>
@@ -159,7 +165,7 @@
                 {{/select}}
               </select>
             </td>
-            <td><span class="attribute-roll" data-attr-name="willpower" >{{localize "kult4e.Willpower"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="willpower" >{{localize "kult4th.Willpower"}}</span></td>
             <td class="refpic">
               <select class="stat-value" name="data.attributes.reflexes" value="{{data.attributes.reflexes}}">
               {{#select data.attributes.reflexes}}
@@ -178,9 +184,9 @@
             </td>
           </tr>
           <tr>
-            <td><span class="attribute-roll" data-attr-name="fortitude">{{localize "kult4e.Fortitude"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="fortitude">{{localize "kult4th.Fortitude"}}</span></td>
             <td></td>
-            <td><span class="attribute-roll" data-attr-name="reflexes">{{localize "kult4e.Reflexes"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="reflexes">{{localize "kult4th.Reflexes"}}</span></td>
           </tr>
           <tr>
             <td class="reasonpic">
@@ -218,7 +224,7 @@
             </td>
           </tr>
           <tr>
-            <td><span class="attribute-roll" data-attr-name="reason">{{localize "kult4e.Reason"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="reason">{{localize "kult4th.Reason"}}</span></td>
             <td class="percpic">
               <select class="stat-value" name="data.attributes.perception" value="{{data.attributes.perception}}">
               {{#select data.attributes.perception}}
@@ -235,7 +241,7 @@
               {{/select}}
               </select>
             </td>
-            <td><span class="attribute-roll" data-attr-name="intuition">{{localize "kult4e.Intuition"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="intuition">{{localize "kult4th.Intuition"}}</span></td>
           </tr>
           <tr>
             <td class="coolpic">
@@ -254,7 +260,7 @@
               {{/select}}
               </select>
             </td>
-            <td><span class="attribute-roll" data-attr-name="perception">{{localize "kult4e.Perception"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="perception">{{localize "kult4th.Perception"}}</span></td>
             <td class="violpic">
               <select class="stat-value" name="data.attributes.violence" value="{{data.attributes.violence}}">
               {{#select data.attributes.violence}}
@@ -273,7 +279,7 @@
             </td>
           </tr>
           <tr>
-            <td><span class="attribute-roll" data-attr-name="coolness">{{localize "kult4e.Coolness"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="coolness">{{localize "kult4th.Coolness"}}</span></td>
             <td class="chapic">
               <select class="stat-value" name="data.attributes.charisma" value="{{data.attributes.charisma}}">
               {{#select data.attributes.charisma}}
@@ -290,11 +296,11 @@
               {{/select}}
               </select>
             </td>
-            <td><span class="attribute-roll" data-attr-name="violence">{{localize "kult4e.Violence"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="violence">{{localize "kult4th.Violence"}}</span></td>
           </tr>
           <tr>
             <td></td>
-            <td><span class="attribute-roll" data-attr-name="charisma">{{localize "kult4e.Charisma"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="charisma">{{localize "kult4th.Charisma"}}</span></td>
             <td></td>
           </tr>
           <tr>
@@ -319,21 +325,21 @@
           </tr>
           <tr>
             <td></td>
-            <td><span class="attribute-roll" data-attr-name="soul">{{localize "kult4e.Soul"}}</span></td>
+            <td><span class="attribute-roll" data-attr-name="soul">{{localize "kult4th.Soul"}}</span></td>
             <td></td>
           </tr>
         </table>
       </div>
 			<div class="move-column">
-				<div class="section-label">{{localize "kult4eOverrides.BasicMoves"}}</div>
+				<div class="section-label">{{localize "kult4th.BasicMoves"}}</div>
 				<div class="item-list card-list">
 					{{#each moves.basic as |move id|}}
 					{{#if (eq move.type "move")}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="basic" typeDisplay="Move"}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="basic" typeDisplay="Move"}}
 					{{/if}}
 					{{/each}}
 				</div>
-								<div class="section-label">{{localize "kult4e.Wounds"}}</div>
+								<div class="section-label">{{localize "kult4th.Wounds"}}</div>
 								<div class="wound-entries">
 									{{log "WOUND DATA"}}
 									{{log this}}
@@ -348,52 +354,52 @@
 								</div>
       </div>
       <div class="move-column right-middle-column">
-				<div class="section-label">{{localize "kult4eOverrides.SpecialMoves"}}</div>
+				<div class="section-label">{{localize "kult4th.SpecialMoves"}}</div>
 				<div class="item-list card-list">
 					{{#each moves.advantage as |move id|}}
 					{{#if (eq move.type "move")}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="advantage" typeDisplay="Move" isRolled=flags.kult4eoverrides.isRolled}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="advantage" typeDisplay="Move" isRolled=flags.kult4th.isRolled}}
 					{{/if}}
 					{{/each}}
 					{{#each moves.disadvantage as |move id|}}
 					{{#if (eq move.type "move")}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="disadvantage" typeDisplay="Move" isRolled=flags.kult4eoverrides.isRolled}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="disadvantage" typeDisplay="Move" isRolled=flags.kult4th.isRolled}}
 					{{/if}}
 					{{/each}}
 					{{#each moves.weapon as |move id|}}
 					{{#if (eq move.type "move")}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="weapon" typeDisplay="Move" isRolled=flags.kult4eoverrides.isRolled}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="weapon" typeDisplay="Move" isRolled=flags.kult4th.isRolled}}
 					{{/if}}
 					{{/each}}
 					{{#each moves.gear as |move id|}}
 					{{#if (eq move.type "move")}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="gear" typeDisplay="Move" isRolled=flags.kult4eoverrides.isRolled}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="gear" typeDisplay="Move" isRolled=flags.kult4th.isRolled}}
 					{{/if}}
 					{{/each}}
 					{{#each moves.relationship as |move id|}}
 					{{#if (eq move.type "move")}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="relationship" typeDisplay="Move" isRolled=flags.kult4eoverrides.isRolled}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=move isSheetOpen=../isSheetOpen moveType="relationship" typeDisplay="Move" isRolled=flags.kult4th.isRolled}}
 					{{/if}}
 					{{/each}}
 				</div>
         <div class="flex-column stability-section">
-          <div class="section-label">{{localize "kult4e.Stability"}}</div>
+          <div class="section-label">{{localize "kult4th.Stability"}}</div>
           <div>
             <select name="data.stability.value" value="{{data.stability.value}}">{{#select data.stability.value}}
-              <option value="0">{{localize "kult4e.StabilityComposed"}}</option>
-              <option value="1">{{localize "kult4e.StabilityUneasy"}}</option>
-              <option value="2">{{localize "kult4e.StabilityUnfocused"}}</option>
-              <option value="3">{{localize "kult4e.StabilityShaken"}}</option>
-              <option value="4">{{localize "kult4e.StabilityDistressed"}}</option>
-              <option value="5">{{localize "kult4e.StabilityNeurotic"}}</option>
-              <option value="6">{{localize "kult4e.StabilityAnxious"}}</option>
-              <option value="7">{{localize "kult4e.StabilityIrrational"}}</option>
-              <option value="8">{{localize "kult4e.StabilityUnhinged"}}</option>
-              <option value="9">{{localize "kult4e.StabilityBroken"}}</option>
+              <option value="0">{{localize "kult4th.StabilityComposed"}}</option>
+              <option value="1">{{localize "kult4th.StabilityUneasy"}}</option>
+              <option value="2">{{localize "kult4th.StabilityUnfocused"}}</option>
+              <option value="3">{{localize "kult4th.StabilityShaken"}}</option>
+              <option value="4">{{localize "kult4th.StabilityDistressed"}}</option>
+              <option value="5">{{localize "kult4th.StabilityNeurotic"}}</option>
+              <option value="6">{{localize "kult4th.StabilityAnxious"}}</option>
+              <option value="7">{{localize "kult4th.StabilityIrrational"}}</option>
+              <option value="8">{{localize "kult4th.StabilityUnhinged"}}</option>
+              <option value="9">{{localize "kult4th.StabilityBroken"}}</option>
               {{/select}}
             </select>
-            <a class="stability-minus" title="{{localize "kult4e.MinusStability"}}"><i class="fas fa-minus-circle"></i></a>
-            <a class="stability-plus" title="{{localize "kult4e.PlusStability"}}"><i class="fas fa-plus-circle"></i></a>
+            <a class="stability-minus" title="{{localize "kult4th.MinusStability"}}"><i class="fas fa-minus-circle"></i></a>
+            <a class="stability-plus" title="{{localize "kult4th.PlusStability"}}"><i class="fas fa-plus-circle"></i></a>
           </div>
         </div>
       </div>
@@ -402,41 +408,41 @@
   <div id="Bio" class="bio-section {{actor.id}}-tab tab-section">
 		<div class="two-column">
 			<div class="col66">
-        <div class="section-label">{{localize "kult4eOverrides.Background"}}</div>
+        <div class="section-label">{{localize "kult4th.Background"}}</div>
         <div class="free-text">
           {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
         </div>
 			</div>
 			<div class="col33">
-				<div class="section-label">{{localize "kult4e.DarkSecrets"}}</div>
+				<div class="section-label">{{localize "kult4th.DarkSecrets"}}</div>
 				<div class=" item-list darksecret-list" style="padding-right: 0;">
 					{{#each darksecrets as |darksecret id|}}
-					{{> "modules/kult4eoverrides/templates/partials/darksecret-card.hbs" data=darksecret isSheetOpen=../isSheetOpen}}
+					{{> "modules/kult4th/templates/partials/darksecret-card.hbs" data=darksecret isSheetOpen=../isSheetOpen}}
 					{{/each}}
 				</div>
-				<div class="section-label">{{localize "kult4e.Advantages"}}</div>
+				<div class="section-label">{{localize "kult4th.Advantages"}}</div>
 				<div class="item-list card-list" style="padding: 0;">
 					{{#each advantages as |advantage id|}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=advantage isSheetOpen=../isSheetOpen
-					typeDisplay="Advantage" isRolled=flags.kult4eoverrides.isRolled}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=advantage isSheetOpen=../isSheetOpen
+					typeDisplay="Advantage" isRolled=flags.kult4th.isRolled}}
 					{{/each}}
 				</div>
-				<div class="section-label">{{localize "kult4e.Disadvantages"}}</div>
+				<div class="section-label">{{localize "kult4th.Disadvantages"}}</div>
 				<div class="item-list card-list" style="padding: 0;">
 					{{#each disadvantages as |disadvantage id|}}
-					{{> "modules/kult4eoverrides/templates/partials/card.hbs" data=disadvantage isSheetOpen=../isSheetOpen isGM=../isGM
-					typeDisplay="Disadvantage" isRolled=flags.kult4eoverrides.isRolled}}
+					{{> "modules/kult4th/templates/partials/card.hbs" data=disadvantage isSheetOpen=../isSheetOpen isGM=../isGM
+					typeDisplay="Disadvantage" isRolled=flags.kult4th.isRolled}}
 					{{/each}}
 				</div>
 			</div>
 		</div>
 	</div>
 	<div id="Relationships" class="relationships-section {{actor.id}}-tab tab-section">
-		<div class="section-label">{{localize "kult4e.Relationships"}}</div>
+		<div class="section-label">{{localize "kult4th.Relationships"}}</div>
 		<div class="two-column">
 			<div class="item-list relationship-list" style="padding-right: 0;">
 				{{#each relationships as |relationship id|}}
-				{{> "modules/kult4eoverrides/templates/partials/relationship-card.hbs" data=relationship isSheetOpen=../isSheetOpen}}
+				{{> "modules/kult4th/templates/partials/relationship-card.hbs" data=relationship isSheetOpen=../isSheetOpen}}
 				{{/each}}
 			</div>
 		</div>
@@ -444,18 +450,18 @@
 	<div id="Assets" class="assets-section {{actor.id}}-tab tab-section">
 		<div class="two-column">
 			<div class="weapon-section">
-				<div class="section-label">{{localize "kult4e.Weapons"}}</div>
+				<div class="section-label">{{localize "kult4th.Weapons"}}</div>
 				<div class=" item-list weapon-list">
 					{{#each weapons as |weapon id|}}
-					{{> "modules/kult4eoverrides/templates/partials/weapon-card.hbs" data=weapon isSheetOpen=../isSheetOpen}}
+					{{> "modules/kult4th/templates/partials/weapon-card.hbs" data=weapon isSheetOpen=../isSheetOpen}}
 					{{/each}}
 				</div>
 			</div>
 			<div class="gear-section" style="margin: 0;">
-				<div class="section-label">{{localize "kult4e.Gear"}}</div>
+				<div class="section-label">{{localize "kult4th.Gear"}}</div>
 				<div class=" item-list weapon-list">
 					{{#each gear as |gear id|}}
-					{{> "modules/kult4eoverrides/templates/partials/gear-card.hbs" data=gear isSheetOpen=../isSheetOpen}}
+					{{> "modules/kult4th/templates/partials/gear-card.hbs" data=gear isSheetOpen=../isSheetOpen}}
 					{{/each}}
 				</div>
 			</div>
@@ -465,43 +471,43 @@
 		<div class="background-box">
 			<div class="section-label">Session Summary</div>
 			<div class="free-text">
-				{{editor content=flags.kult4eoverrides.session-summary target="flags.kult4eoverrides.session-summary" button=true owner=owner editable=editable}}
+				{{editor content=flags.kult4th.session-summary target="flags.kult4th.session-summary" button=true owner=owner editable=editable}}
 			</div>
 			<div class="section-label" style="margin-top: 5px;">Notes</div>
 			<div class="free-text">
-				{{editor content=flags.kult4eoverrides.notes target="flags.kult4eoverrides.notes" button=true owner=owner editable=editable}}
+				{{editor content=flags.kult4th.notes target="flags.kult4th.notes" button=true owner=owner editable=editable}}
 			</div>
 		</div>
 	</div>
 
 	<div id="Advancement" class="advancement-section {{actor.id}}-tab tab-section">
-		<div class="section-label">{{localize "kult4eOverrides.DramaticHooks"}}</div>
+		<div class="section-label">{{localize "kult4th.DramaticHooks"}}</div>
 		<div class="dramatic-hook">
-			{{!-- <input type="checkbox" data-dtype="Boolean" name="flags.kult4eoverrides.dramaticHookChecks.0" {{checked flags.kult4eoverrides.dramaticHookChecks.[0]}} /> --}}
-			<input type="text" class="dramatic-hook" name="flags.kult4eoverrides.dramaticHooks.0" type="text"
-				value="{{flags.kult4eoverrides.dramaticHooks.[0]}}"></input>
+			{{!-- <input type="checkbox" data-dtype="Boolean" name="flags.kult4th.dramaticHookChecks.0" {{checked flags.kult4th.dramaticHookChecks.[0]}} /> --}}
+			<input type="text" class="dramatic-hook" name="flags.kult4th.dramaticHooks.0" type="text"
+				value="{{flags.kult4th.dramaticHooks.[0]}}"></input>
 		</div>
 		<div class="dramatic-hook">
-			{{!-- <input type="checkbox" data-dtype="Boolean" name="flags.kult4eoverrides.dramaticHookChecks.1" {{checked flags.kult4eoverrides.dramaticHookChecks.[1]}} /> --}}
-			<input type="text" class="dramatic-hook" name="flags.kult4eoverrides.dramaticHooks.1" type="text"
-				value="{{flags.kult4eoverrides.dramaticHooks.[1]}}"></input>
+			{{!-- <input type="checkbox" data-dtype="Boolean" name="flags.kult4th.dramaticHookChecks.1" {{checked flags.kult4th.dramaticHookChecks.[1]}} /> --}}
+			<input type="text" class="dramatic-hook" name="flags.kult4th.dramaticHooks.1" type="text"
+				value="{{flags.kult4th.dramaticHooks.[1]}}"></input>
 		</div>
 		<div class="two-column">
 			<div class="advancement-column">
 				<div class="section-label">
-					{{localize "kult4eOverrides.Advancements"}}
+					{{localize "kult4th.Advancements"}}
 				</div>
 				<div class="advancement-total">{{{advancementIntro}}}</div>
 				<div class="experience-total">{{{advancementSubIntro}}}</div>
 				<div class="two-column">
 					<div class="advancement-boxes">
 						{{#each advancementLines}}
-						{{> "modules/kult4eoverrides/templates/partials/advancement-line-boxes.hbs" }}
+						{{> "modules/kult4th/templates/partials/advancement-line-boxes.hbs" }}
 						{{/each}}
 					</div>
 					<div class="advancement-labels">
 						{{#each advancementLines}}
-						{{> "modules/kult4eoverrides/templates/partials/advancement-line-label.hbs" }}
+						{{> "modules/kult4th/templates/partials/advancement-line-label.hbs" }}
 						{{/each}}
 					</div>
 				</div>
@@ -511,15 +517,15 @@
 					Purchases
 				</div>
 				{{#each purchaseLines}}
-				{{> "modules/kult4eoverrides/templates/partials/advancement-purchase.hbs" }}
+				{{> "modules/kult4th/templates/partials/advancement-purchase.hbs" }}
 				{{/each}}
 				{{!-- <div class="purchase-line">
 
 
 
 					<label class="purchase-label"><span class="purchase-counter">1.</span>+1 <u>active</u> Attribute (max +4): </label>
-					<select class="attribute-select" name="flags.kult4eoverrides.purchases.0.label" value="{{flags.kult4eoverrides.purchases.[0].label}}">
-					{{#select flags.kult4eoverrides.purchases.[0].label}}
+					<select class="attribute-select" name="flags.kult4th.purchases.0.label" value="{{flags.kult4th.purchases.[0].label}}">
+					{{#select flags.kult4th.purchases.[0].label}}
 						<option value="reason" selected>Reason</option>
 						<option value="intuition">Intuition</option>
 						<option value="perception">Perception</option>
@@ -533,9 +539,9 @@
 				</div>
 				<div class="purchase-line">
 					<label class="purchase-label"><span class="purchase-counter">2.</span>+1 <u>active</u> Attribute (max +3): </label>
-					<select class="attribute-select" name="flags.kult4eoverrides.purchases.1.label"
-						value="{{flags.kult4eoverrides.purchases.[1].label}}">
-						{{#select flags.kult4eoverrides.purchases.[1].label}}
+					<select class="attribute-select" name="flags.kult4th.purchases.1.label"
+						value="{{flags.kult4th.purchases.[1].label}}">
+						{{#select flags.kult4th.purchases.[1].label}}
 						<option value="reason">Reason</option>
 						<option value="intuition">Intuition</option>
 						<option value="perception">Perception</option>
@@ -549,9 +555,9 @@
 				</div>
 				<div class="purchase-line">
 					<label class="purchase-label"><span class="purchase-counter">3.</span>Gain Archetype Advantage: </label>
-					<select class="advantage-select" name="flags.kult4eoverrides.purchases.2.label"
-						value="{{flags.kult4eoverrides.purchases.[2].label}}">
-						{{#select flags.kult4eoverrides.purchases.[2].label}}
+					<select class="advantage-select" name="flags.kult4th.purchases.2.label"
+						value="{{flags.kult4th.purchases.[2].label}}">
+						{{#select flags.kult4th.purchases.[2].label}}
 						<option value="influentialFriends" selected>Influential Friends</option>
 						{{/select}}
 					</select>
