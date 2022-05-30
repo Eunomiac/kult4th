@@ -4,7 +4,83 @@
 			"PC",
 			"NPC"
 		],
-		"PC": {},
+		"PC": {
+			"archetype": "",
+			"description": "",
+			"history": "",
+			"dramaticHooks": [
+				{
+					"value": "",
+					"isChecked": false
+				},
+				{
+					"value": "",
+					"isChecked": false
+				}
+			],
+			"attributes": {
+				"willpower": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"fortitude": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"reflexes": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"reason": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"intuition": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"perception": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"coolness": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"violence": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"charisma": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"soul": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				}
+			},
+			"wounds": [],
+			"stability": {
+				"min": 0,
+				"max": 9,
+				"value": 0
+			},
+			"edges": {
+				"sourceName": "",
+				"value": 0
+			}
+		},
 		"NPC": {}
 	},
 	"Item": {
@@ -20,29 +96,34 @@
 		],
 		"move": {
 			"description": "",
+			"intro": "",
 			"trigger": "",
+			"outro": "",
 			"attribute": "",
 			"completeSuccess": {
 				"result": "",
-				"optionsList": [],
-				"edges": 0,
-				"hold": 0
+				"optionsLists": [],
+				"edges": 0
 			},
 			"partialSuccess": {
 				"result": "",
-				"optionsList": [],
-				"edges": 0,
-				"hold": 0
+				"optionsLists": [],
+				"edges": 0
 			},
 			"failure": {
 				"result": "",
-				"optionsList": [],
-				"edges": 0,
-				"hold": 0
+				"optionsLists": [],
+				"edges": 0
+			},
+			"lists": {
+				"questions": [],
+				"options": [],
+				"edges": []
 			},
 			"sourceItem": "",
-			"edges": [],
 			"isCustom": true,
+			"isActive": true,
+			"canGrantHold": false,
 			"pdfLink": ""
 		},
 		"attack": {

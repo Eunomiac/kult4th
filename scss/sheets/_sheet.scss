@@ -1,0 +1,105 @@
+select,
+input,
+textarea {
+	font-family: var(--font-primary);
+	color: var(--gold);
+	box-shadow: none;
+}
+
+// select:focus,
+// select:focus-within {
+// 	box-shadow: none;
+// }
+
+option {
+	background: var(--bg);
+}
+
+img {
+	border: none;
+}
+
+& {
+	background: none;
+}
+
+.window-header {
+	position: relative;
+	z-index: 30;
+	font-size: 0;
+	top: -20px;
+	overflow: visible;
+	border: none;
+
+	.header-button {
+
+		i {
+			font-size: 16px;
+			text-shadow:
+				0 0 3px var(--black),
+				0 0 3px var(--black),
+				0 0 3px var(--black),
+				0 0 3px var(--black),
+				0 0 3px var(--black),
+				0 0 5px var(--gold-bright),
+				0 0 5px var(--gold-bright);
+			color: var(--gold);
+		}
+
+		&.close {
+			margin-top: -3px;
+
+			i {
+				color: #F00;
+				font-size: 24px;
+			}
+		}
+	}
+}
+
+.editor-content {
+	text-align: justify;
+	hyphens: auto;
+	color: var(--gold-fg);
+
+	h1 {
+		font-family: 'Infidel';
+		color: white;
+		margin: 0 0 10px 0;
+		line-height: 1em;
+		height: 0.9em;
+		text-shadow: 0px 0px 5px red;
+	}
+
+	h2,
+	h3 {
+		color: var(--gold-bright);
+		font-variant: small-caps;
+	}
+
+	h2 {
+		height: 24px;
+	}
+
+	p {
+		font-size: 12px;
+	}
+
+	h3 {
+		height: 16px;
+	}
+}
+
+.window-resizable-handle {
+	z-index: 4;
+	width: 50px;
+	height: 50px;
+	top: -25px;
+	right: -25px;
+	position: relative;
+	align-self: flex-end;
+	flex-basis: 50px;
+	flex-shrink: 0;
+	flex-grow: 0;
+	opacity: 0;
+}

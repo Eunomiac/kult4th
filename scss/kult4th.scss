@@ -2,27 +2,16 @@
 @import 'globals/typography';
 @import 'globals/singletons';
 
-// @import 'fromKult4e';
-
 .vtt.game.system-kult4th {
 
-	.chat-message {
-		@import 'overrides/chatMessages';
-	}
-
 	.app.window-app {
-
-		@import 'overrides/app';
+		@import 'globals/app';
 
 		&.sheet {
+			@import 'sheets/sheet';
 
-			@import 'overrides/sheet';
-
-			&.actor {
-					@import 'overrides/actorSheet';
-			}
-
-			&.item { @import 'overrides/itemSheet' }
+			&.actor { @import 'sheets/actor-sheet' }
+			&.item { @import 'sheets/item-sheet' }
 		}
 	}
 }

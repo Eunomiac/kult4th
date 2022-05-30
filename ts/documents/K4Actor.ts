@@ -1,7 +1,14 @@
-import K4Item, {K4ItemType} from "./K4Item.js";
-import {ToObjectFalseType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
+import K4Item, {ItemType} from "./K4Item.js";
+import C from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
 
-export default class K4Actor extends Actor {
+export enum ActorType {
+	pc = "pc",
+	npc = "npc"
+}
+
+export default class K4Actor<Type extends ActorType> extends Actor {
+	declare data: K4ActorData<Type>;
 	override get items() { return super.items as K4Collection.Item }
 
 	// override prepareData() {
@@ -19,22 +26,48 @@ export default class K4Actor extends Actor {
 	// 	}
 	// }
 
-	getItemsOfType<T extends K4ItemType>(type: T): Array<K4Item<T>> {
-		return this.items.filter((item): item is K4Item<T> => item.type === type);
+	getItemsOfType<T extends ItemType>(type: T): Array<K4Item<T>> {
+		return this.items.filter((item: K4Item<ItemType>): item is K4Item<T> => item.type === type);
 	}
 
-	get moves() { return this.getItemsOfType(K4ItemType.move) }
-	get attacks() { return this.getItemsOfType(K4ItemType.attack) }
-	get advantages() { return this.getItemsOfType(K4ItemType.advantage) }
-	get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage) }
-	get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret) }
-	get weapons() { return this.getItemsOfType(K4ItemType.weapon) }
-	get gear() { return this.getItemsOfType(K4ItemType.gear) }
-	get relations() { return this.getItemsOfType(K4ItemType.relation) }
+	get moves() { return this.getItemsOfType(ItemType.move) }
+	get attacks() { return this.getItemsOfType(ItemType.attack) }
+	get advantages() { return this.getItemsOfType(ItemType.advantage) }
+	get disadvantages() { return this.getItemsOfType(ItemType.disadvantage) }
+	get darkSecrets() { return this.getItemsOfType(ItemType.darksecret) }
+	get weapons() { return this.getItemsOfType(ItemType.weapon) }
+	get gear() { return this.getItemsOfType(ItemType.gear) }
+	get relations() { return this.getItemsOfType(ItemType.relation) }
 
 	get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem) }
 	get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem)) }
+
+	get attributeData() {
+		const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as Attribute.Any[];
+		return attrList.map((attrName) => ({
+			name: U.tCase(attrName),
+			key: attrName,
+			min: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].min,
+			max: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].max,
+			value: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].value
+		})) as Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
+	}
+	get attributes() {
+		return Object.fromEntries(Object.entries(this.attributeData)
+			.map(([attrName, {value}]) => [attrName, value])) as Record<Attribute.Any, number>;
+	}
+
+	override async _onCreate(...args: [any,any,any]) {
+		await super._preCreate(...args);
+		if (this.type === "PC") {
+			// @ts-expect-error Fucking useless...
+			const itemData = Array.from(game.items as Array<K4Item<ItemType>>).filter((item: K4Item<ItemType>) => item.type === "move" && !item.data.data.sourceItem).map((item) => item.data);
+			// @ts-expect-error Fucking useless...
+			this.createEmbeddedDocuments("Item", itemData);
+		}
+	}
 }
+
 // class K4Item<Type extends K4ItemType> extends Item {
 // 	declare data: K4ItemData<Type>;
 // 	override get type(): Type { return super.type as Type }

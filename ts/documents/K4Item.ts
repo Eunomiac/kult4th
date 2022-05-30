@@ -1,6 +1,4 @@
-import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
-
-export enum K4ItemType {
+export enum ItemType {
 	advantage = "advantage",
 	disadvantage = "disadvantage",
 	move = "move",
@@ -11,17 +9,7 @@ export enum K4ItemType {
 	weapon = "weapon"
 }
 
-class K4Item<Type extends K4ItemType> extends Item {
+export default class K4Item<Type extends ItemType> extends Item {
 	declare data: K4ItemData<Type>;
 	override get type(): Type { return super.type as Type }
 }
-
-interface K4ItemData<Type extends K4ItemType> extends ItemData {
-	data: ItemData["data"] & {
-		sourceItem: K4Item<K4ItemType> | ""
-	}
-}
-
-type K4Props = keyof K4ItemData<K4ItemType.move>;
-
-export default K4Item;

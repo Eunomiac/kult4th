@@ -4,35 +4,53 @@
 }
 
 @font-face {
-	font-family: InfidelA;
-	src: url("../assets/fonts/Infidel-A.ttf");
+	font-family: Alverata;
+	src: url("../assets/fonts/alverata.ttf");
+	font-weight: normal;
+	font-style: normal;
 }
-@font-face {
-	font-family: InfidelB;
-	src: url("../assets/fonts/Infidel-B.ttf");
-}
-@font-face {
-	font-family: InfidelC;
-	src: url("../assets/fonts/Infidel-C.ttf");
-}
-@font-face {
-	font-family: InfidelD;
-	src: url("../assets/fonts/Infidel-D.ttf");
-}
-
 
 @font-face {
 	font-family: Alverata;
-	src: url("../assets/fonts/alverata.ttf");
+	src: url("../assets/fonts/alverata-bold.ttf");
+	font-weight: bold;
+	font-style: normal;
 }
 
 @font-face {
-	font-family: 'Caslon Antique';
-	src: url("../assets/fonts/caslon-antique.ttf");
+	font-family: Alverata;
+	src: url("../assets/fonts/alverata-black.ttf");
+	font-weight: bolder;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: Alverata;
+	src: url("../assets/fonts/alverata-italic.ttf");
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: Alverata;
+	src: url("../assets/fonts/alverata-bold-italic.ttf");
+	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: Alverata;
+	src: url("../assets/fonts/alverata-light.ttf");
+	font-weight: lighter;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: Sokol;
+	src: url("../assets/fonts/sokol.ttf");
 }
 
 * {
 	--font-primary: Alverata;
 	--font-display: Infidel;
-	--font-longtext: "Caslon Antique";
 }

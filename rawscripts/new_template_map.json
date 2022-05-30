@@ -1,0 +1,242 @@
+{
+	"Actor": {
+		"types": [
+			"PC",
+			"NPC"
+		],
+		"PC": {
+			"archetype": "",
+			"description": "",
+			"history": "",
+			"dramaticHooks": [
+				{
+					"value": "",
+					"isChecked": false
+				},
+				{
+					"value": "",
+					"isChecked": false
+				}
+			],
+			"attributes": {
+				"willpower": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"fortitude": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"reflexes": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"reason": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"perception": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"coolness": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"violence": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"charisma": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"soul": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				}
+			},
+			"wounds": [],
+			"stability": {
+				"min": 0,
+				"max": 9,
+				"value": 0
+			},
+			"edges": {
+				"sourceName": "",
+				"value": 0
+			}
+		},
+		"NPC": {}
+	},
+	"Item": {
+		"types": [
+			"move",
+			"attack",
+			"advantage",
+			"disadvantage",
+			"darksecret",
+			"weapon",
+			"relation",
+			"gear"
+		],
+		"move": {
+			"intro": "RECORD.effect.intro",
+			"trigger": "RECORD.effect.trigger",
+			"outro": "RECORD.effect.effect",
+			"attribute": "RECORD.attributemod",
+			"notes": "",
+			"passiveEffect": {
+				"optionsLists": [], // RECORD.results.suffix.list !== "" ? ["watchers gang"] : []
+				"suffix": "", // !RECORD.suffix.text.match(/Hold/) ? RECORD.suffix.text : ""
+				"hold": 0
+			},
+			"completeSuccess": {
+				"result": "RECORD.results.success.text",
+				"optionsLists": [], /* [
+					(RECORD.results.lists.questions !== ""
+						&& RECORD.results.success.text.match(/sk\s+[a-z]+\s+question/))
+						? "questions"
+						: null,
+					(RECORD.results.lists.options !== ""
+						&& RECORD.results.success.text.match(/hoose\s+[a-z]+\s+option/))
+						? "options"
+						: null,
+					(RECORD.results.lists.edges !== ""
+						&& RECORD.results.success.text.match(/\d+\s+Edge/))
+						? "edges"
+						: null
+				].filter((item) => Boolean(item)) */
+				"edges": 0, // parseInt((RECORD.results.success.text.match(/^Gain (\d+) Edge/) ?? [])[1] || 0)
+				"hold": 0 // parseInt((RECORD.results.success.text.match(/(\d+) Hold/) ?? [])[1] || 0)
+			},
+			"partialSuccess": {
+				"result": "RECORD.results.partial.text",
+				"optionsLists": [], /* [
+					(RECORD.results.lists.questions !== ""
+						&& RECORD.results.partial.text.match(/sk\s+[a-z]+\s+question/))
+						? "questions"
+						: null,
+					(RECORD.results.lists.options !== ""
+						&& RECORD.results.partial.text.match(/hoose\s+[a-z]+\s+option/))
+						? "options"
+						: null,
+					(RECORD.results.lists.edges !== ""
+						&& RECORD.results.partial.text.match(/\d+\s+Edge/))
+						? "edges"
+						: null
+				].filter((item) => Boolean(item)) */
+				"edges": 0, // parseInt((RECORD.results.partial.text.match(/^Gain (\d+) Edge/) ?? [])[1] || 0)
+				"hold": 0 // parseInt((RECORD.results.partial.text.match(/(\d+) Hold/) ?? [])[1] || 0)
+			},
+			"failure": {
+				"result": "RECORD.results.fail.text",
+				"optionsLists": [], /* [
+					(RECORD.results.lists.questions !== ""
+						&& RECORD.results.fail.text.match(/sk\s+[a-z]+\s+question/))
+						? "questions"
+						: null,
+					(RECORD.results.lists.options !== ""
+						&& RECORD.results.fail.text.match(/hoose\s+[a-z]+\s+option/))
+						? "options"
+						: null,
+					(RECORD.results.lists.edges !== ""
+						&& RECORD.results.fail.text.match(/\d+\s+Edge/))
+						? "edges"
+						: null
+				].filter((item) => Boolean(item)) */
+				"edges": 0, // parseInt((RECORD.results.fail.text.match(/^Gain (\d+) Edge/) ?? [])[1] || 0)
+				"hold": 0 // parseInt((RECORD.results.fail.text.match(/(\d+) Hold/) ?? [])[1] || 0)
+			},
+			"lists": {
+				"questions": [], // RECORD.results.lists.questions.split(/\|/).filter((item) => Boolean(item))
+				"options": [], // RECORD.results.lists.options.split(/\|/).filter((item) => Boolean(item))
+				"edges": [] // RECORD.results.lists.edges.split(/\|/).filter((item) => Boolean(item))
+				/* if (RECORD.results.suffix.list !== "") {
+					"watchers gang": RECORD.results.suffix.list.split(/\|/).filter((item) => Boolean(item))
+				} */
+			},
+			"sourceItem": {
+				"id": "", // (filled in when item is embedded in actor sheet)
+				"type": "", // RECORD.linkType
+				"name": "" // RECORD.linkName
+			}, // OR false, if this is a basic move
+			"isCustom": true, // set to FALSE for ALL auto-created moves
+			"isActive": true, // RECORD.type === "active"
+			"canGrantHold": false, // RECORD.hasHolds
+			"holdText": "", // RECORD.suffix.text.match(/Hold/) ? RECORD.suffix.text : ""
+			"pdfLink": ""
+		},
+		"attack": {
+			"distance": "arm",
+			"baseHarm": 0,
+			"effect": "",
+			"details": "",
+			"ammo": 0,
+			"sourceItem": {
+				"id": "", // (filled in when item is embedded in actor sheet)
+				"type": "", // RECORD.linkType
+				"name": "" // RECORD.linkName
+			},
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"weapon": {
+			"exampleTypes": "",
+			"weaponType": "",
+			"details": "",
+			"ammo": {
+				"min": 0,
+				"max": 0,
+				"value": 0
+			},
+			"linkedItemData": [],
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"advantage": {
+			"description": "",
+			"attribute": "",
+			"details": "",
+			"linkedItemData": [],
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"disadvantage": {
+			"description": "",
+			"notes": "",
+			"linkedItemData": [],
+			"currentHold": 0,
+			"isCustom": true,
+			"pdfLink": ""
+		},
+		"darksecret": {
+			"description": "",
+			"suggestedDrives": [],
+			"drive": "",
+			"details": "",
+			"playerNotes": "",
+			"gmNotes": ""
+		},
+		"relation": {
+			"target": "",
+			"description": "",
+			"details": "",
+			"strength": {
+				"min": 0,
+				"max": 2,
+				"value": 0
+			}
+		},
+		"gear": {}
+	}
+}

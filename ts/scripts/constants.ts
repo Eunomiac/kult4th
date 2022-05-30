@@ -1,10 +1,3 @@
-
-export namespace Archetype {
-	export type Sleeper = "sleeper";
-	export type Custom = "custom";
-	export type Aware = typeof Archetypes.Aware[number];
-	export type Awakened = typeof Archetypes.Enlightened[number];
-}
 export const Archetypes = {
 	Aware: [
 		"academic",
@@ -39,22 +32,6 @@ export const Archetypes = {
 		"timeAndSpaceMagician"
 	] as const
 };
-
-export type ItemType = typeof ItemTypes[number];
-export const ItemTypes = [
-	"move",
-	"attack",
-	"advantage",
-	"disadvantage",
-	"darksecret",
-	"weapon",
-	"relation",
-	"gear"
-];
-
-export type AttributeActive = keyof typeof Attributes.Active;
-export type AttributePassive = keyof typeof Attributes.Passive;
-export type Attribute = AttributeActive | AttributePassive;
 export const Attributes = {
 	Active: {
 		reason: {},
@@ -62,7 +39,8 @@ export const Attributes = {
 		perception: {},
 		coolness: {},
 		violence: {},
-		charisma: {}
+		charisma: {},
+		soul: {}
 	},
 	Passive: {
 		fortitude: {},
@@ -70,8 +48,6 @@ export const Attributes = {
 		reflexes: {}
 	}
 } as const;
-
-export type RollAttribute = Attribute | "none" | "-harm" | "armor" | SmallInt;
 
 const C = {
 	SYSTEM_ID: "kult4th",
@@ -109,7 +85,8 @@ const C = {
 		passionMagician: [],
 		revenant: ["Bewitching", "Memories of Past Lives", "Commanding Voice", "Mind Manipulator", "Ethereal", "Telekinesis", "Invulnerability", "Bloodthirst", "Sensitivity", "Controlled by External Force", "Symbol Bondage"],
 		timeAndSpaceMagician: []
-	}
+	},
+	Attributes
 };
 
 Object.assign(C, {

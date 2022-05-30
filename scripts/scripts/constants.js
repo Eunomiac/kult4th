@@ -32,16 +32,6 @@ export const Archetypes = {
         "timeAndSpaceMagician"
     ]
 };
-export const ItemTypes = [
-    "move",
-    "attack",
-    "advantage",
-    "disadvantage",
-    "darksecret",
-    "weapon",
-    "relation",
-    "gear"
-];
 export const Attributes = {
     Active: {
         reason: {},
@@ -49,7 +39,8 @@ export const Attributes = {
         perception: {},
         coolness: {},
         violence: {},
-        charisma: {}
+        charisma: {},
+        soul: {}
     },
     Passive: {
         fortitude: {},
@@ -93,7 +84,8 @@ const C = {
         passionMagician: [],
         revenant: ["Bewitching", "Memories of Past Lives", "Commanding Voice", "Mind Manipulator", "Ethereal", "Telekinesis", "Invulnerability", "Bloodthirst", "Sensitivity", "Controlled by External Force", "Symbol Bondage"],
         timeAndSpaceMagician: []
-    }
+    },
+    Attributes
 };
 Object.assign(C, {
     awareArchetypes: Object.keys(C.archetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim()),

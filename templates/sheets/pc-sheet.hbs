@@ -1,5 +1,74 @@
 {{log this}}
+{{log "DATA" data}}
+
 <form class="{{cssClass}}" autocomplete="off">
+	<section class="nav-panel">
+		<img class="img-border" src="../systems/kult4th/assets/layout/portrait-frame.webp" />
+		<div class="profile-image" data-src="{{actor.img}}"></div>
+	</section>
+	<div class="bg-container">
+		<div class="sheet-border corner top-left"></div>
+		<div class="sheet-border horiz-bar top"></div>
+		<div class="sheet-border corner top-right"></div>
+		<div class="sheet-border vert-bar left"></div>
+		<div class="sheet-border vert-bar right"></div>
+		<div class="sheet-border corner bot-left"></div>
+		<div class="sheet-border horiz-bar bot"></div>
+		<div class="sheet-border corner bot-right"></div>
+	</div>
+	<section class="sheet-content">
+		<header class="sheet-header">
+			<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
+		</header>
+		<section class="tab-content">
+			<section class="active tab front" data-group="primary" data-tab="front">
+				<section class="subsection dramatic-hooks">
+					<label class="hook-label">Hooks</label>
+					{{#each data.data.dramaticHooks}}
+					<div class="dramatic-hook">
+						<input type="checkbox" name="data.dramaticHooks.{{@index}}.isChecked" {{checked isChecked}} />
+						<input type="text" name="data.dramaticHooks.{{@index}}.value" value="{{value}}" />
+					</div>
+					{{/each}}
+				</section>
+				<section class="subsection status">
+					<div class="stability"></div>
+					<div class="wounds"></div>
+					<div class="edges"></div>
+					<div class="dice-modifiers"></div>
+				</section>
+				<section class="subsection attributes">
+					<h1 class="subsection-header">Attributes</h1>
+					{{#each attributes}}
+					{{> "systems/kult4th/templates/partials/attribute-box.hbs"}}
+					{{/each}}
+				</section>
+				<section class="subsection basic-moves">
+					<h1 class="subsection-header">Basic Moves</h1>
+					{{#each baseMoves}}
+					{{> "systems/kult4th/templates/partials/basic-move-card.hbs"}}
+					{{/each}}
+				</section>
+				<section class="subsection special-moves">
+					<h1 class="subsection-header">Special Moves</h1>
+				</section>
+				<section class="subsection session-checks">
+					<h1 class="subsection-header">Session Checks</h1>
+				</section>
+				<section class="subsection attacks">
+					<h1 class="subsection-header">Attacks</h1>
+				</section>
+			</section>
+			<section class="tab bio" data-group="primary" data-tab="bio"></section>
+			<section class="tab assets" data-group="primary" data-tab="assets"></section>
+			<section class="tab notes" data-group="primary" data-tab="notes"></section>
+			<section class="tab advancement" data-group="primary" data-tab="advancement"></section>
+		</section>
+	</section>
+</form>
+
+
+<form class="{{cssClass}} actor-sheet pc-sheet" autocomplete="off" style="display: none;">
 	<div class="sheet-lock-button">
 		<a class="sheet-lock" title="Lock/Unlock Sheet">
 			<i class="fas fa-lock{{#if isSheetOpen}}-open{{/if}}"></i>

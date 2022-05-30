@@ -219,7 +219,8 @@ const BUILDFILES = {
 	},
 	assets: {
 		[`./dist/${SYSTEM}/assets/`]: ["assets/**/*.*"],
-		[`./dist/${SYSTEM}/`]: ["system.json", "template.json", "LICENSE.txt", "package.json"]
+		[`./dist/${SYSTEM}/`]: ["system.json", "template.json", "LICENSE.txt", "package.json"],
+		["./scripts/"]: ["rawscripts/*.mjs"]
 	}
 };
 const REGEXPPATTERNS = {
@@ -507,7 +508,7 @@ BUILDFUNCS.assets = parallel(
 // #endregion ▄▄▄▄▄ ASSETS ▄▄▄▄▄
 
 // #region ▒░▒░▒░▒[EXPORTS]▒░▒░▒░▒ ~
-const {ts, js, ...parallelBuildFuncs} = BUILDFUNCS;
+const {ts, js, assets, ...parallelBuildFuncs} = BUILDFUNCS;
 
-exports.default = series(PLUMBING.init, parallel(series(ts, js), ...Object.values(parallelBuildFuncs)), PLUMBING.watch);
+exports.default = series(PLUMBING.init, parallel(series(ts, js, assets), ...Object.values(parallelBuildFuncs)), PLUMBING.watch);
 // #endregion ▒▒▒▒[EXPORTS]▒▒▒▒

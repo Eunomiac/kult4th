@@ -1,61 +1,11 @@
-	select,
-	input,
-	textarea {
-		font-family: var(--font-primary);
-		color: var(--gold-fg);
-	}
-
-	select:focus, select:focus-within {
-		box-shadow: none;
-	}
-
-	option {
-		background: var(--bg);
-	}
 
 
 
 
-	.editor-content {
-		text-align: justify;
-		hyphens: auto;
-		color: var(--gold-fg);
 
-		h1 {
-				font-family: 'Infidel';
-				color: white;
-				margin: 0 0 10px 0;
-				line-height: 1em;
-				height: 0.9em;
-				// border: none;
-				text-shadow: 0px 0px 5px red;
-		}
 
-		h2, h3 {
-			color: var(--gold-bright);
-			font-variant: small-caps;
-		}
 
-		h2 {
-				// border-bottom: 1px solid var(--gold-bright50);
-				height: 24px;
-		}
 
-		p {
-				font-size: 12px;
-		}
-
-		h3 {
-				height: 16px;
-		}
-
-	}
-
-	.window-header {
-		border-color: var(--gold-fg);
-		background-color: var(--bg);
-
-	}
 
 	.window-content {
 		overflow-y: scroll;

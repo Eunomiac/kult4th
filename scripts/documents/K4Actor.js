@@ -1,4 +1,11 @@
-import { K4ItemType } from "./K4Item.js";
+import { ItemType } from "./K4Item.js";
+import C from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
+export var ActorType;
+(function (ActorType) {
+    ActorType["pc"] = "pc";
+    ActorType["npc"] = "npc";
+})(ActorType || (ActorType = {}));
 export default class K4Actor extends Actor {
     get items() { return super.items; }
     // override prepareData() {
@@ -18,16 +25,39 @@ export default class K4Actor extends Actor {
     getItemsOfType(type) {
         return this.items.filter((item) => item.type === type);
     }
-    get moves() { return this.getItemsOfType(K4ItemType.move); }
-    get attacks() { return this.getItemsOfType(K4ItemType.attack); }
-    get advantages() { return this.getItemsOfType(K4ItemType.advantage); }
-    get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage); }
-    get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret); }
-    get weapons() { return this.getItemsOfType(K4ItemType.weapon); }
-    get gear() { return this.getItemsOfType(K4ItemType.gear); }
-    get relations() { return this.getItemsOfType(K4ItemType.relation); }
+    get moves() { return this.getItemsOfType(ItemType.move); }
+    get attacks() { return this.getItemsOfType(ItemType.attack); }
+    get advantages() { return this.getItemsOfType(ItemType.advantage); }
+    get disadvantages() { return this.getItemsOfType(ItemType.disadvantage); }
+    get darkSecrets() { return this.getItemsOfType(ItemType.darksecret); }
+    get weapons() { return this.getItemsOfType(ItemType.weapon); }
+    get gear() { return this.getItemsOfType(ItemType.gear); }
+    get relations() { return this.getItemsOfType(ItemType.relation); }
     get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem); }
     get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem)); }
+    get attributeData() {
+        const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)];
+        return attrList.map((attrName) => ({
+            name: U.tCase(attrName),
+            key: attrName,
+            min: this.data.data.attributes[attrName].min,
+            max: this.data.data.attributes[attrName].max,
+            value: this.data.data.attributes[attrName].value
+        }));
+    }
+    get attributes() {
+        return Object.fromEntries(Object.entries(this.attributeData)
+            .map(([attrName, { value }]) => [attrName, value]));
+    }
+    async _onCreate(...args) {
+        await super._preCreate(...args);
+        if (this.type === "PC") {
+            // @ts-expect-error Fucking useless...
+            const itemData = Array.from(game.items).filter((item) => item.type === "move" && !item.data.data.sourceItem).map((item) => item.data);
+            // @ts-expect-error Fucking useless...
+            this.createEmbeddedDocuments("Item", itemData);
+        }
+    }
 }
 // class K4Item<Type extends K4ItemType> extends Item {
 // 	declare data: K4ItemData<Type>;

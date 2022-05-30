@@ -1,0 +1,14 @@
+<div class="basic-move-item" data-attribute="{{data.data.attribute}}">
+	<span class="move-icon {{#if data.data.isActive}}active{{else}}passive{{/if}}-move">
+		<img src="{{img}}" />
+		<a class="move-button" data-move="{{name}}" data-action="roll">ROLL</a>
+		<a class="move-button" data-move="{{name}}" data-action="chat">CHAT</a>
+		<a class="move-button" data-move="{{name}}" data-action="edit">EDIT</a>
+		<a class="move-button" data-move="{{name}}" data-action="drop">DROP</a>
+	</span>
+	<span class="move-name">
+		<span class="move-bg"></span>
+		<span class="move-text">{{name}}</span>
+	</span>
+	<span class="trigger-tooltip">{{data.data.trigger}}</span>
+</div>
