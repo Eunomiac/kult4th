@@ -13,3 +13,13 @@ export function MIX(derivedCtor: K4Constructor, baseCtors: K4Constructor[]) {
 	});
 	return derivedCtor;
 }
+
+export const HandlebarHelpers = {
+	test: function(param1: string, operator: string, param2: string) {
+		switch (operator) {
+			case "==": { return param1 == param2 } // eslint-disable-line eqeqeq
+			case "===": { return param1 === param2 }
+			default: { return false }
+		}
+	}
+};

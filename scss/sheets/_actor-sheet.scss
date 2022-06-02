@@ -1,10 +1,4 @@
-@function to-url($path){
-@return unquote(str-insert(str-insert('url("../assets/',
-			$path,
-			1000),
-		'")',
-		1000));
-}
+
 
 & {
 	min-width: 700px;

@@ -1,4 +1,4 @@
-import { ItemType } from "./K4Item.js";
+import { K4ItemType } from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 export var ActorType;
@@ -25,14 +25,14 @@ export default class K4Actor extends Actor {
     getItemsOfType(type) {
         return this.items.filter((item) => item.type === type);
     }
-    get moves() { return this.getItemsOfType(ItemType.move); }
-    get attacks() { return this.getItemsOfType(ItemType.attack); }
-    get advantages() { return this.getItemsOfType(ItemType.advantage); }
-    get disadvantages() { return this.getItemsOfType(ItemType.disadvantage); }
-    get darkSecrets() { return this.getItemsOfType(ItemType.darksecret); }
-    get weapons() { return this.getItemsOfType(ItemType.weapon); }
-    get gear() { return this.getItemsOfType(ItemType.gear); }
-    get relations() { return this.getItemsOfType(ItemType.relation); }
+    get moves() { return this.getItemsOfType(K4ItemType.move); }
+    get attacks() { return this.getItemsOfType(K4ItemType.attack); }
+    get advantages() { return this.getItemsOfType(K4ItemType.advantage); }
+    get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage); }
+    get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret); }
+    get weapons() { return this.getItemsOfType(K4ItemType.weapon); }
+    get gear() { return this.getItemsOfType(K4ItemType.gear); }
+    get relations() { return this.getItemsOfType(K4ItemType.relation); }
     get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem); }
     get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem)); }
     get attributeData() {

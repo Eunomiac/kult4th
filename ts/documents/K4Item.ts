@@ -1,4 +1,4 @@
-export enum ItemType {
+export enum K4ItemType {
 	advantage = "advantage",
 	disadvantage = "disadvantage",
 	move = "move",
@@ -9,7 +9,7 @@ export enum ItemType {
 	weapon = "weapon"
 }
 
-export default class K4Item<Type extends ItemType> extends Item {
-	declare data: K4ItemData<Type>;
+export default class K4Item<Type extends K4ItemType> extends Item {
+	declare data: Item["data"] & {data: K4ItemData<Type>};
 	override get type(): Type { return super.type as Type }
 }

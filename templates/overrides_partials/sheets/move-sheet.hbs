@@ -1,0 +1,60 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
+    <h1><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+  </header>
+  <div class="forms kult-item-sheet">
+    <div>
+      <label>{{localize "kult4th.Attribute"}}:</label>
+      <select name="data.attributemod" value="{{data.attributemod}}">
+        {{#select data.attributemod}}
+        <option value ="none">{{localize "kult4th.None"}}</option>
+        <option value="willpower">{{localize "kult4th.Willpower"}}</option>
+        <option value="fortitude">{{localize "kult4th.Fortitude"}}</option>
+        <option value="reflexes">{{localize "kult4th.Reflexes"}}</option>
+        <option value="reason">{{localize "kult4th.Reason"}}</option>
+        <option value="intuition">{{localize "kult4th.Intuition"}}</option>
+        <option value="perception">{{localize "kult4th.Perception"}}</option>
+        <option value="coolness">{{localize "kult4th.Coolness"}}</option>
+        <option value="violence">{{localize "kult4th.Violence"}}</option>
+        <option value="charisma">{{localize "kult4th.Charisma"}}</option>
+        <option value="soul">{{localize "kult4th.Soul"}}</option>
+        <option value="ask">{{localize "kult4th.Ask"}}</option>
+        {{/select}}
+      </select>
+    </div>
+    <div class="editor-row">
+      <label>{{localize "kult4th.Trigger"}}:</label>
+      <div>{{editor content=data.trigger target="data.trigger" button=true owner=owner editable=editable}}</div>
+    </div>
+    <div>
+      <label>{{localize "kult4th.Results"}}:</label>
+      <div class="results-input">
+        <div class="editor-row">
+          <label>15+:</label>
+          <div>{{editor content=data.completesuccess target="data.completesuccess" button=true owner=owner editable=editable}}</div>
+        </div>
+        <div class="editor-row">
+          <label>10-14:</label>
+          <div>{{editor content=data.partialsuccess target="data.partialsuccess" button=true owner=owner
+            editable=editable}}</div>
+        </div>
+        <div class="editor-row">
+          <label>0-9</label>
+          <div>{{editor content=data.failure target="data.failure" button=true owner=owner editable=editable}}</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <label>{{localize "kult4th.SpecialMove"}}:</label>
+      <select name="data.specialflag" value="{{data.specialflag}}">
+      {{#select data.specialflag}}
+        <option value='0'>{{localize "kult4th.None"}}</option>
+        <option value='1'>{{localize "kult4th.KeepItTogether"}}</option>
+        <option value='2'>{{localize "kult4th.SeeThroughTheIllusion"}}</option>
+        <option value='3'>{{localize "kult4th.EndureInjury"}}</option>
+      {{/select}}
+      </select>
+    </div>
+  </div>
+</form>

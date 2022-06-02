@@ -4,6 +4,7 @@ import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import C from "./scripts/constants.js";
+import { HandlebarHelpers } from "./scripts/helpers.js";
 // ts-expect-error Just until I get the compendium data migrated
 import BUILD_ITEM_DATA from "../scripts/jsonImport.mjs";
 import MIGRATE_ITEM_DATA from "./scripts/migrator.js";
@@ -20,9 +21,19 @@ Hooks.once("init", () => {
     loadTemplates([
         "systems/kult4th/templates/sheets/pc-sheet.hbs",
         "systems/kult4th/templates/sheets/npc-sheet.hbs",
+        "systems/kult4th/templates/sheets/move-sheet.hbs",
+        "systems/kult4th/templates/sheets/advantage-sheet.hbs",
+        "systems/kult4th/templates/sheets/disadvantage-sheet.hbs",
+        "systems/kult4th/templates/sheets/darksecret-sheet.hbs",
+        "systems/kult4th/templates/sheets/weapon-sheet.hbs",
+        "systems/kult4th/templates/sheets/relation-sheet.hbs",
+        "systems/kult4th/templates/sheets/gear-sheet.hbs",
+        /*DEVCODE*/ "systems/kult4th/templates/debug/template-entry.hbs",
         "systems/kult4th/templates/partials/basic-move-card.hbs",
         "systems/kult4th/templates/partials/attribute-box.hbs"
     ]);
+    Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func));
+    console.log("HANDLEBARS", Handlebars);
     Object.assign(globalThis, {
         gsap,
         resetItems: async () => {
@@ -35,15 +46,18 @@ Hooks.once("init", () => {
                 move: "Basic Player Moves",
                 disadvantage: "Disadvantages",
                 darksecret: "Dark Secrets",
-                weapon: "Weapons"
+                weapon: "Weapons" /*DEVCODE*/,
+                derived_move: "Derived Moves",
+                derived_attack: "Derived Attacks" /*!DEVCODE*/
             };
             const itemFolders = {
                 "Advantages": C.Colors["GOLD -1"],
                 "Disadvantages": C.Colors["GOLD -2"],
                 "Basic Player Moves": C.Colors["GOLD -1"],
                 "Dark Secrets": C.Colors["GOLD -2"],
-                "Weapons": C.Colors["GOLD -1"],
-                "Attacks": C.Colors["GOLD -2"]
+                "Weapons": C.Colors["GOLD -1"] /*DEVCODE*/,
+                "Derived Moves": C.Colors["GOLD -2"],
+                "Derived Attacks": C.Colors["GOLD -1"] /*!DEVCODE*/
             };
             const FOLDERDATA = Object.entries(itemFolders).map(([folderName, folderColor]) => ({
                 name: folderName,
@@ -51,10 +65,11 @@ Hooks.once("init", () => {
                 sorting: "a",
                 color: folderColor
             }));
-            const folders = await Folder.createDocuments(FOLDERDATA);
+            await Folder.createDocuments(FOLDERDATA);
             const ITEMDATA = await BUILD_ITEM_DATA();
             // ITEMDATA = ITEMDATA.filter((item: Record<string,unknown>) => item.type === "move");
-            const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA(ITEMDATA);
+            const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA(ITEMDATA) // @ts-expect-error They fucked up
+                .map((iData) => Object.assign(iData, { folder: game.folders.getName(folderMap[iData.type]).id }));
             // const items: Array<K4Item<ItemType>> = [];
             // MIGRATEDITEMDATA.forEach(async (itemData) => {
             // 	console.log(`[${itemData.name}] Creating ...`, itemData);
@@ -65,15 +80,31 @@ Hooks.once("init", () => {
             // 	const [item] = await Item.createDocuments([itemData]);
             // 	items.push(item as K4Item<ItemType>);
             // });
-            const items = await Item.createDocuments(MIGRATEDITEMDATA);
-            items.forEach((item) => {
+            // const items = await Item.createDocuments(MIGRATEDITEMDATA);
+            // items.forEach((item) => {
+            // 	// @ts-expect-error They fucked up
+            // 	item.update({folder: game.folders.getName(folderMap[item.type]).id});
+            // });
+            /*DEVCODE*/
+            const derivedMoveData = MIGRATEDITEMDATA.map((iData) => (iData.data.moves ?? [])
                 // @ts-expect-error They fucked up
-                item.update({ folder: game.folders.getName(folderMap[item.type]).id });
-            });
+                .map((mData) => Object.assign(mData, { folder: game.folders.getName(folderMap.derived_move).id }))).flat();
+            const derivedAttackData = MIGRATEDITEMDATA.map((iData) => (iData.data.attacks ?? [])
+                // @ts-expect-error They fucked up
+                .map((aData) => Object.assign(aData, { folder: game.folders.getName(folderMap.derived_attack).id }))).flat();
+            await Item.createDocuments([
+                ...MIGRATEDITEMDATA,
+                ...derivedMoveData,
+                ...derivedAttackData
+            ]);
+            /*!DEVCODE*/
         }
     });
 });
 Hooks.once("ready", async () => {
-    // @ts-expect-error They fucked up
-    resetItems();
+    const isResetting = false;
+    if (isResetting) {
+        // @ts-expect-error They fucked up
+        resetItems();
+    }
 });

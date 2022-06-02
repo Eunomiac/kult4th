@@ -70,87 +70,6 @@
   --font-body: Alverata;
   --font-heading: Infidel; }
 
-.center-text {
-  text-align: center !important; }
-
-.item-trigger {
-  font-style: italic;
-  color: var(--gold-bright); }
-
-.item-gm-phrase {
-  font-weight: 700;
-  color: var(--red-bright); }
-
-.item-roll-desc,
-.item-keyword {
-  font-weight: 700;
-  color: var(--blue); }
-
-.item-roll-desc {
-  text-transform: capitalize; }
-
-.item-move-name {
-  color: var(--red-bright);
-  font-weight: 400 !important; }
-  .item-move-name * {
-    font-weight: 400 !important; }
-
-.edge-name {
-  color: var(--gold-bright);
-  font-weight: 400 !important; }
-
-.source-name {
-  font-size: 12px;
-  text-align: right;
-  display: block;
-  font-variant: small-caps;
-  color: var(--gold-bright);
-  font-style: italic; }
-
-.item-text,
-.message-content {
-  text-align: justify;
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto; }
-  .item-text p,
-  .message-content p {
-    text-align: inherit;
-    -webkit-hyphens: inherit;
-    -ms-hyphens: inherit;
-    hyphens: inherit; }
-  .item-text ul li,
-  .message-content ul li {
-    list-style-type: square;
-    text-indent: -5px;
-    margin-left: 5px; }
-
-/* Darker text on medium background */
-.dark-on-dark {
-  color: #333;
-  background-color: #666;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-  /* 50% white from bottom */ }
-
-/* Medium text on lighter background */
-.med-on-light {
-  color: #666;
-  background-color: #aaa;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
-  /* 50% black coming from the top */ }
-
-/* Middle-tone colors with 1 shadow */
-.mid-one-shadow {
-  color: #3b5957;
-  background-color: #5d8d89;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5); }
-
-/* Middle-tone colors with 2 shadows */
-.mid-two-shadow {
-  color: #3b5957;
-  background-color: #5d8d89;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7); }
-
 .vtt.game.system-kult4th .app.window-app {
   color: var(--gold);
   -webkit-box-shadow: 0 0 0px var(--black);
@@ -714,3 +633,64 @@
             grid-area: session-checks; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .sheet-content .tab-content .tab.front .attacks {
             grid-area: attacks; }
+
+.vtt.game.system-kult4th .app.window-app.sheet.item {
+  min-width: 700px;
+  min-height: 525px; }
+  .vtt.game.system-kult4th .app.window-app.sheet.item .window-content {
+    background: var(--black);
+    border: 8px double var(--gold); }
+    .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form {
+      height: 100%;
+      width: 100%;
+      overflow: scroll; }
+      .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content {
+        padding: 5px;
+        color: var(--gold);
+        padding: 10px; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .sheet-header {
+          background: var(--gold);
+          font-size: 24px;
+          text-align: center; }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .sheet-header input {
+            color: var(--black);
+            background: none;
+            border: none;
+            font-weight: bold; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry label {
+          font-size: 14px;
+          color: var(--gold-bright);
+          font-weight: bold; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry textarea, .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry input, .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry pre {
+          font-size: 12px;
+          color: white;
+          border: 1px solid var(--gold);
+          padding: 2px; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry pre {
+          white-space: break-spaces; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-phrase label {
+          width: 50px; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-phrase input {
+          display: inline;
+          width: calc(100% - 50px); }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-label {
+          display: inline; }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-label input {
+            display: inline;
+            width: auto; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-text {
+          display: block;
+          margin-top: 20px;
+          border-top: 1px solid var(--red-dark); }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-text label {
+            font-size: 24px; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-number {
+          display: inline; }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-number input {
+            display: inline;
+            width: 30px;
+            text-align: center; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-boolean {
+          display: inline; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-content .tab-content .template-entry.template-list {
+          color: var(--gold-bright); }

@@ -733,7 +733,6 @@ const objFilter = (obj, keyFunc, valFunc) => {
     }
     const kFunc = keyFunc || (() => true);
     const vFunc = valFunc || (() => true);
-    // @ts-expect-error TEMPORARY
     return Object.fromEntries(Object.entries(obj).filter(([key, val]) => kFunc(key) && vFunc(val)));
 };
 const objForEach = (obj, func) => {

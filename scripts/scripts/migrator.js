@@ -118,19 +118,34 @@ const migrateData = (iData) => {
         // no default
     }
     mData._original = { ...iData };
+    mData.data.lists = {};
     if (record.lists) {
-        mData.data.lists = {
-            questions: record.lists.questions.split(/\|/).filter(Boolean),
-            options: record.lists.options.split(/\|/).filter(Boolean),
-            edges: record.lists.edges.split(/\|/).filter(Boolean),
-            other: {}
-        };
+        Object.entries(record.lists).forEach(([key, itemString]) => {
+            if (itemString && typeof itemString === "string") {
+                const items = itemString.split(/\|/).filter(Boolean);
+                if (items.length) {
+                    switch (key) {
+                        case "gmoptions": {
+                            mData.data.lists[key] = {
+                                name: "GM Options",
+                                items
+                            };
+                            break;
+                        }
+                        default: {
+                            mData.data.lists[key] = {
+                                name: U.tCase(key),
+                                items
+                            };
+                            break;
+                        }
+                    }
+                }
+            }
+        });
     }
-    if (record.suffix?.list) {
-        mData.data.lists.other_watchers = {
-            name: "Watchers Gang",
-            items: record.suffix.list.split(/\|/).filter(Boolean)
-        };
+    if (mData.data.lists.watchers) {
+        mData.data.lists.watchers.intro = record.suffix.listText;
     }
     if (record.linkName) {
         mData.data.sourceItem = {
@@ -188,24 +203,24 @@ function testIncomingData(DATA) {
     const allItems = {};
     ["advantage", "disadvantage", "move", "darksecret", "relation", "weapon", "attack", "gear"].forEach((iType) => {
         allItems[iType] = {
-            active: activeData.filter((iData) => iData.record.itemType === iType),
-            passive: passiveData.filter((iData) => iData.record.itemType === iType)
+            active: toDict(activeData.filter((iData) => iData.record.itemType === iType), "name"),
+            passive: toDict(passiveData.filter((iData) => iData.record.itemType === iType), "name")
         };
     });
-    allItems.move.activeDerived = derivedMoves.filter((iData) => iData.record.type === "active");
-    allItems.move.passiveDerived = derivedMoves.filter((iData) => iData.record.type === "passive");
-    allItems.attack.derived = derivedAttacks;
+    allItems.move.activeDerived = toDict(derivedMoves.filter((iData) => iData.record.type === "active"), "name");
+    allItems.move.passiveDerived = toDict(derivedMoves.filter((iData) => iData.record.type === "passive"), "name");
+    allItems.attack.derived = toDict(derivedAttacks, "name");
     console.log("[!!!INCOMING!!!] ALL CLEANED INCOMING ITEM DATA", allItems);
     console.log("[TEST INCOMING] Active/Passive/Moves Analysis", {
-        "Passives w/Moves": passiveData.filter((iData) => iData.record.moves?.length),
-        "Passives w/Attacks": passiveData.filter((iData) => iData.record.attacks?.length)
+        "Passives w/Moves": toDict(passiveData.filter((iData) => iData.record.moves?.length), "name"),
+        "Passives w/Attacks": toDict(passiveData.filter((iData) => iData.record.attacks?.length), "name")
     });
     // Check for lists inside result objects that aren't included in main lists property
-    console.log("[TEST INCOMING] Missing Lists", DATA.filter((iData) => {
+    console.log("[TEST INCOMING] Missing Lists", toDict(DATA.filter((iData) => {
         return iData.record?.results
             && (iData.record.results.success?.list || iData.record.results.partial?.list || iData.record.results.fail?.list)
             && !(iData.record.lists?.edges || iData.record.lists?.options || iData.record.lists?.questions);
-    }));
+    }), "name"));
     return true;
 }
 function testOutgoingData(DATA) {
@@ -215,13 +230,33 @@ function testOutgoingData(DATA) {
     const derivedAttacks = cData.map((iData) => iData.data.attacks || []).flat();
     const allItems = {};
     ["advantage", "disadvantage", "move", "darksecret", "relation", "weapon", "attack", "gear"].forEach((iType) => {
-        allItems[iType] = toDict(cData.filter((iData) => iData.type === iType));
+        allItems[iType] = toDict(cData.filter((iData) => iData.type === iType), "name");
     });
-    allItems.move_derived = toDict(derivedMoves);
-    allItems.attack_derived = toDict(derivedAttacks);
+    allItems.move_derived = toDict(derivedMoves, "name");
+    allItems.attack_derived = toDict(derivedAttacks, "name");
     console.log("[!!!OUTGOING!!!] ALL CLEANED OUTGOING ITEM DATA", allItems);
     return true;
 }
-function toDict(items) {
-    return Object.fromEntries(items.map((item) => [item.name, item]));
+function toDict(items, key) {
+    const dict = {};
+    items.forEach((item) => {
+        let newKey = item[key];
+        if (newKey in dict) {
+            console.error(`[toDict()] Duplicate Key: '${String(key)}: ${newKey}'`);
+            newKey = indexString(newKey);
+            console.warn(`Changing to ${newKey}`);
+        }
+        dict[newKey] = item;
+    });
+    return Object.fromEntries(items.map((item) => [item[key], item]));
+}
+function indexString(str) {
+    if (/_\d+$/.test(str)) {
+        const [curIndex, ...subStr] = str.split(/_/).reverse();
+        return [
+            ...subStr.reverse(),
+            parseInt(curIndex) + 1
+        ].join("_");
+    }
+    return `${str}_1`;
 }

@@ -157,7 +157,7 @@ const DATA_JSON = [
 		},
 		lists: {
 			questions: "",
-			options: "",
+			options: "|You discover a portal to another dimension, and a path you can trace back to it later.|You make contact with someone—or something—who can help you, for the right price.|You find something valuable or important, in addition to what you were looking for. The GM will tell you what it is.",
 			edges: "",
 			attacks: ""
 		},
@@ -643,7 +643,8 @@ const DATA_JSON = [
 			questions: "",
 			options: "|Improvisation: You stabilize one Wound without access to medical equipment.|Effective: You stabilize two Wounds instead of one.|Careful: The wound stabilizes and will heal much faster than normal.",
 			edges: "",
-			attacks: ""
+			attacks: "",
+			complications: "|You leave cosmetic scars or defects (the patient loses Stability (−2).|There are lingering side effects (−1 to all rolls the wound could feasibly affect until it's fully healed).|The patient remains knocked out until the GM determines that they awaken."
 		},
 		results: {
 			success: {
@@ -651,7 +652,7 @@ const DATA_JSON = [
 				list: "|Improvisation: You stabilize one Wound without access to medical equipment.|Effective: You stabilize two Wounds instead of one.|Careful: The wound stabilizes and will heal much faster than normal."
 			},
 			partial: {
-				text: "You may choose one option. However, you must also choose one complication:",
+				text: "You may choose one option. $OPTIONS$ However, you must also choose one complication: $COMPLICATIONS$",
 				list: "|You leave cosmetic scars or defects (the patient loses Stability (−2).|There are lingering side effects (−1 to all rolls the wound could feasibly affect until it's fully healed).|The patient remains knocked out until the GM determines that they awaken."
 			},
 			fail: {
@@ -5525,13 +5526,14 @@ const DATA_JSON = [
 		effect: {
 			intro: "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
 			trigger: "Whenever you are in mortal danger and choose to activate your Watchers,",
-			effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach, and the GM can spend Hold on the Watchers' behalf to let them make a Move against you"
+			effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach."
 		},
 		lists: {
 			questions: "",
 			options: "",
 			edges: "",
-			attacks: ""
+			attacks: "",
+			watchers: "|Small Gang: 2 Harm, 5 Wounds|Medium Gang: 3 Harm, 10 Wounds|Large Gang: 3 Harm, 15 Wounds"
 		},
 		results: {
 			success: {
@@ -5548,7 +5550,8 @@ const DATA_JSON = [
 			}
 		},
 		suffix: {
-			text: "The GM chooses the number of Watchers who come to your aid based on the power of the threat to your safety:",
+			text: "The GM can spend Hold on the Watchers' behalf to let them make a Move against you.",
+			listText: "The GM chooses the number of Watchers who come to your aid based on the power of the threat to your safety:",
 			list: "|Small Gang: 2 Harm, 5 Wounds|Medium Gang: 3 Harm, 10 Wounds|Large Gang: 3 Harm, 15 Wounds"
 		},
 		hasEdges: false,
@@ -7729,9 +7732,10 @@ const DATA_JSON = [
 		},
 		lists: {
 			questions: "",
-			options: "",
+			options: "|You become angry (−1 Stability).|You become sad (−1 Stability).|You become scared (−1 Stability).|You become guilt-ridden (−1 Stability).|You become obsessed (+1 Relation to whatever caused the condition).|You become distracted (−2 in situations where the condition limits you).|You will be haunted by the experience at a later time.",
 			edges: "",
-			attacks: ""
+			attacks: "",
+			gmoptions: "|You cower powerless in the threat's presence.|You panic with no control of your actions.|You suffer emotional trauma (−2 Stability).|You suffer life-changing trauma (−4 Stability)."
 		},
 		results: {
 			success: {
@@ -7863,7 +7867,8 @@ const DATA_JSON = [
 			questions: "",
 			options: "",
 			edges: "",
-			attacks: ""
+			attacks: "",
+			gmoptions: "|Something senses you.|The Illusions tears around you."
 		},
 		results: {
 			success: {
@@ -9433,7 +9438,10 @@ const PARSERS = {
 	move: (data) => {
 		data = JSON.parse(JSON.stringify(data));
 		data.itemType = "move";
-		// delete data.moves;
+		if (!data.linkName) {
+			delete data.moves;
+			delete data.record.moves;
+		}
 		const newData = {
 			...{
 				"name": data.moveName || data.name,

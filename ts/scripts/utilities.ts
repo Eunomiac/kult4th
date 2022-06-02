@@ -708,7 +708,6 @@ const objFilter = <Type extends Index<unknown>>(obj: Type, keyFunc: testFunc<key
 	if (isArray(obj)) { return obj.filter(valFunc) as Type }
 	const kFunc = keyFunc || (() => true);
 	const vFunc = valFunc || (() => true);
-	// @ts-expect-error TEMPORARY
 	return Object.fromEntries(Object.entries(obj).filter(([key, val]: [string, unknown]) => kFunc(key) && vFunc(val))) as Type;
 };
 const objForEach = (obj: Index<unknown>, func: valFunc): void => {

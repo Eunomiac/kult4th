@@ -125,12 +125,7 @@
 				"edges": 0,
 				"hold": 0
 			},
-			"lists": {
-				"questions": [],
-				"options": [],
-				"edges": [],
-				"other": {}
-			},
+			"lists": {},
 			"sourceItem": {
 				"name": "",
 				"id": "",

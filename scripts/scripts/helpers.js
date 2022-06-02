@@ -9,3 +9,18 @@ export function MIX(derivedCtor, baseCtors) {
     });
     return derivedCtor;
 }
+export const HandlebarHelpers = {
+    test: function (param1, operator, param2) {
+        switch (operator) {
+            case "==": {
+                return param1 == param2;
+            } // eslint-disable-line eqeqeq
+            case "===": {
+                return param1 === param2;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+};

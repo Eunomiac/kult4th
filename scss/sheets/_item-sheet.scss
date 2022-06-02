@@ -1,0 +1,100 @@
+& {
+	min-width: 700px;
+	min-height: 525px;
+
+	.window-content {
+		background: var(--black);
+		border: 8px double var(--gold);
+
+		form {
+			height: 100%;
+			width: 100%;
+			overflow: scroll;
+
+			.sheet-content {
+				padding: 5px;
+				color: var(--gold);
+				padding: 10px;
+
+				.sheet-header {
+					background: var(--gold);
+					font-size: 24px;
+					text-align: center;
+
+					input {
+						color: var(--black);
+						background: none;
+						border: none;
+						font-weight: bold;
+					}
+				}
+
+				.tab-content {
+					.template-entry {
+						label {
+							font-size: 14px;
+							color: var(--gold-bright);
+							font-weight: bold;
+						}
+
+						textarea, input, pre {
+							font-size: 12px;
+							color: white;
+							border: 1px solid var(--gold);
+							padding: 2px;
+						}
+
+						pre {
+							white-space: break-spaces;
+						}
+
+						&.template-phrase {
+							label {
+								width: 50px;
+							}
+							input {
+								display: inline;
+								width: calc(100% - 50px);
+							}
+						}
+						&.template-label {
+							display: inline;
+							input {
+								display: inline;
+								width: auto;
+							}
+						}
+						&.template-text {
+							display: block;
+							margin-top: 20px;
+							border-top: 1px solid var(--red-dark);
+							label {
+								font-size: 24px;
+							}
+						}
+						&.template-number {
+							display: inline;
+							input {
+								display: inline;
+								width: 30px;
+								text-align: center;
+							}
+						}
+						&.template-pre {}
+						&.template-boolean {
+							display: inline;
+						}
+						&.template-list {
+							color: var(--gold-bright);
+						}
+
+					}
+
+				}
+			}
+
+		}
+
+	}
+
+}
