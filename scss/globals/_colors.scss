@@ -1,48 +1,31 @@
-@function rotateToTarget($targetColor, $sourceColor) {
-	$targetHue: hue($targetColor);
-	$sourceHue: hue($sourceColor);
-	$deltaHue: $targetHue - $sourceHue;
-	@return adjust-hue($sourceColor, $deltaHue);
-}
-
-// GRADIENTS
-$gradient-teal-orange: linear-gradient(#f4791f, #659999);
-$gradient-red-burgundy: linear-gradient(to right, #c31432, #240b36);
-$gradient-teal-gold: linear-gradient(to right, #3e5151, #decba4);
-$gradient-dkgold-gold: linear-gradient(to right, #6d6027, #d3cbb8);
-
-// Variables
-
 * {
-	// Golds
-	// --gold: #9b8d68;
-	--gold-darkest: #261c00;
-	--gold-dark: #8d762a;
-	// --gold-grey: #7a7871;
-	// --gold-bright: #ffebb5;
-	// --gold-glow: #ffb900;
-	// --gold-glow-2: #ffdd00;
-
-	--gold-bright-grey: #acaa9a;
-
-	--gold: #9b8d68;
-	--gold-grey: #6d674f;
-	--gold-bright: #f2eecb;
-	--gold-glow: #ffdb4d;
+	// GOLDS
+	--gold: #958b68;
+	--gold-brightest: #e4ddc3;
+	--gold-bright: #b9af8f;
+	--gold-dark: #685f43;
+	--gold-darker: #362f17;
+	--gold-darkest: #19160b;
+	--gold-glow: #ffd958;
 
 	// Reds
-	--red: #9b201f;
-	--red-dark: #6d1616;
-	--red-bright: #ff2020;
-	--red-grey: #782e22;
+	--red: #9a1f1f;
+	--red-brightest: #e37070;
+	--red-bright: #ba3e3e;
+	--red-dark: #730606;
+	--red-darkest: #490000;
+	--red-glow: #ff0000;
+
+	// Blues
+	--blue: #2a548a;
+	--blue-brightest: #688ab5;
+	--blue-bright: #426899;
+	--blue-dark: #183f72;
+	--blue-darkest: #082b58;
+	--blue-glow: #3f93ff;
 
 	// Contrasts
 	--white: #ffffff;
 	--grey: #888888;
-	--black: #010005;
-
-	// Other
-	--cyan: #97dff4;
-	--blue: #60aeff;
-	--mauve: #8260ff;
+	--black: #000000;
 }

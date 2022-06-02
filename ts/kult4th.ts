@@ -3,11 +3,11 @@ import K4Item from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
+import C from "./scripts/constants.js";
 // ts-expect-error Just until I get the compendium data migrated
 import BUILD_ITEM_DATA from "../scripts/jsonImport.mjs";
+import MIGRATE_ITEM_DATA from "./scripts/migrator.js";
 import gsap from "gsap/all";
-
-// Oh shit go to https://kult.tools/npcGen/ and copy their cool blur effect from the Bookmark button (top left) for the character sheet!
 
 Hooks.once("init", () => {
 	console.log("Initializing Kult 4E");
@@ -37,17 +37,18 @@ Hooks.once("init", () => {
 			await Folder.deleteDocuments(Array.from(game.folders.values()).map((folder) => folder.id));
 			const folderMap = {
 				advantage: "Advantages",
+				move: "Basic Player Moves",
 				disadvantage: "Disadvantages",
-				move: "Moves",
-				weapon: "Weapons",
-				darksecret: "Dark Secrets"
+				darksecret: "Dark Secrets",
+				weapon: "Weapons"
 			};
 			const itemFolders = {
-				"Advantages": "#4d4023",
-				"Disadvantages": "#520000",
-				"Moves": "#000000",
-				"Weapons": "#FF0000",
-				"Dark Secrets": "#6d00a8"
+				"Advantages": C.Colors["GOLD -1"],
+				"Disadvantages": C.Colors["GOLD -2"],
+				"Basic Player Moves": C.Colors["GOLD -1"],
+				"Dark Secrets": C.Colors["GOLD -2"],
+				"Weapons": C.Colors["GOLD -1"],
+				"Attacks": C.Colors["GOLD -2"]
 			};
 			const FOLDERDATA = Object.entries(itemFolders).map(([folderName, folderColor]) => ({
 				name: folderName,
@@ -57,10 +58,23 @@ Hooks.once("init", () => {
 			}));
 			const folders = await Folder.createDocuments(FOLDERDATA);
 
-			let ITEMDATA = await BUILD_ITEM_DATA();
-			ITEMDATA = ITEMDATA.filter((item: Record<string,unknown>) => item.type === "move");
+			const ITEMDATA = await BUILD_ITEM_DATA();
+			// ITEMDATA = ITEMDATA.filter((item: Record<string,unknown>) => item.type === "move");
 
-			const items = await Item.createDocuments(ITEMDATA);
+			const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA(ITEMDATA);
+
+			// const items: Array<K4Item<ItemType>> = [];
+			// MIGRATEDITEMDATA.forEach(async (itemData) => {
+			// 	console.log(`[${itemData.name}] Creating ...`, itemData);
+			// 	// delete itemData._original;
+			// 	// if (itemData.moves?.length) {
+			// 	// itemData.moves = itemData.moves.map((move) => delete move._original);
+			// 	// }
+			// 	const [item] = await Item.createDocuments([itemData]);
+			// 	items.push(item as K4Item<ItemType>);
+			// });
+
+			const items = await Item.createDocuments(MIGRATEDITEMDATA);
 			items.forEach((item) => {
 				// @ts-expect-error They fucked up
 				item.update({folder: game.folders.getName(folderMap[item.type]).id});

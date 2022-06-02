@@ -310,7 +310,7 @@ const pad = (text, minLength, delim = " ", decimalPos) => {
     return str;
 };
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
-const signNum = (num, delim = "") => `${pFloat(num) < 0 ? "-" : "+"}${delim}${Math.abs(pFloat(num))}`;
+const signNum = (num, delim = "", zeroSign = "+") => `${pFloat(num) < 0 ? "-" : (pFloat(num) > 0 ? "+" : zeroSign)}${delim}${Math.abs(pFloat(num))}`;
 const padNum = (num, numDecDigits, includePlus = false, decimalPos) => {
     const prefix = (includePlus && num >= 0) ? "+" : "";
     const [leftDigits, rightDigits] = `${pFloat(num)}`.split(/\./);
@@ -478,7 +478,7 @@ const loremIpsum = (numWords = 200) => {
 };
 const randString = (length = 5) => [...new Array(length)].map(() => String.fromCharCode(randInt(...["a", "z"].map((char) => char.charCodeAt(0))))).join("");
 const randWord = (numWords = 1, wordList = _randomWords) => [...Array(numWords)].map(() => randElem([...wordList])).join(" ");
-const UUIDify = (id) => {
+const getUID = (id) => {
     const indexNum = Math.max(0, ...UUIDLOG.filter(([genericID]) => genericID.startsWith(id)).map(([, , num]) => num)) + 1;
     const uuid = indexNum === 1 ? id : `${id}_${indexNum}`;
     UUIDLOG.push([id, uuid, indexNum]);
@@ -582,6 +582,13 @@ const getAngleDelta = (angleStart, angleEnd, range = [0, 360]) => cycleAngle(ang
 // #region ████████ ARRAYS: Array Manipulation ████████ ~
 const randElem = (array) => gsap.utils.random(array);
 const randIndex = (array) => randInt(0, array.length - 1);
+const makeIntRange = (min, max) => {
+    const intRange = [];
+    for (let i = min; i <= max; i++) {
+        intRange.push(i);
+    }
+    return intRange;
+};
 const makeCycler = (array, index = 0) => {
     // Given an array and a starting index, returns a generator function that can be used
     // to iterate over the array indefinitely, or wrap out-of-bounds index values
@@ -842,7 +849,9 @@ function get(target, property, unit) {
     }
     return gsap.getProperty(target, property);
 }
+const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
 // #endregion ░░░░[GreenSock]░░░░
+// #region ░░░░░░░[SVG]░░░░ SVG Generation & Manipulation ░░░░░░░ ~
 const getRawCirclePath = (r, { x: xO, y: yO } = { x: 0, y: 0 }) => {
     [r, xO, yO] = [r, xO, yO].map((val) => roundNum(val, 2));
     const [b1, b2] = [0.4475 * r, (1 - 0.4475) * r];
@@ -867,8 +876,8 @@ const drawCirclePath = (radius, origin) => {
     path.push("z");
     return path.join(" ");
 };
-const formatAsClass = (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase();
-const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
+// #endregion ░░░░[SVG]░░░░
+// #region ░░░░░░░[Colors]░░░░ Color Manipulation ░░░░░░░ ~
 const getColorVals = (red, green, blue, alpha) => {
     if (isRGBColor(red)) {
         [red, green, blue, alpha] = red
@@ -914,6 +923,22 @@ const getContrastingColor = (...colorVals) => {
     return null;
 };
 const getRandomColor = () => getRGBString(gsap.utils.random(0, 255, 1), gsap.utils.random(0, 255, 1), gsap.utils.random(0, 255, 1));
+// #endregion ░░░░[Colors]░░░░
+// #region ░░░░░░░[DOM]░░░░ DOM Manipulation ░░░░░░░ ~
+const getSiblings = (elem) => {
+    const siblings = [];
+    // if no parent, return no sibling
+    if (!elem.parentNode) {
+        return siblings;
+    }
+    Array.from(elem.parentNode.children).forEach((sibling) => {
+        if (sibling !== elem) {
+            siblings.push(sibling);
+        }
+    });
+    return siblings;
+};
+// #endregion ░░░░[DOM]░░░░
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 // #region ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████ ~
 const sleep = (duration) => new Promise((resolve) => { setTimeout(resolve, duration >= 100 ? duration : duration * 1000); });
@@ -921,7 +946,7 @@ const sleep = (duration) => new Promise((resolve) => { setTimeout(resolve, durat
 // #region ████████ EXPORTS ████████
 export default {
     // ████████ GETTERS: Basic Data Lookup & Retrieval ████████
-    GMID, getUID: UUIDify,
+    GMID, getUID,
     // ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████
     isNumber, isSimpleObj, isList, isArray, isFunc, isInt, isFloat, isPosInt, isIterable,
     isHTMLCode, isRGBColor, isHexColor,
@@ -955,10 +980,10 @@ export default {
     getAngle, getAngleDelta,
     // ████████ ARRAYS: Array Manipulation ████████
     randElem, randIndex,
+    makeIntRange,
     makeCycler,
-    getLast,
     unique,
-    removeFirst, pullElement, pullIndex,
+    getLast, removeFirst, pullElement, pullIndex,
     subGroup,
     // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
     remove, replace, partition,
@@ -968,11 +993,10 @@ export default {
     getDynamicFunc,
     // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
     // ░░░░░░░ GreenSock ░░░░░░░
-    gsap, get, set,
+    gsap, get, set, getGSAngleDelta,
     getRawCirclePath, drawCirclePath,
-    formatAsClass,
-    getGSAngleDelta,
     getColorVals, getRGBString, getContrastingColor, getRandomColor,
+    getSiblings,
     // ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████
     sleep
 };

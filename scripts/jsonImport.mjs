@@ -2534,20 +2534,24 @@ const DATA_JSON = [
 		lists: {
 			questions: "",
 			options: "",
+			// eslint-disable-next-line no-template-curly-in-string
 			edges: "|Take Cover - Avoid a ranged attack by diving behind an object or a person.|Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.|Disarm - Remove an opponent's weapon in close combat.|Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object.$ATTACKS${Surprise Strike:arm:2:-:}",
 			attacks: "{Surprise Strike:arm:2:-:}"
 		},
 		results: {
 			success: {
 				text: "Gain 3 Edges. You may spend them any time during the scene.",
+				// eslint-disable-next-line no-template-curly-in-string
 				list: "|Take Cover - Avoid a ranged attack by diving behind an object or a person.|Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.|Disarm - Remove an opponent's weapon in close combat.|Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object.$ATTACKS${Surprise Strike:arm:2:-:}"
 			},
 			partial: {
 				text: "Gain 2 Edges. You may spend them any time during the scene.",
+				// eslint-disable-next-line no-template-curly-in-string
 				list: "|Take Cover - Avoid a ranged attack by diving behind an object or a person.|Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.|Disarm - Remove an opponent's weapon in close combat.|Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object.$ATTACKS${Surprise Strike:arm:2:-:}"
 			},
 			fail: {
 				text: "Gain 1 Edge, but you have made a bad call. The GM makes a Move.",
+				// eslint-disable-next-line no-template-curly-in-string
 				list: "|Take Cover - Avoid a ranged attack by diving behind an object or a person.|Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.|Disarm - Remove an opponent's weapon in close combat.|Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object.$ATTACKS${Surprise Strike:arm:2:-:}"
 			}
 		},
@@ -9429,6 +9433,7 @@ const PARSERS = {
 	move: (data) => {
 		data = JSON.parse(JSON.stringify(data));
 		data.itemType = "move";
+		// delete data.moves;
 		const newData = {
 			...{
 				"name": data.moveName || data.name,
@@ -9455,7 +9460,40 @@ const PARSERS = {
 			"flags.kult4eoverrides.isRolled": data.moveType === "roll",
 			"flags.kult4eoverrides.moveType": data.moveType,
 			"flags.kult4eoverrides.isFrozen": true,
-			"flags.kult4eoverrides.record": data.record
+			"record": {
+				...data.record,
+				name: data.moveName || data.name || data.linkName,
+				attributemod: data.attributemod ?? "none"
+			}
+		};
+		if (!newData.name) {
+			console.log("Error finding name from data:", data);
+		}
+		return newData;
+	},
+	attack: (data) => {
+		data = JSON.parse(JSON.stringify(data));
+		data.itemType = "attack";
+		const newData = {
+			...{
+				"name": data.name,
+				"type": "attack",
+				"img": imgCheck(data),
+				"data.harm": data.harm,
+				"data.range": data.range,
+				"data.ammo": data.ammo,
+				"data.special": data.effect
+			},
+			...data.sourceItem?.name
+				? {
+						"flags.kult4eoverrides.linkName": data.sourceItem?.name,
+						"flags.kult4eoverrides.linkType": data.sourceItem?.itemType
+					}
+				: {},
+			"flags.kult4eoverrides.isRolled": true,
+			"flags.kult4eoverrides.moveType": "roll",
+			"flags.kult4eoverrides.isFrozen": true,
+			"record": data.record
 		};
 		if (!newData.name) {
 			console.log("Error finding name from data:", data);
@@ -9477,7 +9515,11 @@ const PARSERS = {
 		"data.failure": "",
 		"flags.kult4eoverrides.moves": data.moves ?? [],
 		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.isFrozen": true
+		"flags.kult4eoverrides.isFrozen": true,
+		"record": {
+			...data.record,
+			attributemod: data.attributemod ?? "none"
+		}
 	}),
 	disadvantage: (data) => ({
 		"name": data.name,
@@ -9494,7 +9536,11 @@ const PARSERS = {
 		"data.failure": "",
 		"flags.kult4eoverrides.moves": data.moves ?? [],
 		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.isFrozen": true
+		"flags.kult4eoverrides.isFrozen": true,
+		"record": {
+			...data.record,
+			attributemod: data.attributemod ?? "none"
+		}
 	}),
 	weapon: (data) => ({
 		"name": data.name,
@@ -9509,7 +9555,8 @@ const PARSERS = {
 		"flags.kult4eoverrides.moves": data.moves ?? [],
 		"flags.kult4eoverrides.attacks": data.attacks ?? [],
 		"flags.kult4eoverrides.type": data.type,
-		"flags.kult4eoverrides.isFrozen": true
+		"flags.kult4eoverrides.isFrozen": true,
+		"record": data.record
 	}),
 	darksecret: (data) => ({
 		"name": data.name,
@@ -9517,7 +9564,8 @@ const PARSERS = {
 		"img": imgCheck(data),
 		"data.description": descriptionCheck(data),
 		"data.effect": "",
-		"flags.kult4eoverrides.isFrozen": true
+		"flags.kult4eoverrides.isFrozen": true,
+		"record": data.record
 	}),
 	relationship: (data) => ({
 		"name": data.name,
@@ -9525,7 +9573,8 @@ const PARSERS = {
 		"img": imgCheck(data),
 		"target": "",
 		"strength": "",
-		"flags.kult4eoverrides.isFrozen": true
+		"flags.kult4eoverrides.isFrozen": true,
+		"record": data.record
 	}),
 	gear: (data) => ({
 		"name": data.name,
@@ -9533,13 +9582,14 @@ const PARSERS = {
 		"img": imgCheck(data),
 		"uses": "",
 		"description": "",
-		"flags.kult4eoverrides.isFrozen": true
+		"flags.kult4eoverrides.isFrozen": true,
+		"record": data.record
 	})
 };
 
 export default async function BUILD_ITEM_DATA() {
 	// Find 'Engage in Combat' move to use as template for attack moves.
-	const engageInCombatData = JSON.parse(JSON.stringify(DATA_JSON.find((itemData) => itemData.name === "Engage in Combat")));
+	// const engageInCombatData = JSON.parse(JSON.stringify(DATA_JSON.find((itemData) => itemData.name === "Engage in Combat")));
 
 	// Iterate over Items, adding subMove data and parsing Attacks
 	DATA_JSON.forEach((itemData) => {
@@ -9571,118 +9621,97 @@ export default async function BUILD_ITEM_DATA() {
 				itemData.moves.push(getMoveData(itemData));
 			}
 			if (itemData.lists?.attacks?.length) {
-				const attacksData = getAttacksData(itemData);
-				itemData.attacks.push(...getAttackMoves(itemData, attacksData, engageInCombatData));
-				itemData.moves.push(...itemData.attacks);
+				itemData.attacks.push(...getAttackMoves(itemData));
+				// itemData.moves.push(...itemData.attacks);
 			}
 		}
 	});
 
-	console.log("MOVES ADDED", DATA_JSON);
+	console.log("getAttackMoves Record", movesRecord);
 
 	// FIRST PASS: Iterate through all strings, adding formatting
-	const styleItemData = (itemData) => {
-		// Store unformatted record of text strings
-		itemData.record = JSON.parse(JSON.stringify(itemData));
-
+	const styleItemData = async (itemData) => {
 		// Strip page numbers
 		itemData = stringMap(itemData, (str) => str.replace(/\s*\d\d\d\s*/g, ""));
 
 		// Convert pipe-delimited strings to arrays
-		["effect", "lists", "results", "suffix"].forEach((key) => {
-			itemData[key] = stringMap(itemData[key], (str) => {
-				if (/^\|/.test(str)) {
-					return str.split(/\|/).slice(1);
-				} else if (/\|/.test(str)) {
-					console.error(`String '${str}' has a pipe, but not at the start`);
-				}
-				return str;
-			});
-		});
+		// ["effect", "lists", "results", "suffix"].forEach((key) => {
+		// 	itemData[key] = stringMap(itemData[key], (str) => {
+		// 		if (/^\|/.test(str)) {
+		// 			return str.split(/\|/).slice(1);
+		// 		} else if (/\|/.test(str)) {
+		// 			console.error(`String '${str}' has a pipe, but not at the start`);
+		// 		}
+		// 		return str;
+		// 	});
+		// });
 
 		// Wrap key words and phrases in <span> tags with indicated classes
-		["effect", "lists", "results", "suffix"].forEach((key) => {
-			itemData[key] = stringMap(itemData[key], (str) => {
-				[
-					["\\+(?:Fortitude|Willpower|Reflexes|Reason|Intuition|Perception|Coolness|Violence|Charisma|Soul|0|Varies|Attribute)", "roll-desc"],
-					["(Serious|Critical)\\s+[Ww]oun[a-z]+", "keyword"],
-					["(?:[Tt]he)?\\s+GM(?:\\s+\\w+){1,3}\\s+(?:Hold|Moves?)", "gm-phrase"],
-					["Hold|Moves?", "gm-phrase"],
-					["Avoid Harm", "move-name"],
-					["[\\s()+−\\d]*\\b(?:Stability|Rage|Edges?|Harm|Wounds?|Time|Relations?|ongoing)\\b[\\s()+−\\d]*", "keyword"],
-					["Endure Injury", "move-name"],
-					["Keep [Ii]t Together", "move-name"],
-					["Act Under Pressure", "move-name"],
-					["Engage [Ii]n Combat", "move-name"],
-					["Influence (?:Ano|O)ther", "move-name"],
-					["See [Tt]hrough [Tt]he Illusion", "move-name"],
-					["Read [Aa] Person", "move-name"],
-					["Observe [Aa] Situation", "move-name"],
-					["Investigate", "move-name"],
-					["Help(?:\/|\\s+[Oo]r\\s+)Hinder(?:\\s+(?:Ano|O)ther)?", "move-name"]
-				]
-					.forEach(([pat, className]) => {
-						str = str
-							.replace(new RegExp(`(${pat})`, "g"), `<span class="item-${className}">$1</span>`);
-					});
-				return str;
-			});
-		});
+		// ["effect", "lists", "results", "suffix"].forEach((key) => {
+		// 	itemData[key] = stringMap(itemData[key], (str) => {
+		// 		[
+		// 			["\\+(?:Fortitude|Willpower|Reflexes|Reason|Intuition|Perception|Coolness|Violence|Charisma|Soul|0|Varies|Attribute)", "roll-desc"],
+		// 			["(Serious|Critical)\\s+[Ww]oun[a-z]+", "keyword"],
+		// 			["(?:[Tt]he)?\\s+GM(?:\\s+\\w+){1,3}\\s+(?:Hold|Moves?)", "gm-phrase"],
+		// 			["Hold|Moves?", "gm-phrase"],
+		// 			["Avoid Harm", "move-name"],
+		// 			["[\\s()+−\\d]*\\b(?:Stability|Rage|Edges?|Harm|Wounds?|Time|Relations?|ongoing)\\b[\\s()+−\\d]*", "keyword"],
+		// 			["Endure Injury", "move-name"],
+		// 			["Keep [Ii]t Together", "move-name"],
+		// 			["Act Under Pressure", "move-name"],
+		// 			["Engage [Ii]n Combat", "move-name"],
+		// 			["Influence (?:Ano|O)ther", "move-name"],
+		// 			["See [Tt]hrough [Tt]he Illusion", "move-name"],
+		// 			["Read [Aa] Person", "move-name"],
+		// 			["Observe [Aa] Situation", "move-name"],
+		// 			["Investigate", "move-name"],
+		// 			["Help(?:\/|\\s+[Oo]r\\s+)Hinder(?:\\s+(?:Ano|O)ther)?", "move-name"]
+		// 		]
+		// 			.forEach(([pat, className]) => {
+		// 				str = str
+		// 					.replace(new RegExp(`(${pat})`, "g"), `<span class="item-${className}">$1</span>`);
+		// 			});
+		// 		return str;
+		// 	});
+		// });
 
-		// Reposition white space and parentheses to outside of tags
-		["effect", "lists", "results", "suffix"].forEach((key) => {
-			itemData[key] = stringMap(itemData[key], (str) => str
-				.replace(/(<[^>]+>)([\s(]*)(.*?)([\s)]*)(<\/[^>]+>)/g, "$2$1$3$5$4")
-				.replace(/\(([^)]{1,4})(<\/[a-z]+>)\s*\)/gui, "($1)$2"));
-		});
+		// // Reposition white space and parentheses to outside of tags
+		// ["effect", "lists", "results", "suffix"].forEach((key) => {
+		// 	itemData[key] = stringMap(itemData[key], (str) => str
+		// 		.replace(/(<[^>]+>)([\s(]*)(.*?)([\s)]*)(<\/[^>]+>)/g, "$2$1$3$5$4")
+		// 		.replace(/\(([^)]{1,4})(<\/[a-z]+>)\s*\)/gui, "($1)$2"));
+		// });
 
-		// Repeat parsing for any sub-moves
+		// Repeat parsing for any sub-moves & attacks
 		if (itemData.moves?.length) {
-			itemData.moves = itemData.moves.map((moveData) => styleItemData(moveData));
+			itemData.moves = await Promise.all(itemData.moves.map(async (moveData) => {
+				const styleData = await styleItemData(moveData);
+				return PARSERS.move(styleData);
+			}));
 		}
+		if (itemData.attacks?.length) {
+			itemData.attacks = await Promise.all(itemData.attacks.map(async (attackData) => {
+				const styleData = await styleItemData(attackData);
+				return PARSERS.attack(styleData);
+			}));
+		}
+
+		// Store unformatted record of text strings
+		itemData.record = JSON.parse(JSON.stringify(itemData));
 
 		return itemData;
 	};
-	const DATA_STYLED = DATA_JSON
+	const DATA_STYLED = await Promise.all(DATA_JSON
 		.filter((itemData) => /^[A-Za-z]/.test(itemData.itemType))
-		.map(styleItemData);
+		.map(styleItemData));
 
 	// SECOND PASS: Construct item data in accordance with kult4e template.json
-	const OLD_TEMPLATE_DATA = await Promise.all(DATA_STYLED
-		.filter((data) => ["move", "advantage", "disadvantage", "weapon", "darksecret", "relationship", "gear"].includes(data.itemType))
+	const TEMPLATE_DATA = await Promise.all(DATA_STYLED
+		.filter((data) => ["attack", "move", "advantage", "disadvantage", "weapon", "darksecret", "relationship", "gear"].includes(data.itemType))
 		.map(async (itemData) => PARSERS[itemData.itemType](itemData)));
 
-	console.log("OLD TEMPLATE DATA", OLD_TEMPLATE_DATA);
-
-	const NEW_TEMPLATE_DATA = OLD_TEMPLATE_DATA.map(MAP_TEMPLATE);
-
-	console.log("NEW TEMPLATE DATA", NEW_TEMPLATE_DATA);
-	return NEW_TEMPLATE_DATA;
-}
-
-function MAP_TEMPLATE(oldData) {
-	var {data, flags, ...obj} = expandObject(oldData);
-	flags = {...flags.kult4eoverrides};
-	const newTemplateData = {
-		name: obj.name,
-		type: obj.type,
-		img: obj.img.replace(/modules\/kult4eoverrides/, "systems\/kult4th")
-		// "flags.kult4th.oldData": {
-		// 	flags,
-		// 	data
-		// }
-	};
-	if (obj.type === "move") {
-		Object.assign(newTemplateData, {
-			data: {
-				attribute: data.attributemod,
-				trigger: flags.record.effect.trigger.slice(0, -1),
-				isActive: flags.record.type === "active"
-			}
-		});
-		return flattenObject(newTemplateData);
-	}
-	return oldData;
+	console.log("TEMPLATE DATA", TEMPLATE_DATA);
+	return TEMPLATE_DATA;
 }
 
 function getMoveData(itemData, altMoveType = false) {
@@ -9693,7 +9722,7 @@ function getMoveData(itemData, altMoveType = false) {
 			...itemData,
 			linkName: itemData.itemType.slice(1),
 			linkType: altMoveType,
-			name: itemData.moveName ?? itemData.name,
+			name: itemData.moveName || itemData.name,
 			itemType: "move",
 			moveType
 		};
@@ -9702,7 +9731,7 @@ function getMoveData(itemData, altMoveType = false) {
 			...itemData,
 			linkName: itemData.name,
 			linkType: itemData.itemType,
-			name: itemData.moveName ?? itemData.name,
+			name: itemData.moveName || itemData.name,
 			itemType: "move",
 			moveType
 		};
@@ -9711,26 +9740,38 @@ function getMoveData(itemData, altMoveType = false) {
 	return itemData;
 }
 
-function getAttacksData(itemData) {
-	const {attacks} = itemData.lists;
-	if (attacks) {
-		return attacks.slice(1, -1).split("}{").map((attackString) => {
-			const [name, range, harm, ammo, special] = attackString.split(":");
-			return {
+const movesRecord = [];
+function getAttackMoves(itemData) {
+	if (!itemData.lists.attacks) { return [] }
+	const attacksData = itemData.lists.attacks
+		.slice(1, -1)
+		.split("}{")
+		.map((attack) => {
+			const [name, range, harm, ammo, effect] = attack.split(":");
+			const attackData = {
 				name,
-				source: itemData.name,
+				iconPath: itemData.iconPath,
+				itemType: "attack",
 				range,
-				type: itemData.type,
 				harm: U.pInt(harm),
-				ammoCost: /\d/.test(ammo) ? parseInt(ammo.replace(/\D/g, "")) : 0,
-				special
+				effect,
+				ammo: /\d/.test(ammo) ? parseInt(ammo.replace(/\D/g, "")) : 0,
+				sourceItem: {
+					name: itemData.name,
+					type: itemData.itemType
+				}
 			};
+			movesRecord.push({
+				name: `${attackData.name} (${attackData.sourceItem.name})`,
+				range,
+				ammo
+			});
+			return attackData;
 		});
-	}
-	return [];
+	return attacksData;
 }
-function getAttackMoves(itemData, attacksData, engageInCombatData) {
-	return attacksData?.map((attack) => {
+
+/* return attacksData?.map((attack) => {
 		const attackData = {...engageInCombatData};
 		attackData.name = `${attack.source}: ${attack.name}`;
 		attackData.ammoCost = attack.ammoCost;
@@ -9767,18 +9808,17 @@ function getAttackMoves(itemData, attacksData, engageInCombatData) {
 		attackData.linkType = itemData.itemType;
 		attackData.moveType = "roll";
 		return attackData;
-	});
-}
+	}); */
 
 function tagWrap(tag, lines, classes, delim = "", isResolvingList = false) {
-	lines = [lines].flat().filter((line) => Boolean(line));
+	lines = [lines].flat().filter(Boolean);
 	classes = [classes].flat().filter((cls) => Boolean(cls)).join(" ");
 	const [tagStart, tagEnd] = [`<${tag}${classes ? ` class="${classes}"}` : ""}>`, `</${tag}>`];
 	const injectLineBreaks = (text) => text.replace(/\$n\$/, `${tagEnd}${tagStart}`);
 	if (lines.length) {
 		lines = lines.join(delim);
 		if (/\$(OPTIONS|QUESTIONS|EDGES)\$/.test(lines)) {
-			const listType = lines.match(/\$(OPTIONS|QUESTIONS|EDGES)\$/)[1];
+			const [, listType] = lines.match(/\$(OPTIONS|QUESTIONS|EDGES)\$/);
 			if (isResolvingList) {
 				const afterLines = lines.match(new RegExp(`\\$${listType}\\$(.*)$`))?.[1]?.trim() ?? "";
 				lines = lines.replace(new RegExp(`\\s*\\$${listType}\\$.*$`), "");
@@ -9843,7 +9883,7 @@ function centerCheck(resultData) {
 	return tagWrap("p", checkLine, resultData.list || tagStrip(checkLine).length > 60 ? null : "center-text");
 }
 function listCheck(listLines) {
-	listLines = [listLines].flat().filter((line) => Boolean(line));
+	listLines = [listLines].flat().filter(Boolean);
 	if (listLines.length) {
 		const isLabeled = listLines.every((line) => /^.{2,30} - /.test(line));
 		const report = listLines.map((line) => [line, /^.{2,30} - /.test(line)]);

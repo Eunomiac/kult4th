@@ -300,7 +300,7 @@ const pad = (text: unknown, minLength: posInt, delim = " ", decimalPos?: posInt)
 	return str;
 };
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
-const signNum = (num: int, delim = "") => `${pFloat(num) < 0 ? "-" : "+"}${delim}${Math.abs(pFloat(num))}`;
+const signNum = (num: int, delim = "", zeroSign = "+") => `${pFloat(num) < 0 ? "-" : (pFloat(num) > 0 ? "+" : zeroSign)}${delim}${Math.abs(pFloat(num))}`;
 const padNum = (num: number, numDecDigits: int, includePlus = false, decimalPos?: posInt) => {
 	const prefix = (includePlus && num >= 0) ? "+" : "";
 	const [leftDigits, rightDigits] = `${pFloat(num)}`.split(/\./);
@@ -462,7 +462,7 @@ const loremIpsum = (numWords = 200) => {
 };
 const randString = (length = 5) => [...new Array(length)].map(() => String.fromCharCode(randInt(...<[number, number]>["a", "z"].map((char) => char.charCodeAt(0))))).join("");
 const randWord = (numWords = 1, wordList = _randomWords) => [...Array(numWords)].map(() => randElem([...wordList])).join(" ");
-const UUIDify = (id: string): string => {
+const getUID = (id: string): string => {
 	const indexNum = Math.max(0, ...UUIDLOG.filter(([genericID]) => genericID.startsWith(id)).map(([,,num]) => num)) + 1;
 	const uuid = indexNum === 1 ? id : `${id}_${indexNum}`;
 	UUIDLOG.push([id, uuid, indexNum]);
@@ -571,6 +571,13 @@ const getAngleDelta = (angleStart: number, angleEnd: number, range: [number, num
 // #region ████████ ARRAYS: Array Manipulation ████████ ~
 const randElem = <Type>(array: Type[]): Type => gsap.utils.random(array);
 const randIndex = (array: unknown[]): posInt => randInt(0, array.length - 1);
+const makeIntRange = (min: int, max: int) => {
+	const intRange: int[] = [];
+	for (let i = min; i <= max; i++) {
+		intRange.push(i);
+	}
+	return intRange;
+};
 const makeCycler = (array: unknown[], index = 0): Generator => {
 	// Given an array and a starting index, returns a generator function that can be used
 	// to iterate over the array indefinitely, or wrap out-of-bounds index values
@@ -807,8 +814,11 @@ function get(target: gsap.TweenTarget, property: keyof gsap.CSSProperties & stri
 	}
 	return gsap.getProperty(target, property);
 }
+
+const getGSAngleDelta = (startAngle: number, endAngle: number) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
 // #endregion ░░░░[GreenSock]░░░░
 
+// #region ░░░░░░░[SVG]░░░░ SVG Generation & Manipulation ░░░░░░░ ~
 const getRawCirclePath = (r: number, {x: xO, y: yO}: Point = {x: 0, y: 0}): Array<Array<number | string>> => {
 	[r, xO, yO] = [r, xO, yO].map((val) => roundNum(val, 2));
 	const [b1, b2] = [0.4475 * r, (1 - 0.4475) * r];
@@ -831,9 +841,9 @@ const drawCirclePath = (radius: number, origin: Point) => {
 	path.push("z");
 	return path.join(" ");
 };
-const formatAsClass = (str: string) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase();
-const getGSAngleDelta = (startAngle: number, endAngle: number) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
+// #endregion ░░░░[SVG]░░░░
 
+// #region ░░░░░░░[Colors]░░░░ Color Manipulation ░░░░░░░ ~
 const getColorVals = (red?: string | number | number[], green?: number, blue?: number, alpha?: number): number[] | null => {
 	if (isRGBColor(red)) {
 		[red, green, blue, alpha] = red
@@ -879,6 +889,23 @@ const getContrastingColor = (...colorVals: [string] | number[]): RGBColor | null
 	return null;
 };
 const getRandomColor = (): RGBColor => getRGBString(gsap.utils.random(0, 255, 1), gsap.utils.random(0, 255, 1), gsap.utils.random(0, 255, 1))!;
+// #endregion ░░░░[Colors]░░░░
+
+// #region ░░░░░░░[DOM]░░░░ DOM Manipulation ░░░░░░░ ~
+const getSiblings = (elem: Node) => {
+	const siblings: HTMLElement[] = [];
+	// if no parent, return no sibling
+	if (!elem.parentNode) { return siblings }
+
+	Array.from(elem.parentNode.children).forEach((sibling) => {
+		if (sibling !== elem) {
+			siblings.push(sibling as HTMLElement);
+		}
+	});
+
+	return siblings;
+};
+// #endregion ░░░░[DOM]░░░░
 
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 
@@ -889,7 +916,7 @@ const sleep = (duration: number): Promise<void> => new Promise((resolve) => { se
 // #region ████████ EXPORTS ████████
 export default {
 	// ████████ GETTERS: Basic Data Lookup & Retrieval ████████
-	GMID, getUID: UUIDify,
+	GMID, getUID,
 
 	// ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████
 	isNumber, isSimpleObj, isList, isArray, isFunc, isInt, isFloat, isPosInt, isIterable,
@@ -930,10 +957,10 @@ export default {
 
 	// ████████ ARRAYS: Array Manipulation ████████
 	randElem, randIndex,
+	makeIntRange,
 	makeCycler,
-	getLast,
 	unique,
-	removeFirst, pullElement, pullIndex,
+	getLast, removeFirst, pullElement, pullIndex,
 	subGroup,
 
 	// ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
@@ -946,13 +973,13 @@ export default {
 
 	// ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
 	// ░░░░░░░ GreenSock ░░░░░░░
-	gsap, get, set,
+	gsap, get, set,	getGSAngleDelta,
 
 	getRawCirclePath, drawCirclePath,
-	formatAsClass,
-	getGSAngleDelta,
 
 	getColorVals, getRGBString, getContrastingColor, getRandomColor,
+
+	getSiblings,
 
 	// ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████
 	sleep

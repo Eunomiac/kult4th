@@ -100,38 +100,62 @@
 			"trigger": "",
 			"outro": "",
 			"attribute": "",
+			"notes": "",
+			"passiveEffect": {
+				"effect": "",
+				"optionsLists": [],
+				"hold": 0,
+				"effectFunctions": []
+			},
 			"completeSuccess": {
 				"result": "",
 				"optionsLists": [],
-				"edges": 0
+				"edges": 0,
+				"hold": 0
 			},
 			"partialSuccess": {
 				"result": "",
 				"optionsLists": [],
-				"edges": 0
+				"edges": 0,
+				"hold": 0
 			},
 			"failure": {
 				"result": "",
 				"optionsLists": [],
-				"edges": 0
+				"edges": 0,
+				"hold": 0
 			},
 			"lists": {
 				"questions": [],
 				"options": [],
-				"edges": []
+				"edges": [],
+				"other": {}
 			},
-			"sourceItem": "",
+			"sourceItem": {
+				"name": "",
+				"id": "",
+				"type": ""
+			},
 			"isCustom": true,
 			"isActive": true,
 			"canGrantHold": false,
+			"holdText": "",
 			"pdfLink": ""
 		},
 		"attack": {
-			"distance": "arm",
-			"baseHarm": 0,
+			"attribute": "violence",
+			"range": "arm",
+			"harm": 0,
 			"effect": "",
 			"ammo": 0,
+			"sourceItem": {
+				"name": "",
+				"id": "",
+				"type": ""
+			},
 			"isCustom": true,
+			"canGrantHold": false,
+			"holdText": "",
 			"pdfLink": ""
 		},
 		"weapon": {
@@ -146,6 +170,8 @@
 				"value": 0
 			},
 			"isCustom": true,
+			"canGrantHold": false,
+			"holdText": "",
 			"pdfLink": ""
 		},
 		"advantage": {
@@ -155,6 +181,8 @@
 			"details": "",
 			"moves": [],
 			"isCustom": true,
+			"canGrantHold": false,
+			"holdText": "",
 			"pdfLink": ""
 		},
 		"disadvantage": {
@@ -164,6 +192,8 @@
 			"moves": [],
 			"currentHold": 0,
 			"isCustom": true,
+			"canGrantHold": true,
+			"holdText": "",
 			"pdfLink": ""
 		},
 		"darksecret": {
@@ -171,6 +201,8 @@
 			"suggestedDrives": [],
 			"drive": "",
 			"details": "",
+			"canGrantHold": false,
+			"holdText": "",
 			"playerNotes": "",
 			"gmNotes": ""
 		},
@@ -178,12 +210,25 @@
 			"target": "",
 			"description": "",
 			"details": "",
+			"canGrantHold": false,
+			"holdText": "",
 			"strength": {
 				"min": 0,
 				"max": 2,
 				"value": 0
 			}
 		},
-		"gear": {}
+		"gear": {
+			"description": "",
+			"armor": 0,
+			"effectFunctions": [],
+			"details": "",
+			"moves": [],
+			"attacks": [],
+			"isCustom": true,
+			"canGrantHold": false,
+			"holdText": "",
+			"pdfLink": ""
+		}
 	}
 }

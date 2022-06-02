@@ -7,13 +7,13 @@
   color: var(--gold-bright);
 }
 .item-gm-phrase {
-  font-weight: bold;
+  font-weight: 700;
   color: var(--red-bright);
 }
 .item-roll-desc,
 .item-keyword {
-  font-weight: bold;
-  color: var(--blue-fg);
+  font-weight: 700;
+  color: var(--blue);
 }
 .item-roll-desc {
 	text-transform: capitalize;
@@ -21,15 +21,15 @@
 .item-move-name {
   color: var(--red-bright);
   // font-style: italic;
-  font-weight: normal !important;
+  font-weight: 400 !important;
 
   * {
-    font-weight: normal !important;
+    font-weight: 400 !important;
   }
 }
 .edge-name {
   color: var(--gold-bright);
-  font-weight: normal !important;
+  font-weight: 400 !important;
 }
 .source-name {
   font-size: 12px;

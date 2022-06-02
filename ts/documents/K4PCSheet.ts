@@ -1,6 +1,120 @@
 import C from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
 import K4Actor, {ActorType} from "./K4Actor.js";
-import gsap from "gsap/all";
+import gsap, {GSDevTools} from "gsap/all";
+
+const ANIMATIONS = {
+	hoverNav(target: HTMLElement, context: JQuery): gsapAnim {
+		return gsap
+			.timeline({
+				reversed: true
+			}).to(
+				target,
+				{
+					scale: 2,
+					x: 50,
+					y: 50,
+					duration: 0.5,
+					ease: "power2"
+				},
+				0
+			).to(
+				U.getSiblings(target),
+				{
+					opacity: 0.75,
+					filter: "blur(5px)",
+					duration: 0.5,
+					ease: "back"
+				},
+				0
+			);
+	},
+	hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
+		const attribute = $(target).data("attribute");
+		const tl = gsap
+			.timeline({
+				reversed: true
+			}).to(
+				$(target).find(".move-icon"),
+				{
+					width: "100%",
+					borderRadius: 0,
+					duration: 0.75,
+					backgroundColor: C.Colors["GOLD +1"],
+					ease: "sine"
+				}
+			).fromTo(
+				$(target).find(".move-text"),
+				{
+					x: 0,
+					width: "auto",
+					color: C.Colors.GOLD,
+					textShadow: 0
+				},
+				{
+					x: -(parseInt(`${gsap.getProperty($(target).find(".move-text")[0], "width")}`)) - 40,
+					width: 0,
+					color: C.Colors.BLACK,
+					textShadow: [
+						...new Array(4).fill(`0 0 15px ${C.Colors["GOLD +1"]}`),
+						...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
+						...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
+					].join(", "),
+					duration: 0.75,
+					ease: "back"
+				},
+				0
+			).set(
+				$(target).find(".move-text"),
+				{opacity: 0},
+				0.01
+			).to(
+				$(target).find(".move-text"),
+				{
+					opacity: 1,
+					duration: 0.75,
+					ease: "sine"
+				},
+				0.02
+			).fromTo(
+				$(target).find(".trigger-tooltip"),
+				{
+					opacity: 0,
+					bottom: 30,
+					scale: 1.5
+				},
+				{
+					opacity: 1,
+					bottom: 30,
+					scale: 1,
+					duration: 0.5,
+					ease: "power2.in"
+				},
+				0.5
+			);
+
+		if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
+			tl
+				.fromTo(
+					context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] video`),
+					{
+						opacity: 0,
+						filter: "sepia(1) blur(20px)"
+					},
+					{
+						opacity: 1,
+						filter: "sepia(1) blur(0px)",
+						duration: 1,
+						ease: "sine",
+						onStart() { this.targets()[0].play() }
+					},
+					0
+				);
+		}
+
+		return tl;
+	}
+};
 
 export default class K4PCSheet extends ActorSheet<K4PCSheet.Options, K4PCSheet.Data<K4PCSheet.Options>> {
 
@@ -16,79 +130,38 @@ export default class K4PCSheet extends ActorSheet<K4PCSheet.Options, K4PCSheet.D
 
 	override get actor() { return super.actor as K4Actor<ActorType.pc> }
 
-	override activateListeners(html: JQuery) {
-		$(() => {
-			html.find("video").each(function playVideo() { this.play() });
+	hoverTimeline?: gsapAnim;
+	hoverTimelineTarget?: HTMLElement;
+	devTools = GSDevTools;
 
-			html.find(".nav-panel").each(function initNavPanelPos() { gsap.set(this, {xPercent: -50, yPercent: -50})});
+	override activateListeners(html: JQuery) {
+		super.activateListeners(html);
+		const self = this;
+		$(() => {
+			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
+
+			html.find(".nav-panel")
+				.each(function initNavPanel() {
+					gsap.set(this, {xPercent: -50, yPercent: -50});
+					hoverTimelines.push([this, ANIMATIONS.hoverNav(this, html)]);
+				});
 
 			html.find(".basic-move-item")
 				.each(function addMoveHoverEvents() {
-					const [icon] = $(this).find(".move-icon");
-					const [img] = $(this).find("img");
-					const moveButtons = Array.from($(this).find(".move-button"));
-					const [name] = $(this).find(".move-name");
-					const [text] = $(this).find(".move-text");
-					const [tooltip] = $(this).find(".trigger-tooltip");
-					const textWidth = parseInt(`${gsap.getProperty(text, "width")}`);
-					const attribute = $(this).data("attribute");
-					const tl = gsap.timeline({reversed: true})
-						.to(icon, {
-							width: "100%",
-							borderRadius: 0,
-							duration: 0.75,
-							backgroundColor: "#f2eecb",
-							ease: "sine"
-						})
-						.fromTo(text, {
-							x: 0,
-							width: "auto",
-							color: "#9b8d68",
-							textShadow: 0
-						}, {
-							x: -textWidth - 40,
-							width: 0,
-							color: "black",
-							textShadow: [
-								...new Array(4).fill("0 0 15px var(--gold-bright)"),
-								...new Array(6).fill("0 0 5px var(--gold-bright)"),
-								...new Array(4).fill("0 0 2px var(--gold-bright)")
-							].join(", "),
-							duration: 0.75,
-							ease: "back"
-						}, 0)
-						.set(text, {opacity: 0}, 0.01)
-						.to(text, {
-							opacity: 1,
-							duration: 0.75,
-							ease: "sine"
-						}, 0.02)
-						.fromTo(tooltip, {
-							opacity: 0,
-							bottom: 30,
-							scale: 1.5
-						}, {
-							opacity: 1,
-							bottom: 30,
-							scale: 1,
-							duration: 0.5,
-							ease: "power2.in"
-						}, 0.5);
-					if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
-						const [video] = html.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] video`);
-						tl.fromTo(video, {
-							opacity: 0,
-							scale: 0.5
-						}, {
-							onStart() { this.target.play() },
-							opacity: 1,
-							scale: 1,
-							duration: 1,
-							ease: "sine"
-						}, 0);
+					if (!self.hoverTimeline) {
+						self.hoverTimeline = ANIMATIONS.hoverMove(this, html, false);
+						self.hoverTimeline.vars.id = "hoverTimeline";
+						self.hoverTimelineTarget = this;
 					}
-					$(this).on("mouseenter", () => tl.reversed(false)).on("mouseleave", () => tl.reversed(true));
+					hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html, false)]);
 				});
+
+			hoverTimelines.forEach(([target, anim]) => {
+				$(target)
+					.on("mouseenter", () => anim.reversed(false))
+					.on("mouseleave", () => anim.reversed(true));
+			});
+
 		});
 	}
 

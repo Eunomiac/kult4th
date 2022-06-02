@@ -48,12 +48,35 @@ export const Attributes = {
         reflexes: {}
     }
 };
+export const Colors = {
+    "GOLD": "#958b68",
+    "GOLD +2": "#e4ddc3",
+    "GOLD +1": "#b9af8f",
+    "GOLD -1": "#685f43",
+    "GOLD -2": "#362f17",
+    "GOLD -3": "#19160b",
+    "GOLD GLOW": "#ffd958",
+    "RED": "#9a1f1f",
+    "RED +2": "#e37070",
+    "RED +1": "#ba3e3e",
+    "RED -1": "#730606",
+    "RED -2": "#490000",
+    "RED GLOW": "#ff0000",
+    "WHITE": "#ffffff",
+    "BLACK": "#000000",
+    "BLUE": "#2a548a",
+    "BLUE +2": "#688ab5",
+    "BLUE +1": "#426899",
+    "BLUE -1": "#183f72",
+    "BLUE -2": "#082b58",
+    "BLUE GLOW": "#3f93ff"
+};
 const C = {
     SYSTEM_ID: "kult4th",
     SYSTEM_NAME: "Kult: Divinity Lost",
     SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",
     awareArchetypes: Archetypes.Aware,
-    archetypeAdvantages: {
+    awareArchetypeAdvantages: {
         academic: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],
         agent: ["Moles", "Burglar", "Analyst", "Explosives Expert", "Tracer", "Quick Thinker", "Field Agent", "Endure Trauma"],
         artist: ["Artistic Talent", "Fascination", "Notorious", "Observant", "Body Awareness", "Enhanced Awareness", "Forbidden Inspiration", "Snake Charmer"],
@@ -85,10 +108,11 @@ const C = {
         revenant: ["Bewitching", "Memories of Past Lives", "Commanding Voice", "Mind Manipulator", "Ethereal", "Telekinesis", "Invulnerability", "Bloodthirst", "Sensitivity", "Controlled by External Force", "Symbol Bondage"],
         timeAndSpaceMagician: []
     },
-    Attributes
+    Attributes,
+    Colors
 };
 Object.assign(C, {
-    awareArchetypes: Object.keys(C.archetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim()),
+    awareArchetypes: Object.keys(C.awareArchetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim()),
     enlightenedArchetypes: Object.keys(C.enlightenedArchetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim())
 });
 export default C;

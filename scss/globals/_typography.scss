@@ -6,42 +6,42 @@
 @font-face {
 	font-family: Alverata;
 	src: url("../assets/fonts/alverata.ttf");
-	font-weight: normal;
+	font-weight: 400;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: Alverata;
 	src: url("../assets/fonts/alverata-bold.ttf");
-	font-weight: bold;
+	font-weight: 700;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: Alverata;
 	src: url("../assets/fonts/alverata-black.ttf");
-	font-weight: bolder;
+	font-weight: 800;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: Alverata;
 	src: url("../assets/fonts/alverata-italic.ttf");
-	font-weight: normal;
+	font-weight: 400;
 	font-style: italic;
 }
 
 @font-face {
 	font-family: Alverata;
 	src: url("../assets/fonts/alverata-bold-italic.ttf");
-	font-weight: bold;
+	font-weight: 700;
 	font-style: italic;
 }
 
 @font-face {
 	font-family: Alverata;
 	src: url("../assets/fonts/alverata-light.ttf");
-	font-weight: lighter;
+	font-weight: 300;
 	font-style: normal;
 }
 
@@ -51,6 +51,6 @@
 }
 
 * {
-	--font-primary: Alverata;
-	--font-display: Infidel;
+	--font-body: Alverata;
+	--font-heading: Infidel;
 }

@@ -1,10 +1,25 @@
-{{log "ATTRIBUTE THIS"}}
-{{log this}}
-
 <div class="attribute-box" data-attribute="{{key}}">
 	<video autoplay muted loop>
-		<source src="/systems/kult4th/assets/animations/attribute-flare-10.webm" type="video/webm">
+		<source src="/systems/kult4th/assets/animations/attribute-flare.webm" type="video/webm">
 	</video>
+	<span class="video-mask"></span>
 	<span class="attribute-title">{{name}}</span>
-	<input type="number" class="attribute-value" name="data.attributes.{{key}}.value" value="{{value}}" />
+	<select class="attribute-value" name="data.attributes.{{key}}.value" value="{{value}}" required>
+		{{#select value}}
+		<option name="" value="" selected hidden disabled> </option>
+		<option value="7">+7</option>
+		<option value="6">+6</option>
+		<option value="5">+5</option>
+		<option value="4">+4</option>
+		<option value="3">+3</option>
+		<option value="2">+2</option>
+		<option value="1">+1</option>
+		<option value="0">0</option>
+		<option value="-1">−1</option>
+		<option value="-2">−2</option>
+		<option value="-3">−3</option>
+		<option value="-4">−4</option>
+		<option value="-5">−5</option>
+		{{/select}}
+	</select>
 </div>

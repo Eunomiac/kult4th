@@ -1,4 +1,4 @@
-import "./utilities.d.ts";
+import gsap from "gsap/all";
 
 declare global {
 	type int = number;
@@ -18,7 +18,7 @@ declare global {
 	type mapFunc<Type extends keyFunc | valFunc> = (...args: Parameters<Type>) => unknown;
 	type checkTest = ((...args: any[]) => any) | testFunc<keyFunc> | testFunc<valFunc> | RegExp | number | string;
 
-	export type List<Type> = Record<number | string | symbol, Type>
+	type List<Type> = Record<number | string | symbol, Type>
 	type Index<Type> = List<Type> | Type[];
 
 	type ConstructorOf<X> = new (...args: any[]) => X;
@@ -27,4 +27,6 @@ declare global {
 		[Prop in keyof T as string extends Prop ? never : number extends Prop ? never : Prop]: T[Prop]
 	};
 	type KnownKeys<T> = keyof FreezeProps<T>;
+
+	type gsapAnim = gsap.core.Tween | gsap.core.Timeline;
 }
