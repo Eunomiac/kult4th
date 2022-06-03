@@ -1,15 +1,17 @@
 import K4Item, {K4ItemType} from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
+import EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
 
 export enum ActorType {
 	pc = "pc",
 	npc = "npc"
 }
-
+console.log("test");
+// EmbeddedCollection<K4Item<K4ItemType>, ActorData>
 export default class K4Actor<Type extends ActorType> extends Actor {
 	declare data: K4ActorData<Type>;
-	override get items() { return super.items as K4Collection.Item }
+	override get items() { return super.items as EmbeddedCollection<typeof K4Item, ActorData> }
 
 	// override prepareData() {
 	// 	super.prepareData();

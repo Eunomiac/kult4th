@@ -8,10 +8,8 @@ import C from "../scripts/constants.js";
 import {ToObjectFalseType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
 import {stringify} from "querystring";
 
-type itemTest = ToObjectFalseType<Item["data"]["_id"]>;
-
-export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4ItemOptions, K4ItemData<Type>> {
-	static override get defaultOptions(): K4ItemSheet.Options {
+export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet {
+	static override get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: [C.SYSTEM_ID, "item", "sheet"]
 		});
@@ -27,7 +25,7 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 		const templateEntries = [];
 		switch (this.type) {
 			case "move": {
-				const {data} = this.item.data as K4ItemData<K4ItemType.move>;
+				const {data} = (this.item as K4Item<K4ItemType.move>).data;
 				console.log("this.item.data", data);
 				templateEntries.push(...[
 					{
@@ -185,13 +183,6 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 						target: "data.sourceItem.type"
 					},
 					{
-						isBoolean: true,
-						type: "boolean",
-						label: "Grants Hold",
-						value: data.canGrantHold,
-						target: "data.canGrantHold"
-					},
-					{
 						isPhrase: true,
 						type: "phrase",
 						label: "Hold Text",
@@ -216,20 +207,3 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 		return data;
 	}
 }
-
-const test = `
-{
-	"description": "",
-	"intro": "",
-	"trigger": "When you investigate something",
-	"outro": "roll +Reason",
-	"attribute": "Reason",
-	"notes": "",
-	"passiveEffect": {
-		"effect": "",
-		"optionsLists": [],
-		  "hold": 0,
-		"effectFunctions": []
-	},
-`.replace(/\t/g, "");
-console.log(test);

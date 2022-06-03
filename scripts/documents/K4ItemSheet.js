@@ -169,13 +169,6 @@ export default class K4ItemSheet extends ItemSheet {
                         target: "data.sourceItem.type"
                     },
                     {
-                        isBoolean: true,
-                        type: "boolean",
-                        label: "Grants Hold",
-                        value: data.canGrantHold,
-                        target: "data.canGrantHold"
-                    },
-                    {
                         isPhrase: true,
                         type: "phrase",
                         label: "Hold Text",
@@ -198,19 +191,3 @@ export default class K4ItemSheet extends ItemSheet {
         return data;
     }
 }
-const test = `
-{
-	"description": "",
-	"intro": "",
-	"trigger": "When you investigate something",
-	"outro": "roll +Reason",
-	"attribute": "Reason",
-	"notes": "",
-	"passiveEffect": {
-		"effect": "",
-		"optionsLists": [],
-		  "hold": 0,
-		"effectFunctions": []
-	},
-`.replace(/\t/g, "");
-console.log(test);

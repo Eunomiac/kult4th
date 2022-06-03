@@ -90,8 +90,8 @@
 			"advantage",
 			"disadvantage",
 			"darksecret",
-			"weapon",
 			"relation",
+			"weapon",
 			"gear"
 		],
 		"move": {
@@ -101,27 +101,28 @@
 			"outro": "",
 			"attribute": "",
 			"notes": "",
-			"passiveEffect": {
-				"effect": "",
-				"optionsLists": [],
-				"hold": 0,
-				"effectFunctions": []
-			},
+			"subType": "active-rolled",
+			"effectFunctions": [],
+			"attacks": [],
+			"moves": [],
 			"completeSuccess": {
 				"result": "",
 				"optionsLists": [],
+				"effectFunctions": [],
 				"edges": 0,
 				"hold": 0
 			},
 			"partialSuccess": {
 				"result": "",
 				"optionsLists": [],
+				"effectFunctions": [],
 				"edges": 0,
 				"hold": 0
 			},
 			"failure": {
 				"result": "",
 				"optionsLists": [],
+				"effectFunctions": [],
 				"edges": 0,
 				"hold": 0
 			},
@@ -132,16 +133,16 @@
 				"type": ""
 			},
 			"isCustom": true,
-			"isActive": true,
-			"canGrantHold": false,
 			"holdText": "",
 			"pdfLink": ""
 		},
 		"attack": {
 			"attribute": "violence",
+			"subType": "active-rolled",
 			"range": "arm",
 			"harm": 0,
 			"effect": "",
+			"effectFunctions": [],
 			"ammo": 0,
 			"sourceItem": {
 				"name": "",
@@ -149,55 +150,57 @@
 				"type": ""
 			},
 			"isCustom": true,
-			"canGrantHold": false,
-			"holdText": "",
-			"pdfLink": ""
-		},
-		"weapon": {
-			"exampleTypes": "",
-			"weaponType": "",
-			"description": "",
-			"details": "",
-			"attacks": [],
-			"ammo": {
-				"min": 0,
-				"max": 0,
-				"value": 0
-			},
-			"isCustom": true,
-			"canGrantHold": false,
-			"holdText": "",
 			"pdfLink": ""
 		},
 		"advantage": {
 			"description": "",
+			"intro": "",
+			"trigger": "",
+			"outro": "",
 			"attribute": "",
-			"optionsList": [],
-			"details": "",
+			"subType": "active-rolled",
+			"optionsLists": [],
+			"lists": {},
+			"effectFunctions": [],
+			"attacks": [],
 			"moves": [],
+			"details": "",
 			"isCustom": true,
-			"canGrantHold": false,
+			"currentHold": 0,
 			"holdText": "",
 			"pdfLink": ""
 		},
 		"disadvantage": {
 			"description": "",
-			"optionsList": [],
-			"details": "",
+			"attribute": "",
+			"subType": "active-rolled",
+			"optionsLists": [],
+			"lists": {},
+			"effectFunctions": [],
+			"attacks": [],
 			"moves": [],
-			"currentHold": 0,
+			"details": "",
 			"isCustom": true,
-			"canGrantHold": true,
+			"currentHold": 0,
 			"holdText": "",
 			"pdfLink": ""
 		},
 		"darksecret": {
 			"description": "",
-			"suggestedDrives": [],
 			"drive": "",
+			"optionsLists": ["suggestedDrives"],
+			"lists": {
+				"suggestedDrives": {
+					"name": "Suggested Drives",
+					"items": [],
+					"intro": ""
+				}
+			},
 			"details": "",
-			"canGrantHold": false,
+			"isCustom": true,
+			"currentHold": 0,
 			"holdText": "",
+			"pdfLink": "",
 			"playerNotes": "",
 			"gmNotes": ""
 		},
@@ -205,13 +208,26 @@
 			"target": "",
 			"description": "",
 			"details": "",
-			"canGrantHold": false,
-			"holdText": "",
 			"strength": {
 				"min": 0,
 				"max": 2,
 				"value": 0
 			}
+		},
+		"weapon": {
+			"exampleTypes": "",
+			"weaponType": "",
+			"description": "",
+			"details": "",
+			"attacks": [],
+			"effectFunctions": [],
+			"ammo": {
+				"min": 0,
+				"max": 0,
+				"value": 0
+			},
+			"isCustom": true,
+			"pdfLink": ""
 		},
 		"gear": {
 			"description": "",
@@ -221,7 +237,6 @@
 			"moves": [],
 			"attacks": [],
 			"isCustom": true,
-			"canGrantHold": false,
 			"holdText": "",
 			"pdfLink": ""
 		}

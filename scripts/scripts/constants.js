@@ -1,3 +1,5 @@
+export { SORTED_DATA } from "./migration/sortedData.js";
+export { DATA_JSON } from "./migration/migrationData.js";
 export const Archetypes = {
     Aware: [
         "academic",
@@ -71,6 +73,18 @@ export const Colors = {
     "BLUE -2": "#082b58",
     "BLUE GLOW": "#3f93ff"
 };
+export const Ranges = {
+    arm: "When you engage an able opponent within arm's reach in close combat,",
+    arm_room: "When you engage an able opponent within several steps of you in ranged combat,",
+    // "arm_room_field": "up to a hundred meters away in combat,",
+    // "arm_room_field_horizon": "that you can see, no matter the distance, in combat,",
+    room: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
+    room_field: "When you engage an able opponent out of arm's reach, up to a hundred meters away, in ranged combat,",
+    room_field_horizon: "When you engage an able opponent out of arm's reach but still visible, however distant, in ranged combat,",
+    field: "When you engage an able opponent several to one hundred meters away in ranged combat,"
+    // "field_horizon": "over a hundred meters away in ranged combat,",
+    // "horizon": "at extreme range (over one hundred meters away) in ranged combat,"
+};
 const C = {
     SYSTEM_ID: "kult4th",
     SYSTEM_NAME: "Kult: Divinity Lost",
@@ -109,7 +123,8 @@ const C = {
         timeAndSpaceMagician: []
     },
     Attributes,
-    Colors
+    Colors,
+    Ranges
 };
 Object.assign(C, {
     awareArchetypes: Object.keys(C.awareArchetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim()),

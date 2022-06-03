@@ -6,8 +6,8 @@ import K4NPCSheet from "./documents/K4NPCSheet.js";
 import C from "./scripts/constants.js";
 import { HandlebarHelpers } from "./scripts/helpers.js";
 // ts-expect-error Just until I get the compendium data migrated
-import BUILD_ITEM_DATA from "../scripts/jsonImport.mjs";
-import MIGRATE_ITEM_DATA from "./scripts/migrator.js";
+import { EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON } from "../scripts/jsonImport.mjs";
+import MIGRATE_ITEM_DATA from "./scripts/migration/migrator.js";
 import gsap from "/scripts/greensock/esm/all.js";
 Hooks.once("init", () => {
     console.log("Initializing Kult 4E");
@@ -36,6 +36,9 @@ Hooks.once("init", () => {
     console.log("HANDLEBARS", Handlebars);
     Object.assign(globalThis, {
         gsap,
+        getAllData: EXTRACT_ALL_ITEMS,
+        refreshJson: INTERMEDIATE_MIGRATE_DATA,
+        checkData: CHECK_DATA_JSON,
         resetItems: async () => {
             // @ts-expect-error They fucked up
             await Item.deleteDocuments(Array.from(game.items.values()).map((item) => item.id));
@@ -66,9 +69,9 @@ Hooks.once("init", () => {
                 color: folderColor
             }));
             await Folder.createDocuments(FOLDERDATA);
-            const ITEMDATA = await BUILD_ITEM_DATA();
+            // const ITEMDATA = await BUILD_ITEM_DATA();
             // ITEMDATA = ITEMDATA.filter((item: Record<string,unknown>) => item.type === "move");
-            const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA(ITEMDATA) // @ts-expect-error They fucked up
+            const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA() // @ts-expect-error They fucked up
                 .map((iData) => Object.assign(iData, { folder: game.folders.getName(folderMap[iData.type]).id }));
             // const items: Array<K4Item<ItemType>> = [];
             // MIGRATEDITEMDATA.forEach(async (itemData) => {

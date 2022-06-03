@@ -9434,6 +9434,34 @@ const DATA_JSON = [
 	}
 ];
 
+export const EXTRACT_ALL_ITEMS = () => {
+	return [
+		...DATA_JSON,
+		...DATA_JSON.map((iData) => iData.moves ?? []).flat(),
+		...DATA_JSON.map((iData) => iData.attacks ?? []).flat()
+	];
+};
+export const CHECK_DATA_JSON = () => {
+	const ALLDATA = EXTRACT_ALL_ITEMS(DATA_JSON);
+	const resultReport = {};
+
+	resultReport["Items With Clock"] = ALLDATA.filter((iData) => Boolean(iData.clock));
+	resultReport["Items With Notes"] = ALLDATA.filter((iData) => Boolean(iData.notes));
+
+	console.log("[RESULT REPORT]", resultReport);
+};
+export const INTERMEDIATE_MIGRATE_DATA = () => {
+	return EXTRACT_ALL_ITEMS(DATA_JSON).map((itemData) => {
+		if (!["weapon", "attack"].includes(itemData.itemType)) {
+			delete itemData.ammo;
+		}
+		if (!["gear"].includes(itemData.itemType)) {
+			delete itemData.armor;
+		}
+		return itemData;
+	});
+};
+
 const PARSERS = {
 	move: (data) => {
 		data = JSON.parse(JSON.stringify(data));
@@ -9447,7 +9475,7 @@ const PARSERS = {
 				"name": data.moveName || data.name,
 				"type": "move",
 				"img": imgCheck(data),
-				"data.attributemod": data.attributemod ?? "none",
+				"data.attributemod": data.attributemod ?? "",
 				"data.completesuccess": resultCheck(data.results.success, data),
 				"data.partialsuccess": resultCheck(data.results.partial, data),
 				"data.failure": resultCheck(data.results.fail, data),
@@ -9477,7 +9505,10 @@ const PARSERS = {
 		if (!newData.name) {
 			console.log("Error finding name from data:", data);
 		}
-		return newData;
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
 	},
 	attack: (data) => {
 		data = JSON.parse(JSON.stringify(data));
@@ -9506,93 +9537,132 @@ const PARSERS = {
 		if (!newData.name) {
 			console.log("Error finding name from data:", data);
 		}
-		return newData;
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
 	},
-	advantage: (data) => ({
-		"name": data.name,
-		"type": "advantage",
-		"img": imgCheck(data),
-		"data.attributemod": data.attributemod ?? "none",
-		"data.type": data.type,
-		"data.description": descriptionCheck(data),
-		"data.effect": descriptionCheck(data),
-		"data.tokens": data.hasTokens ? 0 : "",
-		"data.hasTokens": data.hasTokens,
-		"data.completesuccess": "",
-		"data.partialsuccess": "",
-		"data.failure": "",
-		"flags.kult4eoverrides.moves": data.moves ?? [],
-		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": {
-			...data.record,
-			attributemod: data.attributemod ?? "none"
-		}
-	}),
-	disadvantage: (data) => ({
-		"name": data.name,
-		"type": "disadvantage",
-		"img": imgCheck(data),
-		"data.attributemod": data.attributemod ?? "none",
-		"data.type": data.type,
-		"data.description": descriptionCheck(data),
-		"data.effect": descriptionCheck(data),
-		"data.tokens": data.hasTokens ? 0 : "",
-		"data.hasTokens": data.hasTokens,
-		"data.completesuccess": "",
-		"data.partialsuccess": "",
-		"data.failure": "",
-		"flags.kult4eoverrides.moves": data.moves ?? [],
-		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": {
-			...data.record,
-			attributemod: data.attributemod ?? "none"
-		}
-	}),
-	weapon: (data) => ({
-		"name": data.name,
-		"type": "weapon",
-		"img": imgCheck(data),
-		"data.special": descriptionCheck(data),
-		"data.harm": data.attacks[0].harm,
-		"data.range": data.attacks[0].range,
-		"data.ammo.value": data.ammo,
-		"data.ammo.min": 0,
-		"data.ammo.max": data.ammo,
-		"flags.kult4eoverrides.moves": data.moves ?? [],
-		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.type": data.type,
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	}),
-	darksecret: (data) => ({
-		"name": data.name,
-		"type": "darksecret",
-		"img": imgCheck(data),
-		"data.description": descriptionCheck(data),
-		"data.effect": "",
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	}),
-	relationship: (data) => ({
-		"name": data.name,
-		"type": "relationship",
-		"img": imgCheck(data),
-		"target": "",
-		"strength": "",
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	}),
-	gear: (data) => ({
-		"name": data.name,
-		"type": "gear",
-		"img": imgCheck(data),
-		"uses": "",
-		"description": "",
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	})
+	advantage: (data) => {
+		const newData = ({
+			"name": data.name,
+			"type": "advantage",
+			"img": imgCheck(data),
+			"data.attributemod": data.attributemod ?? "",
+			"data.type": data.type,
+			"data.description": descriptionCheck(data),
+			"data.effect": descriptionCheck(data),
+			"data.tokens": data.hasTokens ? 0 : "",
+			"data.hasTokens": data.hasTokens,
+			"data.completesuccess": "",
+			"data.partialsuccess": "",
+			"data.failure": "",
+			"flags.kult4eoverrides.moves": data.moves ?? [],
+			"flags.kult4eoverrides.attacks": data.attacks ?? [],
+			"flags.kult4eoverrides.isFrozen": true,
+			"record": {
+				...data.record,
+				attributemod: data.attributemod ?? ""
+			}
+		});
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
+	},
+	disadvantage: (data) => {
+		const newData = {
+			"name": data.name,
+			"type": "disadvantage",
+			"img": imgCheck(data),
+			"data.attributemod": data.attributemod ?? "",
+			"data.type": data.type,
+			"data.description": descriptionCheck(data),
+			"data.effect": descriptionCheck(data),
+			"data.tokens": data.hasTokens ? 0 : "",
+			"data.hasTokens": data.hasTokens,
+			"data.completesuccess": "",
+			"data.partialsuccess": "",
+			"data.failure": "",
+			"flags.kult4eoverrides.moves": data.moves ?? [],
+			"flags.kult4eoverrides.attacks": data.attacks ?? [],
+			"flags.kult4eoverrides.isFrozen": true,
+			"record": {
+				...data.record,
+				attributemod: data.attributemod ?? ""
+			}
+		};
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
+	},
+	weapon: (data) => {
+		const newData = ({
+			"name": data.name,
+			"type": "weapon",
+			"img": imgCheck(data),
+			"data.special": descriptionCheck(data),
+			"data.harm": data.attacks[0].harm,
+			"data.range": data.attacks[0].range,
+			"data.ammo.value": data.ammo,
+			"data.ammo.min": 0,
+			"data.ammo.max": data.ammo,
+			"flags.kult4eoverrides.moves": data.moves ?? [],
+			"flags.kult4eoverrides.attacks": data.attacks ?? [],
+			"flags.kult4eoverrides.type": data.type,
+			"flags.kult4eoverrides.isFrozen": true,
+			"record": data.record
+		});
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
+	},
+	darksecret: (data) => {
+		const newData = ({
+			"name": data.name,
+			"type": "darksecret",
+			"img": imgCheck(data),
+			"data.description": descriptionCheck(data),
+			"data.effect": "",
+			"flags.kult4eoverrides.isFrozen": true,
+			"record": data.record
+		});
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
+	},
+	relationship: (data) => {
+		const newData = ({
+			"name": data.name,
+			"type": "relationship",
+			"img": imgCheck(data),
+			"target": "",
+			"strength": "",
+			"flags.kult4eoverrides.isFrozen": true,
+			"record": data.record
+		});
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
+	},
+	gear: (data) => {
+		const newData = ({
+			"name": data.name,
+			"type": "gear",
+			"img": imgCheck(data),
+			"uses": "",
+			"description": "",
+			"flags.kult4eoverrides.isFrozen": true,
+			"record": data.record
+		});
+		newData.record.type = newData.type;
+		newData.record.name = newData.name;
+		newData.record.img = newData.img;
+		return newData.record;
+	}
 };
 
 export default async function BUILD_ITEM_DATA() {
@@ -9706,6 +9776,8 @@ export default async function BUILD_ITEM_DATA() {
 
 		// Store unformatted record of text strings
 		itemData.record = JSON.parse(JSON.stringify(itemData));
+		itemData.record.activePassive = itemData.record.type;
+		delete itemData.record.type;
 
 		return itemData;
 	};
@@ -9718,7 +9790,7 @@ export default async function BUILD_ITEM_DATA() {
 		.filter((data) => ["attack", "move", "advantage", "disadvantage", "weapon", "darksecret", "relationship", "gear"].includes(data.itemType))
 		.map(async (itemData) => PARSERS[itemData.itemType](itemData)));
 
-	console.log("TEMPLATE DATA", TEMPLATE_DATA);
+	console.log("TEMPLATE DATA", Object.fromEntries(TEMPLATE_DATA.map((iData) => [iData.name, iData])));
 	return TEMPLATE_DATA;
 }
 

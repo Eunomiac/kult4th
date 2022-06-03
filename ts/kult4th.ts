@@ -8,8 +8,8 @@ import U from "./scripts/utilities.js";
 import {HandlebarHelpers} from "./scripts/helpers.js";
 
 // ts-expect-error Just until I get the compendium data migrated
-import BUILD_ITEM_DATA from "../scripts/jsonImport.mjs";
-import MIGRATE_ITEM_DATA, {ItemMigrationData} from "./scripts/migrator.js";
+import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
+import MIGRATE_ITEM_DATA, {ItemMigrationData} from "./scripts/migration/migrator.js";
 import gsap from "gsap/all";
 
 Hooks.once("init", () => {
@@ -47,6 +47,9 @@ Hooks.once("init", () => {
 
 	Object.assign(globalThis, {
 		gsap,
+		getAllData: EXTRACT_ALL_ITEMS,
+		refreshJson: INTERMEDIATE_MIGRATE_DATA,
+		checkData: CHECK_DATA_JSON,
 		resetItems: async () => {
 			// @ts-expect-error They fucked up
 			await Item.deleteDocuments(Array.from(game.items.values()).map((item) => item.id));
@@ -78,10 +81,10 @@ Hooks.once("init", () => {
 			}));
 			await Folder.createDocuments(FOLDERDATA);
 
-			const ITEMDATA = await BUILD_ITEM_DATA();
+			// const ITEMDATA = await BUILD_ITEM_DATA();
 			// ITEMDATA = ITEMDATA.filter((item: Record<string,unknown>) => item.type === "move");
 
-			const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA(ITEMDATA) // @ts-expect-error They fucked up
+			const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA() // @ts-expect-error They fucked up
 				.map((iData: ItemMigrationData) => Object.assign(iData, {folder: game.folders.getName(folderMap[iData.type as KeyOf<typeof folderMap>]).id}));
 
 			// const items: Array<K4Item<ItemType>> = [];

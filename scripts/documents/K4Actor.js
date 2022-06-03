@@ -6,6 +6,8 @@ export var ActorType;
     ActorType["pc"] = "pc";
     ActorType["npc"] = "npc";
 })(ActorType || (ActorType = {}));
+console.log("test");
+// EmbeddedCollection<K4Item<K4ItemType>, ActorData>
 export default class K4Actor extends Actor {
     get items() { return super.items; }
     // override prepareData() {
