@@ -8,7 +8,7 @@ import U from "./scripts/utilities.js";
 import {HandlebarHelpers} from "./scripts/helpers.js";
 
 // ts-expect-error Just until I get the compendium data migrated
-import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
+// import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
 import MIGRATE_ITEM_DATA, {ItemMigrationData} from "./scripts/migration/migrator.js";
 import gsap from "gsap/all";
 
@@ -47,9 +47,6 @@ Hooks.once("init", () => {
 
 	Object.assign(globalThis, {
 		gsap,
-		getAllData: EXTRACT_ALL_ITEMS,
-		refreshJson: INTERMEDIATE_MIGRATE_DATA,
-		checkData: CHECK_DATA_JSON,
 		resetItems: async () => {
 			// @ts-expect-error They fucked up
 			await Item.deleteDocuments(Array.from(game.items.values()).map((item) => item.id));
@@ -81,28 +78,9 @@ Hooks.once("init", () => {
 			}));
 			await Folder.createDocuments(FOLDERDATA);
 
-			// const ITEMDATA = await BUILD_ITEM_DATA();
-			// ITEMDATA = ITEMDATA.filter((item: Record<string,unknown>) => item.type === "move");
-
 			const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA() // @ts-expect-error They fucked up
 				.map((iData: ItemMigrationData) => Object.assign(iData, {folder: game.folders.getName(folderMap[iData.type as KeyOf<typeof folderMap>]).id}));
 
-			// const items: Array<K4Item<ItemType>> = [];
-			// MIGRATEDITEMDATA.forEach(async (itemData) => {
-			// 	console.log(`[${itemData.name}] Creating ...`, itemData);
-			// 	// delete itemData._original;
-			// 	// if (itemData.moves?.length) {
-			// 	// itemData.moves = itemData.moves.map((move) => delete move._original);
-			// 	// }
-			// 	const [item] = await Item.createDocuments([itemData]);
-			// 	items.push(item as K4Item<ItemType>);
-			// });
-
-			// const items = await Item.createDocuments(MIGRATEDITEMDATA);
-			// items.forEach((item) => {
-			// 	// @ts-expect-error They fucked up
-			// 	item.update({folder: game.folders.getName(folderMap[item.type]).id});
-			// });
 			/*DEVCODE*/
 			const derivedMoveData = MIGRATEDITEMDATA.map((iData) => (iData.data.moves ?? [])
 			// @ts-expect-error They fucked up
@@ -122,9 +100,10 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", async () => {
-	const isResetting = false;
+	const isResetting = true;
 	if (isResetting) {
-	// @ts-expect-error They fucked up
+		console.clear();
+		// @ts-expect-error They fucked up
 		resetItems();
 	}
 });

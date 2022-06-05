@@ -47,7 +47,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/academic-network.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/academic-network.svg",
 		subType: "active-rolled"
@@ -61,16 +60,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you search the Dark Net for forbidden information, rare items, or myths,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"You discover a portal to another dimension, and a path you can trace back to it later.",
-					"You make contact with someone—or something—who can help you, for the right price.",
-					"You find something valuable or important, in addition to what you were looking for. The GM will tell you what it is."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -101,6 +91,9 @@ export const DATA_JSON = {
 							"You discover a portal to another dimension, and a path you can trace back to it later.",
 							"You make contact with someone—or something—who can help you, for the right price.",
 							"You find something valuable or important, in addition to what you were looking for. The GM will tell you what it is."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -122,7 +115,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
 		subType: "active-rolled"
@@ -134,7 +126,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever someone's got you up against the wall or in a tight spot,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -157,7 +152,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever someone's got you up against the wall or in a tight spot,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -176,6 +174,9 @@ export const DATA_JSON = {
 							"Reveal a Weapon - You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
 							"Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
 							"Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -184,6 +185,9 @@ export const DATA_JSON = {
 							"Reveal a Weapon - You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
 							"Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
 							"Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -192,6 +196,9 @@ export const DATA_JSON = {
 							"Reveal a Weapon - You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
 							"Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
 							"Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -205,7 +212,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
 		subType: "active-rolled"
@@ -248,7 +254,8 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you Investigate something,",
-			effect: "you may also choose from these additional questions: $QUESTIONS$"
+			effect: "you may also choose from these additional questions: $QUESTIONS$",
+			optionsLists: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -277,7 +284,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/analyst.svg",
 		subType: "passive"
@@ -291,16 +297,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you attempt to control an animal,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Make the animal go against its instincts.",
-					"Make the animal follow you.",
-					"Make the animal protect you against an attacker."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -331,6 +328,9 @@ export const DATA_JSON = {
 							"Make the animal go against its instincts.",
 							"Make the animal follow you.",
 							"Make the animal protect you against an attacker."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -339,6 +339,9 @@ export const DATA_JSON = {
 							"Make the animal go against its instincts.",
 							"Make the animal follow you.",
 							"Make the animal protect you against an attacker."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -347,6 +350,9 @@ export const DATA_JSON = {
 							"Make the animal go against its instincts.",
 							"Make the animal follow you.",
 							"Make the animal protect you against an attacker."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -360,7 +366,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/animal-speaker.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
 		subType: "active-rolled"
@@ -413,7 +418,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/arcane-researcher.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
 		subType: "active-static"
@@ -427,17 +431,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you activate the object,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"See the true form of a creature or location.",
-					"Receive a vision of what threatens you.",
-					"Get yourself out of a bind.",
-					"Call on the entity bound to the artifact and bargain with them."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -470,6 +464,9 @@ export const DATA_JSON = {
 							"Receive a vision of what threatens you.",
 							"Get yourself out of a bind.",
 							"Call on the entity bound to the artifact and bargain with them."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -479,6 +476,9 @@ export const DATA_JSON = {
 							"Receive a vision of what threatens you.",
 							"Get yourself out of a bind.",
 							"Call on the entity bound to the artifact and bargain with them."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -496,7 +496,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/artifact.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/artifact.svg",
 		subType: "active-rolled"
@@ -510,17 +509,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you perform your chosen art form or show your works to an audience,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$) to influence your audience at any time during the scene"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"They want to see more of your art.",
-					"They are affected by the emotion you wanted to convey (e.g., anger, sorrow, fear, joy, lust, etc).",
-					"They look up to you (take +1 ongoing with the audience during this scene).",
-					"Their attention is fixed entirely on you throughout your performance."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -553,6 +542,9 @@ export const DATA_JSON = {
 							"They are affected by the emotion you wanted to convey (e.g., anger, sorrow, fear, joy, lust, etc).",
 							"They look up to you (take +1 ongoing with the audience during this scene).",
 							"Their attention is fixed entirely on you throughout your performance."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -562,6 +554,9 @@ export const DATA_JSON = {
 							"They are affected by the emotion you wanted to convey (e.g., anger, sorrow, fear, joy, lust, etc).",
 							"They look up to you (take +1 ongoing with the audience during this scene).",
 							"Their attention is fixed entirely on you throughout your performance."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -571,6 +566,9 @@ export const DATA_JSON = {
 							"They are affected by the emotion you wanted to convey (e.g., anger, sorrow, fear, joy, lust, etc).",
 							"They look up to you (take +1 ongoing with the audience during this scene).",
 							"Their attention is fixed entirely on you throughout your performance."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -584,7 +582,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/artistic-talent.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
 		subType: "active-rolled"
@@ -609,7 +606,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent in ranged combat who is out of arm's reach, up to a hundred meters away,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -628,6 +637,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -656,14 +668,26 @@ export const DATA_JSON = {
 					trigger: "When you aggressively engage an able opponent in ranged combat, out of arm's reach, up to a hundred meters away,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
 				type: "attack",
 				results: {
 					success: {
-						text: "You inflict 4 Harm your opponent and avoid counterattacks.",
+						text: "You inflict 4 Harm to your opponent and avoid counterattacks.",
 						list: ""
 					},
 					partial: {
@@ -675,6 +699,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -703,7 +730,19 @@ export const DATA_JSON = {
 					trigger: "When you expend all of your ammo to engage up to three able opponents in ranged combat, all of them out of arm's reach but within a hundred meters of you,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -722,6 +761,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -798,7 +840,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/at-any-cost.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
 		subType: "active-static"
@@ -812,17 +853,7 @@ export const DATA_JSON = {
 			trigger: "At the beginning of each game session,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Influence someone who has heard of your authority in your academic field, as if you had rolled a (15+).",
-					"Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
-					"Make a statement about something or someone in mass media.",
-					"Gain access to people or places under the pretense of engaging in your research or studies."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -855,6 +886,9 @@ export const DATA_JSON = {
 							"Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
 							"Make a statement about something or someone in mass media.",
 							"Gain access to people or places under the pretense of engaging in your research or studies."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -864,6 +898,9 @@ export const DATA_JSON = {
 							"Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
 							"Make a statement about something or someone in mass media.",
 							"Gain access to people or places under the pretense of engaging in your research or studies."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -873,6 +910,9 @@ export const DATA_JSON = {
 							"Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
 							"Make a statement about something or someone in mass media.",
 							"Gain access to people or places under the pretense of engaging in your research or studies."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -886,7 +926,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/authority.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/authority.svg",
 		subType: "active-rolled"
@@ -970,7 +1009,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/awe-inspiring.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
 		subType: "active-rolled"
@@ -984,16 +1022,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you attack someone who's unprepared for it,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Aim for the sensitive parts: Deal +1 Harm.",
-					"Knock out: The NPC is rendered unconcious. PCs roll to Endure Injury and become neutralized on a (—9).",
-					"Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -1024,6 +1053,9 @@ export const DATA_JSON = {
 							"Aim for the sensitive parts: Deal +1 Harm.",
 							"Knock out: The NPC is rendered unconcious. PCs roll to Endure Injury and become neutralized on a (—9).",
 							"Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -1032,6 +1064,9 @@ export const DATA_JSON = {
 							"Aim for the sensitive parts: Deal +1 Harm.",
 							"Knock out: The NPC is rendered unconcious. PCs roll to Endure Injury and become neutralized on a (—9).",
 							"Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -1049,7 +1084,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/backstab.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/backstab.svg",
 		subType: "active-rolled"
@@ -1057,7 +1091,7 @@ export const DATA_JSON = {
 	"Bad Reputation": {
 		name: "Bad Reputation",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "For some reason, you have attracted the public's disapproval—even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
 			trigger: "In the first game session and whenever you attract the public's attention,",
@@ -1071,7 +1105,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Bad Reputation",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "For some reason, you have attracted the public's disapproval—even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
 					trigger: "In the first game session and whenever you attract the public's attention,",
@@ -1102,7 +1136,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
 		subType: "active-rolled"
@@ -1116,24 +1149,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you stabilize an injured person's wounds, even if you don't have access to medical equipment,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Improvisation: You stabilize one Wound without access to medical equipment.",
-					"Effective: You stabilize two Wounds instead of one.",
-					"Careful: The wound stabilizes and will heal much faster than normal."
-				]
-			},
-			complications: {
-				name: "Complications",
-				items: [
-					"You leave cosmetic scars or defects (the patient loses Stability (−2).",
-					"There are lingering side effects (−1 to all rolls the wound could feasibly affect until it's fully healed).",
-					"The patient remains knocked out until the GM determines that they awaken."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -1172,6 +1188,9 @@ export const DATA_JSON = {
 							"Improvisation: You stabilize one Wound without access to medical equipment.",
 							"Effective: You stabilize two Wounds instead of one.",
 							"Careful: The wound stabilizes and will heal much faster than normal."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -1180,6 +1199,9 @@ export const DATA_JSON = {
 							"You leave cosmetic scars or defects (the patient loses Stability (−2).",
 							"There are lingering side effects (−1 to all rolls the wound could feasibly affect until it's fully healed).",
 							"The patient remains knocked out until the GM determines that they awaken."
+						],
+						optionsLists: [
+							"complications"
 						]
 					},
 					fail: {
@@ -1197,7 +1219,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
 		subType: "active-rolled"
@@ -1211,16 +1232,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you perform acrobatic or agile feats,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Escape bindings or restraints.",
-					"Get past an obstacle (creature or object).",
-					"Get into or make it through a space you normally wouldn't be able to."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -1251,6 +1263,9 @@ export const DATA_JSON = {
 							"Escape bindings or restraints.",
 							"Get past an obstacle (creature or object).",
 							"Get into or make it through a space you normally wouldn't be able to."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -1259,6 +1274,9 @@ export const DATA_JSON = {
 							"Escape bindings or restraints.",
 							"Get past an obstacle (creature or object).",
 							"Get into or make it through a space you normally wouldn't be able to."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -1267,6 +1285,9 @@ export const DATA_JSON = {
 							"Escape bindings or restraints.",
 							"Get past an obstacle (creature or object).",
 							"Get into or make it through a space you normally wouldn't be able to."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -1280,7 +1301,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/body-awareness.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/body-awareness.svg",
 		subType: "active-rolled"
@@ -1308,7 +1328,16 @@ export const DATA_JSON = {
 					trigger: "Whenever you send your henchmen to do a risky job,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"Someone got into trouble.",
+							"The job isn't done, and needs something else to be completed.",
+							"There will be repercussions later on."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "They follow your orders and everything goes according to plan.",
@@ -1320,6 +1349,9 @@ export const DATA_JSON = {
 							"Someone got into trouble.",
 							"The job isn't done, and needs something else to be completed.",
 							"There will be repercussions later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -1337,7 +1369,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/boss.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/boss.svg",
 		subType: "active-rolled"
@@ -1351,16 +1382,7 @@ export const DATA_JSON = {
 			trigger: "At the start of each game session,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"See the true form of a creature or location.",
-					"Disperse magic targeting you.",
-					"Call on the entity."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -1391,6 +1413,9 @@ export const DATA_JSON = {
 							"See the true form of a creature or location.",
 							"Disperse magic targeting you.",
 							"Call on the entity."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -1399,6 +1424,9 @@ export const DATA_JSON = {
 							"See the true form of a creature or location.",
 							"Disperse magic targeting you.",
 							"Call on the entity."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -1407,6 +1435,9 @@ export const DATA_JSON = {
 							"See the true form of a creature or location.",
 							"Disperse magic targeting you.",
 							"Call on the entity."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -1420,7 +1451,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/bound.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/bound.svg",
 		subType: "active-rolled"
@@ -1440,7 +1470,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/broken.svg"
 	},
@@ -1453,18 +1482,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you make use of your expertise in breaking and entering,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"You silently open a locked door within a few moments.",
-					"You neutralize an alarm.",
-					"You bust a lockbox or safe in less than two minutes.",
-					"You avoid being discovered by someone.",
-					"Trick someone into believing you belong here (e.g., pretend you're a security guard) for a limited time."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -1499,6 +1517,9 @@ export const DATA_JSON = {
 							"You bust a lockbox or safe in less than two minutes.",
 							"You avoid being discovered by someone.",
 							"Trick someone into believing you belong here (e.g., pretend you're a security guard) for a limited time."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -1509,6 +1530,9 @@ export const DATA_JSON = {
 							"You bust a lockbox or safe in less than two minutes.",
 							"You avoid being discovered by someone.",
 							"Trick someone into believing you belong here (e.g., pretend you're a security guard) for a limited time."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -1519,6 +1543,9 @@ export const DATA_JSON = {
 							"You bust a lockbox or safe in less than two minutes.",
 							"You avoid being discovered by someone.",
 							"Trick someone into believing you belong here (e.g., pretend you're a security guard) for a limited time."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -1532,7 +1559,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/burglar.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/burglar.svg",
 		subType: "active-rolled"
@@ -1560,7 +1586,15 @@ export const DATA_JSON = {
 					trigger: "Whenever you imitate another's appearance or conceal your own identity to trick someone,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					complications: {
+						name: "Complications",
+						items: [
+							"You can't keep this deception up for very long. You must act fast, if you don't want to risk getting exposed.",
+							"You leave traces and clues behind, which can be connected to you later on."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "Your disguise is convincing, as long as you keep the act going.",
@@ -1571,6 +1605,9 @@ export const DATA_JSON = {
 						list: [
 							"You can't keep this deception up for very long. You must act fast, if you don't want to risk getting exposed.",
 							"You leave traces and clues behind, which can be connected to you later on."
+						],
+						optionsLists: [
+							"complications"
 						]
 					},
 					fail: {
@@ -1588,7 +1625,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/chameleon.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/chameleon.svg",
 		subType: "active-rolled"
@@ -1602,17 +1638,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you try to blend into a place or crowd by adapting your appearance and behavior to the others present,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Placate someone who is becoming suspicious.",
-					"Get access to a place outsiders aren't allowed to go.",
-					"Get someone to tell you about this place's secrets.",
-					"Get someone's assistance with something here."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -1645,6 +1671,9 @@ export const DATA_JSON = {
 							"Get access to a place outsiders aren't allowed to go.",
 							"Get someone to tell you about this place's secrets.",
 							"Get someone's assistance with something here."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -1654,6 +1683,9 @@ export const DATA_JSON = {
 							"Get access to a place outsiders aren't allowed to go.",
 							"Get someone to tell you about this place's secrets.",
 							"Get someone's assistance with something here."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -1663,6 +1695,9 @@ export const DATA_JSON = {
 							"Get access to a place outsiders aren't allowed to go.",
 							"Get someone to tell you about this place's secrets.",
 							"Get someone's assistance with something here."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -1676,7 +1711,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/character-actor.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/character-actor.svg",
 		subType: "active-rolled"
@@ -1690,16 +1724,7 @@ export const DATA_JSON = {
 			trigger: "Whenever your aura is truly noticeable,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Catch a stranger's attention. They become curious and approach you.",
-					"Change a person's disposition towards you from either aggressive to suspicious, suspicious to neutral, or neutral to positive.",
-					"Make opponents perceive you as harmless and ignore you for as long as you remain in the background and do not act against them."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -1730,6 +1755,9 @@ export const DATA_JSON = {
 							"Catch a stranger's attention. They become curious and approach you.",
 							"Change a person's disposition towards you from either aggressive to suspicious, suspicious to neutral, or neutral to positive.",
 							"Make opponents perceive you as harmless and ignore you for as long as you remain in the background and do not act against them."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -1738,6 +1766,9 @@ export const DATA_JSON = {
 							"Catch a stranger's attention. They become curious and approach you.",
 							"Change a person's disposition towards you from either aggressive to suspicious, suspicious to neutral, or neutral to positive.",
 							"Make opponents perceive you as harmless and ignore you for as long as you remain in the background and do not act against them."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -1746,6 +1777,9 @@ export const DATA_JSON = {
 							"Catch a stranger's attention. They become curious and approach you.",
 							"Change a person's disposition towards you from either aggressive to suspicious, suspicious to neutral, or neutral to positive.",
 							"Make opponents perceive you as harmless and ignore you for as long as you remain in the background and do not act against them."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -1759,7 +1793,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/charismatic-aura.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
 		subType: "active-rolled"
@@ -1784,7 +1817,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -1803,6 +1848,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -1830,7 +1878,19 @@ export const DATA_JSON = {
 					trigger: "When you engage two able opponents at the same time in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -1849,6 +1909,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -1883,11 +1946,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have been chosen by a god to become its advocate or sacrificial lamb.",
 			trigger: "",
-			effect: "You have been chosen by a god to become its advocate or sacrificial lamb. The god's disciples watch over you, waiting for the day of your ascension. You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have been chosen by a god to become its advocate or sacrificial lamb. The god's disciples watch over you, waiting for the day of your ascension. You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Avoid your pursuers.",
 					"Fight the cult and/or their god.",
@@ -1915,7 +1981,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/chosen-one.svg",
 		subType: "passive"
@@ -1968,7 +2033,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/code-of-honor.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
 		subType: "active-static"
@@ -2021,7 +2085,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/collector.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/collector.svg",
 		subType: "active-rolled"
@@ -2046,7 +2109,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -2065,6 +2140,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2092,7 +2170,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent several to one hundred meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -2111,6 +2201,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2138,7 +2231,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -2157,6 +2262,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2184,7 +2292,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent several to one hundred meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -2203,6 +2323,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2233,7 +2356,7 @@ export const DATA_JSON = {
 	"Competitor": {
 		name: "Competitor",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You have a competitor in the criminal underworld, whose business niche is similar to yours.",
 			trigger: "Whenever you neglect to protect your interests or are distracted elsewhere,",
@@ -2247,7 +2370,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Competitor",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You have a competitor in the criminal underworld, whose business niche is similar to yours.",
 					trigger: "Whenever you neglect to protect your interests or are distracted elsewhere,",
@@ -2278,7 +2401,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/competitor.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/competitor.svg",
 		subType: "active-rolled"
@@ -2286,7 +2408,7 @@ export const DATA_JSON = {
 	"Condemned": {
 		name: "Condemned",
 		notes: ">CreateTracker:Time,10",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "Your fate has already been sealed. Perhaps you're dying from a disease, been promised as the sacrificial offering to a forgotten god, or you've sold your soul to some entity, waiting to drag you off to hell when your time is up. When you finally run out of Time, you meet your ultimate fate.",
 			trigger: "At the start of every game session,",
@@ -2300,13 +2422,24 @@ export const DATA_JSON = {
 			{
 				name: "Check: Condemned",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "Your fate has already been sealed. Perhaps you're dying from a disease, been promised as the sacrificial offering to a forgotten god, or you've sold your soul to some entity, waiting to drag you off to hell when your time is up. When you finally run out of Time, you meet your ultimate fate.",
 					trigger: "At the start of every game session,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You mark 1 Time.",
+							"You're tortured by dreams or visions of your fate. Reduce Stability (−2).",
+							"You're haunted by the entity or event that sealed your fate.",
+							"Someone in your vicinity is negatively affected by your fate.",
+							"Something provides you with false hope of escaping your fate."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "You still have some time remaining.",
@@ -2320,6 +2453,9 @@ export const DATA_JSON = {
 							"You're haunted by the entity or event that sealed your fate.",
 							"Someone in your vicinity is negatively affected by your fate.",
 							"Something provides you with false hope of escaping your fate."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2330,6 +2466,9 @@ export const DATA_JSON = {
 							"You're haunted by the entity or event that sealed your fate.",
 							"Someone in your vicinity is negatively affected by your fate.",
 							"Something provides you with false hope of escaping your fate."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					}
 				},
@@ -2343,7 +2482,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/condemned.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/condemned.svg",
 		subType: "active-rolled"
@@ -2357,17 +2495,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you allow your madness to infect someone you're speaking with,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Afflict your victim with a temporary psychosis, in which they are haunted by their fears (NPCs only).",
-					"Trigger a Disadvantage within another person (PCs only, roll for the Disadvantage).",
-					"Affect an additional victim.",
-					"Call for creatures of madness to haunt the infected."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -2400,6 +2528,9 @@ export const DATA_JSON = {
 							"Trigger a Disadvantage within another person (PCs only, roll for the Disadvantage).",
 							"Affect an additional victim.",
 							"Call for creatures of madness to haunt the infected."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -2409,6 +2540,9 @@ export const DATA_JSON = {
 							"Trigger a Disadvantage within another person (PCs only, roll for the Disadvantage).",
 							"Affect an additional victim.",
 							"Call for creatures of madness to haunt the infected."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -2426,7 +2560,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/contagious-insanity.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
 		subType: "active-rolled"
@@ -2440,16 +2573,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you manipulate an NPC in a longer conversation,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"They become suspicious of someone else of your choosing.",
-					"They view you as their ally, for as long as you don't betray them (+1 to all rolls against them).",
-					"They willingly do a favor for you."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -2480,6 +2604,9 @@ export const DATA_JSON = {
 							"They become suspicious of someone else of your choosing.",
 							"They view you as their ally, for as long as you don't betray them (+1 to all rolls against them).",
 							"They willingly do a favor for you."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -2488,6 +2615,9 @@ export const DATA_JSON = {
 							"They become suspicious of someone else of your choosing.",
 							"They view you as their ally, for as long as you don't betray them (+1 to all rolls against them).",
 							"They willingly do a favor for you."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -2505,7 +2635,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/crafty.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/crafty.svg",
 		subType: "active-rolled"
@@ -2519,20 +2648,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you investigate a crime scene,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"What was the chain of events?",
-					"What can I assume about the perpetrator?",
-					"Which mistakes did the perpetrator make?",
-					"When was the crime committed?",
-					"When was someone here last?",
-					"Does the crime remind me of something I am familiar with already and, if so, what?",
-					"Who might know more about the crime?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -2571,6 +2687,9 @@ export const DATA_JSON = {
 							"When was someone here last?",
 							"Does the crime remind me of something I am familiar with already and, if so, what?",
 							"Who might know more about the crime?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -2583,6 +2702,9 @@ export const DATA_JSON = {
 							"When was someone here last?",
 							"Does the crime remind me of something I am familiar with already and, if so, what?",
 							"Who might know more about the crime?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -2595,6 +2717,9 @@ export const DATA_JSON = {
 							"When was someone here last?",
 							"Does the crime remind me of something I am familiar with already and, if so, what?",
 							"Who might know more about the crime?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -2608,7 +2733,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
 		subType: "active-rolled"
@@ -2633,7 +2757,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -2652,6 +2788,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2679,7 +2818,19 @@ export const DATA_JSON = {
 					trigger: "When you attempt to knock down an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -2698,6 +2849,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2725,7 +2879,19 @@ export const DATA_JSON = {
 					trigger: "When you attempt to knock unconscious an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -2744,6 +2910,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -2780,18 +2949,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you and your followers perform a ritual,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"a vision of a creature's true form.",
-					"a vision of a portal between dimensions.",
-					"a vision of the cult's enemies.",
-					"a vision of an object's purpose.",
-					"a vision revealing your deity's wishes (take +1 to all rolls while fulfilling their wishes)."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -2826,6 +2984,9 @@ export const DATA_JSON = {
 							"a vision of the cult's enemies.",
 							"a vision of an object's purpose.",
 							"a vision revealing your deity's wishes (take +1 to all rolls while fulfilling their wishes)."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -2836,6 +2997,9 @@ export const DATA_JSON = {
 							"a vision of the cult's enemies.",
 							"a vision of an object's purpose.",
 							"a vision revealing your deity's wishes (take +1 to all rolls while fulfilling their wishes)."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -2853,7 +3017,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/cult-leader.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/cult-leader.svg",
 		subType: "active-rolled"
@@ -2865,11 +3028,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You are afflicted by a curse, knowingly or not.",
 			trigger: "",
-			effect: "You are afflicted by a curse, knowingly or not. The curse has started influencing your life and you must find a way to get rid of it. The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You are afflicted by a curse, knowingly or not. The curse has started influencing your life and you must find a way to get rid of it. The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Find out what the curse is.",
 					"Discover how to break the curse.",
@@ -2897,7 +3063,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/curse.svg",
 		subType: "passive"
@@ -2905,7 +3070,7 @@ export const DATA_JSON = {
 	"Cursed": {
 		name: "Cursed",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are cursed.",
 			trigger: "In the first session and whenever you're confronted by the supernatural,",
@@ -2919,7 +3084,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Cursed",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are cursed.",
 					trigger: "In the first session and whenever you're confronted by the supernatural,",
@@ -2950,7 +3115,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/cursed.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/cursed.svg",
 		subType: "active-rolled"
@@ -2978,7 +3142,16 @@ export const DATA_JSON = {
 					trigger: "Whenever you attempt to perform a magical ritual from a set of instructions,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You do not have working protection against the forces or entities the ritual summons.",
+							"The effects of the ritual are slightly different than what you had imagined.",
+							"The ritual summons unexpected entities or forces."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "You perform every step correctly; the ritual works as intended.",
@@ -2990,6 +3163,9 @@ export const DATA_JSON = {
 							"You do not have working protection against the forces or entities the ritual summons.",
 							"The effects of the ritual are slightly different than what you had imagined.",
 							"The ritual summons unexpected entities or forces."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -3007,7 +3183,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
 		subType: "active-rolled"
@@ -3019,7 +3194,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you're entering a dangerous situation,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -3042,7 +3220,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you're entering a dangerous situation,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -3061,6 +3242,9 @@ export const DATA_JSON = {
 							"On a Swivel - Discover a threat before it discovers you.",
 							"Not Today - Avoid an attack.",
 							"Sucker Punch - Get the jump on them: Harm your opponent before they can react."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -3069,6 +3253,9 @@ export const DATA_JSON = {
 							"On a Swivel - Discover a threat before it discovers you.",
 							"Not Today - Avoid an attack.",
 							"Sucker Punch - Get the jump on them: Harm your opponent before they can react."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -3077,6 +3264,9 @@ export const DATA_JSON = {
 							"On a Swivel - Discover a threat before it discovers you.",
 							"Not Today - Avoid an attack.",
 							"Sucker Punch - Get the jump on them: Harm your opponent before they can react."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -3090,7 +3280,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/daredevil.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/daredevil.svg",
 		subType: "active-rolled"
@@ -3104,18 +3293,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you look for information on a subject in a library, research archive, or on the Internet,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$).$n$In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"What is its origin?",
-					"What is it meant for?",
-					"How does it work?",
-					"What do I have to watch out for?",
-					"How can I stop or destroy this?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -3150,6 +3328,9 @@ export const DATA_JSON = {
 							"How does it work?",
 							"What do I have to watch out for?",
 							"How can I stop or destroy this?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -3160,6 +3341,9 @@ export const DATA_JSON = {
 							"How does it work?",
 							"What do I have to watch out for?",
 							"How can I stop or destroy this?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -3170,6 +3354,9 @@ export const DATA_JSON = {
 							"How does it work?",
 							"What do I have to watch out for?",
 							"How can I stop or destroy this?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -3183,7 +3370,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/data-retrieval.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
 		subType: "active-rolled"
@@ -3215,7 +3401,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/dead-shot.svg",
 		subType: "passive"
@@ -3268,7 +3453,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/deadly-stare.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
 		subType: "active-rolled"
@@ -3280,7 +3464,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you fight with no regard for your personal safety,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -3304,7 +3491,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you fight with no regard for your personal safety,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -3325,6 +3515,9 @@ export const DATA_JSON = {
 							"Savagery - Deal +2 Harm with one attack.",
 							"Charge - Get within reach to attack a hostile.",
 							"Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -3334,6 +3527,9 @@ export const DATA_JSON = {
 							"Savagery - Deal +2 Harm with one attack.",
 							"Charge - Get within reach to attack a hostile.",
 							"Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -3343,6 +3539,9 @@ export const DATA_JSON = {
 							"Savagery - Deal +2 Harm with one attack.",
 							"Charge - Get within reach to attack a hostile.",
 							"Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -3356,7 +3555,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/death-drive.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/death-drive.svg",
 		subType: "active-rolled"
@@ -3364,7 +3562,7 @@ export const DATA_JSON = {
 	"Depression": {
 		name: "Depression",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are constantly struggling with depression, which is only worsened by dejection and discouragement.",
 			trigger: "Whenever facing personal setbacks,",
@@ -3378,7 +3576,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Depression",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are constantly struggling with depression, which is only worsened by dejection and discouragement.",
 					trigger: "Whenever facing personal setbacks,",
@@ -3409,7 +3607,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/depression.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/depression.svg",
 		subType: "active-rolled"
@@ -3462,7 +3659,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/desperate.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/desperate.svg",
 		subType: "active-static"
@@ -3476,15 +3672,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you encounter a monstrous creature,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Soothe an aggressive creature.",
-					"Command the creature and force it to obey your order."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -3513,6 +3701,9 @@ export const DATA_JSON = {
 						list: [
 							"Soothe an aggressive creature.",
 							"Command the creature and force it to obey your order."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -3520,6 +3711,9 @@ export const DATA_JSON = {
 						list: [
 							"Soothe an aggressive creature.",
 							"Command the creature and force it to obey your order."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -3527,6 +3721,9 @@ export const DATA_JSON = {
 						list: [
 							"Soothe an aggressive creature.",
 							"Command the creature and force it to obey your order."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -3540,7 +3737,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/divine.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/divine.svg",
 		subType: "active-rolled"
@@ -3611,7 +3807,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/divine-champion.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/divine-champion.svg",
 		subType: "active-static"
@@ -3664,7 +3859,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/dreamer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/dreamer.svg",
 		subType: "active-rolled"
@@ -3676,7 +3870,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You are a trained professional at operating motor vehicles (car or motorcycle).",
 			trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -3700,7 +3897,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "You are a trained professional at operating motor vehicles (car or motorcycle).",
 					trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -3721,6 +3921,9 @@ export const DATA_JSON = {
 							"Evasive Driving - Shake off one pursuing vehicle.",
 							"Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
 							"Reckless Driving - Sideswipe another vehicle off the road."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -3730,6 +3933,9 @@ export const DATA_JSON = {
 							"Evasive Driving - Shake off one pursuing vehicle.",
 							"Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
 							"Reckless Driving - Sideswipe another vehicle off the road."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -3739,6 +3945,9 @@ export const DATA_JSON = {
 							"Evasive Driving - Shake off one pursuing vehicle.",
 							"Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
 							"Reckless Driving - Sideswipe another vehicle off the road."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -3752,7 +3961,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/driver.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/driver.svg",
 		subType: "active-rolled"
@@ -3760,7 +3968,7 @@ export const DATA_JSON = {
 	"Drug Addict": {
 		name: "Drug Addict",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are addicted to hard drugs; name at least one when you gain this Disadvantage.",
 			trigger: "In the first game session and whenever you have been using, or have the opportunity to use,",
@@ -3774,7 +3982,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Drug Addict",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are addicted to hard drugs; name at least one when you gain this Disadvantage.",
 					trigger: "In the first game session and whenever you have been using, or have the opportunity to use,",
@@ -3805,7 +4013,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/drug-addict.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
 		subType: "active-rolled"
@@ -3830,7 +4037,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -3849,6 +4068,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -3876,7 +4098,19 @@ export const DATA_JSON = {
 					trigger: "When you threaten an able opponent within arm's reach with a blade to their neck,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -3895,6 +4129,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -3931,17 +4168,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you ask your contacts for a favor,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Gain a favor from a country's administration (e.g., released from jail, skip a customs check, or get help from the police).",
-					"Gain access to a location unavailable to the public.",
-					"Locate or track a hidden or missing person.",
-					"Receive both the means to escape and a safe hiding spot."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -3974,6 +4201,9 @@ export const DATA_JSON = {
 							"Gain access to a location unavailable to the public.",
 							"Locate or track a hidden or missing person.",
 							"Receive both the means to escape and a safe hiding spot."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -3983,6 +4213,9 @@ export const DATA_JSON = {
 							"Gain access to a location unavailable to the public.",
 							"Locate or track a hidden or missing person.",
 							"Receive both the means to escape and a safe hiding spot."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -3992,6 +4225,9 @@ export const DATA_JSON = {
 							"Gain access to a location unavailable to the public.",
 							"Locate or track a hidden or missing person.",
 							"Receive both the means to escape and a safe hiding spot."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -4005,7 +4241,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/elite-education.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/elite-education.svg",
 		subType: "active-rolled"
@@ -4037,7 +4272,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/elite-sport-(athletic).svg",
 		subType: "passive"
@@ -4090,7 +4324,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg",
 		subType: "active-static"
@@ -4128,7 +4361,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -4147,6 +4392,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -4169,7 +4417,6 @@ export const DATA_JSON = {
 				special: "You can use this attack immediately after successfully parrying."
 			}
 		],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
 		subType: "passive"
@@ -4183,7 +4430,24 @@ export const DATA_JSON = {
 			trigger: "When enduring an injury,",
 			effect: "roll +$ATTRIBUTE$ +Armor −Harm"
 		},
-		lists: {},
+		lists: {
+			options: {
+				name: "Consequences",
+				items: [
+					"Are knocked out (the GM may also choose to inflict a Serious Wound).",
+					"Receive a Critical Wound, but may continue to act (if you already have a Critical Wound, you may not choose this option again).",
+					"Die."
+				]
+			},
+			gmoptions: {
+				name: "GM Options",
+				items: [
+					"The injury throws you off balance.",
+					"You lose something.",
+					"You receive a Serious Wound."
+				]
+			}
+		},
 		results: {
 			success: {
 				text: "You ride out the pain and keep going.",
@@ -4195,6 +4459,10 @@ export const DATA_JSON = {
 					"The injury throws you off balance.",
 					"You lose something.",
 					"You receive a Serious Wound."
+				],
+				optionsLists: [
+					"gmoptions",
+					"gmoptions"
 				]
 			},
 			fail: {
@@ -4203,6 +4471,10 @@ export const DATA_JSON = {
 					"Are knocked out (the GM may also choose to inflict a Serious Wound).",
 					"Receive a Critical Wound, but may continue to act (if you already have a Critical Wound, you may not choose this option again).",
 					"Die."
+				],
+				optionsLists: [
+					"options",
+					"options"
 				]
 			}
 		},
@@ -4240,7 +4512,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/endure-trauma.svg",
 		subType: "passive"
@@ -4268,7 +4539,17 @@ export const DATA_JSON = {
 					trigger: "Whenever you credibly threaten someone directly or suggestively,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					options: {
+						name: "Options",
+						items: [
+							"They offer you something they think you'd rather have.",
+							"Retreat from the scene.",
+							"They are terrorized; you have +1 ongoing on all rolls against them until they've proven they're not afraid of you.",
+							"They attack you from a disadvantaged position. You take +2 on your roll to Engage in Combat if you counterattack."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "They must decide to either do what you want or defy you with the knowledge that you can execute your threat.",
@@ -4281,6 +4562,9 @@ export const DATA_JSON = {
 							"Retreat from the scene.",
 							"They are terrorized; you have +1 ongoing on all rolls against them until they've proven they're not afraid of you.",
 							"They attack you from a disadvantaged position. You take +2 on your roll to Engage in Combat if you counterattack."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -4298,7 +4582,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/enforcer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/enforcer.svg",
 		subType: "active-rolled"
@@ -4312,7 +4595,19 @@ export const DATA_JSON = {
 			trigger: "When you engage an able opponent in combat,",
 			effect: "explain how and roll +$ATTRIBUTE$"
 		},
-		lists: {},
+		lists: {
+			gmoptions: {
+				name: "GM Options",
+				items: [
+					"You're subjected to a counterattack.",
+					"You do less damage than intended.",
+					"You lose something important.",
+					"You expend all your ammo.",
+					"You're beset by a new threat.",
+					"You'll be in trouble later on."
+				]
+			}
+		},
 		results: {
 			success: {
 				text: "You inflict damage to your opponent and avoid counterattacks.",
@@ -4327,6 +4622,10 @@ export const DATA_JSON = {
 					"You expend all your ammo.",
 					"You're beset by a new threat.",
 					"You'll be in trouble later on."
+				],
+				optionsLists: [
+					"gmoptions",
+					"gmoptions"
 				]
 			},
 			fail: {
@@ -4389,7 +4688,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
 		subType: "active-rolled"
@@ -4403,17 +4701,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you make moves to attract an NPC to you,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"The person must have you, and will abandon their normally reasonable behavior to do so.",
-					"The person is distracted by you for as long as you're in the vicinity, unable to concentrate on anything else.",
-					"The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
-					"You make them uncertain and confused. You take +1 ongoing against them during this scene."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -4446,6 +4734,9 @@ export const DATA_JSON = {
 							"The person is distracted by you for as long as you're in the vicinity, unable to concentrate on anything else.",
 							"The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
 							"You make them uncertain and confused. You take +1 ongoing against them during this scene."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -4455,6 +4746,9 @@ export const DATA_JSON = {
 							"The person is distracted by you for as long as you're in the vicinity, unable to concentrate on anything else.",
 							"The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
 							"You make them uncertain and confused. You take +1 ongoing against them during this scene."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -4464,6 +4758,9 @@ export const DATA_JSON = {
 							"The person is distracted by you for as long as you're in the vicinity, unable to concentrate on anything else.",
 							"The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
 							"You make them uncertain and confused. You take +1 ongoing against them during this scene."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -4477,7 +4774,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/erotic.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/erotic.svg",
 		subType: "active-rolled"
@@ -4530,7 +4826,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/escape-artist.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/escape-artist.svg",
 		subType: "active-rolled"
@@ -4544,16 +4839,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you have killed someone covertly and leave the scene of the murder,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"You leave the scene of the murder unnoticed and reach a safe spot of your choosing in the vicinity. Describe how.",
-					"You have left no clues that can be traced back to you.",
-					"The body is well hidden and will not be found for quite some time."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -4584,6 +4870,9 @@ export const DATA_JSON = {
 							"You leave the scene of the murder unnoticed and reach a safe spot of your choosing in the vicinity. Describe how.",
 							"You have left no clues that can be traced back to you.",
 							"The body is well hidden and will not be found for quite some time."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -4592,6 +4881,9 @@ export const DATA_JSON = {
 							"You leave the scene of the murder unnoticed and reach a safe spot of your choosing in the vicinity. Describe how.",
 							"You have left no clues that can be traced back to you.",
 							"The body is well hidden and will not be found for quite some time."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -4600,6 +4892,9 @@ export const DATA_JSON = {
 							"You leave the scene of the murder unnoticed and reach a safe spot of your choosing in the vicinity. Describe how.",
 							"You have left no clues that can be traced back to you.",
 							"The body is well hidden and will not be found for quite some time."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -4613,7 +4908,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/exit-strategy.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
 		subType: "active-rolled"
@@ -4627,16 +4921,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you perform an exorcism to banish a spirit or extradimensional creature,",
 			effect: "explain what the ritual looks like and roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Nobody is harmed during the ritual.",
-					"The entity will not reappear later.",
-					"The entity will not become hostile toward you."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -4667,6 +4952,9 @@ export const DATA_JSON = {
 							"Nobody is harmed during the ritual.",
 							"The entity will not reappear later.",
 							"The entity will not become hostile toward you."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -4675,6 +4963,9 @@ export const DATA_JSON = {
 							"Nobody is harmed during the ritual.",
 							"The entity will not reappear later.",
 							"The entity will not become hostile toward you."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -4692,7 +4983,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/exorcist.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/exorcist.svg",
 		subType: "active-rolled"
@@ -4700,7 +4990,7 @@ export const DATA_JSON = {
 	"Experiment Gone Wrong": {
 		name: "Experiment Gone Wrong",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You have carried out a scientific experiment, which went horribly awry. The experiment gave rise to something unnatural, which escaped and disappeared without a trace. Recently, the 'results' of your experiment tracked you down, reappearing in your life, and forcing you to either escape or confront it.",
 			trigger: "In the first session and whenever things seem in control,",
@@ -4714,7 +5004,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Experiment Gone Wrong",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You have carried out a scientific experiment, which went horribly awry. The experiment gave rise to something unnatural, which escaped and disappeared without a trace. Recently, the 'results' of your experiment tracked you down, reappearing in your life, and forcing you to either escape or confront it.",
 					trigger: "In the first session and whenever things seem in control,",
@@ -4745,7 +5035,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
 		subType: "active-rolled"
@@ -4757,11 +5046,12 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: $OPTIONS$",
 			trigger: "Whenever you Investigate something associated with one of your chosen fields,",
-			effect: "you always get to ask one additional question, regardless of the outcome, and may ask any questions you want"
+			effect: "you always get to ask one additional question, regardless of the outcome, and may ask any questions you want",
+			optionsLists: ["expertise"]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			expertise: {
+				name: "Fields of Expertise",
 				items: [
 					"Archeology",
 					"Economics",
@@ -4791,7 +5081,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/expert.svg",
 		subType: "passive"
@@ -4816,7 +5105,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of arm's reach, up to a hundred meters away, in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -4835,6 +5136,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -4942,7 +5246,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
 		subType: "active-rolled"
@@ -4954,7 +5257,8 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you Read a Person,",
-			effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$"
+			effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$",
+			optionsLists: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -4982,7 +5286,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/extortionist.svg",
 		subType: "passive"
@@ -5035,7 +5338,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
 		subType: "active-static"
@@ -5049,18 +5351,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you have had time to study somebody for a while,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"Where are you from?",
-					"Are you capable of violence?",
-					"How could I seduce or tempt you?",
-					"Why are you here?",
-					"What are you working on?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -5095,6 +5386,9 @@ export const DATA_JSON = {
 							"How could I seduce or tempt you?",
 							"Why are you here?",
 							"What are you working on?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -5105,6 +5399,9 @@ export const DATA_JSON = {
 							"How could I seduce or tempt you?",
 							"Why are you here?",
 							"What are you working on?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -5115,6 +5412,9 @@ export const DATA_JSON = {
 							"How could I seduce or tempt you?",
 							"Why are you here?",
 							"What are you working on?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -5128,7 +5428,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/eye-for-detail.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
 		subType: "active-rolled"
@@ -5140,11 +5439,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "Your family has a well-kept secret, which has haunted you for your entire life.",
 			trigger: "",
-			effect: "Your family has a well-kept secret, which has haunted you for your entire life. They may have been members of an obscure sect or exposed to some dreadful horror. You may have been initiated into this secret as a child, or only recently found out the truth as an adult. This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "Your family has a well-kept secret, which has haunted you for your entire life. They may have been members of an obscure sect or exposed to some dreadful horror. You may have been initiated into this secret as a child, or only recently found out the truth as an adult. This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Keep the secret.",
 					"Avoid your family.",
@@ -5172,7 +5474,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/family-secret.svg",
 		subType: "passive"
@@ -5180,7 +5481,7 @@ export const DATA_JSON = {
 	"Fanatic": {
 		name: "Fanatic",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are a fervent adherent of an ideology, which you must define when you take this Disadvantage. You interpret the whole world in accordance with your ideology, which must not be questioned.",
 			trigger: "Whenever someone questions your ideology,",
@@ -5194,7 +5495,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Fanatic",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are a fervent adherent of an ideology, which you must define when you take this Disadvantage. You interpret the whole world in accordance with your ideology, which must not be questioned.",
 					trigger: "Whenever someone questions your ideology,",
@@ -5225,7 +5526,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/fanatic.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
 		subType: "active-rolled"
@@ -5239,16 +5539,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you use your art to seduce an NPC,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"They are attracted to you.",
-					"They forget their woes when experiencing your art.",
-					"They are totally captivated by your art and forget all about their surrounding environment."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -5270,6 +5561,13 @@ export const DATA_JSON = {
 							"They forget their woes when experiencing your art.",
 							"They are totally captivated by your art and forget all about their surrounding environment."
 						]
+					},
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"They become obsessed with you.",
+							"They want you right now."
+						]
 					}
 				},
 				results: {
@@ -5279,6 +5577,9 @@ export const DATA_JSON = {
 							"They are attracted to you.",
 							"They forget their woes when experiencing your art.",
 							"They are totally captivated by your art and forget all about their surrounding environment."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -5286,6 +5587,10 @@ export const DATA_JSON = {
 						list: [
 							"They become obsessed with you.",
 							"They want you right now."
+						],
+						optionsLists: [
+							"options",
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -5303,7 +5608,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/fascination.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/fascination.svg",
 		subType: "active-rolled"
@@ -5317,16 +5621,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you talk to an NPC to get their attention,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Prevent the NPC from noticing something in her immediate vicinity.",
-					"Get the NPC to disclose something important (the GM will provide the details).",
-					"Distract the NPC. You take +1 to your next roll against them."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -5357,6 +5652,9 @@ export const DATA_JSON = {
 							"Prevent the NPC from noticing something in her immediate vicinity.",
 							"Get the NPC to disclose something important (the GM will provide the details).",
 							"Distract the NPC. You take +1 to your next roll against them."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -5365,6 +5663,9 @@ export const DATA_JSON = {
 							"Prevent the NPC from noticing something in her immediate vicinity.",
 							"Get the NPC to disclose something important (the GM will provide the details).",
 							"Distract the NPC. You take +1 to your next roll against them."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -5373,6 +5674,9 @@ export const DATA_JSON = {
 							"Prevent the NPC from noticing something in her immediate vicinity.",
 							"Get the NPC to disclose something important (the GM will provide the details).",
 							"Distract the NPC. You take +1 to your next roll against them."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -5386,7 +5690,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/fast-talk.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/fast-talk.svg",
 		subType: "active-rolled"
@@ -5398,7 +5701,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have been trained by an intelligence agency to fight in the field.",
 			trigger: "Whenever you enter combat,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -5420,7 +5726,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -5439,6 +5757,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -5469,7 +5790,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "You have been trained by an intelligence agency to fight in the field.",
 					trigger: "Whenever you enter combat,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -5490,6 +5814,9 @@ export const DATA_JSON = {
 							"Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
 							"Disarm - Remove an opponent's weapon in close combat.",
 							"Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object: $ATTACKS_INLINE$"
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -5499,6 +5826,9 @@ export const DATA_JSON = {
 							"Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
 							"Disarm - Remove an opponent's weapon in close combat.",
 							"Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object: $ATTACKS_INLINE$"
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -5508,6 +5838,9 @@ export const DATA_JSON = {
 							"Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
 							"Disarm - Remove an opponent's weapon in close combat.",
 							"Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object: $ATTACKS_INLINE$"
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -5538,7 +5871,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/field-agent.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
 		subType: "active-rolled"
@@ -5552,16 +5884,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you dive deep into your art and allow yourself to be inspired by the Truth,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Enticement: Entice an entity to come to you.",
-					"Visions: See Through the Illusion into a specific place of your choice.",
-					"Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -5592,6 +5915,9 @@ export const DATA_JSON = {
 							"Enticement: Entice an entity to come to you.",
 							"Visions: See Through the Illusion into a specific place of your choice.",
 							"Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -5600,6 +5926,9 @@ export const DATA_JSON = {
 							"Enticement: Entice an entity to come to you.",
 							"Visions: See Through the Illusion into a specific place of your choice.",
 							"Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -5608,6 +5937,9 @@ export const DATA_JSON = {
 							"Enticement: Entice an entity to come to you.",
 							"Visions: See Through the Illusion into a specific place of your choice.",
 							"Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -5621,7 +5953,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
 		subType: "active-rolled"
@@ -5633,11 +5964,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have uncovered some horrid truth, which brings reality's very nature into question.",
 			trigger: "",
-			effect: "You have uncovered some horrid truth, which brings reality's very nature into question. It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion. The Illusion's keepers are now after you and it is only a matter of time before they find you. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have uncovered some horrid truth, which brings reality's very nature into question. It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion. The Illusion's keepers are now after you and it is only a matter of time before they find you.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Reveal the Truth to the world.",
 					"Acquire power or knowledge.",
@@ -5665,7 +5999,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/forbidden-knowledge.svg",
 		subType: "passive"
@@ -5693,7 +6026,24 @@ export const DATA_JSON = {
 					trigger: "Whenever you manipulate someone,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					options: {
+						name: "Options",
+						items: [
+							"They trust you (PC takes +1 Relation with you).",
+							"They're spellbound by you (take +1 ongoing against them during this scene).",
+							"They reveal a weakness, which you can exploit later."
+						]
+					},
+					complications: {
+						name: "Complications",
+						items: [
+							"They see you as a friend they can turn to when in need.",
+							"They fall in love with you.",
+							"They will feel betrayed, spurned, humiliated, or manipulated whenever you abuse their trust in you."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "Choose one option:",
@@ -5701,14 +6051,20 @@ export const DATA_JSON = {
 							"They trust you (PC takes +1 Relation with you).",
 							"They're spellbound by you (take +1 ongoing against them during this scene).",
 							"They reveal a weakness, which you can exploit later."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
-						text: "Choose one option from the list above, but there's also a complication, chosen by the GM or player:",
+						text: "Choose one option from the list below, but there is also a complication, chosen by the GM or the targeted PC:",
 						list: [
 							"They see you as a friend they can turn to when in need.",
 							"They fall in love with you.",
 							"They will feel betrayed, spurned, humiliated, or manipulated whenever you abuse their trust in you."
+						],
+						optionsLists: [
+							"complications"
 						]
 					},
 					fail: {
@@ -5726,7 +6082,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
 		subType: "active-rolled"
@@ -5754,7 +6109,15 @@ export const DATA_JSON = {
 					trigger: "Whenever you give your gang orders that are risky and/ or may result in them paying a high price,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					complications: {
+						name: "Complications",
+						items: [
+							"One of them defies you in front of the others.",
+							"They will all be disgruntled for some time."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "They enact your orders without question.",
@@ -5765,6 +6128,9 @@ export const DATA_JSON = {
 						list: [
 							"One of them defies you in front of the others.",
 							"They will all be disgruntled for some time."
+						],
+						optionsLists: [
+							"complications"
 						]
 					},
 					fail: {
@@ -5782,7 +6148,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/gang-leader.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/gang-leader.svg",
 		subType: "active-rolled"
@@ -5794,7 +6159,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you find yourself in a life-threatening situation,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$) to see if you can discover a way out"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$) to see if you can discover a way out",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -5817,7 +6185,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you find yourself in a life-threatening situation,",
-					effect: "roll +$ATTRIBUTE$ to see if you can discover a way out"
+					effect: "roll +$ATTRIBUTE$ to see if you can discover a way out",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -5836,6 +6207,9 @@ export const DATA_JSON = {
 							"Logical - You realize an effective way to dispose of the threat. Deal +1 Harm whenever you exploit it.",
 							"Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
 							"Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -5844,6 +6218,9 @@ export const DATA_JSON = {
 							"Logical - You realize an effective way to dispose of the threat. Deal +1 Harm whenever you exploit it.",
 							"Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
 							"Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -5852,6 +6229,9 @@ export const DATA_JSON = {
 							"Logical - You realize an effective way to dispose of the threat. Deal +1 Harm whenever you exploit it.",
 							"Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
 							"Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -5865,7 +6245,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/genius.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/genius.svg",
 		subType: "active-rolled"
@@ -5918,7 +6297,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/good-samaritan.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
 		subType: "active-static"
@@ -5926,7 +6304,7 @@ export const DATA_JSON = {
 	"Greedy": {
 		name: "Greedy",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are driven by an unquenchable desire for money and wealth, and are prepared to sacrifice your health, family, and friends to fill the emptiness inside.",
 			trigger: "When an opportunity to increase your wealth arises,",
@@ -5940,7 +6318,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Greedy",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are driven by an unquenchable desire for money and wealth, and are prepared to sacrifice your health, family, and friends to fill the emptiness inside.",
 					trigger: "When an opportunity to increase your wealth arises,",
@@ -5971,7 +6349,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/greedy.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/greedy.svg",
 		subType: "active-rolled"
@@ -6003,7 +6380,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/gritted-teeth.svg",
 		subType: "passive"
@@ -6056,7 +6432,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/grudge.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/grudge.svg",
 		subType: "active-static"
@@ -6068,11 +6443,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have been chosen to protect an important object, place, or person.",
 			trigger: "",
-			effect: "You have been chosen to protect an important object, place, or person. This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request. What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have been chosen to protect an important object, place, or person. This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request. What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Keep what you are guarding safe.",
 					"Find out more about the previous guardians and what you are protecting.",
@@ -6099,7 +6477,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/guardian.svg",
 		subType: "passive"
@@ -6107,7 +6484,7 @@ export const DATA_JSON = {
 	"Guilt": {
 		name: "Guilt",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You carry heavy guilt for your past sins, having harmed one or several people through your actions or inaction.",
 			trigger: "In the first game session and whenever everything appears okay,",
@@ -6121,7 +6498,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Guilt",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You carry heavy guilt for your past sins, having harmed one or several people through your actions or inaction.",
 					trigger: "In the first game session and whenever everything appears okay,",
@@ -6152,7 +6529,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/guilt.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/guilt.svg",
 		subType: "active-rolled"
@@ -6164,11 +6540,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You feel constant remorse for a crime you have committed.",
 			trigger: "",
-			effect: "You feel constant remorse for a crime you have committed. Regardless if you committed the crime on your own initiative or because you were coerced by others, you feel you are solely to blame. The victim, their relatives, and/or the police are probably looking for you. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You feel constant remorse for a crime you have committed. Regardless if you committed the crime on your own initiative or because you were coerced by others, you feel you are solely to blame. The victim, their relatives, and/or the police are probably looking for you.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Avoid justice.",
 					"Confront the victim or their relatives.",
@@ -6197,7 +6576,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/guilty-of-crime.svg",
 		subType: "passive"
@@ -6225,7 +6603,15 @@ export const DATA_JSON = {
 					trigger: "Whenever you penetrate digital networks in the pursuit of confidential data, crack software, or disable security systems,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					complications: {
+						name: "Complications",
+						items: [
+							"Someone discovers the intrusion. You must take risks or compromise on how much you're able to accomplish.",
+							"You leave traces of your intrusion."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "You accomplish your task without a problem.",
@@ -6236,6 +6622,9 @@ export const DATA_JSON = {
 						list: [
 							"Someone discovers the intrusion. You must take risks or compromise on how much you're able to accomplish.",
 							"You leave traces of your intrusion."
+						],
+						optionsLists: [
+							"complications"
 						]
 					},
 					fail: {
@@ -6253,7 +6642,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/hacker.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/hacker.svg",
 		subType: "active-rolled"
@@ -6278,7 +6666,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within several steps of you in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -6297,6 +6697,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -6325,7 +6728,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within several steps of you in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -6344,6 +6759,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -6372,7 +6790,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within several steps of you in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -6391,6 +6821,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -6422,7 +6855,7 @@ export const DATA_JSON = {
 	"Harassed": {
 		name: "Harassed",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "For some reason, personal or otherwise, people tend to harass you; the authorities in particular.",
 			trigger: "In the first game session and whenever you draw attention to yourself,",
@@ -6436,7 +6869,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Harassed",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "For some reason, personal or otherwise, people tend to harass you; the authorities in particular.",
 					trigger: "In the first game session and whenever you draw attention to yourself,",
@@ -6467,7 +6900,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/harassed.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/harassed.svg",
 		subType: "active-rolled"
@@ -6499,7 +6931,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/hardened.svg",
 		subType: "passive"
@@ -6507,7 +6938,7 @@ export const DATA_JSON = {
 	"Haunted": {
 		name: "Haunted",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are haunted by supernatural forces. With the GM's assistance, determine the nature of what you believe is haunting you.",
 			trigger: "In the first session and whenever you are distracted or weakened,",
@@ -6521,7 +6952,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Haunted",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are haunted by supernatural forces. With the GM's assistance, determine the nature of what you believe is haunting you.",
 					trigger: "In the first session and whenever you are distracted or weakened,",
@@ -6552,7 +6983,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/haunted.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/haunted.svg",
 		subType: "active-rolled"
@@ -6564,11 +6994,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have been granted a unique inheritance from relatives or friends.",
 			trigger: "",
-			effect: "You have been granted a unique inheritance from relatives or friends. It could be a small object or something more substantial, such as a house. The inheritance has instilled an unnatural obsession within you. You know it hides secrets and perhaps unknown forces. Might it reveal what happened to its previous owner? Others want to possess your inheritance also, and you suspect they will stop at nothing to acquire it. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have been granted a unique inheritance from relatives or friends. It could be a small object or something more substantial, such as a house. The inheritance has instilled an unnatural obsession within you. You know it hides secrets and perhaps unknown forces. Might it reveal what happened to its previous owner? Others want to possess your inheritance also, and you suspect they will stop at nothing to acquire it.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Discover the truth about your inheritance.",
 					"Protect your inheritance.",
@@ -6595,7 +7028,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/heir.svg",
 		subType: "passive"
@@ -6671,16 +7103,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you are hunting someone or something,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Prepare Ambush - Deal your weapon's Harm when your enemy stumbles in.",
-					"Camouflage - Take +2 ongoing to Act Under Pressure for as long as you remain hiding.",
-					"Move in Shadows - Take +2 ongoing to Avoid Harm from ranged weapons."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -6711,6 +7134,9 @@ export const DATA_JSON = {
 							"Prepare Ambush - Deal your weapon's Harm when your enemy stumbles in.",
 							"Camouflage - Take +2 ongoing to Act Under Pressure for as long as you remain hiding.",
 							"Move in Shadows - Take +2 ongoing to Avoid Harm from ranged weapons."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -6719,6 +7145,9 @@ export const DATA_JSON = {
 							"Prepare Ambush - Deal your weapon's Harm when your enemy stumbles in.",
 							"Camouflage - Take +2 ongoing to Act Under Pressure for as long as you remain hiding.",
 							"Move in Shadows - Take +2 ongoing to Avoid Harm from ranged weapons."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -6727,6 +7156,9 @@ export const DATA_JSON = {
 							"Prepare Ambush - Deal your weapon's Harm when your enemy stumbles in.",
 							"Camouflage - Take +2 ongoing to Act Under Pressure for as long as you remain hiding.",
 							"Move in Shadows - Take +2 ongoing to Avoid Harm from ranged weapons."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -6740,7 +7172,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/hunter.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/hunter.svg",
 		subType: "active-rolled"
@@ -6752,7 +7183,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You keep your calm and cool, even in the midst of violence and chaos.",
 			trigger: "Whenever you are in a violent conflict,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -6776,7 +7210,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "You keep your calm and cool, even in the midst of violence and chaos.",
 					trigger: "Whenever you are in a violent conflict,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -6797,6 +7234,9 @@ export const DATA_JSON = {
 							"Opportunity Calls - Manage to snatch something.",
 							"Patience, Patience - Maneuver into a better position.",
 							"Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -6806,6 +7246,9 @@ export const DATA_JSON = {
 							"Opportunity Calls - Manage to snatch something.",
 							"Patience, Patience - Maneuver into a better position.",
 							"Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -6815,6 +7258,9 @@ export const DATA_JSON = {
 							"Opportunity Calls - Manage to snatch something.",
 							"Patience, Patience - Maneuver into a better position.",
 							"Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -6828,7 +7274,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/ice-cold.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/ice-cold.svg",
 		subType: "active-rolled"
@@ -6881,7 +7326,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/implanted-messages.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
 		subType: "active-rolled"
@@ -6934,7 +7378,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/impostor.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/impostor.svg",
 		subType: "active-rolled"
@@ -6948,17 +7391,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you attempt to get out of a dangerous situation by winging it,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Lie - Come up with a convincing lie.",
-					"Gear Up - Find something you can use as a makeshift melee weapon. The GM will tell you what it is.",
-					"Hide - Stay out of a pursuer's sight.",
-					"Prepare - Set a trap that gives you a +2 surprise bonus the first time you Engage in Combat after the trap is sprung."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -6991,6 +7424,9 @@ export const DATA_JSON = {
 							"Gear Up - Find something you can use as a makeshift melee weapon. The GM will tell you what it is.",
 							"Hide - Stay out of a pursuer's sight.",
 							"Prepare - Set a trap that gives you a +2 surprise bonus the first time you Engage in Combat after the trap is sprung."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -7000,6 +7436,9 @@ export const DATA_JSON = {
 							"Gear Up - Find something you can use as a makeshift melee weapon. The GM will tell you what it is.",
 							"Hide - Stay out of a pursuer's sight.",
 							"Prepare - Set a trap that gives you a +2 surprise bonus the first time you Engage in Combat after the trap is sprung."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -7017,7 +7456,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/improviser.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/improviser.svg",
 		subType: "active-rolled"
@@ -7025,7 +7463,7 @@ export const DATA_JSON = {
 	"Infirm": {
 		name: "Infirm",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You suffer from a dangerous physical disease or condition, such as heart disease, hypertension, morbid obesity, or serious gastric ulcer.",
 			trigger: "Whenever you are subjected to major physical or psychological stress,",
@@ -7039,7 +7477,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Infirm",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You suffer from a dangerous physical disease or condition, such as heart disease, hypertension, morbid obesity, or serious gastric ulcer.",
 					trigger: "Whenever you are subjected to major physical or psychological stress,",
@@ -7070,7 +7508,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/infirm.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/infirm.svg",
 		subType: "active-rolled"
@@ -7084,7 +7521,16 @@ export const DATA_JSON = {
 			trigger: "When you influence an NPC through negotiation, argument, or from a position of power,",
 			effect: "roll +$ATTRIBUTE$"
 		},
-		lists: {},
+		lists: {
+			gmoptions: {
+				name: "GM Options",
+				items: [
+					"She demands better compensation.",
+					"Complications will arise at a future time.",
+					"She gives in for the moment, but will change her mind and regret it later."
+				]
+			}
+		},
 		results: {
 			success: {
 				text: "She does what you ask",
@@ -7096,6 +7542,10 @@ export const DATA_JSON = {
 					"She demands better compensation.",
 					"Complications will arise at a future time.",
 					"She gives in for the moment, but will change her mind and regret it later."
+				],
+				optionsLists: [
+					"gmoptions",
+					"gmoptions"
 				]
 			},
 			fail: {
@@ -7122,13 +7572,10 @@ export const DATA_JSON = {
 		lists: {
 			options: {
 				name: "Options",
-				items: {
-					name: "Options",
-					items: [
-						"She's motivated to do what you ask, and recieves +1 for her next roll, if she does it.",
-						"She's worried of the consequences if she doesn't do what you ask, and gets −1 Stability if she doesn't do it."
-					]
-				}
+				items: [
+					"She's motivated to do what you ask, and recieves +1 for her next roll, if she does it.",
+					"She's worried of the consequences if she doesn't do what you ask, and gets −1 Stability if she doesn't do it."
+				]
 			}
 		},
 		results: {
@@ -7137,6 +7584,10 @@ export const DATA_JSON = {
 				list: [
 					"She's motivated to do what you ask, and recieves +1 for her next roll, if she does it.",
 					"She's worried of the consequences if she doesn't do what you ask, and gets −1 Stability if she doesn't do it."
+				],
+				optionsLists: [
+					"options",
+					"options"
 				]
 			},
 			partial: {
@@ -7144,6 +7595,10 @@ export const DATA_JSON = {
 				list: [
 					"She's motivated to do what you ask, and recieves +1 for her next roll, if she does it.",
 					"She's worried of the consequences if she doesn't do what you ask, and gets −1 Stability if she doesn't do it."
+				],
+				optionsLists: [
+					"options",
+					"options"
 				]
 			},
 			fail: {
@@ -7206,7 +7661,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/influential-friends.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/influential-friends.svg",
 		subType: "active-rolled"
@@ -7259,7 +7713,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/inner-power.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/inner-power.svg",
 		subType: "active-rolled"
@@ -7279,7 +7732,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/instinct.svg"
 	},
@@ -7310,7 +7762,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/interrogator.svg",
 		subType: "passive"
@@ -7363,7 +7814,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/intimidating.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/intimidating.svg",
 		subType: "active-rolled"
@@ -7395,7 +7845,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/intuitive.svg",
 		subType: "passive"
@@ -7409,17 +7858,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you are about to create or repair something,",
 			effect: "explain what you are about to do. The GM will tell you what you need to succeed, and once you have collected these materials, you may roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Durable: The construction can be used multiple times and doesn't break easily.",
-					"Effective: The construction confers +1 on rolls where it is used for its intended purpose.",
-					"Lethal: The construction causes +1 Harm.",
-					"Protective: The construction confers +1 armor."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -7452,6 +7891,9 @@ export const DATA_JSON = {
 							"Effective: The construction confers +1 on rolls where it is used for its intended purpose.",
 							"Lethal: The construction causes +1 Harm.",
 							"Protective: The construction confers +1 armor."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -7461,6 +7903,9 @@ export const DATA_JSON = {
 							"Effective: The construction confers +1 on rolls where it is used for its intended purpose.",
 							"Lethal: The construction causes +1 Harm.",
 							"Protective: The construction confers +1 armor."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -7478,7 +7923,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/inventor.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/inventor.svg",
 		subType: "active-rolled"
@@ -7495,14 +7939,11 @@ export const DATA_JSON = {
 		lists: {
 			questions: {
 				name: "Questions",
-				items: {
-					name: "Questions",
-					items: [
-						"How can I find out more about what I'm investigating?",
-						"What is my gut feel about what I'm investigating?",
-						"Is there anything weird about what I'm investigating?"
-					]
-				}
+				items: [
+					"How can I find out more about what I'm investigating?",
+					"What is my gut feel about what I'm investigating?",
+					"Is there anything weird about what I'm investigating?"
+				]
 			}
 		},
 		results: {
@@ -7512,6 +7953,10 @@ export const DATA_JSON = {
 					"How can I find out more about what I'm investigating?",
 					"What is my gut feel about what I'm investigating?",
 					"Is there anything weird about what I'm investigating?"
+				],
+				optionsLists: [
+					"questions",
+					"questions"
 				]
 			},
 			partial: {
@@ -7520,6 +7965,10 @@ export const DATA_JSON = {
 					"How can I find out more about what I'm investigating?",
 					"What is my gut feel about what I'm investigating?",
 					"Is there anything weird about what I'm investigating?"
+				],
+				optionsLists: [
+					"questions",
+					"questions"
 				]
 			},
 			fail: {
@@ -7537,7 +7986,7 @@ export const DATA_JSON = {
 	"Involuntary Medium": {
 		name: "Involuntary Medium",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are an open vessel for any spirits or demonic entities who desire a medium to speak through or need a corporeal body to use for their purposes.",
 			trigger: "Whenever you encounter spiritual entities or haunted places,",
@@ -7551,7 +8000,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Involuntary Medium",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are an open vessel for any spirits or demonic entities who desire a medium to speak through or need a corporeal body to use for their purposes.",
 					trigger: "Whenever you encounter spiritual entities or haunted places,",
@@ -7582,7 +8031,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
 		subType: "active-rolled"
@@ -7614,7 +8062,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/jaded.svg",
 		subType: "passive"
@@ -7622,7 +8069,7 @@ export const DATA_JSON = {
 	"Jealousy": {
 		name: "Jealousy",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "There is someone who has the life you want to have, and you would do anything to possess it.",
 			trigger: "Whenever you encounter the subject of your jealousy or their life's trappings (possessions, family, friends, etc),",
@@ -7636,7 +8083,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Jealousy",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "There is someone who has the life you want to have, and you would do anything to possess it.",
 					trigger: "Whenever you encounter the subject of your jealousy or their life's trappings (possessions, family, friends, etc),",
@@ -7667,7 +8114,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/jealousy.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
 		subType: "active-rolled"
@@ -7679,7 +8125,8 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you Observe a Situation,",
-			effect: "you may choose from these questions, in addition to the ones normally acquired: $QUESTIONS$"
+			effect: "you may choose from these questions, in addition to the ones normally acquired: $QUESTIONS$",
+			optionsLists: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -7707,7 +8154,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
 		subType: "passive"
@@ -7724,30 +8170,24 @@ export const DATA_JSON = {
 		lists: {
 			options: {
 				name: "Options",
-				items: {
-					name: "Options",
-					items: [
-						"You become angry (−1 Stability).",
-						"You become sad (−1 Stability).",
-						"You become scared (−1 Stability).",
-						"You become guilt-ridden (−1 Stability).",
-						"You become obsessed (+1 Relation to whatever caused the condition).",
-						"You become distracted (−2 in situations where the condition limits you).",
-						"You will be haunted by the experience at a later time."
-					]
-				}
+				items: [
+					"You become angry (−1 Stability).",
+					"You become sad (−1 Stability).",
+					"You become scared (−1 Stability).",
+					"You become guilt-ridden (−1 Stability).",
+					"You become obsessed (+1 Relation to whatever caused the condition).",
+					"You become distracted (−2 in situations where the condition limits you).",
+					"You will be haunted by the experience at a later time."
+				]
 			},
 			gmoptions: {
 				name: "GM Options",
-				items: {
-					name: "GM Options",
-					items: [
-						"You cower powerless in the threat's presence.",
-						"You panic with no control of your actions.",
-						"You suffer emotional trauma (−2 Stability).",
-						"You suffer life-changing trauma (−4 Stability)."
-					]
-				}
+				items: [
+					"You cower powerless in the threat's presence.",
+					"You panic with no control of your actions.",
+					"You suffer emotional trauma (−2 Stability).",
+					"You suffer life-changing trauma (−4 Stability)."
+				]
 			}
 		},
 		results: {
@@ -7765,6 +8205,10 @@ export const DATA_JSON = {
 					"You become obsessed (+1 Relation to whatever caused the condition).",
 					"You become distracted (−2 in situations where the condition limits you).",
 					"You will be haunted by the experience at a later time."
+				],
+				optionsLists: [
+					"options",
+					"options"
 				]
 			},
 			fail: {
@@ -7774,6 +8218,10 @@ export const DATA_JSON = {
 					"You panic with no control of your actions.",
 					"You suffer emotional trauma (−2 Stability).",
 					"You suffer life-changing trauma (−4 Stability)."
+				],
+				optionsLists: [
+					"gmoptions",
+					"gmoptions"
 				]
 			}
 		},
@@ -7832,7 +8280,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/lay-on-hands.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
 		subType: "active-rolled"
@@ -7840,7 +8287,7 @@ export const DATA_JSON = {
 	"Liar": {
 		name: "Liar",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You're a compulsive liar, who invents stories at every opportunity, especially when it's beneficial for you.",
 			trigger: "At the start of every session,",
@@ -7854,7 +8301,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Liar",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You're a compulsive liar, who invents stories at every opportunity, especially when it's beneficial for you.",
 					trigger: "At the start of every session,",
@@ -7885,7 +8332,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/liar.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/liar.svg",
 		subType: "active-rolled"
@@ -7897,7 +8343,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you move unexpectedly fast in combat,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -7920,7 +8369,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you move unexpectedly fast in combat,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -7939,6 +8391,9 @@ export const DATA_JSON = {
 							"Dodge - Avoid an attack.",
 							"Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
 							"Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -7947,6 +8402,9 @@ export const DATA_JSON = {
 							"Dodge - Avoid an attack.",
 							"Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
 							"Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -7955,6 +8413,9 @@ export const DATA_JSON = {
 							"Dodge - Avoid an attack.",
 							"Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
 							"Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -7968,7 +8429,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/lightning-fast.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
 		subType: "active-rolled"
@@ -7976,7 +8436,7 @@ export const DATA_JSON = {
 	"Lost Identity": {
 		name: "Lost Identity",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "Your true identity has been lost to a military or private-run secret agent program. You do not remember anything about your pre-employment life. Recently, memories of your true identity have started coming back to you.",
 			trigger: "In the first game session and whenever you encounter something from your repressed past,",
@@ -7990,7 +8450,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Lost Identity",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "Your true identity has been lost to a military or private-run secret agent program. You do not remember anything about your pre-employment life. Recently, memories of your true identity have started coming back to you.",
 					trigger: "In the first game session and whenever you encounter something from your repressed past,",
@@ -8021,7 +8481,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/lost-identity.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
 		subType: "active-rolled"
@@ -8046,7 +8505,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of arm's reach, up to a hundred meters away, in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -8065,6 +8536,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -8093,7 +8567,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of arm's reach, up to a hundred meters away, in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -8112,6 +8598,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -8149,16 +8638,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you utilize your magical intuition,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Learn something about a creature's true nature.",
-					"Learn if something has a magical nature.",
-					"Learn where the Illusion is weakest towards other dimensions."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -8189,6 +8669,9 @@ export const DATA_JSON = {
 							"Learn something about a creature's true nature.",
 							"Learn if something has a magical nature.",
 							"Learn where the Illusion is weakest towards other dimensions."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -8197,6 +8680,9 @@ export const DATA_JSON = {
 							"Learn something about a creature's true nature.",
 							"Learn if something has a magical nature.",
 							"Learn where the Illusion is weakest towards other dimensions."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -8205,6 +8691,9 @@ export const DATA_JSON = {
 							"Learn something about a creature's true nature.",
 							"Learn if something has a magical nature.",
 							"Learn where the Illusion is weakest towards other dimensions."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -8218,7 +8707,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/magical-intuition.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
 		subType: "active-rolled"
@@ -8232,16 +8720,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you attract everyone's attention,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"People forget what they're doing and can do nothing but stare at you.",
-					"Draw someone to you.",
-					"Get someone to do what you ask."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -8272,6 +8751,9 @@ export const DATA_JSON = {
 							"People forget what they're doing and can do nothing but stare at you.",
 							"Draw someone to you.",
 							"Get someone to do what you ask."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -8280,6 +8762,9 @@ export const DATA_JSON = {
 							"People forget what they're doing and can do nothing but stare at you.",
 							"Draw someone to you.",
 							"Get someone to do what you ask."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -8288,6 +8773,9 @@ export const DATA_JSON = {
 							"People forget what they're doing and can do nothing but stare at you.",
 							"Draw someone to you.",
 							"Get someone to do what you ask."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -8301,7 +8789,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
 		subType: "active-rolled"
@@ -8326,7 +8813,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within several steps of you in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -8345,6 +8844,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -8373,7 +8875,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within several steps of you in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -8392,6 +8906,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -8429,18 +8946,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you're out to get information about someone,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"What is their background?",
-					"What or who do they love most of all?",
-					"Who do they surround themselves with, like, and/or trust?",
-					"Where are they located right now?",
-					"How can I best gain access to them?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -8475,6 +8981,9 @@ export const DATA_JSON = {
 							"Who do they surround themselves with, like, and/or trust?",
 							"Where are they located right now?",
 							"How can I best gain access to them?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -8485,6 +8994,9 @@ export const DATA_JSON = {
 							"Who do they surround themselves with, like, and/or trust?",
 							"Where are they located right now?",
 							"How can I best gain access to them?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -8495,6 +9007,9 @@ export const DATA_JSON = {
 							"Who do they surround themselves with, like, and/or trust?",
 							"Where are they located right now?",
 							"How can I best gain access to them?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -8508,7 +9023,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/manhunter.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/manhunter.svg",
 		subType: "active-rolled"
@@ -8520,7 +9034,8 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you do someone a favor or learn one of their secrets,",
-			effect: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: $OPTIONS$"
+			effect: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: $OPTIONS$",
+			optionsLists: ["options"]
 		},
 		lists: {
 			options: {
@@ -8556,7 +9071,8 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you do someone a favor or learn one of their secrets,",
-					effect: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: $OPTIONS$"
+					effect: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: $OPTIONS$",
+					optionsLists: ["options"]
 				},
 				lists: {
 					options: {
@@ -8577,7 +9093,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/manipulative.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/manipulative.svg",
 		subType: "active-static"
@@ -8585,7 +9100,7 @@ export const DATA_JSON = {
 	"Marked": {
 		name: "Marked",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are marked by the darkness. The mark can take the shape of a full-body tattoo, a demonic body part such as a vestigial arm, an extra eye or mouth, machine parts integrated with your flesh, or similar manifestations.",
 			trigger: "Whenever you consciously Harm someone,",
@@ -8599,7 +9114,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Marked",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are marked by the darkness. The mark can take the shape of a full-body tattoo, a demonic body part such as a vestigial arm, an extra eye or mouth, machine parts integrated with your flesh, or similar manifestations.",
 					trigger: "Whenever you consciously Harm someone,",
@@ -8630,7 +9145,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/marked.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/marked.svg",
 		subType: "active-rolled"
@@ -8642,7 +9156,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you're fighting in close quarters,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -8666,7 +9183,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you're fighting in close quarters,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -8687,6 +9207,9 @@ export const DATA_JSON = {
 							"Roundhouse Strike - Engage in Combat against several opponents surrounding you, counting as a single attack.",
 							"Disarm - Remove an opponent's weapon.",
 							"Throw - Reposition an opponent or drop them to the ground."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -8696,6 +9219,9 @@ export const DATA_JSON = {
 							"Roundhouse Strike - Engage in Combat against several opponents surrounding you, counting as a single attack.",
 							"Disarm - Remove an opponent's weapon.",
 							"Throw - Reposition an opponent or drop them to the ground."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -8705,6 +9231,9 @@ export const DATA_JSON = {
 							"Roundhouse Strike - Engage in Combat against several opponents surrounding you, counting as a single attack.",
 							"Disarm - Remove an opponent's weapon.",
 							"Throw - Reposition an opponent or drop them to the ground."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -8718,7 +9247,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
 		subType: "active-rolled"
@@ -8726,11 +9254,14 @@ export const DATA_JSON = {
 	"Mental Compulsion": {
 		name: "Mental Compulsion",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage: $OPTIONS$",
 			trigger: "In situations where you could be distracted by your compulsion,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"options"
+			]
 		},
 		lists: {
 			options: {
@@ -8757,11 +9288,14 @@ export const DATA_JSON = {
 			{
 				name: "Check: Mental Compulsion",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage: $OPTIONS$",
 					trigger: "In situations where you could be distracted by your compulsion,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"options"
+					]
 				},
 				lists: {
 					options: {
@@ -8805,7 +9339,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
 		subType: "active-rolled"
@@ -8817,11 +9350,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You or one of your close relations suffer from mental illness.",
 			trigger: "",
-			effect: "You or one of your close relations suffer from mental illness. There's a good chance you have seen with your own eyes (or heard from your relative) that reality is simply an illusion. But who would believe a crazy person? Psychiatric institutions hold many secrets and many doctors have hidden motives. For the insane who end up on the streets, disturbed mentors gladly take newcomers under their wing to initiate them in the Truth. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You or one of your close relations suffer from mental illness. There's a good chance you have seen with your own eyes (or heard from your relative) that reality is simply an illusion. But who would believe a crazy person? Psychiatric institutions hold many secrets and many doctors have hidden motives. For the insane who end up on the streets, disturbed mentors gladly take newcomers under their wing to initiate them in the Truth.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Explore the Illusion.",
 					"Expose the conspiracy.",
@@ -8849,7 +9385,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/mental-illness.svg",
 		subType: "passive"
@@ -8863,15 +9398,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you make contact with one of your moles to acquire info or services,",
 			effect: "explain what group or organization the mole belongs to, name them, and then roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"The mole has penetrated the organization's inner circle; however, their influence is limited.",
-					"The mole owes you one; however, you must meet their demands to get what you want."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -8900,6 +9427,9 @@ export const DATA_JSON = {
 						list: [
 							"The mole has penetrated the organization's inner circle; however, their influence is limited.",
 							"The mole owes you one; however, you must meet their demands to get what you want."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -8907,6 +9437,9 @@ export const DATA_JSON = {
 						list: [
 							"The mole has penetrated the organization's inner circle; however, their influence is limited.",
 							"The mole owes you one; however, you must meet their demands to get what you want."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -8924,7 +9457,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/moles.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/moles.svg",
 		subType: "active-rolled"
@@ -8932,7 +9464,7 @@ export const DATA_JSON = {
 	"Nemesis": {
 		name: "Nemesis",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "Through some terrible act you have made an enemy, who does everything in their power to take revenge. Decide who your nemesis is and what you have done to earn their vengeance.",
 			trigger: "In the first game session and whenever you let your guard down,",
@@ -8946,7 +9478,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Nemesis",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "Through some terrible act you have made an enemy, who does everything in their power to take revenge. Decide who your nemesis is and what you have done to earn their vengeance.",
 					trigger: "In the first game session and whenever you let your guard down,",
@@ -8977,7 +9509,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/nemesis.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
 		subType: "active-rolled"
@@ -8991,18 +9522,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you check in with your contacts regarding an individual of your choosing,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"What resources do they have at their disposal?",
-					"Who do they have business dealings with?",
-					"Where can I find them?",
-					"What do they want?",
-					"What are they most afraid of losing?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -9037,6 +9557,9 @@ export const DATA_JSON = {
 							"Where can I find them?",
 							"What do they want?",
 							"What are they most afraid of losing?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -9047,6 +9570,9 @@ export const DATA_JSON = {
 							"Where can I find them?",
 							"What do they want?",
 							"What are they most afraid of losing?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -9057,6 +9583,9 @@ export const DATA_JSON = {
 							"Where can I find them?",
 							"What do they want?",
 							"What are they most afraid of losing?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -9070,7 +9599,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/network-of-contacts.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
 		subType: "active-rolled"
@@ -9078,7 +9606,7 @@ export const DATA_JSON = {
 	"Nightmares": {
 		name: "Nightmares",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You suffer from recurring nightmares, probably connected to your Dark Secrets.",
 			trigger: "During any scene when you sleep,",
@@ -9092,7 +9620,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Nightmares",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You suffer from recurring nightmares, probably connected to your Dark Secrets.",
 					trigger: "During any scene when you sleep,",
@@ -9123,7 +9651,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/nightmares.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
 		subType: "active-rolled"
@@ -9176,7 +9703,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/notorious.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/notorious.svg",
 		subType: "active-rolled"
@@ -9184,7 +9710,7 @@ export const DATA_JSON = {
 	"Oath of Revenge": {
 		name: "Oath of Revenge",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You have sworn to avenge an unforgivable injustice. Decide who is the subject of your vengeance and what they have done to you. It could be a single individual, people who share a certain trait, or members of an organization.",
 			trigger: "Whenever the target of your vengeance (or someone/something associated with them) appears,",
@@ -9198,7 +9724,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Oath of Revenge",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You have sworn to avenge an unforgivable injustice. Decide who is the subject of your vengeance and what they have done to you. It could be a single individual, people who share a certain trait, or members of an organization.",
 					trigger: "Whenever the target of your vengeance (or someone/something associated with them) appears,",
@@ -9229,7 +9755,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
 		subType: "active-rolled"
@@ -9237,7 +9762,7 @@ export const DATA_JSON = {
 	"Object of Desire": {
 		name: "Object of Desire",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "There is just something special about you. You ignite deep unhealthy desires in others, which they are unable to keep in check.",
 			trigger: "At the first game session and whenever you meet one or more new people,",
@@ -9251,7 +9776,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Object of Desire",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "There is just something special about you. You ignite deep unhealthy desires in others, which they are unable to keep in check.",
 					trigger: "At the first game session and whenever you meet one or more new people,",
@@ -9282,7 +9807,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
 		subType: "active-rolled"
@@ -9294,7 +9818,8 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you Read a Person,",
-			effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$"
+			effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$",
+			optionsLists: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -9322,7 +9847,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/observant.svg",
 		subType: "passive"
@@ -9339,17 +9863,14 @@ export const DATA_JSON = {
 		lists: {
 			questions: {
 				name: "Questions",
-				items: {
-					name: "Questions",
-					items: [
-						"What is my best way through this?",
-						"What currently poses the biggest threat?",
-						"What can I use to my advantage?",
-						"What should I be on the lookout for?",
-						"What is being hidden from me?",
-						"What seems strange about this?"
-					]
-				}
+				items: [
+					"What is my best way through this?",
+					"What currently poses the biggest threat?",
+					"What can I use to my advantage?",
+					"What should I be on the lookout for?",
+					"What is being hidden from me?",
+					"What seems strange about this?"
+				]
 			}
 		},
 		results: {
@@ -9362,6 +9883,10 @@ export const DATA_JSON = {
 					"What should I be on the lookout for?",
 					"What is being hidden from me?",
 					"What seems strange about this?"
+				],
+				optionsLists: [
+					"questions",
+					"questions"
 				]
 			},
 			partial: {
@@ -9373,6 +9898,10 @@ export const DATA_JSON = {
 					"What should I be on the lookout for?",
 					"What is being hidden from me?",
 					"What seems strange about this?"
+				],
+				optionsLists: [
+					"questions",
+					"questions"
 				]
 			},
 			fail: {
@@ -9384,6 +9913,10 @@ export const DATA_JSON = {
 					"What should I be on the lookout for?",
 					"What is being hidden from me?",
 					"What seems strange about this?"
+				],
+				optionsLists: [
+					"questions",
+					"questions"
 				]
 			}
 		},
@@ -9397,7 +9930,7 @@ export const DATA_JSON = {
 	"Obsession": {
 		name: "Obsession",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You have discovered a conspiracy or supernatural phenomenon, and you can't stop yourself from getting to the bottom of it.",
 			trigger: "At the first game session and whenever you encounter something associated with your obsession,",
@@ -9411,7 +9944,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Obsession",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You have discovered a conspiracy or supernatural phenomenon, and you can't stop yourself from getting to the bottom of it.",
 					trigger: "At the first game session and whenever you encounter something associated with your obsession,",
@@ -9442,7 +9975,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/obsession.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/obsession.svg",
 		subType: "active-rolled"
@@ -9454,11 +9986,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have witnessed occult proceedings, which changed your view of reality.",
 			trigger: "",
-			effect: "You have witnessed occult proceedings, which changed your view of reality. You may have participated in arcane rituals, exposed cults serving disturbing entities, or seen things revealing that the world is not what it seems. Your experiences make it difficult for you to accept the Illusion that most others live in. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have witnessed occult proceedings, which changed your view of reality. You may have participated in arcane rituals, exposed cults serving disturbing entities, or seen things revealing that the world is not what it seems. Your experiences make it difficult for you to accept the Illusion that most others live in.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Uncover more of the Truth.",
 					"Seek atonement for your actions.",
@@ -9486,7 +10021,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/occult-experience.svg",
 		subType: "passive"
@@ -9514,33 +10048,52 @@ export const DATA_JSON = {
 					trigger: "Whenever you are in your library researching the supernatural,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					questions: {
+						name: "Questions",
+						items: [
+							"Which higher power does this have connections to?",
+							"What do I need, or need to do, to exorcise or control this being?",
+							"Which dimension is this associated with?",
+							"What must I do to protect myself from this?"
+						]
+					}
+				},
 				results: {
 					success: {
-						text: "Ask the GM two questions from the list below.",
+						text: "Ask two questions from the list below.",
 						list: [
 							"Which higher power does this have connections to?",
 							"What do I need, or need to do, to exorcise or control this being?",
 							"Which dimension is this associated with?",
 							"What must I do to protect myself from this?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
-						text: "Ask the GM one question from the list below.",
+						text: "Ask one question from the list below.",
 						list: [
 							"Which higher power does this have connections to?",
 							"What do I need, or need to do, to exorcise or control this being?",
 							"Which dimension is this associated with?",
 							"What must I do to protect myself from this?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
-						text: "Ask the GM one question from the list below, but you have missed or overlooked something crucial. The GM takes 1 Hold.",
+						text: "Ask one question from the list below, but you have missed or overlooked something crucial. The GM takes 1 Hold.",
 						list: [
 							"Which higher power does this have connections to?",
 							"What do I need, or need to do, to exorcise or control this being?",
 							"Which dimension is this associated with?",
 							"What must I do to protect myself from this?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -9554,7 +10107,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/occult-library.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/occult-library.svg",
 		subType: "active-rolled"
@@ -9568,15 +10120,7 @@ export const DATA_JSON = {
 			trigger: "Upon coming in contact with a magical discipline, entity, or phenomenon for the first time,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"I know something about this (ask the GM what you know and take +1 ongoing while acting on the answers during this scene).",
-					"I know where I can find more information about this (ask the GM where)."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -9605,6 +10149,9 @@ export const DATA_JSON = {
 						list: [
 							"I know something about this (ask the GM what you know and take +1 ongoing while acting on the answers during this scene).",
 							"I know where I can find more information about this (ask the GM where)."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -9612,6 +10159,9 @@ export const DATA_JSON = {
 						list: [
 							"I know something about this (ask the GM what you know and take +1 ongoing while acting on the answers during this scene).",
 							"I know where I can find more information about this (ask the GM where)."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -9629,7 +10179,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/occult-studies.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/occult-studies.svg",
 		subType: "active-rolled"
@@ -9641,7 +10190,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you are in combat with at least one ally by your side,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -9665,7 +10217,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you are in combat with at least one ally by your side,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -9686,6 +10241,9 @@ export const DATA_JSON = {
 							"\"Coordinate Fire!\" - All allies get +1 to their next roll to Engage in Combat with firearms while in the fight.",
 							"\"Go For The Head!\" - You or one of your allies' Engage in Combat deals +1 Harm.",
 							"\"Take Cover!\" - You or an ally receive 2 Armor against a ranged attack."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -9695,6 +10253,9 @@ export const DATA_JSON = {
 							"\"Coordinate Fire!\" - All allies get +1 to their next roll to Engage in Combat with firearms while in the fight.",
 							"\"Go For The Head!\" - You or one of your allies' Engage in Combat deals +1 Harm.",
 							"\"Take Cover!\" - You or an ally receive 2 Armor against a ranged attack."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -9712,7 +10273,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/officer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/officer.svg",
 		subType: "active-rolled"
@@ -9765,7 +10325,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/opportunist.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/opportunist.svg",
 		subType: "active-static"
@@ -9773,7 +10332,7 @@ export const DATA_JSON = {
 	"Owned": {
 		name: "Owned",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You used to be a dangerous person's private property, willingly or not. Since your escape, your former owner has been looking for you. Decide who your former owner is when you take this Disadvantage.",
 			trigger: "In the first game session and whenever you draw attention to yourself in public,",
@@ -9787,7 +10346,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Owned",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You used to be a dangerous person's private property, willingly or not. Since your escape, your former owner has been looking for you. Decide who your former owner is when you take this Disadvantage.",
 					trigger: "In the first game session and whenever you draw attention to yourself in public,",
@@ -9818,7 +10377,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/owned.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/owned.svg",
 		subType: "active-rolled"
@@ -9830,11 +10388,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have sealed a pact with a powerful entity.",
 			trigger: "",
-			effect: "You have sealed a pact with a powerful entity. You may have made the pact willingly or been tricked into it. Regardless, you are now under the being's spell. You may have benefited greatly from this pact, but the cost could be your literal soul. Deep inside you understand you must find a way to trick the being into breaking the pact. The question is how? <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have sealed a pact with a powerful entity. You may have made the pact willingly or been tricked into it. Regardless, you are now under the being's spell. You may have benefited greatly from this pact, but the cost could be your literal soul. Deep inside you understand you must find a way to trick the being into breaking the pact. The question is how?",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Find a way to break the pact.",
 					"Cheat death.",
@@ -9862,7 +10423,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/pact-with-dark-forces.svg",
 		subType: "passive"
@@ -9876,16 +10436,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you execute acrobatic maneuvers,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Scale a seemingly impossible obstacle.",
-					"Make a seemingly life-threatening leap without suffering Harm.",
-					"Successfully avoid a threat."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -9916,6 +10467,9 @@ export const DATA_JSON = {
 							"Scale a seemingly impossible obstacle.",
 							"Make a seemingly life-threatening leap without suffering Harm.",
 							"Successfully avoid a threat."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -9924,6 +10478,9 @@ export const DATA_JSON = {
 							"Scale a seemingly impossible obstacle.",
 							"Make a seemingly life-threatening leap without suffering Harm.",
 							"Successfully avoid a threat."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -9932,6 +10489,9 @@ export const DATA_JSON = {
 							"Scale a seemingly impossible obstacle.",
 							"Make a seemingly life-threatening leap without suffering Harm.",
 							"Successfully avoid a threat."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -9945,7 +10505,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/parkour.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/parkour.svg",
 		subType: "active-rolled"
@@ -9959,16 +10518,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you appear defenseless during a dangerous experience,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Make someone want to take care of you.",
-					"Make an aggressive person want to not harm you.",
-					"Make someone confide in you."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -9999,6 +10549,9 @@ export const DATA_JSON = {
 							"Make someone want to take care of you.",
 							"Make an aggressive person want to not harm you.",
 							"Make someone confide in you."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -10007,6 +10560,9 @@ export const DATA_JSON = {
 							"Make someone want to take care of you.",
 							"Make an aggressive person want to not harm you.",
 							"Make someone confide in you."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -10024,7 +10580,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/perpetual-victim.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
 		subType: "active-rolled"
@@ -10077,7 +10632,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/phobia.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/phobia.svg",
 		subType: "active-static"
@@ -10105,7 +10659,16 @@ export const DATA_JSON = {
 					trigger: "Whenever you investigate a location prior to visiting it,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					options: {
+						name: "Options",
+						items: [
+							"Find or create a map of the location.",
+							"Uncover any security systems and other obstacles.",
+							"Pinpoint the location of something you're after."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "Choose three options.",
@@ -10113,6 +10676,9 @@ export const DATA_JSON = {
 							"Find or create a map of the location.",
 							"Uncover any security systems and other obstacles.",
 							"Pinpoint the location of something you're after."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -10121,6 +10687,9 @@ export const DATA_JSON = {
 							"Find or create a map of the location.",
 							"Uncover any security systems and other obstacles.",
 							"Pinpoint the location of something you're after."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -10129,6 +10698,9 @@ export const DATA_JSON = {
 							"Find or create a map of the location.",
 							"Uncover any security systems and other obstacles.",
 							"Pinpoint the location of something you're after."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -10142,7 +10714,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/prepared.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/prepared.svg",
 		subType: "active-rolled"
@@ -10195,7 +10766,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/puppeteer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/puppeteer.svg",
 		subType: "active-rolled"
@@ -10209,16 +10779,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you commence a dangerous mission,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Remember something that's advantageous in a negotiation. Ask the GM what it is.",
-					"You possess some equipment you can use to get out of a sticky situation. Ask the GM what it is.",
-					"You have special field training that would be useful in getting past one of your obstacles. Ask the GM what it is."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -10249,6 +10810,9 @@ export const DATA_JSON = {
 							"Remember something that's advantageous in a negotiation. Ask the GM what it is.",
 							"You possess some equipment you can use to get out of a sticky situation. Ask the GM what it is.",
 							"You have special field training that would be useful in getting past one of your obstacles. Ask the GM what it is."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -10257,6 +10821,9 @@ export const DATA_JSON = {
 							"Remember something that's advantageous in a negotiation. Ask the GM what it is.",
 							"You possess some equipment you can use to get out of a sticky situation. Ask the GM what it is.",
 							"You have special field training that would be useful in getting past one of your obstacles. Ask the GM what it is."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -10265,6 +10832,9 @@ export const DATA_JSON = {
 							"Remember something that's advantageous in a negotiation. Ask the GM what it is.",
 							"You possess some equipment you can use to get out of a sticky situation. Ask the GM what it is.",
 							"You have special field training that would be useful in getting past one of your obstacles. Ask the GM what it is."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -10278,7 +10848,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/quick-thinker.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
 		subType: "active-rolled"
@@ -10290,7 +10859,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "When you choose to awaken your inner rage in combat,",
-			effect: "lose Stability (−1) and mark 1 Rage.$n$Every time you get a wound and every time you defeat a foe, increase Rage (+1).$n$Rage lasts until the end of the combat.$n$During combat, you may spend 1 Rage to activate 1 Edge from the list below: $EDGES$"
+			effect: "lose Stability (−1) and mark 1 Rage.$n$Every time you get a wound and every time you defeat a foe, increase Rage (+1).$n$Rage lasts until the end of the combat.$n$During combat, you may spend 1 Rage to activate 1 Edge from the list below: $EDGES$",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -10327,7 +10899,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "When you choose to awaken your inner rage in combat,",
-					effect: "lose Stability (−1) and mark 1 Rage.$n$Every time you get a wound and every time you defeat a foe, increase Rage (+1).$n$Rage lasts until the end of the combat.$n$During combat, you may spend 1 Rage to activate 1 Edge from the list below: $EDGES$"
+					effect: "lose Stability (−1) and mark 1 Rage.$n$Every time you get a wound and every time you defeat a foe, increase Rage (+1).$n$Rage lasts until the end of the combat.$n$During combat, you may spend 1 Rage to activate 1 Edge from the list below: $EDGES$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -10349,7 +10924,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/rage.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/rage.svg",
 		subType: "active-static"
@@ -10361,11 +10935,12 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.",
 			trigger: "Whenever you See Through the Illusion and whenever the Illusion shatters,",
-			effect: "in addition to the standard effects, the GM may choose one option: $OPTIONS$"
+			effect: "in addition to the standard effects, the GM may choose one option: $GMOPTIONS$",
+			optionsLists: ["gmoptions"]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			gmoptions: {
+				name: "GM Options",
 				items: [
 					"Your presence nurtures the Illusion, making it more powerful and impenetrable.",
 					"Your bewildered psyche starts creating mirror images of familiar places and people in the Illusion.",
@@ -10391,7 +10966,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
 		subType: "passive"
@@ -10405,17 +10979,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you move through a small crowd to gather information,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$).$n$Examples of a 'small crowd' include a party, bar/restaurant, or an office. You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"Who here has information I want?",
-					"Where can I find what I am looking for?",
-					"Who is watching me?",
-					"Is there anything else of interest?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -10448,6 +11012,9 @@ export const DATA_JSON = {
 							"Where can I find what I am looking for?",
 							"Who is watching me?",
 							"Is there anything else of interest?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -10457,6 +11024,9 @@ export const DATA_JSON = {
 							"Where can I find what I am looking for?",
 							"Who is watching me?",
 							"Is there anything else of interest?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -10466,6 +11036,9 @@ export const DATA_JSON = {
 							"Where can I find what I am looking for?",
 							"Who is watching me?",
 							"Is there anything else of interest?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -10479,7 +11052,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/read-a-crowd.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
 		subType: "active-rolled"
@@ -10496,16 +11068,13 @@ export const DATA_JSON = {
 		lists: {
 			questions: {
 				name: "Questions",
-				items: {
-					name: "Questions",
-					items: [
-						"Are you lying?",
-						"How do you feel right now?",
-						"What are you about to do?",
-						"What do you wish I would do?",
-						"How could I get you to […]?"
-					]
-				}
+				items: [
+					"Are you lying?",
+					"How do you feel right now?",
+					"What are you about to do?",
+					"What do you wish I would do?",
+					"How could I get you to […]?"
+				]
 			}
 		},
 		results: {
@@ -10517,6 +11086,10 @@ export const DATA_JSON = {
 					"What are you about to do?",
 					"What do you wish I would do?",
 					"How could I get you to […]?"
+				],
+				optionsLists: [
+					"questions",
+					"questions"
 				]
 			},
 			partial: {
@@ -10527,6 +11100,10 @@ export const DATA_JSON = {
 					"What are you about to do?",
 					"What do you wish I would do?",
 					"How could I get you to […]?"
+				],
+				optionsLists: [
+					"questions",
+					"questions"
 				]
 			},
 			fail: {
@@ -10544,7 +11121,7 @@ export const DATA_JSON = {
 	"Repressed Memories": {
 		name: "Repressed Memories",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You have repressed a particularly unpleasant event from your past, but the memory of it sometimes rises to the surface. It could be a crime or some horrible thing you have done, been subjected to, or witnessed. The GM decides the nature of your repressed memory, usually based on your Dark Secrets.",
 			trigger: "In situations associated with your repressed memories,",
@@ -10558,7 +11135,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Repressed Memories",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You have repressed a particularly unpleasant event from your past, but the memory of it sometimes rises to the surface. It could be a crime or some horrible thing you have done, been subjected to, or witnessed. The GM decides the nature of your repressed memory, usually based on your Dark Secrets.",
 					trigger: "In situations associated with your repressed memories,",
@@ -10589,7 +11166,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
 		subType: "active-rolled"
@@ -10601,11 +11177,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You were responsible for or assisted in shady medical experiments, which ended in horrifying results.",
 			trigger: "",
-			effect: "You were responsible for or assisted in shady medical experiments, which ended in horrifying results. Regardless of whether the subjects were willing or not, the experiments destroyed their lives and they are now dead, missing, or transformed into something inhuman. In addition to your pangs of guilt, you may be pursued by your former test subjects, their relatives, the law, former colleagues, employers, or nameless forces trying to silence you. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You were responsible for or assisted in shady medical experiments, which ended in horrifying results. Regardless of whether the subjects were willing or not, the experiments destroyed their lives and they are now dead, missing, or transformed into something inhuman. In addition to your pangs of guilt, you may be pursued by your former test subjects, their relatives, the law, former colleagues, employers, or nameless forces trying to silence you.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Avoid taking responsibility for the experiments.",
 					"Seek forgiveness from subjects and/or their relatives.",
@@ -10634,7 +11213,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/responsible-for-medical-experiments.svg",
 		subType: "passive"
@@ -10646,11 +11224,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You experienced an event where the Illusion shattered completely, and you were the only one who returned.",
 			trigger: "",
-			effect: "You experienced an event where the Illusion shattered completely, and you were the only one who returned. Your apartment block may have slipped into another dimension, its existence wiped from history. An airplane may have disappeared and you were found twenty years later, without memories and having not aged a day. A company of soldiers in Afghanistan may have literally walked into hell and only you returned, covered in your comrades' blood. Deep down you feel you were not meant to have survived, and that something is coming for you to restore balance and order. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You experienced an event where the Illusion shattered completely, and you were the only one who returned. Your apartment block may have slipped into another dimension, its existence wiped from history. An airplane may have disappeared and you were found twenty years later, without memories and having not aged a day. A company of soldiers in Afghanistan may have literally walked into hell and only you returned, covered in your comrades' blood. Deep down you feel you were not meant to have survived, and that something is coming for you to restore balance and order.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Discover the truth about the event.",
 					"Expose what happened to you to the world.",
@@ -10678,7 +11259,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/returned-from-the-other-side.svg",
 		subType: "passive"
@@ -10703,7 +11283,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of arm's reach but still visible, however distant, in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -10722,6 +11314,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -10754,7 +11349,7 @@ export const DATA_JSON = {
 	"Rival": {
 		name: "Rival",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You have an ambitious rival, who will do anything to be in your shoes. Choose who your rival is when you take this Disadvantage.",
 			trigger: "In the first game session and whenever you make a mistake or let down your guard,",
@@ -10768,7 +11363,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Rival",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You have an ambitious rival, who will do anything to be in your shoes. Choose who your rival is when you take this Disadvantage.",
 					trigger: "In the first game session and whenever you make a mistake or let down your guard,",
@@ -10799,7 +11394,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/rival.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/rival.svg",
 		subType: "active-rolled"
@@ -10811,11 +11405,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "Your family always moved around.",
 			trigger: "",
-			effect: "Your family always moved around. Your parents never told you why, but the haunted look in their eyes and hushed conversations hinted that you were running away from something terrifying. They would rouse you in the middle of night, leaving behind everything you owned, simply to escape. Eventually, they even abandoned you. Maybe they're still on the run, or maybe whatever they feared finally caught up with them. The feeling of being followed never truly lets go, and wherever you end up it's not long before you're on the road again. You don't know exactly what would happen if you stopped, but you feel it's something terrible. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "Your family always moved around. Your parents never told you why, but the haunted look in their eyes and hushed conversations hinted that you were running away from something terrifying. They would rouse you in the middle of night, leaving behind everything you owned, simply to escape. Eventually, they even abandoned you. Maybe they're still on the run, or maybe whatever they feared finally caught up with them. The feeling of being followed never truly lets go, and wherever you end up it's not long before you're on the road again. You don't know exactly what would happen if you stopped, but you feel it's something terrible.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Find out what is pursuing you.",
 					"Find a place where you can stop and breathe.",
@@ -10843,7 +11440,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/rootless.svg",
 		subType: "passive"
@@ -10855,7 +11451,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you sacrifice another to save your own skin,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -10878,7 +11477,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you sacrifice another to save your own skin,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -10897,6 +11499,9 @@ export const DATA_JSON = {
 							"Meat Shield - Force them to take all the Harm from one attack for you.",
 							"Nothing But Bait - Expose someone to danger so you can flank an enemy (deal +1 Harm).",
 							"Leave Them Behind - Abandon them to the enemy while you slip away."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -10905,6 +11510,9 @@ export const DATA_JSON = {
 							"Meat Shield - Force them to take all the Harm from one attack for you.",
 							"Nothing But Bait - Expose someone to danger so you can flank an enemy (deal +1 Harm).",
 							"Leave Them Behind - Abandon them to the enemy while you slip away."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -10922,7 +11530,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/ruthless.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/ruthless.svg",
 		subType: "active-rolled"
@@ -10930,7 +11537,7 @@ export const DATA_JSON = {
 	"Schizophrenia": {
 		name: "Schizophrenia",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You struggle with recurring psychotic episodes and terrifying hallucinations.",
 			trigger: "In the first game session and whenever you go through difficult experiences,",
@@ -10944,7 +11551,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Schizophrenia",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You struggle with recurring psychotic episodes and terrifying hallucinations.",
 					trigger: "In the first game session and whenever you go through difficult experiences,",
@@ -10975,7 +11582,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
 		subType: "active-rolled"
@@ -10987,7 +11593,8 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you Investigate an object or entity using the proper equipment,",
-			effect: "you may choose from these following questions, in addition to those acquired through investigation: $QUESTIONS$"
+			effect: "you may choose from these following questions, in addition to those acquired through investigation: $QUESTIONS$",
+			optionsLists: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -11016,7 +11623,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/scientist.svg",
 		subType: "passive"
@@ -11087,7 +11693,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
 		subType: "active-static"
@@ -11101,18 +11706,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you have an intimate moment with someone,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Give you something you want.",
-					"Reveal a secret.",
-					"Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
-					"Make them feel bad for opposing you (they must Keep it Together)",
-					"They feel happy in your presence, and gain Stability (+2)."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -11147,6 +11741,9 @@ export const DATA_JSON = {
 							"Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
 							"Make them feel bad for opposing you (they must Keep it Together)",
 							"They feel happy in your presence, and gain Stability (+2)."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -11157,6 +11754,9 @@ export const DATA_JSON = {
 							"Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
 							"Make them feel bad for opposing you (they must Keep it Together)",
 							"They feel happy in your presence, and gain Stability (+2)."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -11167,6 +11767,9 @@ export const DATA_JSON = {
 							"Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
 							"Make them feel bad for opposing you (they must Keep it Together)",
 							"They feel happy in your presence, and gain Stability (+2)."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -11180,7 +11783,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/seducer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/seducer.svg",
 		subType: "active-rolled"
@@ -11197,13 +11799,10 @@ export const DATA_JSON = {
 		lists: {
 			gmoptions: {
 				name: "GM Options",
-				items: {
-					name: "GM Options",
-					items: [
-						"Something senses you.",
-						"The Illusions tears around you."
-					]
-				}
+				items: [
+					"Something senses you.",
+					"The Illusions tears around you."
+				]
 			}
 		},
 		results: {
@@ -11216,6 +11815,10 @@ export const DATA_JSON = {
 				list: [
 					"Something senses you.",
 					"The Illusions tears around you."
+				],
+				optionsLists: [
+					"gmoptions",
+					"gmoptions"
 				]
 			},
 			fail: {
@@ -11233,7 +11836,7 @@ export const DATA_JSON = {
 	"Sexual Neurosis": {
 		name: "Sexual Neurosis",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies.",
 			trigger: "Whenever you have the opportunity to have consensual sex or take advantage of someone vulnerable to your advances,",
@@ -11247,13 +11850,22 @@ export const DATA_JSON = {
 			{
 				name: "Check: Sexual Neurosis",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies.",
 					trigger: "Whenever you have the opportunity to have consensual sex or take advantage of someone vulnerable to your advances,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You hurt, or you are hurt by, your sexual partner (physically or psychologically).",
+							"The boundaries between dimensions are weakened; an entity from beyond catches the scent of you or your lover.",
+							"Your sexual partner becomes obsessed with you and starts stalking you."
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "You can control your urges.",
@@ -11269,6 +11881,9 @@ export const DATA_JSON = {
 							"You hurt, or you are hurt by, your sexual partner (physically or psychologically).",
 							"The boundaries between dimensions are weakened; an entity from beyond catches the scent of you or your lover.",
 							"Your sexual partner becomes obsessed with you and starts stalking you."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					}
 				},
@@ -11282,7 +11897,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
 		subType: "active-rolled"
@@ -11366,7 +11980,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/shadow.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/shadow.svg",
 		subType: "active-rolled"
@@ -11380,16 +11993,7 @@ export const DATA_JSON = {
 			trigger: "At the start of each game session,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Act first in a threatening situation. This can include even acting prior to a surprise attack.",
-					"Sense whether someone wishes good or ill towards you.",
-					"Discover or sense a clue or lead when you're off track."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -11420,6 +12024,9 @@ export const DATA_JSON = {
 							"Act first in a threatening situation. This can include even acting prior to a surprise attack.",
 							"Sense whether someone wishes good or ill towards you.",
 							"Discover or sense a clue or lead when you're off track."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -11428,6 +12035,9 @@ export const DATA_JSON = {
 							"Act first in a threatening situation. This can include even acting prior to a surprise attack.",
 							"Sense whether someone wishes good or ill towards you.",
 							"Discover or sense a clue or lead when you're off track."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -11445,7 +12055,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/sixth-sense.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
 		subType: "active-rolled"
@@ -11459,15 +12068,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you perform your chosen art form for an intelligent, monstrous creature,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$) to awaken a desire within them"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Ask the creature for help with a problem.",
-					"Ask the creature for something you desire."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -11496,6 +12097,9 @@ export const DATA_JSON = {
 						list: [
 							"Ask the creature for help with a problem.",
 							"Ask the creature for something you desire."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -11503,6 +12107,9 @@ export const DATA_JSON = {
 						list: [
 							"Ask the creature for help with a problem.",
 							"Ask the creature for something you desire."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -11520,7 +12127,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/snake-charmer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
 		subType: "active-rolled"
@@ -11534,16 +12140,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you keep hidden and try to avoid drawing attention to yourself,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Find a secure hiding spot for a while.",
-					"Find an alternate route to avoid encountering people.",
-					"Bypass a security system or other obstacle without being noticed."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -11574,6 +12171,9 @@ export const DATA_JSON = {
 							"Find a secure hiding spot for a while.",
 							"Find an alternate route to avoid encountering people.",
 							"Bypass a security system or other obstacle without being noticed."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -11582,6 +12182,9 @@ export const DATA_JSON = {
 							"Find a secure hiding spot for a while.",
 							"Find an alternate route to avoid encountering people.",
 							"Bypass a security system or other obstacle without being noticed."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -11590,6 +12193,9 @@ export const DATA_JSON = {
 							"Find a secure hiding spot for a while.",
 							"Find an alternate route to avoid encountering people.",
 							"Bypass a security system or other obstacle without being noticed."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -11603,7 +12209,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/sneak.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/sneak.svg",
 		subType: "active-rolled"
@@ -11617,18 +12222,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you fire at a distant target utilizing a scoped rifle,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Deal +1 Harm.",
-					"Hit another target as well.",
-					"Immobilize your target.",
-					"Get the target to lose control of something.",
-					"You don't reveal your position."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -11663,6 +12257,9 @@ export const DATA_JSON = {
 							"Immobilize your target.",
 							"Get the target to lose control of something.",
 							"You don't reveal your position."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -11673,6 +12270,9 @@ export const DATA_JSON = {
 							"Immobilize your target.",
 							"Get the target to lose control of something.",
 							"You don't reveal your position."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -11690,7 +12290,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/sniper.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/sniper.svg",
 		subType: "active-rolled"
@@ -11698,7 +12297,7 @@ export const DATA_JSON = {
 	"Stalker": {
 		name: "Stalker",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are hunted by a faceless enemy. Anyone you meet could be one of their minions—or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
 			trigger: "In the first game session and whenever you expose your current location,",
@@ -11712,7 +12311,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Stalker",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are hunted by a faceless enemy. Anyone you meet could be one of their minions—or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
 					trigger: "In the first game session and whenever you expose your current location,",
@@ -11743,7 +12342,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/stalker.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/stalker.svg",
 		subType: "active-rolled"
@@ -11755,11 +12353,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "Someone close to you disappeared after getting too close to the truth while investigating something.",
 			trigger: "",
-			effect: "Someone close to you disappeared after getting too close to the truth while investigating something. You have no idea what happened, but someone recently sent you cryptic information, urging you to finish what your colleague started. Since your associate disappeared, you've become the victim of unknown stalkers. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "Someone close to you disappeared after getting too close to the truth while investigating something. You have no idea what happened, but someone recently sent you cryptic information, urging you to finish what your colleague started. Since your associate disappeared, you've become the victim of unknown stalkers.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Figure out whatever became of the missing person.",
 					"Finish the investigation they started.",
@@ -11787,7 +12388,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/strange-disappearance.svg",
 		subType: "passive"
@@ -11801,17 +12401,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you need to know something and check in with your contacts,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"What do you know about the [building / person / organization / event]?",
-					"What rumors are circulating on the street at the moment?",
-					"How can I get into [location]?",
-					"Who in this city would know more about this supernatural thing?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -11844,6 +12434,9 @@ export const DATA_JSON = {
 							"What rumors are circulating on the street at the moment?",
 							"How can I get into [location]?",
 							"Who in this city would know more about this supernatural thing?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -11853,6 +12446,9 @@ export const DATA_JSON = {
 							"What rumors are circulating on the street at the moment?",
 							"How can I get into [location]?",
 							"Who in this city would know more about this supernatural thing?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -11862,6 +12458,9 @@ export const DATA_JSON = {
 							"What rumors are circulating on the street at the moment?",
 							"How can I get into [location]?",
 							"Who in this city would know more about this supernatural thing?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -11875,7 +12474,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/street-contacts.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/street-contacts.svg",
 		subType: "active-rolled"
@@ -11887,7 +12485,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you fight in close combat,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -11910,7 +12511,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you fight in close combat,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -11919,6 +12523,13 @@ export const DATA_JSON = {
 							"Dodge - Avoid an attack.",
 							"Flurry of Blows - Take +2 on your roll to attack an opponent.",
 							"Dirty Strike - Momentarily stun an opponent by striking them where it hurts."
+						]
+					},
+					complications: {
+						name: "Complications",
+						items: [
+							"You risk losing control during the fight (Keep it Together to prevent it).",
+							"You earn an enemy, who will try to get back at you later."
 						]
 					}
 				},
@@ -11929,6 +12540,9 @@ export const DATA_JSON = {
 							"Dodge - Avoid an attack.",
 							"Flurry of Blows - Take +2 on your roll to attack an opponent.",
 							"Dirty Strike - Momentarily stun an opponent by striking them where it hurts."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -11936,6 +12550,9 @@ export const DATA_JSON = {
 						list: [
 							"You risk losing control during the fight (Keep it Together to prevent it).",
 							"You earn an enemy, who will try to get back at you later."
+						],
+						optionsLists: [
+							"complications"
 						]
 					},
 					fail: {
@@ -11953,7 +12570,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/streetfighter.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/streetfighter.svg",
 		subType: "active-rolled"
@@ -11981,7 +12597,17 @@ export const DATA_JSON = {
 					trigger: "Whenever you want to acquire items or services from the criminal underworld,",
 					effect: "roll +$ATTRIBUTE$"
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"It will cost you something extra, such as in-kind services, tasks, or an inflated price.",
+							"You can get it handled, but only by dealing with someone you're already indebted to.",
+							"“Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?”",
+							"“Sorry, that's a bit outside of my area, but maybe this will work instead?”"
+						]
+					}
+				},
 				results: {
 					success: {
 						text: "No problem—you get what you're after. Someone will fix you right up.",
@@ -11994,6 +12620,9 @@ export const DATA_JSON = {
 							"You can get it handled, but only by dealing with someone you're already indebted to.",
 							"“Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?”",
 							"“Sorry, that's a bit outside of my area, but maybe this will work instead?”"
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12011,7 +12640,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/streetwise.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/streetwise.svg",
 		subType: "active-rolled"
@@ -12023,7 +12651,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you push yourself to the limit to overcome a threat,",
-			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+			optionsLists: [
+				"edges"
+			]
 		},
 		lists: {
 			edges: {
@@ -12046,7 +12677,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "",
 					trigger: "Whenever you push yourself to the limit to overcome a threat,",
-					effect: "roll +$ATTRIBUTE$"
+					effect: "roll +$ATTRIBUTE$",
+					optionsLists: [
+						"edges"
+					]
 				},
 				lists: {
 					edges: {
@@ -12065,6 +12699,9 @@ export const DATA_JSON = {
 							"Refuse to give up: Postpone the effects of a critical injury until you have made it out of the threat's reach.",
 							"Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
 							"Steel yourself: Break free from a supernatural effect."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					partial: {
@@ -12073,6 +12710,9 @@ export const DATA_JSON = {
 							"Refuse to give up: Postpone the effects of a critical injury until you have made it out of the threat's reach.",
 							"Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
 							"Steel yourself: Break free from a supernatural effect."
+						],
+						optionsLists: [
+							"edges"
 						]
 					},
 					fail: {
@@ -12081,6 +12721,9 @@ export const DATA_JSON = {
 							"Refuse to give up: Postpone the effects of a critical injury until you have made it out of the threat's reach.",
 							"Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
 							"Steel yourself: Break free from a supernatural effect."
+						],
+						optionsLists: [
+							"edges"
 						]
 					}
 				},
@@ -12094,7 +12737,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/stubborn.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/stubborn.svg",
 		subType: "active-rolled"
@@ -12119,7 +12761,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12138,6 +12792,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12165,7 +12822,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12184,6 +12853,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12211,7 +12883,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12230,6 +12914,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12280,13 +12967,24 @@ export const DATA_JSON = {
 					trigger: "Whenever you suffer a serious or critical injury yet refuse to yield,",
 					effect: "roll +$ATTRIBUTE$.$n$On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires"
 				},
-				lists: {},
+				lists: {
+					options: {
+						name: "Options",
+						items: [
+							"Viciousness — +1 ongoing to Engage in Combat rolls for the remainder of the fight.",
+							"Adrenaline Rush — +1 ongoing to Endure Injury rolls for the remainder of the fight."
+						]
+					}
+				},
 				results: {
 					success: {
-						text: "You ignore your injuries until the conflict is over, as well as choose one:",
+						text: "You ignore your injuries until the conflict is over, and you may choose one option from the list below:",
 						list: [
-							"Viciousness: +1 ongoing to Engage in Combat rolls for the remainder of the fight.",
-							"Adrenaline rush: +1 ongoing to Endure Injury rolls for the remainder of the fight."
+							"Viciousness — +1 ongoing to Engage in Combat rolls for the remainder of the fight.",
+							"Adrenaline Rush — +1 ongoing to Endure Injury rolls for the remainder of the fight."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -12308,7 +13006,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/survival-instinct.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
 		subType: "active-rolled"
@@ -12322,16 +13019,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you utilize your survivalist skills,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Find water and something edible.",
-					"Make it past an environmental obstacle.",
-					"Find a safe spot to hide and rest."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -12362,6 +13050,9 @@ export const DATA_JSON = {
 							"Find water and something edible.",
 							"Make it past an environmental obstacle.",
 							"Find a safe spot to hide and rest."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -12370,6 +13061,9 @@ export const DATA_JSON = {
 							"Find water and something edible.",
 							"Make it past an environmental obstacle.",
 							"Find a safe spot to hide and rest."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -12378,6 +13072,9 @@ export const DATA_JSON = {
 							"Find water and something edible.",
 							"Make it past an environmental obstacle.",
 							"Find a safe spot to hide and rest."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -12391,7 +13088,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/survivalist.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/survivalist.svg",
 		subType: "active-rolled"
@@ -12444,7 +13140,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
 		subType: "active-static"
@@ -12497,7 +13192,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
 		subType: "active-static"
@@ -12511,17 +13205,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you utilize your intelligence networks to trace someone or something,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			questions: {
-				name: "Questions",
-				items: [
-					"Where in the world was this seen last?",
-					"What people have associated themselves with what I'm looking for lately?",
-					"What tracks and marks has it left behind?",
-					"Who else is trying to find what I'm looking for?"
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -12554,6 +13238,9 @@ export const DATA_JSON = {
 							"What people have associated themselves with what I'm looking for lately?",
 							"What tracks and marks has it left behind?",
 							"Who else is trying to find what I'm looking for?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					partial: {
@@ -12563,6 +13250,9 @@ export const DATA_JSON = {
 							"What people have associated themselves with what I'm looking for lately?",
 							"What tracks and marks has it left behind?",
 							"Who else is trying to find what I'm looking for?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					},
 					fail: {
@@ -12572,6 +13262,9 @@ export const DATA_JSON = {
 							"What people have associated themselves with what I'm looking for lately?",
 							"What tracks and marks has it left behind?",
 							"Who else is trying to find what I'm looking for?"
+						],
+						optionsLists: [
+							"questions"
 						]
 					}
 				},
@@ -12585,7 +13278,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/tracer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/tracer.svg",
 		subType: "active-rolled"
@@ -12610,7 +13302,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12629,6 +13333,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12656,7 +13363,19 @@ export const DATA_JSON = {
 					trigger: "When you grapple an able opponent within arm's reach,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12675,6 +13394,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12702,7 +13424,19 @@ export const DATA_JSON = {
 					trigger: "When you try to throw, body check or push an able opponent within arm's reach,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12721,6 +13455,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12748,7 +13485,19 @@ export const DATA_JSON = {
 					trigger: "When you attempt to disarm an able opponent within arm's reach,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12767,6 +13516,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12794,7 +13546,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat, and focus entirely on offense with little regard for your own safety",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -12813,6 +13577,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -12847,11 +13614,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have endured a terrible crime.",
 			trigger: "",
-			effect: "You have endured a terrible crime. Your whole life is marred by this event and you cannot mentally suppress the violation, no matter how hard you try. Fear, shame, anger, and a sense of helplessness torment you, and in order to survive this trauma, you must find a way to heal your wounds. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have endured a terrible crime. Your whole life is marred by this event and you cannot mentally suppress the violation, no matter how hard you try. Fear, shame, anger, and a sense of helplessness torment you, and in order to survive this trauma, you must find a way to heal your wounds.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Get revenge on the perpetrator.",
 					"Re-experience the crime again (as victim or as perpetrator).",
@@ -12879,7 +13649,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/victim-of-crime.svg",
 		subType: "passive"
@@ -12891,11 +13660,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge.",
 			trigger: "",
-			effect: "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge. The experiments have had enduring mental and/or physical side effects. They may have shown you windows into alternate dimensions—resulting in madness. The side effects still torment you, and ridding yourself of them requires you to find the responsible parties. It's also possible your parents were the test subjects and you inherited the experimental effects, as a result. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge. The experiments have had enduring mental and/or physical side effects. They may have shown you windows into alternate dimensions—resulting in madness. The side effects still torment you, and ridding yourself of them requires you to find the responsible parties. It's also possible your parents were the test subjects and you inherited the experimental effects, as a result.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Track down those responsible.",
 					"Restore yourself to the state you were in before.",
@@ -12924,7 +13696,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/victim-of-medical-experiments.svg",
 		subType: "passive"
@@ -12932,7 +13703,7 @@ export const DATA_JSON = {
 	"Victim of Passion": {
 		name: "Victim of Passion",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You have an overwhelming passion for someone or something, seeking to possess it at any cost. Define the object of your passions when you take this Disadvantage.",
 			trigger: "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
@@ -12946,7 +13717,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Victim of Passion",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You have an overwhelming passion for someone or something, seeking to possess it at any cost. Define the object of your passions when you take this Disadvantage.",
 					trigger: "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
@@ -12977,7 +13748,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
 		subType: "active-rolled"
@@ -12989,7 +13759,8 @@ export const DATA_JSON = {
 		effect: {
 			intro: "",
 			trigger: "Whenever you Read a Person,",
-			effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$"
+			effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$",
+			optionsLists: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -13017,7 +13788,6 @@ export const DATA_JSON = {
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/vigilant.svg",
 		subType: "passive"
@@ -13029,11 +13799,14 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You have a history of encounters with beings from the other side.",
 			trigger: "",
-			effect: "You have a history of encounters with beings from the other side. They could be family members or friends tracking you down post-mortem, entities discovered at haunted locations, or inhuman forces taking an interest in you. Regardless of what you do, you can't seem to escape them. Every time you think it's finally over, they reappear in your life—you are never truly free. <h2>Suggested Drives</h2>$OPTIONS$"
+			effect: "You have a history of encounters with beings from the other side. They could be family members or friends tracking you down post-mortem, entities discovered at haunted locations, or inhuman forces taking an interest in you. Regardless of what you do, you can't seem to escape them. Every time you think it's finally over, they reappear in your life—you are never truly free.",
+			optionsLists: [
+				"drives"
+			]
 		},
 		lists: {
-			options: {
-				name: "Options",
+			drives: {
+				name: "Suggested Drives",
 				items: [
 					"Figure out why you are haunted in this way.",
 					"Help spirits find peace after death.",
@@ -13061,7 +13834,6 @@ export const DATA_JSON = {
 		hasHolds: false,
 		attacks: [],
 		moves: [],
-		activePassive: "passive",
 		type: "darksecret",
 		img: "systems/kult4th/assets/icons/darksecret/visitations.svg",
 		subType: "passive"
@@ -13075,18 +13847,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you manipulate a crowd,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Attract other people to join in the crowd.",
-					"Have crowd members give you all their valuables.",
-					"Unite the crowd to fight for you.",
-					"Incite the crowd into an orgy of unbridled emotion: sexual lust, anger, sorrow, violence, generosity, or celebrating, depending on what concepts you are instilling into them.",
-					"Have the crowd disperse and calmly return to their normal lives."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -13121,6 +13882,9 @@ export const DATA_JSON = {
 							"Unite the crowd to fight for you.",
 							"Incite the crowd into an orgy of unbridled emotion: sexual lust, anger, sorrow, violence, generosity, or celebrating, depending on what concepts you are instilling into them.",
 							"Have the crowd disperse and calmly return to their normal lives."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -13131,6 +13895,9 @@ export const DATA_JSON = {
 							"Unite the crowd to fight for you.",
 							"Incite the crowd into an orgy of unbridled emotion: sexual lust, anger, sorrow, violence, generosity, or celebrating, depending on what concepts you are instilling into them.",
 							"Have the crowd disperse and calmly return to their normal lives."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -13141,6 +13908,9 @@ export const DATA_JSON = {
 							"Unite the crowd to fight for you.",
 							"Incite the crowd into an orgy of unbridled emotion: sexual lust, anger, sorrow, violence, generosity, or celebrating, depending on what concepts you are instilling into them.",
 							"Have the crowd disperse and calmly return to their normal lives."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -13154,7 +13924,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
 		subType: "active-rolled"
@@ -13168,16 +13937,7 @@ export const DATA_JSON = {
 			trigger: "When an opponent seriously or critically wounds you for the first time,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"You realize how to get through your opponent's defenses (take +1 to Engage in Combat with them).",
-					"You find your opponent's weak spot (deal +1 Harm whenever you Engage in Combat with them).",
-					"You perceive your opponent's pattern of attack (take +1 to Avoid Harm whenever they attack you). These effects are permanent against this opponent."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -13208,6 +13968,9 @@ export const DATA_JSON = {
 							"You realize how to get through your opponent's defenses (take +1 to Engage in Combat with them).",
 							"You find your opponent's weak spot (deal +1 Harm whenever you Engage in Combat with them).",
 							"You perceive your opponent's pattern of attack (take +1 to Avoid Harm whenever they attack you). These effects are permanent against this opponent."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -13216,6 +13979,9 @@ export const DATA_JSON = {
 							"You realize how to get through your opponent's defenses (take +1 to Engage in Combat with them).",
 							"You find your opponent's weak spot (deal +1 Harm whenever you Engage in Combat with them).",
 							"You perceive your opponent's pattern of attack (take +1 to Avoid Harm whenever they attack you). These effects are permanent against this opponent."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -13224,6 +13990,9 @@ export const DATA_JSON = {
 							"You realize how to get through your opponent's defenses (take +1 to Engage in Combat with them).",
 							"You find your opponent's weak spot (deal +1 Harm whenever you Engage in Combat with them).",
 							"You perceive your opponent's pattern of attack (take +1 to Avoid Harm whenever they attack you). These effects are permanent against this opponent."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -13237,7 +14006,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/voice-of-pain.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
 		subType: "active-rolled"
@@ -13251,17 +14019,7 @@ export const DATA_JSON = {
 			trigger: "Whenever you are heading out to a community or another part of the city,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
 		},
-		lists: {
-			options: {
-				name: "Options",
-				items: [
-					"Ask the GM one question about this place.",
-					"You have a contact at this place who could help you, with a bit of convincing.",
-					"You have a hideout here, where you can put your head down and get some rest.",
-					"You know something about this place. Tell the others what."
-				]
-			}
-		},
+		lists: {},
 		hasEdges: false,
 		hasHolds: false,
 		attacks: [],
@@ -13294,6 +14052,9 @@ export const DATA_JSON = {
 							"You have a contact at this place who could help you, with a bit of convincing.",
 							"You have a hideout here, where you can put your head down and get some rest.",
 							"You know something about this place. Tell the others what."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					partial: {
@@ -13303,6 +14064,9 @@ export const DATA_JSON = {
 							"You have a contact at this place who could help you, with a bit of convincing.",
 							"You have a hideout here, where you can put your head down and get some rest.",
 							"You know something about this place. Tell the others what."
+						],
+						optionsLists: [
+							"options"
 						]
 					},
 					fail: {
@@ -13312,6 +14076,9 @@ export const DATA_JSON = {
 							"You have a contact at this place who could help you, with a bit of convincing.",
 							"You have a hideout here, where you can put your head down and get some rest.",
 							"You know something about this place. Tell the others what."
+						],
+						optionsLists: [
+							"options"
 						]
 					}
 				},
@@ -13325,7 +14092,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/wanderer.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/wanderer.svg",
 		subType: "active-rolled"
@@ -13333,7 +14099,7 @@ export const DATA_JSON = {
 	"Wanted": {
 		name: "Wanted",
 		notes: "",
-		attributemod: "",
+		attributemod: "0",
 		effect: {
 			intro: "You are wanted by the authorities—local, state, or federal—for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
 			trigger: "Whenever you attract attention to yourself or forget to keep your head down,",
@@ -13347,7 +14113,7 @@ export const DATA_JSON = {
 			{
 				name: "Check: Wanted",
 				notes: "",
-				attributemod: "",
+				attributemod: "0",
 				effect: {
 					intro: "You are wanted by the authorities—local, state, or federal—for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
 					trigger: "Whenever you attract attention to yourself or forget to keep your head down,",
@@ -13378,7 +14144,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/disadvantage/wanted.svg"
 			}
 		],
-		activePassive: "active",
 		type: "disadvantage",
 		img: "systems/kult4th/assets/icons/disadvantage/wanted.svg",
 		subType: "active-rolled"
@@ -13390,7 +14155,10 @@ export const DATA_JSON = {
 		effect: {
 			intro: "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
 			trigger: "Whenever you are in mortal danger and choose to activate your Watchers,",
-			effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach."
+			effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
+			optionsLists: [
+				"watchers"
+			]
 		},
 		lists: {
 			watchers: {
@@ -13428,7 +14196,10 @@ export const DATA_JSON = {
 				effect: {
 					intro: "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
 					trigger: "Whenever you are in mortal danger and choose to activate your Watchers,",
-					effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach."
+					effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
+					optionsLists: [
+						"watchers"
+					]
 				},
 				lists: {
 					watchers: {
@@ -13451,7 +14222,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/watchers.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/watchers.svg",
 		subType: "active-static"
@@ -13504,7 +14274,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/wayfinder.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/wayfinder.svg",
 		subType: "active-rolled"
@@ -13542,7 +14311,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -13561,6 +14342,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -13588,7 +14372,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -13607,6 +14403,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -13629,7 +14428,6 @@ export const DATA_JSON = {
 				special: "a targeted PC must Act Under Pressure."
 			}
 		],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
 		subType: "passive"
@@ -13667,7 +14465,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -13686,6 +14496,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -13713,7 +14526,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -13732,6 +14557,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -13759,7 +14587,19 @@ export const DATA_JSON = {
 					trigger: "When you engage an able opponent within arm's reach in close combat,",
 					intro: ""
 				},
-				lists: {},
+				lists: {
+					gmoptions: {
+						name: "GM Options",
+						items: [
+							"You're subjected to a counterattack.",
+							"You do less damage than intended.",
+							"You lose something important.",
+							"You expend all your ammo.",
+							"You're beset by a new threat.",
+							"You'll be in trouble later on."
+						]
+					}
+				},
 				hasEdges: false,
 				hasHolds: false,
 				subType: "active-rolled",
@@ -13778,6 +14618,9 @@ export const DATA_JSON = {
 							"You expend all your ammo.",
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
+						],
+						optionsLists: [
+							"gmoptions"
 						]
 					},
 					fail: {
@@ -13800,7 +14643,6 @@ export const DATA_JSON = {
 				special: "The target falls prone."
 			}
 		],
-		activePassive: "passive",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
 		subType: "passive"
@@ -13853,7 +14695,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/workaholic.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/workaholic.svg",
 		subType: "active-static"
@@ -13906,7 +14747,6 @@ export const DATA_JSON = {
 				img: "systems/kult4th/assets/icons/advantage/worldly.svg"
 			}
 		],
-		activePassive: "active",
 		type: "advantage",
 		img: "systems/kult4th/assets/icons/advantage/worldly.svg",
 		subType: "active-static"

@@ -596,6 +596,14 @@ const unique = <Type>(array: Type[]): Type[] => {
 	array.forEach((item) => { if (!returnArray.includes(item)) { returnArray.push(item) } });
 	return returnArray;
 };
+const group = <Type extends Record<string,unknown>>(array: Type[], key: KeyOf<Type>): Record<string & ValueOf<Type>, Type[]> => {
+	const returnObj: Partial<Record<string & ValueOf<Type>, Type[]>> = {};
+	array.forEach((item) => {
+		returnObj[item[key] as string & ValueOf<Type>] ??= [];
+		returnObj[item[key] as string & ValueOf<Type>]!.push(item);
+	});
+	return returnObj as Record<string & ValueOf<Type>, Type[]>;
+};
 const removeFirst = (array: unknown[], element: unknown) => array.splice(array.findIndex((v) => v === element));
 const pullElement = (array: unknown[], checkFunc = (_v: unknown = true, _i = 0, _a: unknown[] = []) => { checkFunc(_v, _i, _a) }) => {
 	const index = array.findIndex((v, i, a) => checkFunc(v, i, a));
@@ -743,20 +751,19 @@ function objMerge<Tx,Ty>(target: Tx, source: Ty, {isMutatingOk = false, isStrict
 		return target as Tx & Ty;
 	}
 	if (isIndex(source)) {
-		for (const [key, val] of Object.entries(source)) { // @ts-expect-error TEMPORARY
-			if (isConcatenatingArrays && isArray(target[key]) && isArray(val)) { // @ts-expect-error TEMPORARY
-				target[key] = [...target[key], ...val];
-			} else if (val !== null && typeof val === "object") { // @ts-expect-error TEMPORARY
-				if ((target[key] as unknown) === undefined && !(val instanceof Application)) {
-					if (isArray(val)) { // @ts-expect-error TEMPORARY
-						target[key] = [];
-					} else if (isList(val)) { // @ts-expect-error TEMPORARY
-						target[key] = {}; // @ts-expect-error TEMPORARY
-					} else { target[key] = new val.__proto__.constructor() }
-				} // @ts-expect-error TEMPORARY
-				target[key] = objMerge(target[key], val, {isMutatingOk: true, isStrictlySafe});
-			} else { // @ts-expect-error TEMPORARY
-				target[key] = val;
+		for (const [key, val] of Object.entries(source)) {
+			const targetVal = target[key as KeyOf<typeof target>];
+			if (isConcatenatingArrays && isArray(target[key as KeyOf<typeof target>]) && isArray(val)) {
+				// @ts-expect-error Can't get it to recognize that target[key] is an array, despite isArray() above.
+				(target[key as KeyOf<typeof target>] as any[]).push(...val);
+			} else if (val !== null && typeof val === "object") {
+				if (isUndefined(targetVal) && !(val instanceof Application)) {
+					// @ts-expect-error TS doesn't recognize __proto__.
+					target[key as KeyOf<typeof target>] = new val.__proto__.constructor();
+				}
+				target[key as KeyOf<typeof target>] = objMerge(target[key as KeyOf<typeof target>], val, {isMutatingOk: true, isStrictlySafe});
+			} else {
+				target[key as KeyOf<typeof target>] = val as Tx[KeyOf<Tx>];
 			}
 		}
 	}
@@ -958,7 +965,7 @@ export default {
 	randElem, randIndex,
 	makeIntRange,
 	makeCycler,
-	unique,
+	unique, group,
 	getLast, removeFirst, pullElement, pullIndex,
 	subGroup,
 

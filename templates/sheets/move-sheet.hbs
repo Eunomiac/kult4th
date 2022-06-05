@@ -7,9 +7,7 @@
 			<input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" />
 		</header>
 		<section class="tab-content">
-			{{#each templateEntries}}
-{{> "systems/kult4th/templates/debug/template-entry.hbs" }}
-			{{/each}}
+			{{{rulesHTML}}}
 		</section>
 	</section>
 </form>

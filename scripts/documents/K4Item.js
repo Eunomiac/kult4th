@@ -11,4 +11,13 @@ export var K4ItemType;
 })(K4ItemType || (K4ItemType = {}));
 export default class K4Item extends Item {
     get type() { return super.type; }
+    get subItems() {
+        return this.data.data.subItems ?? [];
+    }
+    get moves() {
+        return this.subItems.filter((iData) => iData.type === "move");
+    }
+    get attacks() {
+        return this.subItems.filter((iData) => iData.type === "attack");
+    }
 }

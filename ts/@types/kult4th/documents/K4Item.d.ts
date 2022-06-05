@@ -9,6 +9,56 @@ declare global {
 
 	type TraitType = "active-rolled" | "active-static" | "passive";
 	type RangeType = "arm" | "room" | "field" | "horizon";
+	type AttributeEntry = Attribute.Any | "ask" | "0";
+	type WeaponClass = "melee-unarmed" | "melee-crush" | "melee-slash" | "melee-stab" | "firearm" | "bomb";
+	type WeaponSubClass<T extends WeaponClass> =
+		T extends "melee-unarmed" ? ("")
+	: T extends "melee-crush" ? ("")
+	: T extends "melee-slash" ? ("sword" | "")
+	: T extends "melee-stab" ? ("")
+	: T extends "firearm" ? ("rifle" | "pistol" | "sniper-rifle" | "")
+	: T extends "bomb" ? ("")
+	: "";
+
+	type RulesDef = {
+		intro: string,
+		trigger: string,
+		outro: string,
+		holdText: string,
+		optionsLists: string[],
+		effectFunctions: string[]
+	}
+	type ResultSchema = {
+		result: string,
+		optionsLists: string[],
+		effectFunctions: string[],
+		edges: posInt,
+		hold: posInt
+	};
+	type ResultDef<T extends K4ItemType | undefined = undefined> = T extends K4ItemType.move ? {
+		staticSuccess: ResultSchema,
+		completeSuccess: ResultSchema,
+		partialSuccess: ResultSchema,
+		failure: ResultSchema
+	} : T extends K4ItemType.attack ? {
+		completeSuccess: ResultSchema,
+		partialSuccess: ResultSchema,
+		failure: ResultSchema
+	} : {
+		staticSuccess: ResultSchema
+	}
+
+	type ListDef = {
+		name: string,
+		items: string[],
+		intro?: string
+	}
+
+	type SourceDef = {
+		name: string,
+		id: string,
+		type: K4ItemType
+	}
 
 	type K4ConstructorData<Type extends K4ItemType> = Pick<K4ItemData<Type>,"name"|"type"|"img"|"data">;
 
@@ -31,198 +81,73 @@ declare global {
 		export type Gear = K4Item<K4ItemType.gear>
 	}
 	namespace K4ItemDataDataSchema {
-		export interface Move {
+
+		interface Base {
+			description: string,
 			notes: string,
-			intro: string,
-			trigger: string,
-			outro: string,
-			attribute: Attribute.Any | "ask" | "",
-			subType: TraitType,
-			effectFunctions: string[],
-			attacks: Array<K4ConstructorData<K4ItemType.attack>>,
-			moves: Array<K4ConstructorData<K4ItemType.move>>,
-			completeSuccess: {
-				result: string,
-				optionsLists: string[],
-				effectFunctions: string[],
-				edges: posInt,
-				hold: posInt
-			},
-			partialSuccess: {
-				result: string,
-				optionsLists: string[],
-				effectFunctions: string[],
-				edges: posInt,
-				hold: posInt
-			},
-			failure: {
-				result: string,
-				optionsLists: string[],
-				effectFunctions: string[],
-				edges: posInt,
-				hold: posInt
-			},
-			lists: Record<string,{
-				name: string,
-				items: string[],
-				intro?: string
-			}>,
-			sourceItem: {
-				name: string,
-				id: string,
-				type: K4ItemType
-			},
-			holdText: string,
-			description: string,
+			lists: Record<string, ListDef>,
+			subItems: Array<K4ConstructorData<K4ItemType>>,
 			isCustom: boolean,
 			pdfLink: string
 		}
-		export interface Attack {
-			intro: string,
-			trigger: string,
-			outro: string,
-			attribute: Attribute.Any | "ask" | "",
-			subType: "active-rolled",
-			effectFunctions: string[],
-			completeSuccess: {
-				result: string,
-				optionsLists: string[],
-				effectFunctions: string[],
-				edges: posInt,
-				hold: posInt
-			},
-			partialSuccess: {
-				result: string,
-				optionsLists: string[],
-				effectFunctions: string[],
-				edges: posInt,
-				hold: posInt
-			},
-			failure: {
-				result: string,
-				optionsLists: string[],
-				effectFunctions: string[],
-				edges: posInt,
-				hold: posInt
-			},
-			lists: Record<string,{
-				name: string,
-				items: string[],
-				intro?: string
-			}>,
-			range: string[],
+
+		interface Rules { rules: RulesDef }
+
+		interface Results<T extends K4ItemType | undefined = undefined> { results: ResultDef<T> }
+
+		export interface Move extends Base, Rules, Results<K4ItemType.move> {
+			subType: TraitType,
+			attribute: AttributeEntry,
+			sourceItem?: SourceDef
+		}
+		export interface Attack extends Base, Rules, Results<K4ItemType.attack> {
+			subType: TraitType,
+			attribute: AttributeEntry,
+			sourceItem: SourceDef,
+			range: RangeType[],
 			harm: posInt,
-			effect: string,
 			ammo: posInt,
-			sourceItem: {
-				name: string,
-				id: string,
-				type: K4ItemType
-			},
-			isCustom: boolean,
-			pdfLink: string
 		}
-		export interface Advantage {
-			description: string,
-			intro: string,
-			trigger: string,
-			outro: string,
-			attribute: Attribute.Any | "ask" | "",
+		export interface Advantage extends Base, Rules, Results {
 			subType: TraitType,
-			optionsLists: string[],
-			lists: Record<string,{
-				name: string,
-				items: string[],
-				intro?: string
-			}>,
-			effectFunctions: string[],
-			attacks: Array<K4ItemDataDataSchema.Attack>,
-			moves: Array<K4ItemDataDataSchema.Move>,
-			details: string,
-			isCustom: boolean,
+			attribute: AttributeEntry,
 			currentHold: posInt,
-			holdText: string,
-			pdfLink: string
+			currentEdges: posInt
 		}
-		export interface Disadvantage {
-			description: string,
-			intro: string,
-			trigger: string,
-			outro: string,
-			attribute: Attribute.Any | "ask" | "",
+		export interface Disadvantage extends Base, Rules, Results {
 			subType: TraitType,
-			optionsLists: string[],
-			lists: Record<string,{
-				name: string,
-				items: string[],
-				intro?: string
-			}>,
-			effectFunctions: string[],
-			attacks: Array<K4ItemDataDataSchema.Attack>,
-			moves: Array<K4ItemDataDataSchema.Move>,
-			details: string,
-			isCustom: boolean,
-			currentHold: posInt,
-			holdText: string,
-			pdfLink: string
+			attribute: AttributeEntry,
+			currentHold: posInt
 		}
 
-		export interface DarkSecret {
-			description: string,
-			suggestedDrives: string[],
+		export interface DarkSecret extends Base, Rules {
 			drive: "",
-			optionsLists: string[],
-			lists: Record<string,{
-				name: string,
-				items: string[],
-				intro?: string
-			}>,
-			details: string,
-			isCustom: boolean,
 			currentHold: posInt,
-			holdText: string,
-			pdfLink: string
+			playerNotes: string,
+			gmNotes: string
 		}
 
-		export interface Relation {
+		export interface Relation extends Base {
 			target: string,
-			description: string,
-			details: string,
 			strength: {
 				min: number,
 				max: number,
 				value: number
-			},
-			isCustom: boolean,
-			pdfLink: string
+			}
 		}
 
-		export interface Weapon {
-			weaponClass: string,
-			weaponName: string,
-			exampleWeapons: string,
-			description: string,
-			attacks: Array<K4ItemDataDataSchema.Attack>,
-			effectFunctions: string[],
+		export interface Weapon<C extends WeaponClass, SC extends WeaponSubClass<C>> extends Base, Rules {
+			class: C,
+			subClass: SC,
 			ammo: {
 				min: number,
 				max: number,
 				value: number
-			},
-			details: string,
-			isCustom: boolean,
-			pdfLink: string
+			}
 		}
 
-		export interface Gear {
-			description: string,
-			armor: number,
-			effectFunctions: string[],
-			moves: Array<K4ItemDataDataSchema.Move>,
-			attacks: Array<K4ItemDataDataSchema.Attack>,
-			isCustom: boolean,
-			holdText: string,
-			pdfLink: string
+		export interface Gear extends Base, Rules {
+			armor: number
 		}
 	}
 
@@ -237,6 +162,14 @@ declare global {
 		: Type extends K4ItemType.gear ? K4ItemDataDataSchema.Gear
 		: never)
 	};
+
+	declare interface K4ItemSheet<Type extends K4ItemType> {
+
+	}
+
+	declare class K4Item<Type extends K4ItemType> {
+		data: K4ItemData<Type>
+	}
 
 	namespace K4Collection {
 		export type Item = EmbeddedCollection<ConstructorOf<K4Item>, ActorData>;

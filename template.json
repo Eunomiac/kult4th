@@ -71,6 +71,11 @@
 				}
 			},
 			"wounds": [],
+			"penalties": {
+				"forUnstableSeriousWounds": [1,1,1,1],
+				"forCriticalWound": 1,
+				"forSeriousAndCriticalWounds": 2
+			},
 			"stability": {
 				"min": 0,
 				"max": 9,
@@ -94,120 +99,135 @@
 			"weapon",
 			"gear"
 		],
-		"move": {
-			"description": "",
-			"intro": "",
-			"trigger": "",
-			"outro": "",
-			"attribute": "",
-			"notes": "",
-			"subType": "active-rolled",
-			"effectFunctions": [],
-			"attacks": [],
-			"moves": [],
-			"completeSuccess": {
-				"result": "",
-				"optionsLists": [],
-				"effectFunctions": [],
-				"edges": 0,
-				"hold": 0
+		"templates": {
+			"base": {
+				"description": "",
+				"notes": "",
+				"lists": {},
+				"subItems": [],
+				"sourceItem": {
+					"name": "",
+					"id": "",
+					"type": ""
+				},
+				"isCustom": true,
+				"pdfLink": ""
 			},
-			"partialSuccess": {
-				"result": "",
-				"optionsLists": [],
-				"effectFunctions": [],
-				"edges": 0,
-				"hold": 0
-			},
-			"failure": {
-				"result": "",
-				"optionsLists": [],
-				"effectFunctions": [],
-				"edges": 0,
-				"hold": 0
-			},
-			"lists": {},
-			"sourceItem": {
-				"name": "",
-				"id": "",
-				"type": ""
-			},
-			"isCustom": true,
-			"holdText": "",
-			"pdfLink": ""
-		},
-		"attack": {
-			"attribute": "violence",
-			"subType": "active-rolled",
-			"range": "arm",
-			"harm": 0,
-			"effect": "",
-			"effectFunctions": [],
-			"ammo": 0,
-			"sourceItem": {
-				"name": "",
-				"id": "",
-				"type": ""
-			},
-			"isCustom": true,
-			"pdfLink": ""
-		},
-		"advantage": {
-			"description": "",
-			"intro": "",
-			"trigger": "",
-			"outro": "",
-			"attribute": "",
-			"subType": "active-rolled",
-			"optionsLists": [],
-			"lists": {},
-			"effectFunctions": [],
-			"attacks": [],
-			"moves": [],
-			"details": "",
-			"isCustom": true,
-			"currentHold": 0,
-			"holdText": "",
-			"pdfLink": ""
-		},
-		"disadvantage": {
-			"description": "",
-			"attribute": "",
-			"subType": "active-rolled",
-			"optionsLists": [],
-			"lists": {},
-			"effectFunctions": [],
-			"attacks": [],
-			"moves": [],
-			"details": "",
-			"isCustom": true,
-			"currentHold": 0,
-			"holdText": "",
-			"pdfLink": ""
-		},
-		"darksecret": {
-			"description": "",
-			"drive": "",
-			"optionsLists": ["suggestedDrives"],
-			"lists": {
-				"suggestedDrives": {
-					"name": "Suggested Drives",
-					"items": [],
-					"intro": ""
+			"rules": {
+				"rules": {
+					"intro": "",
+					"trigger": "",
+					"outro": "",
+					"holdText": "",
+					"optionsLists": [],
+					"effectFunctions": []
 				}
 			},
-			"details": "",
-			"isCustom": true,
+			"allResults": {
+				"results": {
+					"staticSuccess": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"completeSuccess": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"partialSuccess": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"failure": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					}
+				}
+			},
+			"rolledResults": {
+				"results": {
+					"completeSuccess": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"partialSuccess": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"failure": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					}
+				}
+			},
+			"staticResults": {
+				"results": {
+					"staticSuccess": {
+						"result": "",
+						"optionsLists": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					}
+				}
+			}
+		},
+		"move": {
+			"templates": ["base", "rules", "allResults"],
+			"subType": "active-rolled",
+			"attribute": ""
+		},
+		"attack": {
+			"templates": ["base", "rules", "rolledResults"],
+			"subType": "active-rolled",
+			"attribute": "violence",
+			"range": "arm",
+			"harm": 0,
+			"ammo": 0
+		},
+		"advantage": {
+			"templates": ["base", "rules", "staticResults"],
+			"subType": "active-rolled",
+			"attribute": "",
 			"currentHold": 0,
-			"holdText": "",
-			"pdfLink": "",
+			"currentEdges": 0
+		},
+		"disadvantage": {
+			"templates": ["base", "rules", "staticResults"],
+			"subType": "active-rolled",
+			"attribute": "",
+			"currentHold": 0
+		},
+		"darksecret": {
+			"templates": ["base", "rules"],
+			"drive": "",
+			"currentHold": 0,
 			"playerNotes": "",
 			"gmNotes": ""
 		},
 		"relation": {
+			"templates": ["base"],
 			"target": "",
-			"description": "",
-			"details": "",
 			"strength": {
 				"min": 0,
 				"max": 2,
@@ -215,30 +235,18 @@
 			}
 		},
 		"weapon": {
-			"exampleTypes": "",
-			"weaponType": "",
-			"description": "",
-			"details": "",
-			"attacks": [],
-			"effectFunctions": [],
+			"templates": ["base", "rules"],
+			"class": "",
+			"subClass": "",
 			"ammo": {
 				"min": 0,
 				"max": 0,
 				"value": 0
-			},
-			"isCustom": true,
-			"pdfLink": ""
+			}
 		},
 		"gear": {
-			"description": "",
-			"armor": 0,
-			"effectFunctions": [],
-			"details": "",
-			"moves": [],
-			"attacks": [],
-			"isCustom": true,
-			"holdText": "",
-			"pdfLink": ""
+			"templates": ["base", "rules"],
+			"armor": 0
 		}
 	}
 }

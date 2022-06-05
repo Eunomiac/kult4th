@@ -1,6 +1,20 @@
 export {SORTED_DATA} from "./migration/sortedData.js";
 export {DATA_JSON} from "./migration/migrationData.js";
 
+export const ActorTypes = {
+	PC: "Player Character",
+	NPC: "Non-Player Character"
+};
+export const ItemTypes = {
+	move: "Move",
+	attack: "Attack",
+	advantage: "Advantage",
+	disadvantage: "Disadvantage",
+	darksecret: "Dark Secret",
+	relation: "Relation",
+	weapon: "Weapon",
+	gear: "Gear"
+};
 export const Archetypes = {
 	Aware: [
 		"academic",
@@ -77,14 +91,14 @@ export const Colors = {
 export const Ranges = {
 	arm: "When you engage an able opponent within arm's reach in close combat,",
 	arm_room: "When you engage an able opponent within several steps of you in ranged combat,",
-	// "arm_room_field": "up to a hundred meters away in combat,",
-	// "arm_room_field_horizon": "that you can see, no matter the distance, in combat,",
+	arm_room_field: "up to a hundred meters away in combat,",
+	arm_room_field_horizon: "that you can see at any distance in combat,",
 	room: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 	room_field: "When you engage an able opponent out of arm's reach, up to a hundred meters away, in ranged combat,",
 	room_field_horizon: "When you engage an able opponent out of arm's reach but still visible, however distant, in ranged combat,",
-	field: "When you engage an able opponent several to one hundred meters away in ranged combat,"
-	// "field_horizon": "over a hundred meters away in ranged combat,",
-	// "horizon": "at extreme range (over one hundred meters away) in ranged combat,"
+	field: "When you engage an able opponent several to one hundred meters away in ranged combat,",
+	field_horizon: "over a hundred meters away in ranged combat,",
+	horizon: "at extreme range (over one hundred meters away) in ranged combat,"
 } as const;
 
 const C = {
@@ -124,6 +138,7 @@ const C = {
 		revenant: ["Bewitching", "Memories of Past Lives", "Commanding Voice", "Mind Manipulator", "Ethereal", "Telekinesis", "Invulnerability", "Bloodthirst", "Sensitivity", "Controlled by External Force", "Symbol Bondage"],
 		timeAndSpaceMagician: []
 	},
+	ActorTypes, ItemTypes,
 	Attributes,
 	Colors,
 	Ranges

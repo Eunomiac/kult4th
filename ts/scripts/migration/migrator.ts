@@ -18,10 +18,14 @@ function stringToNum(numString: string | number) {
 function toDict<T extends List, K extends string & KeyOf<T>, V extends ValueOf<T>>(items: T[], key: K): V extends key ? Record<V,T> : never {
 	const dict = {} as Record<V,T>;
 	const mappedItems = items
-		.map((iData) => [
-			`${(iData.linkName || iData.sourceItem?.name) ? `>${iData.type.charAt(0)}>` : ""}${iData[key]}`,
-			iData
-		])
+		.map((data) => {
+			let {iData} = data;
+			if (!iData) { iData = data }
+			return [
+				`${(iData.linkName || iData.sourceItem?.name) ? `>${iData.type.charAt(0)}>` : ""}${iData[key]}`,
+				iData
+			];
+		})
 		.sort(([a], [b]) => a.localeCompare(b)) as Array<[string, T]>;
 	mappedItems.forEach(([newKey, iData]: [string, T]) => {
 		if (newKey in dict) {
@@ -44,297 +48,266 @@ function toDict<T extends List, K extends string & KeyOf<T>, V extends ValueOf<T
 	}
 }
 
+type listLocation = "staticSuccess" | "completeSuccess" | "partialSuccess" | "failure" | "passive";
+const parserFuncs = {
+	lists: (data: ItemMigrationData): {
+		listDefs: Record<string, ListDef>,
+		listLocs: Record<listLocation, string[]>
+	} => {
+		const listData = {
+			listDefs: data.lists,
+			listLocs: {
+				staticSuccess: U.unique(data.subType !== "passive" ? (data.effect.optionsLists ?? []) : []) as string[],
+				completeSuccess: U.unique(data.results?.success?.optionsLists ?? []) as string[],
+				partialSuccess: U.unique(data.results?.partial?.optionsLists ?? []) as string[],
+				failure: U.unique(data.results?.fail?.optionsLists ?? []) as string[],
+				passive: U.unique(data.subType === "passive" ? (data.effect.optionsLists ?? []) : []) as string[]
+			}
+		};
+		return listData;
+	},
+	rules: (data: ItemMigrationData, type: K4ItemType, listLocs: Record<listLocation, string[]>): RulesDef => {
+		switch (type) {
+			case K4ItemType.attack:
+			case K4ItemType.move:
+			case K4ItemType.advantage:
+			case K4ItemType.disadvantage:
+			case K4ItemType.relation:
+			case K4ItemType.weapon:
+			case K4ItemType.gear: {
+				return {
+					intro: data.effect.intro,
+					trigger: data.effect.trigger,
+					outro: data.effect.effect,
+					holdText: data.hasHolds || "",
+					optionsLists: U.unique([...listLocs.passive, ...listLocs.staticSuccess]),
+					effectFunctions: [data.notes].filter(Boolean)
+				};
+			}
+			case K4ItemType.darksecret: {
+				const regpat = new RegExp(`^${data.effect.intro}`);
+				return {
+					intro: data.effect.intro,
+					trigger: data.effect.trigger,
+					outro: data.effect.effect.replace(regpat, "").trim(),
+					holdText: data.hasHolds || "",
+					optionsLists: U.unique([...listLocs.passive, ...listLocs.staticSuccess]),
+					effectFunctions: [data.notes].filter(Boolean)
+				};
+			}
+			default: return false as never;
+		}
+	},
+	results: <T extends K4ItemType>(data: ItemMigrationData, type: T, listLocs: Record<listLocation, string[]>): ResultDef<T> => {
+		const genericResult = {
+			result: "",
+			optionsLists: [],
+			effectFunctions: [],
+			edges: 0,
+			hold: 0
+		} as ResultSchema;
+		function parseResults(resultType: "staticSuccess" | "completeSuccess" | "partialSuccess" | "failure"): ResultSchema {
+			if (data.subType === "passive") { return genericResult }
+			if (data.subType === "active-static" && resultType === "staticSuccess") {
+				if (data.hasEdges) {
+					console.warn(`${data.name} is Active-Static with EDGES`);
+				}
+				if (data.hasHolds) {
+					console.warn(`${data.name} is Active-Static with HOLD`);
+				}
+				return {
+					result: U.sCase(data.effect.effect),
+					optionsLists: listLocs.staticSuccess,
+					effectFunctions: [data.notes].filter(Boolean),
+					edges: 0,
+					hold: 0
+				};
+			}
+			if (data.subType === "active-rolled" && ["completeSuccess", "partialSuccess", "failure"].includes(resultType)) {
+				const migKey = {
+					completeSuccess: "success",
+					partialSuccess: "partial",
+					failure: "fail"
+				};
+				const resultText = U.sCase(data.results[migKey[resultType as "completeSuccess" | "partialSuccess" | "failure"]].text);
+				return {
+					result: resultText,
+					optionsLists: U.unique(listLocs[resultType]),
+					effectFunctions: [],
+					edges: data.hasEdges ? stringToNum(resultText.match(/.{6,30}Edge/)?.[0] ?? "") : 0,
+					hold: data.hasHolds ? stringToNum(resultText.match(/.{6,30}Hold/)?.[0] ?? "") : 0
+				};
+			}
+			return genericResult;
+		}
+		const results: Partial<ResultDef<K4ItemType.move>> = {};
+		switch (type) {
+			case K4ItemType.move: {
+				results.staticSuccess = parseResults("staticSuccess");
+				// falls through
+			}
+			case K4ItemType.attack: {
+				results.completeSuccess = parseResults("completeSuccess");
+				results.partialSuccess = parseResults("partialSuccess");
+				results.failure = parseResults("failure");
+				return results as ResultDef<T>;
+			}
+			case K4ItemType.advantage:
+			case K4ItemType.disadvantage: {
+				return {staticSuccess: parseResults("staticSuccess")} as ResultDef<T>;
+			}
+			case K4ItemType.darksecret:
+			case K4ItemType.relation:
+			case K4ItemType.weapon:
+			case K4ItemType.gear: {
+				return {} as ResultDef<T>;
+			}
+			default: return false as never;
+		}
+	}
+};
+
 const PARSERS = {
 	move: (data: ItemMigrationData): K4ConstructorData<K4ItemType.move> => {
+		const {listDefs, listLocs} = parserFuncs.lists(data);
 		const newData: K4ConstructorData<K4ItemType.move> = {
+			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
 			name: data.name,
 			type: "move",
 			img: data.img,
 			data: {
+				subType: data.subType as TraitType,
+				attribute: data.attributemod || "0",
 				description: "",
-				intro: data.effect.intro,
-				trigger: data.effect.trigger,
-				outro: data.effect.effect,
-				attribute: data.attributemod,
 				notes: data.notes,
-				subType: "active-rolled" as const,
-				effectFunctions: [],
-				attacks: data.attacks ?? [],
-				moves: [],
-				completeSuccess: {
-					result: "",
-					optionsLists: [],
-					effectFunctions: [],
-					edges: 0,
-					hold: 0
-				},
-				partialSuccess: {
-					result: "",
-					optionsLists: [],
-					effectFunctions: [],
-					edges: 0,
-					hold: 0
-				},
-				failure: {
-					result: "",
-					optionsLists: [],
-					effectFunctions: [],
-					edges: 0,
-					hold: 0
-				},
-				lists: {},
+				lists: listDefs,
+				subItems: data.attacks ?? [],
 				sourceItem: {
 					name: data.linkName ?? "",
 					id: "",
 					type: data.linkType ?? ""
 				},
-				isCustom: true,
-				holdText: "",
-				pdfLink: ""
+				isCustom: false,
+				pdfLink: "",
+				rules: parserFuncs.rules(data, K4ItemType.move, listLocs),
+				results: parserFuncs.results(data, K4ItemType.move, listLocs)
 			}
 		};
-
-		const moveType = getMoveType(data);
-		if (moveType) {
-			newData.data.subType = moveType;
-		}
-
 		return newData;
-	}
-};
-function getMoveType(data: ItemMigrationData): TraitType | false {
-	if (["active-rolled", "active-static", "passive"].includes(data.subType)) {
-		return data.subType;
-	} else {
-		console.warn("Unable to Determine Move Type", data);
-		return false;
-	}
-	if (data.moveType === "static") {
-		if (data.activePassive === "passive") {
-			return "passive";
-		} else if (data.activePassive === "active") {
-			return "active-static";
-		}
-	} else if (data.moveType === "roll" && data.activePassive === "active") {
-		return "active-rolled";
-	} else if (!data.sourceItem && !data.linkName) {
-		return "active-rolled";
-	}
-}
-
-
-/*
-const PARSERS = {
-	move: (data: ItemMigrationData) => {
-		data = JSON.parse(JSON.stringify(data));
-		data.itemType = "move";
-		if (!data.linkName) {
-			delete data.moves;
-			delete data.record.moves;
-		}
-		const {record} = data;
-		const newData = {
-			...{
-				"name": data.name,
-				"type": "move",
-				"img": "",
-				"data.description": "",
-				"data.intro": "",
-				"data.trigger": "",
-				"data.outro": "",
-				"data.attribute": "",
-				"data.notes": "",
-				"data.moveType": "active-rolled",
-				"data.staticSuccess": {
-					result: "",
-					optionsLists: [],
-					effectFunctions: [],
-					edges: 0,
-					hold: 0
-				},
-				"data.completeSuccess": {
-					result: "",
-					optionsLists: [],
-					effectFunctions: [],
-					edges: 0,
-					hold: 0
-				},
-				"data.partialSuccess": {
-					result: "",
-					optionsLists: [],
-					effectFunctions: [],
-					edges: 0,
-					hold: 0
-				},
-				"data.failure": {
-					result: "",
-					optionsLists: [],
-					effectFunctions: [],
-					edges: 0,
-					hold: 0
-				},
-				"data.lists": {},
-				"data.sourceItem": {
-					name: data.linkName ?? "",
+	},
+	attack: (data: ItemMigrationData): K4ConstructorData<K4ItemType.attack> => {
+		const {listDefs, listLocs} = parserFuncs.lists(data);
+		const newData: K4ConstructorData<K4ItemType.attack> = {
+			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
+			name: data.name,
+			type: "attack",
+			img: data.img,
+			data: {
+				subType: data.subType as TraitType,
+				attribute: data.attributemod || "violence",
+				description: "",
+				notes: data.special,
+				range: data.range,
+				ammo: data.ammo,
+				harm: data.harm,
+				lists: listDefs,
+				subItems: [
+					...(data.attacks ?? []).map(PARSERS.attack),
+					...(data.moves ?? []).map(PARSERS.move)
+				],
+				sourceItem: {
+					name: data.sourceItem?.name ?? "",
 					id: "",
-					type: data.linkType ?? ""
+					type: data.sourceItem?.type ?? ""
 				},
-				"data.isCustom": true,
-				"data.holdText": "",
-				"data.pdfLink": ""
-			},
-			...{
-				"name": data.moveName || data.name,
-				"type": "move",
-				"img": imgCheck(data),
-				"data.attributemod": data.attributemod ?? "none",
-				"data.completesuccess": resultCheck(data.results.success, data),
-				"data.partialsuccess": resultCheck(data.results.partial, data),
-				"data.failure": resultCheck(data.results.fail, data),
-				"data.trigger": descriptionCheck(data),
-				"data.specialflag": {
-					"keep it together": 1,
-					"see through the illusion": 2,
-					"endure injury": 3
-				}[data.name.toLowerCase()] ?? 0
-			},
-			...data.linkName
-				? {
-						"flags.kult4eoverrides.linkName": data.linkName,
-						"flags.kult4eoverrides.linkType": data.linkType
-					}
-				: {},
-			"flags.kult4eoverrides.trigger": data.trigger,
-			"flags.kult4eoverrides.isRolled": data.moveType === "roll",
-			"flags.kult4eoverrides.moveType": data.moveType,
-			"flags.kult4eoverrides.isFrozen": true,
-			"record": {
-				...data.record,
-				name: data.moveName || data.name || data.linkName,
-				attributemod: data.attributemod ?? "none"
+				isCustom: false,
+				pdfLink: "",
+				rules: parserFuncs.rules(data, K4ItemType.attack, listLocs),
+				results: parserFuncs.results(data, K4ItemType.attack, listLocs)
 			}
 		};
-		if (!newData.name) {
-			console.log("Error finding name from data:", data);
-		}
 		return newData;
 	},
-	attack: (data) => {
-		data = JSON.parse(JSON.stringify(data));
-		data.itemType = "attack";
-		const newData = {
-			...{
-				"name": data.name,
-				"type": "attack",
-				"img": imgCheck(data),
-				"data.harm": data.harm,
-				"data.range": data.range,
-				"data.ammo": data.ammo,
-				"data.special": data.effect
-			},
-			...data.sourceItem?.name
-				? {
-						"flags.kult4eoverrides.linkName": data.sourceItem?.name,
-						"flags.kult4eoverrides.linkType": data.sourceItem?.itemType
-					}
-				: {},
-			"flags.kult4eoverrides.isRolled": true,
-			"flags.kult4eoverrides.moveType": "roll",
-			"flags.kult4eoverrides.isFrozen": true,
-			"record": data.record
+	advantage: (data: ItemMigrationData): K4ConstructorData<K4ItemType.advantage> => {
+		const {listDefs, listLocs} = parserFuncs.lists(data);
+		const newData: K4ConstructorData<K4ItemType.advantage> = {
+			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
+			name: data.name,
+			type: "advantage",
+			img: data.img,
+			data: {
+				subType: data.subType as TraitType,
+				attribute: data.attributemod || "0",
+				description: "",
+				notes: data.notes,
+				lists: listDefs,
+				currentHold: 0,
+				currentEdges: 0,
+				subItems: [
+					...(data.attacks ?? []).map(PARSERS.attack),
+					...(data.moves ?? []).map(PARSERS.move)
+				],
+				isCustom: false,
+				pdfLink: "",
+				rules: parserFuncs.rules(data, K4ItemType.advantage, listLocs),
+				results: parserFuncs.results(data, K4ItemType.advantage, listLocs)
+			}
 		};
-		if (!newData.name) {
-			console.log("Error finding name from data:", data);
-		}
 		return newData;
 	},
-	advantage: (data) => ({
-		"name": data.name,
-		"type": "advantage",
-		"img": imgCheck(data),
-		"data.attributemod": data.attributemod ?? "none",
-		"data.type": data.type,
-		"data.description": descriptionCheck(data),
-		"data.effect": descriptionCheck(data),
-		"data.tokens": data.hasTokens ? 0 : "",
-		"data.hasTokens": data.hasTokens,
-		"data.completesuccess": "",
-		"data.partialsuccess": "",
-		"data.failure": "",
-		"flags.kult4eoverrides.moves": data.moves ?? [],
-		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": {
-			...data.record,
-			attributemod: data.attributemod ?? "none"
-		}
-	}),
-	disadvantage: (data) => ({
-		"name": data.name,
-		"type": "disadvantage",
-		"img": imgCheck(data),
-		"data.attributemod": data.attributemod ?? "none",
-		"data.type": data.type,
-		"data.description": descriptionCheck(data),
-		"data.effect": descriptionCheck(data),
-		"data.tokens": data.hasTokens ? 0 : "",
-		"data.hasTokens": data.hasTokens,
-		"data.completesuccess": "",
-		"data.partialsuccess": "",
-		"data.failure": "",
-		"flags.kult4eoverrides.moves": data.moves ?? [],
-		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": {
-			...data.record,
-			attributemod: data.attributemod ?? "none"
-		}
-	}),
-	weapon: (data) => ({
-		"name": data.name,
-		"type": "weapon",
-		"img": imgCheck(data),
-		"data.special": descriptionCheck(data),
-		"data.harm": data.attacks[0].harm,
-		"data.range": data.attacks[0].range,
-		"data.ammo.value": data.ammo,
-		"data.ammo.min": 0,
-		"data.ammo.max": data.ammo,
-		"flags.kult4eoverrides.moves": data.moves ?? [],
-		"flags.kult4eoverrides.attacks": data.attacks ?? [],
-		"flags.kult4eoverrides.type": data.type,
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	}),
-	darksecret: (data) => ({
-		"name": data.name,
-		"type": "darksecret",
-		"img": imgCheck(data),
-		"data.description": descriptionCheck(data),
-		"data.effect": "",
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	}),
-	relationship: (data) => ({
-		"name": data.name,
-		"type": "relationship",
-		"img": imgCheck(data),
-		"target": "",
-		"strength": "",
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	}),
-	gear: (data) => ({
-		"name": data.name,
-		"type": "gear",
-		"img": imgCheck(data),
-		"uses": "",
-		"description": "",
-		"flags.kult4eoverrides.isFrozen": true,
-		"record": data.record
-	})
+	disadvantage: (data: ItemMigrationData): K4ConstructorData<K4ItemType.disadvantage> => {
+		const {listDefs, listLocs} = parserFuncs.lists(data);
+		const newData: K4ConstructorData<K4ItemType.disadvantage> = {
+			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
+			name: data.name,
+			type: "disadvantage",
+			img: data.img,
+			data: {
+				subType: data.subType as TraitType,
+				attribute: data.attributemod || "0",
+				description: "",
+				notes: data.notes,
+				lists: listDefs,
+				currentHold: 0,
+				subItems: [
+					...(data.attacks ?? []).map(PARSERS.attack),
+					...(data.moves ?? []).map(PARSERS.move)
+				],
+				isCustom: false,
+				pdfLink: "",
+				rules: parserFuncs.rules(data, K4ItemType.disadvantage, listLocs),
+				results: parserFuncs.results(data, K4ItemType.disadvantage, listLocs)
+			}
+		};
+		return newData;
+	},
+	darksecret: (data: ItemMigrationData): K4ConstructorData<K4ItemType.darksecret> => {
+		const {listDefs, listLocs} = parserFuncs.lists(data);
+		const newData: K4ConstructorData<K4ItemType.darksecret> = {
+			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
+			name: data.name,
+			type: "darksecret",
+			img: data.img,
+			data: {
+				drive: "",
+				description: "",
+				notes: data.notes,
+				playerNotes: "",
+				gmNotes: "",
+				lists: listDefs,
+				currentHold: 0,
+				subItems: [
+					...(data.attacks ?? []).map(PARSERS.attack),
+					...(data.moves ?? []).map(PARSERS.move)
+				],
+				isCustom: false,
+				pdfLink: "",
+				rules: parserFuncs.rules(data, K4ItemType.darksecret, listLocs)
+			}
+		};
+		return newData;
+	}
 };
- */
 
 function getAllData(data: Record<any,any> = DATA_JSON): Record<key,ItemMigrationData> {
 	const items = Object.values(data);
@@ -347,23 +320,33 @@ function getAllData(data: Record<any,any> = DATA_JSON): Record<key,ItemMigration
 	};
 }
 
-function checkJSON(tests: Array<(iData: ItemMigrationData) => boolean>, data: Record<any,any> = DATA_JSON) {
-	let validItems = Object.values(data) as unknown as ItemMigrationData[];
-	tests.forEach((testFunc) => {
-		validItems = validItems.filter(testFunc);
+function checkJSON(tests: Record<string, Array<(iData: ItemMigrationData) => boolean>>, data: Record<string,ItemMigrationData> = DATA_JSON) {
+	const resultReport: Record<string,Record<string,ItemMigrationData>> = {};
+	Object.entries(tests).forEach(([testName, testFuncs]) => {
+		let validItems = Object.values(cleanData(data));
+		testFuncs.forEach((testFunc) => {
+			validItems = validItems.filter(testFunc);
+		});
+		resultReport[testName] = toDict(validItems, "name");
 	});
-	return toDict(validItems as ItemMigrationData[], "name");
+	return resultReport;
 }
 
-function mapJSON(keys: key[], data: Record<any,any> = DATA_JSON): Record<key, ItemMigrationData> {
-	return toDict(Object.values(data).map((iData) => {
+function mapJSON(keys: key[], data: Record<string,ItemMigrationData> = DATA_JSON) {
+	// @ts-expect-error Just testing;
+	return Object.fromEntries(Object.entries(data).map(([name, iData]) => {
 		const flatData = flattenObject(iData);
 		const newData: Record<any,any> = {};
+		let hasData = false;
 		keys.forEach((key) => {
-			newData[key as KeyOf<typeof newData>] = flatData[key];
+			if (flatData[key]) {
+				hasData = true;
+				newData[key as KeyOf<typeof newData>] = flatData[key];
+			}
 		});
-		return expandObject(newData);
-	}), "name");
+		return hasData ? [name, newData] : false;
+	})
+		.filter(Boolean));
 }
 
 function groupJSON(groupTests: Record<string, (iData: ItemMigrationData) => boolean>, data: Record<any,any> = DATA_JSON): Record<key, Record<key, ItemMigrationData>> {
@@ -384,6 +367,158 @@ function groupJSON(groupTests: Record<string, (iData: ItemMigrationData) => bool
 		}
 	});
 	return U.objMap(groupedData, (val: ItemMigrationData[]) => toDict(val, "name")) as Record<key, Record<key, ItemMigrationData>>;
+}
+
+function confirmList(iData: ItemMigrationData): {master: Array<Record<string,any>>, results: Array<Record<string,any>>} {
+	// Flatten the data object
+	const flatData = flattenObject(iData);
+	// Collect any lists in the master lists object, stringifying the values
+	const masterLists = Object.fromEntries([
+		"lists.options.items",
+		"lists.edges.items",
+		"lists.questions.items",
+		"lists.complications.items",
+		"lists.gmoptions.items",
+		"lists.watchers.items",
+		"lists.drives.items",
+		"lists.expertise.items"
+	]
+		.filter((flatKey) => Array.isArray(flatData[flatKey]) && flatData[flatKey].length)
+		.map((flatKey) => [flatKey, flatData[flatKey].join("|")]));
+
+	// Do the same for the three results lists and lists found in the static effect section
+	const resultLists = Object.fromEntries([
+		"results.fail.list",
+		"results.partial.list",
+		"results.success.list"
+	]
+		.filter((flatKey) => Array.isArray(flatData[flatKey]) && flatData[flatKey].length)
+		.map((flatKey) => [flatKey, flatData[flatKey].join("|")]));
+
+	// Get a list of registered lists under the optionsLists
+	const registeredLists = [
+		"results.fail.optionsLists",
+		"results.partial.optionsLists",
+		"results.success.optionsLists",
+		"effect.optionsLists"
+	]
+		.map((flatKey) => flatData[flatKey])
+		.filter(Boolean)
+		.flat();
+
+	const missingListData: {master: Array<Record<string,any>>, results: Array<Record<string,any>>} = {master: [], results: []};
+	if (Object.values(masterLists).length + Object.values(resultLists).length === 0) { return missingListData }
+
+	if (Object.values(resultLists).length) {
+		Object.entries(resultLists).forEach(([listKey, listStr]) => {
+			if (!Object.values(masterLists).includes(listStr)) {
+				const shortKey = listKey.replace(/^.*?\.(.*?)\..*?$/, "$1");
+				missingListData.master.push({
+					name: iData.name,
+					shortKey,
+					listText: iData.results[shortKey].text,
+					listStr,
+					iData
+				});
+			}
+		});
+	}
+
+	if (Object.values(masterLists).length) {
+		Object.entries(masterLists).forEach(([listKey, listStr]) => {
+			const shortKey = listKey.replace(/^.*?\.(.*?)\..*?$/, "$1");
+			if (!registeredLists.includes(shortKey) && !Object.values(resultLists).includes(listStr)) {
+				missingListData.results.push({
+					name: iData.name,
+					listKey,
+					listStr,
+					iData
+				});
+			}
+		});
+	}
+
+	return missingListData;
+}
+
+function parseResultListReferences(iData: ItemMigrationData): ItemMigrationData {
+
+	// Flatten the data object
+	const flatData = flattenObject(iData);
+	// Collect any lists in the master lists object, stringifying the values
+	const masterLists = Object.fromEntries([
+		"lists.options.items",
+		"lists.edges.items",
+		"lists.questions.items",
+		"lists.complications.items",
+		"lists.gmoptions.items",
+		"lists.drives.items",
+		"lists.watchers.items"
+	]
+		.filter((flatKey) => Array.isArray(flatData[flatKey]) && flatData[flatKey].length)
+		.map((flatKey) => [flatKey, flatData[flatKey].join("|")]));
+
+	// Do the same for the three results lists and lists found in the static effect section
+	const resultLists = Object.fromEntries([
+		"results.fail.list",
+		"results.partial.list",
+		"results.success.list"
+	]
+		.filter((flatKey) => Array.isArray(flatData[flatKey]) && flatData[flatKey].length)
+		.map((flatKey) => [flatKey, flatData[flatKey].join("|")]));
+
+	// For each result type, create references to the corresponding master list.
+	["success", "partial", "fail"].forEach((shortKey) => {
+		const listStr = resultLists[`results.${shortKey}.list`];
+		const masterKey = Object.keys(masterLists).find((key) => masterLists[key] === listStr);
+		if (masterKey) {
+			const [, listRef] = masterKey.split(".");
+			iData.results[shortKey].optionsLists ??= [];
+			iData.results[shortKey].optionsLists.push(listRef);
+		}
+	});
+
+	// If the item has Edges, add a reference to Edges in the main effect field
+	if (iData.hasEdges) {
+		iData.effect.optionsLists ??= [];
+		iData.effect.optionsLists.push("edges");
+	}
+
+	return iData;
+	/*
+
+	const missingListData: {master: Array<Record<string,any>>, results: Array<Record<string,any>>} = {master: [], results: []};
+	if (Object.values(masterLists).length + Object.values(resultLists).length === 0) { return missingListData }
+
+	if (Object.values(resultLists).length) {
+		Object.entries(resultLists).forEach(([listKey, listStr]) => {
+			if (!Object.values(masterLists).includes(listStr)) {
+				const shortKey = listKey.replace(/^.*?\.(.*?)\..*?$/, "$1");
+				missingListData.master.push({
+					name: iData.name,
+					shortKey,
+					listText: iData.results[shortKey].text,
+					listStr,
+					iData
+				});
+			}
+		});
+	}
+
+	if (Object.values(masterLists).length) {
+		Object.entries(masterLists).forEach(([listKey, listStr]) => {
+			if (!Object.values(resultLists).includes(listStr)) {
+				missingListData.results.push({
+					name: iData.name,
+					listKey,
+					listStr,
+					iData
+				});
+			}
+		});
+	}
+
+	return missingListData; */
 }
 
 function changeAllData(iFunc: (iData: ItemMigrationData) => ItemMigrationData, data = DATA_JSON): Record<key, ItemMigrationData> {
@@ -424,375 +559,103 @@ function changeAttackData(aFunc: (aData: ItemMigrationData) => ItemMigrationData
 	return toDict((Object.values(data) as unknown as ItemMigrationData[]).map(changeAttack), "name");
 }
 
-const migrateData = (iData: ItemMigrationData): ItemMigrationData | false => {
-	iData = expandObject(iData);
-	if (iData.type === "move") {
-		return PARSERS.move(iData);
-	} else if (iData.moves && iData.moves.length) {
-		iData.moves = iData.moves.map(PARSERS.move);
+function cleanData<T>(data: T, remVals: Array<false|null|undefined|""|0|Record<string,never>|never[]> = [undefined,null,"",{},[]]): T | Partial<T> | "KILL" {
+	const remStrings = remVals.map((rVal) => JSON.stringify(rVal));
+	if (remStrings.includes(JSON.stringify(data))) { return "KILL" }
+	if (Array.isArray(data)) {
+		const newData = data.map((elem) => cleanData(elem, remVals))
+			.filter((elem) => elem !== "KILL") as T & any[];
+		return newData.length ? newData : "KILL";
 	}
-	return iData;
-	const mData: ItemMigrationData = {
-		name: iData.name,
-		type: iData.type,
-		img: iData.img,
-		data: {
-			isCustom: false
-		}
-	};
-	switch (iData.type) {
-		case "attack": {
-
-
-			break;
-		}
-		case "move": {
-			mData.name = iData.moveName || iData.name || iData.linkName || " ??? ";
-			mData.data.intro = iData.effect.intro;
-			mData.data.trigger = iData.effect.trigger;
-			mData.data.outro = iData.effect.effect;
-
-			mData.data.attribute = iData.attributemod;
-			mData.data.notes = iData.notes;
-			if (iData.activePassive === "passive") {
-				mData.data.passiveEffect = {
-					optionsLists: iData.suffix.list === "" ? [] : ["other_watchers"],
-					suffix: iData.suffix.text.match(/Hold/) ? "" : iData.suffix.text
-				};
-				mData.data.isActive = false;
-			} else {
-				let edges = stringToNum((iData.results.success.text.match(/([^\s]+) Edge/) ?? [])[1] || 0),
-								hold = stringToNum((iData.results.success.text.match(/([^\s]+) Hold/) ?? [])[1] || 0);
-				mData.data.completeSuccess = {
-					result: iData.results.success.text,
-					optionsLists: [
-						(iData.lists.questions !== ""
-							&& iData.results.success.text.match(/sk\s+[a-z]+\s+question/))
-							? "questions"
-							: null,
-						(iData.lists.options !== ""
-							&& iData.results.success.text.match(/hoose\s+[a-z]+\s+option/))
-							? "options"
-							: null,
-						(iData.lists.edges !== ""
-							&& iData.results.success.text.match(/[^\s]+\s+Edge/))
-							? "edges"
-							: null
-					].filter((item) => Boolean(item)),
-					edges,
-					hold
-				};
-				edges = stringToNum((iData.results.partial.text.match(/([^\s]+) Edge/) ?? [])[1] || 0);
-				hold = stringToNum((iData.results.partial.text.match(/([^\s]+) Hold/) ?? [])[1] || 0);
-				mData.data.partialSuccess = {
-					result: iData.results.partial.text,
-					optionsLists: [
-						(iData.lists.questions !== ""
-							&& iData.results.partial.text.match(/sk\s+[a-z]+\s+question/))
-							? "questions"
-							: null,
-						(iData.lists.options !== ""
-							&& iData.results.partial.text.match(/hoose\s+[a-z]+\s+option/))
-							? "options"
-							: null,
-						(iData.lists.edges !== ""
-							&& iData.results.partial.text.match(/[^\s]+\s+Edge/))
-							? "edges"
-							: null
-					].filter((item) => Boolean(item)),
-					edges,
-					hold
-				};
-				edges = stringToNum((iData.results.fail.text.match(/([^\s]+) Edge/) ?? [])[1] || 0);
-				hold = stringToNum((iData.results.fail.text.match(/([^\s]+) Hold/) ?? [])[1] || 0);
-				mData.data.failure = {
-					result: iData.results.fail.text,
-					optionsLists: [
-						(iData.lists.questions !== ""
-							&& iData.results.fail.text.match(/sk\s+[a-z]+\s+question/))
-							? "questions"
-							: null,
-						(iData.lists.options !== ""
-							&& iData.results.fail.text.match(/hoose\s+[a-z]+\s+option/))
-							? "options"
-							: null,
-						(iData.lists.edges !== ""
-							&& iData.results.fail.text.match(/[^\s]+\s+Edge/))
-							? "edges"
-							: null
-					].filter((item) => Boolean(item)),
-					edges,
-					hold
-				};
-			}
-			break;
-		}
-		// no default
+	if (data && typeof data === "object" && JSON.stringify(data).startsWith("{")) {
+		const newData = Object.entries(data)
+			.map(([key, val]) => [key, cleanData(val, remVals)])
+			.filter(([, val]) => val !== "KILL");
+		return newData.length ? Object.fromEntries(newData) : "KILL";
 	}
-	mData._original = {...iData};
-	mData.data.lists = {};
-	if (iData.lists) {
-		Object.entries(iData.lists).forEach(([key, itemString]: [string, unknown]) => {
-			if (itemString && typeof itemString === "string") {
-				const items = itemString.split(/\|/).filter(Boolean);
-				if (items.length) {
-					switch (key) {
-						case "gmoptions": {
-							mData.data.lists[key] = {
-								name: "GM Options",
-								items
-							};
-							break;
-						}
-						default: {
-							mData.data.lists[key] = {
-								name: U.tCase(key),
-								items
-							};
-							break;
-						}
-					}
-				}
-			}
-		});
-	}
-	if (mData.data.lists.watchers) {
-		mData.data.lists.watchers.intro = iData.suffix.listText;
-	}
-	if (iData.linkName) {
-		mData.data.sourceItem = {
-			id: "",
-			type: iData.linkType,
-			name: iData.linkName
-		};
-	}
-	mData.data.canGrantHold = Boolean(iData.hasHolds);
-	mData.data.holdText = (iData.suffix?.text && iData.suffix?.text.match(/Hold/)) ? iData.suffix.text : "";
-	if (iData.moves?.length) {
-		mData.data.moves = iData.moves.map(migrateData);
-	}
-	if (iData.attacks?.length) {
-		mData.data.attacks = iData.attacks.map(migrateData);
-	}
-	return mData;
-};
-
-function getRangePhrase(rangeArray: Array<KeyOf<typeof C.Ranges>>) {
-	const rangeString = rangeArray.join("_");
-	console.log(rangeString, C.Ranges[rangeString as KeyOf<typeof C.Ranges>]);
-	if (rangeString in C.Ranges) {
-		return C.Ranges[rangeString as KeyOf<typeof C.Ranges>];
-	}
-	console.error(`No range phrase for range: ${rangeArray.join("/")}`);
-	return `When you engage an able opponent (range: ${rangeString}) in combat,`;
+	return data;
 }
 
 export default function MIGRATE_ITEM_DATA() {
-	// Pull out the Engage-in-Combat template for Attacks
-	const EICTemplate = DATA_JSON["!!AttackTemplate!!"];
-	delete DATA_JSON["!!AttackTemplate!!"];
-
 	const ALL_DATA = getAllData();
-	console.log("ALL DATA", ALL_DATA);
+	console.log("ALL_DATA (cleaned)", cleanData(ALL_DATA));
 
-	// const newData = changeAllData((iData) => {
-	// 	if (["darksecret", "weapon"].includes(iData.type)) {
-	// 		iData.subType = "passive";
-	// 	}
-	// 	if (iData.type === "attack") {
-	// 		iData.special = iData.effect;
-	// 		delete iData.effect;
-	// 		iData.range = iData.range.split(/\//);
-	// 		const newAttackData = {
-	// 			...EICTemplate,
-	// 			...iData
-	// 		};
-	// 		newAttackData.effect = {
-	// 			effect: newAttackData.effect.effect.replace(/\$AMMO_AND\$/g, newAttackData.ammo ? `expend ${newAttackData.ammo} Ammo and ` : ""),
-	// 			trigger: getRangePhrase(newAttackData.range),
-	// 			intro: ""
-	// 		},
-	// 		// newAttackData.effect.trigger = ;
-	// 		// console.log(`${iData.name} Range = ${iData.range.join("_")}`, {PHRASE: getRangePhrase(iData.range), TRIGGER: newAttackData.effect.trigger});
-	// 		newAttackData.results.success.text = newAttackData.results.success.text.replace(/\$HARM\$/g, `${newAttackData.harm} Harm`);
-	// 		newAttackData.results.partial.text = newAttackData.results.partial.text.replace(/\$HARM\$/g, `${newAttackData.harm} Harm`);
-	// 		newAttackData.results.fail.text = newAttackData.results.fail.text.replace(/\$HARM\$/g, `${newAttackData.harm} Harm`);
-	// 		console.log(`${newAttackData.name} NewAttackData =`, newAttackData);
-	// 		return newAttackData;
-	// 	}
-	// 	return iData;
-	// });
+	const ITEM_GROUPS = Object.fromEntries(Object.keys(C.ItemTypes).map((iType) => [
+		iType,
+		groupJSON({
+			"Is Active-Rolled": (iData) => iData.subType === "active-rolled",
+			"Is Active-Static": (iData) => iData.subType === "active-static",
+			"Is Passive": (iData) => iData.subType === "passive"
+		}, U.objFilter(ALL_DATA, (iData: ItemMigrationData) => iData.type === iType))
+	]));
 
-	const ITEM_GROUPS = groupJSON({
-		"Is Active-Rolled": (iData) => iData.subType === "active-rolled",
-		"Is Active-Static": (iData) => iData.subType === "active-static",
-		"Is Passive": (iData) => iData.subType === "passive"
-	}, ALL_DATA);
+	console.log("All_DATA (cleaned, grouped)", cleanData(ITEM_GROUPS));
 
-	// const attackRangeArray: Record<string,ItemMigrationData[]> = {};
+	/* Comment out this line to activate data mutation.
 
-	// Object.values(ALL_DATA)
-	// 	.filter((iData) => iData.type === "attack")
-	// 	.forEach((iData) => {
-	// 		const {range} = iData;
-	// 		attackRangeArray[String(range.join("/"))] ??= [];
-	// 		attackRangeArray[String(range.join("/"))].push(iData);
-	// 	});
+	const changedDataReport: string[] = [];
+	const newData = changeAllData((iData) => {
 
-	// const ATTACK_RANGES: Record<string, Record<string,ItemMigrationData>> = {};
-	// Object.keys(attackRangeArray).forEach((rangeKey) => {
-	// 	ATTACK_RANGES[rangeKey] = toDict(attackRangeArray[rangeKey], "name");
-	// });
+		return iData;
+	});
+	console.log("NEW DATA JSON", newData);
+	console.log("CHANGES REPORT", changedDataReport);
 
-	console.log("SUBTYPE GROUPS", ITEM_GROUPS);
+	// */
 
-	// console.log("NEW JSON", newData);
+	const missingFromMasterLists: Record<string,any> = {};
+	const missingFromResultLists: Record<string,any> = {};
+	const MISSING_LISTS = toDict(Object.entries(ALL_DATA).filter(([nameKey, iData]) => {
+		const {
+			master,
+			results
+		} = confirmList(iData);
 
-	// Extract derived moves from DATA_JSON
-	const derivedMoves = Object.values(DATA_JSON).map((iData) => ("moves" in iData ? iData.moves : [])).flat();
-	const derivedAttacks = Object.values(DATA_JSON).map((iData) => ("attacks" in iData ? iData.attacks : [])).flat();
+		if (master.length) { missingFromMasterLists[nameKey] = master }
+		if (results.length) { missingFromResultLists[nameKey] = results }
 
-	const FULL_DATA = {
-		JSON: DATA_JSON,
-		DERIVED: toDict([
-			...derivedMoves,
-			...derivedAttacks
-		], "name")
-	};
+		return Boolean(master.length + results.length);
+	})
+		.map(([, iData]) => iData), "name");
 
-	// const checkData = {
-	// 	AMMO: {
-	// 		JSON: checkJSON([
-	// 			(iData) => !["weapon", "attack", "gear"].includes(iData.type) && iData.ammo !== null
-	// 		]),
-	// 		DERIVED: checkJSON([
-	// 			(iData) => !["weapon", "attack", "gear"].includes(iData.type) && iData.ammo !== null
-	// 		], FULL_DATA.DERIVED)
-	// 	},
-	// 	ARMOR: {
-	// 		JSON: checkJSON([
-	// 			(iData) => iData.type !== "gear" && iData.armor !== undefined && iData.armor !== ""
-	// 		]),
-	// 		DERIVED: checkJSON([
-	// 			(iData) => iData.type !== "gear" && iData.armor !== undefined && iData.armor !== ""
-	// 		], FULL_DATA.DERIVED)
-	// 	}
-	// };
-	// console.log("CONFIRMING DATA", checkData);
+	Object.values(cleanData(mapJSON(["effect.effect"], ALL_DATA)))
+		.map((effectData) => effectData["effect.effect"]);
 
-	// const newData = changeAllData((mData) => {
-	// 	if (mData.attributemod === "none") {
-	// 		mData.attributemod = "";
-	// 	}
-	// 	if (mData.effect?.effect) {
-	// 		mData.effect.effect = mData.effect.effect.replace(/\[\[\[moveName\]\]\]/gi, "$MOVENAME$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\[\[\[attrMod\]\]\]/gi, "$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+0/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+None/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Violence/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Willpower/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Fortitude/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Reflexes/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Reason/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Intuition/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Perception/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Coolness/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Charisma/gi, "+$ATTRIBUTE$");
-	// 		mData.effect.effect = mData.effect.effect.replace(/\+Soul/gi, "+$ATTRIBUTE$");
-	// 	}
-	// 	return mData;
-	// });
 
-	// console.log("NEWLY MUTATED DATA_JSON", newData);
-
-	console.log("DERIVED", FULL_DATA.DERIVED);
-	console.log("INCOMING MIGRATION DATA", FULL_DATA.JSON);
-
-	const DATA = Object.values(FULL_DATA.JSON) as ItemMigrationData[];
-
-	testIncomingData(DATA);
-	const migratedData = DATA.map(migrateData).filter(Boolean);
-	console.log("OUTGOING MIGRATION DATA", migratedData);
-	testOutgoingData(migratedData as ItemMigrationData[]);
-	return migratedData as ItemMigrationData[];
-}
-
-function cleanData<T extends Record<any,any>>(data: T): T {
-	const cData = JSON.parse(JSON.stringify(data));
-	Object.entries(cData).forEach(([key, val]: [any, any]) => {
-		if (val === 0 || val === false || val === null || val === undefined) { return }
-		if (
-			(typeof val === "string" && !val)
-			|| (Array.isArray(val) && val.length === 0)
-			|| (/^\{\s*\}$/.test(JSON.stringify(val)))
-		) {
-			delete cData[key];
-			return;
-		}
-		if (/^\{/.test(JSON.stringify(val))) {
-			cData[key] = cleanData(val) as any;
+	console.log("*** REPORTS ***", {
+		"Keys with Array Values": U.unique(Object.values(ALL_DATA)
+			.map((iData) => Object.keys(flattenObject(iData))
+				.filter((key) => Array.isArray(flattenObject(iData)[key])))
+			.flat()),
+		"data.note Values": cleanData(mapJSON(["notes"], ALL_DATA)),
+		"data.effect.effect Values": cleanData(mapJSON(["effect.effect"], ALL_DATA)),
+		"Effects List": Object.values(cleanData(mapJSON(["effect.effect"], ALL_DATA)))
+			.map((effectData) => effectData["effect.effect"]),
+		"Missing Lists": {
+			missingFromMasterLists,
+			missingFromResultLists,
+			MISSING_LISTS,
+			Grouped: groupJSON({
+				"Is Active-Rolled": (iData) => iData.subType === "active-rolled",
+				"Is Active-Static": (iData) => iData.subType === "active-static",
+				"Is Passive": (iData) => iData.subType === "passive"
+			}, MISSING_LISTS)
 		}
 	});
-	return cData;
-}
 
-function testIncomingData(DATA: ItemMigrationData[]) {
+	console.log("INCOMING MIGRATION DATA", cleanData(DATA_JSON));
 
-	const cData = DATA.map(cleanData);
-	// Separate "active" and "passive" types
-	const activeData = cData.filter((iData) => iData.type === "active");
-	const passiveData = cData.filter((iData) => iData.type === "passive");
+	const DATA = Object.values(DATA_JSON);
 
-	// Extract Derived Moves and Attacks from NON-Move Items
-	// const nonMoveData = DATA.filter((iData) => iData.itemType !== "move");
-	const derivedMoves = cData.map((iData) => iData.moves || []).flat();
-	const derivedAttacks = cData.map((iData) => iData.attacks || []).flat();
-	// console.log({derivedMoves, derivedAttacks});
-	const allItems: Record<any,any> = {};
+	const migratedData = DATA.map((iData: ItemMigrationData): ItemMigrationData | false => {
+		iData = expandObject(iData);
 
-	["advantage", "disadvantage", "move", "darksecret", "relation", "weapon", "attack", "gear"].forEach((iType) => {
-		allItems[iType] = {
-			active: toDict(activeData.filter((iData) => iData.itemType === iType), "name"),
-			passive:  toDict(passiveData.filter((iData) => iData.itemType === iType), "name")
-		};
-	});
-	allItems.move.activeDerived = toDict(derivedMoves.filter((iData) => iData.type === "active"), "name");
-	allItems.move.passiveDerived = toDict(derivedMoves.filter((iData) => iData.type === "passive"), "name");
-	allItems.attack.derived = toDict(derivedAttacks, "name");
+		if (["relation", "weapon", "gear"].includes(iData.type)) { return false }
 
-	console.log("[!!!INCOMING!!!] ALL CLEANED INCOMING ITEM DATA", allItems);
+		return PARSERS[iData.type as KeyOf<typeof PARSERS>](iData);
+	}).filter(Boolean) as ItemMigrationData[];
+	console.log("OUTGOING MIGRATION DATA", cleanData(migratedData));
 
-	console.log("[TEST INCOMING] Active/Passive/Moves Analysis", {
-		"Passives w/Moves": toDict(passiveData.filter((iData) => iData.moves?.length), "name"),
-		"Passives w/Attacks": toDict(passiveData.filter((iData) => iData.attacks?.length), "name")
-	});
-
-	// Check for lists inside result objects that aren't included in main lists property
-	console.log("[TEST INCOMING] Missing Lists", toDict(DATA.filter((iData) => {
-		return iData.record?.results
-			&& (iData.results.success?.list || iData.results.partial?.list || iData.results.fail?.list)
-			&& !(iData.lists?.edges || iData.lists?.options || iData.lists?.questions);
-	}), "name"));
-
-
-	return true;
-}
-
-function testOutgoingData(DATA: ItemMigrationData[]) {
-	const cData = JSON.parse(JSON.stringify(DATA)) as ItemMigrationData[];
-
-	// Extract Derived Moves and Attacks from Items
-	const derivedMoves: ItemMigrationData[] = cData.map((iData) => iData.data.moves || []).flat();
-	const derivedAttacks: ItemMigrationData[] = cData.map((iData) => iData.data.attacks || []).flat();
-
-	const allItems: List<List<ItemMigrationData>> = {};
-
-	["advantage", "disadvantage", "move", "darksecret", "relation", "weapon", "attack", "gear"].forEach((iType) => {
-		allItems[iType] = toDict(cData.filter((iData) => iData.type === iType), "name");
-	});
-	allItems.move_derived = toDict(derivedMoves, "name");
-	allItems.attack_derived = toDict(derivedAttacks, "name");
-
-	console.log("[!!!OUTGOING!!!] ALL CLEANED OUTGOING ITEM DATA", allItems);
-	return true;
+	// testOutgoingData(migratedData);
+	return migratedData;
 }

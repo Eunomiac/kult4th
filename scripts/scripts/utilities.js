@@ -609,6 +609,14 @@ const unique = (array) => {
     } });
     return returnArray;
 };
+const group = (array, key) => {
+    const returnObj = {};
+    array.forEach((item) => {
+        returnObj[item[key]] ??= [];
+        returnObj[item[key]].push(item);
+    });
+    return returnObj;
+};
 const removeFirst = (array, element) => array.splice(array.findIndex((v) => v === element));
 const pullElement = (array, checkFunc = (_v = true, _i = 0, _a = []) => { checkFunc(_v, _i, _a); }) => {
     const index = array.findIndex((v, i, a) => checkFunc(v, i, a));
@@ -776,25 +784,20 @@ function objMerge(target, source, { isMutatingOk = false, isStrictlySafe = false
         return target;
     }
     if (isIndex(source)) {
-        for (const [key, val] of Object.entries(source)) { // @ts-expect-error TEMPORARY
-            if (isConcatenatingArrays && isArray(target[key]) && isArray(val)) { // @ts-expect-error TEMPORARY
-                target[key] = [...target[key], ...val];
+        for (const [key, val] of Object.entries(source)) {
+            const targetVal = target[key];
+            if (isConcatenatingArrays && isArray(target[key]) && isArray(val)) {
+                // @ts-expect-error Can't get it to recognize that target[key] is an array, despite isArray() above.
+                target[key].push(...val);
             }
-            else if (val !== null && typeof val === "object") { // @ts-expect-error TEMPORARY
-                if (target[key] === undefined && !(val instanceof Application)) {
-                    if (isArray(val)) { // @ts-expect-error TEMPORARY
-                        target[key] = [];
-                    }
-                    else if (isList(val)) { // @ts-expect-error TEMPORARY
-                        target[key] = {}; // @ts-expect-error TEMPORARY
-                    }
-                    else {
-                        target[key] = new val.__proto__.constructor();
-                    }
-                } // @ts-expect-error TEMPORARY
+            else if (val !== null && typeof val === "object") {
+                if (isUndefined(targetVal) && !(val instanceof Application)) {
+                    // @ts-expect-error TS doesn't recognize __proto__.
+                    target[key] = new val.__proto__.constructor();
+                }
                 target[key] = objMerge(target[key], val, { isMutatingOk: true, isStrictlySafe });
             }
-            else { // @ts-expect-error TEMPORARY
+            else {
                 target[key] = val;
             }
         }
@@ -981,7 +984,7 @@ export default {
     randElem, randIndex,
     makeIntRange,
     makeCycler,
-    unique,
+    unique, group,
     getLast, removeFirst, pullElement, pullIndex,
     subGroup,
     // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████

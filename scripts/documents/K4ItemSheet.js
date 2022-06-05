@@ -1,3 +1,4 @@
+import U from "../scripts/utilities.js";
 import C from "../scripts/constants.js";
 export default class K4ItemSheet extends ItemSheet {
     static get defaultOptions() {
@@ -5,189 +6,54 @@ export default class K4ItemSheet extends ItemSheet {
             classes: [C.SYSTEM_ID, "item", "sheet"]
         });
     }
-    get template() { return `systems/kult4th/templates/sheets/${this.item.data.type}-sheet.hbs`; }
+    get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs`; }
     get item() { return super.item; }
     get type() { return this.item.data.type; }
-    getData() {
-        const data = super.getData();
-        const templateEntries = [];
-        switch (this.type) {
-            case "move": {
-                const { data } = this.item.data;
-                console.log("this.item.data", data);
-                templateEntries.push(...[
-                    {
-                        isPhrase: true,
-                        type: "phrase",
-                        label: "Intro",
-                        value: data.intro,
-                        target: "data.intro"
-                    },
-                    {
-                        isPhrase: true,
-                        type: "phrase",
-                        label: "Trigger",
-                        value: data.trigger,
-                        target: "data.trigger"
-                    },
-                    {
-                        isPhrase: true,
-                        type: "phrase",
-                        label: "Outro",
-                        value: data.outro,
-                        target: "data.outro"
-                    },
-                    {
-                        isLabel: true,
-                        type: "label",
-                        label: "Attribute",
-                        value: data.attribute,
-                        target: "data.attribute"
-                    },
-                    {
-                        isPhrase: true,
-                        type: "phrase",
-                        label: "Notes",
-                        value: data.notes,
-                        target: "data.notes"
-                    },
-                    {
-                        isText: true,
-                        type: "text",
-                        label: "Complete Success",
-                        value: data.completeSuccess.result,
-                        target: "data.completeSuccess.result"
-                    },
-                    {
-                        isNumber: true,
-                        type: "number",
-                        label: "Edges",
-                        value: data.completeSuccess.edges,
-                        target: "data.completeSuccess.edges"
-                    },
-                    {
-                        isNumber: true,
-                        type: "number",
-                        label: "Hold",
-                        value: data.completeSuccess.hold,
-                        target: "data.completeSuccess.hold"
-                    },
-                    {
-                        isPhrase: true,
-                        type: "phrase",
-                        label: "Lists:",
-                        value: data.completeSuccess.optionsLists,
-                        target: "data.completeSuccess.optionsLists"
-                    },
-                    {
-                        isText: true,
-                        type: "text",
-                        label: "Partial Success",
-                        value: data.partialSuccess.result,
-                        target: "data.partialSuccess.result"
-                    },
-                    {
-                        isNumber: true,
-                        type: "number",
-                        label: "Edges",
-                        value: data.partialSuccess.edges,
-                        target: "data.partialSuccess.edges"
-                    },
-                    {
-                        isNumber: true,
-                        type: "number",
-                        label: "Hold",
-                        value: data.partialSuccess.hold,
-                        target: "data.partialSuccess.hold"
-                    },
-                    {
-                        isPhrase: true,
-                        type: "label",
-                        label: "Lists:",
-                        value: data.partialSuccess.optionsLists,
-                        target: "data.partialSuccess.optionsLists"
-                    },
-                    {
-                        isText: true,
-                        type: "text",
-                        label: "Failure",
-                        value: data.failure.result,
-                        target: "data.failure.result"
-                    },
-                    {
-                        isNumber: true,
-                        type: "number",
-                        label: "Edges",
-                        value: data.failure.edges,
-                        target: "data.failure.edges"
-                    },
-                    {
-                        isNumber: true,
-                        type: "number",
-                        label: "Hold",
-                        value: data.failure.hold,
-                        target: "data.failure.hold"
-                    },
-                    {
-                        isPhrase: true,
-                        type: "phrase",
-                        label: "Lists:",
-                        value: data.failure.optionsLists,
-                        target: "data.failure.optionsLists"
-                    }
-                ]);
-                Object.entries(data.lists).forEach(([key, { name, items, intro }]) => {
-                    if (typeof key === "string" && typeof items === "object") {
-                        if (Object.values(items || []).length > 0) {
-                            const listEntry = {
-                                isList: true,
-                                type: "list",
-                                label: name,
-                                value: items,
-                                target: `data.lists.${key}`
-                            };
-                            if (intro && typeof intro === "string") {
-                                listEntry.intro = intro;
-                            }
-                            templateEntries.push(listEntry);
-                        }
-                    }
-                });
-                templateEntries.push(...[
-                    {
-                        isLabel: true,
-                        type: "label",
-                        label: "Source Item",
-                        value: data.sourceItem.name,
-                        target: "data.sourceItem.name"
-                    },
-                    {
-                        isLabel: true,
-                        type: "label",
-                        label: "Source Type",
-                        value: data.sourceItem.type,
-                        target: "data.sourceItem.type"
-                    },
-                    {
-                        isPhrase: true,
-                        type: "phrase",
-                        label: "Hold Text",
-                        value: data.holdText,
-                        target: "data.holdText"
-                    },
-                    {
-                        isPre: true,
-                        type: "pre",
-                        label: "Full Schema",
-                        value: JSON.stringify(data, null, 2)
-                    }
-                ]);
-                break;
-            }
-            // no default
+    get data() { return this.item.data.data; }
+    get outroHTML() {
+        if (!this.data.rules.outro) {
+            return "";
         }
-        // @ts-expect-error Just temporary
-        data.templateEntries = templateEntries;
-        return data;
+        return this.data.rules.outro
+            .replace(/\+\$ATTRIBUTE\$/g, `<span class='text-keyword'>+${U.tCase(this.data.attribute)}</span>`)
+            .replace(/\$MOVENAME\$/g, `<span class='text-movename'>+${U.tCase(this.item.moves?.[0]?.name)}</span>`);
+    }
+    get rulesListHTML() {
+        if (!this.data.rules.optionsLists?.length) {
+            return "";
+        }
+        const lists = [];
+        this.data.rules.optionsLists.forEach((listKey) => {
+            const thisList = [];
+            const { name, items, intro } = this.data.lists[listKey];
+            thisList.push(`<h2 class='list-name'>${name}</h2>`);
+            if (intro) {
+                thisList.push(`<p>${intro}</p>`);
+            }
+            thisList.push(`<ul class='list-${listKey}'>`);
+            items.forEach((item) => {
+                thisList.push(`<li>${item}</li>`);
+            });
+            thisList.push("</ul>");
+            lists.push(thisList.join(""));
+        });
+        return lists.join("");
+    }
+    async getData() {
+        // if (this.type === "move") {
+        const data = await super.getData();
+        const handlebarsData = {
+            rulesHTML: [
+                "<p class='rules-text'>",
+                ...[
+                    data.data.data.rules.intro,
+                    data.data.data.rules.trigger ? `<em>${data.data.data.rules.trigger}</em>` : "",
+                    this.outroHTML
+                ].map((str) => str.trim()).join(" "),
+                this.rulesListHTML,
+                "</p>"
+            ].filter(Boolean).join("")
+        };
+        return Object.assign(data, handlebarsData);
     }
 }
