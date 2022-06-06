@@ -30,71 +30,81 @@
 				}
 
 				.tab-content {
-					.template-entry {
-						label {
+
+					.rules-text {
+						display: block;
+						margin: 10px;
+						padding: 5px;
+						font-size: 18px;
+						border: 4px outset var(--gold-dark);
+						background: var(--gradient-dkdkgold-upright);
+						text-shadow: var(--textShadow-inset);
+
+
+						.inline-attack {
+							display: inline;
+							background: var(--red-darkest);
+							border-radius: 4px;
 							font-size: 14px;
-							color: var(--gold-bright);
-							font-weight: bold;
-						}
+							line-height: 24px;
+							vertical-align: middle;
+							border: 1px solid var(--red-dark);
+							text-transform: uppercase;
+							height: 24px;
+							padding: 0 3px;
+							box-sizing: content-box;
+							margin: 0 5px;
 
-						textarea, input, pre {
-							font-size: 12px;
-							color: white;
-							border: 1px solid var(--gold);
-							padding: 2px;
-						}
-
-						pre {
-							white-space: break-spaces;
-						}
-
-						&.template-phrase {
-							label {
-								width: 50px;
-							}
-							input {
+							.attack-name {
 								display: inline;
-								width: calc(100% - 50px);
-							}
-						}
-						&.template-label {
-							display: inline;
-							input {
-								display: inline;
-								width: auto;
-							}
-						}
-						&.template-text {
-							display: block;
-							margin-top: 20px;
-							border-top: 1px solid var(--red-dark);
-							label {
-								font-size: 24px;
-							}
-						}
-						&.template-number {
-							display: inline;
-							input {
-								display: inline;
-								width: 30px;
+								text-shadow: none;
+								color: #FAA;
+								line-height: 25px;
+								height: 24px;
+								display: inline-block;
+								transform-origin: center center;
+								transform: scaleY(1.5);
+								}
+							.attack-range {
+								display: inline-block;
+								padding-right:5px;
+								color: #FAA;
+								transform-origin: center center;
+								transform: scaleY(1.5);
+								}
+							.attack-harm {
+								display: inline-block;
+								height: 28px;
+								width: 28px;
+								border-radius: 12px;
+								background: red;
+								color: black;
 								text-align: center;
+								font-size: 24px;
+								text-shadow: none;
+								position: relative;
+								margin-top: -6px;
+								top: 4px;
+								margin-left: 5px;
+								margin-right: 5px;
+								font-weight: 900;
+								border: 2px outset var(--red-brightest
+																			);
+								text-indent: 1px;
+								z-index: 2;
+								}
+							.attack-effect {
+								display: inline;
+								text-shadow: none;
+								color: #FAA;
+								font-size: 10px;
+								// line-height: normal;
+
 							}
-						}
-						&.template-pre {}
-						&.template-boolean {
-							display: inline;
-						}
-						&.template-list {
-							color: var(--gold-bright);
-						}
-
+							}
 					}
-
 				}
 			}
-
 		}
-
 	}
-
 }

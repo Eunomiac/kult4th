@@ -1,7 +1,7 @@
 import C from "../constants.js";
 import U from "../utilities.js";
 import { DATA_JSON } from "./migrationData.js";
-import { K4ItemType } from "../../documents/K4Item.js";
+import { K4ItemType, K4ItemSubType } from "../../documents/K4Item.js";
 function stringToNum(numString) {
     if (/^\d+$/.test(`${numString}`)) {
         return parseInt(`${numString}`);
@@ -67,10 +67,19 @@ const parserFuncs = {
     },
     rules: (data, type, listLocs) => {
         switch (type) {
+            case K4ItemType.advantage:
+            case K4ItemType.disadvantage: {
+                return {
+                    intro: data.effect.intro,
+                    trigger: "",
+                    outro: "",
+                    holdText: data.hasHolds || "",
+                    optionsLists: U.unique([...listLocs.passive, ...listLocs.staticSuccess]),
+                    effectFunctions: [data.notes].filter(Boolean)
+                };
+            }
             case K4ItemType.attack:
             case K4ItemType.move:
-            case K4ItemType.advantage:
-            case K4ItemType.disadvantage:
             case K4ItemType.relation:
             case K4ItemType.weapon:
             case K4ItemType.gear: {
@@ -116,8 +125,9 @@ const parserFuncs = {
                 if (data.hasHolds) {
                     console.warn(`${data.name} is Active-Static with HOLD`);
                 }
+                const effect = data.effect.effect || "";
                 return {
-                    result: U.sCase(data.effect.effect),
+                    result: effect ? `${effect.charAt(0).toUpperCase()}${effect.slice(1)}` : "",
                     optionsLists: listLocs.staticSuccess,
                     effectFunctions: [data.notes].filter(Boolean),
                     edges: 0,
@@ -130,7 +140,8 @@ const parserFuncs = {
                     partialSuccess: "partial",
                     failure: "fail"
                 };
-                const resultText = U.sCase(data.results[migKey[resultType]].text);
+                const { text } = data.results[migKey[resultType]];
+                const resultText = `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
                 return {
                     result: resultText,
                     optionsLists: U.unique(listLocs[resultType]),
@@ -289,6 +300,7 @@ const PARSERS = {
             type: "darksecret",
             img: data.img,
             data: {
+                subType: "passive",
                 drive: "",
                 description: "",
                 notes: data.notes,
@@ -345,7 +357,7 @@ function mapJSON(keys, data = DATA_JSON) {
     })
         .filter(Boolean));
 }
-function groupJSON(groupTests, data = DATA_JSON) {
+function groupJSON(groupTests, data = DATA_JSON, isFilteringEmpty = false) {
     const groupedData = Object.fromEntries([
         ...Object.keys(groupTests).map((key) => [key, []]),
         ["UNGROUPED", []]
@@ -362,6 +374,13 @@ function groupJSON(groupTests, data = DATA_JSON) {
             groupedData.UNGROUPED.push(iData);
         }
     });
+    if (isFilteringEmpty) {
+        Object.keys(groupedData).forEach((key) => {
+            if (Object.values(groupedData[key]).length === 0) {
+                delete groupedData[key];
+            }
+        });
+    }
     return U.objMap(groupedData, (val) => toDict(val, "name"));
 }
 function confirmList(iData) {
@@ -616,14 +635,23 @@ export default function MIGRATE_ITEM_DATA() {
     });
     console.log("INCOMING MIGRATION DATA", cleanData(DATA_JSON));
     const DATA = Object.values(DATA_JSON);
-    const migratedData = DATA.map((iData) => {
+    let migratedData = DATA.map((iData) => {
         iData = expandObject(iData);
         if (["relation", "weapon", "gear"].includes(iData.type)) {
             return false;
         }
         return PARSERS[iData.type](iData);
     }).filter(Boolean);
-    console.log("OUTGOING MIGRATION DATA", cleanData(migratedData));
+    // Filter out unwanted traits from migratedData
+    migratedData = migratedData.map(({ name, type, data, img }) => ({ name, type, data, img }));
+    // Prepare console printout of grouped and sorted migratedData
+    const CONSTRUCTORDATA = Object.fromEntries(Object.values(K4ItemType).map((iType) => [iType, U.objMap(groupJSON({
+            [K4ItemSubType.activeRolled]: (iData) => iData.data.subType === K4ItemSubType.activeRolled,
+            [K4ItemSubType.activeStatic]: (iData) => iData.data.subType === K4ItemSubType.activeStatic,
+            [K4ItemSubType.passive]: (iData) => iData.data.subType === K4ItemSubType.passive
+        }, U.objFilter(migratedData, (iData) => iData.type === iType), true), (itemDict) => U.objMap(itemDict, ({ name, type, img, data }) => ({ name, type, img, data })))
+    ]));
+    console.log("OUTGOING MIGRATION DATA", CONSTRUCTORDATA);
     // testOutgoingData(migratedData);
     return migratedData;
 }

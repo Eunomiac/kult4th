@@ -253,8 +253,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Investigate something,",
-            effect: "you may also choose from these additional questions: $QUESTIONS$",
+            trigger: "",
+            effect: "When you Investigate, you may also choose from these additional questions:",
             optionsLists: ["questions"]
         },
         lists: {
@@ -429,9 +429,20 @@ export const DATA_JSON = {
         effect: {
             intro: "You own a seemingly mundane item, which actually possesses mystical powers. Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).$n$Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: $OPTIONS$",
             trigger: "Whenever you activate the object,",
-            effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)"
+            effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
+            optionsLists: ["options"]
         },
-        lists: {},
+        lists: {
+            options: {
+                name: "Options",
+                items: [
+                    "See the true form of a creature or location.",
+                    "Receive a vision of what threatens you.",
+                    "Get yourself out of a bind.",
+                    "Call on the entity bound to the artifact and bargain with them."
+                ]
+            }
+        },
         hasEdges: false,
         hasHolds: false,
         attacks: [],
@@ -3380,8 +3391,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "You are a seasoned marksman.",
-            trigger: "Whenever you deal Harm with a firearm,",
-            effect: "you deal +1 Harm"
+            trigger: "",
+            effect: "You deal +1 Harm with firearms."
         },
         lists: {},
         results: {
@@ -3795,7 +3806,7 @@ export const DATA_JSON = {
                 effect: {
                     intro: "",
                     trigger: "When you lose a battle against your deity's enemies or to protect a sacred object,",
-                    effect: "your deity becomes irate: [[[you take −1 ongoing to all actions related to your deity until you have atoned for your failure.]]]"
+                    effect: "your deity becomes irate: You take −1 ongoing to all actions related to your deity until you have atoned for your failure."
                 },
                 lists: {},
                 hasEdges: false,
@@ -4251,8 +4262,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.",
-            trigger: "When running, throwing or catching objects,",
-            effect: "you take +1 ongoing to all relevant rolls"
+            trigger: "",
+            effect: "You take +1 ongoing to all rolls relevant to running, throwing, or catching objects."
         },
         lists: {},
         results: {
@@ -4282,8 +4293,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.",
-            trigger: "Whenever you Endure Injury against a close combat attack,",
-            effect: "take +1 to your roll"
+            trigger: "",
+            effect: "You take +1 ongoing to Endure Injury rolls against close-combat attacks."
         },
         lists: {},
         results: {
@@ -4303,39 +4314,18 @@ export const DATA_JSON = {
         hasEdges: false,
         hasHolds: false,
         attacks: [],
-        moves: [
-            {
-                name: "Take a Hit",
-                notes: "",
-                attributemod: "",
-                effect: {
-                    intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.",
-                    trigger: "Whenever you Endure Injury against a close combat attack,",
-                    effect: "take +1 to your roll"
-                },
-                lists: {},
-                hasEdges: false,
-                hasHolds: false,
-                attacks: [],
-                linkName: "Elite Sport (Contact)",
-                linkType: "advantage",
-                subType: "active-static",
-                type: "move",
-                img: "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg"
-            }
-        ],
         type: "advantage",
         img: "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg",
-        subType: "active-static"
+        subType: "passive"
     },
     "Elite Sport (Fencing)": {
         name: "Elite Sport (Fencing)",
         notes: ">AppendList:weapon/sword,attacks",
         attributemod: "",
         effect: {
-            intro: "You've competed professionally in fencing. You own a rapier at home and you know how to wield it.",
-            trigger: "When fighting with a sword,",
-            effect: "add the following to your available attacks: $ATTACKS$"
+            intro: "You've competed professionally in fencing.",
+            trigger: "",
+            effect: "You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: $ATTACKS$"
         },
         lists: {},
         results: {
@@ -4491,8 +4481,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "You are not as easily affected by trauma as others.",
-            trigger: "Whenever you reduce Stability,",
-            effect: "you always lose 1 fewer level than normal"
+            trigger: "",
+            effect: "Whenever you would lose Stability, lose one fewer level than normal."
         },
         lists: {},
         results: {
@@ -5044,9 +5034,9 @@ export const DATA_JSON = {
         notes: "GET: ReplaceList (Investigate, Questions)",
         attributemod: "",
         effect: {
-            intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: $OPTIONS$",
-            trigger: "Whenever you Investigate something associated with one of your chosen fields,",
-            effect: "you always get to ask one additional question, regardless of the outcome, and may ask any questions you want",
+            intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: $EXPERTISE$",
+            trigger: "",
+            effect: "Whenever you Investigate something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want",
             optionsLists: ["expertise"]
         },
         lists: {
@@ -5256,8 +5246,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Read a Person,",
-            effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$",
+            trigger: "",
+            effect: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: $QUESTIONS$",
             optionsLists: ["questions"]
         },
         lists: {
@@ -6359,8 +6349,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.",
-            trigger: "Whenever you are Wounded,",
-            effect: "you suffer no penalties from your Wounds"
+            trigger: "",
+            effect: "You suffer no penalties to your dice rolls from your Wounds."
         },
         lists: {},
         results: {
@@ -6911,7 +6901,7 @@ export const DATA_JSON = {
         effect: {
             intro: "",
             trigger: "Whenever you Endure Injury,",
-            effect: "take +1 to your roll"
+            effect: "You take +1 ongoing to all Endure Injury rolls."
         },
         lists: {},
         results: {
@@ -7724,8 +7714,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Observe a Situation and act on the GM's answers,",
-            effect: "take +2 instead of +1"
+            trigger: "",
+            effect: "Whenever you Observe a Situation and act on the GM's answers, take +2 instead of +1."
         },
         lists: {},
         hasEdges: false,
@@ -7741,8 +7731,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Read a Person and mention a name, person, or object,",
-            effect: "you may always ask “Are you lying?” This doesn't count towards the number of questions you're allowed to normally ask"
+            trigger: "",
+            effect: "Whenever you Read a Person and mention a name, person, or object, you may always ask \"Are you lying?\" This doesn't count towards the number of questions you're allowed to normally ask."
         },
         lists: {},
         results: {
@@ -7820,12 +7810,12 @@ export const DATA_JSON = {
     },
     "Intuitive": {
         name: "Intuitive",
-        notes: "",
+        notes: "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect",
         attributemod: "",
         effect: {
             intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.",
-            trigger: "Whenever you Read a Person,",
-            effect: "you may always ask one additional question, regardless of the outcome of your roll"
+            trigger: "",
+            effect: "Whenever you Read a Person, you may always ask one additional question, regardless of the outcome of your roll"
         },
         lists: {},
         results: {
@@ -8037,12 +8027,12 @@ export const DATA_JSON = {
     },
     "Jaded": {
         name: "Jaded",
-        notes: "",
+        notes: "AddNote:Keep It Together:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'",
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Keep It Together and the result is a Partial Success,",
-            effect: "you may suppress your emotions and postpone their effects until the next scene"
+            trigger: "",
+            effect: "Whenever you Keep It Together and the result is a Partial Success, you may suppress your emotions and postpone their effects until the next scene"
         },
         lists: {},
         results: {
@@ -8124,8 +8114,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Observe a Situation,",
-            effect: "you may choose from these questions, in addition to the ones normally acquired: $QUESTIONS$",
+            trigger: "",
+            effect: "Whenever you Observe a Situation, you may choose from these questions, in addition to the ones normally acquired: $QUESTIONS$",
             optionsLists: ["questions"]
         },
         lists: {
@@ -8295,7 +8285,7 @@ export const DATA_JSON = {
         },
         lists: {},
         hasEdges: false,
-        hasHolds: "The GM can spend Hold whenever a PC encounters someone they know to ask, “What have you lied about to this person?” or to invent a troublesome lie the PC has told in the past.",
+        hasHolds: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past.",
         attacks: [],
         moves: [
             {
@@ -8323,7 +8313,7 @@ export const DATA_JSON = {
                     }
                 },
                 hasEdges: false,
-                hasHolds: "The GM can spend Hold whenever a PC encounters someone they know to ask, “What have you lied about to this person?” or to invent a troublesome lie the PC has told in the past.",
+                hasHolds: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past.",
                 attacks: [],
                 linkName: "Liar",
                 linkType: "disadvantage",
@@ -9813,12 +9803,12 @@ export const DATA_JSON = {
     },
     "Observant": {
         name: "Observant",
-        notes: "",
+        notes: "AppendList:Read a Person,questions",
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Read a Person,",
-            effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$",
+            trigger: "",
+            effect: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: $QUESTIONS$",
             optionsLists: ["questions"]
         },
         lists: {
@@ -11592,8 +11582,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Investigate an object or entity using the proper equipment,",
-            effect: "you may choose from these following questions, in addition to those acquired through investigation: $QUESTIONS$",
+            trigger: "",
+            effect: "Whenever you Investigate an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: $QUESTIONS$",
             optionsLists: ["questions"]
         },
         lists: {
@@ -12603,8 +12593,8 @@ export const DATA_JSON = {
                         items: [
                             "It will cost you something extra, such as in-kind services, tasks, or an inflated price.",
                             "You can get it handled, but only by dealing with someone you're already indebted to.",
-                            "“Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?”",
-                            "“Sorry, that's a bit outside of my area, but maybe this will work instead?”"
+                            "\"Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?\"",
+                            "\"Sorry, that's a bit outside of my area, but maybe this will work instead?\""
                         ]
                     }
                 },
@@ -12618,8 +12608,8 @@ export const DATA_JSON = {
                         list: [
                             "It will cost you something extra, such as in-kind services, tasks, or an inflated price.",
                             "You can get it handled, but only by dealing with someone you're already indebted to.",
-                            "“Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?”",
-                            "“Sorry, that's a bit outside of my area, but maybe this will work instead?”"
+                            "\"Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?\"",
+                            "\"Sorry, that's a bit outside of my area, but maybe this will work instead?\""
                         ],
                         optionsLists: [
                             "gmoptions"
@@ -13754,12 +13744,12 @@ export const DATA_JSON = {
     },
     "Vigilant": {
         name: "Vigilant",
-        notes: "",
+        notes: "AppendList:Read a Person,questions",
         attributemod: "",
         effect: {
             intro: "",
-            trigger: "Whenever you Read a Person,",
-            effect: "you may choose from these questions in addition to the usual ones: $QUESTIONS$",
+            trigger: "",
+            effect: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: $QUESTIONS$",
             optionsLists: ["questions"]
         },
         lists: {
@@ -14284,8 +14274,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "You are a master of gunplay.",
-            trigger: "When you Engage in Combat with a firearm,",
-            effect: "use +$ATTRIBUTE$ instead of Violence, and add the following to your available attacks: $ATTACKS$"
+            trigger: "",
+            effect: "When you Engage in Combat with a firearm, roll +Coolness instead of +Violence, and add the following to your available attacks: $ATTACKS$"
         },
         lists: {},
         results: {
@@ -14438,8 +14428,8 @@ export const DATA_JSON = {
         attributemod: "",
         effect: {
             intro: "You are a master of armed melee combat.",
-            trigger: "When you Engage in Combat in close quarters, with or without a weapon",
-            effect: "use Coolness instead of Violence, and add the following to your available attacks: $ATTACKS$"
+            trigger: "",
+            effect: "When you Engage in Combat in close quarters, with or without a weapon, roll +Coolness instead of +Violence, and add the following to your available attacks: $ATTACKS$"
         },
         lists: {},
         results: {

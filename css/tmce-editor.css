@@ -1,0 +1,122 @@
+* {
+  --gold: #958b68;
+  --gold-brightest: #e4ddc3;
+  --gold-bright: #b9af8f;
+  --gold-dark: #685f43;
+  --gold-darker: #362f17;
+  --gold-darkest: #19160b;
+  --gold-glow: #ffd958;
+  --red: #9a1f1f;
+  --red-brightest: #e37070;
+  --red-bright: #ba3e3e;
+  --red-dark: #730606;
+  --red-darkest: #490000;
+  --red-glow: #ff0000;
+  --blue: #2a548a;
+  --blue-brightest: #688ab5;
+  --blue-bright: #426899;
+  --blue-dark: #183f72;
+  --blue-darkest: #082b58;
+  --blue-glow: #3f93ff;
+  --blue-bright: #4084dd;
+  --white: #ffffff;
+  --grey: #888888;
+  --black: #000000;
+  --gradient-teal-orange: linear-gradient(#f4791f, #659999);
+  --gradient-red-burgundy: linear-gradient(to right, #c31432, #240b36);
+  --gradient-teal-gold: linear-gradient(to right, #3e5151, #decba4);
+  --gradient-dkgold-gold: linear-gradient(to right, #6d6027, #d3cbb8);
+  --gradient-dkdkgold-upright: linear-gradient(14deg, var(--gold-darker), var(--gold-darkest));
+  --textShadow-inset: 1px 1px 0px var(--gold-dark), -1px -1px 1px var(--black); }
+
+@font-face {
+  font-family: Infidel;
+  src: url("../assets/fonts/infidel.ttf"); }
+
+@font-face {
+  font-family: Alverata;
+  src: url("../assets/fonts/alverata.ttf");
+  font-weight: 400;
+  font-style: normal; }
+
+@font-face {
+  font-family: Alverata;
+  src: url("../assets/fonts/alverata-bold.ttf");
+  font-weight: 700;
+  font-style: normal; }
+
+@font-face {
+  font-family: Alverata;
+  src: url("../assets/fonts/alverata-black.ttf");
+  font-weight: 800;
+  font-style: normal; }
+
+@font-face {
+  font-family: Alverata;
+  src: url("../assets/fonts/alverata-italic.ttf");
+  font-weight: 400;
+  font-style: italic; }
+
+@font-face {
+  font-family: Alverata;
+  src: url("../assets/fonts/alverata-bold-italic.ttf");
+  font-weight: 700;
+  font-style: italic; }
+
+@font-face {
+  font-family: Alverata;
+  src: url("../assets/fonts/alverata-light.ttf");
+  font-weight: 300;
+  font-style: normal; }
+
+@font-face {
+  font-family: Sokol;
+  src: url("../assets/fonts/sokol.ttf"); }
+
+* {
+  --font-body: Alverata;
+  --font-heading: Infidel; }
+
+#tinymce * {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  color: var(--gold);
+  font-family: var(--font-body); }
+
+#tinymce h1 {
+  font-family: var(--font-body);
+  color: var(--white);
+  margin: 0 0 10px 0;
+  line-height: 1em;
+  height: 0.9em;
+  text-shadow: 0px 0px 5px var(--red-glow); }
+
+#tinymce h2,
+#tinymce h3 {
+  color: var(--gold-bright);
+  font-variant: small-caps; }
+
+#tinymce h2 {
+  height: 24px; }
+
+#tinymce p {
+  font-size: 12px; }
+
+#tinymce h3 {
+  height: 16px; }
+
+#tinymce .text-keyword {
+  color: var(--blue-bright);
+  font-weight: bold; }
+
+#tinymce .text-movename {
+  color: var(--blue-bright);
+  font-weight: bold; }
+
+#tinymce .text-trigger {
+  color: var(--gold-brightest); }
+
+#tinymce .text-extra-bold {
+  font-weight: 900; }

@@ -220,7 +220,9 @@ const BUILDFILES = {
 	assets: {
 		[`./dist/${SYSTEM}/assets/`]: ["assets/**/*.*"],
 		[`./dist/${SYSTEM}/`]: ["system.json", "template.json", "LICENSE.txt", "package.json"],
-		["./scripts/"]: ["rawscripts/*.mjs"]
+		["./scripts/"]: ["rawscripts/*.mjs"],
+		[`./dist/${SYSTEM}/css/`]: ["scss/**/*.css"],
+		"./css/": ["scss/**/*.css"]
 	}
 };
 const REGEXPPATTERNS = {

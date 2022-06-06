@@ -1,3 +1,4 @@
+import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 export enum K4ItemType {
 	advantage = "advantage",
 	disadvantage = "disadvantage",
@@ -8,18 +9,23 @@ export enum K4ItemType {
 	attack = "attack",
 	weapon = "weapon"
 }
+export enum K4ItemSubType {
+	activeRolled = "active-rolled",
+	activeStatic = "active-static",
+	passive = "passive"
+}
 
 export default class K4Item<Type extends K4ItemType> extends Item {
-	declare data: K4ItemData<Type>;
+	declare data: ItemData & K4ItemData<Type>;
 	override get type(): Type { return super.type as Type }
 
 	get subItems(): Array<K4ConstructorData<K4ItemType.move|K4ItemType.attack>> {
 		return this.data.data.subItems ?? [];
 	}
 	get moves(): Array<K4ConstructorData<K4ItemType.move>> {
-		return this.subItems.filter((iData) => iData.type === "move");
+		return this.subItems.filter((iData) => iData.type === "move") as Array<K4ConstructorData<K4ItemType.move>>;
 	}
 	get attacks(): Array<K4ConstructorData<K4ItemType.attack>> {
-		return this.subItems.filter((iData) => iData.type === "attack");
+		return this.subItems.filter((iData) => iData.type === "attack") as Array<K4ConstructorData<K4ItemType.attack>>;
 	}
 }

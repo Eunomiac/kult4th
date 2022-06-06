@@ -9,6 +9,12 @@ export var K4ItemType;
     K4ItemType["attack"] = "attack";
     K4ItemType["weapon"] = "weapon";
 })(K4ItemType || (K4ItemType = {}));
+export var K4ItemSubType;
+(function (K4ItemSubType) {
+    K4ItemSubType["activeRolled"] = "active-rolled";
+    K4ItemSubType["activeStatic"] = "active-static";
+    K4ItemSubType["passive"] = "passive";
+})(K4ItemSubType || (K4ItemSubType = {}));
 export default class K4Item extends Item {
     get type() { return super.type; }
     get subItems() {

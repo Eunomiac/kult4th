@@ -1,0 +1,55 @@
+& {
+
+
+	* {
+		text-align: justify;
+		hyphens: auto;
+		color: var(--gold);
+		font-family: var(--font-body);
+	}
+
+	h1 {
+		font-family: var(--font-body);
+		color: var(--white);
+		margin: 0 0 10px 0;
+		line-height: 1em;
+		height: 0.9em;
+		text-shadow: 0px 0px 5px var(--red-glow);
+	}
+
+	h2,
+	h3 {
+		color: var(--gold-bright);
+		font-variant: small-caps;
+	}
+
+	h2 {
+		height: 24px;
+	}
+
+	p {
+		font-size: 12px;
+	}
+
+	h3 {
+		height: 16px;
+	}
+
+	.text-keyword {
+		color: var(--blue-bright);
+		font-weight: bold;
+	}
+
+	.text-movename {
+		color: var(--blue-bright);
+		font-weight: bold;
+	}
+
+	.text-trigger {
+		color: var(--gold-brightest);
+	}
+
+	.text-extra-bold {
+		font-weight: 900;
+	}
+}

@@ -100,6 +100,34 @@ export const Ranges = {
 	field_horizon: "over a hundred meters away in ranged combat,",
 	horizon: "at extreme range (over one hundred meters away) in ranged combat,"
 } as const;
+export const RegExpPatterns = {
+	Attributes: [
+		...Object.keys(Attributes.Active),
+		...Object.keys(Attributes.Passive)
+	].map((attrStr) => new RegExp(`(\\b${attrStr.charAt(0).toUpperCase()}${attrStr.slice(1)}\\b)`, "g")),
+	BasicPlayerMoves: [
+		"\\bAct Under Pressure\\b",
+		"\\bAvoid Harm\\b",
+		"\\bEndure Injury\\b",
+		"\\bEngage in Combat\\b",
+		"\\bHelp (Ano|O)ther\\b",
+		"\\bHinder (Ano|O)ther\\b",
+		"\\bHelp or Hinder (Ano|O)ther\\b",
+		"\\bInfluence (Ano|O)ther( PC|NPC)?\\b",
+		"\\bInvestigate\\b",
+		"\\bKeep It Together\\b",
+		"\\bObserve a Situation\\b",
+		"\\bRead a Person\\b",
+		"\\bSee Through the Illusion\\b"
+	].map((patStr) => new RegExp(`(${patStr})`, "g")),
+	Keywords: [
+		"\\bHarm\\b",
+		"\\bArmor\\b",
+		"\\bStability\\b( \\(.?\\d+\\))?",
+		"[-+]\\d+ ongoing\\b",
+		"\\b(Serious |Critical )?Wounds?\\b"
+	].map((patStr) => new RegExp(`(${patStr})`, "g"))
+};
 
 const C = {
 	SYSTEM_ID: "kult4th",
@@ -141,7 +169,8 @@ const C = {
 	ActorTypes, ItemTypes,
 	Attributes,
 	Colors,
-	Ranges
+	Ranges,
+	RegExpPatterns
 };
 
 Object.assign(C, {

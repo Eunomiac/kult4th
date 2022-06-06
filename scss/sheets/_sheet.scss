@@ -67,38 +67,23 @@
 			border: none;
 		}
 
-		.editor-content {
-			text-align: justify;
-			hyphens: auto;
-			color: var(--gold);
+		.sheet-content {
+			height: 100%;
+			width: 100%;
 
-			h1 {
-				font-family: var(--font-body);
-				color: var(--white);
-				margin: 0 0 10px 0;
-				line-height: 1em;
-				height: 0.9em;
-				text-shadow: 0px 0px 5px var(--red-glow);
-			}
+			.editor {
+				height: 100%;
+				.editor-content { @import '../tinymce/tinymce' }
+				.tox.tox-tinymce .tox-editor-container .tox-editor-header {
+					transform-origin: top left;
+					transform: scale(0.75);
+					width: calc(100% / 0.75);
+				}
 
-			h2,
-			h3 {
-				color: var(--gold-bright);
-				font-variant: small-caps;
-			}
-
-			h2 {
-				height: 24px;
-			}
-
-			p {
-				font-size: 12px;
-			}
-
-			h3 {
-				height: 16px;
 			}
 		}
+
+
 	}
 
 	.window-resizable-handle {

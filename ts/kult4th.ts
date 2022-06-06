@@ -10,7 +10,9 @@ import {HandlebarHelpers} from "./scripts/helpers.js";
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
 import MIGRATE_ITEM_DATA, {ItemMigrationData} from "./scripts/migration/migrator.js";
+import ITEM_DATA from "./scripts/migration/migratedData.js";
 import gsap from "gsap/all";
+import {FolderDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/folderData.js";
 
 Hooks.once("init", () => {
 	console.log("Initializing Kult 4E");
@@ -52,14 +54,54 @@ Hooks.once("init", () => {
 			await Item.deleteDocuments(Array.from(game.items.values()).map((item) => item.id));
 			// @ts-expect-error They fucked up
 			await Folder.deleteDocuments(Array.from(game.folders.values()).map((folder) => folder.id));
+			const folderNames = {
+				"advantage": "Advantages",
+				"move": "Basic Player Moves",
+				"disadvantage": "Disadvantages",
+				"darksecret": "Dark Secrets",
+				"weapon": "Weapons",
+				"active-rolled": "Active Rolled",
+				"active-static": "Active Static",
+				"passive": "Passive"/*DEVCODE*/,
+				"derived_move": "Derived Moves",
+				"derived_attack": "Derived Attacks"/*!DEVCODE*/
+			};
 			const folderMap = {
-				advantage: "Advantages",
-				move: "Basic Player Moves",
-				disadvantage: "Disadvantages",
-				darksecret: "Dark Secrets",
-				weapon: "Weapons"/*DEVCODE*/,
-				derived_move: "Derived Moves",
-				derived_attack: "Derived Attacks"/*!DEVCODE*/
+				advantage: {
+					"active-rolled": "",
+					"active-static": "",
+					"passive": ""
+				},
+				move: {
+					"active-rolled": "",
+					"active-static": "",
+					"passive": ""
+				},
+				disadvantage: {
+					"active-rolled": "",
+					"active-static": "",
+					"passive": ""
+				},
+				darksecret: {
+					"active-rolled": "",
+					"active-static": "",
+					"passive": ""
+				},
+				weapon: {
+					"active-rolled": "",
+					"active-static": "",
+					"passive": ""
+				}/*DEVCODE*/,
+				derived_move: {
+					"active-rolled": "",
+					"active-static": "",
+					"passive": ""
+				},
+				derived_attack: {
+					"active-rolled": "",
+					"active-static": "",
+					"passive": ""
+				}/*!DEVCODE*/
 			};
 			const itemFolders = {
 				"Advantages": C.Colors["GOLD -1"],
@@ -70,29 +112,74 @@ Hooks.once("init", () => {
 				"Derived Moves": C.Colors["GOLD -2"],
 				"Derived Attacks": C.Colors["GOLD -1"]/*!DEVCODE*/
 			};
+			const subItemFolders = {
+				"Active Rolled": C.Colors["RED -1"],
+				"Active Static": C.Colors["RED -2"],
+				"Passive": C.Colors["RED -1"]
+			};
 			const FOLDERDATA = Object.entries(itemFolders).map(([folderName, folderColor]) => ({
 				name: folderName,
 				type: "Item" as const,
 				sorting: "a" as const,
-				color: folderColor
+				color: folderColor as string
 			}));
-			await Folder.createDocuments(FOLDERDATA);
 
-			const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA() // @ts-expect-error They fucked up
-				.map((iData: ItemMigrationData) => Object.assign(iData, {folder: game.folders.getName(folderMap[iData.type as KeyOf<typeof folderMap>]).id}));
+
+			const folders = await Folder.createDocuments(FOLDERDATA);
+
+			const SUBFOLDERDATA: FolderDataConstructorData[] = [];
+			folders.forEach((fData) => {
+				const folderId = fData.id;
+				const folderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName: string) => fName === fData.name)];
+				SUBFOLDERDATA.push(...Object.entries(subItemFolders).map(([subFolderName, subFolderColor]) => ({
+					name: subFolderName,
+					type: "Item" as const,
+					sorting: "a" as const,
+					color: subFolderColor,
+					parent: folderId
+				})));
+			});
+
+			const subFolders = await Folder.createDocuments(SUBFOLDERDATA);
+			subFolders.forEach((subFolder) => { // @ts-expect-error They fucked up
+				const parentFolder = game.folders.get(subFolder.data.parent);
+				const folderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName: string) => fName === parentFolder.data.name)];
+				const subFolderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName: string) => fName === subFolder.data.name)];
+				folderMap[folderType as KeyOf<typeof folderMap>][subFolderType as "active-static" | "active-rolled" | "passive"] = subFolder.id;
+			});
+
+			console.log("FOLDER MAP", folderMap);
+
+			MIGRATE_ITEM_DATA();
+
+			const MIGRATEDITEMDATA = Object.values(ITEM_DATA)
+				.map((subTypeDict) => Object.values(subTypeDict))
+				.flat()
+				.map((v) => Object.values(v))
+				.flat() // @ts-expect-error They fucked up
+				.map((iData: K4ConstructorData) => Object.assign(iData, {folder: game.folders.get(folderMap[iData.type as KeyOf<typeof folderMap>][iData.data.subType as "active-rolled" | "active-static" | "passive"])})) as K4ConstructorData[];
+
+			console.log("MIGRATED DATA", MIGRATEDITEMDATA);
+
+			const derivedItemData = MIGRATEDITEMDATA.map((iData) => iData.data.subItems ?? [])
+				.flat() // @ts-expect-error They fucked up
+				.map((iData: K4ConstructorData) => Object.assign(iData, {folder: game.folders.get(folderMap[`derived_${iData.type}` as KeyOf<typeof folderMap>][iData.data.subType as "active-rolled" | "active-static" | "passive"])})) as K4ConstructorData[];
+
+			console.log("DERIVED ITEMS", derivedItemData);
+			// const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA() // @ts-expect-error They fucked up
+			// );
 
 			/*DEVCODE*/
-			const derivedMoveData = MIGRATEDITEMDATA.map((iData) => (iData.data.moves ?? [])
-			// @ts-expect-error They fucked up
-				.map((mData: ItemMigrationData) => Object.assign(mData, {folder: game.folders.getName(folderMap.derived_move).id}))).flat();
-			const derivedAttackData = MIGRATEDITEMDATA.map((iData) => (iData.data.attacks ?? [])
-			// @ts-expect-error They fucked up
-				.map((aData: ItemMigrationData) => Object.assign(aData, {folder: game.folders.getName(folderMap.derived_attack).id}))).flat();
+			// const derivedItemData = MIGRATEDITEMDATA.map((iData) => (iData.data.subItems ?? [])
+			// // @ts-expect-error They fucked up
+			// 	.map((mData: ItemMigrationData) => Object.assign(mData, {folder: game.folders.getName(folderMap.derived_move).id}))).flat();
+			// const derivedAttackData = MIGRATEDITEMDATA.map((iData) => (iData.data.attacks ?? [])
+			// // @ts-expect-error They fucked up
+			// 	.map((aData: ItemMigrationData) => Object.assign(aData, {folder: game.folders.getName(folderMap.derived_attack).id}))).flat();
 
 			await Item.createDocuments([
 				...MIGRATEDITEMDATA,
-				...derivedMoveData,
-				...derivedAttackData
+				...derivedItemData
 			]);
 			/*!DEVCODE*/
 		}
@@ -106,4 +193,66 @@ Hooks.once("ready", async () => {
 		// @ts-expect-error They fucked up
 		resetItems();
 	}
+
+	// #region ████████ TinyMCE Config: Configuring TinyMCE Instances with Custom Styles ████████ ~
+	// CONFIG.TinyMCE.plugins += " searchreplace preview template";
+	// CONFIG.TinyMCE.toolbar += " | searchreplace template";
+	CONFIG.TinyMCE.style_formats = [
+		{
+			title: "Headings",
+			items: [
+				{title: "Heading 1", block: "h1", wrapper: false},
+				{title: "Heading 2", block: "h2", wrapper: false},
+				{title: "Heading 3", block: "h3", wrapper: false},
+				{title: "Heading 4", block: "h4", wrapper: false}
+			]
+		},
+		{
+			title: "Block",
+			items: [
+				{title: "Paragraph", block: "p", wrapper: true}
+			]
+		},
+		{
+			title: "Inline",
+			items: [
+				{title: "Bold", inline: "strong", wrapper: false},
+				{title: "Extra Bold", inline: "strong", classes: "text-extra-bold", wrapper: false},
+				{title: "Italics", inline: "em", wrapper: false}
+			]
+		},
+		{
+			title: "Rules",
+			items: [
+				{title: "Trigger", inline: "em", classes: "text-trigger", wrapper: false},
+				{title: "Keyword", inline: "strong", classes: "text-keyword", wrapper: false},
+				{title: "Move Name", inline: "em", classes: "text-keyword text-movename", wrapper: false}
+			]
+		}
+	];
+	CONFIG.TinyMCE.skin = "Kult4th";
+	CONFIG.TinyMCE.skin_url = "systems/kult4th/css/tinymce/ui/Kult4th";
+	CONFIG.TinyMCE.style_formats_merge = false;
+	// CONFIG.TinyMCE.template_selected_content_classes += " ws-contents";
+	// CONFIG.TinyMCE.templates = CONFIG.TinyMCE.templates ?? [];
+	// CONFIG.TinyMCE.templates.push(
+	// 		{
+	// 				title: 'Sidebar',
+	// 				description: 'A World Smiths sidebar',
+	// 				content: '<section class="ws-sidebar-group"><main><p></p></main><aside class="ws-block sidebar"><h3></h3><p class="ws-contents">{$contents}</p></aside></section>'
+	// 		},
+	// 		{
+	// 				title: 'Note',
+	// 				description: 'A World Smiths note',
+	// 				content: `<section class="ws-block note"><img src="worlds/${game.world.data.name}/styles/ws.svg" width="48" /> <div class="contents"><h3></h3><p class="ws-contents">{$contents}</p></div></section>`
+	// 		});
+	if (typeof CONFIG.TinyMCE.content_css === "string") {
+		CONFIG.TinyMCE.content_css = [CONFIG.TinyMCE.content_css];
+	} else if (!Array.isArray(CONFIG.TinyMCE.content_css)) {
+		CONFIG.TinyMCE.content_css = [];
+	}
+	// CONFIG.TinyMCE.content_css.unshift("dark");
+	CONFIG.TinyMCE.content_css.push("systems/kult4th/css/tmce-editor.css");
+	// #endregion ▄▄▄▄▄ TinyMCE Config ▄▄▄▄▄
+
 });

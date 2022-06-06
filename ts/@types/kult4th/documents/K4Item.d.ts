@@ -60,7 +60,7 @@ declare global {
 		type: K4ItemType
 	}
 
-	type K4ConstructorData<Type extends K4ItemType> = Pick<K4ItemData<Type>,"name"|"type"|"img"|"data">;
+	type K4ConstructorData<Type extends K4ItemType = K4ItemType> =  Pick<K4ItemData<Type>,"name"|"type"|"img"|"data">;
 
 	namespace K4ItemClass {
 		// @ts-expect-error Why won't it let me use a generic here?
@@ -83,10 +83,11 @@ declare global {
 	namespace K4ItemDataDataSchema {
 
 		interface Base {
+			subType: TraitType,
 			description: string,
 			notes: string,
 			lists: Record<string, ListDef>,
-			subItems: Array<K4ConstructorData<K4ItemType>>,
+			subItems: Array<K4ConstructorData>,
 			isCustom: boolean,
 			pdfLink: string
 		}
@@ -96,12 +97,10 @@ declare global {
 		interface Results<T extends K4ItemType | undefined = undefined> { results: ResultDef<T> }
 
 		export interface Move extends Base, Rules, Results<K4ItemType.move> {
-			subType: TraitType,
 			attribute: AttributeEntry,
 			sourceItem?: SourceDef
 		}
 		export interface Attack extends Base, Rules, Results<K4ItemType.attack> {
-			subType: TraitType,
 			attribute: AttributeEntry,
 			sourceItem: SourceDef,
 			range: RangeType[],
@@ -109,13 +108,11 @@ declare global {
 			ammo: posInt,
 		}
 		export interface Advantage extends Base, Rules, Results {
-			subType: TraitType,
 			attribute: AttributeEntry,
 			currentHold: posInt,
 			currentEdges: posInt
 		}
 		export interface Disadvantage extends Base, Rules, Results {
-			subType: TraitType,
 			attribute: AttributeEntry,
 			currentHold: posInt
 		}
@@ -151,7 +148,10 @@ declare global {
 		}
 	}
 
-	type K4ItemData<Type extends K4ItemType> = ItemData & {
+	type K4ItemData<Type extends K4ItemType> = {
+		name: string,
+		img: string,
+		type: K4ItemType,
 		data: (Type extends K4ItemType.move ? K4ItemDataDataSchema.Move
 		: Type extends K4ItemType.attack ? K4ItemDataDataSchema.Attack
 		: Type extends K4ItemType.advantage ? K4ItemDataDataSchema.Advantage
@@ -167,9 +167,6 @@ declare global {
 
 	}
 
-	declare class K4Item<Type extends K4ItemType> {
-		data: K4ItemData<Type>
-	}
 
 	namespace K4Collection {
 		export type Item = EmbeddedCollection<ConstructorOf<K4Item>, ActorData>;
