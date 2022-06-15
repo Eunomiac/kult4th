@@ -14,6 +14,26 @@ export enum K4ItemSubType {
 	activeStatic = "active-static",
 	passive = "passive"
 }
+export enum K4ItemRange {
+	arm = "arm",
+	room = "room",
+	field = "field",
+	horizon = "horizon"
+}
+export enum K4WeaponClass {
+	meleeUnarmed = "melee-unarmed",
+	meleeCrush = "melee-crush",
+	meleeSlash = "melee-slash",
+	meleeStab = "melee-stab",
+	firearm = "firearm",
+	bomb = "bomb"
+}
+export enum K4ItemResultType {
+	staticSuccess = "staticSuccess",
+	completeSuccess = "completeSuccess",
+	partialSuccess = "partialSuccess",
+	failure = "failure"
+}
 
 export default class K4Item<Type extends K4ItemType> extends Item {
 	declare data: ItemData & K4ItemData<Type>;

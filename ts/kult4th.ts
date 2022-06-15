@@ -1,5 +1,5 @@
 import K4Actor from "./documents/K4Actor.js";
-import K4Item from "./documents/K4Item.js";
+import K4Item, {K4ItemType, K4ItemSubType, K4ItemResultType} from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
@@ -9,10 +9,14 @@ import {HandlebarHelpers} from "./scripts/helpers.js";
 
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
-import MIGRATE_ITEM_DATA, {ItemMigrationData} from "./scripts/migration/migrator.js";
+import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "./scripts/migration/migrator.js";
 import ITEM_DATA from "./scripts/migration/migratedData.js";
 import gsap from "gsap/all";
 import {FolderDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/folderData.js";
+
+type iDataDict = Record<string, Partial<K4ConstructorData>>;
+type SubTypeDict = Partial<Record<K4ItemSubType, iDataDict>>;
+type ItemDataRecord = Record<K4ItemType, SubTypeDict>;
 
 Hooks.once("init", () => {
 	console.log("Initializing Kult 4E");
@@ -49,6 +53,8 @@ Hooks.once("init", () => {
 
 	Object.assign(globalThis, {
 		gsap,
+		cleanData,
+		toDict,
 		resetItems: async () => {
 			// @ts-expect-error They fucked up
 			await Item.deleteDocuments(Array.from(game.items.values()).map((item) => item.id));
@@ -124,13 +130,11 @@ Hooks.once("init", () => {
 				color: folderColor as string
 			}));
 
-
 			const folders = await Folder.createDocuments(FOLDERDATA);
 
 			const SUBFOLDERDATA: FolderDataConstructorData[] = [];
 			folders.forEach((fData) => {
 				const folderId = fData.id;
-				const folderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName: string) => fName === fData.name)];
 				SUBFOLDERDATA.push(...Object.entries(subItemFolders).map(([subFolderName, subFolderColor]) => ({
 					name: subFolderName,
 					type: "Item" as const,
@@ -148,34 +152,87 @@ Hooks.once("init", () => {
 				folderMap[folderType as KeyOf<typeof folderMap>][subFolderType as "active-static" | "active-rolled" | "passive"] = subFolder.id;
 			});
 
-			console.log("FOLDER MAP", folderMap);
+			const mutateLog: string[] = [];
+			function mutateItemData(itemData: Partial<ItemDataRecord>): Partial<ItemDataRecord> {
+				const formatString = (str: string) => (str ? `${str}.`.replace(/([,\:\.])\.$/, "$1") : str);
+				const mutateData = <T extends K4ItemType = K4ItemType>(iData: any): Partial<K4ConstructorData<T>> => {
+					if (!iData.data) {
+						mutateLog.push(`${iData.name} is missing a DATA attribute!`);
+						return iData;
+					}
+					if (iData.data.results) {
+						iData.data.results = U.objMap(iData.data.results, (rData: any) => {
+							if (typeof rData.result === "string" && /Gain\s\d+\s+Edge/.test(rData.result)) {
+								return Object.assign(
+									rData,
+									{
+										edges: U.pInt(rData.result.match(/Gain\s(\d+)\s+Edge/)?.pop())
+									}
+								);
+							} else {
+								return rData;
+							}
+						});
+					}
+					if (iData.data?.subItems?.length) {
+						iData.data.subItems = iData.data.subItems.map(mutateData);
+					}
+					delete iData.folder;
+					delete iData.effects;
+					delete iData.sort;
+					delete iData.permission;
+					delete iData.flags;
+					delete iData._id;
+					return iData;
+				};
+				return U.objMap(itemData, (subTypeDict: SubTypeDict) => U
+					.objMap(subTypeDict, (iDataDict: iDataDict) => U
+						.objMap(iDataDict, mutateData))) as ItemDataRecord;
+			}
 
-			MIGRATE_ITEM_DATA();
+			console.log("ORIGINAL DATA (cleaned, grouped)", GROUPED_DATA);
 
-			const MIGRATEDITEMDATA = Object.values(ITEM_DATA)
+			console.log("CURRENT DATA", ITEM_DATA);
+
+			const NEW_ITEM_DATA = mutateItemData(ITEM_DATA);
+			// NEW_ITEM_DATA = mutateItemData(ITEM_DATA);
+			const FLAT_DATA = Object.fromEntries(Object.entries(NEW_ITEM_DATA).map(([iType, tDict]) => [
+				iType,
+				Object.fromEntries(Object.entries(tDict).map(([iSubType, stDict]: [any, any]) => [
+					iSubType,
+					Object.fromEntries(Object.entries(stDict).map(([iName, iData]: [any, any]) => [
+						iName,
+						U.objFlatten(iData)
+					]))
+				]))
+			]));
+			Object.assign(globalThis, {ITEM_DATA: NEW_ITEM_DATA, FLAT_DATA});
+
+			console.log("*** NEW ITEM_DATA ***", NEW_ITEM_DATA);
+			console.log("*** FLATTENED ITEM_DATA ***", FLAT_DATA);
+			console.log("*** MUTATOR LOG ***", mutateLog);
+
+
+			/* REG-EXP PATTERNS TO MANUALLY FIX migratedData.ts
+
+				\btype: "(.+?)" 	type: K4ItemType.$1
+				"active-(.)([a-z]+)":			[K4ItemSubType.active\U$1$2]:
+				"passive": 	[K4ItemSubType.passive]:
+				\bsubType: "([^"-]+)-?([^"-])?([^"-]+)?"		subType: K4ItemSubType.$1\U$2$3
+			*/
+
+			const MIGRATEDITEMDATA = (Object.values(NEW_ITEM_DATA)
 				.map((subTypeDict) => Object.values(subTypeDict))
-				.flat()
-				.map((v) => Object.values(v))
+				.flat() as unknown as Array<Record<string,K4ConstructorData[]>>)
+				.map((v: Record<string,K4ConstructorData[]>) => Object.values(v))
 				.flat() // @ts-expect-error They fucked up
 				.map((iData: K4ConstructorData) => Object.assign(iData, {folder: game.folders.get(folderMap[iData.type as KeyOf<typeof folderMap>][iData.data.subType as "active-rolled" | "active-static" | "passive"])})) as K4ConstructorData[];
-
-			console.log("MIGRATED DATA", MIGRATEDITEMDATA);
 
 			const derivedItemData = MIGRATEDITEMDATA.map((iData) => iData.data.subItems ?? [])
 				.flat() // @ts-expect-error They fucked up
 				.map((iData: K4ConstructorData) => Object.assign(iData, {folder: game.folders.get(folderMap[`derived_${iData.type}` as KeyOf<typeof folderMap>][iData.data.subType as "active-rolled" | "active-static" | "passive"])})) as K4ConstructorData[];
 
 			console.log("DERIVED ITEMS", derivedItemData);
-			// const MIGRATEDITEMDATA = MIGRATE_ITEM_DATA() // @ts-expect-error They fucked up
-			// );
-
-			/*DEVCODE*/
-			// const derivedItemData = MIGRATEDITEMDATA.map((iData) => (iData.data.subItems ?? [])
-			// // @ts-expect-error They fucked up
-			// 	.map((mData: ItemMigrationData) => Object.assign(mData, {folder: game.folders.getName(folderMap.derived_move).id}))).flat();
-			// const derivedAttackData = MIGRATEDITEMDATA.map((iData) => (iData.data.attacks ?? [])
-			// // @ts-expect-error They fucked up
-			// 	.map((aData: ItemMigrationData) => Object.assign(aData, {folder: game.folders.getName(folderMap.derived_attack).id}))).flat();
 
 			await Item.createDocuments([
 				...MIGRATEDITEMDATA,

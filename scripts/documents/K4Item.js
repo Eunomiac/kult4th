@@ -15,6 +15,29 @@ export var K4ItemSubType;
     K4ItemSubType["activeStatic"] = "active-static";
     K4ItemSubType["passive"] = "passive";
 })(K4ItemSubType || (K4ItemSubType = {}));
+export var K4ItemRange;
+(function (K4ItemRange) {
+    K4ItemRange["arm"] = "arm";
+    K4ItemRange["room"] = "room";
+    K4ItemRange["field"] = "field";
+    K4ItemRange["horizon"] = "horizon";
+})(K4ItemRange || (K4ItemRange = {}));
+export var K4WeaponClass;
+(function (K4WeaponClass) {
+    K4WeaponClass["meleeUnarmed"] = "melee-unarmed";
+    K4WeaponClass["meleeCrush"] = "melee-crush";
+    K4WeaponClass["meleeSlash"] = "melee-slash";
+    K4WeaponClass["meleeStab"] = "melee-stab";
+    K4WeaponClass["firearm"] = "firearm";
+    K4WeaponClass["bomb"] = "bomb";
+})(K4WeaponClass || (K4WeaponClass = {}));
+export var K4ItemResultType;
+(function (K4ItemResultType) {
+    K4ItemResultType["staticSuccess"] = "staticSuccess";
+    K4ItemResultType["completeSuccess"] = "completeSuccess";
+    K4ItemResultType["partialSuccess"] = "partialSuccess";
+    K4ItemResultType["failure"] = "failure";
+})(K4ItemResultType || (K4ItemResultType = {}));
 export default class K4Item extends Item {
     get type() { return super.type; }
     get subItems() {

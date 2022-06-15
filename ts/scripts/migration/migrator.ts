@@ -1,10 +1,10 @@
 import C from "../constants.js";
 import U from "../utilities.js";
 import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData.js";
-import {DATA_JSON} from "./migrationData.js";
+import {UNMIGRATED_DATA} from "./migrationData.js";
 import {K4ItemType, K4ItemSubType} from "../../documents/K4Item.js";
 
-export type ItemMigrationData = Record<any,any> & Omit<Required<ItemDataConstructorData>,"_id"|"effects"|"folder"|"sort"|"permission"|"flags">& {data: Record<any,any>}
+export type ItemMigrationData = Record<key,any> & Omit<Required<ItemDataConstructorData>,"data"|"_id"|"effects"|"folder"|"sort"|"permission"|"flags">
 
 function stringToNum(numString: string | number) {
 	if (/^\d+$/.test(`${numString}`)) { return parseInt(`${numString}`) }
@@ -15,7 +15,7 @@ function stringToNum(numString: string | number) {
 	// throw new Error(`Bad Number String: '${numString}'`);
 }
 
-function toDict<T extends List, K extends string & KeyOf<T>, V extends ValueOf<T>>(items: T[], key: K): V extends key ? Record<V,T> : never {
+export function toDict<T extends List, K extends string & KeyOf<T>, V extends ValueOf<T>>(items: T[], key: K): V extends key ? Record<V,T> : never {
 	const dict = {} as Record<V,T>;
 	const mappedItems = items
 		.map((data) => {
@@ -107,7 +107,7 @@ const parserFuncs = {
 			default: return false as never;
 		}
 	},
-	results: <T extends K4ItemType>(data: ItemMigrationData, type: T, listLocs: Record<listLocation, string[]>): ResultDef<T> => {
+	results: <T extends K4ItemType>(data: ItemMigrationData, type: T, listLocs: Record<listLocation, string[]>): ResultDef<K4ItemSubType> => {
 		const genericResult = {
 			result: "",
 			optionsLists: [],
@@ -151,7 +151,7 @@ const parserFuncs = {
 			}
 			return genericResult;
 		}
-		const results: Partial<ResultDef<K4ItemType.move>> = {};
+		const results: Partial<ResultDef<K4ItemSubType.activeRolled> & ResultDef<K4ItemSubType.activeStatic>> = {};
 		switch (type) {
 			case K4ItemType.move: {
 				results.staticSuccess = parseResults("staticSuccess");
@@ -161,17 +161,17 @@ const parserFuncs = {
 				results.completeSuccess = parseResults("completeSuccess");
 				results.partialSuccess = parseResults("partialSuccess");
 				results.failure = parseResults("failure");
-				return results as ResultDef<T>;
+				return results as ResultDef<K4ItemSubType>;
 			}
 			case K4ItemType.advantage:
 			case K4ItemType.disadvantage: {
-				return {staticSuccess: parseResults("staticSuccess")} as ResultDef<T>;
+				return {staticSuccess: parseResults("staticSuccess")} as ResultDef<K4ItemSubType>;
 			}
 			case K4ItemType.darksecret:
 			case K4ItemType.relation:
 			case K4ItemType.weapon:
 			case K4ItemType.gear: {
-				return {} as ResultDef<T>;
+				return {} as ResultDef<K4ItemSubType>;
 			}
 			default: return false as never;
 		}
@@ -179,20 +179,20 @@ const parserFuncs = {
 };
 
 const PARSERS = {
-	move: (data: ItemMigrationData): K4ConstructorData<K4ItemType.move> => {
+	move: (data: ItemMigrationData): any => {
 		const {listDefs, listLocs} = parserFuncs.lists(data);
-		const newData: K4ConstructorData<K4ItemType.move> = {
+		const newData: any = {
 			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
 			name: data.name,
-			type: "move",
-			img: data.img,
+			type: K4ItemType.move,
+			img: data.img ?? "",
 			data: {
-				subType: data.subType as TraitType,
+				subType: data.subType as K4ItemSubType,
 				attribute: data.attributemod || "0",
 				description: "",
 				notes: data.notes,
 				lists: listDefs,
-				subItems: data.attacks ?? [],
+				subItems: (data.attacks ?? []).map(PARSERS.attack),
 				sourceItem: {
 					name: data.linkName ?? "",
 					id: "",
@@ -204,17 +204,17 @@ const PARSERS = {
 				results: parserFuncs.results(data, K4ItemType.move, listLocs)
 			}
 		};
-		return newData;
+		return newData as K4ConstructorData;
 	},
-	attack: (data: ItemMigrationData): K4ConstructorData<K4ItemType.attack> => {
+	attack: (data: ItemMigrationData): any => {
 		const {listDefs, listLocs} = parserFuncs.lists(data);
-		const newData: K4ConstructorData<K4ItemType.attack> = {
+		const newData: any = {
 			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
 			name: data.name,
-			type: "attack",
-			img: data.img,
+			type: K4ItemType.attack,
+			img: data.img ?? "",
 			data: {
-				subType: data.subType as TraitType,
+				subType: data.subType as K4ItemSubType,
 				attribute: data.attributemod || "violence",
 				description: "",
 				notes: data.special,
@@ -237,17 +237,17 @@ const PARSERS = {
 				results: parserFuncs.results(data, K4ItemType.attack, listLocs)
 			}
 		};
-		return newData;
+		return newData as K4ConstructorData;
 	},
-	advantage: (data: ItemMigrationData): K4ConstructorData<K4ItemType.advantage> => {
+	advantage: (data: ItemMigrationData): any => {
 		const {listDefs, listLocs} = parserFuncs.lists(data);
-		const newData: K4ConstructorData<K4ItemType.advantage> = {
+		const newData: any = {
 			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
 			name: data.name,
-			type: "advantage",
-			img: data.img,
+			type: K4ItemType.advantage,
+			img: data.img ?? "",
 			data: {
-				subType: data.subType as TraitType,
+				subType: data.subType as K4ItemSubType,
 				attribute: data.attributemod || "0",
 				description: "",
 				notes: data.notes,
@@ -266,15 +266,15 @@ const PARSERS = {
 		};
 		return newData;
 	},
-	disadvantage: (data: ItemMigrationData): K4ConstructorData<K4ItemType.disadvantage> => {
+	disadvantage: (data: ItemMigrationData): any => {
 		const {listDefs, listLocs} = parserFuncs.lists(data);
-		const newData: K4ConstructorData<K4ItemType.disadvantage> = {
+		const newData: any = {
 			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
 			name: data.name,
-			type: "disadvantage",
-			img: data.img,
+			type: K4ItemType.disadvantage,
+			img: data.img ?? "",
 			data: {
-				subType: data.subType as TraitType,
+				subType: data.subType as K4ItemSubType,
 				attribute: data.attributemod || "0",
 				description: "",
 				notes: data.notes,
@@ -292,15 +292,15 @@ const PARSERS = {
 		};
 		return newData;
 	},
-	darksecret: (data: ItemMigrationData): K4ConstructorData<K4ItemType.darksecret> => {
+	darksecret: (data: ItemMigrationData): any => {
 		const {listDefs, listLocs} = parserFuncs.lists(data);
-		const newData: K4ConstructorData<K4ItemType.darksecret> = {
+		const newData: any = {
 			// isMigrated: true, // Activate ONLY when you're sure all the data is transferred over!
 			name: data.name,
-			type: "darksecret",
-			img: data.img,
+			type: K4ItemType.darksecret,
+			img: data.img ?? "",
 			data: {
-				subType: "passive" as TraitType,
+				subType: "passive" as K4ItemSubType,
 				drive: "",
 				description: "",
 				notes: data.notes,
@@ -314,14 +314,15 @@ const PARSERS = {
 				],
 				isCustom: false,
 				pdfLink: "",
-				rules: parserFuncs.rules(data, K4ItemType.darksecret, listLocs)
+				rules: parserFuncs.rules(data, K4ItemType.darksecret, listLocs),
+				results: parserFuncs.results(data, K4ItemType.darksecret, listLocs)
 			}
 		};
 		return newData;
 	}
 };
 
-function getAllData(data: Record<any,any> = DATA_JSON): Record<key,ItemMigrationData> {
+function getAllData(data: Record<any,any> = UNMIGRATED_DATA): Record<key,ItemMigrationData> {
 	const items = Object.values(data);
 	const derivedMoves = items.map((item) => item.moves || []).flat();
 	const derivedAttacks = items.map((item) => item.attacks || []).flat();
@@ -332,7 +333,7 @@ function getAllData(data: Record<any,any> = DATA_JSON): Record<key,ItemMigration
 	};
 }
 
-function checkJSON(tests: Record<string, Array<(iData: ItemMigrationData) => boolean>>, data: Record<string,ItemMigrationData> = DATA_JSON) {
+function checkJSON(tests: Record<string, Array<(iData: ItemMigrationData) => boolean>>, data: Record<string,ItemMigrationData> = UNMIGRATED_DATA) {
 	const resultReport: Record<string,Record<string,ItemMigrationData>> = {};
 	Object.entries(tests).forEach(([testName, testFuncs]) => {
 		let validItems = Object.values(cleanData(data));
@@ -344,7 +345,7 @@ function checkJSON(tests: Record<string, Array<(iData: ItemMigrationData) => boo
 	return resultReport;
 }
 
-function mapJSON(keys: key[], data: Record<string,ItemMigrationData> = DATA_JSON) {
+function mapJSON(keys: key[], data: Record<string,ItemMigrationData> = UNMIGRATED_DATA) {
 	// @ts-expect-error Just testing;
 	return Object.fromEntries(Object.entries(data).map(([name, iData]) => {
 		const flatData = flattenObject(iData);
@@ -361,12 +362,12 @@ function mapJSON(keys: key[], data: Record<string,ItemMigrationData> = DATA_JSON
 		.filter(Boolean));
 }
 
-function groupJSON(
-	groupTests: Record<string, (iData: ItemMigrationData) => boolean>,
-	data: Record<any,any> = DATA_JSON,
+function groupJSON<T>(
+	groupTests: Record<string, (iData: T) => boolean>,
+	data: Record<any,any> = UNMIGRATED_DATA,
 	isFilteringEmpty = false
-): Record<key, Record<key, ItemMigrationData>> {
-	const groupedData: Record<key, ItemMigrationData[]> = Object.fromEntries([
+): Record<key, Record<key, T>> {
+	const groupedData: Record<key, T[]> = Object.fromEntries([
 		...Object.keys(groupTests).map((key) => [key, []]),
 		["UNGROUPED", []]
 	]);
@@ -544,18 +545,18 @@ function parseResultListReferences(iData: ItemMigrationData): ItemMigrationData 
 	return missingListData; */
 }
 
-function changeAllData(iFunc: (iData: ItemMigrationData) => ItemMigrationData, data = DATA_JSON): Record<key, ItemMigrationData> {
+function changeAllData(iFunc: (iData: ItemMigrationData) => ItemMigrationData, data = UNMIGRATED_DATA): Record<key, ItemMigrationData> {
 	let newData = changeData(iFunc, data);
 	newData = changeMoveData(iFunc, newData);
 	newData = changeAttackData(iFunc, newData);
 	return newData;
 }
 
-function changeData(iFunc: (iData: ItemMigrationData) => ItemMigrationData, data = DATA_JSON): Record<key, ItemMigrationData> {
+function changeData(iFunc: (iData: ItemMigrationData) => ItemMigrationData, data = UNMIGRATED_DATA): Record<key, ItemMigrationData> {
 	return toDict((Object.values(data) as unknown as ItemMigrationData[]).map(iFunc), "name");
 }
 
-function changeMoveData(mFunc: (mData: ItemMigrationData) => ItemMigrationData, data = DATA_JSON): Record<key,ItemMigrationData> {
+function changeMoveData(mFunc: (mData: ItemMigrationData) => ItemMigrationData, data = UNMIGRATED_DATA): Record<key,ItemMigrationData> {
 	function changeMove(iData: ItemMigrationData) {
 		if (iData.type === "move") {
 			iData = mFunc(iData);
@@ -568,7 +569,7 @@ function changeMoveData(mFunc: (mData: ItemMigrationData) => ItemMigrationData, 
 	return toDict((Object.values(data) as unknown as ItemMigrationData[]).map(changeMove), "name");
 }
 
-function changeAttackData(aFunc: (aData: ItemMigrationData) => ItemMigrationData, data = DATA_JSON): Record<key,ItemMigrationData> {
+function changeAttackData(aFunc: (aData: ItemMigrationData) => ItemMigrationData, data = UNMIGRATED_DATA): Record<key,ItemMigrationData> {
 	function changeAttack(iData: ItemMigrationData) {
 		if (iData.type === "attack") {
 			iData = aFunc(iData);
@@ -582,9 +583,9 @@ function changeAttackData(aFunc: (aData: ItemMigrationData) => ItemMigrationData
 	return toDict((Object.values(data) as unknown as ItemMigrationData[]).map(changeAttack), "name");
 }
 
-function cleanData<T>(data: T, remVals: Array<false|null|undefined|""|0|Record<string,never>|never[]> = [undefined,null,"",{},[]]): T | Partial<T> | "KILL" {
+export function cleanData<T>(data: T, remVals: Array<false|null|undefined|""|0|Record<string,never>|never[]> = [undefined,null,"",{},[]]): T | Partial<T> | "KILL" {
 	const remStrings = remVals.map((rVal) => JSON.stringify(rVal));
-	if (remStrings.includes(JSON.stringify(data))) { return "KILL" }
+	if (remStrings.includes(JSON.stringify(data)) || remVals.includes(data as ValueOf<typeof remVals>)) { return "KILL" }
 	if (Array.isArray(data)) {
 		const newData = data.map((elem) => cleanData(elem, remVals))
 			.filter((elem) => elem !== "KILL") as T & any[];
@@ -599,6 +600,15 @@ function cleanData<T>(data: T, remVals: Array<false|null|undefined|""|0|Record<s
 	return data;
 }
 
+export const GROUPED_DATA = Object.fromEntries(Object.keys(C.ItemTypes).map((iType) => [
+	iType,
+	groupJSON({
+		"active-rolled": (iData: ItemMigrationData) => iData.subType === "active-rolled",
+		"active-static": (iData: ItemMigrationData) => iData.subType === "active-static",
+		"passive": (iData: ItemMigrationData) => iData.subType === "passive"
+	}, U.objFilter(getAllData(), (iData: ItemMigrationData) => iData.type === iType))
+]));
+
 export default function MIGRATE_ITEM_DATA() {
 	const ALL_DATA = getAllData();
 	console.log("ALL_DATA (cleaned)", cleanData(ALL_DATA));
@@ -606,9 +616,9 @@ export default function MIGRATE_ITEM_DATA() {
 	const ITEM_GROUPS = Object.fromEntries(Object.keys(C.ItemTypes).map((iType) => [
 		iType,
 		groupJSON({
-			"Is Active-Rolled": (iData) => iData.subType === "active-rolled",
-			"Is Active-Static": (iData) => iData.subType === "active-static",
-			"Is Passive": (iData) => iData.subType === "passive"
+			"active-rolled": (iData: ItemMigrationData) => iData.subType === "active-rolled",
+			"active-static": (iData: ItemMigrationData) => iData.subType === "active-static",
+			"passive": (iData: ItemMigrationData) => iData.subType === "passive"
 		}, U.objFilter(ALL_DATA, (iData: ItemMigrationData) => iData.type === iType))
 	]));
 
@@ -659,16 +669,16 @@ export default function MIGRATE_ITEM_DATA() {
 			missingFromResultLists,
 			MISSING_LISTS,
 			Grouped: groupJSON({
-				"Is Active-Rolled": (iData) => iData.subType === "active-rolled",
-				"Is Active-Static": (iData) => iData.subType === "active-static",
-				"Is Passive": (iData) => iData.subType === "passive"
+				"Is Active-Rolled": (iData: any) => iData.subType === "active-rolled",
+				"Is Active-Static": (iData: any) => iData.subType === "active-static",
+				"Is Passive": (iData: any) => iData.subType === "passive"
 			}, MISSING_LISTS)
 		}
 	});
 
-	console.log("INCOMING MIGRATION DATA", cleanData(DATA_JSON));
+	console.log("INCOMING MIGRATION DATA", cleanData(UNMIGRATED_DATA));
 
-	const DATA = Object.values(DATA_JSON);
+	const DATA = Object.values(UNMIGRATED_DATA);
 
 	let migratedData = DATA.map((iData: ItemMigrationData): K4ConstructorData | false => {
 		iData = expandObject(iData);
@@ -694,5 +704,5 @@ export default function MIGRATE_ITEM_DATA() {
 	console.log("OUTGOING MIGRATION DATA", CONSTRUCTORDATA);
 
 	// testOutgoingData(migratedData);
-	return migratedData;
+	return CONSTRUCTORDATA;
 }

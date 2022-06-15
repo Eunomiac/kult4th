@@ -1,5 +1,5 @@
-export { SORTED_DATA } from "./migration/sortedData.js";
-export { DATA_JSON } from "./migration/migrationData.js";
+// export {SORTED_DATA} from "./migration/sortedData.js";
+export { UNMIGRATED_DATA, ORIGINAL_MIGRATED_DATA } from "./migration/migrationData.js";
 export const ActorTypes = {
     PC: "Player Character",
     NPC: "Non-Player Character"
@@ -102,8 +102,9 @@ export const Ranges = {
 export const RegExpPatterns = {
     Attributes: [
         ...Object.keys(Attributes.Active),
-        ...Object.keys(Attributes.Passive)
-    ].map((attrStr) => new RegExp(`(\\b${attrStr.charAt(0).toUpperCase()}${attrStr.slice(1)}\\b)`, "g")),
+        ...Object.keys(Attributes.Passive),
+        "Attribute"
+    ].map((attrStr) => new RegExp(`((?:\\+|\\b)${attrStr.charAt(0).toUpperCase()}${attrStr.slice(1)}\\b)`, "g")),
     BasicPlayerMoves: [
         "\\bAct Under Pressure\\b",
         "\\bAvoid Harm\\b",
@@ -120,12 +121,16 @@ export const RegExpPatterns = {
         "\\bSee Through the Illusion\\b"
     ].map((patStr) => new RegExp(`(${patStr})`, "g")),
     Keywords: [
-        "\\bHarm\\b",
-        "\\bArmor\\b",
+        "(\\b|[-+\\d\\s]+ )Harm\\b",
+        "(\\b|[-+\\d\\s]+ )Armor\\b",
         "\\bStability\\b( \\(.?\\d+\\))?",
         "[-+]\\d+ ongoing\\b",
         "\\b(Serious |Critical )?Wounds?\\b"
-    ].map((patStr) => new RegExp(`(${patStr})`, "g"))
+    ].map((patStr) => new RegExp(`(${patStr})`, "g")),
+    GMText: [
+        /\b([Tt]he GM (?:may )?makes? a (?:hard |soft )?Move)\b/g,
+        /\b([Tt]he GM takes \d+ Hold)\b/g
+    ]
 };
 const C = {
     SYSTEM_ID: "kult4th",

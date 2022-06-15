@@ -2,22 +2,19 @@ import EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/
 import {ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
 import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import { ConfiguredDocumentClass } from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
-import K4Item, {K4ItemType} from "../../../documents/K4Item";
+import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item";
 import K4ItemSheet from '../../../documents/K4ItemSheet';
 
 declare global {
 
-	type TraitType = "active-rolled" | "active-static" | "passive";
-	type RangeType = "arm" | "room" | "field" | "horizon";
 	type AttributeEntry = Attribute.Any | "ask" | "0";
-	type WeaponClass = "melee-unarmed" | "melee-crush" | "melee-slash" | "melee-stab" | "firearm" | "bomb";
-	type WeaponSubClass<T extends WeaponClass> =
-		T extends "melee-unarmed" ? ("")
-	: T extends "melee-crush" ? ("")
-	: T extends "melee-slash" ? ("sword" | "")
-	: T extends "melee-stab" ? ("")
-	: T extends "firearm" ? ("rifle" | "pistol" | "sniper-rifle" | "")
-	: T extends "bomb" ? ("")
+	type WeaponSubClass<T extends K4WeaponClass> =
+		T extends K4WeaponClass.meleeUnarmed ? ("")
+	: T extends K4WeaponClass.meleeCrush ? ("")
+	: T extends K4WeaponClass.meleeSlash ? ("sword" | "")
+	: T extends K4WeaponClass.meleeStab ? ("")
+	: T extends K4WeaponClass.firearm ? ("rifle" | "pistol" | "sniper-rifle" | "")
+	: T extends K4WeaponClass.bomb ? ("")
 	: "";
 
 	type RulesDef = {
@@ -35,18 +32,17 @@ declare global {
 		edges: posInt,
 		hold: posInt
 	};
-	type ResultDef<T extends K4ItemType | undefined = undefined> = T extends K4ItemType.move ? {
-		staticSuccess: ResultSchema,
-		completeSuccess: ResultSchema,
-		partialSuccess: ResultSchema,
-		failure: ResultSchema
-	} : T extends K4ItemType.attack ? {
-		completeSuccess: ResultSchema,
-		partialSuccess: ResultSchema,
-		failure: ResultSchema
-	} : {
-		staticSuccess: ResultSchema
-	}
+	type ResultDef<ST extends K4ItemSubType> = ST extends K4ItemSubType.activeRolled
+			? {
+					[K4ItemResultType.completeSuccess]: ResultSchema,
+					[K4ItemResultType.partialSuccess]: ResultSchema,
+					[K4ItemResultType.failure]: ResultSchema
+			}
+			: ST extends K4ItemSubType.activeStatic
+			? {
+				[K4ItemResultType.staticSuccess]: ResultSchema
+			}
+			: undefined;
 
 	type ListDef = {
 		name: string,
@@ -60,7 +56,7 @@ declare global {
 		type: K4ItemType
 	}
 
-	type K4ConstructorData<Type extends K4ItemType = K4ItemType> =  Pick<K4ItemData<Type>,"name"|"type"|"img"|"data">;
+	type K4ConstructorData<Type extends K4ItemType = K4ItemType> =  K4ItemData<Type>;
 
 	namespace K4ItemClass {
 		// @ts-expect-error Why won't it let me use a generic here?
@@ -87,32 +83,32 @@ declare global {
 			description: string,
 			notes: string,
 			lists: Record<string, ListDef>,
-			subItems: Array<K4ConstructorData>,
+			subItems: Array<K4ConstructorData<K4ItemType.move|K4ItemType.attack>>,
 			isCustom: boolean,
 			pdfLink: string
 		}
 
 		interface Rules { rules: RulesDef }
 
-		interface Results<T extends K4ItemType | undefined = undefined> { results: ResultDef<T> }
+		interface Results<T extends K4ItemSubType = K4ItemSubType> { results: ResultDef<T> }
 
-		export interface Move extends Base, Rules, Results<K4ItemType.move> {
+		export interface Move extends Base, Rules, Results {
 			attribute: AttributeEntry,
 			sourceItem?: SourceDef
 		}
-		export interface Attack extends Base, Rules, Results<K4ItemType.attack> {
+		export interface Attack extends Base, Results {
 			attribute: AttributeEntry,
 			sourceItem: SourceDef,
 			range: RangeType[],
 			harm: posInt,
 			ammo: posInt,
 		}
-		export interface Advantage extends Base, Rules, Results {
+		export interface Advantage extends Base, Rules {
 			attribute: AttributeEntry,
 			currentHold: posInt,
 			currentEdges: posInt
 		}
-		export interface Disadvantage extends Base, Rules, Results {
+		export interface Disadvantage extends Base, Rules {
 			attribute: AttributeEntry,
 			currentHold: posInt
 		}
@@ -160,7 +156,13 @@ declare global {
 		: Type extends K4ItemType.weapon ? K4ItemDataDataSchema.Weapon
 		: Type extends K4ItemType.relation ? K4ItemDataDataSchema.Relation
 		: Type extends K4ItemType.gear ? K4ItemDataDataSchema.Gear
-		: never)
+		: never),
+		folder: string,
+		_id: string | null,
+		effects: any[],
+		sort: number,
+		permission: Record<string,0|1|2|3|undefined>,
+		flags: Record<string,any>
 	};
 
 	declare interface K4ItemSheet<Type extends K4ItemType> {

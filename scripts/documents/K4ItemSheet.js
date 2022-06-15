@@ -28,6 +28,23 @@ export default class K4ItemSheet extends ItemSheet {
     isWeapon() { return this.type === "weapon"; }
     isGear() { return this.type === "gear"; }
     parseHTMLString(str, containerClass = "rules-text") {
+        Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
+            str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
+        });
+        str = str.replace(/\+?%([^%]+)%/g, (match, refStr, ...args) => {
+            if (/^data\./.test(refStr)) {
+                const key = refStr.split(".").pop();
+                return `<strong class='text-keyword'>+${U.tCase(this.data[key])}</strong>`;
+            }
+            else if (/^lists:/.test(refStr)) {
+                const [, listKey] = refStr.split(/:/);
+                return this.getListHTML(listKey);
+            }
+            else if (/^n$/.test(refStr)) {
+                return "<br><br>";
+            }
+            return refStr;
+        }).replace(/(<br>){2,}/g, "<br><br>");
         [
             ...Object.values(C.RegExpPatterns.Attributes),
             ...Object.values(C.RegExpPatterns.Keywords)
@@ -37,31 +54,7 @@ export default class K4ItemSheet extends ItemSheet {
         Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
             str = str.replace(pat, "<em class='text-movename'>$1</em>");
         });
-        return str
-            .replace(/\+\$ATTRIBUTE\$/g, `<strong class='text-keyword'>+${U.tCase(this.data.attribute)}</strong>`)
-            .replace(/\$MOVENAME\$/g, `<em class='text-movename'>${U.tCase(this.item.moves?.[0]?.name)}</em>`)
-            .replace(/\$n\$/g, "<br><br>")
-            .replace(/\$ATTACKS\$/g, this.getListHTML("inlineAttacks"))
-            .replace(/\$OPTIONS\$[\.,\s]*$/, [
-            "</p>",
-            this.getListHTML("options")
-            // `<p class='${containerClass}'>`
-        ].join(""))
-            .replace(/\$OPTIONS\$/g, [
-            "</p>",
-            this.getListHTML("options"),
-            `<p class='${containerClass}'>`
-        ].join(""))
-            .replace(/\$QUESTIONS\$[\.,\s]*$/, [
-            "</p>",
-            this.getListHTML("questions")
-            // `<p class='${containerClass}'>`
-        ].join(""))
-            .replace(/\$QUESTIONS\$/g, [
-            "</p>",
-            this.getListHTML("questions"),
-            `<p class='${containerClass}'>`
-        ].join(""));
+        return str;
     }
     get outroHTML() {
         if (!this.data.rules.outro) {
@@ -82,7 +75,7 @@ export default class K4ItemSheet extends ItemSheet {
                     case K4ItemSubType.activeStatic:
                     case K4ItemSubType.activeRolled: {
                         return this.moves.map((move) => this.parseHTMLString((move.data.rules.outro ?? "")
-                            .replace(/roll \+\$ATTRIBUTE\$/g, "roll to \$MOVENAME\$ (+\$ATTRIBUTE\$)")), "rules-text");
+                            .replace(/roll \+%data\.attribute%/g, "roll to \$MOVENAME\$ (+%data.attribute%)")), "rules-text");
                     }
                     default: {
                         return "";
@@ -136,7 +129,9 @@ export default class K4ItemSheet extends ItemSheet {
         }
         const lists = [];
         this.data.rules.optionsLists.forEach((listKey) => {
-            lists.push(this.getListHTML(listKey));
+            if (!(new RegExp(`${listKey}%`)).test(this.data.rules.intro + this.data.rules.trigger + this.data.rules.outro)) {
+                lists.push(this.getListHTML(listKey));
+            }
         });
         return lists.join("");
     }
@@ -182,14 +177,12 @@ export default class K4ItemSheet extends ItemSheet {
         const data = await super.getData();
         const handlebarsData = {
             rulesHTML: [
-                "<div class='editor-content'>",
-                "<p class='rules-text'>",
+                "<div class='editor-content rules-text'>",
                 ...[
                     this.parseHTMLString(data.data.data.rules.intro),
                     data.data.data.rules.trigger ? `<em class='text-trigger'>${this.parseHTMLString(data.data.data.rules.trigger)}</em>` : "",
                     [this.outroHTML].flat().join("<br><br><br>")
                 ].map((str) => str.trim()).join(" "),
-                "</p>",
                 this.rulesListHTML,
                 "</div>"
             ].filter(Boolean).join("")

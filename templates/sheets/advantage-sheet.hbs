@@ -7,7 +7,17 @@
 			<input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" />
 		</header>
 		<section class="tab-content">
-			<div class="editor">{{{rulesHTML}}}</div>
+			<div class="editor">{{{rulesHTML}}}
+				{{#if item.data.data.rules.holdText}}
+				<span class="hold-header">This {{item.type}} grants Hold</span>
+				<span class="hold-body">{{item.data.data.rules.holdText}}</span>
+				{{/if}}
+			</div>
+			{{#each item.data.data.subItems as |subItem|}}
+			{{log "SUBITEM" subItem}}
+			{{log this}}
+			{{> "systems/kult4th/templates/partials/basic-move-card.hbs" subItem}}
+			{{/each}}
 		</section>
 	</section>
 </form>

@@ -7,7 +7,31 @@
 			<input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" />
 		</header>
 		<section class="tab-content">
-			<div class="editor">{{{rulesHTML}}}</div>
+			<div class="editor">
+				<div class="editor-content rules-text">
+					{{~#if data.data.rules.intro}}<span class="text-intro">{{{formatForKult data.data.rules.intro}}}</span>{{/if}}
+					{{~#if data.data.rules.trigger}} <em class="text-trigger">{{{formatForKult data.data.rules.trigger}}}</em> {{/if}}
+					{{~#if data.data.rules.outro}}<span class="text-outro">{{{formatForKult data.data.rules.outro}}}</span>{{/if}}
+					{{~#if data.data.rules.optionsLists}}
+						{{~#with data.data.lists as |LISTS|}}
+						{{~#each ../data.data.rules.optionsLists as |listKey|}}
+						{{log "LISTS" LISTS}}
+						{{log "listKey" listKey}}
+						{{log "Lookup" (lookup LISTS listKey)}}
+						{{~#with (lookup LISTS listKey) as |listData|}}
+						{{log "listData" listData}}
+						<h2 class="list-name">{{listData.name}}</h2>
+						{{~#if listData.intro}}<span class="list-intro">{{{formatForKult listData.intro}}}</span>{{/if}}
+						<ul class="rules-list list-{{listKey}}">
+						{{#each listData.items as |item|}}
+						<li>{{{formatForKult item}}}</li>
+						{{/each}}
+						{{/with}}
+						{{/each}}
+						{{/with}}
+					{{/if}}
+				</div>
+			</div>
 		</section>
 	</section>
 </form>

@@ -787,7 +787,7 @@ function objMerge(target, source, { isMutatingOk = false, isStrictlySafe = false
         for (const [key, val] of Object.entries(source)) {
             const targetVal = target[key];
             if (isConcatenatingArrays && isArray(target[key]) && isArray(val)) {
-                // @ts-expect-error Can't get it to recognize that target[key] is an array, despite isArray() above.
+                // @ts-expect-error Compiler won't let me convert Tx[keyof Tx] to an array.
                 target[key].push(...val);
             }
             else if (val !== null && typeof val === "object") {

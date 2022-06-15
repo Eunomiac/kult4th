@@ -40,6 +40,9 @@
 						background: var(--gradient-dkdkgold-upright);
 						text-shadow: var(--textShadow-inset);
 
+						ul {
+							margin-top: 15px;
+						}
 
 						.inline-attack {
 							display: inline;
