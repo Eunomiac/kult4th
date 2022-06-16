@@ -12,7 +12,7 @@ export function MIX(derivedCtor, baseCtors) {
     return derivedCtor;
 }
 export const HandlebarHelpers = {
-    test: function (param1, operator, param2) {
+    "test": function (param1, operator, param2) {
         switch (operator) {
             case "==": {
                 return param1 == param2;
@@ -20,21 +20,33 @@ export const HandlebarHelpers = {
             case "===": {
                 return param1 === param2;
             }
+            case "includes": {
+                return Array.isArray(param1) && param1.includes(param2);
+            }
             default: {
                 return false;
             }
         }
     },
-    formatForKult: function (str, context) {
-        console.log("CONTEXT", context);
+    "case": function (mode, str) {
+        switch (mode) {
+            case "upper": return U.uCase(str);
+            case "lower": return U.lCase(str);
+            case "sentence": return U.sCase(str);
+            case "title": return U.tCase(str);
+            default: return str;
+        }
+    },
+    "formatForKult": function (str, context) {
+        // console.log("CONTEXT", context);
         const iData = context.data.root.data;
         Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
             str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
         });
-        str = str.replace(/\+?%([^%]+)%/g, (match, refStr, ...args) => {
+        str = str.replace(/(\+?)%([^%]+)%/g, (match, prefix, refStr, ...args) => {
             if (/^data\./.test(refStr)) {
                 const key = refStr.split(".").pop();
-                return `<strong class='text-keyword'>+${U.tCase(iData.data[key])}</strong>`;
+                return `<strong class='text-keyword'>${prefix}${U.tCase(iData.data[key])}</strong>`;
             }
             else if (/^lists:/.test(refStr)) {
                 // const [,listKey] = refStr.split(/:/);
@@ -54,6 +66,15 @@ export const HandlebarHelpers = {
         Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
             str = str.replace(pat, "<em class='text-movename'>$1</em>");
         });
+        if (/&mdash;/.test(str)) {
+            const [edgeName, edgeEffect] = str.split(/\s+&mdash;\s+/);
+            str = [
+                "<span class='edge-name'>",
+                edgeName,
+                "</span> &mdash; ",
+                edgeEffect
+            ].join("");
+        }
         return str;
     }
 };

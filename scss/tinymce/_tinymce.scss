@@ -3,6 +3,7 @@
 	hyphens: auto;
 	color: var(--gold);
 	font-family: var(--font-body);
+	font-size: 12px;
 
 
 	* {
@@ -32,7 +33,7 @@
 	}
 
 	p {
-		font-size: 12px;
+		font-size: inherit;
 	}
 
 	h3 {

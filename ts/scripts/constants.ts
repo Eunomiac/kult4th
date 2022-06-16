@@ -65,6 +65,30 @@ export const Attributes = {
 		reflexes: {}
 	}
 } as const;
+export enum K4ItemType {
+	advantage = "advantage",
+	disadvantage = "disadvantage",
+	move = "move",
+	darksecret = "darksecret",
+	relation = "relation",
+	gear = "gear",
+	attack = "attack",
+	weapon = "weapon"
+}
+export enum K4Attribute {
+	ask = "ask",
+	zero = "0",
+	fortitude = "fortitude",
+	reflexes = "reflexes",
+	willpower = "willpower",
+	reason = "reason",
+	intuition = "intuition",
+	perception = "perception",
+	coolness = "coolness",
+	violence = "violence",
+	charisma = "charisma",
+	soul = "soul"
+}
 export const Colors = {
 	"GOLD": "#958b68",
 	"GOLD +2": "#e4ddc3",
@@ -126,7 +150,7 @@ export const RegExpPatterns = {
 		"(\\b|[-+\\d\\s]+ )Armor\\b",
 		"\\bStability\\b( \\(.?\\d+\\))?",
 		"[-+]\\d+ ongoing\\b",
-		"\\b(Serious |Critical )?Wounds?\\b"
+		"\\b(Serious |Critical |\d+ )?Wounds?\\b"
 	].map((patStr) => new RegExp(`(${patStr})`, "g")),
 	GMText: [
 		/\b([Tt]he GM (?:may )?makes? a (?:hard |soft )?Move)\b/g,

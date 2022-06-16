@@ -812,7 +812,20 @@ const objExpand = (obj) => {
         }
         setProperty(expObj, key, val);
     }
-    return expObj;
+    // Iterate through expanded Object, converting object literals to arrays where it makes sense
+    function arrayify(obj) {
+        if (isList(obj)) {
+            if (/^\d+$/.test(Object.keys(obj).join(""))) {
+                return Object.values(obj).map(arrayify);
+            }
+            return objMap(obj, (v) => arrayify(v));
+        }
+        if (isArray(obj)) {
+            return obj.map(arrayify);
+        }
+        return obj;
+    }
+    return arrayify(expObj);
 };
 const objFlatten = (obj) => {
     const flatObj = {};

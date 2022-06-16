@@ -1,14 +1,3 @@
 <div class="detail-move-card move-{{data.subType}}" data-move-id="{{id}}">
-	<h3>{{name}}</h3>
-	{{#if data.sourceItem}}
-	<span class="source-item-subheader"><label>{{data.sourceItem.type}}</label><span>{{data.sourceItem.name}}</span></span>
-	{{/if}}
-	{{{rulesHTML}}}
-	{{#if eq (data.subType "active-rolled")}}
-	<div class="roll-result-box">
-		<div class="roll-result"><label>15+</label><span>{{{completeSuccessHTML}}}</span></div>
-		<div class="roll-result"><label>9-14</label><span>{{{partialSuccessHTML}}}</span></div>
-		<div class="roll-result"><label>8-</label><span>{{{failureHTML}}}</span></div>
-	</div>
-	{{/if}}
+
 </div>

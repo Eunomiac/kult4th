@@ -18,23 +18,33 @@ export function MIX(derivedCtor: K4Constructor, baseCtors: K4Constructor[]) {
 }
 
 export const HandlebarHelpers = {
-	test: function(param1: string, operator: string, param2: string) {
+	"test": function(param1: string, operator: string, param2: string) {
 		switch (operator) {
 			case "==": { return param1 == param2 } // eslint-disable-line eqeqeq
 			case "===": { return param1 === param2 }
+			case "includes": { return Array.isArray(param1) && param1.includes(param2) }
 			default: { return false }
 		}
 	},
-	formatForKult: function(str: string, context: any) {
-		console.log("CONTEXT", context);
-		const iData: K4ConstructorData = context.data.root.data;
+	"case": function(mode: "upper" | "lower" | "sentence" | "title", str: string) {
+		switch (mode) {
+			case "upper": return U.uCase(str);
+			case "lower": return U.lCase(str);
+			case "sentence": return U.sCase(str);
+			case "title": return U.tCase(str);
+			default: return str;
+		}
+	},
+	"formatForKult": function(str: string, context: any) {
+		// console.log("CONTEXT", context);
+		const iData: K4ItemData = context.data.root.data;
 		Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
 			str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
 		});
-		str = str.replace(/\+?%([^%]+)%/g, (match, refStr: string, ...args: any[]) => {
+		str = str.replace(/(\+?)%([^%]+)%/g, (match, prefix: string, refStr: string, ...args: any[]) => {
 			if (/^data\./.test(refStr)) {
 				const key = refStr.split(".").pop();
-				return `<strong class='text-keyword'>+${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])}</strong>`;
+				return `<strong class='text-keyword'>${prefix}${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])}</strong>`;
 			} else if (/^lists:/.test(refStr)) {
 				// const [,listKey] = refStr.split(/:/);
 				return "";
@@ -52,6 +62,15 @@ export const HandlebarHelpers = {
 		Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
 			str = str.replace(pat, "<em class='text-movename'>$1</em>");
 		});
+		if (/&mdash;/.test(str)) {
+			const [edgeName, edgeEffect] = str.split(/\s+&mdash;\s+/);
+			str = [
+				"<span class='edge-name'>",
+				edgeName,
+				"</span> &mdash; ",
+				edgeEffect
+			].join("");
+		}
 		return str;
 	}
 };

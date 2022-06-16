@@ -39,13 +39,13 @@ export default class K4Item<Type extends K4ItemType> extends Item {
 	declare data: ItemData & K4ItemData<Type>;
 	override get type(): Type { return super.type as Type }
 
-	get subItems(): Array<K4ConstructorData<K4ItemType.move|K4ItemType.attack>> {
+	get subItems(): Array<K4ItemData<K4ItemType.move|K4ItemType.attack>> {
 		return this.data.data.subItems ?? [];
 	}
-	get moves(): Array<K4ConstructorData<K4ItemType.move>> {
-		return this.subItems.filter((iData) => iData.type === "move") as Array<K4ConstructorData<K4ItemType.move>>;
+	get moves(): Array<K4ItemData<K4ItemType.move>> {
+		return this.subItems.filter((iData) => iData.type === "move") as Array<K4ItemData<K4ItemType.move>>;
 	}
-	get attacks(): Array<K4ConstructorData<K4ItemType.attack>> {
-		return this.subItems.filter((iData) => iData.type === "attack") as Array<K4ConstructorData<K4ItemType.attack>>;
+	get attacks(): Array<K4ItemData<K4ItemType.attack>> {
+		return this.subItems.filter((iData) => iData.type === "attack") as Array<K4ItemData<K4ItemType.attack>>;
 	}
 }

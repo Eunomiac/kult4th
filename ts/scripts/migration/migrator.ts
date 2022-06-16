@@ -204,7 +204,7 @@ const PARSERS = {
 				results: parserFuncs.results(data, K4ItemType.move, listLocs)
 			}
 		};
-		return newData as K4ConstructorData;
+		return newData as K4ItemData;
 	},
 	attack: (data: ItemMigrationData): any => {
 		const {listDefs, listLocs} = parserFuncs.lists(data);
@@ -237,7 +237,7 @@ const PARSERS = {
 				results: parserFuncs.results(data, K4ItemType.attack, listLocs)
 			}
 		};
-		return newData as K4ConstructorData;
+		return newData as K4ItemData;
 	},
 	advantage: (data: ItemMigrationData): any => {
 		const {listDefs, listLocs} = parserFuncs.lists(data);
@@ -680,25 +680,25 @@ export default function MIGRATE_ITEM_DATA() {
 
 	const DATA = Object.values(UNMIGRATED_DATA);
 
-	let migratedData = DATA.map((iData: ItemMigrationData): K4ConstructorData | false => {
+	let migratedData = DATA.map((iData: ItemMigrationData): K4ItemData | false => {
 		iData = expandObject(iData);
 
 		if (["relation", "weapon", "gear"].includes(iData.type)) { return false }
 
 		return PARSERS[iData.type as KeyOf<typeof PARSERS>](iData);
-	}).filter(Boolean) as K4ConstructorData[];
+	}).filter(Boolean) as K4ItemData[];
 
 	// Filter out unwanted traits from migratedData
-	migratedData = migratedData.map(({name, type, data, img}: K4ConstructorData) => ({name, type, data, img})) as K4ConstructorData[];
+	migratedData = migratedData.map(({name, type, data, img}: K4ItemData) => ({name, type, data, img})) as K4ItemData[];
 
 	// Prepare console printout of grouped and sorted migratedData
 	const CONSTRUCTORDATA = Object.fromEntries(Object.values(K4ItemType).map((iType) => [iType, U.objMap(
 		groupJSON({
-			[K4ItemSubType.activeRolled]: (iData: K4ConstructorData<typeof iType>) => iData.data.subType === K4ItemSubType.activeRolled,
-			[K4ItemSubType.activeStatic]: (iData: K4ConstructorData<typeof iType>) => iData.data.subType === K4ItemSubType.activeStatic,
-			[K4ItemSubType.passive]: (iData: K4ConstructorData<typeof iType>) => iData.data.subType === K4ItemSubType.passive
-		}, U.objFilter(migratedData, (iData: K4ConstructorData) => iData.type === iType), true),
-		(itemDict: Record<string,K4ConstructorData>) => U.objMap(itemDict, ({name, type, img, data}: K4ConstructorData) => ({name, type, img, data}))
+			[K4ItemSubType.activeRolled]: (iData: K4ItemData<typeof iType>) => iData.data.subType === K4ItemSubType.activeRolled,
+			[K4ItemSubType.activeStatic]: (iData: K4ItemData<typeof iType>) => iData.data.subType === K4ItemSubType.activeStatic,
+			[K4ItemSubType.passive]: (iData: K4ItemData<typeof iType>) => iData.data.subType === K4ItemSubType.passive
+		}, U.objFilter(migratedData, (iData: K4ItemData) => iData.type === iType), true),
+		(itemDict: Record<string,K4ItemData>) => U.objMap(itemDict, ({name, type, img, data}: K4ItemData) => ({name, type, img, data}))
 	)
 	]));
 	console.log("OUTGOING MIGRATION DATA", CONSTRUCTORDATA);

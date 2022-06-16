@@ -83,7 +83,8 @@
   -ms-hyphens: auto;
   hyphens: auto;
   color: var(--gold);
-  font-family: var(--font-body); }
+  font-family: var(--font-body);
+  font-size: 12px; }
   #tinymce * {
     text-align: justify;
     -webkit-hyphens: auto;
@@ -105,7 +106,7 @@
   #tinymce h2 {
     height: 24px; }
   #tinymce p {
-    font-size: 12px; }
+    font-size: inherit; }
   #tinymce h3 {
     height: 16px; }
   #tinymce .text-keyword {

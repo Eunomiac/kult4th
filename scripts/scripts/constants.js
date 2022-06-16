@@ -64,6 +64,32 @@ export const Attributes = {
         reflexes: {}
     }
 };
+export var K4ItemType;
+(function (K4ItemType) {
+    K4ItemType["advantage"] = "advantage";
+    K4ItemType["disadvantage"] = "disadvantage";
+    K4ItemType["move"] = "move";
+    K4ItemType["darksecret"] = "darksecret";
+    K4ItemType["relation"] = "relation";
+    K4ItemType["gear"] = "gear";
+    K4ItemType["attack"] = "attack";
+    K4ItemType["weapon"] = "weapon";
+})(K4ItemType || (K4ItemType = {}));
+export var K4Attribute;
+(function (K4Attribute) {
+    K4Attribute["ask"] = "ask";
+    K4Attribute["zero"] = "0";
+    K4Attribute["fortitude"] = "fortitude";
+    K4Attribute["reflexes"] = "reflexes";
+    K4Attribute["willpower"] = "willpower";
+    K4Attribute["reason"] = "reason";
+    K4Attribute["intuition"] = "intuition";
+    K4Attribute["perception"] = "perception";
+    K4Attribute["coolness"] = "coolness";
+    K4Attribute["violence"] = "violence";
+    K4Attribute["charisma"] = "charisma";
+    K4Attribute["soul"] = "soul";
+})(K4Attribute || (K4Attribute = {}));
 export const Colors = {
     "GOLD": "#958b68",
     "GOLD +2": "#e4ddc3",
@@ -125,7 +151,7 @@ export const RegExpPatterns = {
         "(\\b|[-+\\d\\s]+ )Armor\\b",
         "\\bStability\\b( \\(.?\\d+\\))?",
         "[-+]\\d+ ongoing\\b",
-        "\\b(Serious |Critical )?Wounds?\\b"
+        "\\b(Serious |Critical |\d+ )?Wounds?\\b"
     ].map((patStr) => new RegExp(`(${patStr})`, "g")),
     GMText: [
         /\b([Tt]he GM (?:may )?makes? a (?:hard |soft )?Move)\b/g,

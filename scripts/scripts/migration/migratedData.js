@@ -1,8 +1,11 @@
-import { K4ItemSubType, K4ItemType } from "../../documents/K4Item.js";
-// SEE KULT4TH.ts, BOTTOM, FOR REGEXP PATTERNS
+import { K4Attribute } from "../../scripts/constants.js";
+import { K4ItemType, K4ItemSubType } from "../../documents/K4Item.js";
+/* REG EX REPLACEMENT PATTERNS AFTER IMPORTING FROM CONSOLE:
+     "\[K4(.*?):(.*?)\]"			-->			K4$1.$2
+     "\[\[K4(.*?):(.*?)\]\]" 	-->			[K4$1.$2]		*/
 const ITEM_DATA = {
-    advantage: {
-        "active-rolled": {
+    [K4ItemType.advantage]: {
+        [K4ItemSubType.activeRolled]: {
             "Academic Network": {
                 name: "Academic Network",
                 type: K4ItemType.advantage,
@@ -34,20 +37,18 @@ const ITEM_DATA = {
                                         result: "You know one another, but there is an old enmity between the two of you (Relation +0)."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have academic contacts at universities around the world."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Access the Dark Net": {
                 name: "Access the Dark Net",
@@ -93,17 +94,15 @@ const ITEM_DATA = {
                                         result: "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Ace Up the Sleeve": {
                 name: "Ace Up the Sleeve",
@@ -114,9 +113,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Reveal a Weapon - You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
-                                "Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
-                                "Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
+                                "Reveal a Weapon &mdash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
+                                "Spot a Weakness &mdash; You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
+                                "Find an Exit &mdash; You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
                             ]
                         }
                     },
@@ -130,9 +129,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Reveal a Weapon - You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
-                                            "Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
-                                            "Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
+                                            "Reveal a Weapon &mdash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
+                                            "Spot a Weakness &mdash; You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
+                                            "Find an Exit &mdash; You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
                                         ]
                                     }
                                 },
@@ -171,10 +170,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
@@ -183,10 +181,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Animal Speaker": {
                 name: "Animal Speaker",
@@ -238,20 +235,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "intuition"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.intuition
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are able to understand and control animals."
                     },
-                    subType: "active-rolled",
-                    attribute: "intuition"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.intuition
+                }
             },
             "Artifact": {
                 name: "Artifact",
@@ -312,10 +307,9 @@ const ITEM_DATA = {
                                         result: "The artifact does something unexpected, possibly dangerous. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
@@ -325,10 +319,9 @@ const ITEM_DATA = {
                             "powers"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Artistic Talent": {
                 name: "Artistic Talent",
@@ -381,17 +374,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Authority": {
                 name: "Authority",
@@ -444,20 +435,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You're an academic authority in your field and a well-known name in newspapers, debate shows, and scientific journals."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Awe-Inspiring": {
                 name: "Awe-Inspiring",
@@ -490,17 +479,15 @@ const ITEM_DATA = {
                                         result: "People feel like you're the leader, but one of them tries to challenge you for it. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Backstab": {
                 name: "Backstab",
@@ -549,17 +536,15 @@ const ITEM_DATA = {
                                         result: "You expose your betrayal and your target gets to react to your attack as usual. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Battlefield Medicine": {
                 name: "Battlefield Medicine",
@@ -616,17 +601,15 @@ const ITEM_DATA = {
                                         result: "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Body Awareness": {
                 name: "Body Awareness",
@@ -678,20 +661,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "Your body and mind are as one."
                     },
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Boss": {
                 name: "Boss",
@@ -737,20 +718,18 @@ const ITEM_DATA = {
                                         result: "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have five to ten criminal henchmen who are loyal to you, usually for as long as you continue paying them."
                     },
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Bound": {
                 name: "Bound",
@@ -802,20 +781,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are bound to an extradimensional entity whose powers you can draw upon. Explain what you think it is when you take this Advantage."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Burglar": {
                 name: "Burglar",
@@ -869,17 +846,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Chameleon": {
                 name: "Chameleon",
@@ -924,17 +899,15 @@ const ITEM_DATA = {
                                         result: "Your disguise is only effective at a distance. If you attract any attention to yourself, you will be exposed."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "intuition"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.intuition
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "intuition"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.intuition
+                }
             },
             "Character Actor": {
                 name: "Character Actor",
@@ -987,17 +960,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "intuition"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.intuition
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "intuition"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.intuition
+                }
             },
             "Charismatic Aura": {
                 name: "Charismatic Aura",
@@ -1049,20 +1020,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You radiate an aura that makes people trust you and seek your company."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Collector": {
                 name: "Collector",
@@ -1095,17 +1064,15 @@ const ITEM_DATA = {
                                         result: "You know roughly where to start searching for it, but not the hazards or costs involved in pursuing it."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Contagious Insanity": {
                 name: "Contagious Insanity",
@@ -1155,17 +1122,15 @@ const ITEM_DATA = {
                                         result: "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must Keep It Together."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Crafty": {
                 name: "Crafty",
@@ -1214,17 +1179,15 @@ const ITEM_DATA = {
                                         result: "They're on to you. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "intuition"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.intuition
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "intuition"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.intuition
+                }
             },
             "Crime Scene Investigator": {
                 name: "Crime Scene Investigator",
@@ -1280,17 +1243,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Cult Leader": {
                 name: "Cult Leader",
@@ -1341,17 +1302,15 @@ const ITEM_DATA = {
                                         result: "Choose one vision, but the Illusion tears as a result. You may temporarily be transported into another dimension, attract a demonic being's attention, or receive a horrifying omen. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Dabbler in the Occult": {
                 name: "Dabbler in the Occult",
@@ -1397,20 +1356,18 @@ const ITEM_DATA = {
                                         result: "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You know a little of magical rituals, but have never gone beyond performing written instructions."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Daredevil": {
                 name: "Daredevil",
@@ -1421,9 +1378,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "On a Swivel - Discover a threat before it discovers you.",
-                                "Not Today - Avoid an attack.",
-                                "Sucker Punch - Get the jump on them: Harm your opponent before they can react."
+                                "On a Swivel &mdash; Discover a threat before it discovers you.",
+                                "Not Today &mdash; Avoid an attack.",
+                                "Sucker Punch &mdash; Get the jump on them: Harm your opponent before they can react."
                             ]
                         }
                     },
@@ -1437,9 +1394,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "On a Swivel - Discover a threat before it discovers you.",
-                                            "Not Today - Avoid an attack.",
-                                            "Sucker Punch - Get the jump on them: Harm your opponent before they can react."
+                                            "On a Swivel &mdash; Discover a threat before it discovers you.",
+                                            "Not Today &mdash; Avoid an attack.",
+                                            "Sucker Punch &mdash; Get the jump on them: Harm your opponent before they can react."
                                         ]
                                     }
                                 },
@@ -1478,10 +1435,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
@@ -1490,10 +1446,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Data Retrieval": {
                 name: "Data Retrieval",
@@ -1547,17 +1502,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Deadly Stare": {
                 name: "Deadly Stare",
@@ -1590,17 +1543,15 @@ const ITEM_DATA = {
                                         result: "Your opponents see you as their primary threat."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Death Drive": {
                 name: "Death Drive",
@@ -1611,10 +1562,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Bring 'Em On - Engage an additional hostile in Combat.",
-                                "Savagery - Deal +2 Harm with one attack.",
-                                "Charge - Get within reach to attack a hostile.",
-                                "Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
+                                "Bring 'Em On &mdash; Engage an additional hostile in Combat.",
+                                "Savagery &mdash; Deal +2 Harm with one attack.",
+                                "Charge &mdash; Get within reach to attack a hostile.",
+                                "Go Crazy &mdash; Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
                             ]
                         }
                     },
@@ -1628,10 +1579,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Bring 'Em On - Engage an additional hostile in Combat.",
-                                            "Savagery - Deal +2 Harm with one attack.",
-                                            "Charge - Get within reach to attack a hostile.",
-                                            "Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
+                                            "Bring 'Em On &mdash; Engage an additional hostile in Combat.",
+                                            "Savagery &mdash; Deal +2 Harm with one attack.",
+                                            "Charge &mdash; Get within reach to attack a hostile.",
+                                            "Go Crazy &mdash; Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
                                         ]
                                     }
                                 },
@@ -1670,10 +1621,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
@@ -1682,10 +1632,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Divine": {
                 name: "Divine",
@@ -1736,20 +1685,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "There is something about you that reminds your former servants of what you truly are."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Dreamer": {
                 name: "Dreamer",
@@ -1782,20 +1729,18 @@ const ITEM_DATA = {
                                         result: "You are lost in the Dream and cannot wake up until you find your way back."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are a talented, self-taught dream wanderer."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Driver": {
                 name: "Driver",
@@ -1806,10 +1751,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Defensive Driving - Make a risky maneuver to get out of the way.",
-                                "Evasive Driving - Shake off one pursuing vehicle.",
-                                "Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
-                                "Reckless Driving - Sideswipe another vehicle off the road."
+                                "Defensive Driving &mdash; Make a risky maneuver to get out of the way.",
+                                "Evasive Driving &mdash; Shake off one pursuing vehicle.",
+                                "Deadly Driving &mdash; Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
+                                "Reckless Driving &mdash; Sideswipe another vehicle off the road."
                             ]
                         }
                     },
@@ -1823,10 +1768,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Defensive Driving - Make a risky maneuver to get out of the way.",
-                                            "Evasive Driving - Shake off one pursuing vehicle.",
-                                            "Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
-                                            "Reckless Driving - Sideswipe another vehicle off the road."
+                                            "Defensive Driving &mdash; Make a risky maneuver to get out of the way.",
+                                            "Evasive Driving &mdash; Shake off one pursuing vehicle.",
+                                            "Deadly Driving &mdash; Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
+                                            "Reckless Driving &mdash; Sideswipe another vehicle off the road."
                                         ]
                                     }
                                 },
@@ -1865,10 +1810,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
@@ -1878,10 +1822,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Elite Education": {
                 name: "Elite Education",
@@ -1934,20 +1877,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have attended one of the world's most prestigious institutes of higher learning and have acquired contacts with power and influence."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Enforcer": {
                 name: "Enforcer",
@@ -1994,17 +1935,15 @@ const ITEM_DATA = {
                                         result: "Turns out you didn't have the advantage you thought you did. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Enhanced Awareness": {
                 name: "Enhanced Awareness",
@@ -2037,17 +1976,15 @@ const ITEM_DATA = {
                                         result: "The Illusion tears. The veil is lifted temporarily, revealing an alternate dimension—the GM determines which one. The PC could be sucked into it or something may cross over into our reality. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Erotic": {
                 name: "Erotic",
@@ -2100,17 +2037,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Escape Artist": {
                 name: "Escape Artist",
@@ -2143,20 +2078,18 @@ const ITEM_DATA = {
                                         result: "You are only half out the door when you're caught in a really bad spot. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are a master at slipping away when the shit hits the fan."
                     },
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Exit Strategy": {
                 name: "Exit Strategy",
@@ -2208,17 +2141,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Exorcist": {
                 name: "Exorcist",
@@ -2267,17 +2198,15 @@ const ITEM_DATA = {
                                         result: "The creature resists banishment and something goes terribly wrong, such as the creature possessing you. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Explosives Expert": {
                 name: "Explosives Expert",
@@ -2310,10 +2239,9 @@ const ITEM_DATA = {
                                         result: "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         },
                         {
                             name: "Disarm Explosive",
@@ -2340,20 +2268,18 @@ const ITEM_DATA = {
                                         result: "Fuck, that's not good! The bomb may go off in your hands, the timer starts counting down from 10, 9, 8, 7…, or even bigger problems occur. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You can build and disarm bombs. If you have enough time and resources, you can build any kind of bomb you like without a roll."
                     },
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Eye for Detail": {
                 name: "Eye for Detail",
@@ -2407,17 +2333,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Fascination": {
                 name: "Fascination",
@@ -2474,17 +2398,15 @@ const ITEM_DATA = {
                                         result: "They are affected by you in a way you didn't anticipate, or the attraction is uncomfortably strong—you choose. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Fast Talk": {
                 name: "Fast Talk",
@@ -2536,17 +2458,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Field Agent": {
                 name: "Field Agent",
@@ -2557,10 +2477,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Take Cover - Avoid a ranged attack by diving behind an object or a person.",
-                                "Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
-                                "Disarm - Remove an opponent's weapon in close combat.",
-                                "Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object.%lists:inline-attacks%"
+                                "Take Cover &mdash; Avoid a ranged attack by diving behind an object or a person.",
+                                "Choke Hold &mdash; Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
+                                "Disarm &mdash; Remove an opponent's weapon in close combat.",
+                                "Improvised Weapon &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object.%lists:inline-attacks%"
                             ]
                         }
                     },
@@ -2606,14 +2526,13 @@ const ITEM_DATA = {
                                         result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence",
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
                                 ],
                                 harm: 2
-                            },
-                            folder: "qVv6bYX8utdyAYhf"
+                            }
                         },
                         {
                             name: "Enter Combat",
@@ -2624,10 +2543,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Take Cover - Avoid a ranged attack by diving behind an object or a person.",
-                                            "Choke Hold - Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
-                                            "Disarm - Remove an opponent's weapon in close combat.",
-                                            "Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object: %parent-lists:attacks%"
+                                            "Take Cover &mdash; Avoid a ranged attack by diving behind an object or a person.",
+                                            "Choke Hold &mdash; Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
+                                            "Disarm &mdash; Remove an opponent's weapon in close combat.",
+                                            "Improvised Weapon &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %parent-lists:attacks%"
                                         ]
                                     }
                                 },
@@ -2666,10 +2585,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
@@ -2679,10 +2597,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Forbidden Inspiration": {
                 name: "Forbidden Inspiration",
@@ -2734,17 +2651,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Forked Tongue": {
                 name: "Forked Tongue",
@@ -2801,17 +2716,15 @@ const ITEM_DATA = {
                                         result: "They see right through you and will act as they please."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Gang Leader": {
                 name: "Gang Leader",
@@ -2856,20 +2769,18 @@ const ITEM_DATA = {
                                         result: "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You're the boss of a small gang of criminals."
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Genius": {
                 name: "Genius",
@@ -2880,9 +2791,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Logical - You realize an effective way to dispose of the threat. Deal +1 Harm whenever you exploit it.",
-                                "Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
-                                "Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+                                "Logical &mdash; You realize an effective way to dispose of the threat. Deal +1 Harm whenever you exploit it.",
+                                "Quick Thinker &mdash; You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
+                                "Rational &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                             ]
                         }
                     },
@@ -2896,9 +2807,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Logical - You realize an effective way to dispose of the threat. Deal +1 Harm whenever you exploit it.",
-                                            "Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
-                                            "Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+                                            "Logical &mdash; You realize an effective way to dispose of the threat. Deal +1 Harm whenever you exploit it.",
+                                            "Quick Thinker &mdash; You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
+                                            "Rational &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                                         ]
                                     }
                                 },
@@ -2937,10 +2848,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
@@ -2949,10 +2859,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Hacker": {
                 name: "Hacker",
@@ -2997,17 +2906,15 @@ const ITEM_DATA = {
                                         result: "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Hunter": {
                 name: "Hunter",
@@ -3059,17 +2966,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Ice Cold": {
                 name: "Ice Cold",
@@ -3080,10 +2985,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Easy Dodge - Avoid an attack.",
-                                "Opportunity Calls - Manage to snatch something.",
-                                "Patience, Patience - Maneuver into a better position.",
-                                "Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
+                                "Easy Dodge &mdash; Avoid an attack.",
+                                "Opportunity Calls &mdash; Manage to snatch something.",
+                                "Patience, Patience &mdash; Maneuver into a better position.",
+                                "Clever Trick &mdash; Put someone in a bad position (everyone gets +2 to any attack Moves)."
                             ]
                         }
                     },
@@ -3097,10 +3002,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Easy Dodge - Avoid an attack.",
-                                            "Opportunity Calls - Manage to snatch something.",
-                                            "Patience, Patience - Maneuver into a better position.",
-                                            "Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
+                                            "Easy Dodge &mdash; Avoid an attack.",
+                                            "Opportunity Calls &mdash; Manage to snatch something.",
+                                            "Patience, Patience &mdash; Maneuver into a better position.",
+                                            "Clever Trick &mdash; Put someone in a bad position (everyone gets +2 to any attack Moves)."
                                         ]
                                     }
                                 },
@@ -3139,10 +3044,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
@@ -3152,10 +3056,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Implanted Messages": {
                 name: "Implanted Messages",
@@ -3188,20 +3091,18 @@ const ITEM_DATA = {
                                         result: "Something goes wrong, such as they get hurt in the process or the order's outcome is different than what you imagined. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You know how to implant orders into the minds of your \"subjects\"."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Impostor": {
                 name: "Impostor",
@@ -3234,20 +3135,18 @@ const ITEM_DATA = {
                                         result: "You know someone who can help, but they have already seen through your game. If you want their assistance it will require threats or blackmail to get them to provide it."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You maintain relationships with numerous people who all believe you are their soulmate, yet are unaware of each other."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Improviser": {
                 name: "Improviser",
@@ -3297,17 +3196,15 @@ const ITEM_DATA = {
                                         result: "Your improvisation makes the situation worse. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Influential Friends": {
                 name: "Influential Friends",
@@ -3340,20 +3237,18 @@ const ITEM_DATA = {
                                         result: "They arrange for what you want, but you get on a powerful person's bad side or attract negative publicity. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have friends with power and influence."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Inner Power": {
                 name: "Inner Power",
@@ -3386,20 +3281,18 @@ const ITEM_DATA = {
                                         result: "The power attacks all living beings, including yourself, in the vicinity, causing 2 Harm."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You harbor a mysterious power, which you do not fully understand. The power can protect you, but you have no control over it."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Intimidating": {
                 name: "Intimidating",
@@ -3432,20 +3325,18 @@ const ITEM_DATA = {
                                         result: "They see you as their primary threat and act accordingly. The GM makes a Move for them."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "There is something about you that instinctively makes others fear you."
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Inventor": {
                 name: "Inventor",
@@ -3495,17 +3386,15 @@ const ITEM_DATA = {
                                         result: "You complete the construction or repair, but it has significant flaws, some of which are hidden. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Lay on Hands": {
                 name: "Lay on Hands",
@@ -3538,20 +3427,18 @@ const ITEM_DATA = {
                                         result: "You may choose to stabilize the injured, but if you do, the powers break free from your control."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are able to heal others' Wounds without using medicine or first aid, but you must channel the injuries onto yourself or another living victim.%n%To transfer a Wound, you must be able to see the victim, but not touch them and they are not required to consent.%n%The wound transferred is of the same type, severity, and condition as the original."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Lightning Fast": {
                 name: "Lightning Fast",
@@ -3562,9 +3449,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Dodge - Avoid an attack.",
-                                "Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
-                                "Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
+                                "Dodge &mdash; Avoid an attack.",
+                                "Blinding Speed &mdash; Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+                                "Uncanny Precision &mdash; Hit your opponent's weak spot. Deal +1 Harm."
                             ]
                         }
                     },
@@ -3578,9 +3465,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Dodge - Avoid an attack.",
-                                            "Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
-                                            "Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
+                                            "Dodge &mdash; Avoid an attack.",
+                                            "Blinding Speed &mdash; Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+                                            "Uncanny Precision &mdash; Hit your opponent's weak spot. Deal +1 Harm."
                                         ]
                                     }
                                 },
@@ -3619,10 +3506,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
@@ -3631,10 +3517,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Magical Intuition": {
                 name: "Magical Intuition",
@@ -3686,20 +3571,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have an innate ability to perceive Kirlian auras and sense the presence of magic."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Magnetic Attraction": {
                 name: "Magnetic Attraction",
@@ -3751,17 +3634,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Manhunter": {
                 name: "Manhunter",
@@ -3815,17 +3696,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Martial Arts Expert": {
                 name: "Martial Arts Expert",
@@ -3836,10 +3715,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Block - Avoid a melee attack.",
-                                "Roundhouse Strike - Engage in Combat against several opponents surrounding you, counting as a single attack.",
-                                "Disarm - Remove an opponent's weapon.",
-                                "Throw - Reposition an opponent or drop them to the ground."
+                                "Block &mdash; Avoid a melee attack.",
+                                "Roundhouse Strike &mdash; Engage in Combat against several opponents surrounding you, counting as a single attack.",
+                                "Disarm &mdash; Remove an opponent's weapon.",
+                                "Throw &mdash; Reposition an opponent or drop them to the ground."
                             ]
                         }
                     },
@@ -3853,10 +3732,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Block - Avoid a melee attack.",
-                                            "Roundhouse Strike - Engage in Combat against several opponents surrounding you, counting as a single attack.",
-                                            "Disarm - Remove an opponent's weapon.",
-                                            "Throw - Reposition an opponent or drop them to the ground."
+                                            "Block &mdash; Avoid a melee attack.",
+                                            "Roundhouse Strike &mdash; Engage in Combat against several opponents surrounding you, counting as a single attack.",
+                                            "Disarm &mdash; Remove an opponent's weapon.",
+                                            "Throw &mdash; Reposition an opponent or drop them to the ground."
                                         ]
                                     }
                                 },
@@ -3895,10 +3774,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
@@ -3907,10 +3785,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Moles": {
                 name: "Moles",
@@ -3958,20 +3835,18 @@ const ITEM_DATA = {
                                         result: "The mole's loyalties are questionable. Can you trust them? The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have placed a number of moles in groups or organizations of interest to you, such as business competitors, governments, or cults."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Network of Contacts": {
                 name: "Network of Contacts",
@@ -4025,17 +3900,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Notorious": {
                 name: "Notorious",
@@ -4068,20 +3941,18 @@ const ITEM_DATA = {
                                         result: "They know of your reputation; the GM decides what they have heard."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are famous in your trade."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Occult Library": {
                 name: "Occult Library",
@@ -4136,20 +4007,18 @@ const ITEM_DATA = {
                                         hold: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         holdText: "The GM can spend Hold at any time to make a hard or soft Move."
                     },
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Occult Studies": {
                 name: "Occult Studies",
@@ -4197,20 +4066,18 @@ const ITEM_DATA = {
                                         result: "You have a hazy memory of something like this, but can't say for sure if it's true or not. The GM explains what it is you remember."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are a student of the occult."
                     },
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Officer": {
                 name: "Officer",
@@ -4221,10 +4088,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "\"Attack!\" - One ally gets +2 to their next roll to Engage in Combat.",
-                                "\"Coordinate Fire!\" - All allies get +1 to their next roll to Engage in Combat with firearms while in the fight.",
-                                "\"Go For The Head!\" - You or one of your allies' Engage in Combat deals +1 Harm.",
-                                "\"Take Cover!\" - You or an ally receive 2 Armor against a ranged attack."
+                                "\"Attack!\" &mdash; One ally gets +2 to their next roll to Engage in Combat.",
+                                "\"Coordinate Fire!\" &mdash; All allies get +1 to their next roll to Engage in Combat with firearms while in the fight.",
+                                "\"Go For The Head!\" &mdash; You or one of your allies' Engage in Combat deals +1 Harm.",
+                                "\"Take Cover!\" &mdash; You or an ally receive 2 Armor against a ranged attack."
                             ]
                         }
                     },
@@ -4238,10 +4105,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "\"Attack!\" - One ally gets +2 to their next roll to Engage in Combat.",
-                                            "\"Coordinate Fire!\" - All allies get +1 to their next roll to Engage in Combat with firearms while in the fight.",
-                                            "\"Go For The Head!\" - You or one of your allies' Engage in Combat deals +1 Harm.",
-                                            "\"Take Cover!\" - You or an ally receive 2 Armor against a ranged attack."
+                                            "\"Attack!\" &mdash; One ally gets +2 to their next roll to Engage in Combat.",
+                                            "\"Coordinate Fire!\" &mdash; All allies get +1 to their next roll to Engage in Combat with firearms while in the fight.",
+                                            "\"Go For The Head!\" &mdash; You or one of your allies' Engage in Combat deals +1 Harm.",
+                                            "\"Take Cover!\" &mdash; You or an ally receive 2 Armor against a ranged attack."
                                         ]
                                     }
                                 },
@@ -4276,10 +4143,9 @@ const ITEM_DATA = {
                                         result: "You misjudge the situation. Choose whether you have put yourself or one of your allies in harm's way. The GM makes a Move for your opponent."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
@@ -4288,10 +4154,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Parkour": {
                 name: "Parkour",
@@ -4343,20 +4208,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are deft at running and jumping, even over difficult terrain."
                     },
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Perpetual Victim": {
                 name: "Perpetual Victim",
@@ -4406,16 +4269,14 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: K4ItemSubType.activeRolled,
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Prepared": {
                 name: "Prepared",
@@ -4469,20 +4330,18 @@ const ITEM_DATA = {
                                         hold: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         holdText: "The GM can spend Hold at any time to make a hard or soft Move for the location."
                     },
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Puppeteer": {
                 name: "Puppeteer",
@@ -4515,17 +4374,15 @@ const ITEM_DATA = {
                                         result: "Your plan is inadequate, revealed, and/or misguided. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Quick Thinker": {
                 name: "Quick Thinker",
@@ -4577,17 +4434,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Read a Crowd": {
                 name: "Read a Crowd",
@@ -4640,17 +4495,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Ruthless": {
                 name: "Ruthless",
@@ -4661,9 +4514,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Meat Shield - Force them to take all the Harm from one attack for you.",
-                                "Nothing But Bait - Expose someone to danger so you can flank an enemy (deal +1 Harm).",
-                                "Leave Them Behind - Abandon them to the enemy while you slip away."
+                                "Meat Shield &mdash; Force them to take all the Harm from one attack for you.",
+                                "Nothing But Bait &mdash; Expose someone to danger so you can flank an enemy (deal +1 Harm).",
+                                "Leave Them Behind &mdash; Abandon them to the enemy while you slip away."
                             ]
                         }
                     },
@@ -4677,9 +4530,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Meat Shield - Force them to take all the Harm from one attack for you.",
-                                            "Nothing But Bait - Expose someone to danger so you can flank an enemy (deal +1 Harm).",
-                                            "Leave Them Behind - Abandon them to the enemy while you slip away."
+                                            "Meat Shield &mdash; Force them to take all the Harm from one attack for you.",
+                                            "Nothing But Bait &mdash; Expose someone to danger so you can flank an enemy (deal +1 Harm).",
+                                            "Leave Them Behind &mdash; Abandon them to the enemy while you slip away."
                                         ]
                                     }
                                 },
@@ -4714,10 +4567,9 @@ const ITEM_DATA = {
                                         result: "Things turns out in a bad way for you instead. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
@@ -4726,10 +4578,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Seducer": {
                 name: "Seducer",
@@ -4783,20 +4634,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You can consciously make people fall in love with you."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Shadow": {
                 name: "Shadow",
@@ -4829,10 +4678,9 @@ const ITEM_DATA = {
                                         result: "You are spotted or encounter some sort of problem along the way. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         },
                         {
                             name: "Evade a Shadow",
@@ -4859,17 +4707,15 @@ const ITEM_DATA = {
                                         result: "Your pursuers are still on your tail, and they can set up an ambush, disappear without a trace (only to show up when you least expect it), or refuse to go away. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Sixth Sense": {
                 name: "Sixth Sense",
@@ -4918,20 +4764,18 @@ const ITEM_DATA = {
                                         result: "Your instincts will fail to trigger in a dangerous situation. The GM makes a Move at some point during the session."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have an intuition for things, both good and bad."
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Snake Charmer": {
                 name: "Snake Charmer",
@@ -4979,17 +4823,15 @@ const ITEM_DATA = {
                                         result: "The desire is beyond the creature's ability to regulate. It cannot help but attempt to devour or imprison you."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Sneak": {
                 name: "Sneak",
@@ -5041,17 +4883,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "coolness"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.coolness
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Sniper": {
                 name: "Sniper",
@@ -5102,17 +4942,15 @@ const ITEM_DATA = {
                                         result: "The shot didn't go where you intended it to, or you reveal your position to the enemy—expect witnesses, opponents pursuing you as you leave the scene, or other problems. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Street Contacts": {
                 name: "Street Contacts",
@@ -5165,20 +5003,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have contacts among the homeless, crazies, and other societal outsiders and outcasts."
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Streetfighter": {
                 name: "Streetfighter",
@@ -5189,9 +5025,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Dodge - Avoid an attack.",
-                                "Flurry of Blows - Take +2 on your roll to attack an opponent.",
-                                "Dirty Strike - Momentarily stun an opponent by striking them where it hurts."
+                                "Dodge &mdash; Avoid an attack.",
+                                "Flurry of Blows &mdash; Take +2 on your roll to attack an opponent.",
+                                "Dirty Strike &mdash; Momentarily stun an opponent by striking them where it hurts."
                             ]
                         }
                     },
@@ -5205,9 +5041,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Dodge - Avoid an attack.",
-                                            "Flurry of Blows - Take +2 on your roll to attack an opponent.",
-                                            "Dirty Strike - Momentarily stun an opponent by striking them where it hurts."
+                                            "Dodge &mdash; Avoid an attack.",
+                                            "Flurry of Blows &mdash; Take +2 on your roll to attack an opponent.",
+                                            "Dirty Strike &mdash; Momentarily stun an opponent by striking them where it hurts."
                                         ]
                                     },
                                     complications: {
@@ -5249,10 +5085,9 @@ const ITEM_DATA = {
                                         result: "You're unfocused and lose control. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
@@ -5261,10 +5096,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Streetwise": {
                 name: "Streetwise",
@@ -5311,17 +5145,15 @@ const ITEM_DATA = {
                                         result: "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "charisma"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.charisma
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Stubborn": {
                 name: "Stubborn",
@@ -5332,9 +5164,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Refuse to give up: Postpone the effects of a critical injury until you have made it out of the threat's reach.",
-                                "Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
-                                "Steel yourself: Break free from a supernatural effect."
+                                "Refuse to Give Up &mdash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
+                                "Will Over Skill &mdash; Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
+                                "Steel Yourself &mdash; Break free from a supernatural effect."
                             ]
                         }
                     },
@@ -5348,9 +5180,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Refuse to give up: Postpone the effects of a critical injury until you have made it out of the threat's reach.",
-                                            "Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
-                                            "Steel yourself: Break free from a supernatural effect."
+                                            "Refuse to Give Up &mdash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
+                                            "Will Over Skill &mdash; Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
+                                            "Steel Yourself &mdash; Break free from a supernatural effect."
                                         ]
                                     }
                                 },
@@ -5389,10 +5221,9 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
@@ -5401,10 +5232,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Survival Instinct": {
                 name: "Survival Instinct",
@@ -5449,17 +5279,15 @@ const ITEM_DATA = {
                                         result: "You overexert yourself and after a few moments your injuries cause you to pass out and collapse. After your next action, the GM decides when and how you pass out."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Survivalist": {
                 name: "Survivalist",
@@ -5511,17 +5339,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Tracer": {
                 name: "Tracer",
@@ -5574,17 +5400,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "reason"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.reason
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Voice of Insanity": {
                 name: "Voice of Insanity",
@@ -5638,17 +5462,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Voice of Pain": {
                 name: "Voice of Pain",
@@ -5700,17 +5522,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             },
             "Wanderer": {
                 name: "Wanderer",
@@ -5763,17 +5583,15 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "perception"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.perception
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Wayfinder": {
                 name: "Wayfinder",
@@ -5806,20 +5624,18 @@ const ITEM_DATA = {
                                         result: "You discover a shortcut, but it leads you into a dangerous situation, such as the lair of some creature or an ambush set by some gang. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "soul"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.soul
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "UzxBiS0k3UWtGmoO"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             }
         },
-        "active-static": {
+        [K4ItemSubType.activeStatic]: {
             "Arcane Researcher": {
                 name: "Arcane Researcher",
                 type: K4ItemType.advantage,
@@ -5840,17 +5656,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you venture into alternate planes of existence or meet entities from other dimensions,",
                                     outro: "you may declare that you have read about this dimension or creature before. Ask the GM what you learned from your past studies."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "At Any Cost": {
                 name: "At Any Cost",
@@ -5872,17 +5686,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you truly desire something,",
                                     outro: "you may take +2 to a roll by decreasing Stability (−2)."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Code of Honor": {
                 name: "Code of Honor",
@@ -5904,20 +5716,18 @@ const ITEM_DATA = {
                                     trigger: "Whenever you take risks or make sacrifices for your code of honor,",
                                     outro: "gain Stability (+1)."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You abide by a strict code of honor. Decide its nature when you take this Advantage."
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Desperate": {
                 name: "Desperate",
@@ -5939,17 +5749,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you try to make it through overwhelming odds,",
                                     outro: "take +1 ongoing on all rolls until you're clear of the threat."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Divine Champion": {
                 name: "Divine Champion",
@@ -5971,10 +5779,9 @@ const ITEM_DATA = {
                                     trigger: "Whenever you fight your deity's enemies or fight to protect a sacred object,",
                                     outro: "you do +1 Harm and take +1 to Endure Injury."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         },
                         {
                             name: "Fail your God",
@@ -5990,10 +5797,9 @@ const ITEM_DATA = {
                                     trigger: "When you lose a battle against your deity's enemies or to protect a sacred object,",
                                     outro: "your deity becomes irate: You take −1 ongoing to all actions related to your deity until you have atoned for your failure."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -6002,10 +5808,9 @@ const ITEM_DATA = {
                             result: "You do +1 Harm and take +1 to Endure Injury."
                         }
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Eye for an Eye": {
                 name: "Eye for an Eye",
@@ -6027,17 +5832,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you suffer a serious or critical injury, name the person you feel is responsible.",
                                     outro: "You get +2 ongoing to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Good Samaritan": {
                 name: "Good Samaritan",
@@ -6059,17 +5862,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you help another at your own expense,",
                                     outro: "gain Stability (+1)."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Grudge": {
                 name: "Grudge",
@@ -6091,17 +5892,15 @@ const ITEM_DATA = {
                                     trigger: "When someone directly or indirectly ruins your plans,",
                                     outro: "you take +1 ongoing against them until you have taken revenge or received restitution of equal worth to what you lost."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Manipulative": {
                 name: "Manipulative",
@@ -6151,10 +5950,9 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -6163,10 +5961,9 @@ const ITEM_DATA = {
                             "options"
                         ]
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Opportunist": {
                 name: "Opportunist",
@@ -6188,17 +5985,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you sacrifice someone else to further your own goals,",
                                     outro: "gain Stability (+1)."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Rage": {
                 name: "Rage",
@@ -6209,9 +6004,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "Brutal Assault - Take +1 Harm to your attack.",
-                                "What Pain? - Take +2 to Endure Injury.",
-                                "See Only Red - Shake off and ignore psychological or supernatural influence."
+                                "Brutal Assault &mdash; Take +1 Harm to your attack.",
+                                "What Pain? &mdash; Take +2 to Endure Injury.",
+                                "See Only Red &mdash; Shake off and ignore psychological or supernatural influence."
                             ]
                         }
                     },
@@ -6225,9 +6020,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "Brutal Assault - Take +1 Harm to your attack.",
-                                            "What Pain? - Take +2 to Endure Injury.",
-                                            "See Only Red - Shake off and ignore psychological or supernatural influence."
+                                            "Brutal Assault &mdash; Take +1 Harm to your attack.",
+                                            "What Pain? &mdash; Take +2 to Endure Injury.",
+                                            "See Only Red &mdash; Shake off and ignore psychological or supernatural influence."
                                         ]
                                     }
                                 },
@@ -6250,10 +6045,9 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -6262,10 +6056,9 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Sealed Fate": {
                 name: "Sealed Fate",
@@ -6299,10 +6092,9 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         },
                         {
                             name: "Defy Death",
@@ -6329,10 +6121,9 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -6349,10 +6140,9 @@ const ITEM_DATA = {
                             ]
                         }
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Thirst for Knowledge": {
                 name: "Thirst for Knowledge",
@@ -6374,17 +6164,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you learn new information about alternate planes of existence, a supernatural entity, or a Higher Power,",
                                     outro: "gain Stability (+1)."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "To the Last Breath": {
                 name: "To the Last Breath",
@@ -6418,10 +6206,9 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -6430,10 +6217,9 @@ const ITEM_DATA = {
                             "Requires the Disadvantage Condemned"
                         ]
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Watchers": {
                 name: "Watchers",
@@ -6488,10 +6274,9 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -6502,10 +6287,9 @@ const ITEM_DATA = {
                             "watchers"
                         ]
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Workaholic": {
                 name: "Workaholic",
@@ -6527,17 +6311,15 @@ const ITEM_DATA = {
                                     trigger: "Whenever you create something or carry out an experiment,",
                                     outro: "gain Stability (+1)."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             },
             "Worldly": {
                 name: "Worldly",
@@ -6559,20 +6341,18 @@ const ITEM_DATA = {
                                     trigger: "Whenever you arrive at a new location in the mundane world,",
                                     outro: "decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "WGe4y7fxTQl1dgYI"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             }
         },
-        "passive": {
+        [K4ItemSubType.passive]: {
             "Analyst": {
                 name: "Analyst",
                 type: K4ItemType.advantage,
@@ -6599,10 +6379,9 @@ const ITEM_DATA = {
                             ">AppendList:move/Investigate,questions"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Dead Shot": {
                 name: "Dead Shot",
@@ -6617,10 +6396,9 @@ const ITEM_DATA = {
                             ">ModValue:weapon/firearm,harm,1"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Elite Sport (Athletic)": {
                 name: "Elite Sport (Athletic)",
@@ -6631,10 +6409,9 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.%n%You take +1 ongoing to all rolls relevant to running, throwing, or catching objects."
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Elite Sport (Contact)": {
                 name: "Elite Sport (Contact)",
@@ -6645,10 +6422,9 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%n%You take +1 ongoing to Endure Injury rolls against close-combat attacks."
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Elite Sport (Fencing)": {
                 name: "Elite Sport (Fencing)",
@@ -6699,14 +6475,13 @@ const ITEM_DATA = {
                                         result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence",
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
                                 ],
                                 harm: 3
-                            },
-                            folder: "qVv6bYX8utdyAYhf"
+                            }
                         }
                     ],
                     isCustom: false,
@@ -6716,10 +6491,9 @@ const ITEM_DATA = {
                             ">AppendList:weapon/sword,attacks"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Endure Trauma": {
                 name: "Endure Trauma",
@@ -6730,10 +6504,9 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are not as easily affected by trauma as others.%n%Whenever you would lose Stability, lose one fewer level than normal."
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Expert": {
                 name: "Expert",
@@ -6766,10 +6539,9 @@ const ITEM_DATA = {
                             "GET: ReplaceList (Investigate, Questions)"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Extortionist": {
                 name: "Extortionist",
@@ -6793,10 +6565,9 @@ const ITEM_DATA = {
                             ">AppendList:move/Read a Person,questions"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Gritted Teeth": {
                 name: "Gritted Teeth",
@@ -6811,10 +6582,9 @@ const ITEM_DATA = {
                             ">SetPenalty:SeriousWound,0>SetPenalty:CriticalWound,0"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Hardened": {
                 name: "Hardened",
@@ -6829,10 +6599,9 @@ const ITEM_DATA = {
                             ">BuffRoll:Endure Injury,1"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Instinct": {
                 name: "Instinct",
@@ -6847,10 +6616,9 @@ const ITEM_DATA = {
                             ">AddNote:Observe a Situation/completeSuccess,effect|>AddNote:Observe a Situation/partialSuccess,effect|>AddNote:Observe a Situation/failure,effect"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Interrogator": {
                 name: "Interrogator",
@@ -6861,10 +6629,9 @@ const ITEM_DATA = {
                     rules: {
                         intro: "Whenever you Read a Person and mention a name, person, or object, you may always ask \"Are you lying?\" This doesn't count towards the number of questions you're allowed to normally ask."
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Intuitive": {
                 name: "Intuitive",
@@ -6879,10 +6646,9 @@ const ITEM_DATA = {
                             "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Jaded": {
                 name: "Jaded",
@@ -6897,10 +6663,9 @@ const ITEM_DATA = {
                             "AddNote:Keep It Together:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Keen-Eyed": {
                 name: "Keen-Eyed",
@@ -6927,10 +6692,9 @@ const ITEM_DATA = {
                             ">AppendList:move/Observe a Situation,questions"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Observant": {
                 name: "Observant",
@@ -6957,10 +6721,9 @@ const ITEM_DATA = {
                             "AppendList:Read a Person,questions"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Scientist": {
                 name: "Scientist",
@@ -6984,10 +6747,9 @@ const ITEM_DATA = {
                             "questions"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Vigilant": {
                 name: "Vigilant",
@@ -7014,10 +6776,9 @@ const ITEM_DATA = {
                             "AppendList:Read a Person,questions"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Weapon Master (Firearms)": {
                 name: "Weapon Master (Firearms)",
@@ -7066,15 +6827,14 @@ const ITEM_DATA = {
                                         result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence",
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence,
                                 range: [
                                     "room"
                                 ],
                                 harm: 4,
                                 ammo: 2
-                            },
-                            folder: "qVv6bYX8utdyAYhf"
+                            }
                         },
                         {
                             name: "Disarming Shot",
@@ -7118,25 +6878,23 @@ const ITEM_DATA = {
                                         result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence",
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence,
                                 range: [
                                     "room"
                                 ],
                                 harm: 1,
                                 ammo: 1
-                            },
-                            folder: "qVv6bYX8utdyAYhf"
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are a master of gunplay.%n%When you Engage in Combat with a firearm, roll +Coolness instead of +Violence, and add the following to your available attacks: %lists:attacks%"
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             "Weapon Master (Melee)": {
                 name: "Weapon Master (Melee)",
@@ -7185,14 +6943,13 @@ const ITEM_DATA = {
                                         result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence",
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence,
                                 range: [
                                     "room"
                                 ],
                                 harm: 2
-                            },
-                            folder: "qVv6bYX8utdyAYhf"
+                            }
                         },
                         {
                             name: "Precision Attack",
@@ -7236,14 +6993,13 @@ const ITEM_DATA = {
                                         result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence",
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
                                 ],
                                 harm: 2
-                            },
-                            folder: "qVv6bYX8utdyAYhf"
+                            }
                         },
                         {
                             name: "Tripping Attack",
@@ -7287,29 +7043,27 @@ const ITEM_DATA = {
                                         result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "violence",
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
                                 ],
                                 harm: 2
-                            },
-                            folder: "qVv6bYX8utdyAYhf"
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are a master of armed melee combat.%n%When you Engage in Combat in close quarters, with or without a weapon, roll +Coolness instead of +Violence, and add the following to your available attacks: %lists:attacks%"
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "BW4SW79hJuVkFfKo"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             }
         }
     },
-    disadvantage: {
-        "active-rolled": {
+    [K4ItemType.disadvantage]: {
+        [K4ItemSubType.activeRolled]: {
             "Bad Reputation": {
                 name: "Bad Reputation",
                 type: K4ItemType.disadvantage,
@@ -7344,10 +7098,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7355,10 +7108,9 @@ const ITEM_DATA = {
                         intro: "For some reason, you have attracted the public's disapproval—even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
                         holdText: "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Competitor": {
                 name: "Competitor",
@@ -7394,10 +7146,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7405,10 +7156,9 @@ const ITEM_DATA = {
                         intro: "You have a competitor in the criminal underworld, whose business niche is similar to yours.",
                         holdText: "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Condemned": {
                 name: "Condemned",
@@ -7460,10 +7210,9 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7473,10 +7222,9 @@ const ITEM_DATA = {
                             ">CreateTracker:Time,10"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Cursed": {
                 name: "Cursed",
@@ -7512,10 +7260,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7523,10 +7270,9 @@ const ITEM_DATA = {
                         intro: "You are cursed.",
                         holdText: "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Depression": {
                 name: "Depression",
@@ -7559,20 +7305,18 @@ const ITEM_DATA = {
                                         result: "You succumb to the sense of hopelessness or blame and punish yourself; reduce Stability (−2). Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are constantly struggling with depression, which is only worsened by dejection and discouragement."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Drug Addict": {
                 name: "Drug Addict",
@@ -7608,10 +7352,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7619,10 +7362,9 @@ const ITEM_DATA = {
                         intro: "You are addicted to hard drugs; name at least one when you gain this Disadvantage.",
                         holdText: "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Experiment Gone Wrong": {
                 name: "Experiment Gone Wrong",
@@ -7658,10 +7400,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7669,10 +7410,9 @@ const ITEM_DATA = {
                         intro: "You have carried out a scientific experiment, which went horribly awry. The experiment gave rise to something unnatural, which escaped and disappeared without a trace. Recently, the 'results' of your experiment tracked you down, reappearing in your life, and forcing you to either escape or confront it.",
                         holdText: "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Fanatic": {
                 name: "Fanatic",
@@ -7705,20 +7445,18 @@ const ITEM_DATA = {
                                         result: "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce Stability (−2)."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are a fervent adherent of an ideology, which you must define when you take this Disadvantage. You interpret the whole world in accordance with your ideology, which must not be questioned."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Greedy": {
                 name: "Greedy",
@@ -7751,20 +7489,18 @@ const ITEM_DATA = {
                                         result: "You must take advantage of every opportunity to further your wealth, or reduce Stability (−2)."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You are driven by an unquenchable desire for money and wealth, and are prepared to sacrifice your health, family, and friends to fill the emptiness inside."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Guilt": {
                 name: "Guilt",
@@ -7800,10 +7536,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7811,10 +7546,9 @@ const ITEM_DATA = {
                         intro: "You carry heavy guilt for your past sins, having harmed one or several people through your actions or inaction.",
                         holdText: "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Harassed": {
                 name: "Harassed",
@@ -7850,10 +7584,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7861,10 +7594,9 @@ const ITEM_DATA = {
                         intro: "For some reason, personal or otherwise, people tend to harass you; the authorities in particular.",
                         holdText: "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Haunted": {
                 name: "Haunted",
@@ -7900,10 +7632,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -7911,10 +7642,9 @@ const ITEM_DATA = {
                         intro: "You are haunted by supernatural forces. With the GM's assistance, determine the nature of what you believe is haunting you.",
                         holdText: "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Infirm": {
                 name: "Infirm",
@@ -7947,20 +7677,18 @@ const ITEM_DATA = {
                                         result: "Your condition is aggravated with life threatening results (Endure Injury with 2 Harm)."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You suffer from a dangerous physical disease or condition, such as heart disease, hypertension, morbid obesity, or serious gastric ulcer."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Involuntary Medium": {
                 name: "Involuntary Medium",
@@ -7996,10 +7724,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8007,10 +7734,9 @@ const ITEM_DATA = {
                         intro: "You are an open vessel for any spirits or demonic entities who desire a medium to speak through or need a corporeal body to use for their purposes.",
                         holdText: "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Jealousy": {
                 name: "Jealousy",
@@ -8043,20 +7769,18 @@ const ITEM_DATA = {
                                         result: "Your jealousy takes hold of you. You must Keep It Together to refrain from harming, destroying, or stealing from the subject of your jealousy."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "There is someone who has the life you want to have, and you would do anything to possess it."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Liar": {
                 name: "Liar",
@@ -8092,10 +7816,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8103,10 +7826,9 @@ const ITEM_DATA = {
                         intro: "You're a compulsive liar, who invents stories at every opportunity, especially when it's beneficial for you.",
                         holdText: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Lost Identity": {
                 name: "Lost Identity",
@@ -8142,10 +7864,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8153,10 +7874,9 @@ const ITEM_DATA = {
                         intro: "Your true identity has been lost to a military or private-run secret agent program. You do not remember anything about your pre-employment life. Recently, memories of your true identity have started coming back to you.",
                         holdText: "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Marked": {
                 name: "Marked",
@@ -8192,10 +7912,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8203,10 +7922,9 @@ const ITEM_DATA = {
                         intro: "You are marked by the darkness. The mark can take the shape of a full-body tattoo, a demonic body part such as a vestigial arm, an extra eye or mouth, machine parts integrated with your flesh, or similar manifestations.",
                         holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to Keep It Together to resist the darkness' influence."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Mental Compulsion": {
                 name: "Mental Compulsion",
@@ -8278,10 +7996,9 @@ const ITEM_DATA = {
                                         result: "You become completely obsessed with your compulsion. If you focus on anything else, reduce Stability (−2)."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8291,10 +8008,9 @@ const ITEM_DATA = {
                             "options"
                         ]
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Nemesis": {
                 name: "Nemesis",
@@ -8330,10 +8046,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8341,10 +8056,9 @@ const ITEM_DATA = {
                         intro: "Through some terrible act you have made an enemy, who does everything in their power to take revenge. Decide who your nemesis is and what you have done to earn their vengeance.",
                         holdText: "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Nightmares": {
                 name: "Nightmares",
@@ -8377,20 +8091,18 @@ const ITEM_DATA = {
                                         result: "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You suffer from recurring nightmares, probably connected to your Dark Secrets."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Oath of Revenge": {
                 name: "Oath of Revenge",
@@ -8423,20 +8135,18 @@ const ITEM_DATA = {
                                         result: "You become obsessed and can act only to further your revenge. Doing anything else requires you roll Keep It Together. Your obsession cannot be assuaged while the target remains in the same scene with you."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have sworn to avenge an unforgivable injustice. Decide who is the subject of your vengeance and what they have done to you. It could be a single individual, people who share a certain trait, or members of an organization."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Object of Desire": {
                 name: "Object of Desire",
@@ -8472,10 +8182,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8483,10 +8192,9 @@ const ITEM_DATA = {
                         intro: "There is just something special about you. You ignite deep unhealthy desires in others, which they are unable to keep in check.",
                         holdText: "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Obsession": {
                 name: "Obsession",
@@ -8522,10 +8230,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8533,10 +8240,9 @@ const ITEM_DATA = {
                         intro: "You have discovered a conspiracy or supernatural phenomenon, and you can't stop yourself from getting to the bottom of it.",
                         holdText: "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing Stability. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Owned": {
                 name: "Owned",
@@ -8572,10 +8278,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8583,10 +8288,9 @@ const ITEM_DATA = {
                         intro: "You used to be a dangerous person's private property, willingly or not. Since your escape, your former owner has been looking for you. Decide who your former owner is when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Repressed Memories": {
                 name: "Repressed Memories",
@@ -8619,20 +8323,18 @@ const ITEM_DATA = {
                                         result: "You are overwhelmed by your repressed memories, completely losing yourself to them. The GM makes a hard Move and you reduce Stability (−2)."
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You have repressed a particularly unpleasant event from your past, but the memory of it sometimes rises to the surface. It could be a crime or some horrible thing you have done, been subjected to, or witnessed. The GM decides the nature of your repressed memory, usually based on your Dark Secrets."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Rival": {
                 name: "Rival",
@@ -8668,10 +8370,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8679,10 +8380,9 @@ const ITEM_DATA = {
                         intro: "You have an ambitious rival, who will do anything to be in your shoes. Choose who your rival is when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Schizophrenia": {
                 name: "Schizophrenia",
@@ -8718,10 +8418,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8729,10 +8428,9 @@ const ITEM_DATA = {
                         intro: "You struggle with recurring psychotic episodes and terrifying hallucinations.",
                         holdText: "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Sexual Neurosis": {
                 name: "Sexual Neurosis",
@@ -8778,20 +8476,18 @@ const ITEM_DATA = {
                                         ]
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Stalker": {
                 name: "Stalker",
@@ -8827,10 +8523,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8838,10 +8533,9 @@ const ITEM_DATA = {
                         intro: "You are hunted by a faceless enemy. Anyone you meet could be one of their minions—or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
                         holdText: "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Victim of Passion": {
                 name: "Victim of Passion",
@@ -8877,10 +8571,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8888,10 +8581,9 @@ const ITEM_DATA = {
                         intro: "You have an overwhelming passion for someone or something, seeking to possess it at any cost. Define the object of your passions when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce Stability (−2), your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (Keep It Together to resist), your longing leaves you feeble vis-à-vis the objective of this passion (−1 to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             },
             "Wanted": {
                 name: "Wanted",
@@ -8927,10 +8619,9 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: "active-rolled",
-                                attribute: "0"
-                            },
-                            folder: "fVHZntzzGBD4b2FH"
+                                subType: K4ItemSubType.activeRolled,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
@@ -8938,13 +8629,12 @@ const ITEM_DATA = {
                         intro: "You are wanted by the authorities—local, state, or federal—for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
                     },
-                    subType: "active-rolled",
-                    attribute: "0"
-                },
-                folder: "ZZ5uHOnbzZMKYSKI"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.zero
+                }
             }
         },
-        "active-static": {
+        [K4ItemSubType.activeStatic]: {
             Phobia: {
                 name: "Phobia",
                 type: K4ItemType.disadvantage,
@@ -8965,23 +8655,21 @@ const ITEM_DATA = {
                                     trigger: "Whenever you're confronted by the object of your phobia,",
                                     outro: "you must Keep It Together."
                                 },
-                                subType: "active-static",
-                                attribute: "0"
-                            },
-                            folder: "Q06LHfNMWeMVhYGm"
+                                subType: K4ItemSubType.activeStatic,
+                                attribute: K4Attribute.zero
+                            }
                         }
                     ],
                     isCustom: false,
                     rules: {
                         intro: "You harbor an overpowering fear of something. Choose the stimulus that frightens you when you take this Disadvantage."
                     },
-                    subType: "active-static",
-                    attribute: "0"
-                },
-                folder: "zmu4Z5XjVVRbIAlq"
+                    subType: K4ItemSubType.activeStatic,
+                    attribute: K4Attribute.zero
+                }
             }
         },
-        "passive": {
+        [K4ItemSubType.passive]: {
             Broken: {
                 name: "Broken",
                 type: K4ItemType.disadvantage,
@@ -8995,10 +8683,9 @@ const ITEM_DATA = {
                             "SetTrait:actor/data.stability.max,6"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "rAcwSWWQwWDS4DAi"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             },
             Rationalist: {
                 name: "Rationalist",
@@ -9023,15 +8710,14 @@ const ITEM_DATA = {
                             "gmoptions"
                         ]
                     },
-                    subType: "passive",
-                    attribute: "0"
-                },
-                folder: "rAcwSWWQwWDS4DAi"
+                    subType: K4ItemSubType.passive,
+                    attribute: K4Attribute.zero
+                }
             }
         }
     },
-    move: {
-        "active-rolled": {
+    [K4ItemType.move]: {
+        [K4ItemSubType.activeRolled]: {
             "Act Under Pressure": {
                 name: "Act Under Pressure",
                 type: K4ItemType.move,
@@ -9053,10 +8739,9 @@ const ITEM_DATA = {
                             result: "There are serious consequences, you make a mistake, or you're exposed to the danger. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "coolness"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.coolness
+                }
             },
             "Avoid Harm": {
                 name: "Avoid Harm",
@@ -9079,10 +8764,9 @@ const ITEM_DATA = {
                             result: "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any Harm at all, or you ended up in an even worse spot than before. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "reflexes"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reflexes
+                }
             },
             "Endure Injury": {
                 name: "Endure Injury",
@@ -9133,10 +8817,9 @@ const ITEM_DATA = {
                             ]
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "fortitude"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.fortitude
+                }
             },
             "Engage in Combat": {
                 name: "Engage in Combat",
@@ -9175,10 +8858,9 @@ const ITEM_DATA = {
                             result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "violence"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.violence
+                }
             },
             "Help Other": {
                 name: "Help Other",
@@ -9201,10 +8883,9 @@ const ITEM_DATA = {
                             result: "Your interference has unintended consequences. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "ask"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.ask
+                }
             },
             "Hinder Other": {
                 name: "Hinder Other",
@@ -9227,10 +8908,9 @@ const ITEM_DATA = {
                             result: "Your interference has unintended consequences. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "ask"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.ask
+                }
             },
             "Influence Other NPC": {
                 name: "Influence Other NPC",
@@ -9266,10 +8946,9 @@ const ITEM_DATA = {
                             result: "Your attempt has unintended repercussions. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Influence Other PC": {
                 name: "Influence Other PC",
@@ -9307,10 +8986,9 @@ const ITEM_DATA = {
                             result: "The character gets +1 on her next roll against you. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "charisma"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.charisma
+                }
             },
             "Investigate": {
                 name: "Investigate",
@@ -9349,10 +9027,9 @@ const ITEM_DATA = {
                             result: "You may get some information anyway, but you pay a price for it. You may expose yourself to dangers or costs. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "reason"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.reason
+                }
             },
             "Keep It Together": {
                 name: "Keep It Together",
@@ -9404,10 +9081,9 @@ const ITEM_DATA = {
                             ]
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "willpower"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.willpower
+                }
             },
             "Observe a Situation": {
                 name: "Observe a Situation",
@@ -9452,10 +9128,9 @@ const ITEM_DATA = {
                             ]
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "perception"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.perception
+                }
             },
             "Read a Person": {
                 name: "Read a Person",
@@ -9496,10 +9171,9 @@ const ITEM_DATA = {
                             result: "You accidentally reveal your own intentions to the person you're trying to read. Tell the GM/player what these intentions are. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "intuition"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.intuition
+                }
             },
             "See Through the Illusion": {
                 name: "See Through the Illusion",
@@ -9534,15 +9208,14 @@ const ITEM_DATA = {
                             result: "The GM explains what you see. The GM makes a Move."
                         }
                     },
-                    subType: "active-rolled",
-                    attribute: "soul"
-                },
-                folder: "nH0Xqbf80gCjhHvl"
+                    subType: K4ItemSubType.activeRolled,
+                    attribute: K4Attribute.soul
+                }
             }
         }
     },
-    darksecret: {
-        passive: {
+    [K4ItemType.darksecret]: {
+        [K4ItemSubType.passive]: {
             "Chosen One": {
                 name: "Chosen One",
                 type: K4ItemType.darksecret,
@@ -9568,9 +9241,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Curse": {
                 name: "Curse",
@@ -9597,9 +9269,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Family Secret": {
                 name: "Family Secret",
@@ -9626,9 +9297,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Forbidden Knowledge": {
                 name: "Forbidden Knowledge",
@@ -9655,9 +9325,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Guardian": {
                 name: "Guardian",
@@ -9683,9 +9352,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Guilty of Crime": {
                 name: "Guilty of Crime",
@@ -9713,9 +9381,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Heir": {
                 name: "Heir",
@@ -9741,9 +9408,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Mental Illness": {
                 name: "Mental Illness",
@@ -9770,9 +9436,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Occult Experience": {
                 name: "Occult Experience",
@@ -9799,9 +9464,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Pact with Dark Forces": {
                 name: "Pact with Dark Forces",
@@ -9828,9 +9492,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Responsible for Medical Experiments": {
                 name: "Responsible for Medical Experiments",
@@ -9858,9 +9521,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Returned from the Other Side": {
                 name: "Returned from the Other Side",
@@ -9887,9 +9549,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Rootless": {
                 name: "Rootless",
@@ -9916,9 +9577,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Strange Disappearance": {
                 name: "Strange Disappearance",
@@ -9945,9 +9605,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Victim of Crime": {
                 name: "Victim of Crime",
@@ -9974,9 +9633,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Victim of Medical Experiments": {
                 name: "Victim of Medical Experiments",
@@ -10004,9 +9662,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             },
             "Visitations": {
                 name: "Visitations",
@@ -10033,9 +9690,8 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: "passive"
-                },
-                folder: "tHZJ4CLINyxkB6PQ"
+                    subType: K4ItemSubType.passive
+                }
             }
         }
     }

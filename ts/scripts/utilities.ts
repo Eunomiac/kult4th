@@ -769,15 +769,29 @@ function objMerge<Tx,Ty>(target: Tx, source: Ty, {isMutatingOk = false, isStrict
 	}
 	return target as Tx & Ty;
 }
-const objExpand = (obj: List<unknown>): List<unknown> => {
+const objExpand = <T>(obj: List<T>): List<T> => {
 	const expObj = {};
 	for (let [key, val] of Object.entries(obj)) {
 		if (isList(val)) {
-			val = objExpand(val);
+			val = objExpand(val) as T;
 		}
 		setProperty(expObj, key, val);
 	}
-	return expObj;
+	// Iterate through expanded Object, converting object literals to arrays where it makes sense
+	function arrayify<X>(obj: Index<X> | X): Index<X> | X {
+		if (isList(obj)) {
+			if (/^\d+$/.test(Object.keys(obj).join(""))) {
+				return Object.values(obj).map(arrayify) as X[];
+			}
+			return objMap(obj, (v: unknown): unknown => arrayify(v)) as List<X>;
+		}
+		if (isArray(obj)) {
+			return obj.map(arrayify) as X[];
+		}
+		return obj;
+	}
+
+	return arrayify(expObj) as List<T>;
 };
 const objFlatten = (obj: Index<unknown>) => {
 	const flatObj: List<unknown> = {};

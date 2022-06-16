@@ -40,8 +40,52 @@
 						background: var(--gradient-dkdkgold-upright);
 						text-shadow: var(--textShadow-inset);
 
-						ul {
-							margin-top: 15px;
+						.hold-header,
+						.edges-header {
+							--header-glow: var(--red-glow);
+							display: block;
+							text-align: center;
+							font-family: 'Alverata';
+							font-size: 22px;
+							color: var(--header-glow);
+							text-shadow:
+								0 0 14px var(--header-glow),
+								0 0 2px var(--black),
+								0 0 2px var(--black),
+								0 0 2px var(--black),
+								0 0 2px var(--black),
+								0 0 2px var(--black);
+							font-weight: 900;
+							text-transform: uppercase;
+							line-height: 22px;
+							margin-bottom: 5px;
+
+							&.edges-header {
+								--header-glow: var(--blue-glow)
+							}
+						}
+
+						.hold-body {
+							padding: 0 20px;
+							display: block;
+						}
+
+						.result-entry {
+							display: block;
+							margin: 0 20px;
+							font-size: 16px;
+							clear: both;
+
+							label {
+								color: var(--red-glow);
+								font-weight: 900;
+								text-align: right;
+								display: block;
+								width: 60px;
+								height: 100%;
+								float: left;
+								margin-right: 10px;
+							}
 						}
 
 						.inline-attack {
@@ -67,14 +111,16 @@
 								display: inline-block;
 								transform-origin: center center;
 								transform: scaleY(1.5);
-								}
+							}
+
 							.attack-range {
 								display: inline-block;
-								padding-right:5px;
+								padding-right: 5px;
 								color: #FAA;
 								transform-origin: center center;
 								transform: scaleY(1.5);
-								}
+							}
+
 							.attack-harm {
 								display: inline-block;
 								height: 28px;
@@ -91,11 +137,11 @@
 								margin-left: 5px;
 								margin-right: 5px;
 								font-weight: 900;
-								border: 2px outset var(--red-brightest
-																			);
+								border: 2px outset var(--red-brightest);
 								text-indent: 1px;
 								z-index: 2;
-								}
+							}
+
 							.attack-effect {
 								display: inline;
 								text-shadow: none;
@@ -104,7 +150,7 @@
 								// line-height: normal;
 
 							}
-							}
+						}
 					}
 				}
 			}

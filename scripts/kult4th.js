@@ -32,7 +32,8 @@ Hooks.once("init", () => {
         "systems/kult4th/templates/sheets/gear-sheet.hbs",
         /*DEVCODE*/ "systems/kult4th/templates/debug/template-entry.hbs",
         "systems/kult4th/templates/partials/basic-move-card.hbs",
-        "systems/kult4th/templates/partials/attribute-box.hbs"
+        "systems/kult4th/templates/partials/attribute-box.hbs",
+        "systems/kult4th/templates/partials/roll-result-entry.hbs"
     ]);
     Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func));
     console.log("HANDLEBARS", Handlebars);
@@ -40,6 +41,8 @@ Hooks.once("init", () => {
         gsap,
         cleanData,
         toDict,
+        U,
+        C,
         resetItems: async () => {
             // @ts-expect-error They fucked up
             await Item.deleteDocuments(Array.from(game.items.values()).map((item) => item.id));
@@ -171,27 +174,45 @@ Hooks.once("init", () => {
             console.log("ORIGINAL DATA (cleaned, grouped)", GROUPED_DATA);
             console.log("CURRENT DATA", ITEM_DATA);
             const NEW_ITEM_DATA = mutateItemData(ITEM_DATA);
-            // NEW_ITEM_DATA = mutateItemData(ITEM_DATA);
             const FLAT_DATA = Object.fromEntries(Object.entries(NEW_ITEM_DATA).map(([iType, tDict]) => [
-                iType,
+                `[[K4ItemType:${iType}]]`,
                 Object.fromEntries(Object.entries(tDict).map(([iSubType, stDict]) => [
-                    iSubType,
+                    `[[K4ItemSubType:${iSubType.replace(/-(.)/g, (_, match) => match.toUpperCase())}]]`,
                     Object.fromEntries(Object.entries(stDict).map(([iName, iData]) => [
                         iName,
-                        U.objFlatten(iData)
+                        U.objMap(U.objFlatten(iData), (k) => k, (v, k) => {
+                            k = String(k);
+                            if (/attribute$/.test(k)) {
+                                return `[K4Attribute:${v}]`.replace(/:0/, ":zero");
+                            }
+                            if (/type$/.test(k)) {
+                                return `[K4ItemType:${v}]`;
+                            }
+                            if (/subType$/.test(k)) {
+                                return `[K4ItemSubType:${v.replace(/-(.)/g, (_, match) => match.toUpperCase())}]`;
+                            }
+                            return v;
+                        })
                     ]))
                 ]))
             ]));
             Object.assign(globalThis, { ITEM_DATA: NEW_ITEM_DATA, FLAT_DATA });
-            console.log("*** NEW ITEM_DATA ***", NEW_ITEM_DATA);
+            console.log("*** NEW ITEM_DATA ***", NEW_ITEM_DATA, mutateLog);
             console.log("*** FLATTENED ITEM_DATA ***", FLAT_DATA);
-            console.log("*** MUTATOR LOG ***", mutateLog);
+            const LOCALIZATION_DATA = U.objMap(U.objFilter(U.objFlatten(NEW_ITEM_DATA), (k) => !/attribute|isCustom|lists\.[a-z]+\.name|\.subType|\.type|\.img|\.folder|\.optionsLists|\.sourceItem\.name|\.notes|\.range|effectFunctions/.test(k), (v) => typeof v === "string"), (k) => {
+                k = String(k).replace(/data\.(subItems\.)?|\.result$/g, "")
+                    .replace(/^[^\.]+\.[^\.]+\./, "")
+                    .replace(/ (.)/g, (_, cap) => cap.toUpperCase())
+                    .replace(/[()]/g, "")
+                    .replace(/\.items\.(\d+)/g, ".item$1");
+                return `${k.charAt(0).toLowerCase()}${k.slice(1)}`;
+            }, (v) => v);
+            console.log("*** UNFLATTENED ITEM_DATA ***", U.objExpand(U.objFlatten(FLAT_DATA)));
+            console.log("*** LOCALIZATION STRINGS ***", LOCALIZATION_DATA);
             /* REG-EXP PATTERNS TO MANUALLY FIX migratedData.ts
 
-                \btype: "(.+?)" 	type: K4ItemType.$1
-                "active-(.)([a-z]+)":			[K4ItemSubType.active\U$1$2]:
-                "passive": 	[K4ItemSubType.passive]:
-                \bsubType: "([^"-]+)-?([^"-])?([^"-]+)?"		subType: K4ItemSubType.$1\U$2$3
+            "\[K4(.*?):(.*?)\]"			-->			K4$1.$2
+            "\[\[K4(.*?):(.*?)\]\]" -->			[K4$1.$2]
             */
             const MIGRATEDITEMDATA = Object.values(NEW_ITEM_DATA)
                 .map((subTypeDict) => Object.values(subTypeDict))

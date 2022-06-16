@@ -1,13 +1,13 @@
 import EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs';
 import {ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
 import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
-import { ConfiguredDocumentClass } from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
+import {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
 import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item";
 import K4ItemSheet from '../../../documents/K4ItemSheet';
+import { K4Attribute } from '../../../scripts/constants';
 
 declare global {
 
-	type AttributeEntry = Attribute.Any | "ask" | "0";
 	type WeaponSubClass<T extends K4WeaponClass> =
 		T extends K4WeaponClass.meleeUnarmed ? ("")
 	: T extends K4WeaponClass.meleeCrush ? ("")
@@ -18,10 +18,11 @@ declare global {
 	: "";
 
 	type RulesDef = {
-		intro: string,
-		trigger: string,
-		outro: string,
-		holdText: string,
+		intro?: string,
+		trigger?: string,
+		outro?: string,
+		suffix?: string,
+		holdText?: string,
 		optionsLists: string[],
 		effectFunctions: string[]
 	}
@@ -56,8 +57,6 @@ declare global {
 		type: K4ItemType
 	}
 
-	type K4ConstructorData<Type extends K4ItemType = K4ItemType> =  K4ItemData<Type>;
-
 	namespace K4ItemClass {
 		// @ts-expect-error Why won't it let me use a generic here?
 		export type Move = K4Item<K4ItemType.move>;
@@ -83,38 +82,42 @@ declare global {
 			description: string,
 			notes: string,
 			lists: Record<string, ListDef>,
-			subItems: Array<K4ConstructorData<K4ItemType.move|K4ItemType.attack>>,
+			subItems: Array<K4ItemData<K4ItemType.move|K4ItemType.attack>>,
 			isCustom: boolean,
 			pdfLink: string
 		}
 
-		interface Rules { rules: RulesDef }
+		interface Rules {
+			rules: RulesDef
+		}
 
-		interface Results<T extends K4ItemSubType = K4ItemSubType> { results: ResultDef<T> }
+		interface Results<T extends K4ItemSubType = K4ItemSubType> {
+			results: ResultDef<T>
+		}
 
 		export interface Move extends Base, Rules, Results {
-			attribute: AttributeEntry,
+			attribute: K4Attribute,
 			sourceItem?: SourceDef
 		}
 		export interface Attack extends Base, Results {
-			attribute: AttributeEntry,
+			attribute: K4Attribute,
 			sourceItem: SourceDef,
 			range: RangeType[],
 			harm: posInt,
 			ammo: posInt,
 		}
 		export interface Advantage extends Base, Rules {
-			attribute: AttributeEntry,
+			attribute: K4Attribute,
 			currentHold: posInt,
 			currentEdges: posInt
 		}
 		export interface Disadvantage extends Base, Rules {
-			attribute: AttributeEntry,
+			attribute: K4Attribute,
 			currentHold: posInt
 		}
 
 		export interface DarkSecret extends Base, Rules {
-			drive: "",
+			drive: string,
 			currentHold: posInt,
 			playerNotes: string,
 			gmNotes: string
@@ -144,7 +147,7 @@ declare global {
 		}
 	}
 
-	type K4ItemData<Type extends K4ItemType> = {
+	type K4ItemData<Type extends K4ItemType = K4ItemType> = {
 		name: string,
 		img: string,
 		type: K4ItemType,
