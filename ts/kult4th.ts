@@ -9,7 +9,7 @@ import {HandlebarHelpers} from "./scripts/helpers.js";
 
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
-import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "./scripts/migration/migrator.js";
+// import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "../kult4eoverrides/migratorts";
 import ITEM_DATA from "./scripts/migration/migratedData.js";
 import gsap from "gsap/all";
 import {FolderDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/folderData.js";
@@ -45,17 +45,16 @@ Hooks.once("init", () => {
 
 		"systems/kult4th/templates/partials/basic-move-card.hbs",
 		"systems/kult4th/templates/partials/attribute-box.hbs",
-		"systems/kult4th/templates/partials/roll-result-entry.hbs"
+		"systems/kult4th/templates/partials/roll-result-entry.hbs",
+		"systems/kult4th/templates/partials/derived-item-summary.hbs"
 	]);
 
-	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func));
+	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func as Handlebars.HelperDelegate));
 
 	console.log("HANDLEBARS", Handlebars);
 
 	Object.assign(globalThis, {
 		gsap,
-		cleanData,
-		toDict,
 		U,
 		C,
 		resetItems: async () => {
@@ -157,12 +156,22 @@ Hooks.once("init", () => {
 
 			const mutateLog: string[] = [];
 			function mutateItemData(itemData: Partial<ItemDataRecord>): Partial<ItemDataRecord> {
+				itemData = U.objClone(itemData);
 				const formatString = (str: string) => (str ? `${str}.`.replace(/([,\:\.])\.$/, "$1") : str);
 				const mutateData = <T extends K4ItemType = K4ItemType>(iData: any): Partial<K4ItemData<T>> => {
 					if (!iData.data) {
 						mutateLog.push(`${iData.name} is missing a DATA attribute!`);
 						return iData;
 					}
+
+					// First, get names of each of the lists, if any.
+					const listKeys = Object.keys(iData.data.lists ?? {});
+
+					// If there is only one list ...
+
+					// If there are multiple ...
+
+
 					if (iData.data.results) {
 						iData.data.results = U.objMap(iData.data.results, (rData: any) => {
 							if (typeof rData.result === "string" && /Gain\s\d+\s+Edge/.test(rData.result)) {
@@ -193,13 +202,97 @@ Hooks.once("init", () => {
 						.objMap(iDataDict, mutateData))) as ItemDataRecord;
 			}
 
-			console.log("ORIGINAL DATA (cleaned, grouped)", GROUPED_DATA);
-
-			console.log("CURRENT DATA", ITEM_DATA);
+			console.log("CURRENT DATA", U.objClone(ITEM_DATA));
 
 			const NEW_ITEM_DATA = mutateItemData(ITEM_DATA);
 
-			const FLAT_DATA = Object.fromEntries(Object.entries(NEW_ITEM_DATA).map(([iType, tDict]) => [
+			console.log("NEW DATA", U.objClone(NEW_ITEM_DATA));
+
+			const FLAT_DATA_UNTYPESCRIPTED = U.objMap(NEW_ITEM_DATA, (k: key, v: any) => k, (typeDict: Record<key,any>) => {
+				return U.objMap(typeDict, (k: key, v: any) => k, (subTypeDict: Record<key,any>) => {
+					return U.objMap(subTypeDict, (k: key, v: any) => k, (iData: Partial<K4ItemData>) => U.objFlatten(iData));
+				});
+			});
+
+			function AnalyzeFlatKeys(iDataSet: Array<Record<string,any>>) {
+				if (!iDataSet || !Object.values(iDataSet).length) { return {} }
+				// Extract ONLY keys that begin with 'data'.
+				const flatKeyTally = {
+					primary: {},
+					subItems: {}
+				};
+				const numEntries = Object.entries(iDataSet).length;
+				Object.entries(iDataSet).forEach(([iName, iData]) => {
+					const [subItems, primaries] = U.partition(Object.keys(iData).filter((key) => /^data/.test(key) && !/subItems\.\d+\.[^d]/.test(key)), (key) => /subItems/.test(key));
+					primaries.forEach((key) => {
+						key = key.replace(/\.\d+$/, "");
+						// @ts-expect-error Temp
+						flatKeyTally.primary[key] ??= [];
+						// @ts-expect-error Temp
+						flatKeyTally.primary[key].push(iName);
+					});
+					subItems.forEach((key) => {
+						key = key.replace(/^data.*?data/, "data");
+						key = key.replace(/\.\d+$/, "");
+						// @ts-expect-error Temp
+						flatKeyTally.subItems[key] ??= [];
+						// @ts-expect-error Temp
+						flatKeyTally.subItems[key].push(iName);
+					});
+				});
+				// @ts-expect-error Temp
+				function valMap(v) {
+					v = U.unique(v).sort();
+					return (v.length === numEntries || U.unique(v).length === numEntries) ? `ALL (${numEntries})` : `${U.unique(v).length}: ${U.unique(v).sort().join(", ")}`;
+				}
+
+				flatKeyTally.primary = Object.fromEntries(Object.entries(flatKeyTally.primary).sort(([a], [b]) => a.localeCompare(b)));
+				flatKeyTally.subItems = Object.fromEntries(Object.entries(flatKeyTally.subItems).sort(([a], [b]) => a.localeCompare(b)));
+
+				return {
+					// @ts-expect-error Temp
+					primary: U.objMap(flatKeyTally.primary, (k) => k, valMap),
+					// primary: U.objMap(flatKeyTally.primary, (k) => k, (v) => { v = U.unique(v); return v.length > 5 ? v.length : v.join(", ") }),
+					// @ts-expect-error Temp
+					subItems: U.objMap(flatKeyTally.subItems, (k) => k, valMap)
+					// subItems: U.objMap(flatKeyTally.subItems, (k) => k, (v) => { v = U.unique(v); return v.length > 5 ? v.length : v.join(", ") })
+				};
+			}
+
+			const finalLog = {};
+			const keyList = {};
+			[
+				"advantage",
+				"disadvantage",
+				"move",
+				"darksecret",
+				"relation",
+				"gear",
+				"attack",
+				"weapon"
+			].forEach((itemType) => {
+				if (itemType in FLAT_DATA_UNTYPESCRIPTED) {
+					// @ts-expect-error Temp
+					finalLog[itemType] = {};
+					// @ts-expect-error Temp
+					keyList[itemType] = {};
+					[
+						"active-rolled",
+						"active-static",
+						"passive"
+					].forEach((itemSubType) => {
+						// @ts-expect-error Temp
+						if (itemSubType in FLAT_DATA_UNTYPESCRIPTED[itemType]) {
+							// @ts-expect-error Temp
+							finalLog[itemType][itemSubType] = AnalyzeFlatKeys((FLAT_DATA_UNTYPESCRIPTED as any)[itemType][itemSubType]);
+						}
+					});
+				}
+			});
+
+			console.log("*** ANALYSIS ***", finalLog);
+
+			const FLAT_DATA = Object.fromEntries(Object.entries(U.objClone(NEW_ITEM_DATA)).map(([iType, tDict]) => [
 				`[[K4ItemType:${iType}]]`,
 				Object.fromEntries(Object.entries(tDict).map(([iSubType, stDict]: [any, any]) => [
 					`[[K4ItemSubType:${iSubType.replace(/-(.)/g, (_: unknown, match: string) => match.toUpperCase())}]]`,
@@ -226,14 +319,13 @@ Hooks.once("init", () => {
 				]))
 			]));
 			Object.assign(globalThis, {ITEM_DATA: NEW_ITEM_DATA, FLAT_DATA});
-
-			console.log("*** NEW ITEM_DATA ***", NEW_ITEM_DATA, mutateLog);
 			console.log("*** FLATTENED ITEM_DATA ***", FLAT_DATA);
+			console.log("*** FLATTENED ITEM_DATA UNTYPESCRIPTED ***", FLAT_DATA_UNTYPESCRIPTED);
 
 			const LOCALIZATION_DATA = U.objMap(
 				U.objFilter(
 					U.objFlatten(NEW_ITEM_DATA),
-					(k: string) => !/attribute|isCustom|lists\.[a-z]+\.name|\.subType|\.type|\.img|\.folder|\.optionsLists|\.sourceItem\.name|\.notes|\.range|effectFunctions/.test(k),
+					(k: string) => !/attribute|isCustom|lists\.[a-z]+\.name|\.subType|\.type|\.img|\.folder|\.listRefs|\.sourceItem\.name|\.notes|\.range|effectFunctions/.test(k),
 					(v) => typeof v === "string"
 				),
 				(k: key) => {
@@ -282,7 +374,7 @@ Hooks.once("init", () => {
 Hooks.once("ready", async () => {
 	const isResetting = true;
 	if (isResetting) {
-		console.clear();
+		// console.clear();
 		// @ts-expect-error They fucked up
 		resetItems();
 	}

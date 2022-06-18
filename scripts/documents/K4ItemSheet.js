@@ -117,18 +117,17 @@ export default class K4ItemSheet extends ItemSheet {
                         ? attack.data.range[0]
                         : `${attack.data.range[0]}—${U.getLast(attack.data.range)}`}]</span>`
                     : "",
-                attack.data.notes ? `<span class='attack-effect'>${attack.data.notes}</span>` : "",
                 "</span>"
             ].join("")).join("");
         }
         return "";
     }
     get rulesListHTML() {
-        if (!this.data.rules.optionsLists?.length) {
+        if (!this.data.rules.listRefs?.length) {
             return "";
         }
         const lists = [];
-        this.data.rules.optionsLists.forEach((listKey) => {
+        this.data.rules.listRefs.forEach((listKey) => {
             if (!(new RegExp(`${listKey}%`)).test(this.data.rules.intro + this.data.rules.trigger + this.data.rules.outro)) {
                 lists.push(this.getListHTML(listKey));
             }
@@ -140,7 +139,7 @@ export default class K4ItemSheet extends ItemSheet {
             const listHTML: string[] = [];
             switch (resultType) {
                 case "staticSuccess": {
-                    resultsData.staticSuccess.optionsLists.forEach((listKey: string) => {
+                    resultsData.staticSuccess.listRefs.forEach((listKey: string) => {
                         listHTML.push(this.getListHTML(listKey))
                     })
 
@@ -172,23 +171,25 @@ export default class K4ItemSheet extends ItemSheet {
             default: return "";
         }
     } */
-    async getData() {
-        // if (this.type === "move") {
-        const data = await super.getData();
-        const handlebarsData = {
-            rulesHTML: [
-                "<div class='editor-content rules-text'>",
-                ...[
-                    this.parseHTMLString(data.data.data.rules.intro),
-                    data.data.data.rules.trigger ? `<em class='text-trigger'>${this.parseHTMLString(data.data.data.rules.trigger)}</em>` : "",
-                    [this.outroHTML].flat().join("<br><br><br>")
-                ].map((str) => str.trim()).join(" "),
-                this.rulesListHTML,
-                "</div>"
-            ].filter(Boolean).join("")
-        };
-        return Object.assign(data, handlebarsData);
-    }
+    // override async getData() {
+    // 	// if (this.type === "move") {
+    // 	const data = await super.getData();
+    // 	const handlebarsData: {
+    // 			rulesHTML: string
+    // 		} = {
+    // 			rulesHTML: [
+    // 				"<div class='editor-content rules-text'>",
+    // 				...[
+    // 					this.parseHTMLString(data.data.data.rules.intro),
+    // 					data.data.data.rules.trigger ? `<em class='text-trigger'>${this.parseHTMLString(data.data.data.rules.trigger)}</em>` : "",
+    // 					[this.outroHTML].flat().join("<br><br><br>")
+    // 				].map((str) => str.trim()).join(" "),
+    // 				this.rulesListHTML,
+    // 				"</div>"
+    // 			].filter(Boolean).join("")
+    // 		};
+    // 	return Object.assign(data, handlebarsData);
+    // }
     activateListeners(html) {
         // Apply custom styles to TinyMCE editors
         // const editors = Object.values(this.editors);

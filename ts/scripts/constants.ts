@@ -104,6 +104,11 @@ export const Colors = {
 	"RED -2": "#490000",
 	"RED GLOW": "#ff0000",
 	"WHITE": "#ffffff",
+	"GREY +2": "#CCCCCC",
+	"GREY +1": "#AAAAAA",
+	"GREY": "#888888",
+	"GREY -1": "#666666",
+	"GREY -2": "#333333",
 	"BLACK": "#000000",
 	"BLUE": "#2a548a",
 	"BLUE +2": "#688ab5",
@@ -146,11 +151,13 @@ export const RegExpPatterns = {
 		"\\bSee Through the Illusion\\b"
 	].map((patStr) => new RegExp(`(${patStr})`, "g")),
 	Keywords: [
-		"(\\b|[-+\\d\\s]+ )Harm\\b",
-		"(\\b|[-+\\d\\s]+ )Armor\\b",
+		/[\-+]/g,
+		"(\\b|[^ :a-z()]+ )Harm\\b",
+		"(\\b|[^ :a-z()]+ )Armor\\b",
 		"\\bStability\\b( \\(.?\\d+\\))?",
-		"[-+]\\d+ ongoing\\b",
-		"\\b(Serious |Critical |\d+ )?Wounds?\\b"
+		"\\bRelation\\b( .?\\d+)?",
+		"[^ :a-z()]+ ongoing\\b",
+		"\\b(Serious |Critical |\\d+ )?Wounds?\\b"
 	].map((patStr) => new RegExp(`(${patStr})`, "g")),
 	GMText: [
 		/\b([Tt]he GM (?:may )?makes? a (?:hard |soft )?Move)\b/g,

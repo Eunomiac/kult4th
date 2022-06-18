@@ -27,7 +27,29 @@
   --gradient-teal-gold: linear-gradient(to right, #3e5151, #decba4);
   --gradient-dkgold-gold: linear-gradient(to right, #6d6027, #d3cbb8);
   --gradient-dkdkgold-upright: linear-gradient(14deg, var(--gold-darker), var(--gold-darkest));
-  --textShadow-inset: 1px 1px 0px var(--gold-dark), -1px -1px 1px var(--black); }
+  --textShadow-inset: 1px 1px 0px var(--gold-dark), -1px -1px 1px var(--black);
+  /* Darker text on medium background */
+  /* Medium text on lighter background */
+  /* Middle-tone colors with 1 shadow */
+  /* Middle-tone colors with 2 shadows */ }
+  * .dark-on-dark {
+    color: #333;
+    background-color: #666;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+    /* 50% white from bottom */ }
+  * .med-on-light {
+    color: #666;
+    background-color: #aaa;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+    /* 50% black coming from the top */ }
+  * .mid-one-shadow {
+    color: #3b5957;
+    background-color: #5d8d89;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5); }
+  * .mid-two-shadow {
+    color: #3b5957;
+    background-color: #5d8d89;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7); }
 
 @font-face {
   font-family: Infidel;
@@ -115,7 +137,8 @@
     font-style: normal; }
   #tinymce .text-movename {
     color: var(--blue-bright);
-    font-weight: bold; }
+    font-weight: bold;
+    font-style: italic; }
   #tinymce .text-trigger {
     color: var(--gold-brightest); }
   #tinymce .text-extra-bold {

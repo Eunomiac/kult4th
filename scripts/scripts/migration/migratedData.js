@@ -83,7 +83,7 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "You discover what you're looking for, and may also choose one option:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -143,28 +143,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever someone's got you up against the wall or in a tight spot,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     partialSuccess: {
                                         result: "Gain 1 Edge. You may spend it at any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but the situation is worse than you imagined. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -177,7 +177,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -218,19 +218,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options. You may save up to two for later.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options. You may save one for later.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but the animal is affected by your memories and Disadvantages. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -293,13 +293,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose one option (the GM determines what happens).",
-                                        optionsLists: [
+                                        listRefs: [
                                             "powers"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option (the GM determines what happens). However, the artifact also exacts an additional price (the GM determines what is required).",
-                                        optionsLists: [
+                                        listRefs: [
                                             "powers"
                                         ]
                                     },
@@ -314,8 +314,8 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You own a seemingly mundane item, which actually possesses mystical powers. Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required). Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: %lists:powers%",
-                        optionsLists: [
+                        intro: "You own a seemingly mundane item, which actually possesses mystical powers. Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required). Work with the GM to devise a list of options appropriate to the artifact, using this list as an example:",
+                        listRefs: [
                             "powers"
                         ]
                     },
@@ -357,19 +357,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but a complication/threat manifests. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -418,19 +418,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "During this game session, choose three options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "During this game session, choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "During this game session you may choose one option, but you also attract unwanted attention like stalkers, professional adversaries, competitors, or hostile forces. The GM makes a Move for them at some point during the session.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -522,13 +522,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -587,14 +587,14 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "You may choose one option. %lists:options% However, you must also choose one complication: %lists:complications%",
-                                        optionsLists: [
-                                            "complications"
+                                        result: "You may choose one option from the list below, but you must also choose one complication: %list:complications%",
+                                        listRefs: [
+                                            "options"
                                         ]
                                     },
                                     failure: {
@@ -644,19 +644,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option, but you expose yourself to danger or incur a cost.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but something goes very wrong. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -710,7 +710,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "They follow your orders, but GM picks one option:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -764,19 +764,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "You may choose three options at any time during the session.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "You may choose one option at any time during the session.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "You may choose one option at any time during the session, but the GM makes a Move for the entity at some point during the session.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -829,19 +829,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Get three options. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Get two options. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Get one option, but a problem arises. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -891,7 +891,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "You manage to trick everyone who doesn't examine you in detail, but choose one complication:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "complications"
                                         ]
                                     },
@@ -943,19 +943,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options. You may save up to two for later.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options. You may save one for later.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but things don't go according to plan. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -1003,19 +1003,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two separate options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but you also attract unwanted attention. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -1108,13 +1108,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -1165,13 +1165,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options. You may save one until later during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -1226,19 +1226,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask two questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask one question from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but your investigation leads you into danger or introduces additional problems later on.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -1288,13 +1288,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose to receive up to three visions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose to receive up to two visions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -1348,7 +1348,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "You make a minor error. The GM chooses one:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -1408,28 +1408,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you're entering a dangerous situation,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them anytime during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them anytime during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but you are in over your head. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -1442,7 +1442,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -1485,19 +1485,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask three questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask two questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but you also discover something unexpected. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -1594,28 +1594,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you fight with no regard for your personal safety,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but afterwards you discover you have been injured without noticing it (Endure Injury; the GM determines the amount of Harm based on who attacked you and how).",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -1628,7 +1628,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -1668,19 +1668,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "The creature mistakes you for a god. choose three options, useable any time during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "You are fascinating to the creature. Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "You may choose one option, but after using it the creature becomes determined to possess you. It might try to devour you or perhaps capture you. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -1783,28 +1783,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them anytime during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them anytime during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge to spend any time during the scene, but the situation worsens somehow—maybe you speed past a police car, additional vehicles start pursuing you, or you or your vehicle is damaged. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -1818,7 +1818,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "You are a trained professional at operating motor vehicles (car or motorcycle).",
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -1860,19 +1860,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but you've become indebted to someone. The debt can be called in at any time during the story, at the GM's discretion.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -1927,7 +1927,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "You must give them a third option. Choose one:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -2020,19 +2020,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options any time during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options any time during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option any time during this scene, but the nature of the attraction is different than you had hoped. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -2124,19 +2124,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "You get all three options below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two of the options below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but you risk discovery or face unexpected obstacles. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -2184,13 +2184,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "The creature is banished. Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "The creature is banished. Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -2316,19 +2316,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask three questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask two questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but you expose your inquisitiveness to the person you're observing. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -2383,15 +2383,14 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option, but the GM also chooses one of the following:",
-                                        optionsLists: [
-                                            "options",
-                                            "gmoptions"
+                                        result: "Choose one option, but the GM also chooses one of the following: %list:gmoptions%",
+                                        listRefs: [
+                                            "options"
                                         ]
                                     },
                                     failure: {
@@ -2441,19 +2440,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but they grow suspicious of your motives. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -2480,7 +2479,7 @@ const ITEM_DATA = {
                                 "Take Cover &mdash; Avoid a ranged attack by diving behind an object or a person.",
                                 "Choke Hold &mdash; Lock a human opponent in a grip they cannot get out of without taking 1 Harm.",
                                 "Disarm &mdash; Remove an opponent's weapon in close combat.",
-                                "Improvised Weapon &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object.%lists:inline-attacks%"
+                                "Improvised Weapon &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object. %list:inline-attacks%"
                             ]
                         }
                     },
@@ -2518,7 +2517,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -2558,28 +2557,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you enter combat,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but you have made a bad call. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -2593,7 +2592,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "You have been trained by an intelligence agency to fight in the field.",
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -2634,19 +2633,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "You have gazed too deeply into the abyss. Choose one option, but you also experience terrifying visions or encounter something horrible. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -2702,14 +2701,14 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose one option:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option from the list below, but there is also a complication, chosen by the GM or the targeted PC:",
-                                        optionsLists: [
-                                            "complications"
+                                        result: "Choose one option from the list below, but there is also a complication, chosen by the GM or the targeted PC: %list:complications%",
+                                        listRefs: [
+                                            "options"
                                         ]
                                     },
                                     failure: {
@@ -2761,7 +2760,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "They do as you want, but there is a complication (choose one):",
-                                        optionsLists: [
+                                        listRefs: [
                                             "complications"
                                         ]
                                     },
@@ -2821,28 +2820,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you find yourself in a life-threatening situation,",
                                     outro: "roll +%data.attribute% to see if you can discover a way out.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges, useable any time in the scene, while you're still in danger.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges, useable any time in the scene, while you're still in danger.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but you also attract unwanted attention. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -2855,7 +2854,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -2898,7 +2897,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "Complications arise. Choose one option:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "complications"
                                         ]
                                     },
@@ -2949,19 +2948,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Get three options. You may spend them anytime during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Get two options. You may spend them anytime during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Get one option, but you become the prey. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -3017,28 +3016,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you are in a violent conflict,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but you attract attention from the hostiles. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -3052,7 +3051,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "You keep your calm and cool, even in the midst of violence and chaos.",
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -3182,13 +3181,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -3372,13 +3371,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "The construction is successful and you may pick two options from below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "The construction has minor flaws. You may choose one option from below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -3479,28 +3478,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you move unexpectedly fast in combat,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but you also end up in a bad spot or face unexpected resistance. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -3513,7 +3512,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -3554,19 +3553,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options. Up to two may be saved until later this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options. One may be saved until later this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but you also get an unexpected vision or attract attention. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -3617,19 +3616,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options. You may save up to two until later in the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but someone present becomes obsessed, wanting to have you, keep you, and own you for themselves. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -3679,19 +3678,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask three questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask two questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but someone figures out you've been snooping around.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -3747,28 +3746,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you're fighting in close quarters,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     partialSuccess: {
                                         result: "Gain 1 Edge.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but you underestimate your opponents, who may be more numerous or skilled than you first assumed. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -3781,7 +3780,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -3821,13 +3820,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "You receive both options below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one of the options below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -3883,19 +3882,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask three questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask two questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but the person you're inquiring about finds out you're snooping around. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -3989,19 +3988,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask two questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask one question from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but you have missed or overlooked something crucial. The GM takes 1 Hold.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ],
                                         hold: 1
@@ -4052,13 +4051,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Take both options below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -4120,21 +4119,21 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you are in combat with at least one ally by your side,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
@@ -4150,7 +4149,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -4191,19 +4190,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose two options. You may save one until later.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but a complication, cost, or new threat emerges. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -4254,13 +4253,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options. You may save up to two options for use later during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -4312,19 +4311,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but you have missed or overlooked something crucial: The GM takes 1 Hold.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ],
                                         hold: 1
@@ -4417,19 +4416,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options, at any time during the mission.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options, at any time during the mission.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "At any time during the mission, choose one option, but you've failed to account for something. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -4478,19 +4477,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask three questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask two questions from the list below, but you also draw unwanted attention to yourself.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but you've blown your cover. Those who have what you're looking for will be expecting you. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -4544,21 +4543,21 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you sacrifice another to save your own skin,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
@@ -4574,7 +4573,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -4617,19 +4616,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options, useable any time in the story.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options, useable any time in the story.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, useable any time in the story, but you also develop feelings for the person. Increase your Relation to them by +1.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -4750,13 +4749,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options, useable any time during the session.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options, useable any time during the session.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -4809,13 +4808,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose one option immediately, and you may choose two more any time in the future.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -4866,19 +4865,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose 2 options. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose 1 option. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose 1 option, but you manage to attract someone's attention. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -4928,13 +4927,13 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "The shot finds its target. Choose two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "The shot finds its target. Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -4986,19 +4985,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask three questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask one question from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but someone becomes suspicious or aggressive. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -5062,22 +5061,22 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you fight in close combat,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
-                                        result: "Gain 2 Edges, but the GM also gets to pick one complication:",
-                                        optionsLists: [
-                                            "complications"
+                                        result: "Gain 2 Edges, but the GM also gets to pick one complication: %list:complications%",
+                                        listRefs: [
+                                            "edges"
                                         ],
                                         edges: 2
                                     },
@@ -5092,7 +5091,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -5137,7 +5136,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "The GM chooses one option:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -5194,28 +5193,28 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "Whenever you push yourself to the limit to overcome a threat,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "edges"
                                     ]
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Gain 3 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 3
                                     },
                                     partialSuccess: {
                                         result: "Gain 2 Edges. You may spend them any time during the scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 2
                                     },
                                     failure: {
                                         result: "Gain 1 Edge, but you push yourself past your breaking point. Decrease Stability (−2).",
-                                        optionsLists: [
+                                        listRefs: [
                                             "edges"
                                         ],
                                         edges: 1
@@ -5228,7 +5227,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -5268,7 +5267,7 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "You ignore your injuries until the conflict is over, and you may choose one option from the list below:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
@@ -5322,19 +5321,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options, useable while you remain in this situation.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options, useable while you remain in this situation.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option useable while you remain in this situation, but you've also overlooked something important. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -5383,19 +5382,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Ask three questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Ask two questions from the list below.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     },
                                     failure: {
                                         result: "Ask one question from the list below, but someone notices you snooping around. It might be someone you'd rather not be known by, or a traitor inside your network.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "questions"
                                         ]
                                     }
@@ -5445,19 +5444,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "Choose three options, useable any time during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose two options, useable any time during this scene.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, useable any time during this scene. However, the crowd becomes uncontrollable and volatile, and cannot be dispersed. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -5505,19 +5504,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "You get two options.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "Choose one option.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "Choose one option, but the pain will overwhelm you eventually and make you black out.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -5566,19 +5565,19 @@ const ITEM_DATA = {
                                 results: {
                                     completeSuccess: {
                                         result: "You have been here before. Choose two options any time during your visit.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
                                         result: "You have heard of this place. Choose one option any time during your visit.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
                                         result: "You have been here before, but something bad happened. Choose one option any time during your visit. The GM explains what kind of problem awaits you here. The GM makes a Move.",
-                                        optionsLists: [
+                                        listRefs: [
                                             "options"
                                         ]
                                     }
@@ -5803,11 +5802,6 @@ const ITEM_DATA = {
                         }
                     ],
                     isCustom: false,
-                    results: {
-                        staticSuccess: {
-                            result: "You do +1 Harm and take +1 to Endure Injury."
-                        }
-                    },
                     subType: K4ItemSubType.activeStatic,
                     attribute: K4Attribute.zero
                 }
@@ -5938,17 +5932,10 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you do someone a favor or learn one of their secrets,",
-                                    outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %lists:options%",
-                                    optionsLists: [
+                                    outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know:",
+                                    listRefs: [
                                         "options"
                                     ]
-                                },
-                                results: {
-                                    staticSuccess: {
-                                        optionsLists: [
-                                            "options"
-                                        ]
-                                    }
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -5957,7 +5944,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "options"
                         ]
                     },
@@ -6033,17 +6020,10 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you choose to awaken your inner rage in combat,",
-                                    outro: "lose Stability (−1) and mark 1 Rage.%n%Every time you get a wound and every time you defeat a foe, increase Rage (+1).%n%Rage lasts until the end of the combat.%n%During combat, you may spend 1 Rage to activate 1 Edge from the list below: %lists:edges%",
-                                    optionsLists: [
+                                    outro: "lose Stability (−1) and mark 1 Rage.%n%Every time you get a wound and every time you defeat a foe, increase Rage (+1).%n%Rage lasts until the end of the combat.%n%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
+                                    listRefs: [
                                         "edges"
                                     ]
-                                },
-                                results: {
-                                    staticSuccess: {
-                                        optionsLists: [
-                                            "edges"
-                                        ]
-                                    }
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -6052,7 +6032,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        optionsLists: [
+                        listRefs: [
                             "edges"
                         ]
                     },
@@ -6065,14 +6045,12 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                 data: {
-                    notes: "Requires the Disadvantage Condemned",
                     subItems: [
                         {
                             name: "Invoke Fate",
                             type: K4ItemType.move,
                             img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                             data: {
-                                notes: "Requires the Disadvantage Condemned",
                                 sourceItem: {
                                     name: "Sealed Fate",
                                     type: K4ItemType.advantage
@@ -6080,17 +6058,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are dealt a Critical Wound,",
-                                    outro: "you may mark 1 Time from Condemned to immediately stabilize the Wound.",
-                                    effectFunctions: [
-                                        "Requires the Disadvantage Condemned"
-                                    ]
-                                },
-                                results: {
-                                    staticSuccess: {
-                                        effectFunctions: [
-                                            "Requires the Disadvantage Condemned"
-                                        ]
-                                    }
+                                    outro: "you may mark 1 Time from Condemned to immediately stabilize the Wound."
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -6101,7 +6069,6 @@ const ITEM_DATA = {
                             type: K4ItemType.move,
                             img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                             data: {
-                                notes: "Requires the Disadvantage Condemned",
                                 sourceItem: {
                                     name: "Sealed Fate",
                                     type: K4ItemType.advantage
@@ -6109,17 +6076,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you die,",
-                                    outro: "[[[mark 2 Time from Condemned and reawaken, injured and weak, but alive. All your Wounds will be stabilized.]]].",
-                                    effectFunctions: [
-                                        "Requires the Disadvantage Condemned"
-                                    ]
-                                },
-                                results: {
-                                    staticSuccess: {
-                                        effectFunctions: [
-                                            "Requires the Disadvantage Condemned"
-                                        ]
-                                    }
+                                    outro: "mark 2 Time from Condemned and reawaken, injured and weak, but alive, and with all of your Wounds stabilized."
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -6131,14 +6088,6 @@ const ITEM_DATA = {
                         effectFunctions: [
                             "Requires the Disadvantage Condemned"
                         ]
-                    },
-                    results: {
-                        staticSuccess: {
-                            result: "You may mark 1 Time from Condemned to immediately stabilize the Wound.",
-                            effectFunctions: [
-                                "Requires the Disadvantage Condemned"
-                            ]
-                        }
                     },
                     subType: K4ItemSubType.activeStatic,
                     attribute: K4Attribute.zero
@@ -6179,14 +6128,12 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
                 data: {
-                    notes: "Requires the Disadvantage Condemned",
                     subItems: [
                         {
                             name: "Refuse to Give In",
                             type: K4ItemType.move,
                             img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
                             data: {
-                                notes: "Requires the Disadvantage Condemned",
                                 sourceItem: {
                                     name: "To the Last Breath",
                                     type: K4ItemType.advantage
@@ -6194,17 +6141,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you refuse to give in even if the odds turn against you,",
-                                    outro: "mark 1 Time to reroll the dice.",
-                                    effectFunctions: [
-                                        "Requires the Disadvantage Condemned"
-                                    ]
-                                },
-                                results: {
-                                    staticSuccess: {
-                                        effectFunctions: [
-                                            "Requires the Disadvantage Condemned"
-                                        ]
-                                    }
+                                    outro: "mark 1 Time to reroll the dice."
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -6263,16 +6200,9 @@ const ITEM_DATA = {
                                     trigger: "Whenever you are in mortal danger and choose to activate your Watchers,",
                                     outro: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
                                     holdText: "The GM can spend Hold on the Watchers' behalf to let them make a Move against you.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "watchers"
                                     ]
-                                },
-                                results: {
-                                    staticSuccess: {
-                                        optionsLists: [
-                                            "watchers"
-                                        ]
-                                    }
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -6283,7 +6213,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
                         holdText: "The GM can spend Hold on the Watchers' behalf to let them make a Move against you.",
-                        optionsLists: [
+                        listRefs: [
                             "watchers"
                         ]
                     },
@@ -6358,7 +6288,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/analyst.svg",
                 data: {
-                    notes: ">AppendList:move/Investigate,questions",
                     lists: {
                         questions: {
                             name: "Questions",
@@ -6372,7 +6301,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "When you Investigate, you may also choose from these additional questions:",
-                        optionsLists: [
+                        listRefs: [
                             "questions"
                         ],
                         effectFunctions: [
@@ -6388,7 +6317,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/dead-shot.svg",
                 data: {
-                    notes: ">ModValue:weapon/firearm,harm,1",
                     isCustom: false,
                     rules: {
                         intro: "You are a seasoned marksman.%n%You deal +1 Harm with firearms.",
@@ -6431,14 +6359,12 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
                 data: {
-                    notes: ">AppendList:weapon/sword,attacks",
                     subItems: [
                         {
                             name: "Riposte",
                             type: K4ItemType.attack,
                             img: "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
                             data: {
-                                notes: "You can use this attack immediately after successfully parrying.",
                                 lists: {
                                     gmoptions: {
                                         name: "GM Options",
@@ -6458,7 +6384,7 @@ const ITEM_DATA = {
                                 },
                                 isCustom: false,
                                 rules: {
-                                    trigger: "When you engage an able opponent within arm's reach in close combat,",
+                                    trigger: "When you engage an able opponent within arm's reach in close combat, including immediately after a successful parry,",
                                     outro: "roll +%data.attribute%."
                                 },
                                 results: {
@@ -6467,7 +6393,7 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -6486,7 +6412,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You've competed professionally in fencing.%n%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %lists:attacks%",
+                        intro: "You've competed professionally in fencing.%n%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list:inline-attacks%",
                         effectFunctions: [
                             ">AppendList:weapon/sword,attacks"
                         ]
@@ -6513,7 +6439,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/expert.svg",
                 data: {
-                    notes: "GET: ReplaceList (Investigate, Questions)",
                     lists: {
                         expertise: {
                             name: "Fields of Expertise",
@@ -6531,12 +6456,11 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %lists:expertise%Whenever you Investigate something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
-                        optionsLists: [
-                            "expertise"
-                        ],
+                        intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list:expertise%Whenever you Investigate something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
                         effectFunctions: [
-                            "GET: ReplaceList (Investigate, Questions)"
+                            "GET: ReplaceList (Investigate, Questions)",
+                            "StoreInput: text=Field of Expertise #1>flags.field_1",
+                            "StoreInput: text=Field of Expertise #2>flags.field_2"
                         ]
                     },
                     subType: K4ItemSubType.passive,
@@ -6548,7 +6472,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/extortionist.svg",
                 data: {
-                    notes: ">AppendList:move/Read a Person,questions",
                     lists: {
                         questions: {
                             name: "Questions",
@@ -6560,7 +6483,10 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: %lists:questions%",
+                        intro: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones:",
+                        listRefs: [
+                            "questions"
+                        ],
                         effectFunctions: [
                             ">AppendList:move/Read a Person,questions"
                         ]
@@ -6574,12 +6500,12 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/gritted-teeth.svg",
                 data: {
-                    notes: ">SetPenalty:SeriousWound,0>SetPenalty:CriticalWound,0",
                     isCustom: false,
                     rules: {
                         intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.%n%You suffer no penalties to your dice rolls from your Wounds.",
                         effectFunctions: [
-                            ">SetPenalty:SeriousWound,0>SetPenalty:CriticalWound,0"
+                            "SetPenalty:SeriousWound,0",
+                            "SetPenalty:CriticalWound,0"
                         ]
                     },
                     subType: K4ItemSubType.passive,
@@ -6591,12 +6517,11 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/hardened.svg",
                 data: {
-                    notes: ">BuffRoll:Endure Injury,1",
                     isCustom: false,
                     rules: {
                         intro: "You take +1 ongoing to all Endure Injury rolls.",
                         effectFunctions: [
-                            ">BuffRoll:Endure Injury,1"
+                            "BuffRoll:Endure Injury,1"
                         ]
                     },
                     subType: K4ItemSubType.passive,
@@ -6608,12 +6533,12 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/instinct.svg",
                 data: {
-                    notes: ">AddNote:Observe a Situation/completeSuccess,effect|>AddNote:Observe a Situation/partialSuccess,effect|>AddNote:Observe a Situation/failure,effect",
                     isCustom: false,
                     rules: {
                         intro: "Whenever you Observe a Situation and act on the GM's answers, take +2 instead of +1.",
                         effectFunctions: [
-                            ">AddNote:Observe a Situation/completeSuccess,effect|>AddNote:Observe a Situation/partialSuccess,effect|>AddNote:Observe a Situation/failure,effect"
+                            "AddNote:Observe a Situation/completeSuccess,Take +2 instead of +1 for acting on the GM's answers.",
+                            "AddNote:Observe a Situation/partialSuccess,Take +2 instead of +1 for acting on the GM's answers."
                         ]
                     },
                     subType: K4ItemSubType.passive,
@@ -6638,7 +6563,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/intuitive.svg",
                 data: {
-                    notes: "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect",
                     isCustom: false,
                     rules: {
                         intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%n%Whenever you Read a Person, you may always ask one additional question, regardless of the outcome of your roll.",
@@ -6655,7 +6579,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/jaded.svg",
                 data: {
-                    notes: "AddNote:Keep It Together:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'",
                     isCustom: false,
                     rules: {
                         intro: "Whenever you Keep It Together and the result is a Partial Success, you may suppress your emotions and postpone their effects until the next scene.",
@@ -6672,7 +6595,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
                 data: {
-                    notes: ">AppendList:move/Observe a Situation,questions",
                     lists: {
                         questions: {
                             name: "Questions",
@@ -6684,8 +6606,8 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you Observe a Situation, you may choose from these questions, in addition to the ones normally acquired: %lists:questions%",
-                        optionsLists: [
+                        intro: "Whenever you Observe a Situation, you may choose from these questions, in addition to the ones normally acquired:",
+                        listRefs: [
                             "questions"
                         ],
                         effectFunctions: [
@@ -6701,7 +6623,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/observant.svg",
                 data: {
-                    notes: "AppendList:Read a Person,questions",
                     lists: {
                         questions: {
                             name: "Questions",
@@ -6713,8 +6634,8 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: %lists:questions%",
-                        optionsLists: [
+                        intro: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones:",
+                        listRefs: [
                             "questions"
                         ],
                         effectFunctions: [
@@ -6742,8 +6663,8 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you Investigate an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %lists:questions%",
-                        optionsLists: [
+                        intro: "Whenever you Investigate an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation:",
+                        listRefs: [
                             "questions"
                         ]
                     },
@@ -6756,7 +6677,6 @@ const ITEM_DATA = {
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/vigilant.svg",
                 data: {
-                    notes: "AppendList:Read a Person,questions",
                     lists: {
                         questions: {
                             name: "Questions",
@@ -6768,8 +6688,8 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: %lists:questions%",
-                        optionsLists: [
+                        intro: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones:",
+                        listRefs: [
                             "questions"
                         ],
                         effectFunctions: [
@@ -6815,11 +6735,11 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks."
+                                        result: "You inflict 4 Harm to your opponent(s) and avoid counterattacks."
                                     },
                                     partialSuccess: {
-                                        result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-                                        optionsLists: [
+                                        result: "You inflict 4 Harm, but at a cost. The GM chooses one:",
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -6841,7 +6761,6 @@ const ITEM_DATA = {
                             type: K4ItemType.attack,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
                             data: {
-                                notes: "a targeted PC must Act Under Pressure.",
                                 lists: {
                                     gmoptions: {
                                         name: "GM Options",
@@ -6862,15 +6781,15 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                                    outro: "expend 1 Ammo and roll +%data.attribute%."
+                                    outro: "expend 1 Ammo and roll +%data.attribute%. A targeted PC must Act Under Pressure."
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks."
+                                        result: "You inflict 1 Harm to your opponent(s) and avoid counterattacks."
                                     },
                                     partialSuccess: {
-                                        result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-                                        optionsLists: [
+                                        result: "You inflict 1 Harm, but at a cost. The GM chooses one:",
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -6890,7 +6809,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a master of gunplay.%n%When you Engage in Combat with a firearm, roll +Coolness instead of +Violence, and add the following to your available attacks: %lists:attacks%"
+                        intro: "You are a master of gunplay.%n%When you Engage in Combat with a firearm, roll +Coolness instead of +Violence, and add the following to your available attacks: %list:inline-attacks%"
                     },
                     subType: K4ItemSubType.passive,
                     attribute: K4Attribute.zero
@@ -6931,11 +6850,11 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks."
+                                        result: "You inflict 2 Harm to your opponent(s) and avoid counterattacks."
                                     },
                                     partialSuccess: {
-                                        result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-                                        optionsLists: [
+                                        result: "You inflict 2 Harm, but at a cost. The GM chooses one:",
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -6956,7 +6875,6 @@ const ITEM_DATA = {
                             type: K4ItemType.attack,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
-                                notes: "Ignores Armor",
                                 lists: {
                                     gmoptions: {
                                         name: "GM Options",
@@ -6981,11 +6899,11 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks."
+                                        result: "You inflict 2 Harm to your opponent(s) and avoid counterattacks. This Harm ignores Armor."
                                     },
                                     partialSuccess: {
-                                        result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-                                        optionsLists: [
+                                        result: "You inflict 2 Harm, ignoring armor, but at a cost. The GM chooses one:",
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -7006,7 +6924,6 @@ const ITEM_DATA = {
                             type: K4ItemType.attack,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
-                                notes: "The target falls prone.",
                                 lists: {
                                     gmoptions: {
                                         name: "GM Options",
@@ -7031,11 +6948,11 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks."
+                                        result: "You inflict 2 Harm to your opponent, who falls prone."
                                     },
                                     partialSuccess: {
-                                        result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-                                        optionsLists: [
+                                        result: "You inflict 2 Harm to your opponent, intending to knock them prone, but at a cost. The GM chooses one:",
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
@@ -7054,7 +6971,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a master of armed melee combat.%n%When you Engage in Combat in close quarters, with or without a weapon, roll +Coolness instead of +Violence, and add the following to your available attacks: %lists:attacks%"
+                        intro: "You are a master of armed melee combat.%n%When you Engage in Combat in close quarters, with or without a weapon, roll +Coolness instead of +Violence, and add the following to your available attacks: %list:inline-attacks%"
                     },
                     subType: K4ItemSubType.passive,
                     attribute: K4Attribute.zero
@@ -7165,7 +7082,6 @@ const ITEM_DATA = {
                 type: K4ItemType.disadvantage,
                 img: "systems/kult4th/assets/icons/disadvantage/condemned.svg",
                 data: {
-                    notes: ">CreateTracker:Time,10",
                     subItems: [
                         {
                             name: "Check: Condemned",
@@ -7199,13 +7115,13 @@ const ITEM_DATA = {
                                     },
                                     partialSuccess: {
                                         result: "Your fate approaches. The GM chooses one option:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     },
                                     failure: {
                                         result: "Your end approaches. The GM chooses two options, and may choose the same option twice:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     }
@@ -7981,7 +7897,7 @@ const ITEM_DATA = {
                                 rules: {
                                     trigger: "In situations where you could be distracted by your compulsion,",
                                     outro: "roll +%data.attribute%.",
-                                    optionsLists: [
+                                    listRefs: [
                                         "options"
                                     ]
                                 },
@@ -8003,8 +7919,8 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage: %lists:options%%n%You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage: %lists:options%",
-                        optionsLists: [
+                        intro: "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage:",
+                        listRefs: [
                             "options"
                         ]
                     },
@@ -8471,7 +8387,7 @@ const ITEM_DATA = {
                                     },
                                     failure: {
                                         result: "You cannot resist having sex with the person and the GM chooses one option:",
-                                        optionsLists: [
+                                        listRefs: [
                                             "gmoptions"
                                         ]
                                     }
@@ -8705,8 +8621,8 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.%n%in addition to the standard effects, the GM may choose one option: %lists:gmoptions%",
-                        optionsLists: [
+                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.%n%in addition to the standard effects, the GM may choose one option:",
+                        listRefs: [
                             "gmoptions"
                         ]
                     },
@@ -8773,7 +8689,6 @@ const ITEM_DATA = {
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/endure-injury.svg",
                 data: {
-                    notes: "Add Armor and subtract Harm from Fortitude roll",
                     lists: {
                         options: {
                             name: "Consequences",
@@ -8806,13 +8721,13 @@ const ITEM_DATA = {
                         },
                         partialSuccess: {
                             result: "You are still standing, but the GM picks one condition:",
-                            optionsLists: [
+                            listRefs: [
                                 "gmoptions"
                             ]
                         },
                         failure: {
                             result: "The injury is overwhelming. You choose if you:",
-                            optionsLists: [
+                            listRefs: [
                                 "options"
                             ]
                         }
@@ -8850,7 +8765,7 @@ const ITEM_DATA = {
                         },
                         partialSuccess: {
                             result: "You inflict damage, but at a cost. The GM chooses one:",
-                            optionsLists: [
+                            listRefs: [
                                 "gmoptions"
                             ]
                         },
@@ -8938,7 +8853,7 @@ const ITEM_DATA = {
                         },
                         partialSuccess: {
                             result: "She does what you ask, but the GM chooses one:",
-                            optionsLists: [
+                            listRefs: [
                                 "gmoptions"
                             ]
                         },
@@ -8972,13 +8887,13 @@ const ITEM_DATA = {
                     results: {
                         completeSuccess: {
                             result: "Both options below.",
-                            optionsLists: [
+                            listRefs: [
                                 "options"
                             ]
                         },
                         partialSuccess: {
                             result: "Choose one option below.",
-                            optionsLists: [
+                            listRefs: [
                                 "options"
                             ]
                         },
@@ -9013,13 +8928,13 @@ const ITEM_DATA = {
                     results: {
                         completeSuccess: {
                             result: "You uncover all direct leads, and may additionally ask two questions from the list below.",
-                            optionsLists: [
+                            listRefs: [
                                 "questions"
                             ]
                         },
                         partialSuccess: {
                             result: "You uncover all direct leads, and may additionally ask one question from the list below. The information comes at a cost, determined by the GM, such as requiring someone or something for the answer, exposing yourself to danger, or needing to expend extra time or resources. Will you do what it takes?.",
-                            optionsLists: [
+                            listRefs: [
                                 "questions"
                             ]
                         },
@@ -9070,13 +8985,13 @@ const ITEM_DATA = {
                         },
                         partialSuccess: {
                             result: "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get −1 in situations where this condition would be a hindrance to you. Choose one:",
-                            optionsLists: [
+                            listRefs: [
                                 "options"
                             ]
                         },
                         failure: {
                             result: "The strain is too much for your mind to handle. The GM chooses your reaction:",
-                            optionsLists: [
+                            listRefs: [
                                 "gmoptions"
                             ]
                         }
@@ -9111,19 +9026,19 @@ const ITEM_DATA = {
                     results: {
                         completeSuccess: {
                             result: "Ask two questions from the list below. When you act on these answers, gain +1 to your rolls.",
-                            optionsLists: [
+                            listRefs: [
                                 "questions"
                             ]
                         },
                         partialSuccess: {
                             result: "Ask one question from the list below. When you act on the answer, gain +1 to your rolls.",
-                            optionsLists: [
+                            listRefs: [
                                 "questions"
                             ]
                         },
                         failure: {
                             result: "Ask one question from the list below, but you get no bonus for it and miss something, attract unwanted attention or expose yourself to danger. The GM makes a Move.",
-                            optionsLists: [
+                            listRefs: [
                                 "questions"
                             ]
                         }
@@ -9157,13 +9072,13 @@ const ITEM_DATA = {
                     results: {
                         completeSuccess: {
                             result: "Ask two questions from the list below any time you are in conversation with the subject of your scrutiny during this scene.",
-                            optionsLists: [
+                            listRefs: [
                                 "questions"
                             ]
                         },
                         partialSuccess: {
                             result: "Ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene.",
-                            optionsLists: [
+                            listRefs: [
                                 "questions"
                             ]
                         },
@@ -9200,7 +9115,7 @@ const ITEM_DATA = {
                         },
                         partialSuccess: {
                             result: "You see Reality, but you also affect the Illusion. The GM chooses one:",
-                            optionsLists: [
+                            listRefs: [
                                 "gmoptions"
                             ]
                         },
@@ -9237,7 +9152,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have been chosen by a god to become its advocate or sacrificial lamb.",
                         outro: "The god's disciples watch over you, waiting for the day of your ascension. You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9265,7 +9180,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are afflicted by a curse, knowingly or not.",
                         outro: "The curse has started influencing your life and you must find a way to get rid of it. The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9293,7 +9208,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "Your family has a well-kept secret, which has haunted you for your entire life.",
                         outro: "They may have been members of an obscure sect or exposed to some dreadful horror. You may have been initiated into this secret as a child, or only recently found out the truth as an adult. This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9321,7 +9236,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have uncovered some horrid truth, which brings reality's very nature into question.",
                         outro: "It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion. The Illusion's keepers are now after you and it is only a matter of time before they find you.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9348,7 +9263,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have been chosen to protect an important object, place, or person.",
                         outro: "This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request. What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9377,7 +9292,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You feel constant remorse for a crime you have committed.",
                         outro: "Regardless if you committed the crime on your own initiative or because you were coerced by others, you feel you are solely to blame. The victim, their relatives, and/or the police are probably looking for you.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9404,7 +9319,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have been granted a unique inheritance from relatives or friends.",
                         outro: "It could be a small object or something more substantial, such as a house. The inheritance has instilled an unnatural obsession within you. You know it hides secrets and perhaps unknown forces. Might it reveal what happened to its previous owner? Others want to possess your inheritance also, and you suspect they will stop at nothing to acquire it.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9432,7 +9347,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You or one of your close relations suffer from mental illness.",
                         outro: "There's a good chance you have seen with your own eyes (or heard from your relative) that reality is simply an illusion. But who would believe a crazy person? Psychiatric institutions hold many secrets and many doctors have hidden motives. For the insane who end up on the streets, disturbed mentors gladly take newcomers under their wing to initiate them in the Truth.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9460,7 +9375,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have witnessed occult proceedings, which changed your view of reality.",
                         outro: "You may have participated in arcane rituals, exposed cults serving disturbing entities, or seen things revealing that the world is not what it seems. Your experiences make it difficult for you to accept the Illusion that most others live in.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9488,7 +9403,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have sealed a pact with a powerful entity.",
                         outro: "You may have made the pact willingly or been tricked into it. Regardless, you are now under the being's spell. You may have benefited greatly from this pact, but the cost could be your literal soul. Deep inside you understand you must find a way to trick the being into breaking the pact. The question is how?.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9517,7 +9432,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You were responsible for or assisted in shady medical experiments, which ended in horrifying results.",
                         outro: "Regardless of whether the subjects were willing or not, the experiments destroyed their lives and they are now dead, missing, or transformed into something inhuman. In addition to your pangs of guilt, you may be pursued by your former test subjects, their relatives, the law, former colleagues, employers, or nameless forces trying to silence you.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9545,7 +9460,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You experienced an event where the Illusion shattered completely, and you were the only one who returned.",
                         outro: "Your apartment block may have slipped into another dimension, its existence wiped from history. An airplane may have disappeared and you were found twenty years later, without memories and having not aged a day. A company of soldiers in Afghanistan may have literally walked into hell and only you returned, covered in your comrades' blood. Deep down you feel you were not meant to have survived, and that something is coming for you to restore balance and order.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9573,7 +9488,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "Your family always moved around.",
                         outro: "Your parents never told you why, but the haunted look in their eyes and hushed conversations hinted that you were running away from something terrifying. They would rouse you in the middle of night, leaving behind everything you owned, simply to escape. Eventually, they even abandoned you. Maybe they're still on the run, or maybe whatever they feared finally caught up with them. The feeling of being followed never truly lets go, and wherever you end up it's not long before you're on the road again. You don't know exactly what would happen if you stopped, but you feel it's something terrible.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9601,7 +9516,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "Someone close to you disappeared after getting too close to the truth while investigating something.",
                         outro: "You have no idea what happened, but someone recently sent you cryptic information, urging you to finish what your colleague started. Since your associate disappeared, you've become the victim of unknown stalkers.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9629,7 +9544,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have endured a terrible crime.",
                         outro: "Your whole life is marred by this event and you cannot mentally suppress the violation, no matter how hard you try. Fear, shame, anger, and a sense of helplessness torment you, and in order to survive this trauma, you must find a way to heal your wounds.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9658,7 +9573,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge.",
                         outro: "The experiments have had enduring mental and/or physical side effects. They may have shown you windows into alternate dimensions—resulting in madness. The side effects still torment you, and ridding yourself of them requires you to find the responsible parties. It's also possible your parents were the test subjects and you inherited the experimental effects, as a result.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },
@@ -9686,7 +9601,7 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have a history of encounters with beings from the other side.",
                         outro: "They could be family members or friends tracking you down post-mortem, entities discovered at haunted locations, or inhuman forces taking an interest in you. Regardless of what you do, you can't seem to escape them. Every time you think it's finally over, they reappear in your life—you are never truly free.",
-                        optionsLists: [
+                        listRefs: [
                             "drives"
                         ]
                     },

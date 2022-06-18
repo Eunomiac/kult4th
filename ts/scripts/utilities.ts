@@ -684,6 +684,59 @@ const replace = (obj: Index<unknown>, checkTest: checkTest, repVal: unknown) => 
 	}
 	return true;
 };
+const objClean = <T>(data: T, remVals: Array<false|null|undefined|""|0|Record<string,never>|never[]> = [undefined,null,"",{},[]]): T | Partial<T> | "KILL" => {
+	const remStrings = remVals.map((rVal) => JSON.stringify(rVal));
+	if (remStrings.includes(JSON.stringify(data)) || remVals.includes(data as ValueOf<typeof remVals>)) { return "KILL" }
+	if (Array.isArray(data)) {
+		const newData = data.map((elem) => objClean(elem, remVals))
+			.filter((elem) => elem !== "KILL") as T & any[];
+		return newData.length ? newData : "KILL";
+	}
+	if (data && typeof data === "object" && JSON.stringify(data).startsWith("{")) {
+		const newData = Object.entries(data)
+			.map(([key, val]) => [key, objClean(val, remVals)])
+			.filter(([, val]) => val !== "KILL");
+		return newData.length ? Object.fromEntries(newData) : "KILL";
+	}
+	return data;
+};
+
+
+
+
+
+export function toDict<T extends List, K extends string & KeyOf<T>, V extends ValueOf<T>>(items: T[], key: K): V extends key ? Record<V,T> : never {
+	const dict = {} as Record<V,T>;
+	const mappedItems = items
+		.map((data) => {
+			let {iData} = data;
+			if (!iData) { iData = data }
+			return [
+				`${(iData.linkName || iData.sourceItem?.name) ? `>${iData.type.charAt(0)}>` : ""}${iData[key]}`,
+				iData
+			];
+		})
+		.sort(([a], [b]) => a.localeCompare(b)) as Array<[string, T]>;
+	mappedItems.forEach(([newKey, iData]: [string, T]) => {
+		if (newKey in dict) {
+			newKey = indexString(newKey) as V;
+		}
+		dict[newKey as KeyOf<typeof dict>] = iData;
+	});
+	// @ts-expect-error Oh it definitely does.
+	return dict;
+
+	function indexString(str: string) {
+		if (/_\d+$/.test(str)) {
+			const [curIndex, ...subStr] = str.split(/_/).reverse();
+			return [
+				...subStr.reverse(),
+				parseInt(curIndex) + 1
+			].join("_");
+		}
+		return `${str}_1`;
+	}
+}
 // Given an object and a predicate function, returns array of two objects:
 //   one with entries that pass, one with entries that fail.
 const partition = <Type>(obj: Type[], predicate: testFunc<valFunc> = () => true): [Type[], Type[]] => [
@@ -985,7 +1038,7 @@ export default {
 
 	// ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
 	remove, replace, partition,
-	objMap, objFilter, objForEach, objCompact,
+	objClean, objMap, objFilter, objForEach, objCompact,
 	objClone, objMerge, objExpand, objFlatten,
 
 	// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████

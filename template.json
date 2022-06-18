@@ -102,89 +102,50 @@
 		"templates": {
 			"base": {
 				"description": "",
-				"notes": "",
 				"lists": {},
-				"subItems": [],
+				"subType": "",
+				"isCustom": true,
+				"pdfLink": ""
+			},
+			"hasSubItems": {
+				"subItems": []
+			},
+			"canSubItem": {
 				"sourceItem": {
 					"name": "",
 					"id": "",
 					"type": ""
-				},
-				"isCustom": true,
-				"pdfLink": ""
+				}
 			},
-			"rules": {
+			"rulesData": {
 				"rules": {
 					"intro": "",
 					"trigger": "",
 					"outro": "",
-					"holdText": "",
-					"optionsLists": [],
-					"effectFunctions": []
+					"listRefs": [],
+					"effectFunctions": [],
+					"holdText": ""
 				}
 			},
-			"allResults": {
+			"resultsData": {
 				"results": {
-					"staticSuccess": {
-						"result": "",
-						"optionsLists": [],
-						"effectFunctions": [],
-						"edges": 0,
-						"hold": 0
-					},
 					"completeSuccess": {
 						"result": "",
-						"optionsLists": [],
+						"listRefs": [],
 						"effectFunctions": [],
 						"edges": 0,
 						"hold": 0
 					},
 					"partialSuccess": {
 						"result": "",
-						"optionsLists": [],
+						"listRefs": [],
 						"effectFunctions": [],
 						"edges": 0,
 						"hold": 0
 					},
 					"failure": {
 						"result": "",
-						"optionsLists": [],
-						"effectFunctions": [],
-						"edges": 0,
-						"hold": 0
-					}
-				}
-			},
-			"rolledResults": {
-				"results": {
-					"completeSuccess": {
-						"result": "",
-						"optionsLists": [],
-						"effectFunctions": [],
-						"edges": 0,
-						"hold": 0
-					},
-					"partialSuccess": {
-						"result": "",
-						"optionsLists": [],
-						"effectFunctions": [],
-						"edges": 0,
-						"hold": 0
-					},
-					"failure": {
-						"result": "",
-						"optionsLists": [],
-						"effectFunctions": [],
-						"edges": 0,
-						"hold": 0
-					}
-				}
-			},
-			"staticResults": {
-				"results": {
-					"staticSuccess": {
-						"result": "",
-						"optionsLists": [],
+						"listRefs": [],
 						"effectFunctions": [],
 						"edges": 0,
 						"hold": 0
@@ -193,33 +154,28 @@
 			}
 		},
 		"move": {
-			"templates": ["base", "rules", "allResults"],
-			"subType": "active-rolled",
+			"templates": ["base", "canSubItem", "rulesData", "resultsData"],
 			"attribute": ""
 		},
 		"attack": {
-			"templates": ["base", "rules", "rolledResults"],
-			"subType": "active-rolled",
-			"attribute": "violence",
-			"range": "arm",
+			"templates": ["base", "canSubItem", "rulesData", "resultsData"],
+			"range": ["arm"],
 			"harm": 0,
 			"ammo": 0
 		},
 		"advantage": {
-			"templates": ["base", "rules", "staticResults"],
-			"subType": "active-rolled",
+			"templates": ["base", "hasSubItems", "rulesData"],
 			"attribute": "",
 			"currentHold": 0,
 			"currentEdges": 0
 		},
 		"disadvantage": {
-			"templates": ["base", "rules", "staticResults"],
-			"subType": "active-rolled",
+			"templates": ["base", "hasSubItems", "rulesData"],
 			"attribute": "",
 			"currentHold": 0
 		},
 		"darksecret": {
-			"templates": ["base", "rules"],
+			"templates": ["base", "rulesData"],
 			"drive": "",
 			"currentHold": 0,
 			"playerNotes": "",
@@ -235,7 +191,7 @@
 			}
 		},
 		"weapon": {
-			"templates": ["base", "rules"],
+			"templates": ["base", "hasSubItems", "rulesData"],
 			"class": "",
 			"subClass": "",
 			"ammo": {
@@ -245,7 +201,7 @@
 			}
 		},
 		"gear": {
-			"templates": ["base", "rules"],
+			"templates": ["base", "rulesData"],
 			"armor": 0
 		}
 	}

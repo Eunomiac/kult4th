@@ -1,11 +1,10 @@
-import {ItemMigrationData} from "./migrator.js";
 import {K4ItemType, K4ItemSubType} from "../../documents/K4Item.js";
 
 type ItemDict<Type extends K4ItemType = K4ItemType> = Record<string,K4ItemData<Type>>;
 type SubTypeDict<Type extends K4ItemType = K4ItemType> = Record<K4ItemSubType,ItemDict<Type>>;
 
 
-export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
+export const UNMIGRATED_DATA: Record<string, any> = {
 	"Academic Network": {
 		name: "Academic Network",
 		notes: "",
@@ -99,7 +98,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You make contact with someone—or something—who can help you, for the right price.",
 							"You find something valuable or important, in addition to what you were looking for. The GM will tell you what it is."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -134,7 +133,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever someone's got you up against the wall or in a tight spot,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -160,7 +159,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever someone's got you up against the wall or in a tight spot,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -182,7 +181,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
 							"Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -193,7 +192,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
 							"Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -204,7 +203,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Spot a Weakness - You realize your opponent has a weakness you can exploit (take +2 to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
 							"Find an Exit - You spot a way out. Ask the GM what it is. Take +2 to your next roll to make use of it."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -262,7 +261,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "",
 			effect: "When you Investigate, you may also choose from these additional questions:",
-			optionsLists: ["questions"]
+			listRefs: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -336,7 +335,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make the animal follow you.",
 							"Make the animal protect you against an attacker."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -347,7 +346,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make the animal follow you.",
 							"Make the animal protect you against an attacker."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -358,7 +357,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make the animal follow you.",
 							"Make the animal protect you against an attacker."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -437,7 +436,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You own a seemingly mundane item, which actually possesses mystical powers. Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).$n$Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: $OPTIONS$",
 			trigger: "Whenever you activate the object,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: ["options"]
+			listRefs: ["options"]
 		},
 		lists: {
 			options: {
@@ -483,7 +482,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get yourself out of a bind.",
 							"Call on the entity bound to the artifact and bargain with them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -495,7 +494,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get yourself out of a bind.",
 							"Call on the entity bound to the artifact and bargain with them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -561,7 +560,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They look up to you (take +1 ongoing with the audience during this scene).",
 							"Their attention is fixed entirely on you throughout your performance."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -573,7 +572,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They look up to you (take +1 ongoing with the audience during this scene).",
 							"Their attention is fixed entirely on you throughout your performance."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -585,7 +584,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They look up to you (take +1 ongoing with the audience during this scene).",
 							"Their attention is fixed entirely on you throughout your performance."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -656,7 +655,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -718,7 +717,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -780,7 +779,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -905,7 +904,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make a statement about something or someone in mass media.",
 							"Gain access to people or places under the pretense of engaging in your research or studies."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -917,7 +916,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make a statement about something or someone in mass media.",
 							"Gain access to people or places under the pretense of engaging in your research or studies."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -929,7 +928,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make a statement about something or someone in mass media.",
 							"Gain access to people or places under the pretense of engaging in your research or studies."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -1072,7 +1071,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Knock out: The NPC is rendered unconcious. PCs roll to Endure Injury and become neutralized on a (—9).",
 							"Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1083,7 +1082,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Knock out: The NPC is rendered unconcious. PCs roll to Endure Injury and become neutralized on a (—9).",
 							"Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1207,7 +1206,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Effective: You stabilize two Wounds instead of one.",
 							"Careful: The wound stabilizes and will heal much faster than normal."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1218,7 +1217,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"There are lingering side effects (−1 to all rolls the wound could feasibly affect until it's fully healed).",
 							"The patient remains knocked out until the GM determines that they awaken."
 						],
-						optionsLists: [
+						listRefs: [
 							"complications"
 						]
 					},
@@ -1282,7 +1281,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get past an obstacle (creature or object).",
 							"Get into or make it through a space you normally wouldn't be able to."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1293,7 +1292,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get past an obstacle (creature or object).",
 							"Get into or make it through a space you normally wouldn't be able to."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1304,7 +1303,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get past an obstacle (creature or object).",
 							"Get into or make it through a space you normally wouldn't be able to."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -1368,7 +1367,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The job isn't done, and needs something else to be completed.",
 							"There will be repercussions later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -1432,7 +1431,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disperse magic targeting you.",
 							"Call on the entity."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1443,7 +1442,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disperse magic targeting you.",
 							"Call on the entity."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1454,7 +1453,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disperse magic targeting you.",
 							"Call on the entity."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -1536,7 +1535,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You avoid being discovered by someone.",
 							"Trick someone into believing you belong here (e.g., pretend you're a security guard) for a limited time."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1549,7 +1548,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You avoid being discovered by someone.",
 							"Trick someone into believing you belong here (e.g., pretend you're a security guard) for a limited time."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1562,7 +1561,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You avoid being discovered by someone.",
 							"Trick someone into believing you belong here (e.g., pretend you're a security guard) for a limited time."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -1624,7 +1623,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You can't keep this deception up for very long. You must act fast, if you don't want to risk getting exposed.",
 							"You leave traces and clues behind, which can be connected to you later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"complications"
 						]
 					},
@@ -1690,7 +1689,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get someone to tell you about this place's secrets.",
 							"Get someone's assistance with something here."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1702,7 +1701,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get someone to tell you about this place's secrets.",
 							"Get someone's assistance with something here."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1714,7 +1713,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get someone to tell you about this place's secrets.",
 							"Get someone's assistance with something here."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -1774,7 +1773,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Change a person's disposition towards you from either aggressive to suspicious, suspicious to neutral, or neutral to positive.",
 							"Make opponents perceive you as harmless and ignore you for as long as you remain in the background and do not act against them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1785,7 +1784,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Change a person's disposition towards you from either aggressive to suspicious, suspicious to neutral, or neutral to positive.",
 							"Make opponents perceive you as harmless and ignore you for as long as you remain in the background and do not act against them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -1796,7 +1795,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Change a person's disposition towards you from either aggressive to suspicious, suspicious to neutral, or neutral to positive.",
 							"Make opponents perceive you as harmless and ignore you for as long as you remain in the background and do not act against them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -1867,7 +1866,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -1928,7 +1927,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -1965,7 +1964,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have been chosen by a god to become its advocate or sacrificial lamb.",
 			trigger: "",
 			effect: "You have been chosen by a god to become its advocate or sacrificial lamb. The god's disciples watch over you, waiting for the day of your ascension. You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -2159,7 +2158,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -2220,7 +2219,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -2281,7 +2280,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -2342,7 +2341,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -2472,7 +2471,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Someone in your vicinity is negatively affected by your fate.",
 							"Something provides you with false hope of escaping your fate."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -2485,7 +2484,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Someone in your vicinity is negatively affected by your fate.",
 							"Something provides you with false hope of escaping your fate."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					}
@@ -2547,7 +2546,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Affect an additional victim.",
 							"Call for creatures of madness to haunt the infected."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -2559,7 +2558,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Affect an additional victim.",
 							"Call for creatures of madness to haunt the infected."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -2623,7 +2622,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They view you as their ally, for as long as you don't betray them (+1 to all rolls against them).",
 							"They willingly do a favor for you."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -2634,7 +2633,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They view you as their ally, for as long as you don't betray them (+1 to all rolls against them).",
 							"They willingly do a favor for you."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -2706,7 +2705,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Does the crime remind me of something I am familiar with already and, if so, what?",
 							"Who might know more about the crime?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -2721,7 +2720,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Does the crime remind me of something I am familiar with already and, if so, what?",
 							"Who might know more about the crime?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -2736,7 +2735,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Does the crime remind me of something I am familiar with already and, if so, what?",
 							"Who might know more about the crime?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -2807,7 +2806,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -2868,7 +2867,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -2929,7 +2928,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -3003,7 +3002,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"a vision of an object's purpose.",
 							"a vision revealing your deity's wishes (take +1 to all rolls while fulfilling their wishes)."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -3016,7 +3015,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"a vision of an object's purpose.",
 							"a vision revealing your deity's wishes (take +1 to all rolls while fulfilling their wishes)."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -3047,7 +3046,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You are afflicted by a curse, knowingly or not.",
 			trigger: "",
 			effect: "You are afflicted by a curse, knowingly or not. The curse has started influencing your life and you must find a way to get rid of it. The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -3182,7 +3181,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The effects of the ritual are slightly different than what you had imagined.",
 							"The ritual summons unexpected entities or forces."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -3213,7 +3212,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you're entering a dangerous situation,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -3239,7 +3238,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you're entering a dangerous situation,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -3261,7 +3260,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Not Today - Avoid an attack.",
 							"Sucker Punch - Get the jump on them: Harm your opponent before they can react."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -3272,7 +3271,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Not Today - Avoid an attack.",
 							"Sucker Punch - Get the jump on them: Harm your opponent before they can react."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -3283,7 +3282,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Not Today - Avoid an attack.",
 							"Sucker Punch - Get the jump on them: Harm your opponent before they can react."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -3347,7 +3346,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What do I have to watch out for?",
 							"How can I stop or destroy this?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -3360,7 +3359,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What do I have to watch out for?",
 							"How can I stop or destroy this?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -3373,7 +3372,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What do I have to watch out for?",
 							"How can I stop or destroy this?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -3483,7 +3482,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you fight with no regard for your personal safety,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -3510,7 +3509,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you fight with no regard for your personal safety,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -3534,7 +3533,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Charge - Get within reach to attack a hostile.",
 							"Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -3546,7 +3545,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Charge - Get within reach to attack a hostile.",
 							"Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -3558,7 +3557,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Charge - Get within reach to attack a hostile.",
 							"Go Crazy - Frighten your opponents by laughing into the face of death (+1 ongoing during the fight)."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -3720,7 +3719,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Soothe an aggressive creature.",
 							"Command the creature and force it to obey your order."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -3730,7 +3729,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Soothe an aggressive creature.",
 							"Command the creature and force it to obey your order."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -3740,7 +3739,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Soothe an aggressive creature.",
 							"Command the creature and force it to obey your order."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -3889,7 +3888,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You are a trained professional at operating motor vehicles (car or motorcycle).",
 			trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -3916,7 +3915,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "You are a trained professional at operating motor vehicles (car or motorcycle).",
 					trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -3940,7 +3939,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
 							"Reckless Driving - Sideswipe another vehicle off the road."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -3952,7 +3951,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
 							"Reckless Driving - Sideswipe another vehicle off the road."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -3964,7 +3963,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Deadly Driving - Use your vehicle as a weapon against a pedestrian (2-4 Harm depending on speed).",
 							"Reckless Driving - Sideswipe another vehicle off the road."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -4087,7 +4086,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -4148,7 +4147,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -4220,7 +4219,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Locate or track a hidden or missing person.",
 							"Receive both the means to escape and a safe hiding spot."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4232,7 +4231,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Locate or track a hidden or missing person.",
 							"Receive both the means to escape and a safe hiding spot."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4244,7 +4243,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Locate or track a hidden or missing person.",
 							"Receive both the means to escape and a safe hiding spot."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -4390,7 +4389,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -4457,7 +4456,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"You lose something.",
 					"You receive a Serious Wound."
 				],
-				optionsLists: [
+				listRefs: [
 					"gmoptions",
 					"gmoptions"
 				]
@@ -4469,7 +4468,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"Receive a Critical Wound, but may continue to act (if you already have a Critical Wound, you may not choose this option again).",
 					"Die."
 				],
-				optionsLists: [
+				listRefs: [
 					"options",
 					"options"
 				]
@@ -4560,7 +4559,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They are terrorized; you have +1 ongoing on all rolls against them until they've proven they're not afraid of you.",
 							"They attack you from a disadvantaged position. You take +2 on your roll to Engage in Combat if you counterattack."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4620,7 +4619,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"You're beset by a new threat.",
 					"You'll be in trouble later on."
 				],
-				optionsLists: [
+				listRefs: [
 					"gmoptions",
 					"gmoptions"
 				]
@@ -4732,7 +4731,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
 							"You make them uncertain and confused. You take +1 ongoing against them during this scene."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4744,7 +4743,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
 							"You make them uncertain and confused. You take +1 ongoing against them during this scene."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4756,7 +4755,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
 							"You make them uncertain and confused. You take +1 ongoing against them during this scene."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -4868,7 +4867,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You have left no clues that can be traced back to you.",
 							"The body is well hidden and will not be found for quite some time."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4879,7 +4878,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You have left no clues that can be traced back to you.",
 							"The body is well hidden and will not be found for quite some time."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4890,7 +4889,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You have left no clues that can be traced back to you.",
 							"The body is well hidden and will not be found for quite some time."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -4950,7 +4949,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The entity will not reappear later.",
 							"The entity will not become hostile toward you."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -4961,7 +4960,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The entity will not reappear later.",
 							"The entity will not become hostile toward you."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -5044,7 +5043,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: $EXPERTISE$",
 			trigger: "",
 			effect: "Whenever you Investigate something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want",
-			optionsLists: ["expertise"]
+			listRefs: ["expertise"]
 		},
 		lists: {
 			expertise: {
@@ -5134,7 +5133,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -5255,7 +5254,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "",
 			effect: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: $QUESTIONS$",
-			optionsLists: ["questions"]
+			listRefs: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -5384,7 +5383,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Why are you here?",
 							"What are you working on?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -5397,7 +5396,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Why are you here?",
 							"What are you working on?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -5410,7 +5409,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Why are you here?",
 							"What are you working on?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -5437,7 +5436,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "Your family has a well-kept secret, which has haunted you for your entire life.",
 			trigger: "",
 			effect: "Your family has a well-kept secret, which has haunted you for your entire life. They may have been members of an obscure sect or exposed to some dreadful horror. You may have been initiated into this secret as a child, or only recently found out the truth as an adult. This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -5575,7 +5574,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They forget their woes when experiencing your art.",
 							"They are totally captivated by your art and forget all about their surrounding environment."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -5585,7 +5584,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They become obsessed with you.",
 							"They want you right now."
 						],
-						optionsLists: [
+						listRefs: [
 							"options",
 							"gmoptions"
 						]
@@ -5650,7 +5649,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get the NPC to disclose something important (the GM will provide the details).",
 							"Distract the NPC. You take +1 to your next roll against them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -5661,7 +5660,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get the NPC to disclose something important (the GM will provide the details).",
 							"Distract the NPC. You take +1 to your next roll against them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -5672,7 +5671,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get the NPC to disclose something important (the GM will provide the details).",
 							"Distract the NPC. You take +1 to your next roll against them."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -5699,7 +5698,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have been trained by an intelligence agency to fight in the field.",
 			trigger: "Whenever you enter combat,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -5755,7 +5754,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -5788,7 +5787,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "You have been trained by an intelligence agency to fight in the field.",
 					trigger: "Whenever you enter combat,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -5812,7 +5811,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disarm - Remove an opponent's weapon in close combat.",
 							"Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object: $ATTACKS_INLINE$"
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -5824,7 +5823,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disarm - Remove an opponent's weapon in close combat.",
 							"Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object: $ATTACKS_INLINE$"
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -5836,7 +5835,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disarm - Remove an opponent's weapon in close combat.",
 							"Improvised Weapon - Make a lethal, close-combat attack with a seemingly-innocuous object: $ATTACKS_INLINE$"
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -5913,7 +5912,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Visions: See Through the Illusion into a specific place of your choice.",
 							"Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -5924,7 +5923,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Visions: See Through the Illusion into a specific place of your choice.",
 							"Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -5935,7 +5934,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Visions: See Through the Illusion into a specific place of your choice.",
 							"Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -5962,7 +5961,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have uncovered some horrid truth, which brings reality's very nature into question.",
 			trigger: "",
 			effect: "You have uncovered some horrid truth, which brings reality's very nature into question. It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion. The Illusion's keepers are now after you and it is only a matter of time before they find you.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -6049,7 +6048,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They're spellbound by you (take +1 ongoing against them during this scene).",
 							"They reveal a weakness, which you can exploit later."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -6060,7 +6059,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"They fall in love with you.",
 							"They will feel betrayed, spurned, humiliated, or manipulated whenever you abuse their trust in you."
 						],
-						optionsLists: [
+						listRefs: [
 							"complications"
 						]
 					},
@@ -6126,7 +6125,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"One of them defies you in front of the others.",
 							"They will all be disgruntled for some time."
 						],
-						optionsLists: [
+						listRefs: [
 							"complications"
 						]
 					},
@@ -6157,7 +6156,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you find yourself in a life-threatening situation,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$) to see if you can discover a way out",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -6183,7 +6182,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you find yourself in a life-threatening situation,",
 					effect: "roll +$ATTRIBUTE$ to see if you can discover a way out",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -6205,7 +6204,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
 							"Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -6216,7 +6215,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
 							"Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -6227,7 +6226,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Quick Thinker - You realize how to protect yourself from Harm. Treat it as if you'd rolled a (15+) on Avoid Harm whenever you exploit it.",
 							"Rational - You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -6441,7 +6440,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have been chosen to protect an important object, place, or person.",
 			trigger: "",
 			effect: "You have been chosen to protect an important object, place, or person. This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request. What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -6538,7 +6537,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You feel constant remorse for a crime you have committed.",
 			trigger: "",
 			effect: "You feel constant remorse for a crime you have committed. Regardless if you committed the crime on your own initiative or because you were coerced by others, you feel you are solely to blame. The victim, their relatives, and/or the police are probably looking for you.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -6620,7 +6619,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Someone discovers the intrusion. You must take risks or compromise on how much you're able to accomplish.",
 							"You leave traces of your intrusion."
 						],
-						optionsLists: [
+						listRefs: [
 							"complications"
 						]
 					},
@@ -6695,7 +6694,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -6757,7 +6756,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -6819,7 +6818,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -6992,7 +6991,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have been granted a unique inheritance from relatives or friends.",
 			trigger: "",
 			effect: "You have been granted a unique inheritance from relatives or friends. It could be a small object or something more substantial, such as a house. The inheritance has instilled an unnatural obsession within you. You know it hides secrets and perhaps unknown forces. Might it reveal what happened to its previous owner? Others want to possess your inheritance also, and you suspect they will stop at nothing to acquire it.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -7132,7 +7131,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Camouflage - Take +2 ongoing to Act Under Pressure for as long as you remain hiding.",
 							"Move in Shadows - Take +2 ongoing to Avoid Harm from ranged weapons."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -7143,7 +7142,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Camouflage - Take +2 ongoing to Act Under Pressure for as long as you remain hiding.",
 							"Move in Shadows - Take +2 ongoing to Avoid Harm from ranged weapons."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -7154,7 +7153,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Camouflage - Take +2 ongoing to Act Under Pressure for as long as you remain hiding.",
 							"Move in Shadows - Take +2 ongoing to Avoid Harm from ranged weapons."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -7181,7 +7180,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You keep your calm and cool, even in the midst of violence and chaos.",
 			trigger: "Whenever you are in a violent conflict,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -7208,7 +7207,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "You keep your calm and cool, even in the midst of violence and chaos.",
 					trigger: "Whenever you are in a violent conflict,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -7232,7 +7231,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Patience, Patience - Maneuver into a better position.",
 							"Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -7244,7 +7243,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Patience, Patience - Maneuver into a better position.",
 							"Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -7256,7 +7255,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Patience, Patience - Maneuver into a better position.",
 							"Clever Trick - Put someone in a bad position (everyone gets +2 to any attack Moves)."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -7422,7 +7421,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Hide - Stay out of a pursuer's sight.",
 							"Prepare - Set a trap that gives you a +2 surprise bonus the first time you Engage in Combat after the trap is sprung."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -7434,7 +7433,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Hide - Stay out of a pursuer's sight.",
 							"Prepare - Set a trap that gives you a +2 surprise bonus the first time you Engage in Combat after the trap is sprung."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -7540,7 +7539,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"Complications will arise at a future time.",
 					"She gives in for the moment, but will change her mind and regret it later."
 				],
-				optionsLists: [
+				listRefs: [
 					"gmoptions",
 					"gmoptions"
 				]
@@ -7582,7 +7581,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"She's motivated to do what you ask, and recieves +1 for her next roll, if she does it.",
 					"She's worried of the consequences if she doesn't do what you ask, and gets −1 Stability if she doesn't do it."
 				],
-				optionsLists: [
+				listRefs: [
 					"options",
 					"options"
 				]
@@ -7593,7 +7592,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"She's motivated to do what you ask, and recieves +1 for her next roll, if she does it.",
 					"She's worried of the consequences if she doesn't do what you ask, and gets −1 Stability if she doesn't do it."
 				],
-				optionsLists: [
+				listRefs: [
 					"options",
 					"options"
 				]
@@ -7889,7 +7888,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Lethal: The construction causes +1 Harm.",
 							"Protective: The construction confers +1 armor."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -7901,7 +7900,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Lethal: The construction causes +1 Harm.",
 							"Protective: The construction confers +1 armor."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -7951,7 +7950,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"What is my gut feel about what I'm investigating?",
 					"Is there anything weird about what I'm investigating?"
 				],
-				optionsLists: [
+				listRefs: [
 					"questions",
 					"questions"
 				]
@@ -7963,7 +7962,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"What is my gut feel about what I'm investigating?",
 					"Is there anything weird about what I'm investigating?"
 				],
-				optionsLists: [
+				listRefs: [
 					"questions",
 					"questions"
 				]
@@ -8123,7 +8122,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "",
 			effect: "Whenever you Observe a Situation, you may choose from these questions, in addition to the ones normally acquired: $QUESTIONS$",
-			optionsLists: ["questions"]
+			listRefs: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -8203,7 +8202,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"You become distracted (−2 in situations where the condition limits you).",
 					"You will be haunted by the experience at a later time."
 				],
-				optionsLists: [
+				listRefs: [
 					"options",
 					"options"
 				]
@@ -8216,7 +8215,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"You suffer emotional trauma (−2 Stability).",
 					"You suffer life-changing trauma (−4 Stability)."
 				],
-				optionsLists: [
+				listRefs: [
 					"gmoptions",
 					"gmoptions"
 				]
@@ -8341,7 +8340,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you move unexpectedly fast in combat,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -8367,7 +8366,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you move unexpectedly fast in combat,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -8389,7 +8388,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
 							"Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -8400,7 +8399,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
 							"Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -8411,7 +8410,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Blinding Speed - Engage in Combat with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
 							"Uncanny Precision - Hit your opponent's weak spot. Deal +1 Harm."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -8534,7 +8533,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -8596,7 +8595,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -8667,7 +8666,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Learn if something has a magical nature.",
 							"Learn where the Illusion is weakest towards other dimensions."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -8678,7 +8677,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Learn if something has a magical nature.",
 							"Learn where the Illusion is weakest towards other dimensions."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -8689,7 +8688,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Learn if something has a magical nature.",
 							"Learn where the Illusion is weakest towards other dimensions."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -8749,7 +8748,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Draw someone to you.",
 							"Get someone to do what you ask."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -8760,7 +8759,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Draw someone to you.",
 							"Get someone to do what you ask."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -8771,7 +8770,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Draw someone to you.",
 							"Get someone to do what you ask."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -8842,7 +8841,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -8904,7 +8903,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -8979,7 +8978,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Where are they located right now?",
 							"How can I best gain access to them?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -8992,7 +8991,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Where are they located right now?",
 							"How can I best gain access to them?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -9005,7 +9004,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Where are they located right now?",
 							"How can I best gain access to them?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -9032,7 +9031,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you do someone a favor or learn one of their secrets,",
 			effect: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: $OPTIONS$",
-			optionsLists: ["options"]
+			listRefs: ["options"]
 		},
 		lists: {
 			options: {
@@ -9069,7 +9068,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you do someone a favor or learn one of their secrets,",
 					effect: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: $OPTIONS$",
-					optionsLists: ["options"]
+					listRefs: ["options"]
 				},
 				lists: {
 					options: {
@@ -9154,7 +9153,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you're fighting in close quarters,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -9181,7 +9180,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you're fighting in close quarters,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -9205,7 +9204,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disarm - Remove an opponent's weapon.",
 							"Throw - Reposition an opponent or drop them to the ground."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -9217,7 +9216,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disarm - Remove an opponent's weapon.",
 							"Throw - Reposition an opponent or drop them to the ground."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -9229,7 +9228,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Disarm - Remove an opponent's weapon.",
 							"Throw - Reposition an opponent or drop them to the ground."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -9256,7 +9255,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage: $OPTIONS$",
 			trigger: "In situations where you could be distracted by your compulsion,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"options"
 			]
 		},
@@ -9290,7 +9289,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage: $OPTIONS$",
 					trigger: "In situations where you could be distracted by your compulsion,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"options"
 					]
 				},
@@ -9348,7 +9347,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You or one of your close relations suffer from mental illness.",
 			trigger: "",
 			effect: "You or one of your close relations suffer from mental illness. There's a good chance you have seen with your own eyes (or heard from your relative) that reality is simply an illusion. But who would believe a crazy person? Psychiatric institutions hold many secrets and many doctors have hidden motives. For the insane who end up on the streets, disturbed mentors gladly take newcomers under their wing to initiate them in the Truth.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -9425,7 +9424,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The mole has penetrated the organization's inner circle; however, their influence is limited.",
 							"The mole owes you one; however, you must meet their demands to get what you want."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -9435,7 +9434,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The mole has penetrated the organization's inner circle; however, their influence is limited.",
 							"The mole owes you one; however, you must meet their demands to get what you want."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -9555,7 +9554,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What do they want?",
 							"What are they most afraid of losing?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -9568,7 +9567,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What do they want?",
 							"What are they most afraid of losing?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -9581,7 +9580,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What do they want?",
 							"What are they most afraid of losing?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -9816,7 +9815,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "",
 			effect: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: $QUESTIONS$",
-			optionsLists: ["questions"]
+			listRefs: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -9881,7 +9880,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"What is being hidden from me?",
 					"What seems strange about this?"
 				],
-				optionsLists: [
+				listRefs: [
 					"questions",
 					"questions"
 				]
@@ -9896,7 +9895,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"What is being hidden from me?",
 					"What seems strange about this?"
 				],
-				optionsLists: [
+				listRefs: [
 					"questions",
 					"questions"
 				]
@@ -9911,7 +9910,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"What is being hidden from me?",
 					"What seems strange about this?"
 				],
-				optionsLists: [
+				listRefs: [
 					"questions",
 					"questions"
 				]
@@ -9984,7 +9983,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have witnessed occult proceedings, which changed your view of reality.",
 			trigger: "",
 			effect: "You have witnessed occult proceedings, which changed your view of reality. You may have participated in arcane rituals, exposed cults serving disturbing entities, or seen things revealing that the world is not what it seems. Your experiences make it difficult for you to accept the Illusion that most others live in.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -10065,7 +10064,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Which dimension is this associated with?",
 							"What must I do to protect myself from this?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -10077,7 +10076,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Which dimension is this associated with?",
 							"What must I do to protect myself from this?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -10089,7 +10088,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Which dimension is this associated with?",
 							"What must I do to protect myself from this?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -10147,7 +10146,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"I know something about this (ask the GM what you know and take +1 ongoing while acting on the answers during this scene).",
 							"I know where I can find more information about this (ask the GM where)."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10157,7 +10156,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"I know something about this (ask the GM what you know and take +1 ongoing while acting on the answers during this scene).",
 							"I know where I can find more information about this (ask the GM where)."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10188,7 +10187,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you are in combat with at least one ally by your side,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -10215,7 +10214,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you are in combat with at least one ally by your side,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -10239,7 +10238,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"\"Go For The Head!\" - You or one of your allies' Engage in Combat deals +1 Harm.",
 							"\"Take Cover!\" - You or an ally receive 2 Armor against a ranged attack."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -10251,7 +10250,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"\"Go For The Head!\" - You or one of your allies' Engage in Combat deals +1 Harm.",
 							"\"Take Cover!\" - You or an ally receive 2 Armor against a ranged attack."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -10386,7 +10385,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have sealed a pact with a powerful entity.",
 			trigger: "",
 			effect: "You have sealed a pact with a powerful entity. You may have made the pact willingly or been tricked into it. Regardless, you are now under the being's spell. You may have benefited greatly from this pact, but the cost could be your literal soul. Deep inside you understand you must find a way to trick the being into breaking the pact. The question is how?",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -10465,7 +10464,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make a seemingly life-threatening leap without suffering Harm.",
 							"Successfully avoid a threat."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10476,7 +10475,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make a seemingly life-threatening leap without suffering Harm.",
 							"Successfully avoid a threat."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10487,7 +10486,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make a seemingly life-threatening leap without suffering Harm.",
 							"Successfully avoid a threat."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -10547,7 +10546,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make an aggressive person want to not harm you.",
 							"Make someone confide in you."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10558,7 +10557,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make an aggressive person want to not harm you.",
 							"Make someone confide in you."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10674,7 +10673,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Uncover any security systems and other obstacles.",
 							"Pinpoint the location of something you're after."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10685,7 +10684,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Uncover any security systems and other obstacles.",
 							"Pinpoint the location of something you're after."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10696,7 +10695,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Uncover any security systems and other obstacles.",
 							"Pinpoint the location of something you're after."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -10808,7 +10807,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You possess some equipment you can use to get out of a sticky situation. Ask the GM what it is.",
 							"You have special field training that would be useful in getting past one of your obstacles. Ask the GM what it is."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10819,7 +10818,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You possess some equipment you can use to get out of a sticky situation. Ask the GM what it is.",
 							"You have special field training that would be useful in getting past one of your obstacles. Ask the GM what it is."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -10830,7 +10829,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You possess some equipment you can use to get out of a sticky situation. Ask the GM what it is.",
 							"You have special field training that would be useful in getting past one of your obstacles. Ask the GM what it is."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -10857,7 +10856,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "When you choose to awaken your inner rage in combat,",
 			effect: "lose Stability (−1) and mark 1 Rage.$n$Every time you get a wound and every time you defeat a foe, increase Rage (+1).$n$Rage lasts until the end of the combat.$n$During combat, you may spend 1 Rage to activate 1 Edge from the list below: $EDGES$",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -10897,7 +10896,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "When you choose to awaken your inner rage in combat,",
 					effect: "lose Stability (−1) and mark 1 Rage.$n$Every time you get a wound and every time you defeat a foe, increase Rage (+1).$n$Rage lasts until the end of the combat.$n$During combat, you may spend 1 Rage to activate 1 Edge from the list below: $EDGES$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -10933,7 +10932,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.",
 			trigger: "Whenever you See Through the Illusion and whenever the Illusion shatters,",
 			effect: "in addition to the standard effects, the GM may choose one option: $GMOPTIONS$",
-			optionsLists: ["gmoptions"]
+			listRefs: ["gmoptions"]
 		},
 		lists: {
 			gmoptions: {
@@ -11010,7 +11009,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Who is watching me?",
 							"Is there anything else of interest?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -11022,7 +11021,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Who is watching me?",
 							"Is there anything else of interest?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -11034,7 +11033,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Who is watching me?",
 							"Is there anything else of interest?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -11084,7 +11083,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"What do you wish I would do?",
 					"How could I get you to […]?"
 				],
-				optionsLists: [
+				listRefs: [
 					"questions",
 					"questions"
 				]
@@ -11098,7 +11097,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"What do you wish I would do?",
 					"How could I get you to […]?"
 				],
-				optionsLists: [
+				listRefs: [
 					"questions",
 					"questions"
 				]
@@ -11175,7 +11174,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You were responsible for or assisted in shady medical experiments, which ended in horrifying results.",
 			trigger: "",
 			effect: "You were responsible for or assisted in shady medical experiments, which ended in horrifying results. Regardless of whether the subjects were willing or not, the experiments destroyed their lives and they are now dead, missing, or transformed into something inhuman. In addition to your pangs of guilt, you may be pursued by your former test subjects, their relatives, the law, former colleagues, employers, or nameless forces trying to silence you.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -11222,7 +11221,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You experienced an event where the Illusion shattered completely, and you were the only one who returned.",
 			trigger: "",
 			effect: "You experienced an event where the Illusion shattered completely, and you were the only one who returned. Your apartment block may have slipped into another dimension, its existence wiped from history. An airplane may have disappeared and you were found twenty years later, without memories and having not aged a day. A company of soldiers in Afghanistan may have literally walked into hell and only you returned, covered in your comrades' blood. Deep down you feel you were not meant to have survived, and that something is coming for you to restore balance and order.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -11312,7 +11311,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -11403,7 +11402,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "Your family always moved around.",
 			trigger: "",
 			effect: "Your family always moved around. Your parents never told you why, but the haunted look in their eyes and hushed conversations hinted that you were running away from something terrifying. They would rouse you in the middle of night, leaving behind everything you owned, simply to escape. Eventually, they even abandoned you. Maybe they're still on the run, or maybe whatever they feared finally caught up with them. The feeling of being followed never truly lets go, and wherever you end up it's not long before you're on the road again. You don't know exactly what would happen if you stopped, but you feel it's something terrible.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -11449,7 +11448,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you sacrifice another to save your own skin,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -11475,7 +11474,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you sacrifice another to save your own skin,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -11497,7 +11496,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Nothing But Bait - Expose someone to danger so you can flank an enemy (deal +1 Harm).",
 							"Leave Them Behind - Abandon them to the enemy while you slip away."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -11508,7 +11507,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Nothing But Bait - Expose someone to danger so you can flank an enemy (deal +1 Harm).",
 							"Leave Them Behind - Abandon them to the enemy while you slip away."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -11591,7 +11590,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "",
 			effect: "Whenever you Investigate an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: $QUESTIONS$",
-			optionsLists: ["questions"]
+			listRefs: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -11739,7 +11738,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make them feel bad for opposing you (they must Keep it Together)",
 							"They feel happy in your presence, and gain Stability (+2)."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -11752,7 +11751,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make them feel bad for opposing you (they must Keep it Together)",
 							"They feel happy in your presence, and gain Stability (+2)."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -11765,7 +11764,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make them feel bad for opposing you (they must Keep it Together)",
 							"They feel happy in your presence, and gain Stability (+2)."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -11813,7 +11812,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					"Something senses you.",
 					"The Illusions tears around you."
 				],
-				optionsLists: [
+				listRefs: [
 					"gmoptions",
 					"gmoptions"
 				]
@@ -11879,7 +11878,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"The boundaries between dimensions are weakened; an entity from beyond catches the scent of you or your lover.",
 							"Your sexual partner becomes obsessed with you and starts stalking you."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					}
@@ -12022,7 +12021,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Sense whether someone wishes good or ill towards you.",
 							"Discover or sense a clue or lead when you're off track."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12033,7 +12032,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Sense whether someone wishes good or ill towards you.",
 							"Discover or sense a clue or lead when you're off track."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12095,7 +12094,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Ask the creature for help with a problem.",
 							"Ask the creature for something you desire."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12105,7 +12104,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Ask the creature for help with a problem.",
 							"Ask the creature for something you desire."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12169,7 +12168,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Find an alternate route to avoid encountering people.",
 							"Bypass a security system or other obstacle without being noticed."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12180,7 +12179,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Find an alternate route to avoid encountering people.",
 							"Bypass a security system or other obstacle without being noticed."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12191,7 +12190,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Find an alternate route to avoid encountering people.",
 							"Bypass a security system or other obstacle without being noticed."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -12255,7 +12254,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get the target to lose control of something.",
 							"You don't reveal your position."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12268,7 +12267,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Get the target to lose control of something.",
 							"You don't reveal your position."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -12351,7 +12350,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "Someone close to you disappeared after getting too close to the truth while investigating something.",
 			trigger: "",
 			effect: "Someone close to you disappeared after getting too close to the truth while investigating something. You have no idea what happened, but someone recently sent you cryptic information, urging you to finish what your colleague started. Since your associate disappeared, you've become the victim of unknown stalkers.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -12432,7 +12431,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"How can I get into [location]?",
 							"Who in this city would know more about this supernatural thing?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -12444,7 +12443,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"How can I get into [location]?",
 							"Who in this city would know more about this supernatural thing?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -12456,7 +12455,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"How can I get into [location]?",
 							"Who in this city would know more about this supernatural thing?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -12483,7 +12482,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you fight in close combat,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -12509,7 +12508,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you fight in close combat,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -12538,7 +12537,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Flurry of Blows - Take +2 on your roll to attack an opponent.",
 							"Dirty Strike - Momentarily stun an opponent by striking them where it hurts."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -12548,7 +12547,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You risk losing control during the fight (Keep it Together to prevent it).",
 							"You earn an enemy, who will try to get back at you later."
 						],
-						optionsLists: [
+						listRefs: [
 							"complications"
 						]
 					},
@@ -12618,7 +12617,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"\"Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?\"",
 							"\"Sorry, that's a bit outside of my area, but maybe this will work instead?\""
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -12649,7 +12648,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "Whenever you push yourself to the limit to overcome a threat,",
 			effect: "roll to $MOVENAME$ (+$ATTRIBUTE$)",
-			optionsLists: [
+			listRefs: [
 				"edges"
 			]
 		},
@@ -12675,7 +12674,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "",
 					trigger: "Whenever you push yourself to the limit to overcome a threat,",
 					effect: "roll +$ATTRIBUTE$",
-					optionsLists: [
+					listRefs: [
 						"edges"
 					]
 				},
@@ -12697,7 +12696,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
 							"Steel yourself: Break free from a supernatural effect."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -12708,7 +12707,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
 							"Steel yourself: Break free from a supernatural effect."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					},
@@ -12719,7 +12718,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Will over skill: Roll +Willpower instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
 							"Steel yourself: Break free from a supernatural effect."
 						],
-						optionsLists: [
+						listRefs: [
 							"edges"
 						]
 					}
@@ -12790,7 +12789,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -12851,7 +12850,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -12912,7 +12911,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -12980,7 +12979,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Viciousness — +1 ongoing to Engage in Combat rolls for the remainder of the fight.",
 							"Adrenaline Rush — +1 ongoing to Endure Injury rolls for the remainder of the fight."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -13048,7 +13047,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make it past an environmental obstacle.",
 							"Find a safe spot to hide and rest."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -13059,7 +13058,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make it past an environmental obstacle.",
 							"Find a safe spot to hide and rest."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -13070,7 +13069,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Make it past an environmental obstacle.",
 							"Find a safe spot to hide and rest."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -13236,7 +13235,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What tracks and marks has it left behind?",
 							"Who else is trying to find what I'm looking for?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -13248,7 +13247,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What tracks and marks has it left behind?",
 							"Who else is trying to find what I'm looking for?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					},
@@ -13260,7 +13259,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"What tracks and marks has it left behind?",
 							"Who else is trying to find what I'm looking for?"
 						],
-						optionsLists: [
+						listRefs: [
 							"questions"
 						]
 					}
@@ -13331,7 +13330,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -13392,7 +13391,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -13453,7 +13452,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -13514,7 +13513,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -13575,7 +13574,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -13612,7 +13611,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have endured a terrible crime.",
 			trigger: "",
 			effect: "You have endured a terrible crime. Your whole life is marred by this event and you cannot mentally suppress the violation, no matter how hard you try. Fear, shame, anger, and a sense of helplessness torment you, and in order to survive this trauma, you must find a way to heal your wounds.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -13658,7 +13657,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge.",
 			trigger: "",
 			effect: "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge. The experiments have had enduring mental and/or physical side effects. They may have shown you windows into alternate dimensions—resulting in madness. The side effects still torment you, and ridding yourself of them requires you to find the responsible parties. It's also possible your parents were the test subjects and you inherited the experimental effects, as a result.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -13757,7 +13756,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "",
 			trigger: "",
 			effect: "Whenever you Read a Person, you may choose from these questions in addition to the usual ones: $QUESTIONS$",
-			optionsLists: ["questions"]
+			listRefs: ["questions"]
 		},
 		lists: {
 			questions: {
@@ -13797,7 +13796,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You have a history of encounters with beings from the other side.",
 			trigger: "",
 			effect: "You have a history of encounters with beings from the other side. They could be family members or friends tracking you down post-mortem, entities discovered at haunted locations, or inhuman forces taking an interest in you. Regardless of what you do, you can't seem to escape them. Every time you think it's finally over, they reappear in your life—you are never truly free.",
-			optionsLists: [
+			listRefs: [
 				"drives"
 			]
 		},
@@ -13880,7 +13879,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Incite the crowd into an orgy of unbridled emotion: sexual lust, anger, sorrow, violence, generosity, or celebrating, depending on what concepts you are instilling into them.",
 							"Have the crowd disperse and calmly return to their normal lives."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -13893,7 +13892,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Incite the crowd into an orgy of unbridled emotion: sexual lust, anger, sorrow, violence, generosity, or celebrating, depending on what concepts you are instilling into them.",
 							"Have the crowd disperse and calmly return to their normal lives."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -13906,7 +13905,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"Incite the crowd into an orgy of unbridled emotion: sexual lust, anger, sorrow, violence, generosity, or celebrating, depending on what concepts you are instilling into them.",
 							"Have the crowd disperse and calmly return to their normal lives."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -13966,7 +13965,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You find your opponent's weak spot (deal +1 Harm whenever you Engage in Combat with them).",
 							"You perceive your opponent's pattern of attack (take +1 to Avoid Harm whenever they attack you). These effects are permanent against this opponent."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -13977,7 +13976,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You find your opponent's weak spot (deal +1 Harm whenever you Engage in Combat with them).",
 							"You perceive your opponent's pattern of attack (take +1 to Avoid Harm whenever they attack you). These effects are permanent against this opponent."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -13988,7 +13987,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You find your opponent's weak spot (deal +1 Harm whenever you Engage in Combat with them).",
 							"You perceive your opponent's pattern of attack (take +1 to Avoid Harm whenever they attack you). These effects are permanent against this opponent."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -14050,7 +14049,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You have a hideout here, where you can put your head down and get some rest.",
 							"You know something about this place. Tell the others what."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -14062,7 +14061,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You have a hideout here, where you can put your head down and get some rest.",
 							"You know something about this place. Tell the others what."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					},
@@ -14074,7 +14073,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You have a hideout here, where you can put your head down and get some rest.",
 							"You know something about this place. Tell the others what."
 						],
-						optionsLists: [
+						listRefs: [
 							"options"
 						]
 					}
@@ -14153,7 +14152,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 			intro: "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
 			trigger: "Whenever you are in mortal danger and choose to activate your Watchers,",
 			effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
-			optionsLists: [
+			listRefs: [
 				"watchers"
 			]
 		},
@@ -14194,7 +14193,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 					intro: "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
 					trigger: "Whenever you are in mortal danger and choose to activate your Watchers,",
 					effect: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
-					optionsLists: [
+					listRefs: [
 						"watchers"
 					]
 				},
@@ -14340,7 +14339,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -14401,7 +14400,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -14494,7 +14493,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -14555,7 +14554,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -14616,7 +14615,7 @@ export const UNMIGRATED_DATA: Record<string, ItemMigrationData> = {
 							"You're beset by a new threat.",
 							"You'll be in trouble later on."
 						],
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						]
 					},
@@ -14783,34 +14782,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When it would be useful to know someone at a university,",
 									outro: "provide the person's name, field of study, and how you got to know one another, then roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The person is a friend (Relation +1).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The person is an acquaintance (Relation +0).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You know one another, but there is an old enmity between the two of you (Relation +0).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -14841,13 +14840,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -14906,20 +14905,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you search the Dark Net for forbidden information, rare items, or myths,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You discover what you're looking for, and may also choose one option:",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -14928,14 +14927,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must Keep It Together to see how it affects you.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -14966,13 +14965,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15040,7 +15039,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever someone's got you up against the wall or in a tight spot,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -15048,14 +15047,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -15064,7 +15063,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 1 Edge. You may spend it at any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -15073,7 +15072,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge, but the situation is worse than you imagined. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -15106,7 +15105,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -15114,7 +15113,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15173,20 +15172,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you attempt to control an animal,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options. You may save up to two for later.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15195,7 +15194,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options. You may save one for later.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15204,7 +15203,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but the animal is affected by your memories and Disadvantages. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15237,13 +15236,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15313,20 +15312,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you activate the object,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose one option (the GM determines what happens).",
-										optionsLists: [
+										listRefs: [
 											"powers"
 										],
 										effectFunctions: [],
@@ -15335,7 +15334,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option (the GM determines what happens). However, the artifact also exacts an additional price (the GM determines what is required).",
-										optionsLists: [
+										listRefs: [
 											"powers"
 										],
 										effectFunctions: [],
@@ -15344,7 +15343,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "The artifact does something unexpected, possibly dangerous. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -15375,7 +15374,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"powers"
 						],
 						effectFunctions: []
@@ -15383,7 +15382,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15443,20 +15442,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you perform your chosen art form or show your works to an audience,",
 									outro: "roll +%data.attribute% to influence your audience at any time during the scene.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15465,7 +15464,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15474,7 +15473,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but a complication/threat manifests. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15507,13 +15506,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15573,20 +15572,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "At the beginning of each game session,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "During this game session, choose three options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15595,7 +15594,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "During this game session, choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15604,7 +15603,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "During this game session you may choose one option, but you also attract unwanted attention like stalkers, professional adversaries, competitors, or hostile forces. The GM makes a Move for them at some point during the session.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15637,13 +15636,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15693,34 +15692,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you make a show of being the boss,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "People around you accept you as their leader and listen to you. Take +1 ongoing against people in this scene.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "People feel you're leadership material and show you respect. Choose one of them, in particular, who goes along with what you think. You have +1 ongoing against them during this scene.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "People feel like you're the leader, but one of them tries to challenge you for it. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -15751,13 +15750,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15816,20 +15815,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you attack someone who's unprepared for it,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15838,7 +15837,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15847,7 +15846,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You expose your betrayal and your target gets to react to your attack as usual. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -15878,13 +15877,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -15951,20 +15950,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you stabilize an injured person's wounds, even if you don't have access to medical equipment,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -15973,7 +15972,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "You may choose one option. %lists:options% However, you must also choose one complication: %lists:complications%",
-										optionsLists: [
+										listRefs: [
 											"complications"
 										],
 										effectFunctions: [],
@@ -15982,7 +15981,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -16013,13 +16012,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16078,20 +16077,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you perform acrobatic or agile feats,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16100,7 +16099,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option, but you expose yourself to danger or incur a cost.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16109,7 +16108,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but something goes very wrong. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16142,13 +16141,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16207,27 +16206,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you send your henchmen to do a risky job,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "They follow your orders and everything goes according to plan.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "They follow your orders, but GM picks one option:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -16236,7 +16235,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -16267,13 +16266,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16332,20 +16331,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "At the start of each game session,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You may choose three options at any time during the session.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16354,7 +16353,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "You may choose one option at any time during the session.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16363,7 +16362,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You may choose one option at any time during the session, but the GM makes a Move for the entity at some point during the session.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16396,13 +16395,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16463,20 +16462,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you make use of your expertise in breaking and entering,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Get three options. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16485,7 +16484,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Get two options. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16494,7 +16493,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Get one option, but a problem arises. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16527,13 +16526,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16591,27 +16590,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you imitate another's appearance or conceal your own identity to trick someone,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Your disguise is convincing, as long as you keep the act going.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You manage to trick everyone who doesn't examine you in detail, but choose one complication:",
-										optionsLists: [
+										listRefs: [
 											"complications"
 										],
 										effectFunctions: [],
@@ -16620,7 +16619,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your disguise is only effective at a distance. If you attract any attention to yourself, you will be exposed.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -16651,13 +16650,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16717,20 +16716,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you try to blend into a place or crowd by adapting your appearance and behavior to the others present,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options. You may save up to two for later.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16739,7 +16738,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options. You may save one for later.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16748,7 +16747,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but things don't go according to plan. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16781,13 +16780,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16846,20 +16845,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever your aura is truly noticeable,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two separate options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16868,7 +16867,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16877,7 +16876,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but you also attract unwanted attention. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -16910,13 +16909,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -16966,34 +16965,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you search for an unusual or rare item,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You know exactly where the item is, how to acquire it, and how to minimize hazards, obstacles, and/or costs.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You know roughly where it is and what hazards, obstacles, and/or costs are associated with acquiring it.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You know roughly where to start searching for it, but not the hazards or costs involved in pursuing it.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -17024,13 +17023,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17090,20 +17089,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you allow your madness to infect someone you're speaking with,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -17112,7 +17111,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -17121,7 +17120,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must Keep It Together.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -17152,13 +17151,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17217,20 +17216,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you manipulate an NPC in a longer conversation,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options. You may save one until later during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -17239,7 +17238,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -17248,7 +17247,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "They're on to you. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -17279,13 +17278,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17348,20 +17347,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you investigate a crime scene,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask two questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -17370,7 +17369,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask one question from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -17379,7 +17378,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but your investigation leads you into danger or introduces additional problems later on.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -17412,13 +17411,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17479,20 +17478,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you and your followers perform a ritual,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose to receive up to three visions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -17501,7 +17500,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose to receive up to two visions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -17510,7 +17509,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one vision, but the Illusion tears as a result. You may temporarily be transported into another dimension, attract a demonic being's attention, or receive a horrifying omen. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -17541,13 +17540,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17606,27 +17605,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you attempt to perform a magical ritual from a set of instructions,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You perform every step correctly; the ritual works as intended.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You make a minor error. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -17635,7 +17634,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -17666,13 +17665,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17740,7 +17739,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you're entering a dangerous situation,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -17748,14 +17747,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three Edges. You may spend them anytime during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -17764,7 +17763,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two Edges. You may spend them anytime during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -17773,7 +17772,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one Edge, but you are in over your head. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -17806,7 +17805,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -17814,7 +17813,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17875,20 +17874,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you look for information on a subject in a library, research archive, or on the Internet,",
 									outro: "roll +%data.attribute%.%n%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask three questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -17897,7 +17896,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask two questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -17906,7 +17905,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but you also discover something unexpected. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -17939,13 +17938,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -17995,34 +17994,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you find yourself in a charged situation,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact. You also get +2 ongoing against your target.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your opponents see you as their primary threat.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -18053,13 +18052,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -18129,7 +18128,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you fight with no regard for your personal safety,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -18137,14 +18136,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -18153,7 +18152,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -18162,7 +18161,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge, but afterwards you discover you have been injured without noticing it (Endure Injury; the GM determines the amount of Harm based on who attacked you and how).",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -18195,7 +18194,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -18203,7 +18202,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -18261,20 +18260,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you encounter a monstrous creature,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The creature mistakes you for a god. choose three options, useable any time during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -18283,7 +18282,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "You are fascinating to the creature. Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -18292,7 +18291,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You may choose one option, but after using it the creature becomes determined to possess you. It might try to devour you or perhaps capture you. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -18325,13 +18324,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -18381,34 +18380,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you want to meet someone or find out the truth about something in the Dream,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You meet the intended person or arrive at the specific place in the Dream.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You meet the intended person, or arrive at the specific place. However, some element has changed, or something followed you or the person in question.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You are lost in the Dream and cannot wake up until you find your way back.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -18439,13 +18438,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -18515,7 +18514,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -18523,14 +18522,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them anytime during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -18539,7 +18538,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges. You may spend them anytime during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -18548,7 +18547,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge to spend any time during the scene, but the situation worsens somehow—maybe you speed past a police car, additional vehicles start pursuing you, or you or your vehicle is damaged. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -18581,7 +18580,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -18589,7 +18588,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -18649,20 +18648,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you ask your contacts for a favor,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -18671,7 +18670,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -18680,7 +18679,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but you've become indebted to someone. The debt can be called in at any time during the story, at the GM's discretion.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -18713,13 +18712,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -18779,27 +18778,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you credibly threaten someone directly or suggestively,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "They must decide to either do what you want or defy you with the knowledge that you can execute your threat.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You must give them a third option. Choose one:",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -18808,7 +18807,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Turns out you didn't have the advantage you thought you did. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -18839,13 +18838,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -18895,34 +18894,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you focus your senses at a location where the Illusion is weak,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You can discern clear details regarding the location, and may be able to speak to entities tied to it.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You get some basic impressions regarding the location.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The Illusion tears. The veil is lifted temporarily, revealing an alternate dimension—the GM determines which one. The PC could be sucked into it or something may cross over into our reality. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -18953,13 +18952,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19019,20 +19018,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you make moves to attract an NPC to you,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options any time during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19041,7 +19040,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options any time during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19050,7 +19049,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option any time during this scene, but the nature of the attraction is different than you had hoped. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19083,13 +19082,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19139,34 +19138,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you need to escape a dangerous situation,",
 									outro: "outline your plan and roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You escape without complications.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You can choose to stay or escape at a cost, such as leaving something important behind or take something traceable with you. The GM decides what it is.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You are only half out the door when you're caught in a really bad spot. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -19197,13 +19196,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19262,20 +19261,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you have killed someone covertly and leave the scene of the murder,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You get all three options below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19284,7 +19283,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two of the options below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19293,7 +19292,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but you risk discovery or face unexpected obstacles. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19326,13 +19325,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19391,20 +19390,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you perform an exorcism to banish a spirit or extradimensional creature,",
 									outro: "explain what the ritual looks like and roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The creature is banished. Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19413,7 +19412,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "The creature is banished. Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19422,7 +19421,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "The creature resists banishment and something goes terribly wrong, such as the creature possessing you. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -19453,13 +19452,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19509,34 +19508,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you're building an improvised bomb under time pressure,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You construct a functional bomb.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The bomb's blast potential is lower than usual (decrease Harm dealt by −1).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -19575,34 +19574,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you are disarming a bomb,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The bomb is deactivated.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Complications arise. Maybe you can't completely turn it off, just delay the timer, weaken the explosive effect, or something else turns up and makes thing worse.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Fuck, that's not good! The bomb may go off in your hands, the timer starts counting down from 10, 9, 8, 7…, or even bigger problems occur. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -19633,13 +19632,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19700,20 +19699,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you have had time to study somebody for a while,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask three questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -19722,7 +19721,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask two questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -19731,7 +19730,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but you expose your inquisitiveness to the person you're observing. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -19764,13 +19763,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19836,20 +19835,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you use your art to seduce an NPC,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19858,7 +19857,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option, but the GM also chooses one of the following:",
-										optionsLists: [
+										listRefs: [
 											"options",
 											"gmoptions"
 										],
@@ -19868,7 +19867,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "They are affected by you in a way you didn't anticipate, or the attraction is uncomfortably strong—you choose. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -19899,13 +19898,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -19964,20 +19963,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you talk to an NPC to get their attention,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19986,7 +19985,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -19995,7 +19994,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but they grow suspicious of your motives. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -20028,13 +20027,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -20106,20 +20105,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you engage an able opponent within arm's reach in close combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									completeSuccess: {
 										result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -20128,7 +20127,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -20182,7 +20181,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you enter combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -20190,14 +20189,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -20206,7 +20205,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -20215,7 +20214,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge, but you have made a bad call. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -20248,7 +20247,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -20256,7 +20255,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -20315,20 +20314,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you dive deep into your art and allow yourself to be inspired by the Truth,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -20337,7 +20336,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -20346,7 +20345,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You have gazed too deeply into the abyss. Choose one option, but you also experience terrifying visions or encounter something horrible. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -20379,13 +20378,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -20452,20 +20451,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you manipulate someone,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose one option:",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -20474,7 +20473,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option from the list below, but there is also a complication, chosen by the GM or the targeted PC:",
-										optionsLists: [
+										listRefs: [
 											"complications"
 										],
 										effectFunctions: [],
@@ -20483,7 +20482,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "They see right through you and will act as they please.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -20514,13 +20513,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -20578,27 +20577,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you give your gang orders that are risky and/ or may result in them paying a high price,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "They enact your orders without question.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "They do as you want, but there is a complication (choose one):",
-										optionsLists: [
+										listRefs: [
 											"complications"
 										],
 										effectFunctions: [],
@@ -20607,7 +20606,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -20638,13 +20637,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -20712,7 +20711,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you find yourself in a life-threatening situation,",
 									outro: "roll +%data.attribute% to see if you can discover a way out.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -20720,14 +20719,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three Edges, useable any time in the scene, while you're still in danger.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -20736,7 +20735,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two Edges, useable any time in the scene, while you're still in danger.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -20745,7 +20744,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one Edge, but you also attract unwanted attention. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -20778,7 +20777,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -20786,7 +20785,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -20844,27 +20843,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you penetrate digital networks in the pursuit of confidential data, crack software, or disable security systems,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You accomplish your task without a problem.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Complications arise. Choose one option:",
-										optionsLists: [
+										listRefs: [
 											"complications"
 										],
 										effectFunctions: [],
@@ -20873,7 +20872,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -20904,13 +20903,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -20969,20 +20968,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are hunting someone or something,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Get three options. You may spend them anytime during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -20991,7 +20990,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Get two options. You may spend them anytime during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -21000,7 +20999,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Get one option, but you become the prey. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -21033,13 +21032,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21109,7 +21108,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are in a violent conflict,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -21117,14 +21116,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -21133,7 +21132,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -21142,7 +21141,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge, but you attract attention from the hostiles. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -21175,7 +21174,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -21183,7 +21182,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21233,34 +21232,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you experiment on a human and wish to implant an order into them,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You hold 2 Power over them. For as long as you retain Power over them, they take 1 Serious Wound should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You hold 1 Power over them. For as long as you retain Power over them, they take 1 Serious Wound should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Something goes wrong, such as they get hurt in the process or the order's outcome is different than what you imagined. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -21291,13 +21290,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21347,34 +21346,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you need money, a safehouse, protection, or other help one of your victims can provide,",
 									outro: "describe who they are and roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "They can provide you with whatever you require.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "One of them might be able to help, but it will take some convincing.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You know someone who can help, but they have already seen through your game. If you want their assistance it will require threats or blackmail to get them to provide it.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -21405,13 +21404,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21471,20 +21470,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you attempt to get out of a dangerous situation by winging it,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -21493,7 +21492,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -21502,7 +21501,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your improvisation makes the situation worse. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -21533,13 +21532,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21589,34 +21588,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you need to acquire an object, gain access to a restricted location, or meet a specific person,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Your friends can arrange for what you want.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "They can arrange for it, but you have to repay the favor later.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "They arrange for what you want, but you get on a powerful person's bad side or attract negative publicity. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -21647,13 +21646,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21703,34 +21702,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you release your inner power,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The power attacks all opponents in your vicinity, causing 2 Harm.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The power attacks your closest opponent, causing 2 Harm.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The power attacks all living beings, including yourself, in the vicinity, causing 2 Harm.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -21761,13 +21760,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21817,34 +21816,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you're trying to frighten another person,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "They succumb to fear and give in to your demands.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "They run away from you or give in to you, GM's choice.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "They see you as their primary threat and act accordingly. The GM makes a Move for them.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -21875,13 +21874,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -21941,20 +21940,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are about to create or repair something,",
 									outro: "explain what you are about to do. The GM will tell you what you need to succeed, and once you have collected these materials, you may roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The construction is successful and you may pick two options from below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -21963,7 +21962,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "The construction has minor flaws. You may choose one option from below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -21972,7 +21971,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You complete the construction or repair, but it has significant flaws, some of which are hidden. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -22003,13 +22002,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22059,34 +22058,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you lay your hands on a seriously or critically wounded person and pray,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You fully heal the injured person, channeling the Wound onto yourself or a selected target.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You stabilize the injured, channeling the Wound onto yourself or a selected target.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You may choose to stabilize the injured, but if you do, the powers break free from your control.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -22117,13 +22116,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22191,7 +22190,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you move unexpectedly fast in combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -22199,14 +22198,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -22215,7 +22214,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -22224,7 +22223,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge, but you also end up in a bad spot or face unexpected resistance. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -22257,7 +22256,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -22265,7 +22264,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22324,20 +22323,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you utilize your magical intuition,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options. Up to two may be saved until later this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22346,7 +22345,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options. One may be saved until later this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22355,7 +22354,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but you also get an unexpected vision or attract attention. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22388,13 +22387,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22453,20 +22452,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you attract everyone's attention,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options. You may save up to two until later in the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22475,7 +22474,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22484,7 +22483,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but someone present becomes obsessed, wanting to have you, keep you, and own you for themselves. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22517,13 +22516,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22584,20 +22583,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you're out to get information about someone,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask three questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -22606,7 +22605,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask two questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -22615,7 +22614,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but someone figures out you've been snooping around.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -22648,13 +22647,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22724,7 +22723,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you're fighting in close quarters,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -22732,14 +22731,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -22748,7 +22747,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 1 Edge.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -22757,7 +22756,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge, but you underestimate your opponents, who may be more numerous or skilled than you first assumed. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -22790,7 +22789,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -22798,7 +22797,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22856,20 +22855,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you make contact with one of your moles to acquire info or services,",
 									outro: "explain what group or organization the mole belongs to, name them, and then roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You receive both options below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22878,7 +22877,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one of the options below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -22887,7 +22886,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "The mole's loyalties are questionable. Can you trust them? The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -22918,13 +22917,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -22985,20 +22984,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you check in with your contacts regarding an individual of your choosing,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask three questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -23007,7 +23006,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask two questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -23016,7 +23015,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but the person you're inquiring about finds out you're snooping around. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -23049,13 +23048,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -23105,34 +23104,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you encounter someone who has likely heard about you,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take +2 to your next roll to Influence them.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "They know of your reputation; you can decide what they have heard.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "They know of your reputation; the GM decides what they have heard.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -23163,13 +23162,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -23229,20 +23228,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are in your library researching the supernatural,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold at any time to make a hard or soft Move.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask two questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -23251,7 +23250,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask one question from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -23260,7 +23259,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but you have missed or overlooked something crucial. The GM takes 1 Hold.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -23293,13 +23292,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold at any time to make a hard or soft Move.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -23357,20 +23356,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Upon coming in contact with a magical discipline, entity, or phenomenon for the first time,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Take both options below.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23379,7 +23378,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23388,7 +23387,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You have a hazy memory of something like this, but can't say for sure if it's true or not. The GM explains what it is you remember.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -23419,13 +23418,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -23495,7 +23494,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are in combat with at least one ally by your side,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -23503,14 +23502,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -23519,7 +23518,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -23528,7 +23527,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You misjudge the situation. Choose whether you have put yourself or one of your allies in harm's way. The GM makes a Move for your opponent.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -23559,7 +23558,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -23567,7 +23566,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -23626,20 +23625,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you execute acrobatic maneuvers,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose two options. You may save one until later.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23648,7 +23647,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23657,7 +23656,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but a complication, cost, or new threat emerges. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23690,13 +23689,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -23755,20 +23754,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you appear defenseless during a dangerous experience,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options. You may save up to two options for use later during the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23777,7 +23776,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23786,7 +23785,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Someone tries to take advantage of you and your position. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -23817,13 +23816,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -23882,20 +23881,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you investigate a location prior to visiting it,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold at any time to make a hard or soft Move for the location.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23904,7 +23903,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23913,7 +23912,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but you have missed or overlooked something crucial: The GM takes 1 Hold.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -23946,13 +23945,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold at any time to make a hard or soft Move for the location.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24002,34 +24001,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you execute a plan using other people as pawns,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Everyone involved takes +1 ongoing to carry out the plan, and you get one Experience if the plan is successful.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You get one Experience if the plan is successful, but you have overlooked or miscalculated something.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your plan is inadequate, revealed, and/or misguided. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -24060,13 +24059,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24125,20 +24124,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you commence a dangerous mission,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options, at any time during the mission.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24147,7 +24146,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options, at any time during the mission.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24156,7 +24155,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "At any time during the mission, choose one option, but you've failed to account for something. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24189,13 +24188,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24255,20 +24254,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you move through a small crowd to gather information,",
 									outro: "roll +%data.attribute%.%n%Examples of a 'small crowd' include a party, bar/restaurant, or an office. You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask three questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -24277,7 +24276,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask two questions from the list below, but you also draw unwanted attention to yourself.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -24286,7 +24285,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but you've blown your cover. Those who have what you're looking for will be expecting you. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -24319,13 +24318,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24393,7 +24392,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you sacrifice another to save your own skin,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -24401,14 +24400,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -24417,7 +24416,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -24426,7 +24425,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Things turns out in a bad way for you instead. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -24457,7 +24456,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -24465,7 +24464,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24526,20 +24525,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you have an intimate moment with someone,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options, useable any time in the story.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24548,7 +24547,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options, useable any time in the story.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24557,7 +24556,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, useable any time in the story, but you also develop feelings for the person. Increase your Relation to them by +1.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24590,13 +24589,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24646,34 +24645,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When shadowing someone,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You avoid discovery, follow your target all the way to their final destination, and learn something about them you can use to your advantage later.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You avoid discovery and follow your target to their final destination.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You are spotted or encounter some sort of problem along the way. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -24712,34 +24711,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you want to lose someone shadowing you,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You shake your pursuers and can choose to try to shadow them instead.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You shake your pursuers.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your pursuers are still on your tail, and they can set up an ambush, disappear without a trace (only to show up when you least expect it), or refuse to go away. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -24770,13 +24769,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24835,20 +24834,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "At the start of each game session,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options, useable any time during the session.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24857,7 +24856,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options, useable any time during the session.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24866,7 +24865,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your instincts will fail to trigger in a dangerous situation. The GM makes a Move at some point during the session.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -24897,13 +24896,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -24961,20 +24960,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you perform your chosen art form for an intelligent, monstrous creature,",
 									outro: "roll +%data.attribute% to awaken a desire within them.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose one option immediately, and you may choose two more any time in the future.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24983,7 +24982,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -24992,7 +24991,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "The desire is beyond the creature's ability to regulate. It cannot help but attempt to devour or imprison you.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -25023,13 +25022,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -25088,20 +25087,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you keep hidden and try to avoid drawing attention to yourself,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose 2 options. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -25110,7 +25109,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose 1 option. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -25119,7 +25118,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose 1 option, but you manage to attract someone's attention. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -25152,13 +25151,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -25219,20 +25218,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you fire at a distant target utilizing a scoped rifle,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The shot finds its target. Choose two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -25241,7 +25240,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "The shot finds its target. Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -25250,7 +25249,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "The shot didn't go where you intended it to, or you reveal your position to the enemy—expect witnesses, opponents pursuing you as you leave the scene, or other problems. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -25281,13 +25280,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -25347,20 +25346,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you need to know something and check in with your contacts,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask three questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -25369,7 +25368,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask one question from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -25378,7 +25377,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but someone becomes suspicious or aggressive. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -25411,13 +25410,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -25492,7 +25491,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you fight in close combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -25500,14 +25499,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -25516,7 +25515,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges, but the GM also gets to pick one complication:",
-										optionsLists: [
+										listRefs: [
 											"complications"
 										],
 										effectFunctions: [],
@@ -25525,7 +25524,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You're unfocused and lose control. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -25556,7 +25555,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -25564,7 +25563,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -25624,27 +25623,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you want to acquire items or services from the criminal underworld,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "No problem—you get what you're after. Someone will fix you right up.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The GM chooses one option:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -25653,7 +25652,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -25684,13 +25683,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -25758,7 +25757,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you push yourself to the limit to overcome a threat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -25766,14 +25765,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Gain 3 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -25782,7 +25781,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Gain 2 Edges. You may spend them any time during the scene.",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -25791,7 +25790,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Gain 1 Edge, but you push yourself past your breaking point. Decrease Stability (−2).",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -25824,7 +25823,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -25832,7 +25831,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -25890,20 +25889,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you suffer a serious or critical injury yet refuse to yield,",
 									outro: "roll +%data.attribute%.%n%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You ignore your injuries until the conflict is over, and you may choose one option from the list below:",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -25912,14 +25911,14 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "You ignore your injuries until the conflict is over.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You overexert yourself and after a few moments your injuries cause you to pass out and collapse. After your next action, the GM decides when and how you pass out.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -25950,13 +25949,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26015,20 +26014,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you utilize your survivalist skills,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options, useable while you remain in this situation.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26037,7 +26036,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options, useable while you remain in this situation.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26046,7 +26045,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option useable while you remain in this situation, but you've also overlooked something important. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26079,13 +26078,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26145,20 +26144,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you utilize your intelligence networks to trace someone or something,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Ask three questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -26167,7 +26166,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Ask two questions from the list below.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -26176,7 +26175,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Ask one question from the list below, but someone notices you snooping around. It might be someone you'd rather not be known by, or a traitor inside your network.",
-										optionsLists: [
+										listRefs: [
 											"questions"
 										],
 										effectFunctions: [],
@@ -26209,13 +26208,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26276,20 +26275,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you manipulate a crowd,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Choose three options, useable any time during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26298,7 +26297,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose two options, useable any time during this scene.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26307,7 +26306,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, useable any time during this scene. However, the crowd becomes uncontrollable and volatile, and cannot be dispersed. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26340,13 +26339,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26405,20 +26404,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When an opponent seriously or critically wounds you for the first time,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You get two options.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26427,7 +26426,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "Choose one option.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26436,7 +26435,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Choose one option, but the pain will overwhelm you eventually and make you black out.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26469,13 +26468,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26535,20 +26534,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are heading out to a community or another part of the city,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You have been here before. Choose two options any time during your visit.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26557,7 +26556,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									partialSuccess: {
 										result: "You have heard of this place. Choose one option any time during your visit.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26566,7 +26565,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "You have been here before, but something bad happened. Choose one option any time during your visit. The GM explains what kind of problem awaits you here. The GM makes a Move.",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -26599,13 +26598,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26655,34 +26654,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you travel between two places in the city and allow your madness to guide you through the alleys,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You discover a shortcut through the alleys, which takes you to your destination within a few minutes, regardless of how far the distance actually is.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You discover a shortcut, but there is also some sort of obstacle you will need to get past.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You discover a shortcut, but it leads you into a dangerous situation, such as the lair of some creature or an ambush set by some gang. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -26713,13 +26712,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26771,34 +26770,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you venture into alternate planes of existence or meet entities from other dimensions,",
 									outro: "you may declare that you have read about this dimension or creature before. Ask the GM what you learned from your past studies.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -26829,13 +26828,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26885,34 +26884,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you truly desire something,",
 									outro: "you may take +2 to a roll by decreasing Stability (−2).",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -26943,13 +26942,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -26999,34 +26998,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you take risks or make sacrifices for your code of honor,",
 									outro: "gain Stability (+1).",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27057,13 +27056,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -27113,34 +27112,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you try to make it through overwhelming odds,",
 									outro: "take +1 ongoing on all rolls until you're clear of the threat.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27171,13 +27170,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -27227,34 +27226,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you fight your deity's enemies or fight to protect a sacred object,",
 									outro: "you do +1 Harm and take +1 to Endure Injury.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27293,34 +27292,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you lose a battle against your deity's enemies or to protect a sacred object,",
 									outro: "your deity becomes irate: You take −1 ongoing to all actions related to your deity until you have atoned for your failure.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27351,13 +27350,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "You do +1 Harm and take +1 to Endure Injury.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -27407,34 +27406,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you suffer a serious or critical injury, name the person you feel is responsible.",
 									outro: "You get +2 ongoing to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27465,13 +27464,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -27521,34 +27520,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you help another at your own expense,",
 									outro: "gain Stability (+1).",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27579,13 +27578,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -27635,34 +27634,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When someone directly or indirectly ruins your plans,",
 									outro: "you take +1 ongoing against them until you have taken revenge or received restitution of equal worth to what you lost.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27693,13 +27692,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -27765,7 +27764,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you do someone a favor or learn one of their secrets,",
 									outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %lists:options%",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"options"
 									],
 									effectFunctions: []
@@ -27773,7 +27772,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [
+										listRefs: [
 											"options"
 										],
 										effectFunctions: [],
@@ -27782,21 +27781,21 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27827,7 +27826,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"options"
 						],
 						effectFunctions: []
@@ -27835,7 +27834,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -27885,34 +27884,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you sacrifice someone else to further your own goals,",
 									outro: "gain Stability (+1).",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -27943,13 +27942,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28017,7 +28016,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you choose to awaken your inner rage in combat,",
 									outro: "lose Stability (−1) and mark 1 Rage.%n%Every time you get a wound and every time you defeat a foe, increase Rage (+1).%n%Rage lasts until the end of the combat.%n%During combat, you may spend 1 Rage to activate 1 Edge from the list below: %lists:edges%",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"edges"
 									],
 									effectFunctions: []
@@ -28025,7 +28024,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [
+										listRefs: [
 											"edges"
 										],
 										effectFunctions: [],
@@ -28034,21 +28033,21 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28079,7 +28078,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"edges"
 						],
 						effectFunctions: []
@@ -28087,7 +28086,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28137,7 +28136,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are dealt a Critical Wound,",
 									outro: "you may mark 1 Time from Condemned to immediately stabilize the Wound.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: [
 										"Requires the Disadvantage Condemned"
 									]
@@ -28145,7 +28144,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [
 											"Requires the Disadvantage Condemned"
 										],
@@ -28154,21 +28153,21 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28207,7 +28206,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you die,",
 									outro: "[[[mark 2 Time from Condemned and reawaken, injured and weak, but alive. All your Wounds will be stabilized.]]].",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: [
 										"Requires the Disadvantage Condemned"
 									]
@@ -28215,7 +28214,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [
 											"Requires the Disadvantage Condemned"
 										],
@@ -28224,21 +28223,21 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28269,7 +28268,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							"Requires the Disadvantage Condemned"
 						]
@@ -28277,7 +28276,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "You may mark 1 Time from Condemned to immediately stabilize the Wound.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [
 								"Requires the Disadvantage Condemned"
 							],
@@ -28329,34 +28328,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you learn new information about alternate planes of existence, a supernatural entity, or a Higher Power,",
 									outro: "gain Stability (+1).",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28387,13 +28386,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28443,7 +28442,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you refuse to give in even if the odds turn against you,",
 									outro: "mark 1 Time to reroll the dice.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: [
 										"Requires the Disadvantage Condemned"
 									]
@@ -28451,7 +28450,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [
 											"Requires the Disadvantage Condemned"
 										],
@@ -28460,21 +28459,21 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28505,7 +28504,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							"Requires the Disadvantage Condemned"
 						]
@@ -28513,7 +28512,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28583,7 +28582,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are in mortal danger and choose to activate your Watchers,",
 									outro: "the GM takes 1 Hold and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
 									holdText: "The GM can spend Hold on the Watchers' behalf to let them make a Move against you.",
-									optionsLists: [
+									listRefs: [
 										"watchers"
 									],
 									effectFunctions: []
@@ -28591,7 +28590,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [
+										listRefs: [
 											"watchers"
 										],
 										effectFunctions: [],
@@ -28600,21 +28599,21 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28645,7 +28644,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold on the Watchers' behalf to let them make a Move against you.",
-						optionsLists: [
+						listRefs: [
 							"watchers"
 						],
 						effectFunctions: []
@@ -28653,7 +28652,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28703,34 +28702,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you create something or carry out an experiment,",
 									outro: "gain Stability (+1).",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28761,13 +28760,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28817,34 +28816,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you arrive at a new location in the mundane world,",
 									outro: "decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -28875,13 +28874,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28933,7 +28932,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"questions"
 						],
 						effectFunctions: [
@@ -28943,7 +28942,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -28984,7 +28983,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							">ModValue:weapon/firearm,harm,1"
 						]
@@ -28992,7 +28991,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29033,13 +29032,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29080,13 +29079,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29148,20 +29147,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you engage an able opponent within arm's reach in close combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									completeSuccess: {
 										result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -29170,7 +29169,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -29206,7 +29205,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							">AppendList:weapon/sword,attacks"
 						]
@@ -29214,7 +29213,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29255,13 +29254,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29316,7 +29315,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"expertise"
 						],
 						effectFunctions: [
@@ -29326,7 +29325,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29375,7 +29374,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							">AppendList:move/Read a Person,questions"
 						]
@@ -29383,7 +29382,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29424,7 +29423,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							">SetPenalty:SeriousWound,0>SetPenalty:CriticalWound,0"
 						]
@@ -29432,7 +29431,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29473,7 +29472,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							">BuffRoll:Endure Injury,1"
 						]
@@ -29481,7 +29480,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29522,7 +29521,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							">AddNote:Observe a Situation/completeSuccess,effect|>AddNote:Observe a Situation/partialSuccess,effect|>AddNote:Observe a Situation/failure,effect"
 						]
@@ -29530,7 +29529,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29571,13 +29570,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29618,7 +29617,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							"AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
 						]
@@ -29626,7 +29625,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29667,7 +29666,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							"AddNote:Keep It Together:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
 						]
@@ -29675,7 +29674,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29724,7 +29723,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"questions"
 						],
 						effectFunctions: [
@@ -29734,7 +29733,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29783,7 +29782,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"questions"
 						],
 						effectFunctions: [
@@ -29793,7 +29792,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29843,7 +29842,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"questions"
 						],
 						effectFunctions: []
@@ -29851,7 +29850,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29900,7 +29899,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"questions"
 						],
 						effectFunctions: [
@@ -29910,7 +29909,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -29972,20 +29971,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 									outro: "expend 2 Ammo and roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									completeSuccess: {
 										result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -29994,7 +29993,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30050,20 +30049,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 									outro: "expend 1 Ammo and roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									completeSuccess: {
 										result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -30072,7 +30071,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30108,13 +30107,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -30176,20 +30175,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									completeSuccess: {
 										result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -30198,7 +30197,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30254,20 +30253,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you engage an able opponent within arm's reach in close combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									completeSuccess: {
 										result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -30276,7 +30275,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30332,20 +30331,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When you engage an able opponent within arm's reach in close combat,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									completeSuccess: {
 										result: "You inflict 3 Harm to your opponent(s) and avoid counterattacks.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You inflict 3 Harm, but at a cost. The GM chooses one:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -30354,7 +30353,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30390,13 +30389,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -30450,34 +30449,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you attract the public's attention,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You blend in. Nobody is out to get you.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You have been recognized. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Several people have recognized you. Anger and fear control their actions. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30508,13 +30507,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -30563,34 +30562,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you neglect to protect your interests or are distracted elsewhere,",
 									outro: "roll +%data.attribute% to see if your competitor managed to damage your business.",
 									holdText: "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You are safe from your competitor, for the moment.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You have been careless. Your competitor may strike against you. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You hand your competitor a golden opportunity, and they move against your interests. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30621,13 +30620,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -30687,27 +30686,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "At the start of every game session,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You still have some time remaining.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Your fate approaches. The GM chooses one option:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -30716,7 +30715,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									},
 									failure: {
 										result: "Your end approaches. The GM chooses two options, and may choose the same option twice:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -30749,7 +30748,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							">CreateTracker:Time,10"
 						]
@@ -30757,7 +30756,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -30806,34 +30805,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first session and whenever you're confronted by the supernatural,",
 									outro: "roll +%data.attribute% to see how strongly the curse influences you.",
 									holdText: "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You temporarily avoid the curse's influence.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30864,13 +30863,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -30919,34 +30918,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever facing personal setbacks,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You remain in control.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You experience temporary anxiety, decreased self-confidence, or lack of will. You take −1 to your next roll.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You succumb to the sense of hopelessness or blame and punish yourself; reduce Stability (−2). Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -30977,13 +30976,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31032,34 +31031,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you have been using, or have the opportunity to use,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You are in control of the urge, for now.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31090,13 +31089,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31145,34 +31144,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first session and whenever things seem in control,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Your experiment leaves you alone.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Your experiment is close on your heels. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your experiment is in your vicinity and acts against you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31203,13 +31202,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31258,34 +31257,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever someone questions your ideology,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You can keep your emotions in check.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You become angry, confused, or frustrated. You take −1 to your next roll.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce Stability (−2).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31316,13 +31315,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31371,34 +31370,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "When an opportunity to increase your wealth arises,",
 									outro: "roll +%data.attribute% to see if you are in control of your desire.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You keep your greed in check.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer −1 ongoing to any rolls you make.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You must take advantage of every opportunity to further your wealth, or reduce Stability (−2).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31429,13 +31428,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31484,34 +31483,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever everything appears okay,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Your guilt isn't on your mind at the moment.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You are reminded of your guilt. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your guilt catches up to you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31542,13 +31541,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31597,34 +31596,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you draw attention to yourself,",
 									outro: "roll +%data.attribute% to see if you're harassed.",
 									holdText: "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You've managed to keep clear of harassment.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31655,13 +31654,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31710,34 +31709,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first session and whenever you are distracted or weakened,",
 									outro: "roll +%data.attribute% to see if the entity gains power over you.",
 									holdText: "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The entity leaves you alone.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31768,13 +31767,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31823,34 +31822,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you are subjected to major physical or psychological stress,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "Your condition is under control.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Your condition triggers, causing pain and daze (−1 to all rolls until the scene ends).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your condition is aggravated with life threatening results (Endure Injury with 2 Harm).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31881,13 +31880,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -31936,34 +31935,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you encounter spiritual entities or haunted places,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You resist the possession.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The entity gains influence over you. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The entity gains control over you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -31994,13 +31993,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32049,34 +32048,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you encounter the subject of your jealousy or their life's trappings (possessions, family, friends, etc),",
 									outro: "roll +%data.attribute% to see if you can keep your cool.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You maintain control over your jealousy.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You're afflicted by jealousy and take −1 ongoing for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your jealousy takes hold of you. You must Keep It Together to refrain from harming, destroying, or stealing from the subject of your jealousy.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32107,13 +32106,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32162,34 +32161,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "At the start of every session,",
 									outro: "roll +%data.attribute% to see what trouble your lies have gotten you into this time.",
 									holdText: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You have kept your lies tangle-free.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You've told one too many lies. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your web of lies has come completely unraveled. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32220,13 +32219,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32275,34 +32274,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you encounter something from your repressed past,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You repress your true identity, remaining in the present.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Your true identity is catching up to you. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your true identity resurfaces. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32333,13 +32332,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32388,34 +32387,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you consciously Harm someone,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to Keep It Together to resist the darkness' influence.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You are still in control.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You feed the darkness. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The darkness gains power over you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32446,13 +32445,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to Keep It Together to resist the darkness' influence.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32535,7 +32534,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In situations where you could be distracted by your compulsion,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [
+									listRefs: [
 										"options"
 									],
 									effectFunctions: []
@@ -32543,28 +32542,28 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You control your compulsions and can focus on other things.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You become distracted and take −1 ongoing to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You become completely obsessed with your compulsion. If you focus on anything else, reduce Stability (−2).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32595,7 +32594,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"options"
 						],
 						effectFunctions: []
@@ -32603,7 +32602,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32652,34 +32651,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you let your guard down,",
 									outro: "roll +%data.attribute% to see if your nemesis moves against you.",
 									holdText: "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You are safe from your nemesis for the moment.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You have been careless and your nemesis moves against you. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You have compromised your position and your nemesis strikes against you in full force. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32710,13 +32709,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32765,34 +32764,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "During any scene when you sleep,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You sleep in peace.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The nightmares torment you. The GM may make a Move for your nightmares. For example, you are unable to sleep at all during the night (−1 ongoing until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (Keep It Together) when you wake up.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32823,13 +32822,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32878,34 +32877,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever the target of your vengeance (or someone/something associated with them) appears,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You remain in control of your vengeful nature and can act rationally.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You can't focus on anything, other than the target of your vengeance. Take −1 ongoing until the target's involvement in the scene ends.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You become obsessed and can act only to further your revenge. Doing anything else requires you roll Keep It Together. Your obsession cannot be assuaged while the target remains in the same scene with you.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -32936,13 +32935,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -32991,34 +32990,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "At the first game session and whenever you meet one or more new people,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "The desire is not awakened at this moment.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Someone becomes desirous of you. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "A strong desire is awakened in one or several people. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33049,13 +33048,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33104,34 +33103,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "At the first game session and whenever you encounter something associated with your obsession,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing Stability. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You overcome your obsession for the moment.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Your obsession influences your behavior. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your obsession takes over completely. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33162,13 +33161,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing Stability. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33217,34 +33216,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you draw attention to yourself in public,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "For the moment, you are safe.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Your former owner picks up your scent. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your owner finds you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33275,13 +33274,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33330,34 +33329,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In situations associated with your repressed memories,",
 									outro: "roll +%data.attribute% to determine if the memories resurface.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You continue to suppress the memories.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must Keep It Together.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You are overwhelmed by your repressed memories, completely losing yourself to them. The GM makes a hard Move and you reduce Stability (−2).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33388,13 +33387,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33443,34 +33442,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you make a mistake or let down your guard,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "All clear; your rival makes no moves against you.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You've given your rival an opportunity. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You've handed your rival whatever they needed to completely undermine you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33501,13 +33500,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33556,34 +33555,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you go through difficult experiences,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You maintain control of your insanity.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Schizophrenia overtakes you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33614,13 +33613,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33678,34 +33677,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you have the opportunity to have consensual sex or take advantage of someone vulnerable to your advances,",
 									outro: "roll +%data.attribute%.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You can control your urges.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Choose between having sex with the person or reduce your Stability (−1).",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You cannot resist having sex with the person and the GM chooses one option:",
-										optionsLists: [
+										listRefs: [
 											"gmoptions"
 										],
 										effectFunctions: [],
@@ -33738,13 +33737,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33793,34 +33792,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you expose your current location,",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You are safe for now.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "Your enemies are on to you. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "Your enemies have caught up to you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33851,13 +33850,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -33906,34 +33905,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
 									outro: "roll +%data.attribute%.",
 									holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce Stability (−2), your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (Keep It Together to resist), your longing leaves you feeble vis-à-vis the objective of this passion (−1 to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You keep your passion in check.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "The passion awakens within you. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "You are completely in the passion's grip. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -33964,13 +33963,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce Stability (−2), your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (Keep It Together to resist), your longing leaves you feeble vis-à-vis the objective of this passion (−1 to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34019,34 +34018,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you attract attention to yourself or forget to keep your head down,",
 									outro: "roll +%data.attribute% to see if you've been discovered.",
 									holdText: "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you.",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "You are safe, for now.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "You have made a mistake. The GM takes 1 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "All eyes are on you. The GM takes 3 Hold.",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -34077,13 +34076,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you.",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34134,34 +34133,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 									trigger: "Whenever you're confronted by the object of your phobia,",
 									outro: "you must Keep It Together.",
 									holdText: "",
-									optionsLists: [],
+									listRefs: [],
 									effectFunctions: []
 								},
 								results: {
 									staticSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									completeSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									partialSuccess: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
 									},
 									failure: {
 										result: "",
-										optionsLists: [],
+										listRefs: [],
 										effectFunctions: [],
 										edges: 0,
 										hold: 0
@@ -34192,13 +34191,13 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34240,7 +34239,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							"SetTrait:actor/data.stability.max,6"
 						]
@@ -34248,7 +34247,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34298,7 +34297,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"gmoptions"
 						],
 						effectFunctions: []
@@ -34306,7 +34305,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34350,34 +34349,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you do something risky, under time pressure, or try to avoid danger,",
 						outro: "the GM will explain what the consequences for failure are and you roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You do what you intended.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "You do it, but hesitate, are delayed, or must deal with a complication—the GM reveals an unexpected outcome, a high price, or a difficult choice.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						failure: {
 							result: "There are serious consequences, you make a mistake, or you're exposed to the danger. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34416,34 +34415,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you dodge, parry, or block Harm,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You emerge completely unharmed.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "You avoid the worst of it, but the GM decides if you end up in a bad spot, lose something, or partially sustain Harm.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						failure: {
 							result: "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any Harm at all, or you ended up in an even worse spot than before. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34499,7 +34498,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When enduring an injury,",
 						outro: "roll +%data.attribute% +Armor −Harm.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: [
 							"Add Armor and subtract Harm from Fortitude roll"
 						]
@@ -34507,21 +34506,21 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You ride out the pain and keep going.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "You are still standing, but the GM picks one condition:",
-							optionsLists: [
+							listRefs: [
 								"gmoptions"
 							],
 							effectFunctions: [],
@@ -34530,7 +34529,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "The injury is overwhelming. You choose if you:",
-							optionsLists: [
+							listRefs: [
 								"options"
 							],
 							effectFunctions: [],
@@ -34583,27 +34582,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you engage an able opponent in combat,",
 						outro: "explain how and roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You inflict damage to your opponent and avoid counterattacks.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "You inflict damage, but at a cost. The GM chooses one:",
-							optionsLists: [
+							listRefs: [
 								"gmoptions"
 							],
 							effectFunctions: [],
@@ -34612,7 +34611,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34651,34 +34650,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you help another player character's Move,",
 						outro: "explain how before their roll and roll +Attribute, where the Attribute is the same as the other player is rolling.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You may modify the subsequent roll by +2.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "You may modify the subsequent roll by +1.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						failure: {
 							result: "Your interference has unintended consequences. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34717,34 +34716,34 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you hinder another player character's Move,",
 						outro: "explain how before their roll and roll +Attribute, where the Attribute is the same as the other player is rolling.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You may modify the subsequent roll by −2.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "You may modify the subsequent roll by −1.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						failure: {
 							result: "Your interference has unintended consequences. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34792,27 +34791,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you influence an NPC through negotiation, argument, or from a position of power,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "She does what you ask.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "She does what you ask, but the GM chooses one:",
-							optionsLists: [
+							listRefs: [
 								"gmoptions"
 							],
 							effectFunctions: [],
@@ -34821,7 +34820,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "Your attempt has unintended repercussions. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34868,20 +34867,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you influence another PC,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "Both options below.",
-							optionsLists: [
+							listRefs: [
 								"options"
 							],
 							effectFunctions: [],
@@ -34890,7 +34889,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						partialSuccess: {
 							result: "Choose one option below.",
-							optionsLists: [
+							listRefs: [
 								"options"
 							],
 							effectFunctions: [],
@@ -34899,7 +34898,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "The character gets +1 on her next roll against you. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -34947,20 +34946,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you investigate something,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You uncover all direct leads, and may additionally ask two questions from the list below.",
-							optionsLists: [
+							listRefs: [
 								"questions"
 							],
 							effectFunctions: [],
@@ -34969,7 +34968,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						partialSuccess: {
 							result: "You uncover all direct leads, and may additionally ask one question from the list below. The information comes at a cost, determined by the GM, such as requiring someone or something for the answer, exposing yourself to danger, or needing to expend extra time or resources. Will you do what it takes?.",
-							optionsLists: [
+							listRefs: [
 								"questions"
 							],
 							effectFunctions: [],
@@ -34978,7 +34977,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "You may get some information anyway, but you pay a price for it. You may expose yourself to dangers or costs. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -35039,27 +35038,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you exercise self-control to keep from succumbing to stress, traumatic experiences, psychic influence, or supernatural forces,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You grit your teeth and stay the course.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get −1 in situations where this condition would be a hindrance to you. Choose one:",
-							optionsLists: [
+							listRefs: [
 								"options"
 							],
 							effectFunctions: [],
@@ -35068,7 +35067,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "The strain is too much for your mind to handle. The GM chooses your reaction:",
-							optionsLists: [
+							listRefs: [
 								"gmoptions"
 							],
 							effectFunctions: [],
@@ -35121,20 +35120,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you observe a situation,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "Ask two questions from the list below. When you act on these answers, gain +1 to your rolls.",
-							optionsLists: [
+							listRefs: [
 								"questions"
 							],
 							effectFunctions: [],
@@ -35143,7 +35142,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						partialSuccess: {
 							result: "Ask one question from the list below. When you act on the answer, gain +1 to your rolls.",
-							optionsLists: [
+							listRefs: [
 								"questions"
 							],
 							effectFunctions: [],
@@ -35152,7 +35151,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "Ask one question from the list below, but you get no bonus for it and miss something, attract unwanted attention or expose yourself to danger. The GM makes a Move.",
-							optionsLists: [
+							listRefs: [
 								"questions"
 							],
 							effectFunctions: [],
@@ -35204,20 +35203,20 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you read a person,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "Ask two questions from the list below any time you are in conversation with the subject of your scrutiny during this scene.",
-							optionsLists: [
+							listRefs: [
 								"questions"
 							],
 							effectFunctions: [],
@@ -35226,7 +35225,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						partialSuccess: {
 							result: "Ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene.",
-							optionsLists: [
+							listRefs: [
 								"questions"
 							],
 							effectFunctions: [],
@@ -35235,7 +35234,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "You accidentally reveal your own intentions to the person you're trying to read. Tell the GM/player what these intentions are. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -35282,27 +35281,27 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "When you suffer shock, injuries, or distort your perception through drugs or rituals,",
 						outro: "roll +%data.attribute%.",
 						holdText: "",
-						optionsLists: [],
+						listRefs: [],
 						effectFunctions: []
 					},
 					results: {
 						staticSuccess: {
 							result: "",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						completeSuccess: {
 							result: "You perceive things as they truly are.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
 						},
 						partialSuccess: {
 							result: "You see Reality, but you also affect the Illusion. The GM chooses one:",
-							optionsLists: [
+							listRefs: [
 								"gmoptions"
 							],
 							effectFunctions: [],
@@ -35311,7 +35310,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						},
 						failure: {
 							result: "The GM explains what you see. The GM makes a Move.",
-							optionsLists: [],
+							listRefs: [],
 							effectFunctions: [],
 							edges: 0,
 							hold: 0
@@ -35365,7 +35364,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "The god's disciples watch over you, waiting for the day of your ascension. You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35417,7 +35416,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "The curse has started influencing your life and you must find a way to get rid of it. The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35469,7 +35468,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "They may have been members of an obscure sect or exposed to some dreadful horror. You may have been initiated into this secret as a child, or only recently found out the truth as an adult. This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35521,7 +35520,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion. The Illusion's keepers are now after you and it is only a matter of time before they find you.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35572,7 +35571,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request. What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35625,7 +35624,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "Regardless if you committed the crime on your own initiative or because you were coerced by others, you feel you are solely to blame. The victim, their relatives, and/or the police are probably looking for you.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35676,7 +35675,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "It could be a small object or something more substantial, such as a house. The inheritance has instilled an unnatural obsession within you. You know it hides secrets and perhaps unknown forces. Might it reveal what happened to its previous owner? Others want to possess your inheritance also, and you suspect they will stop at nothing to acquire it.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35728,7 +35727,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "There's a good chance you have seen with your own eyes (or heard from your relative) that reality is simply an illusion. But who would believe a crazy person? Psychiatric institutions hold many secrets and many doctors have hidden motives. For the insane who end up on the streets, disturbed mentors gladly take newcomers under their wing to initiate them in the Truth.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35780,7 +35779,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "You may have participated in arcane rituals, exposed cults serving disturbing entities, or seen things revealing that the world is not what it seems. Your experiences make it difficult for you to accept the Illusion that most others live in.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35832,7 +35831,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "You may have made the pact willingly or been tricked into it. Regardless, you are now under the being's spell. You may have benefited greatly from this pact, but the cost could be your literal soul. Deep inside you understand you must find a way to trick the being into breaking the pact. The question is how?.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35885,7 +35884,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "Regardless of whether the subjects were willing or not, the experiments destroyed their lives and they are now dead, missing, or transformed into something inhuman. In addition to your pangs of guilt, you may be pursued by your former test subjects, their relatives, the law, former colleagues, employers, or nameless forces trying to silence you.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35937,7 +35936,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "Your apartment block may have slipped into another dimension, its existence wiped from history. An airplane may have disappeared and you were found twenty years later, without memories and having not aged a day. A company of soldiers in Afghanistan may have literally walked into hell and only you returned, covered in your comrades' blood. Deep down you feel you were not meant to have survived, and that something is coming for you to restore balance and order.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -35989,7 +35988,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "Your parents never told you why, but the haunted look in their eyes and hushed conversations hinted that you were running away from something terrifying. They would rouse you in the middle of night, leaving behind everything you owned, simply to escape. Eventually, they even abandoned you. Maybe they're still on the run, or maybe whatever they feared finally caught up with them. The feeling of being followed never truly lets go, and wherever you end up it's not long before you're on the road again. You don't know exactly what would happen if you stopped, but you feel it's something terrible.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -36041,7 +36040,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "You have no idea what happened, but someone recently sent you cryptic information, urging you to finish what your colleague started. Since your associate disappeared, you've become the victim of unknown stalkers.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -36093,7 +36092,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "Your whole life is marred by this event and you cannot mentally suppress the violation, no matter how hard you try. Fear, shame, anger, and a sense of helplessness torment you, and in order to survive this trauma, you must find a way to heal your wounds.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -36146,7 +36145,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "The experiments have had enduring mental and/or physical side effects. They may have shown you windows into alternate dimensions—resulting in madness. The side effects still torment you, and ridding yourself of them requires you to find the responsible parties. It's also possible your parents were the test subjects and you inherited the experimental effects, as a result.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []
@@ -36198,7 +36197,7 @@ export const ORIGINAL_MIGRATED_DATA: Record<K4ItemType,Partial<SubTypeDict>> = {
 						trigger: "",
 						outro: "They could be family members or friends tracking you down post-mortem, entities discovered at haunted locations, or inhuman forces taking an interest in you. Regardless of what you do, you can't seem to escape them. Every time you think it's finally over, they reappear in your life—you are never truly free.",
 						holdText: "",
-						optionsLists: [
+						listRefs: [
 							"drives"
 						],
 						effectFunctions: []

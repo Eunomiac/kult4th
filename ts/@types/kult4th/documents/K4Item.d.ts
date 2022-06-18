@@ -2,7 +2,7 @@ import EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/
 import {ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
 import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
-import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item";
+import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item.js";
 import K4ItemSheet from '../../../documents/K4ItemSheet';
 import { K4Attribute } from '../../../scripts/constants';
 
@@ -17,106 +17,99 @@ declare global {
 	: T extends K4WeaponClass.bomb ? ("")
 	: "";
 
-	type RulesDef = {
-		intro?: string,
-		trigger?: string,
-		outro?: string,
-		suffix?: string,
-		holdText?: string,
-		optionsLists: string[],
-		effectFunctions: string[]
-	}
-	type ResultSchema = {
-		result: string,
-		optionsLists: string[],
-		effectFunctions: string[],
-		edges: posInt,
-		hold: posInt
-	};
-	type ResultDef<ST extends K4ItemSubType> = ST extends K4ItemSubType.activeRolled
-			? {
-					[K4ItemResultType.completeSuccess]: ResultSchema,
-					[K4ItemResultType.partialSuccess]: ResultSchema,
-					[K4ItemResultType.failure]: ResultSchema
-			}
-			: ST extends K4ItemSubType.activeStatic
-			? {
-				[K4ItemResultType.staticSuccess]: ResultSchema
-			}
-			: undefined;
 
-	type ListDef = {
-		name: string,
-		items: string[],
-		intro?: string
-	}
-
-	type SourceDef = {
-		name: string,
-		id: string,
-		type: K4ItemType
-	}
 
 	namespace K4ItemClass {
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type Move = K4Item<K4ItemType.move>;
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type Attack = K4Item<K4ItemType.attack>;
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type Advantage = K4Item<K4ItemType.advantage>;
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type Disadvantage = K4Item<K4ItemType.disadvantage>;
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type DarkSecret = K4Item<K4ItemType.darksecret>;
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type Weapon = K4Item<K4ItemType.weapon>;
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type Relation = K4Item<K4ItemType.relation>;
-		// @ts-expect-error Why won't it let me use a generic here?
 		export type Gear = K4Item<K4ItemType.gear>
 	}
-	namespace K4ItemDataDataSchema {
+	namespace K4ItemDataSchema {
 
 		interface Base {
-			subType: TraitType,
 			description: string,
-			notes: string,
-			lists: Record<string, ListDef>,
-			subItems: Array<K4ItemData<K4ItemType.move|K4ItemType.attack>>,
+			lists: Record<string, {
+				name: string,
+				items: string[],
+				intro?: string
+			}>,
 			isCustom: boolean,
-			pdfLink: string
+			pdfLink: string,
+			subType: K4ItemSubType
 		}
 
-		interface Rules {
-			rules: RulesDef
+		interface HasSubItems<T = K4ItemType.move | K4ItemType.attack> {
+			subItems: Array<K4ItemData<T>>
 		}
 
-		interface Results<T extends K4ItemSubType = K4ItemSubType> {
-			results: ResultDef<T>
+		interface CanSubItem {
+			sourceItem?: {
+				name: string,
+				id?: string,
+				type: K4ItemType
+			}
 		}
 
-		export interface Move extends Base, Rules, Results {
-			attribute: K4Attribute,
-			sourceItem?: SourceDef
+		interface RulesData<T extends K4ItemType> {
+			rules: T extends K4ItemType.move | K4ItemType.attack
+				? {
+					intro?: string,
+					trigger: string,
+					outro: string,
+					listRefs?: string[],
+					effectFunctions?: string[],
+					holdText?: string
+				}
+				: {
+					intro?: string,
+					outro?: string,
+					listRefs?: string[],
+					effectFunctions?: string[],
+					holdText?: string
+				}
 		}
-		export interface Attack extends Base, Results {
-			attribute: K4Attribute,
-			sourceItem: SourceDef,
+
+		interface ResultsData<ST extends K4ItemSubType = K4ItemSubType.activeRolled> {
+			results: ST extends K4ItemSubType.activeRolled
+			? Record<
+					K4ItemResultType,
+					{
+						result: string,
+						listRefs?: string[],
+						effectFunctions?: string[],
+						edges: posInt,
+						hold: posInt
+					}
+				> & {
+					listRefs?: string[]
+				}
+			: undefined
+		}
+
+		export interface Move<ST extends K4ItemSubType = K4ItemSubType> extends Base, CanSubItem, RulesData<K4ItemType.move>, ResultsData<ST> {
+			attribute: K4Attribute
+		}
+		export interface Attack extends Move<K4ItemSubType.activeRolled> {
 			range: RangeType[],
 			harm: posInt,
-			ammo: posInt,
+			ammo: posInt
 		}
-		export interface Advantage extends Base, Rules {
+		export interface Advantage extends Base, HasSubItems, RulesData<K4ItemType.advantage> {
 			attribute: K4Attribute,
 			currentHold: posInt,
 			currentEdges: posInt
 		}
-		export interface Disadvantage extends Base, Rules {
+		export interface Disadvantage extends Base, HasSubItems, RulesData<K4ItemType.disadvantage> {
 			attribute: K4Attribute,
 			currentHold: posInt
 		}
 
-		export interface DarkSecret extends Base, Rules {
+		export interface DarkSecret extends Base, RulesData<K4ItemType.darksecret> {
 			drive: string,
 			currentHold: posInt,
 			playerNotes: string,
@@ -132,7 +125,7 @@ declare global {
 			}
 		}
 
-		export interface Weapon<C extends WeaponClass, SC extends WeaponSubClass<C>> extends Base, Rules {
+		export interface Weapon<C extends WeaponClass, SC extends WeaponSubClass<C>> extends Base, HasSubItems<K4ItemSubType>, RulesData<K4ItemType.weapon> {
 			class: C,
 			subClass: SC,
 			ammo: {
@@ -142,23 +135,39 @@ declare global {
 			}
 		}
 
-		export interface Gear extends Base, Rules {
+		export interface Gear extends Base, RulesData {
 			armor: number
 		}
+	}
+
+	type K4ItemConstructorData<Type extends K4ItemType = K4ItemType> = {
+		name: string,
+		img: string,
+		type: K4ItemType,
+		data: (Type extends K4ItemType.move ? K4ItemDataSchema.Move
+			: Type extends K4ItemType.attack ? K4ItemDataSchema.Attack
+			: Type extends K4ItemType.advantage ? K4ItemDataSchema.Advantage
+			: Type extends K4ItemType.disadvantage ? K4ItemDataSchema.Disadvantage
+			: Type extends K4ItemType.darksecret ? K4ItemDataSchema.DarkSecret
+			: Type extends K4ItemType.weapon ? K4ItemDataSchema.Weapon
+			: Type extends K4ItemType.relation ? K4ItemDataSchema.Relation
+			: Type extends K4ItemType.gear ? K4ItemDataSchema.Gear
+			: never),
+
 	}
 
 	type K4ItemData<Type extends K4ItemType = K4ItemType> = {
 		name: string,
 		img: string,
 		type: K4ItemType,
-		data: (Type extends K4ItemType.move ? K4ItemDataDataSchema.Move
-		: Type extends K4ItemType.attack ? K4ItemDataDataSchema.Attack
-		: Type extends K4ItemType.advantage ? K4ItemDataDataSchema.Advantage
-		: Type extends K4ItemType.disadvantage ? K4ItemDataDataSchema.Disadvantage
-		: Type extends K4ItemType.darksecret ? K4ItemDataDataSchema.DarkSecret
-		: Type extends K4ItemType.weapon ? K4ItemDataDataSchema.Weapon
-		: Type extends K4ItemType.relation ? K4ItemDataDataSchema.Relation
-		: Type extends K4ItemType.gear ? K4ItemDataDataSchema.Gear
+		data: (Type extends K4ItemType.move ? K4ItemDataSchema.Move
+		: Type extends K4ItemType.attack ? K4ItemDataSchema.Attack
+		: Type extends K4ItemType.advantage ? K4ItemDataSchema.Advantage
+		: Type extends K4ItemType.disadvantage ? K4ItemDataSchema.Disadvantage
+		: Type extends K4ItemType.darksecret ? K4ItemDataSchema.DarkSecret
+		: Type extends K4ItemType.weapon ? K4ItemDataSchema.Weapon
+		: Type extends K4ItemType.relation ? K4ItemDataSchema.Relation
+		: Type extends K4ItemType.gear ? K4ItemDataSchema.Gear
 		: never),
 		folder: string,
 		_id: string | null,

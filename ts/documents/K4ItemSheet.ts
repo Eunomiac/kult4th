@@ -103,13 +103,13 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 	getListHTML(listKey: KeyOf<typeof this["data"]["lists"]> | "inlineAttacks"): string {
 		const listHTML: string[] = [];
 		if (this.data.lists[listKey]) {
-			const {name, items, intro} = this.data.lists[listKey] as ListDef;
+			const {name, items, intro} = this.data.lists[listKey];
 			listHTML.push(`<h2 class='list-name'>${name}</h2>`);
 			if (intro) {
 				listHTML.push(`<p>${intro}</p>`);
 			}
 			listHTML.push(`<ul class='list-${String(listKey)}'>`);
-			items.forEach((item) => {
+			items.forEach((item: string) => {
 				listHTML.push(`<li>${item}</li>`);
 			});
 			listHTML.push("</ul>");
@@ -127,16 +127,15 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 						: `${attack.data.range[0]}—${U.getLast(attack.data.range)}`
 					}]</span>`
 					: "",
-				attack.data.notes ? `<span class='attack-effect'>${attack.data.notes}</span>` : "",
 				"</span>"
 			].join("")).join("");
 		}
 		return "";
 	}
 	private get rulesListHTML(): string {
-		if (!this.data.rules.optionsLists?.length) { return "" }
+		if (!this.data.rules.listRefs?.length) { return "" }
 		const lists: string[] = [];
-		this.data.rules.optionsLists.forEach((listKey: string) => {
+		this.data.rules.listRefs.forEach((listKey: string) => {
 			if (!(new RegExp(`${listKey}%`)).test(this.data.rules.intro + this.data.rules.trigger + this.data.rules.outro)) {
 				lists.push(this.getListHTML(listKey));
 			}
@@ -148,7 +147,7 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 			const listHTML: string[] = [];
 			switch (resultType) {
 				case "staticSuccess": {
-					resultsData.staticSuccess.optionsLists.forEach((listKey: string) => {
+					resultsData.staticSuccess.listRefs.forEach((listKey: string) => {
 						listHTML.push(this.getListHTML(listKey))
 					})
 
@@ -181,27 +180,27 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 		}
 	} */
 
-	override async getData() {
+	// override async getData() {
 
-		// if (this.type === "move") {
-		const data = await super.getData();
-		const handlebarsData: {
-				rulesHTML: string
-			} = {
-				rulesHTML: [
-					"<div class='editor-content rules-text'>",
-					...[
-						this.parseHTMLString(data.data.data.rules.intro),
-						data.data.data.rules.trigger ? `<em class='text-trigger'>${this.parseHTMLString(data.data.data.rules.trigger)}</em>` : "",
-						[this.outroHTML].flat().join("<br><br><br>")
-					].map((str) => str.trim()).join(" "),
-					this.rulesListHTML,
-					"</div>"
-				].filter(Boolean).join("")
-			};
+	// 	// if (this.type === "move") {
+	// 	const data = await super.getData();
+	// 	const handlebarsData: {
+	// 			rulesHTML: string
+	// 		} = {
+	// 			rulesHTML: [
+	// 				"<div class='editor-content rules-text'>",
+	// 				...[
+	// 					this.parseHTMLString(data.data.data.rules.intro),
+	// 					data.data.data.rules.trigger ? `<em class='text-trigger'>${this.parseHTMLString(data.data.data.rules.trigger)}</em>` : "",
+	// 					[this.outroHTML].flat().join("<br><br><br>")
+	// 				].map((str) => str.trim()).join(" "),
+	// 				this.rulesListHTML,
+	// 				"</div>"
+	// 			].filter(Boolean).join("")
+	// 		};
 
-		return Object.assign(data, handlebarsData);
-	}
+	// 	return Object.assign(data, handlebarsData);
+	// }
 
 	override activateListeners(html: JQuery<HTMLElement>): void {
 

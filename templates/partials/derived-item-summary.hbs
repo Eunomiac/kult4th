@@ -1,0 +1,9 @@
+{{log "DERIVED ITEM" this}}
+
+{{#unless (areEmpty data.rules.intro data.rules.trigger data.rules.outro)}}
+<p class="rules-top">
+{{~#if data.rules.intro}}<span class="text-intro">{{{formatForKult data.rules.intro}}}</span>{{/if}}
+{{~#if data.rules.trigger}} <em class="text-trigger">{{{formatForKult data.rules.trigger}}}</em> {{/if}}
+{{~#if data.rules.outro}}<span class="text-outro">{{{formatForKult data.rules.outro}}}</span>{{/if}}
+</p>
+{{/unless}}

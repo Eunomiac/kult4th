@@ -1,0 +1,24 @@
+{{log this}}
+{{log "DATA" data}}
+
+<form class="{{cssClass}}" autocomplete="off">
+	<section class="sheet-content">
+		<header class="sheet-header">
+			<span class="header-bullet">•</span>
+			<span class="header-name">{{item.name}}</span>
+			<span class="header-filler"></span>
+			{{!-- <input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" /> --}}
+		</header>
+		<section class="tab-content">
+				{{#if item.data.data.rules.holdText}}
+				<span class="hold-header">This {{item.type}} grants Hold</span>
+				<span class="hold-body">{{item.data.data.rules.holdText}}</span>
+				{{/if}}
+			{{#each item.data.data.subItems as |subItem|}}
+			{{log "SUBITEM" subItem}}
+			{{log this}}
+			{{> "systems/kult4th/templates/partials/basic-move-card.hbs" subItem}}
+			{{/each}}
+		</section>
+	</section>
+</form>
