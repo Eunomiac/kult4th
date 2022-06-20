@@ -3,20 +3,45 @@ import U from "../scripts/utilities.js";
 import gsap, { GSDevTools } from "/scripts/greensock/esm/all.js";
 const ANIMATIONS = {
     hoverNav(target, context) {
+        const headerButtons = target.getElementsByClassName("header-button");
         return gsap
             .timeline({
             reversed: true
         }).to(target, {
             scale: 2,
             x: 50,
-            y: 50,
+            y: 100,
             duration: 0.5,
-            ease: "power2"
+            ease: "back"
         }, 0).to(U.getSiblings(target), {
             opacity: 0.75,
             filter: "blur(5px)",
             duration: 0.5,
             ease: "back"
+        }, 0).fromTo(headerButtons, {
+            scale: 1,
+            y: 50,
+            opacity: 1
+        }, {
+            scale: 0.75,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.2,
+            ease: "back.out(5)",
+            opacity: 1
+        }, 0);
+    },
+    hoverTab(target, context) {
+        return gsap
+            .timeline({
+            reversed: true
+        }).to(target, {
+            scale: 2,
+            background: "lime",
+            fontSize: 30,
+            color: "white",
+            duration: 1,
+            ease: "power2.in"
         }, 0);
     },
     hoverMove(target, context, isDerivedMove = true) {
@@ -82,7 +107,7 @@ export default class K4PCSheet extends ActorSheet {
         return mergeObject(super.defaultOptions, {
             classes: [C.SYSTEM_ID, "actor", "sheet"],
             tabs: [
-                { navSelector: ".tabButton", contentSelector: ".tab-section", initial: "Front" }
+                { navSelector: ".tabs", contentSelector: ".tab-content", initial: "front" }
             ]
         });
     }
@@ -91,6 +116,22 @@ export default class K4PCSheet extends ActorSheet {
     hoverTimeline;
     hoverTimelineTarget;
     devTools = GSDevTools;
+    async getData() {
+        const data = await super.getData();
+        data.actorData = data.data.data;
+        data.baseMoves = this.actor.basicMoves;
+        data.derivedMoves = this.actor.derivedMoves;
+        data.advantages = this.actor.advantages;
+        data.disadvantages = this.actor.disadvantages;
+        data.darksecrets = this.actor.darkSecrets;
+        data.relations = this.actor.relations;
+        data.weapons = this.actor.weapons;
+        data.gear = this.actor.gear;
+        data.attacks = this.actor.attacks;
+        data.attributes = this.actor.attributeData;
+        /*DEVCODE*/ console.log("Final Data", data); /*!DEVCODE*/
+        return data;
+    }
     activateListeners(html) {
         super.activateListeners(html);
         const self = this;
@@ -100,6 +141,15 @@ export default class K4PCSheet extends ActorSheet {
                 .each(function initNavPanel() {
                 gsap.set(this, { xPercent: -50, yPercent: -50 });
                 hoverTimelines.push([this, ANIMATIONS.hoverNav(this, html)]);
+            });
+            html.find(".nav-tab")
+                .each(function initNavTab() {
+                gsap.set(this, { xPercent: -50, yPercent: -50, opacity: 1 });
+                hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+            });
+            html.find(".nav-panel .header-button")
+                .each(function initHeaderButtons() {
+                gsap.set(this, { scale: 2, opacity: 0, y: 100 });
             });
             html.find(".basic-move-item")
                 .each(function addMoveHoverEvents() {
@@ -115,24 +165,10 @@ export default class K4PCSheet extends ActorSheet {
                     .on("mouseenter", () => anim.reversed(false))
                     .on("mouseleave", () => anim.reversed(true));
             });
+            html.find(".profile-image").on("dblclick", (event) => {
+                event.preventDefault();
+                console.log("DOUBLE-CLICKED!");
+            });
         });
-    }
-    async getData() {
-        const data = await super.getData();
-        console.log("Initial Data Pull", data);
-        console.log("K4PCSheet -> THIS", this);
-        data.actorData = data.data.data;
-        data.baseMoves = this.actor.basicMoves;
-        data.derivedMoves = this.actor.derivedMoves;
-        data.advantages = this.actor.advantages;
-        data.disadvantages = this.actor.disadvantages;
-        data.darksecrets = this.actor.darkSecrets;
-        data.relations = this.actor.relations;
-        data.weapons = this.actor.weapons;
-        data.gear = this.actor.gear;
-        data.attacks = this.actor.attacks;
-        data.attributes = this.actor.attributeData;
-        /*DEVCODE*/ console.log("Final Data", data); /*!DEVCODE*/
-        return data;
     }
 }

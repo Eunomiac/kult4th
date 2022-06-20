@@ -21,7 +21,7 @@
 
 	.window-header {
 		position: relative;
-		z-index: 30;
+		z-index: 6;
 		font-size: 0;
 		top: -20px;
 		overflow: visible;
@@ -70,6 +70,10 @@
 		.sheet-content {
 			height: 100%;
 			width: 100%;
+
+			.tab:not(.active) {
+				display: none !important;
+			}
 
 			.editor {
 				height: 100%;

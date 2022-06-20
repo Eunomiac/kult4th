@@ -1,5 +1,5 @@
 import EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs';
-import {ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
+import {ItemDataBaseProperties, ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
 import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
 import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item.js";
@@ -7,6 +7,10 @@ import K4ItemSheet from '../../../documents/K4ItemSheet';
 import { K4Attribute } from '../../../scripts/constants';
 
 declare global {
+
+	// interface K4ItemDataBaseProperties<Type extends K4ItemType> extends ItemDataBaseProperties {
+	// 	data:
+	// }
 
 	type WeaponSubClass<T extends K4WeaponClass> =
 		T extends K4WeaponClass.meleeUnarmed ? ("")
@@ -50,7 +54,7 @@ declare global {
 		interface CanSubItem {
 			sourceItem?: {
 				name: string,
-				id?: string,
+				id?: string | null,
 				type: K4ItemType
 			}
 		}
@@ -176,11 +180,6 @@ declare global {
 		permission: Record<string,0|1|2|3|undefined>,
 		flags: Record<string,any>
 	};
-
-	declare interface K4ItemSheet<Type extends K4ItemType> {
-
-	}
-
 
 	namespace K4Collection {
 		export type Item = EmbeddedCollection<ConstructorOf<K4Item>, ActorData>;

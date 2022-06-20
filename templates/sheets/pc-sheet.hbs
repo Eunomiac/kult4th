@@ -5,7 +5,16 @@
 	<section class="nav-panel">
 		<img class="img-border" src="../systems/kult4th/assets/layout/portrait-frame.webp" />
 		<img class="profile-image blur-background" src="{{actor.img}}" />
-		<img class="profile-image" src="{{actor.img}}" />
+		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
+		<nav class="tabs" data-group="primary">
+			<a class="nav-tab" data-tab="front">F</a>
+			<a class="nav-tab" data-tab="bio">B</a>
+			<a class="nav-tab" data-tab="assets">A</a>
+			<a class="nav-tab" data-tab="notes">N</a>
+			<a class="nav-tab" data-tab="advancement">A</a>
+  	</nav>
+		<a class="header-button close"><i class="fas fa-times"></i></a>
+		<a class="header-button minimize"><i class="fas fa-minus"></i></a>
 	</section>
 	<div class="bg-container">
 		<div class="sheet-border corner top-left"></div>
@@ -52,11 +61,9 @@
 				</section>
 				<section class="subsection special-moves">
 					<h1 class="subsection-header">Special Moves</h1>
-					<div class="editor">
-						<div class="editor-content">
-					{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
-						</div>
-					</div>
+					{{#each derivedMoves}}
+					{{> "systems/kult4th/templates/partials/basic-move-card.hbs"}}
+					{{/each}}
 				</section>
 				<section class="subsection session-checks">
 					<h1 class="subsection-header">Session Checks</h1>

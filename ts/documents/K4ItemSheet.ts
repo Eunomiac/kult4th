@@ -24,7 +24,7 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 	get type(): Type { return this.item.type as Type }
 	get data() { return this.item.data.data }
 	get subType() { return this.data.subType as K4ItemSubType }
-	get subItems() { return this.item.subItems }
+	get subItems() { return this.item.subItemData }
 	get moves() { return this.item.moves }
 	get attacks() { return this.item.attacks }
 

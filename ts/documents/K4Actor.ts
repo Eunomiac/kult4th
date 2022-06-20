@@ -41,8 +41,8 @@ export default class K4Actor<Type extends ActorType> extends Actor {
 	get gear() { return this.getItemsOfType(K4ItemType.gear) }
 	get relations() { return this.getItemsOfType(K4ItemType.relation) }
 
-	get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem) }
-	get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem)) }
+	get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem?.name) }
+	get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem?.name)) }
 
 	get attributeData() {
 		const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as Attribute.Any[];
@@ -59,11 +59,13 @@ export default class K4Actor<Type extends ActorType> extends Actor {
 			.map(([attrName, {value}]) => [attrName, value])) as Record<Attribute.Any, number>;
 	}
 
-	override async _onCreate(...args: [any,any,any]) {
-		await super._preCreate(...args);
-		if (this.type === "PC") {
+	override async _onCreate(...[actorData, ...args]: Parameters<Actor["_onCreate"]>) {
+		console.log("ACTOR ON CREATE", actorData, args);
+		await super._onCreate(actorData, ...args);
+		if (actorData.type === "PC") {
+			console.log("ACTOR TYPE OK", this);
 			// @ts-expect-error Fucking useless...
-			const itemData = Array.from(game.items as Array<K4Item<K4ItemType>>).filter((item: K4Item<K4ItemType>) => item.type === "move" && !item.data.data.sourceItem).map((item) => item.data);
+			const itemData = Array.from(game.items as Array<K4Item<K4ItemType>>).filter((item: K4Item<K4ItemType>) => item.type === "move" && !item.data.data.sourceItem.name).map((item) => item.data);
 			// @ts-expect-error Fucking useless...
 			this.createEmbeddedDocuments("Item", itemData);
 		}

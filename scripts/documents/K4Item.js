@@ -33,20 +33,36 @@ export var K4WeaponClass;
 })(K4WeaponClass || (K4WeaponClass = {}));
 export var K4ItemResultType;
 (function (K4ItemResultType) {
-    K4ItemResultType["staticSuccess"] = "staticSuccess";
     K4ItemResultType["completeSuccess"] = "completeSuccess";
     K4ItemResultType["partialSuccess"] = "partialSuccess";
     K4ItemResultType["failure"] = "failure";
 })(K4ItemResultType || (K4ItemResultType = {}));
 export default class K4Item extends Item {
     get type() { return super.type; }
-    get subItems() {
-        return this.data.data.subItems ?? [];
+    subItems;
+    get subItemData() {
+        if (this.hasSubItems) {
+            return this.data.data.subItems.map((subIData) => {
+                subIData.data.sourceItem = {
+                    ...subIData.data.sourceItem,
+                    id: this.id
+                };
+                return subIData;
+            });
+        }
+        return [];
     }
+    get hasSubItems() { return Boolean(this.data.data.subItems?.length); }
     get moves() {
-        return this.subItems.filter((iData) => iData.type === "move");
+        return this.subItemData.filter((iData) => iData.type === "move");
     }
     get attacks() {
-        return this.subItems.filter((iData) => iData.type === "attack");
+        return this.subItemData.filter((iData) => iData.type === "attack");
+    }
+    async _onCreate(...args) {
+        await super._onCreate(...args);
+        if (this.hasSubItems && this.isEmbedded && this.parent instanceof Actor) {
+            this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData);
+        }
     }
 }
