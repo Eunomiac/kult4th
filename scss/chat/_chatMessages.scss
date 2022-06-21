@@ -4,7 +4,7 @@
 	.message-header { }
 
 	.message-content {
-		.move-name:nth-child(2) {
+		.item-name:nth-child(2) {
 			background: linear-gradient(90deg, var(--black), var(--red) 35%, var(--red) 65%, var(--black));
 			line-height: 27px;
 			height: 24px;

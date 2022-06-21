@@ -19,15 +19,15 @@ const ANIMATIONS = {
             duration: 0.5,
             ease: "back"
         }, 0).fromTo(headerButtons, {
-            scale: 1,
-            y: 50,
-            opacity: 1
+            scale: 0.75,
+            y: 100,
+            opacity: 0
         }, {
             scale: 0.75,
             y: 0,
             duration: 0.5,
-            stagger: 0.2,
-            ease: "back.out(5)",
+            stagger: 0.1,
+            ease: "back.out(3)",
             opacity: 1
         }, 0);
     },
@@ -49,19 +49,19 @@ const ANIMATIONS = {
         const tl = gsap
             .timeline({
             reversed: true
-        }).to($(target).find(".move-icon"), {
+        }).to($(target).find(".item-icon"), {
             width: "100%",
             borderRadius: 0,
             duration: 0.75,
             backgroundColor: C.Colors["GOLD +1"],
             ease: "sine"
-        }).fromTo($(target).find(".move-text"), {
+        }).fromTo($(target).find(".item-text"), {
             x: 0,
             width: "auto",
             color: C.Colors.GOLD,
             textShadow: 0
         }, {
-            x: -(parseInt(`${gsap.getProperty($(target).find(".move-text")[0], "width")}`)) - 40,
+            x: -(parseInt(`${gsap.getProperty($(target).find(".item-text")[0], "width")}`)) - 40,
             width: 0,
             color: C.Colors.BLACK,
             textShadow: [
@@ -71,7 +71,7 @@ const ANIMATIONS = {
             ].join(", "),
             duration: 0.75,
             ease: "back"
-        }, 0).set($(target).find(".move-text"), { opacity: 0 }, 0.01).to($(target).find(".move-text"), {
+        }, 0).set($(target).find(".item-text"), { opacity: 0 }, 0.01).to($(target).find(".item-text"), {
             opacity: 1,
             duration: 0.75,
             ease: "sine"
@@ -135,23 +135,106 @@ export default class K4PCSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
         const self = this;
+        const positionKeys = [
+            "maxX",
+            "maxY",
+            "posX",
+            "posY",
+            "percentX",
+            "percentY",
+            "rotX",
+            "rotY"
+        ];
+        if (!$("#position-display")[0]) {
+            $("body").append([
+                "<div id='position-display'>",
+                ...positionKeys.map((key) => [
+                    "<div class='position-entry'>",
+                    `<label>${key}:</label>`,
+                    `<span id="${key}" class='position-value'></span>`,
+                    "</div>"
+                ].join("\n")),
+                "</div>"
+            ].join("\n"));
+        }
+        const positionDisplays = Object.fromEntries(positionKeys.map((key) => [key, $(`#${key}`)]));
+        function updateDisplay(key, data) {
+            positionDisplays[key]?.text(String(U.pFloat(data, 3)));
+        }
         $(() => {
+            console.log("SHEET HTML OBJECT", html);
             const hoverTimelines = [];
             html.find(".nav-panel")
                 .each(function initNavPanel() {
-                gsap.set(this, { xPercent: -50, yPercent: -50 });
-                hoverTimelines.push([this, ANIMATIONS.hoverNav(this, html)]);
+                const [navPanel] = $(this);
+                gsap.set(navPanel, {
+                    xPercent: -50,
+                    yPercent: -50,
+                    transformPerspective: 1000,
+                    perspective: 600,
+                    transformStyle: "preserve-3d"
+                });
+                hoverTimelines.push([navPanel, ANIMATIONS.hoverNav(navPanel, html)]);
+                $(navPanel)
+                    .on("mouseenter", () => $(this).data({ isHovered: true }))
+                    .on("mouseleave", () => $(this).data({ isHovered: false }));
+                $(document).on("mousemove", (pos) => {
+                    if ($(navPanel).data("isHovered")) {
+                        const maxX = $(navPanel).width() ?? 0;
+                        const maxY = $(navPanel).height() ?? 0;
+                        updateDisplay("maxX", maxX);
+                        updateDisplay("maxY", maxY);
+                        if (!maxX || !maxY) {
+                            return;
+                        }
+                        const posX = pos.offsetX;
+                        const posY = pos.offsetY;
+                        updateDisplay("posX", posX);
+                        updateDisplay("posY", posY);
+                        const percentX = (100 / (maxX / posX)) - 50;
+                        const percentY = (100 / (maxY / posY)) - 50;
+                        updateDisplay("percentX", percentX);
+                        updateDisplay("percentY", percentY);
+                        const maxRotX = 25;
+                        const maxRotY = 25;
+                        const rotX = (maxRotY / 100) * percentY;
+                        const rotY = (-maxRotX / 100) * percentX;
+                        updateDisplay("rotX", rotX);
+                        updateDisplay("rotY", rotY);
+                        gsap.to(navPanel, {
+                            rotationX: rotX,
+                            rotationY: rotY,
+                            ease: "back.out",
+                            duration: 0.5
+                        });
+                    }
+                    else {
+                        gsap.to(navPanel, {
+                            rotationX: 0,
+                            rotationY: 0,
+                            duration: 2,
+                            ease: "power3.out"
+                        });
+                    }
+                });
             });
             html.find(".nav-tab")
                 .each(function initNavTab() {
                 gsap.set(this, { xPercent: -50, yPercent: -50, opacity: 1 });
                 hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
             });
-            html.find(".nav-panel .header-button")
-                .each(function initHeaderButtons() {
-                gsap.set(this, { scale: 2, opacity: 0, y: 100 });
+            // html.find(".nav-panel .header-button")
+            // 	.each(function initHeaderButtons() {
+            // 		gsap.set(this, {scale: 2, opacity: 0, y: 100});
+            // 	});
+            html.find(".item-button[data-action=\"edit\"]")
+                .each(function addItemEditEvents() {
+                const iName = $(this).attr("data-move");
+                if (iName) {
+                    $(this).on("click", () => self.actor.getItemByName(iName)?.sheet?.render(true));
+                }
             });
-            html.find(".basic-move-item")
+            html.find(".basic-move-item, .derived-move-item")
                 .each(function addMoveHoverEvents() {
                 if (!self.hoverTimeline) {
                     self.hoverTimeline = ANIMATIONS.hoverMove(this, html, false);
@@ -164,10 +247,6 @@ export default class K4PCSheet extends ActorSheet {
                 $(target)
                     .on("mouseenter", () => anim.reversed(false))
                     .on("mouseleave", () => anim.reversed(true));
-            });
-            html.find(".profile-image").on("dblclick", (event) => {
-                event.preventDefault();
-                console.log("DOUBLE-CLICKED!");
             });
         });
     }

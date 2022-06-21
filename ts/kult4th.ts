@@ -44,6 +44,12 @@ Hooks.once("init", () => {
 		/*DEVCODE*/"systems/kult4th/templates/debug/template-entry.hbs",/*!DEVCODE*/
 
 		"systems/kult4th/templates/partials/basic-move-card.hbs",
+		"systems/kult4th/templates/partials/derived-move-card.hbs",
+		"systems/kult4th/templates/partials/attack-card.hbs",
+		"systems/kult4th/templates/partials/advantage-card.hbs",
+		"systems/kult4th/templates/partials/disadvantage-card.hbs",
+		"systems/kult4th/templates/partials/dark-secret-card.hbs",
+		"systems/kult4th/templates/partials/relation-card.hbs",
 		"systems/kult4th/templates/partials/attribute-box.hbs",
 		"systems/kult4th/templates/partials/roll-result-entry.hbs",
 		"systems/kult4th/templates/partials/derived-item-summary.hbs"
@@ -372,13 +378,6 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", async () => {
-	const isResetting = true;
-	if (isResetting) {
-		// console.clear();
-		// @ts-expect-error They fucked up
-		resetItems();
-	}
-
 	// #region ████████ TinyMCE Config: Configuring TinyMCE Instances with Custom Styles ████████ ~
 	// CONFIG.TinyMCE.plugins += " searchreplace preview template";
 	// CONFIG.TinyMCE.toolbar += " | searchreplace template";

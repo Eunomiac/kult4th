@@ -2,14 +2,13 @@
 {{log "DATA" data}}
 
 <form class="{{cssClass}}" autocomplete="off">
-	<section class="sheet-content">
 		<header class="sheet-header">
 			<span class="header-bullet">•</span>
 			<span class="header-name">{{item.name}}</span>
 			<span class="header-filler"></span>
 			{{!-- <input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" /> --}}
 		</header>
-		<section class="tab-content">
+		<main class="tab-content">
 				<div class="rules-text">
 					{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
 					<p class="rules-top">
@@ -25,10 +24,6 @@
 					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(9—14)" result=data.data.results.partialSuccess.result}}
 					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
 					</p>
-					{{else}}{{~#if (test data.data.subType "==" "active-static")}}
-					<p class="results-summary">
-					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-static" result=data.data.results.staticSuccess.result}}
-					</p>{{/if}}
 					{{/if}}
 
 					{{~#if data.data.rules.listRefs}}
@@ -57,6 +52,5 @@
 					{{/if}}
 					{{~#if data.data.rules.suffix}}<span class="text-outro">{{{formatForKult data.data.rules.suffix}}}</span>{{/if}}
 				</div>
-		</section>
-	</section>
+		</main>
 </form>

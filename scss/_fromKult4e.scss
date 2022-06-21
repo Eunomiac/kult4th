@@ -51,11 +51,11 @@ float: right;
     border-top-right-radius: 4px;
 }
 
-.move-info input{
+.item-info input{
     width: 30px;
    }
 
-.move-info a{
+.item-info a{
     vertical-align: middle
 }
 
@@ -73,7 +73,7 @@ table{
     padding-bottom: 10px;
 }
 
-.move-card{
+.item-card{
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 1px;
@@ -92,7 +92,7 @@ table{
     float: right;
 }
 
-.bottom-section .move-list{
+.bottom-section .item-list{
     column-count: 3;}
 
 .bottom-section{
@@ -156,7 +156,7 @@ div.right-middle-column{
     font-size: x-large;
 }
 
-.move-name{
+.item-name{
     background-color: var(--black);
     color: #9b201f;
     text-align: center;
@@ -220,12 +220,12 @@ div.right-middle-column{
       height: 100%;
   }
 
-  .move-card-text{
+  .item-card-text{
       padding-left: 3px;
       vertical-align: middle;
   }
 
-  .move-card img{
+  .item-card img{
       vertical-align: middle;
       height: 15px;
       width: 15px

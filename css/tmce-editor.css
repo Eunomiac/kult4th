@@ -139,6 +139,8 @@
     color: var(--blue-bright);
     font-weight: bold;
     font-style: italic; }
+  #tinymce .edge-name {
+    font-weight: 900; }
   #tinymce .text-trigger {
     color: var(--gold-brightest); }
   #tinymce .text-extra-bold {

@@ -27,6 +27,9 @@ export default class K4Actor extends Actor {
     getItemsOfType(type) {
         return this.items.filter((item) => item.type === type);
     }
+    getItemByName(iName) {
+        return this.items.find((item) => item.name === iName);
+    }
     get moves() { return this.getItemsOfType(K4ItemType.move); }
     get attacks() { return this.getItemsOfType(K4ItemType.attack); }
     get advantages() { return this.getItemsOfType(K4ItemType.advantage); }

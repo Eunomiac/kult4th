@@ -82,7 +82,7 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You discover what you're looking for, and may also choose one option:",
+                                        result: "You discover what you're looking for, and may also choose one option: %list:options%",
                                         listRefs: [
                                             "options"
                                         ]

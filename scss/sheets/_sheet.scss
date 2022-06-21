@@ -1,7 +1,19 @@
 & {
+	--sheet-min-height: 0px;
+	--sheet-min-width: 0px;
+
+	--sheet-top-padding: 0px;
+	--sheet-horiz-padding: 0px;
+	--sheet-bottom-padding: 0px;
+
+	--sheet-header-height: 60px;
+
+	min-width: var(--sheet-min-width);
+	min-height: var(--sheet-min-height);
 	background: none;
 	overflow: visible;
 	filter: drop-shadow(25px 25px 15px rgba(0, 0, 0, 0.8));
+	margin: 0;
 
 	select,
 	input,
@@ -20,14 +32,25 @@
 	}
 
 	.window-header {
-		position: relative;
 		z-index: 6;
 		font-size: 0;
-		top: -20px;
+		max-height: 20px;
 		overflow: visible;
 		border: none;
+		padding: 0;
+
+		.window-title { display: none }
 
 		.header-button {
+			position: absolute;
+			right: -40px;
+
+			&:nth-of-type(1) { top: 75px }
+			&:nth-of-type(2) { top: 100px }
+			&:nth-of-type(3) { top: 125px }
+			&:nth-of-type(4) { top: 150px }
+			&:nth-of-type(5) { top: 175px }
+			&:nth-of-type(6) { top: 200px }
 
 			i {
 				font-size: 16px;
@@ -42,14 +65,7 @@
 				color: var(--gold);
 			}
 
-			&.close {
-				margin-top: -3px;
-
-				i {
-					color: var(--red-glow);
-					font-size: 24px;
-				}
-			}
+			&.close { display: none }
 		}
 	}
 
@@ -61,151 +77,176 @@
 		padding: 0;
 		background: none;
 
+		form {
+			--border-color: var(--gold);
+			height: 100%;
+			width: 100%;
+			overflow: visible;
+
+			display: grid;
+			position: relative;
+			padding: 0 var(--sheet-horiz-padding) var(--sheet-bottom-padding);
+			grid-template-areas:
+				"header"
+				"main";
+			grid-template-rows: var(--sheet-header-height) 1fr;
+			grid-template-columns: 1fr;
+
+			header {
+				grid-area: header;
+				height: 100%;
+				overflow: hidden;
+				z-index: 3;
+
+			}
+			main { grid-area: main }
+
+			> * {
+				position: relative;
+				z-index: 2;
+			}
+		}
+
 		h1, h2, h3, h4 {
 			font-family: var(--font-body);
 			font-weight: 900;
 			border: none;
 		}
 
-		.sheet-content {
+		.tab:not(.active) {
+			display: none !important;
+		}
+
+		.editor {
 			height: 100%;
-			width: 100%;
-
-			.tab:not(.active) {
-				display: none !important;
+			.editor-content { @import '../tinymce/tinymce' }
+			.tox.tox-tinymce .tox-editor-container .tox-editor-header {
+				transform-origin: top left;
+				transform: scale(0.75);
+				width: calc(100% / 0.75);
 			}
+		}
 
-			.editor {
-				height: 100%;
-				.editor-content { @import '../tinymce/tinymce' }
-				.tox.tox-tinymce .tox-editor-container .tox-editor-header {
-					transform-origin: top left;
-					transform: scale(0.75);
-					width: calc(100% / 0.75);
-				}
-			}
+		.item-card {
+			--border-width: 1px;
+			--icon-size: 28px;
+			--icon-margin: calc((30px - var(--icon-size)) / 2);
+			position: relative;
+			height: 30px;
+			white-space: nowrap;
 
-			.basic-move-item {
-				--border-width: 1px;
-				--icon-size: 28px;
-				--icon-margin: calc((30px - var(--icon-size)) / 2);
+			.item-icon {
 				position: relative;
-				height: 30px;
+				display: inline-block;
+				background-position: center center;
+				background-repeat: no-repeat;
+				vertical-align: top;
+				height: var(--icon-size);
+				width: var(--icon-size);
+				margin: var(--icon-margin);
+				transform-origin: center center;
+				box-sizing: border-box;
+				border: var(--border-width) solid var(--gold);
+				overflow: hidden;
 				white-space: nowrap;
+				z-index: 1;
+				font-size: 0;
 
-				.move-icon {
+				img {
+					height: calc(var(--icon-size) + 2px);
+					max-width: unset;
+					position: relative;
+					top: calc(-1 * var(--border-width) - 1px);
+					margin-bottom: calc(-1 * var(--border-width) - 1px);
+					left: calc(-1 * var(--border-width) - 1px);
+					margin-right: calc(-1 * var(--border-width) - 1px);
+				}
+
+				.item-button {
+					font-family: var(--font-body);
 					position: relative;
 					display: inline-block;
-					background-position: center center;
-					background-repeat: no-repeat;
+					height: 100%;
+					width: calc((100% - var(--icon-size)) / 4);
+					font-weight: 700;
+					line-height: 28px;
+					font-size: 11px;
+					text-align: center;
+					text-shadow: 0 0 var(--black);
 					vertical-align: top;
-					height: var(--icon-size);
-					width: var(--icon-size);
-					margin: var(--icon-margin);
-					transform-origin: center center;
-					box-sizing: border-box;
-					border: var(--border-width) solid var(--gold);
-					overflow: hidden;
-					white-space: nowrap;
-					z-index: 1;
-					font-size: 0;
+				}
+
+				&.active-move {
+					border-radius: calc(var(--icon-size) / 2);
+					background: var(--gold);
 
 					img {
-						height: calc(var(--icon-size) + 2px);
-						max-width: unset;
-						position: relative;
-						top: calc(-1 * var(--border-width) - 1px);
-						margin-bottom: calc(-1 * var(--border-width) - 1px);
-						left: calc(-1 * var(--border-width) - 1px);
-						margin-right: calc(-1 * var(--border-width) - 1px);
+						filter: invert(1);
 					}
 
-					.move-button {
-						font-family: var(--font-body);
-						position: relative;
-						display: inline-block;
-						height: 100%;
-						width: calc((100% - var(--icon-size)) / 4);
-						font-weight: 700;
-						line-height: 28px;
-						font-size: 11px;
-						text-align: center;
-						text-shadow: 0 0 var(--black);
-						vertical-align: top;
-					}
-
-					&.active-move {
-						border-radius: calc(var(--icon-size) / 2);
-						background: var(--gold);
-
-						img {
-							filter: invert(1);
-						}
-
-						.move-button {
-							background: linear-gradient(90deg, var(--black) 15%, var(--gold) 15%, var(--gold) 85%, var(--black) 85%);
-						}
-					}
-
-					&.passive-move {
-
+					.item-button {
+						background: linear-gradient(90deg, var(--black) 15%, var(--gold) 15%, var(--gold) 85%, var(--black) 85%);
 					}
 				}
 
-				.move-name {
-					position: absolute;
-					display: inline-block;
-					width: 100%;
-					height: 30px;
-					left: 0;
+				&.passive-move {
 
-					.move-bg {
-						position: absolute;
-						z-index: 0;
-						height: 20px;
-						width: calc(100% - 10px);
-						top: calc((var(--icon-size) - 20px) / 2);
-						left: 10px;
-						background: var(--black);
-						display: block;
-						border-bottom: 1px solid var(--gold);
-					}
-
-					.move-text {
-						position: absolute;
-						font-family: var(--font-body);
-						font-size: 14px;
-						color: var(--gold);
-						line-height: 22px;
-						font-weight: 700;
-						height: 20px;
-						top: calc((var(--icon-size) - 20px) / 2);
-						left: calc(var(--icon-size) + 5px);
-						z-index: 5;
-						white-space: nowrap;
-					}
 				}
+			}
 
-				.trigger-tooltip {
-					pointer-events: none;
+			.item-name {
+				position: absolute;
+				display: inline-block;
+				width: 100%;
+				height: 30px;
+				left: 0;
+
+				.item-bg {
 					position: absolute;
-					display: block;
-					font-family: var(--font-body);
-					font-size: 10px;
-					text-align: center;
-					font-style: italic;
-					width: 100%;
-					color: var(--white);
-					opacity: 0;
-					bottom: 0;
-					left: 0;
-					z-index: 20;
-					white-space: break-spaces;
-
-					padding: 4px;
+					z-index: 0;
+					height: 20px;
+					width: calc(100% - 10px);
+					top: calc((var(--icon-size) - 20px) / 2);
+					left: 10px;
 					background: var(--black);
-					border-radius: 20px;
+					display: block;
+					border-bottom: 1px solid var(--gold);
 				}
+
+				.item-text {
+					position: absolute;
+					font-family: var(--font-body);
+					font-size: 14px;
+					color: var(--gold);
+					line-height: 22px;
+					font-weight: 700;
+					height: 20px;
+					top: calc((var(--icon-size) - 20px) / 2);
+					left: calc(var(--icon-size) + 5px);
+					z-index: 5;
+					white-space: nowrap;
+				}
+			}
+
+			.trigger-tooltip {
+				pointer-events: none;
+				position: absolute;
+				display: block;
+				font-family: var(--font-body);
+				font-size: 10px;
+				text-align: center;
+				font-style: italic;
+				width: 100%;
+				color: var(--white);
+				opacity: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 20;
+				white-space: break-spaces;
+
+				padding: 4px;
+				background: var(--black);
+				border-radius: 20px;
 			}
 		}
 
@@ -216,7 +257,6 @@
 		z-index: 4;
 		width: 50px;
 		height: 50px;
-		top: -25px;
 		right: -25px;
 		position: relative;
 		align-self: flex-end;

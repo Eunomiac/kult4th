@@ -2,53 +2,51 @@
 {{log "DATA" data}}
 
 <form class="{{cssClass}}" autocomplete="off">
-	<section class="sheet-content">
-		<header class="sheet-header">
-			<span class="header-bullet">•</span>
-			<span class="header-name">{{item.name}}</span>
-			<span class="header-filler"></span>
-			{{!-- <input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" /> --}}
-		</header>
-		<section class="tab-content">
-			<div class="rules-text">
-				{{#unless (areEmpty item.data.data.rules.intro item.data.data.rules.trigger item.data.data.rules.outro)}}
-				<p class="rules-top">
-				{{~#if item.data.data.rules.intro}}<span class="text-intro">{{{formatForKult item.data.data.rules.intro}}}</span>{{/if}}
-				{{~#if item.data.data.rules.trigger}} <em class="text-trigger">{{{formatForKult item.data.data.rules.trigger}}}</em> {{/if}}
-				{{~#if item.data.data.rules.outro}}<span class="text-outro">{{{formatForKult item.data.data.rules.outro}}}</span>{{/if}}
-				</p>
-				{{/unless}}
+	<header class="sheet-header">
+		<span class="header-bullet">•</span>
+		<span class="header-name">{{item.name}}</span>
+		<span class="header-filler"></span>
+		{{!-- <input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" /> --}}
+	</header>
+	<main class="tab-content">
+		<div class="rules-text">
+			{{#unless (areEmpty item.data.data.rules.intro item.data.data.rules.trigger item.data.data.rules.outro)}}
+			<p class="rules-top">
+			{{~#if item.data.data.rules.intro}}<span class="text-intro">{{{formatForKult item.data.data.rules.intro}}}</span>{{/if}}
+			{{~#if item.data.data.rules.trigger}} <em class="text-trigger">{{{formatForKult item.data.data.rules.trigger}}}</em> {{/if}}
+			{{~#if item.data.data.rules.outro}}<span class="text-outro">{{{formatForKult item.data.data.rules.outro}}}</span>{{/if}}
+			</p>
+			{{/unless}}
 
-				{{#each item.data.data.subItems as |subItem|}}
-				{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subItem}}
-				{{/each}}
+			{{#each item.data.data.subItems as |subItem|}}
+			{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subItem}}
+			{{/each}}
 
-				{{~#if item.data.data.rules.listRefs}}
-					{{~#with item.data.data.lists as |LISTS|}}
-					{{~#each ../item.data.data.rules.listRefs as |listKey|}}
-						{{~#with (lookup LISTS listKey) as |listData|}}
-						{{#if (test listKey "==" "edges")}}
-						<span class="edges-header">This {{case "title" ../../../item.data.type}} grants Edges:</span>
-						{{else}}
-						<h2 class="list-name">{{listData.name}}</h2>
-						{{/if}}
-						{{~#if listData.intro}}<span class="list-intro">{{{formatForKult listData.intro}}}</span>{{/if}}
-						<ul class="rules-list list-{{listKey}}">
-							{{#each listData.items as |item|}}
-							<li>{{{formatForKult item}}}</li>
-							{{/each}}
-						</ul>
-						{{/with}}
-					{{/each}}
+			{{~#if item.data.data.rules.listRefs}}
+				{{~#with item.data.data.lists as |LISTS|}}
+				{{~#each ../item.data.data.rules.listRefs as |listKey|}}
+					{{~#with (lookup LISTS listKey) as |listData|}}
+					{{#if (test listKey "==" "edges")}}
+					<span class="edges-header">This {{case "title" ../../../item.data.type}} grants Edges:</span>
+					{{else}}
+					<h2 class="list-name">{{listData.name}}</h2>
+					{{/if}}
+					{{~#if listData.intro}}<span class="list-intro">{{{formatForKult listData.intro}}}</span>{{/if}}
+					<ul class="rules-list list-{{listKey}}">
+						{{#each listData.items as |item|}}
+						<li>{{{formatForKult item}}}</li>
+						{{/each}}
+					</ul>
 					{{/with}}
-				{{/if}}
-
-			{{#if item.data.data.rules.holdText}}
-			<span class="hold-header">This {{case "title" item.data.type}} grants Hold</span>
-			<span class="hold-body">{{item.data.data.rules.holdText}}</span>
+				{{/each}}
+				{{/with}}
 			{{/if}}
-			</div>
 
-		</section>
-	</section>
+		{{#if item.data.data.rules.holdText}}
+		<span class="hold-header">This {{case "title" item.data.type}} grants Hold</span>
+		<span class="hold-body">{{item.data.data.rules.holdText}}</span>
+		{{/if}}
+		</div>
+
+	</main>
 </form>

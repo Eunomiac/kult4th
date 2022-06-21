@@ -2,6 +2,22 @@
 @import 'globals/functions';
 @import 'globals/typography';
 
+#position-display {
+	height: 200px;
+	width: 200px;
+	position: absolute;
+	color: lime;
+	left: 100px;
+	top: 100px;
+	background: rgba(0, 100, 0, 0.2);
+	padding: 10px;
+	border:  3px solid lime;
+	border-radius: 20px;
+	line-height: 22px;
+
+	display: none;
+}
+
 .vtt.game.system-kult4th {
 
 	.app.window-app {
