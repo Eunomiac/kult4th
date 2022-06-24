@@ -4,9 +4,14 @@
 			"PC",
 			"NPC"
 		],
+		"templates": {
+			"base": {
+				"description": ""
+			}
+		},
 		"PC": {
+			"templates": ["base"],
 			"archetype": "",
-			"description": "",
 			"history": "",
 			"dramaticHooks": [
 				{
@@ -19,56 +24,16 @@
 				}
 			],
 			"attributes": {
-				"willpower": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"fortitude": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"reflexes": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"reason": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"intuition": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"perception": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"coolness": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"violence": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"charisma": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				},
-				"soul": {
-					"min": -5,
-					"max": 7,
-					"value": 0
-				}
+				"willpower": 0,
+				"fortitude": 0,
+				"reflexes": 0,
+				"reason": 0,
+				"intuition": 0,
+				"perception": 0,
+				"coolness": 0,
+				"violence": 0,
+				"charisma": 0,
+				"soul": 0
 			},
 			"wounds": [],
 			"penalties": {
@@ -82,11 +47,36 @@
 				"value": 0
 			},
 			"edges": {
+				"sourceId": "",
 				"sourceName": "",
 				"value": 0
 			}
 		},
-		"NPC": {}
+		"NPC": {
+			"templates": ["base"],
+			"homeDimension": "",
+			"creatureType": "",
+			"higherPower": "",
+			"abilities": {},
+			"attributes": {
+				"combat": 0,
+				"influence": 0,
+				"magic": 0,
+				"harm": 0
+			},
+			"uniqueMoves": {
+				"combat": {},
+				"influence": {},
+				"magic": {},
+				"harm": {}
+			},
+			"uniqueAttacks": {},
+			"wounds": {
+				"min": 0,
+				"max": 10,
+				"value": 0
+			}
+		}
 	},
 	"Item": {
 		"types": [
@@ -183,12 +173,12 @@
 		},
 		"relation": {
 			"templates": ["base"],
-			"target": "",
-			"strength": {
-				"min": 0,
-				"max": 2,
-				"value": 0
-			}
+			"target": {
+				"name": "",
+				"id": "",
+				"isPlayer": false
+			},
+			"strength": 0
 		},
 		"weapon": {
 			"templates": ["base", "hasSubItems", "rulesData"],

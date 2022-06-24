@@ -1,34 +1,16 @@
-import K4Item, {K4ItemType} from "./K4Item.js";
+import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
 
-export enum ActorType {
-	pc = "pc",
-	npc = "npc"
+
+export default class K4Actor extends Actor {
+	override get items() { return super.data.items }
+	//           ^                        ^-- "Propety 'data' does not exist on type 'Actor'."
+	//           └-- "This member cannot have an 'override' modifier because it is not
+	//												declared in the base class 'Actor'."
 }
-console.log("test");
-// EmbeddedCollection<K4Item<K4ItemType>, ActorData>
-export default class K4Actor<Type extends ActorType> extends Actor {
-	declare data: K4ActorData<Type>;
-	override get items() { return super.items as EmbeddedCollection<typeof K4Item, ActorData> }
 
-	// override prepareData() {
-	// 	super.prepareData();
-	// 	this.data.data.moves = {};
-	// 	this.items.filter((item) => item.type === "move")
-	// 		.forEach((move) => {
-	// 			this.data.data.moves[move.koFlags.linkType ?? "basic"] = this.data.data.moves[move.koFlags.linkType ?? "basic"] ?? [];
-	// 			this.data.data.moves[move.koFlags.linkType ?? "basic"].push(move);
-	// 		});
-	// 	const data = this.data as ActorData;
-	// 	const actorData = data.data;
-	// 	if (this.koFlags.archetype) {
-	// 		this.data.data.archetypeAdvantages = this.getAvailableAdvantages();
-	// 	}
-	// }
-
-	getItemsOfType<T extends K4ItemType>(type: T): Array<K4Item<T>> {
+	/* getItemsOfType<T extends K4ItemType>(type: T): Array<K4Item<T>> {
 		return this.items.filter((item: K4Item<K4ItemType>): item is K4Item<T> => item.type === type);
 	}
 
@@ -48,15 +30,17 @@ export default class K4Actor<Type extends ActorType> extends Actor {
 	get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem?.name) }
 	get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem?.name)) }
 
+	get game() { return game }
+
 	get attributeData() {
 		const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as Attribute.Any[];
 		return attrList.map((attrName) => ({
 			name: U.tCase(attrName),
 			key: attrName,
-			min: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].min,
-			max: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].max,
-			value: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].value
-		})) as Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
+			min: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].min,
+			max: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].max,
+			value: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].value
+		})) as Array<{name: Capitalize<keyof typeof K4Attribute>, key: Attribute.Any, min: number, max: number, value: number}>;
 	}
 	get attributes() {
 		return Object.fromEntries(Object.entries(this.attributeData)
@@ -64,20 +48,31 @@ export default class K4Actor<Type extends ActorType> extends Actor {
 	}
 
 	override async _onCreate(...[actorData, ...args]: Parameters<Actor["_onCreate"]>) {
-		console.log("ACTOR ON CREATE", actorData, args);
 		await super._onCreate(actorData, ...args);
-		if (actorData.type === "PC") {
-			console.log("ACTOR TYPE OK", this);
-			// @ts-expect-error Fucking useless...
-			const itemData = Array.from(game.items as Array<K4Item<K4ItemType>>).filter((item: K4Item<K4ItemType>) => item.type === "move" && !item.data.data.sourceItem.name).map((item) => item.data);
+		if (actorData.type === K4ActorType.PC) {
+
+			// TypeScript Error: "Property 'items' does not exist on type '{} | Game'."
+			const itemData: K4ItemData[] = Array.from(game.folders as K4Item[])
+				.filter((item) => item.type === K4ItemType.move
+					&& !item.data.data.sourceItem.name)
+				.map((item) => item.data);
+
+
+
 			// @ts-expect-error Fucking useless...
 			this.createEmbeddedDocuments("Item", itemData);
 		}
-	}
+	} */
+}
+
+declare global {
+  interface DocumentClassConfig {
+    Actor: typeof K4Actor;
+  }
 }
 
 // class K4Item<Type extends K4ItemType> extends Item {
-// 	declare data: K4ItemData<Type>;
+// 	declare data: K4ItemDataSource.Any;
 // 	override get type(): Type { return super.type as Type }
 // }
 

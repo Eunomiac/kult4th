@@ -1,12 +1,6 @@
-// class ItemSheet<
-// 	Options extends ItemSheet.Options = ItemSheet.Options,
-// 	Data extends object = ItemSheet.Data<Options>
-// 	> extends DocumentSheet<Options, Data, InstanceType<ConfiguredDocumentClass<typeof Item>>> {
-import K4Item, {K4ItemSubType, K4ItemType} from "./K4Item.js";
 import U from "../scripts/utilities.js";
 import C from "../scripts/constants.js";
-import {ToObjectFalseType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
-import {stringify} from "querystring";
+import K4Item, {K4ItemSubType, K4ItemType} from "./K4Item.js";
 
 type K4ItemSheetOptions = DocumentSheetOptions & {
 	testing: true
@@ -28,14 +22,14 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 	get moves() { return this.item.moves }
 	get attacks() { return this.item.attacks }
 
-	isMove(): this is K4ItemSheet<K4ItemType.move> { return this.type === "move" }
-	isAttack(): this is K4ItemSheet<K4ItemType.attack> { return this.type === "attack" }
-	isAdvantage(): this is K4ItemSheet<K4ItemType.advantage> { return this.type === "advantage" }
-	isDisadvantage(): this is K4ItemSheet<K4ItemType.disadvantage> { return this.type === "disadvantage" }
-	isDarkSecret(): this is K4ItemSheet<K4ItemType.darksecret> { return this.type === "darksecret" }
-	isRelation(): this is K4ItemSheet<K4ItemType.relation> { return this.type === "relation" }
-	isWeapon(): this is K4ItemSheet<K4ItemType.weapon> { return this.type === "weapon" }
-	isGear(): this is K4ItemSheet<K4ItemType.gear> { return this.type === "gear" }
+	// isMove(): this is K4ItemSheet<K4ItemType.move> { return this.type === "move" }
+	// isAttack(): this is K4ItemSheet<K4ItemType.attack> { return this.type === "attack" }
+	// isAdvantage(): this is K4ItemSheet<K4ItemType.advantage> { return this.type === "advantage" }
+	// isDisadvantage(): this is K4ItemSheet<K4ItemType.disadvantage> { return this.type === "disadvantage" }
+	// isDarkSecret(): this is K4ItemSheet<K4ItemType.darksecret> { return this.type === "darksecret" }
+	// isRelation(): this is K4ItemSheet<K4ItemType.relation> { return this.type === "relation" }
+	// isWeapon(): this is K4ItemSheet<K4ItemType.weapon> { return this.type === "weapon" }
+	// isGear(): this is K4ItemSheet<K4ItemType.gear> { return this.type === "gear" }
 
 	parseHTMLString(str: string, containerClass = "rules-text"): string {
 		Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
@@ -44,6 +38,7 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 		str = str.replace(/\+?%([^%]+)%/g, (match, refStr: string, ...args: any[]) => {
 			if (/^data\./.test(refStr)) {
 				const key = refStr.split(".").pop();
+				//    ^?
 				return `<strong class='text-keyword'>+${U.tCase(this.data[key as KeyOf<this["data"]>])}</strong>`;
 			} else if (/^lists:/.test(refStr)) {
 				const [,listKey] = refStr.split(/:/);

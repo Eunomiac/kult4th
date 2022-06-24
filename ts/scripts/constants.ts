@@ -15,80 +15,7 @@ export const ItemTypes = {
 	weapon: "Weapon",
 	gear: "Gear"
 };
-export const Archetypes = {
-	Aware: [
-		"academic",
-		"agent",
-		"artist",
-		"avenger",
-		"broken",
-		"careerist",
-		"criminal",
-		"cursed",
-		"deceiver",
-		"descendant",
-		"detective",
-		"doll",
-		"drifter",
-		"fixer",
-		"occultist",
-		"prophet",
-		"ronin",
-		"scientist",
-		"seeker",
-		"veteran"
-	] as const,
-	Enlightened: [
-		"abomination",
-		"deathMagician",
-		"disciple",
-		"dreamMagician",
-		"madnessMagician",
-		"passionMagician",
-		"revenant",
-		"timeAndSpaceMagician"
-	] as const
-};
-export const Attributes = {
-	Active: {
-		reason: {},
-		intuition: {},
-		perception: {},
-		coolness: {},
-		violence: {},
-		charisma: {},
-		soul: {}
-	},
-	Passive: {
-		fortitude: {},
-		willpower: {},
-		reflexes: {}
-	}
-} as const;
-export enum K4ItemType {
-	advantage = "advantage",
-	disadvantage = "disadvantage",
-	move = "move",
-	darksecret = "darksecret",
-	relation = "relation",
-	gear = "gear",
-	attack = "attack",
-	weapon = "weapon"
-}
-export enum K4Attribute {
-	ask = "ask",
-	zero = "0",
-	fortitude = "fortitude",
-	reflexes = "reflexes",
-	willpower = "willpower",
-	reason = "reason",
-	intuition = "intuition",
-	perception = "perception",
-	coolness = "coolness",
-	violence = "violence",
-	charisma = "charisma",
-	soul = "soul"
-}
+
 export const Colors = {
 	"GOLD": "#958b68",
 	"GOLD +2": "#e4ddc3",
@@ -131,7 +58,7 @@ export const Ranges = {
 } as const;
 export const RegExpPatterns = {
 	Attributes: [
-		...Object.keys(Attributes.Active),
+		...Object.keys(keyof typeof ValueOf<K4Attribute>),
 		...Object.keys(Attributes.Passive),
 		"Attribute"
 	].map((attrStr) => new RegExp(`((?:\\+|\\b)${attrStr.charAt(0).toUpperCase()}${attrStr.slice(1)}\\b)`, "g")),

@@ -1,3 +1,4 @@
+import C from "../../../scripts/constants.js";
 import gsap from "gsap/all";
 
 declare global {
@@ -12,6 +13,7 @@ declare global {
 	type HEXColor = string;
 	type RGBColor = string;
 	type jQueryTextTerm = string | number | boolean | ((this: Element, index: number, text: string) => string | number | boolean);
+	type K4Color = ValueOf<typeof C.Colors>;
 
 	type keyFunc = (key: number | string, val?: any) => unknown;
 	type valFunc = (val: any, key?: number | string) => any;
@@ -27,6 +29,11 @@ declare global {
 		[Prop in keyof T as string extends Prop ? never : number extends Prop ? never : Prop]: T[Prop]
 	};
 	type KeyOf<T> = keyof T;
+	type TypeOf<T> = InstanceType<T>;
 
 	type gsapAnim = gsap.core.Tween | gsap.core.Timeline;
+
+	type iDataDict = Record<string, Partial<K4ItemDataSource.Any>>;
+	type SubTypeDict = Partial<Record<K4ItemSubType, iDataDict>>;
+	type ItemDataRecord = Record<K4ItemType, SubTypeDict>;
 }

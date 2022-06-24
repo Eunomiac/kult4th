@@ -1,48 +1,12 @@
-import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
-import {ItemDataSchema} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
-export enum K4ItemType {
-	advantage = "advantage",
-	disadvantage = "disadvantage",
-	move = "move",
-	darksecret = "darksecret",
-	relation = "relation",
-	gear = "gear",
-	attack = "attack",
-	weapon = "weapon"
-}
-export enum K4ItemSubType {
-	activeRolled = "active-rolled",
-	activeStatic = "active-static",
-	passive = "passive"
-}
-export enum K4ItemRange {
-	arm = "arm",
-	room = "room",
-	field = "field",
-	horizon = "horizon"
-}
-export enum K4WeaponClass {
-	meleeUnarmed = "melee-unarmed",
-	meleeCrush = "melee-crush",
-	meleeSlash = "melee-slash",
-	meleeStab = "melee-stab",
-	firearm = "firearm",
-	bomb = "bomb"
-}
-export enum K4ItemResultType {
-	completeSuccess = "completeSuccess",
-	partialSuccess = "partialSuccess",
-	failure = "failure"
-}
+import K4Actor from "./K4Actor.js";
 
-export default class K4Item<Type extends K4ItemType> extends Item {
-	declare data: ItemData & K4ItemData<Type>;
+export default class K4Item<Type extends K4ItemType = K4ItemType> extends Item {
 	override get type(): Type { return super.type as Type }
 
 	subItems?: Array<K4Item<K4ItemType.move|K4ItemType.attack>>;
-	get subItemData(): Array<K4ItemConstructorData<K4ItemType.move|K4ItemType.attack>> {
+	get subItemData(): Array<Partial<K4ItemDataSource.Move|K4ItemDataSource.Attack>> {
 		if (this.hasSubItems) {
-			return this.data.data.subItems.map((subIData: K4ItemData<K4ItemType.move|K4ItemType.attack>) => {
+			return this.data.data.subItems.map((subIData) => {
 				subIData.data.sourceItem = {
 					...subIData.data.sourceItem!,
 					id: this.id
@@ -53,11 +17,11 @@ export default class K4Item<Type extends K4ItemType> extends Item {
 		return [];
 	}
 	get hasSubItems() { return Boolean(this.data.data.subItems?.length) }
-	get moves(): Array<K4ItemData<K4ItemType.move>> {
-		return this.subItemData.filter((iData) => iData.type === "move") as Array<K4ItemData<K4ItemType.move>>;
+	get moves(): Array<K4ItemDataSource.Move> {
+		return this.subItemData.filter((iData) => iData.type === "move") as Array<K4ItemDataSource.Move>;
 	}
-	get attacks(): Array<K4ItemData<K4ItemType.attack>> {
-		return this.subItemData.filter((iData) => iData.type === "attack") as Array<K4ItemData<K4ItemType.attack>>;
+	get attacks(): Array<K4ItemDataSource.Attack> {
+		return this.subItemData.filter((iData) => iData.type === "attack") as Array<K4ItemDataSource.Attack>;
 	}
 
 	override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
@@ -66,4 +30,15 @@ export default class K4Item<Type extends K4ItemType> extends Item {
 			this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData) as Array<K4Item<K4ItemType.move|K4ItemType.attack>>;
 		}
 	}
+
+	async handleRoll() {
+		if (this.actor instanceof K4Actor)
+		console.log(`Rolling ${this.name} for ${this.actor?.name ?? "UNKNOWN"} - ${U.tCase(this.data.data.attribute)} = ${U.signNum(this.actor?.)}`)
+	}
+}
+
+declare global {
+  interface DocumentClassConfig {
+    Item: typeof K4Item;
+  }
 }

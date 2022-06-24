@@ -1,5 +1,5 @@
 import K4Actor from "./documents/K4Actor.js";
-import K4Item, {K4ItemType, K4ItemSubType, K4ItemResultType} from "./documents/K4Item.js";
+import K4Item from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
@@ -14,9 +14,7 @@ import ITEM_DATA from "./scripts/migration/migratedData.js";
 import gsap from "gsap/all";
 import {FolderDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/folderData.js";
 
-type iDataDict = Record<string, Partial<K4ItemData>>;
-type SubTypeDict = Partial<Record<K4ItemSubType, iDataDict>>;
-type ItemDataRecord = Record<K4ItemType, SubTypeDict>;
+
 
 Hooks.once("init", () => {
 	console.log("Initializing Kult 4E");
@@ -164,7 +162,7 @@ Hooks.once("init", () => {
 			function mutateItemData(itemData: Partial<ItemDataRecord>): Partial<ItemDataRecord> {
 				itemData = U.objClone(itemData);
 				const formatString = (str: string) => (str ? `${str}.`.replace(/([,\:\.])\.$/, "$1") : str);
-				const mutateData = <T extends K4ItemType = K4ItemType>(iData: any): Partial<K4ItemData<T>> => {
+				const mutateData = (iData: any): Partial<K4ItemDataSource.Any> => {
 					if (!iData.data) {
 						mutateLog.push(`${iData.name} is missing a DATA attribute!`);
 						return iData;
