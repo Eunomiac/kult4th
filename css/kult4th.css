@@ -712,14 +712,14 @@
             width: var(--panel-size);
             position: absolute;
             pointer-events: none; }
-            .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box video {
+            .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box img {
               position: absolute;
               height: 100%;
               width: 100%;
               -webkit-filter: sepia(1);
               filter: sepia(1);
               opacity: 0; }
-            .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .video-mask {
+            .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .animation-mask {
               --mask-size: 34px;
               position: absolute;
               display: block;

@@ -46,22 +46,29 @@ const ANIMATIONS = {
     },
     hoverMove(target, context, isDerivedMove = true) {
         const attribute = $(target).data("attribute");
+        const itemText$ = $(target).find(".item-text");
+        const itemIcon$ = $(target).find(".item-icon");
+        const toolTip$ = $(target).find(".trigger-tooltip");
         const tl = gsap
             .timeline({
             reversed: true
-        }).to($(target).find(".item-icon"), {
+        }).fromTo(itemIcon$, {
+            borderRadius: 25,
+            overflow: "hidden"
+        }, {
             width: "100%",
             borderRadius: 0,
             duration: 0.75,
             backgroundColor: C.Colors["GOLD +1"],
             ease: "sine"
-        }).fromTo($(target).find(".item-text"), {
+        }, 0).fromTo(itemText$, {
             x: 0,
             width: "auto",
+            opacity: 1,
             color: C.Colors.GOLD,
             textShadow: 0
         }, {
-            x: -(parseInt(`${gsap.getProperty($(target).find(".item-text")[0], "width")}`)) - 40,
+            x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`)) - 40,
             width: 0,
             color: C.Colors.BLACK,
             textShadow: [
@@ -71,11 +78,14 @@ const ANIMATIONS = {
             ].join(", "),
             duration: 0.75,
             ease: "back"
-        }, 0).set($(target).find(".item-text"), { opacity: 0 }, 0.01).to($(target).find(".item-text"), {
+        }, 0).set(itemText$, {
+            opacity: 0
+        }, 0.01)
+            .to(itemText$, {
             opacity: 1,
             duration: 0.75,
             ease: "sine"
-        }, 0.02).fromTo($(target).find(".trigger-tooltip"), {
+        }, 0.01).fromTo($(target).find(".trigger-tooltip"), {
             opacity: 0,
             bottom: 30,
             scale: 1.5
@@ -85,18 +95,17 @@ const ANIMATIONS = {
             scale: 1,
             duration: 0.5,
             ease: "power2.in"
-        }, 0.5);
+        }, 0);
         if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
             tl
-                .fromTo(context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] video`), {
+                .fromTo(context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`), {
                 opacity: 0,
-                filter: "sepia(1) blur(20px)"
+                filter: "blur(20px)"
             }, {
                 opacity: 1,
-                filter: "sepia(1) blur(0px)",
+                filter: "none",
                 duration: 1,
-                ease: "sine",
-                onStart() { this.targets()[0].play(); }
+                ease: "sine"
             }, 0);
         }
         return tl;
