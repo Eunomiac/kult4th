@@ -11,12 +11,12 @@
 		<main class="tab-content">
 				{{#if item.data.data.rules.holdText}}
 				<span class="hold-header">This {{item.type}} grants Hold</span>
-				<span class="hold-body">{{item.data.data.rules.holdText}}</span>
+				<span class="hold-body">{{{formatForKult item.data.data.rules.holdText}}}</span>
 				{{/if}}
-			{{#each item.data.data.subItems as |subItem|}}
-			{{log "SUBITEM" subItem}}
+			{{#each item.subMoves as |subMove|}}
+			{{log "SUB-MOVE" subMove}}
 			{{log this}}
-			{{> "systems/kult4th/templates/partials/basic-move-card.hbs" subItem}}
+			{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subMove}}
 			{{/each}}
 		</main>
 </form>

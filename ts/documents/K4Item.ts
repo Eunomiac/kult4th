@@ -53,10 +53,10 @@ export default class K4Item<Type extends K4ItemType> extends Item {
 		return [];
 	}
 	get hasSubItems() { return Boolean(this.data.data.subItems?.length) }
-	get moves(): Array<K4ItemData<K4ItemType.move>> {
+	get subMoves(): Array<K4ItemData<K4ItemType.move>> {
 		return this.subItemData.filter((iData) => iData.type === "move") as Array<K4ItemData<K4ItemType.move>>;
 	}
-	get attacks(): Array<K4ItemData<K4ItemType.attack>> {
+	get subAttacks(): Array<K4ItemData<K4ItemType.attack>> {
 		return this.subItemData.filter((iData) => iData.type === "attack") as Array<K4ItemData<K4ItemType.attack>>;
 	}
 

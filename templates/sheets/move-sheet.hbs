@@ -63,7 +63,7 @@
 
 					{{#if data.data.rules.holdText}}
 					<span class="hold-header">This {{case "title" data.type}} grants Hold</span>
-					<span class="hold-body">{{data.data.rules.holdText}}</span>
+					<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
 					{{/if}}
 					{{~#if data.data.rules.suffix}}<span class="text-outro">{{{formatForKult data.data.rules.suffix}}}</span>{{/if}}
 				</div>

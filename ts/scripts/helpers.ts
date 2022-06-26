@@ -50,19 +50,35 @@ export const HandlebarHelpers = {
 		const iData: K4ItemData = context.data.root.data;
 		console.log("[FormatForKult]", {str, iData, "this": this});
 
-		str = str.replace(/(\S+?)?%([^%\s]+)%/g, (_, prefix: string, refStr: string) => {
+		// #>text-rolltrait>+%data.attribute%<#   `#>text-rolltrait>+%data.attribute%<#`.match(/#>([^>]+)>/)?.pop()
+
+
+		str = str.replace(/(?:#>([^>]+)>)?(\S+?)?%([^%\s]+)%(?:<#)?/g, (_, spanTag: string | undefined, prefix: string | undefined, refStr: string) => {
+			console.log({_, spanTag, prefix, refStr});
 			if (/^data\./.test(refStr)) {
 
 				const key = refStr.split(".").pop();
 				console.log("[FormatForKult] Found DATA. Key =", key);
 				if ([K4ItemType.attack, K4ItemType.move].includes(iData.type)) {
-					// return `|NOLINK|${prefix}${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])}||`;
-					return `${prefix}${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])}`;
+					return formatStringForKult([
+						spanTag ? `#>${spanTag}>` : "",
+						prefix,
+						U.tCase(iData.data[key as KeyOf<typeof iData["data"]>]),
+						spanTag ? "<#" : ""
+					].join(""));
 				}
-				// return `|LINK|${prefix}${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])}||`;
-				return formatStringForKult(`to <a class='item-button' data-action='edit' data-item-name='${(this as unknown as K4ItemData).name}'>#>text-movename>${(this as unknown as K4ItemData).name}<#</a> (${prefix}${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])})`);
+				return formatStringForKult([
+					"to <a class='item-button' data-action='edit' data-item-name='",
+					(this as unknown as K4ItemData).name,
+					"'>#>text-movename>",
+					(this as unknown as K4ItemData).name,
+					"<#</a> (",
+					"#>text-keyword>",
+					prefix,
+					U.tCase(iData.data[key as KeyOf<typeof iData["data"]>]),
+					"<#)"
+				].join(""));
 			} else if (/^list:/.test(refStr)) {
-
 				const listKey = refStr.split(":").pop();
 				console.log(`[FormatForKult] Found LIST. Key = ${listKey}`, iData.data.lists);
 				if (listKey && (listKey in iData.data.lists)) {

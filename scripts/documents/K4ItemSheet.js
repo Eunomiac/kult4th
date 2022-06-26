@@ -16,8 +16,8 @@ export default class K4ItemSheet extends ItemSheet {
     get data() { return this.item.data.data; }
     get subType() { return this.data.subType; }
     get subItems() { return this.item.subItemData; }
-    get moves() { return this.item.moves; }
-    get attacks() { return this.item.attacks; }
+    get subMoves() { return this.item.subMoves; }
+    get attacks() { return this.item.subAttacks; }
     isMove() { return this.type === "move"; }
     isAttack() { return this.type === "attack"; }
     isAdvantage() { return this.type === "advantage"; }

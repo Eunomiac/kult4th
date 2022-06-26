@@ -53,10 +53,10 @@ export default class K4Item extends Item {
         return [];
     }
     get hasSubItems() { return Boolean(this.data.data.subItems?.length); }
-    get moves() {
+    get subMoves() {
         return this.subItemData.filter((iData) => iData.type === "move");
     }
-    get attacks() {
+    get subAttacks() {
         return this.subItemData.filter((iData) => iData.type === "attack");
     }
     async _onCreate(...args) {

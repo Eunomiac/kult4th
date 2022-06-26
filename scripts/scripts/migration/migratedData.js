@@ -588,19 +588,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options. You may save up to two for later.",
+                                        result: "Choose three options from the list below. You may save up to two for later.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options. You may save one for later.",
+                                        result: "Choose two options from the list below. You may save one for later.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but the animal is affected by your memories and Disadvantages. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but the animal is affected by your memories and Disadvantages. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -733,19 +733,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options any time during the scene.",
+                                        result: "Choose two options from the list below any time during the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option any time during the scene.",
+                                        result: "Choose one option from the list below any time during the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but a complication/threat manifests. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but a complication/threat manifests. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -779,7 +779,7 @@ const ITEM_DATA = {
                                     options: {
                                         name: "Options",
                                         items: [
-                                            "Automatically succeed at an #>text-movename>Influence Other<# move targeting someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
+                                            "Automatically #>text-movename:Influence Other>Influence<# someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
                                             "Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
                                             "Make a statement about something or someone in mass media.",
                                             "Gain access to people or places under the pretense of engaging in your research or studies."
@@ -797,19 +797,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "During this game session, choose three options.",
+                                        result: "During this game session, choose three options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "During this game session, choose two options.",
+                                        result: "During this game session, choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "During this game session you may choose one option, but you also attract unwanted attention like stalkers, professional adversaries, competitors, or hostile forces. #>text-gmtext>The GM makes a Move<# for them at some point during the session.",
+                                        result: "During this game session you may choose one option from the list below, but you also attract unwanted attention like stalkers, professional adversaries, competitors, or hostile forces. #>text-gmtext>The GM makes a Move<# for them at some point during the session.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -904,13 +904,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -972,7 +972,7 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1032,19 +1032,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option, but you expose yourself to danger or incur a cost.",
+                                        result: "Choose one option from the list below, but you expose yourself to danger or incur a cost.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but something goes very wrong. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but something goes very wrong. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1152,19 +1152,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You may choose three options at any time during the session.",
+                                        result: "You may choose three options from the list below at any time during the session.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "You may choose one option at any time during the session.",
+                                        result: "You may choose one option from the list below at any time during the session.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "You may choose one option at any time during the session, but #>text-gmtext>the GM makes a Move<# for the entity at some point during the session.",
+                                        result: "You may choose one option from the list below at any time during the session, but #>text-gmtext>the GM makes a Move<# for the entity at some point during the session.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1220,19 +1220,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Get three options. You may spend them any time during the scene.",
+                                        result: "Choose three options from the list below. You may spend them any time during the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Get two options. You may spend them any time during the scene.",
+                                        result: "Choose two options from the list below. You may spend them any time during the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Get one option, but a problem arises. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but a problem arises. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1334,19 +1334,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options. You may save up to two for later.",
+                                        result: "Choose three options from the list below. You may save up to two for later.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options. You may save one for later.",
+                                        result: "Choose two options from the list below. You may save one for later.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but things don't go according to plan. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but things don't go according to plan. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1403,13 +1403,13 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but you also attract unwanted attention. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but you also attract unwanted attention. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1505,13 +1505,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1565,13 +1565,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options. You may save one until later during this scene.",
+                                        result: "Choose two options from the list below. You may save one until later during this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1672,7 +1672,7 @@ const ITEM_DATA = {
                             img: "systems/kult4th/assets/icons/advantage/cult-leader.svg",
                             data: {
                                 lists: {
-                                    options: {
+                                    visions: {
                                         name: "Visions",
                                         items: [
                                             "a vision of a creature's true form.",
@@ -1787,7 +1787,7 @@ const ITEM_DATA = {
                             items: [
                                 "#>edge-name>On a Swivel<# &mdash; Discover a threat before it discovers you.",
                                 "#>edge-name>Not Today<# &mdash; Avoid an attack.",
-                                "#>edge-name>Sucker Punch<# &mdash; Get the jump on them: #>text-keyword>Harm<# your opponent before they can react."
+                                "#>edge-name>Sucker Punch<# &mdash; Get the jump on them: Harm your opponent before they can react."
                             ]
                         }
                     },
@@ -1803,7 +1803,7 @@ const ITEM_DATA = {
                                         items: [
                                             "#>edge-name>On a Swivel<# &mdash; Discover a threat before it discovers you.",
                                             "#>edge-name>Not Today<# &mdash; Avoid an attack.",
-                                            "#>edge-name>Sucker Punch<# &mdash; Get the jump on them: #>text-keyword>Harm<# your opponent before they can react."
+                                            "#>edge-name>Sucker Punch<# &mdash; Get the jump on them: Harm your opponent before they can react."
                                         ]
                                     }
                                 },
@@ -2272,19 +2272,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options.",
+                                        result: "Choose three options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but you've become indebted to someone. The debt can be called in at any time during the story, at the GM's discretion.",
+                                        result: "Choose one option from the list below, but you've become indebted to someone. The debt can be called in at any time during the story, at the GM's discretion.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -2432,19 +2432,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options any time during this scene.",
+                                        result: "Choose three options from the list below any time during this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options any time during this scene.",
+                                        result: "Choose two options from the list below any time during this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option any time during this scene, but the nature of the attraction is different than you had hoped. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below any time during this scene, but the nature of the attraction is different than you had hoped. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -2551,7 +2551,7 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but you risk discovery or face unexpected obstacles. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but you risk discovery or face unexpected obstacles. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -2602,13 +2602,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "The creature is banished. Choose two options.",
+                                        result: "The creature is banished. Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "The creature is banished. Choose one option.",
+                                        result: "The creature is banished. Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -2807,13 +2807,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option, but the GM also chooses one of the following: %list:gmoptions%",
+                                        result: "Choose one option from the list below, but the GM also chooses one of the following: %list:gmoptions%",
                                         listRefs: [
                                             "options"
                                         ]
@@ -2867,19 +2867,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but they grow suspicious of your motives. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but they grow suspicious of your motives. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -2898,8 +2898,8 @@ const ITEM_DATA = {
                     attribute: K4Attribute.coolness
                 }
             },
-            "Field Agent": {
-                name: "Field Agent",
+            "XXX Field Agent": {
+                name: "XXX Field Agent",
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
                 data: {
@@ -2934,7 +2934,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 sourceItem: {
-                                    name: "Field Agent",
+                                    name: "XXX Field Agent",
                                     type: K4ItemType.advantage
                                 },
                                 isCustom: false,
@@ -2979,12 +2979,12 @@ const ITEM_DATA = {
                                             "#>edge-name>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
                                             "#>edge-name>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
                                             "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
-                                            "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %parent-lists:attacks%"
+                                            "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %list:parent-attacks%"
                                         ]
                                     }
                                 },
                                 sourceItem: {
-                                    name: "Field Agent",
+                                    name: "XXX Field Agent",
                                     type: K4ItemType.advantage
                                 },
                                 isCustom: false,
@@ -3066,19 +3066,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "You have gazed too deeply into the abyss. Choose one option, but you also experience terrifying visions or encounter something horrible. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "You have gazed too deeply into the abyss. Choose one option from the list below, but you also experience terrifying visions or encounter something horrible. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -3137,7 +3137,7 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose one option:",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -3228,7 +3228,7 @@ const ITEM_DATA = {
                             name: "Edges",
                             items: [
                                 "#>edge-name>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-                                "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from #>text-keyword>Harm<#. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>text-movename>Avoid Harm<# whenever you exploit it.",
+                                "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>text-movename>Avoid Harm<# whenever you exploit it.",
                                 "#>edge-name>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                             ]
                         }
@@ -3244,7 +3244,7 @@ const ITEM_DATA = {
                                         name: "Edges",
                                         items: [
                                             "#>edge-name>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-                                            "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from #>text-keyword>Harm<#. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>text-movename>Avoid Harm<# whenever you exploit it.",
+                                            "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>text-movename>Avoid Harm<# whenever you exploit it.",
                                             "#>edge-name>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                                         ]
                                     }
@@ -3381,19 +3381,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Get three options. You may spend them anytime during this scene.",
+                                        result: "Choose three options from the list below. You may spend them anytime during this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Get two options. You may spend them anytime during this scene.",
+                                        result: "Choose two options from the list below. You may spend them anytime during this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Get one option, but you become the prey. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but you become the prey. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -3617,13 +3617,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -3816,7 +3816,7 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "The construction has minor flaws. You may choose one option from below.",
+                                        result: "The construction has minor flaws. You may choose one option from the list below from below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -3876,7 +3876,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim. %n%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent. %n%The wound transferred is of the same type, severity, and condition as the original."
+                        intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim. %n%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent. %n%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
                     },
                     subType: K4ItemSubType.activeRolled,
                     attribute: K4Attribute.soul
@@ -3964,7 +3964,7 @@ const ITEM_DATA = {
                 }
             },
             "Magical Intuition": {
-                name: "Magical #>text-rolltrait>Intuition<#",
+                name: "Magical Intuition",
                 type: K4ItemType.advantage,
                 img: "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
                 data: {
@@ -3985,7 +3985,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 sourceItem: {
-                                    name: "Magical #>text-rolltrait>Intuition<#",
+                                    name: "Magical Intuition",
                                     type: K4ItemType.advantage
                                 },
                                 isCustom: false,
@@ -3995,19 +3995,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options. Up to two may be saved until later this scene.",
+                                        result: "Choose three options from the list below. Up to two may be saved until later this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options. One may be saved until later this scene.",
+                                        result: "Choose two options from the list below. One may be saved until later this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but you also get an unexpected vision or attract attention. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but you also get an unexpected vision or attract attention. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -4061,19 +4061,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options. You may save up to two until later in the scene.",
+                                        result: "Choose three options from the list below. You may save up to two until later in the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but someone present becomes obsessed, wanting to have you, keep you, and own you for themselves. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but someone present becomes obsessed, wanting to have you, keep you, and own you for themselves. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -4099,7 +4099,7 @@ const ITEM_DATA = {
                 data: {
                     subItems: [
                         {
-                            name: "Hunt Someone",
+                            name: "Investigate Someone",
                             type: K4ItemType.move,
                             img: "systems/kult4th/assets/icons/advantage/manhunter.svg",
                             data: {
@@ -4517,7 +4517,7 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -4653,19 +4653,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose two options. You may save one until later.",
+                                        result: "Choose two options from the list below. You may save one until later.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but a complication, cost, or new threat emerges. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but a complication, cost, or new threat emerges. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -4719,13 +4719,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options. You may save up to two options for use later during the scene.",
+                                        result: "Choose three options from the list below. You may save up to two options for use later during the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -4780,19 +4780,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options.",
+                                        result: "Choose three options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but you have missed or overlooked something crucial: #>text-gmtext>The GM takes 1 Hold<#.",
+                                        result: "Choose one option from the list below, but you have missed or overlooked something crucial: #>text-gmtext>The GM takes 1 Hold<#.",
                                         listRefs: [
                                             "options"
                                         ],
@@ -4888,19 +4888,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options, at any time during the mission.",
+                                        result: "Choose three options from the list below, at any time during the mission.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options, at any time during the mission.",
+                                        result: "Choose two options from the list below, at any time during the mission.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "At any time during the mission, choose one option, but you've failed to account for something. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "At any time during the mission, choose one option from the list below, but you've failed to account for something. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -5094,19 +5094,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options, useable any time in the story.",
+                                        result: "Choose three options from the list below, useable any time in the story.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options, useable any time in the story.",
+                                        result: "Choose two options from the list below, useable any time in the story.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, useable any time in the story, but you also develop feelings for the person. Increase your #>text-keyword>Relation<# to them by #>text-posmod>+1<#.",
+                                        result: "Choose one option from the list below, useable any time in the story, but you also develop feelings for the person. Increase your #>text-keyword>Relation<# to them by #>text-posmod>+1<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -5230,13 +5230,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options, useable any time during the session.",
+                                        result: "Choose three options from the list below, useable any time during the session.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options, useable any time during the session.",
+                                        result: "Choose two options from the list below, useable any time during the session.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -5292,13 +5292,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose one option immediately, and you may choose two more any time in the future.",
+                                        result: "Choose one option from the list below immediately, and you may choose two more any time in the future.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -5352,19 +5352,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose 2 options. You may spend them any time during the scene.",
+                                        result: "Choose two options from the list below. You may spend them any time during the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose 1 option. You may spend them any time during the scene.",
+                                        result: "Choose one option from the list below. You may spend them any time during the scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose 1 option, but you manage to attract someone's attention. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, but you manage to attract someone's attention. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -5417,13 +5417,13 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "The shot finds its target. Choose two options.",
+                                        result: "The shot finds its target. Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "The shot finds its target. Choose one option.",
+                                        result: "The shot finds its target. Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -5632,17 +5632,11 @@ const ITEM_DATA = {
                                         result: "No problem—you get what you're after. Someone will fix you right up."
                                     },
                                     partialSuccess: {
-                                        result: "The GM chooses one option:",
-                                        listRefs: [
-                                            "gmoptions"
-                                        ]
+                                        result: "The GM chooses one option from the list below: %list:gmoptions%"
                                     },
                                     failure: {
                                         result: "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. #>text-gmtext>The GM makes a Move<#."
-                                    },
-                                    listRefs: [
-                                        "gmoptions"
-                                    ]
+                                    }
                                 },
                                 subType: K4ItemSubType.activeRolled,
                                 attribute: K4Attribute.charisma
@@ -5766,20 +5760,14 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You ignore your injuries until the conflict is over, and you may choose one option from the list below:",
-                                        listRefs: [
-                                            "options"
-                                        ]
+                                        result: "You ignore your injuries until the conflict is over, and you may choose one option from the list below: %list:options%"
                                     },
                                     partialSuccess: {
                                         result: "You ignore your injuries until the conflict is over."
                                     },
                                     failure: {
                                         result: "You overexert yourself and after a few moments your injuries cause you to pass out and collapse. After your next action, the GM decides when and how you pass out."
-                                    },
-                                    listRefs: [
-                                        "options"
-                                    ]
+                                    }
                                 },
                                 subType: K4ItemSubType.activeRolled,
                                 attribute: K4Attribute.violence
@@ -5823,19 +5811,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options, useable while you remain in this situation.",
+                                        result: "Choose three options from the list below, useable while you remain in this situation.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options, useable while you remain in this situation.",
+                                        result: "Choose two options from the list below, useable while you remain in this situation.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option useable while you remain in this situation, but you've also overlooked something important. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below useable while you remain in this situation, but you've also overlooked something important. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -5952,19 +5940,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "Choose three options, useable any time during this scene.",
+                                        result: "Choose three options from the list below, useable any time during this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose two options, useable any time during this scene.",
+                                        result: "Choose two options from the list below, useable any time during this scene.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, useable any time during this scene. However, the crowd becomes uncontrollable and volatile, and cannot be dispersed. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "Choose one option from the list below, useable any time during this scene. However, the crowd becomes uncontrollable and volatile, and cannot be dispersed. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -6015,19 +6003,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You get two options.",
+                                        result: "Choose two options from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option.",
+                                        result: "Choose one option from the list below.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "Choose one option, but the pain will overwhelm you eventually and make you black out.",
+                                        result: "Choose one option from the list below, but the pain will overwhelm you eventually and make you black out.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -6079,19 +6067,19 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You have been here before. Choose two options any time during your visit.",
+                                        result: "You have been here before. Choose two options from the list below any time during your visit.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "You have heard of this place. Choose one option any time during your visit.",
+                                        result: "You have heard of this place. Choose one option from the list below any time during your visit.",
                                         listRefs: [
                                             "options"
                                         ]
                                     },
                                     failure: {
-                                        result: "You have been here before, but something bad happened. Choose one option any time during your visit. The GM explains what kind of problem awaits you here. #>text-gmtext>The GM makes a Move<#.",
+                                        result: "You have been here before, but something bad happened. Choose one option from the list below any time during your visit. The GM explains what kind of problem awaits you here. #>text-gmtext>The GM makes a Move<#.",
                                         listRefs: [
                                             "options"
                                         ]
@@ -6201,7 +6189,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you truly desire something,",
-                                    outro: "you may take #>text-posmod>+2<# to a roll by decreasing #>text-negmod>−2<##>text-keyword>Stability<#."
+                                    outro: "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<##>text-keyword>Stability<#."
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -6450,10 +6438,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you do someone a favor or learn one of their secrets,",
-                                    outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know:",
-                                    listRefs: [
-                                        "options"
-                                    ]
+                                    outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %list:options%"
                                 },
                                 subType: K4ItemSubType.activeStatic,
                                 attribute: K4Attribute.zero
@@ -6461,11 +6446,6 @@ const ITEM_DATA = {
                         }
                     ],
                     isCustom: false,
-                    rules: {
-                        listRefs: [
-                            "options"
-                        ]
-                    },
                     subType: K4ItemSubType.activeStatic,
                     attribute: K4Attribute.zero
                 }
@@ -6818,10 +6798,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "When you #>text-movename>Investigate<#, you may also choose from these additional questions:",
-                        listRefs: [
-                            "questions"
-                        ],
+                        intro: "When you #>text-movename>Investigate<#, you may also choose from these additional questions: %list:questions%",
                         effectFunctions: [
                             ">AppendList:move/#>text-movename>Investigate<#,questions"
                         ]
@@ -7127,10 +7104,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired:",
-                        listRefs: [
-                            "questions"
-                        ],
+                        intro: "Whenever you #>text-movename>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list:questions%",
                         effectFunctions: [
                             ">AppendList:move/#>text-movename>Observe a Situation<#,questions"
                         ]
@@ -7155,10 +7129,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename>Read a Person<#, you may choose from these questions in addition to the usual ones:",
-                        listRefs: [
-                            "questions"
-                        ],
+                        intro: "Whenever you #>text-movename>Read a Person<#, you may choose from these questions in addition to the usual ones: %list:questions%",
                         effectFunctions: [
                             "AppendList:#>text-movename>Read a Person<#,questions"
                         ]
@@ -7184,10 +7155,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation:",
-                        listRefs: [
-                            "questions"
-                        ]
+                        intro: "Whenever you #>text-movename>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list:questions%"
                     },
                     subType: K4ItemSubType.passive,
                     attribute: K4Attribute.zero
@@ -7209,10 +7177,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename>Read a Person<#, you may choose from these questions in addition to the usual ones:",
-                        listRefs: [
-                            "questions"
-                        ],
+                        intro: "Whenever you #>text-movename>Read a Person<#, you may choose from these questions in addition to the usual ones: %list:questions%",
                         effectFunctions: [
                             "AppendList:#>text-movename>Read a Person<#,questions"
                         ]
@@ -7650,13 +7615,13 @@ const ITEM_DATA = {
                                         result: "You still have some time remaining."
                                     },
                                     partialSuccess: {
-                                        result: "Your fate approaches. The GM chooses one option:",
+                                        result: "Your fate approaches. The GM chooses one option from the list below.",
                                         listRefs: [
                                             "gmoptions"
                                         ]
                                     },
                                     failure: {
-                                        result: "Your end approaches. The GM chooses two options, and may choose the same option twice:",
+                                        result: "Your end approaches. The GM chooses two options from the list below, and may choose the same option twice.",
                                         listRefs: [
                                             "gmoptions"
                                         ]
@@ -8410,24 +8375,6 @@ const ITEM_DATA = {
                             type: K4ItemType.move,
                             img: "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
                             data: {
-                                lists: {
-                                    options: {
-                                        name: "Options",
-                                        items: [
-                                            "Cleaning",
-                                            "Counting",
-                                            "Triple-checking",
-                                            "Showering",
-                                            "Memorizing",
-                                            "Pyromania",
-                                            "Kleptomania",
-                                            "Cursing",
-                                            "Confessing your sins",
-                                            "Eating",
-                                            "Hypochondria"
-                                        ]
-                                    }
-                                },
                                 sourceItem: {
                                     name: "Mental Compulsion",
                                     type: K4ItemType.disadvantage
@@ -8435,10 +8382,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In situations where you could be distracted by your compulsion,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
-                                    listRefs: [
-                                        "options"
-                                    ]
+                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -8775,7 +8719,7 @@ const ITEM_DATA = {
                                         result: "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>text-movename>Keep It Together<#."
                                     },
                                     failure: {
-                                        result: "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you reduce #>text-negmod>−2<##>text-keyword>Stability<#."
+                                        result: "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<##>text-keyword>Stability<#."
                                     }
                                 },
                                 subType: K4ItemSubType.activeRolled,
@@ -8925,14 +8869,8 @@ const ITEM_DATA = {
                                         result: "Choose between having sex with the person or reduce your #>text-negmod>−1<##>text-keyword>Stability<#."
                                     },
                                     failure: {
-                                        result: "You cannot resist having sex with the person and the GM chooses one option:",
-                                        listRefs: [
-                                            "gmoptions"
-                                        ]
-                                    },
-                                    listRefs: [
-                                        "gmoptions"
-                                    ]
+                                        result: "You cannot resist having sex with the person and the GM chooses one option from the list below: %list:gmoptions%"
+                                    }
                                 },
                                 subType: K4ItemSubType.activeRolled,
                                 attribute: K4Attribute.zero
@@ -9163,7 +9101,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you. %n%in addition to the standard effects, the GM may choose one option:",
+                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you. %n%in addition to the standard effects, the GM may choose one option from the list below:",
                         listRefs: [
                             "gmoptions"
                         ]
@@ -9177,7 +9115,7 @@ const ITEM_DATA = {
     [K4ItemType.move]: {
         [K4ItemSubType.activeRolled]: {
             "Act Under Pressure": {
-                name: "#>text-movename>Act Under Pressure<#",
+                name: "Act Under Pressure",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/act-under-pressure.svg",
                 data: {
@@ -9202,7 +9140,7 @@ const ITEM_DATA = {
                 }
             },
             "Avoid Harm": {
-                name: "#>text-movename>Avoid Harm<#",
+                name: "Avoid Harm",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/avoid-harm.svg",
                 data: {
@@ -9227,7 +9165,7 @@ const ITEM_DATA = {
                 }
             },
             "Endure Injury": {
-                name: "#>text-movename>Endure Injury<#",
+                name: "Endure Injury",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/endure-injury.svg",
                 data: {
@@ -9235,9 +9173,9 @@ const ITEM_DATA = {
                         options: {
                             name: "Consequences",
                             items: [
-                                "Are knocked out (the GM may also choose to inflict a #>text-keyword>Serious Wound<#).",
-                                "Receive a #>text-keyword>Critical Wound<#, but may continue to act (if you already have a #>text-keyword>Critical Wound<#, you may not choose this option again).",
-                                "Die."
+                                "...are knocked out (the GM may also choose to inflict a #>text-keyword>Serious Wound<#),",
+                                "...receive a #>text-keyword>Critical Wound<#, but may continue to act (if you already have a #>text-keyword>Critical Wound<#, you may not choose this option again), or",
+                                "...die."
                             ]
                         },
                         gmoptions: {
@@ -9262,16 +9200,10 @@ const ITEM_DATA = {
                             result: "You ride out the pain and keep going."
                         },
                         partialSuccess: {
-                            result: "You are still standing, but the GM picks one condition:",
-                            listRefs: [
-                                "gmoptions"
-                            ]
+                            result: "You are still standing, but the GM picks one condition: %list:gmoptions%"
                         },
                         failure: {
-                            result: "The injury is overwhelming. You choose if you:",
-                            listRefs: [
-                                "options"
-                            ]
+                            result: "The injury is overwhelming. You choose if you... %list:options%"
                         }
                     },
                     subType: K4ItemSubType.activeRolled,
@@ -9279,7 +9211,7 @@ const ITEM_DATA = {
                 }
             },
             "Engage in Combat": {
-                name: "#>text-movename>Engage in Combat<#",
+                name: "Engage in Combat",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/engage-in-combat.svg",
                 data: {
@@ -9306,24 +9238,18 @@ const ITEM_DATA = {
                             result: "You inflict damage to your opponent and avoid counterattacks."
                         },
                         partialSuccess: {
-                            result: "You inflict damage, but at a cost. The GM chooses one:",
-                            listRefs: [
-                                "gmoptions"
-                            ]
+                            result: "You inflict damage, but at a cost. The GM chooses one: %list:gmoptions%"
                         },
                         failure: {
                             result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                        },
-                        listRefs: [
-                            "gmoptions"
-                        ]
+                        }
                     },
                     subType: K4ItemSubType.activeRolled,
                     attribute: K4Attribute.violence
                 }
             },
             "Help Other": {
-                name: "#>text-movename>Help Other<#",
+                name: "Help Other",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/help-other.svg",
                 data: {
@@ -9348,7 +9274,7 @@ const ITEM_DATA = {
                 }
             },
             "Hinder Other": {
-                name: "#>text-movename>Hinder Other<#",
+                name: "Hinder Other",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/hinder-other.svg",
                 data: {
@@ -9373,7 +9299,7 @@ const ITEM_DATA = {
                 }
             },
             "Influence Other NPC": {
-                name: "#>text-movename>Influence Other<# NPC",
+                name: "Influence Other NPC",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/influence-other-npc.svg",
                 data: {
@@ -9397,24 +9323,18 @@ const ITEM_DATA = {
                             result: "She does what you ask."
                         },
                         partialSuccess: {
-                            result: "She does what you ask, but the GM chooses one:",
-                            listRefs: [
-                                "gmoptions"
-                            ]
+                            result: "She does what you ask, but the GM chooses one: %list:gmoptions%"
                         },
                         failure: {
                             result: "Your attempt has unintended repercussions. #>text-gmtext>The GM makes a Move<#."
-                        },
-                        listRefs: [
-                            "gmoptions"
-                        ]
+                        }
                     },
                     subType: K4ItemSubType.activeRolled,
                     attribute: K4Attribute.charisma
                 }
             },
             "Influence Other PC": {
-                name: "#>text-movename>Influence Other PC<#",
+                name: "Influence Other PC",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/influence-other-pc.svg",
                 data: {
@@ -9434,13 +9354,13 @@ const ITEM_DATA = {
                     },
                     results: {
                         completeSuccess: {
-                            result: "Both options below.",
+                            result: "Gain the benefits of both options from the list below.",
                             listRefs: [
                                 "options"
                             ]
                         },
                         partialSuccess: {
-                            result: "Choose one option below.",
+                            result: "Choose one option from the list below.",
                             listRefs: [
                                 "options"
                             ]
@@ -9457,7 +9377,7 @@ const ITEM_DATA = {
                 }
             },
             "Investigate": {
-                name: "#>text-movename>Investigate<#",
+                name: "Investigate",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/investigate.svg",
                 data: {
@@ -9484,7 +9404,7 @@ const ITEM_DATA = {
                             ]
                         },
                         partialSuccess: {
-                            result: "You uncover all direct leads, and may additionally ask one question from the list below. The information comes at a cost, determined by the GM, such as requiring someone or something for the answer, exposing yourself to danger, or needing to expend extra time or resources. Will you do what it takes?.",
+                            result: "You uncover all direct leads, and may additionally ask one question from the list below. The information comes at a cost, determined by the GM, such as requiring someone or something for the answer, exposing yourself to danger, or needing to expend extra time or resources. Will you do what it takes?",
                             listRefs: [
                                 "questions"
                             ]
@@ -9501,7 +9421,7 @@ const ITEM_DATA = {
                 }
             },
             "Keep It Together": {
-                name: "#>text-movename>Keep It Together<#",
+                name: "Keep It Together",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/keep-it-together.svg",
                 data: {
@@ -9555,7 +9475,7 @@ const ITEM_DATA = {
                 }
             },
             "Observe a Situation": {
-                name: "#>text-movename>Observe a Situation<#",
+                name: "Observe a Situation",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/observe-a-situation.svg",
                 data: {
@@ -9605,7 +9525,7 @@ const ITEM_DATA = {
                 }
             },
             "Read a Person": {
-                name: "#>text-movename>Read a Person<#",
+                name: "Read a Person",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/read-a-person.svg",
                 data: {
@@ -9651,7 +9571,7 @@ const ITEM_DATA = {
                 }
             },
             "See Through the Illusion": {
-                name: "#>text-movename>See Through the Illusion<#",
+                name: "See Through the Illusion",
                 type: K4ItemType.move,
                 img: "systems/kult4th/assets/icons/move/see-through-the-illusion.svg",
                 data: {
@@ -9674,17 +9594,11 @@ const ITEM_DATA = {
                             result: "You perceive things as they truly are."
                         },
                         partialSuccess: {
-                            result: "You see Reality, but you also affect the Illusion. The GM chooses one:",
-                            listRefs: [
-                                "gmoptions"
-                            ]
+                            result: "You see Reality, but you also affect the Illusion. The GM chooses one: %list:gmoptions%"
                         },
                         failure: {
                             result: "The GM explains what you see. #>text-gmtext>The GM makes a Move<#."
-                        },
-                        listRefs: [
-                            "gmoptions"
-                        ]
+                        }
                     },
                     subType: K4ItemSubType.activeRolled,
                     attribute: K4Attribute.soul
@@ -9918,7 +9832,7 @@ const ITEM_DATA = {
                 }
             },
             "Occult Experience": {
-                name: "Occult #>text-keyword>Experience<#",
+                name: "Occult Experience",
                 type: K4ItemType.darksecret,
                 img: "systems/kult4th/assets/icons/darksecret/occult-experience.svg",
                 data: {

@@ -18,8 +18,8 @@
 			</p>
 			{{/unless}}
 
-			{{#each item.data.data.subItems as |subItem|}}
-			{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subItem}}
+			{{#each item.subMoves as |subMove|}}
+			{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subMove}}
 			{{/each}}
 
 			{{~#if item.data.data.rules.listRefs}}
@@ -44,7 +44,7 @@
 
 		{{#if item.data.data.rules.holdText}}
 		<span class="hold-header">This {{case "title" item.data.type}} grants Hold</span>
-		<span class="hold-body">{{item.data.data.rules.holdText}}</span>
+		<span class="hold-body">{{{formatForKult item.data.data.rules.holdText}}}</span>
 		{{/if}}
 		</div>
 
