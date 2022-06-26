@@ -8,6 +8,31 @@
 
 	--sheet-header-height: 30px;
 
+	.window-header {
+		.header-button {
+			right: -25px;
+			width: 30px;
+			text-align: right;
+
+			&:nth-of-type(1) { top: 32px }
+			&:nth-of-type(2) { top: 57px }
+			&:nth-of-type(3) { top: 82px }
+			&:nth-of-type(4) { top: 107px }
+			&:nth-of-type(5) { top: 132px }
+			&:nth-of-type(6) { top: 157px }
+
+			&:last-of-type {
+				display: initial;
+				top: 7px;
+
+				i {
+					font-size: 24px;
+					color: red;
+				}
+			}
+		}
+	}
+
 	.window-content {
 
 		form {
@@ -84,44 +109,40 @@
 					hyphens: auto;
 					text-align: justify;
 
-					.text-keyword {
+					.text-tag {
 						color: var(--blue);
 						font-weight: bold;
-						font-style: normal;
 						text-shadow: none;
-					}
+						display: inline !important;
+						border: none !important;
 
-					.text-movename {
-						color: var(--blue);
-						font-weight: bold;
-						font-style: italic;
-						text-shadow: none;
+						& + .text-tag {
+							padding: 0 2.5px;
+						}
+
+						&.text-negmod,
+						&.text-negmod + .text-keyword {
+							color: var(--red);
+						}
+
+						&.text-gmtext {
+							color: var(--red);
+							font-weight: 900;
+						}
+
+						&.text-movename {
+							font-style: italic;
+						}
 					}
 
 					.text-trigger {
-						// color: var(--gold-brightest);
-						font-style: normal;
-						// background: var(--black);
-						// padding: 4px 6px;
-						// font-weight: normal;
-						// display: inline-block;
-						// margin-top: -4px;
+						font-style: italic;
 						text-shadow: none;
-						font-weight: 900;
-					}
-
-					.edge-name {
 						font-weight: 900;
 					}
 
 					.text-extra-bold {
 						font-weight: 900;
-					}
-
-					.text-gmtext {
-						color: var(--red);
-						font-weight: 900;
-						text-shadow: none;
 					}
 
 					.rules-text {
@@ -195,6 +216,10 @@
 								border-bottom-style: solid;
 								border-bottom-width: 3px;
 								border-image: linear-gradient(to right, var(--gold), transparent 75%) 1;
+							}
+
+							&:last-of-type span {
+								border-bottom: none;
 							}
 						}
 

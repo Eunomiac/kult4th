@@ -702,9 +702,6 @@ const objClean = <T>(data: T, remVals: Array<false|null|undefined|""|0|Record<st
 };
 
 
-
-
-
 export function toDict<T extends List, K extends string & KeyOf<T>, V extends ValueOf<T>>(items: T[], key: K): V extends key ? Record<V,T> : never {
 	const dict = {} as Record<V,T>;
 	const mappedItems = items

@@ -1,4 +1,3 @@
-import C from "./constants.js";
 import U from "./utilities.js";
 import { K4ItemType } from "../documents/K4Item.js";
 export function MIX(derivedCtor, baseCtors) {
@@ -12,33 +11,9 @@ export function MIX(derivedCtor, baseCtors) {
     });
     return derivedCtor;
 }
-function formatStringForKult(str) {
-    // Add red gm-styling to GM Hold/Move prompts
-    Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
-        str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
-    });
-    // Add keyword flagging to keywords and Attributes
-    [
-        ...Object.values(C.RegExpPatterns.Attributes),
-        ...Object.values(C.RegExpPatterns.Keywords)
-    ].forEach((pat) => {
-        str = str.replace(pat, "<strong class='text-keyword'>$1</strong>");
-    });
-    // Add italic move-name flagging to basic player move names
-    Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
-        str = str.replace(pat, "<em class='text-movename'>$1</em>");
-    });
-    // Add highlighting to edge names
-    if (/&mdash;/.test(str)) {
-        const [edgeName, edgeEffect] = str.split(/\s+&mdash;\s+/);
-        str = [
-            "<span class='edge-name'>",
-            edgeName,
-            "</span> &mdash; ",
-            edgeEffect
-        ].join("");
-    }
-    return str;
+export function formatStringForKult(str) {
+    // Apply spans around all hash-tag indicators
+    return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
 }
 export const HandlebarHelpers = {
     "test": function (param1, operator, param2) {
@@ -71,18 +46,23 @@ export const HandlebarHelpers = {
         return !Object.values(args).flat().join("");
     },
     "formatForKult": function (str, context) {
+        // Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
         const iData = context.data.root.data;
-        console.log(`[FormatForKult] '${str}'`, context, this);
-        str = str.replace(/(\S+?)%([^%]+)%/g, (_, prefix, refStr) => {
+        console.log("[FormatForKult]", { str, iData, "this": this });
+        str = str.replace(/(\S+?)?%([^%\s]+)%/g, (_, prefix, refStr) => {
             if (/^data\./.test(refStr)) {
                 const key = refStr.split(".").pop();
+                console.log("[FormatForKult] Found DATA. Key =", key);
                 if ([K4ItemType.attack, K4ItemType.move].includes(iData.type)) {
-                    return formatStringForKult(`${prefix}${U.tCase(iData.data[key])}`);
+                    // return `|NOLINK|${prefix}${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])}||`;
+                    return `${prefix}${U.tCase(iData.data[key])}`;
                 }
-                return formatStringForKult(`to <span class='text-movename inline-move'>${this.name}</span> (${prefix}${U.tCase(iData.data[key])})`);
+                // return `|LINK|${prefix}${U.tCase(iData.data[key as KeyOf<typeof iData["data"]>])}||`;
+                return formatStringForKult(`to <a class='item-button' data-action='edit' data-item-name='${this.name}'>#>text-movename>${this.name}<#</a> (${prefix}${U.tCase(iData.data[key])})`);
             }
             else if (/^list:/.test(refStr)) {
                 const listKey = refStr.split(":").pop();
+                console.log(`[FormatForKult] Found LIST. Key = ${listKey}`, iData.data.lists);
                 if (listKey && (listKey in iData.data.lists)) {
                     return [
                         `<ul class='inline-list list-${listKey}'>`,

@@ -45,6 +45,7 @@ const ANIMATIONS = {
         }, 0);
     },
     hoverMove(target, context, isDerivedMove = true) {
+        const FULL_DURATION = 0.5;
         const attribute = $(target).data("attribute");
         const itemText$ = $(target).find(".item-text");
         const itemIcon$ = $(target).find(".item-icon");
@@ -58,7 +59,7 @@ const ANIMATIONS = {
         }, {
             width: "100%",
             borderRadius: 0,
-            duration: 0.75,
+            duration: FULL_DURATION,
             backgroundColor: C.Colors["GOLD +1"],
             ease: "sine"
         }, 0).fromTo(itemText$, {
@@ -76,14 +77,14 @@ const ANIMATIONS = {
                 ...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
                 ...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
             ].join(", "),
-            duration: 0.75,
+            duration: FULL_DURATION,
             ease: "back"
         }, 0).set(itemText$, {
             opacity: 0
         }, 0.01)
             .to(itemText$, {
             opacity: 1,
-            duration: 0.75,
+            duration: FULL_DURATION - 0.01,
             ease: "sine"
         }, 0.01).fromTo($(target).find(".trigger-tooltip"), {
             opacity: 0,
@@ -93,20 +94,31 @@ const ANIMATIONS = {
             opacity: 1,
             bottom: 30,
             scale: 1,
-            duration: 0.5,
+            duration: 0.75 * FULL_DURATION,
             ease: "power2.in"
         }, 0);
         if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
+            const animation$ = context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`);
             tl
-                .fromTo(context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`), {
-                opacity: 0,
-                filter: "blur(20px)"
+                .fromTo(animation$, {
+                opacity: 0
             }, {
                 opacity: 1,
-                filter: "none",
-                duration: 1,
+                duration: FULL_DURATION,
                 ease: "sine"
             }, 0);
+            // .fromTo(
+            // 	animation$,
+            // 	{
+            // 		filter: "blur(40px)"
+            // 	},
+            // 	{
+            // 		filter: "none",
+            // 		duration: FULL_DURATION,
+            // 		ease: "sine"
+            // 	},
+            // 	0
+            // );
         }
         return tl;
     }
@@ -171,7 +183,7 @@ export default class K4PCSheet extends ActorSheet {
             positionDisplays[key]?.text(String(U.pFloat(data, 3)));
         }
         $(() => {
-            console.log("SHEET HTML OBJECT", html);
+            console.log("ACTOR SHEET HTML OBJECT", html);
             const hoverTimelines = [];
             html.find(".nav-panel")
                 .each(function initNavPanel() {
@@ -236,9 +248,9 @@ export default class K4PCSheet extends ActorSheet {
             // 	.each(function initHeaderButtons() {
             // 		gsap.set(this, {scale: 2, opacity: 0, y: 100});
             // 	});
-            html.find(".item-button[data-action=\"edit\"]")
+            html.find("*[data-action=\"edit\"]")
                 .each(function addItemEditEvents() {
-                const iName = $(this).attr("data-move");
+                const iName = $(this).attr("data-item-name");
                 if (iName) {
                     $(this).on("click", () => self.actor.getItemByName(iName)?.sheet?.render(true));
                 }

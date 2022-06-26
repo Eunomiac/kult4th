@@ -1,11 +1,11 @@
 import { K4ItemType } from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-export var ActorType;
-(function (ActorType) {
-    ActorType["pc"] = "pc";
-    ActorType["npc"] = "npc";
-})(ActorType || (ActorType = {}));
+export var K4ActorType;
+(function (K4ActorType) {
+    K4ActorType["pc"] = "pc";
+    K4ActorType["npc"] = "npc";
+})(K4ActorType || (K4ActorType = {}));
 console.log("test");
 // EmbeddedCollection<K4Item<K4ItemType>, ActorData>
 export default class K4Actor extends Actor {

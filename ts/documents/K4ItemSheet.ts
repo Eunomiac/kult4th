@@ -7,6 +7,7 @@ import U from "../scripts/utilities.js";
 import C from "../scripts/constants.js";
 import {ToObjectFalseType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
 import {stringify} from "querystring";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 
 type K4ItemSheetOptions = DocumentSheetOptions & {
 	testing: true
@@ -37,35 +38,35 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 	isWeapon(): this is K4ItemSheet<K4ItemType.weapon> { return this.type === "weapon" }
 	isGear(): this is K4ItemSheet<K4ItemType.gear> { return this.type === "gear" }
 
-	parseHTMLString(str: string, containerClass = "rules-text"): string {
-		Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
-			str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
-		});
-		str = str.replace(/\+?%([^%]+)%/g, (match, refStr: string, ...args: any[]) => {
-			if (/^data\./.test(refStr)) {
-				const key = refStr.split(".").pop();
-				return `<strong class='text-keyword'>+${U.tCase(this.data[key as KeyOf<this["data"]>])}</strong>`;
-			} else if (/^lists:/.test(refStr)) {
-				const [,listKey] = refStr.split(/:/);
-				return this.getListHTML(listKey);
-			} else if (/^n$/.test(refStr)) {
-				return "<br><br>";
-			}
-			return refStr;
-		}).replace(/(<br>){2,}/g, "<br><br>");
-		[
-			...Object.values(C.RegExpPatterns.Attributes),
-			...Object.values(C.RegExpPatterns.Keywords)
-		].forEach((pat) => {
-			str = str.replace(pat, "<strong class='text-keyword'>$1</strong>");
-		});
-		Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
-			str = str.replace(pat, "<em class='text-movename'>$1</em>");
-		});
-		return str;
-	}
+	// parseHTMLString(str: string, containerClass = "rules-text"): string {
+	// 	Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
+	// 		str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
+	// 	});
+	// 	str = str.replace(/\+?%([^%]+)%/g, (match, refStr: string, ...args: any[]) => {
+	// 		if (/^data\./.test(refStr)) {
+	// 			const key = refStr.split(".").pop();
+	// 			return `<strong class='text-keyword'>+${U.tCase(this.data[key as KeyOf<this["data"]>])}</strong>`;
+	// 		} else if (/^lists:/.test(refStr)) {
+	// 			const [,listKey] = refStr.split(/:/);
+	// 			return this.getListHTML(listKey);
+	// 		} else if (/^n$/.test(refStr)) {
+	// 			return "<br><br>";
+	// 		}
+	// 		return refStr;
+	// 	}).replace(/(<br>){2,}/g, "<br><br>");
+	// 	[
+	// 		...Object.values(C.RegExpPatterns.Attributes),
+	// 		...Object.values(C.RegExpPatterns.Keywords)
+	// 	].forEach((pat) => {
+	// 		str = str.replace(pat, "<strong class='text-keyword'>$1</strong>");
+	// 	});
+	// 	Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
+	// 		str = str.replace(pat, "<em class='text-movename'>$1</em>");
+	// 	});
+	// 	return str;
+	// }
 
-	private get outroHTML(): string | string[] {
+	/* 	private get outroHTML(): string | string[] {
 		if (!this.data.rules.outro) { return "" }
 		const {data} = this;
 		switch (this.type) {
@@ -141,7 +142,7 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 			}
 		});
 		return lists.join("");
-	}
+	} */
 	/* private get resultsSummary(): string {
 		const parseResultHTML = (resultsData, resultType) => {
 			const listHTML: string[] = [];
@@ -203,6 +204,25 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 	// }
 
 	override activateListeners(html: JQuery<HTMLElement>): void {
+		super.activateListeners(html);
+		const self = this;
+
+		$(() => {
+			console.log("ITEM SHEET HTML OBJECT", html);
+
+			html.find("*[data-action=\"edit\"]")
+				.each(function addItemEditEvents() {
+					const iName = $(this).attr("data-item-name");
+					if (iName) {
+						if (self.document.isEmbedded) {
+							$(this).on("click", () => (self.actor as K4Actor<K4ActorType>)?.getItemByName(iName)?.sheet?.render(true));
+						} else {
+							$(this).on("click", () => Array.from(C.game.items ?? []).find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type as K4ItemType) && item.name === iName)?.sheet?.render(true));
+						}
+					}
+				});
+
+		});
 
 		// Apply custom styles to TinyMCE editors
 		// const editors = Object.values(this.editors);

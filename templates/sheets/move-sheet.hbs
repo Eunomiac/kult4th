@@ -23,6 +23,21 @@
 					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
 					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(9—14)" result=data.data.results.partialSuccess.result}}
 					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
+					{{~#if data.data.results.listRefs}}
+						{{~#with data.data.lists as |LISTS|}}
+						{{~#each ../data.data.results.listRefs as |listKey|}}
+							{{~#with (lookup LISTS listKey) as |listData|}}
+							<h2 class="list-name">{{listData.name}}</h2>
+							{{~#if listData.intro}}<span class="list-intro">{{{formatForKult listData.intro}}}</span>{{/if}}
+							<ul class="rules-list list-{{listKey}}">
+								{{#each listData.items as |item|}}
+								<li>{{{formatForKult item}}}</li>
+								{{/each}}
+							</ul>
+							{{/with}}
+						{{/each}}
+						{{/with}}
+					{{/if}}
 					</p>
 					{{/if}}
 

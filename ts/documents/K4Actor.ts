@@ -3,13 +3,13 @@ import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
 
-export enum ActorType {
+export enum K4ActorType {
 	pc = "pc",
 	npc = "npc"
 }
 console.log("test");
 // EmbeddedCollection<K4Item<K4ItemType>, ActorData>
-export default class K4Actor<Type extends ActorType> extends Actor {
+export default class K4Actor<Type extends K4ActorType> extends Actor {
 	declare data: K4ActorData<Type>;
 	override get items() { return super.items as EmbeddedCollection<typeof K4Item, ActorData> }
 
@@ -53,9 +53,9 @@ export default class K4Actor<Type extends ActorType> extends Actor {
 		return attrList.map((attrName) => ({
 			name: U.tCase(attrName),
 			key: attrName,
-			min: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].min,
-			max: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].max,
-			value: this.data.data.attributes[attrName as keyof K4ActorData<ActorType>["data"]["attributes"]].value
+			min: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].min,
+			max: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].max,
+			value: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].value
 		})) as Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
 	}
 	get attributes() {

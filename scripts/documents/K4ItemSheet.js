@@ -2,8 +2,7 @@
 // 	Options extends ItemSheet.Options = ItemSheet.Options,
 // 	Data extends object = ItemSheet.Data<Options>
 // 	> extends DocumentSheet<Options, Data, InstanceType<ConfiguredDocumentClass<typeof Item>>> {
-import { K4ItemSubType, K4ItemType } from "./K4Item.js";
-import U from "../scripts/utilities.js";
+import { K4ItemType } from "./K4Item.js";
 import C from "../scripts/constants.js";
 export default class K4ItemSheet extends ItemSheet {
     static get defaultOptions() {
@@ -27,40 +26,36 @@ export default class K4ItemSheet extends ItemSheet {
     isRelation() { return this.type === "relation"; }
     isWeapon() { return this.type === "weapon"; }
     isGear() { return this.type === "gear"; }
-    parseHTMLString(str, containerClass = "rules-text") {
-        Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
-            str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
-        });
-        str = str.replace(/\+?%([^%]+)%/g, (match, refStr, ...args) => {
-            if (/^data\./.test(refStr)) {
-                const key = refStr.split(".").pop();
-                return `<strong class='text-keyword'>+${U.tCase(this.data[key])}</strong>`;
-            }
-            else if (/^lists:/.test(refStr)) {
-                const [, listKey] = refStr.split(/:/);
-                return this.getListHTML(listKey);
-            }
-            else if (/^n$/.test(refStr)) {
-                return "<br><br>";
-            }
-            return refStr;
-        }).replace(/(<br>){2,}/g, "<br><br>");
-        [
-            ...Object.values(C.RegExpPatterns.Attributes),
-            ...Object.values(C.RegExpPatterns.Keywords)
-        ].forEach((pat) => {
-            str = str.replace(pat, "<strong class='text-keyword'>$1</strong>");
-        });
-        Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
-            str = str.replace(pat, "<em class='text-movename'>$1</em>");
-        });
-        return str;
-    }
-    get outroHTML() {
-        if (!this.data.rules.outro) {
-            return "";
-        }
-        const { data } = this;
+    // parseHTMLString(str: string, containerClass = "rules-text"): string {
+    // 	Object.values(C.RegExpPatterns.GMText).forEach((pat) => {
+    // 		str = str.replace(pat, "<strong class='text-gmtext'>$1</strong>");
+    // 	});
+    // 	str = str.replace(/\+?%([^%]+)%/g, (match, refStr: string, ...args: any[]) => {
+    // 		if (/^data\./.test(refStr)) {
+    // 			const key = refStr.split(".").pop();
+    // 			return `<strong class='text-keyword'>+${U.tCase(this.data[key as KeyOf<this["data"]>])}</strong>`;
+    // 		} else if (/^lists:/.test(refStr)) {
+    // 			const [,listKey] = refStr.split(/:/);
+    // 			return this.getListHTML(listKey);
+    // 		} else if (/^n$/.test(refStr)) {
+    // 			return "<br><br>";
+    // 		}
+    // 		return refStr;
+    // 	}).replace(/(<br>){2,}/g, "<br><br>");
+    // 	[
+    // 		...Object.values(C.RegExpPatterns.Attributes),
+    // 		...Object.values(C.RegExpPatterns.Keywords)
+    // 	].forEach((pat) => {
+    // 		str = str.replace(pat, "<strong class='text-keyword'>$1</strong>");
+    // 	});
+    // 	Object.values(C.RegExpPatterns.BasicPlayerMoves).forEach((pat) => {
+    // 		str = str.replace(pat, "<em class='text-movename'>$1</em>");
+    // 	});
+    // 	return str;
+    // }
+    /* 	private get outroHTML(): string | string[] {
+        if (!this.data.rules.outro) { return "" }
+        const {data} = this;
         switch (this.type) {
             case K4ItemType.attack:
             case K4ItemType.move: {
@@ -75,7 +70,10 @@ export default class K4ItemSheet extends ItemSheet {
                     case K4ItemSubType.activeStatic:
                     case K4ItemSubType.activeRolled: {
                         return this.moves.map((move) => this.parseHTMLString((move.data.rules.outro ?? "")
-                            .replace(/roll \+%data\.attribute%/g, "roll to \$MOVENAME\$ (+%data.attribute%)")), "rules-text");
+                            .replace(
+                                /roll \+%data\.attribute%/g,
+                                "roll to \$MOVENAME\$ (+%data.attribute%)"
+                            )), "rules-text");
                     }
                     default: {
                         return "";
@@ -90,22 +88,21 @@ export default class K4ItemSheet extends ItemSheet {
                 return "";
         }
     }
-    getListHTML(listKey) {
-        const listHTML = [];
+    getListHTML(listKey: KeyOf<typeof this["data"]["lists"]> | "inlineAttacks"): string {
+        const listHTML: string[] = [];
         if (this.data.lists[listKey]) {
-            const { name, items, intro } = this.data.lists[listKey];
+            const {name, items, intro} = this.data.lists[listKey];
             listHTML.push(`<h2 class='list-name'>${name}</h2>`);
             if (intro) {
                 listHTML.push(`<p>${intro}</p>`);
             }
             listHTML.push(`<ul class='list-${String(listKey)}'>`);
-            items.forEach((item) => {
+            items.forEach((item: string) => {
                 listHTML.push(`<li>${item}</li>`);
             });
             listHTML.push("</ul>");
             return listHTML.join("");
-        }
-        else if (listKey === "inlineAttacks" && this.attacks.length) {
+        } else if (listKey === "inlineAttacks" && this.attacks.length) {
             const isShowingRange = this.attacks.some((attack) => attack.data.range.join("") !== this.attacks[0].data.range.join(""));
             return this.attacks.map((attack) => [
                 "<span class='inline-attack'>",
@@ -115,25 +112,24 @@ export default class K4ItemSheet extends ItemSheet {
                 isShowingRange
                     ? `<span class='attack-range'>[${attack.data.range.length === 1
                         ? attack.data.range[0]
-                        : `${attack.data.range[0]}—${U.getLast(attack.data.range)}`}]</span>`
+                        : `${attack.data.range[0]}—${U.getLast(attack.data.range)}`
+                    }]</span>`
                     : "",
                 "</span>"
             ].join("")).join("");
         }
         return "";
     }
-    get rulesListHTML() {
-        if (!this.data.rules.listRefs?.length) {
-            return "";
-        }
-        const lists = [];
-        this.data.rules.listRefs.forEach((listKey) => {
+    private get rulesListHTML(): string {
+        if (!this.data.rules.listRefs?.length) { return "" }
+        const lists: string[] = [];
+        this.data.rules.listRefs.forEach((listKey: string) => {
             if (!(new RegExp(`${listKey}%`)).test(this.data.rules.intro + this.data.rules.trigger + this.data.rules.outro)) {
                 lists.push(this.getListHTML(listKey));
             }
         });
         return lists.join("");
-    }
+    } */
     /* private get resultsSummary(): string {
         const parseResultHTML = (resultsData, resultType) => {
             const listHTML: string[] = [];
@@ -191,6 +187,23 @@ export default class K4ItemSheet extends ItemSheet {
     // 	return Object.assign(data, handlebarsData);
     // }
     activateListeners(html) {
+        super.activateListeners(html);
+        const self = this;
+        $(() => {
+            console.log("ITEM SHEET HTML OBJECT", html);
+            html.find("*[data-action=\"edit\"]")
+                .each(function addItemEditEvents() {
+                const iName = $(this).attr("data-item-name");
+                if (iName) {
+                    if (self.document.isEmbedded) {
+                        $(this).on("click", () => self.actor?.getItemByName(iName)?.sheet?.render(true));
+                    }
+                    else {
+                        $(this).on("click", () => Array.from(C.game.items ?? []).find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type) && item.name === iName)?.sheet?.render(true));
+                    }
+                }
+            });
+        });
         // Apply custom styles to TinyMCE editors
         // const editors = Object.values(this.editors);
         // <div>{{editor content=data.trigger target="data.trigger" button=true owner=owner editable=editable}}</div>

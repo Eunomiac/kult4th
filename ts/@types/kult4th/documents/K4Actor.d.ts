@@ -4,7 +4,7 @@ import C from "../../../scripts/constants";
 
 import * as ACTORDATA from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
 import K4Actor from "../../../documents/K4Actor";
-import {ActorType} from "../../../documents/K4Actor";
+import {K4ActorType} from "../../../documents/K4Actor";
 
 import K4PCSheet from '../../../documents/K4PCSheet';
 import K4NPCSheet from '../../../documents/K4NPCSheet';
@@ -25,7 +25,7 @@ declare global {
 		export type Passive = keyof typeof C.Attributes.Passive;
 	}
 
-	interface K4ActorData<Type extends ActorType> extends ActorData {
+	interface K4ActorData<Type extends K4ActorType> extends ActorData {
 		data: ActorData["data"] & {
 			archetype: Archetype.Any,
 			description: string,
@@ -113,7 +113,7 @@ declare global {
 
 			attributes: Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
 
-			actorData: ToObjectFalseType<K4Actor<ActorType.pc>>
+			actorData: ToObjectFalseType<K4Actor<K4ActorType.pc>>
 		}
 	}
 }

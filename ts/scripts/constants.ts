@@ -157,7 +157,8 @@ export const RegExpPatterns = {
 		"\\bStability\\b( \\(.?\\d+\\))?",
 		"\\bRelation\\b( .?\\d+)?",
 		"[^ :a-z()]+ ongoing\\b",
-		"\\b(Serious |Critical |\\d+ )?Wounds?\\b"
+		"\\b(Serious |Critical |\\d+ )?Wounds?\\b",
+		"(\\d+\\s+|\\b[Oo]ne\\s+)?\\bExperience"
 	].map((patStr) => new RegExp(`(${patStr})`, "g")),
 	GMText: [
 		/\b([Tt]he GM (?:may )?makes? a (?:hard |soft )?Move)\b/g,
@@ -166,6 +167,7 @@ export const RegExpPatterns = {
 };
 
 const C = {
+	get game() { return game as Game },
 	SYSTEM_ID: "kult4th",
 	SYSTEM_NAME: "Kult: Divinity Lost",
 	SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",

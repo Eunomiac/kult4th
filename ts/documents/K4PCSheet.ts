@@ -1,6 +1,6 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import K4Actor, {ActorType} from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import gsap, {GSDevTools} from "gsap/all";
 
 const ANIMATIONS = {
@@ -64,6 +64,8 @@ const ANIMATIONS = {
 			);
 	},
 	hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
+		const FULL_DURATION = 0.5;
+
 		const attribute = $(target).data("attribute");
 		const itemText$ = $(target).find(".item-text");
 		const itemIcon$ = $(target).find(".item-icon");
@@ -80,7 +82,7 @@ const ANIMATIONS = {
 				{
 					width: "100%",
 					borderRadius: 0,
-					duration: 0.75,
+					duration: FULL_DURATION,
 					backgroundColor: C.Colors["GOLD +1"],
 					ease: "sine"
 				},
@@ -103,7 +105,7 @@ const ANIMATIONS = {
 						...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
 						...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
 					].join(", "),
-					duration: 0.75,
+					duration: FULL_DURATION,
 					ease: "back"
 				},
 				0
@@ -118,7 +120,7 @@ const ANIMATIONS = {
 				itemText$,
 				{
 					opacity: 1,
-					duration: 0.75,
+					duration: FULL_DURATION - 0.01,
 					ease: "sine"
 				},
 				0.01
@@ -133,28 +135,39 @@ const ANIMATIONS = {
 					opacity: 1,
 					bottom: 30,
 					scale: 1,
-					duration: 0.5,
+					duration: 0.75 * FULL_DURATION,
 					ease: "power2.in"
 				},
 				0
 			);
 
 		if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
+			const animation$ = context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`);
 			tl
 				.fromTo(
-					context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`),
+					animation$,
 					{
-						opacity: 0,
-						filter: "blur(20px)"
+						opacity: 0
 					},
 					{
 						opacity: 1,
-						filter: "none",
-						duration: 1,
+						duration: FULL_DURATION,
 						ease: "sine"
 					},
 					0
 				);
+			// .fromTo(
+			// 	animation$,
+			// 	{
+			// 		filter: "blur(40px)"
+			// 	},
+			// 	{
+			// 		filter: "none",
+			// 		duration: FULL_DURATION,
+			// 		ease: "sine"
+			// 	},
+			// 	0
+			// );
 		}
 
 		return tl;
@@ -173,7 +186,7 @@ export default class K4PCSheet extends ActorSheet<K4PCSheet.Options, K4PCSheet.D
 	}
 	override get template() { return "systems/kult4th/templates/sheets/pc-sheet.hbs" }
 
-	override get actor() { return super.actor as K4Actor<ActorType.pc> }
+	override get actor() { return super.actor as K4Actor<K4ActorType.pc> }
 
 	hoverTimeline?: gsapAnim;
 	hoverTimelineTarget?: HTMLElement;
@@ -232,7 +245,7 @@ export default class K4PCSheet extends ActorSheet<K4PCSheet.Options, K4PCSheet.D
 		}
 
 		$(() => {
-			console.log("SHEET HTML OBJECT", html);
+			console.log("ACTOR SHEET HTML OBJECT", html);
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
 
 			html.find(".nav-panel")
@@ -310,9 +323,9 @@ export default class K4PCSheet extends ActorSheet<K4PCSheet.Options, K4PCSheet.D
 			// 		gsap.set(this, {scale: 2, opacity: 0, y: 100});
 			// 	});
 
-			html.find(".item-button[data-action=\"edit\"]")
+			html.find("*[data-action=\"edit\"]")
 				.each(function addItemEditEvents() {
-					const iName = $(this).attr("data-move");
+					const iName = $(this).attr("data-item-name");
 					if (iName) {
 						$(this).on("click", () => self.actor.getItemByName(iName)?.sheet?.render(true));
 					}

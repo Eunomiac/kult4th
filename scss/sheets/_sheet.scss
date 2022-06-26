@@ -52,6 +52,8 @@
 			&:nth-of-type(5) { top: 175px }
 			&:nth-of-type(6) { top: 200px }
 
+			&:last-of-type { top: 50px }
+
 			i {
 				font-size: 16px;
 				text-shadow:
@@ -131,6 +133,10 @@
 			--border-width: 1px;
 			--icon-size: 28px;
 			--icon-margin: calc((30px - var(--icon-size)) / 2);
+			--icon-background: var(--black);
+			--icon-filter: none;
+			--popout-background: var(--gold);
+			--popout-spacer-color: var(--black);
 			position: relative;
 			height: 30px;
 			white-space: nowrap;
@@ -138,6 +144,7 @@
 			.item-icon {
 				position: relative;
 				display: inline-block;
+				background: var(--icon-background);
 				background-position: center center;
 				background-repeat: no-repeat;
 				vertical-align: top;
@@ -147,6 +154,7 @@
 				transform-origin: center center;
 				box-sizing: border-box;
 				border: var(--border-width) solid var(--gold);
+				border-radius: calc(var(--icon-size) / 2);
 				overflow: hidden;
 				white-space: nowrap;
 				z-index: 1;
@@ -160,6 +168,7 @@
 					margin-bottom: calc(-1 * var(--border-width) - 1px);
 					left: calc(-1 * var(--border-width) - 1px);
 					margin-right: calc(-1 * var(--border-width) - 1px);
+					filter: var(--icon-filter);
 				}
 
 				.item-button {
@@ -168,29 +177,19 @@
 					display: inline-block;
 					height: 100%;
 					width: calc((100% - var(--icon-size)) / 4);
+					background: linear-gradient(
+						to right,
+						var(--popout-spacer-color) 15%,
+						var(--popout-background) 15%,
+						var(--popout-background) 85%,
+						var(--popout-spacer-color) 85%
+					);
 					font-weight: 700;
 					line-height: 28px;
 					font-size: 11px;
 					text-align: center;
 					text-shadow: 0 0 var(--black);
 					vertical-align: top;
-				}
-
-				&.active-move {
-					border-radius: calc(var(--icon-size) / 2);
-					background: var(--gold);
-
-					img {
-						filter: invert(1);
-					}
-
-					.item-button {
-						background: linear-gradient(90deg, var(--black) 15%, var(--gold) 15%, var(--gold) 85%, var(--black) 85%);
-					}
-				}
-
-				&.passive-move {
-
 				}
 			}
 
@@ -247,6 +246,20 @@
 				padding: 4px;
 				background: var(--black);
 				border-radius: 20px;
+			}
+
+			&.basic-move-item {
+				--icon-background: var(--gold);
+				--popout-background: var(--gold);
+				--popout-spacer-color: var(--black);
+				.item-icon {
+					&.active-item {
+					--icon-filter: invert(1);
+					}
+					&.passive-item {
+					--icon-filter: invert(1) brightness(0.5);
+					}
+				}
 			}
 		}
 
