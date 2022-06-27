@@ -2,12 +2,10 @@
 // 	Options extends ItemSheet.Options = ItemSheet.Options,
 // 	Data extends object = ItemSheet.Data<Options>
 // 	> extends DocumentSheet<Options, Data, InstanceType<ConfiguredDocumentClass<typeof Item>>> {
-import K4Item, {K4ItemSubType, K4ItemType} from "./K4Item.js";
+import K4Item from "./K4Item.js";
 import U from "../scripts/utilities.js";
 import C from "../scripts/constants.js";
-import {ToObjectFalseType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
-import {stringify} from "querystring";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Actor from "./K4Actor.js";
 
 type K4ItemSheetOptions = DocumentSheetOptions & {
 	testing: true
@@ -26,8 +24,8 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet<K4It
 	get data() { return this.item.data.data }
 	get subType() { return this.data.subType as K4ItemSubType }
 	get subItems() { return this.item.subItemData }
-	get subMoves() { return this.item.subMoves }
-	get attacks() { return this.item.subAttacks }
+	get subMoves() { return this.item.subMoveData }
+	get attacks() { return this.item.subAttackData }
 
 	isMove(): this is K4ItemSheet<K4ItemType.move> { return this.type === "move" }
 	isAttack(): this is K4ItemSheet<K4ItemType.attack> { return this.type === "attack" }

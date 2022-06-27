@@ -1,7 +1,6 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
 import C, {K4Attribute} from "../../scripts/constants.js";
 import U from "../../scripts/utilities.js";
-import {K4ItemType, K4ItemSubType} from "../../documents/K4Item.js";
 import {FolderDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/folderData.js";
 // #endregion ▮▮▮▮[IMPORTS]▮▮▮▮
 // #region ▮▮▮▮▮▮▮ UTILITY ▮▮▮▮▮▮▮ ~
@@ -9251,7 +9250,7 @@ const ITEM_DATA: Partial<Record<
 					isCustom: false,
 					rules: {
 						trigger: "When enduring an injury,",
-						outro: "roll #>text-rolltrait>+%data.attribute%<# +#>text-keyword>Armor<# −#>text-negmod text-keyword>Harm<#.",
+						outro: "roll #>text-rolltrait>+%data.attribute%<# #>text-keyword>+Armor<# #>text-negmod text-keyword>−Harm<#.",
 						effectFunctions: [
 							"Add #>text-keyword>Armor<# and subtract #>text-keyword text-negmod>Harm<# from #>text-rolltrait>Fortitude<# roll"
 						]

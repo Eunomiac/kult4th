@@ -1,6 +1,6 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Actor from "./K4Actor.js";
 import gsap, {GSDevTools} from "gsap/all";
 
 const ANIMATIONS = {

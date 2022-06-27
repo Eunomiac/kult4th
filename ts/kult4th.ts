@@ -1,5 +1,5 @@
 import K4Actor from "./documents/K4Actor.js";
-import K4Item, {K4ItemType, K4ItemSubType, K4ItemResultType} from "./documents/K4Item.js";
+import K4Item from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";

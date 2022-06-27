@@ -12,6 +12,42 @@ declare global {
 	// 	data:
 	// }
 
+	declare const enum K4ItemType {
+		advantage = "advantage",
+		disadvantage = "disadvantage",
+		move = "move",
+		darksecret = "darksecret",
+		relation = "relation",
+		gear = "gear",
+		attack = "attack",
+		weapon = "weapon"
+	}
+
+	declare const enum K4ItemSubType {
+		activeRolled = "active-rolled",
+		activeStatic = "active-static",
+		passive = "passive"
+	}
+	declare const enum K4ItemRange {
+		arm = "arm",
+		room = "room",
+		field = "field",
+		horizon = "horizon"
+	}
+	declare const enum K4WeaponClass {
+		meleeUnarmed = "melee-unarmed",
+		meleeCrush = "melee-crush",
+		meleeSlash = "melee-slash",
+		meleeStab = "melee-stab",
+		firearm = "firearm",
+		bomb = "bomb"
+	}
+	declare const enum K4ItemResultType {
+		completeSuccess = "completeSuccess",
+		partialSuccess = "partialSuccess",
+		failure = "failure"
+	}
+
 	type WeaponSubClass<T extends K4WeaponClass> =
 		T extends K4WeaponClass.meleeUnarmed ? ("")
 	: T extends K4WeaponClass.meleeCrush ? ("")

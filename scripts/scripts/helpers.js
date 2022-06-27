@@ -1,5 +1,4 @@
 import U from "./utilities.js";
-import { K4ItemType } from "../documents/K4Item.js";
 export function MIX(derivedCtor, baseCtors) {
     baseCtors.forEach(baseCtor => {
         Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
@@ -55,7 +54,7 @@ export const HandlebarHelpers = {
             if (/^data\./.test(refStr)) {
                 const key = refStr.split(".").pop();
                 console.log("[FormatForKult] Found DATA. Key =", key);
-                if ([K4ItemType.attack, K4ItemType.move].includes(iData.type)) {
+                if (["attack" /* K4ItemType.attack */, "move" /* K4ItemType.move */].includes(iData.type)) {
                     return formatStringForKult([
                         spanTag ? `#>${spanTag}>` : "",
                         prefix,

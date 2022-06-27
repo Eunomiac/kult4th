@@ -1,5 +1,4 @@
 import C from "./constants.js";
-import {K4ItemType} from "../documents/K4Item.js";
 
 function getSVGDefs(fillGradient: [string, string], strokeGradient: [string, string]) {
 	return [

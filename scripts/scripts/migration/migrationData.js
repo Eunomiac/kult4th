@@ -1,4 +1,3 @@
-import { K4ItemType, K4ItemSubType } from "../../documents/K4Item.js";
 export const UNMIGRATED_DATA = {
     "Academic Network": {
         name: "Academic Network",
@@ -14745,10 +14744,10 @@ export const UNMIGRATED_DATA = {
 };
 export const ORIGINAL_MIGRATED_DATA = {
     advantage: {
-        [K4ItemSubType.activeRolled]: {
+        ["active-rolled" /* K4ItemSubType.activeRolled */]: {
             "Academic Network": {
                 name: "Academic Network",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/academic-network.svg",
                 data: {
                     description: "",
@@ -14757,7 +14756,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Tap Academic Network",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/academic-network.svg",
                             data: {
                                 description: "",
@@ -14767,7 +14766,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Academic Network",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -14809,7 +14808,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -14846,7 +14845,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -14862,7 +14861,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Access the Dark Net": {
                 name: "Access the Dark Net",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
                 data: {
                     description: "",
@@ -14871,7 +14870,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Access the Dark Net",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
                             data: {
                                 description: "",
@@ -14890,7 +14889,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Access the Dark Net",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -14934,7 +14933,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -14971,7 +14970,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -14987,7 +14986,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Ace Up the Sleeve": {
                 name: "Ace Up the Sleeve",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
                 data: {
                     description: "",
@@ -15005,7 +15004,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Pull an Ace",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
                             data: {
                                 description: "",
@@ -15024,7 +15023,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Ace Up the Sleeve",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15074,7 +15073,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -15113,7 +15112,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -15129,7 +15128,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Animal Speaker": {
                 name: "Animal Speaker",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
                 data: {
                     description: "",
@@ -15138,7 +15137,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Control Animal",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
                             data: {
                                 description: "",
@@ -15157,7 +15156,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Animal Speaker",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15205,7 +15204,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "intuition"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -15242,7 +15241,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "intuition",
                     currentHold: 0,
                     currentEdges: 0
@@ -15258,7 +15257,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Artifact": {
                 name: "Artifact",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/artifact.svg",
                 data: {
                     description: "",
@@ -15277,7 +15276,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Activate Artifact",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/artifact.svg",
                             data: {
                                 description: "",
@@ -15297,7 +15296,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Artifact",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15343,7 +15342,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -15382,7 +15381,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -15398,7 +15397,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Artistic Talent": {
                 name: "Artistic Talent",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
                 data: {
                     description: "",
@@ -15407,7 +15406,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Perform",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
                             data: {
                                 description: "",
@@ -15427,7 +15426,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Artistic Talent",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15475,7 +15474,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -15512,7 +15511,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -15528,7 +15527,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Authority": {
                 name: "Authority",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/authority.svg",
                 data: {
                     description: "",
@@ -15537,7 +15536,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Authority",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/authority.svg",
                             data: {
                                 description: "",
@@ -15557,7 +15556,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Authority",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15605,7 +15604,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -15642,7 +15641,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -15658,7 +15657,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Awe-Inspiring": {
                 name: "Awe-Inspiring",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
                 data: {
                     description: "",
@@ -15667,7 +15666,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Take Charge",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
                             data: {
                                 description: "",
@@ -15677,7 +15676,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Awe-Inspiring",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15719,7 +15718,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -15756,7 +15755,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -15772,7 +15771,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Backstab": {
                 name: "Backstab",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/backstab.svg",
                 data: {
                     description: "",
@@ -15781,7 +15780,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Backstab",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/backstab.svg",
                             data: {
                                 description: "",
@@ -15800,7 +15799,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Backstab",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15846,7 +15845,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -15883,7 +15882,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -15899,7 +15898,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Battlefield Medicine": {
                 name: "Battlefield Medicine",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
                 data: {
                     description: "",
@@ -15908,7 +15907,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Stabilize Injury",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
                             data: {
                                 description: "",
@@ -15935,7 +15934,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Battlefield Medicine",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -15981,7 +15980,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16018,7 +16017,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -16034,7 +16033,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Body Awareness": {
                 name: "Body Awareness",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/body-awareness.svg",
                 data: {
                     description: "",
@@ -16043,7 +16042,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Perform Acrobatics",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/body-awareness.svg",
                             data: {
                                 description: "",
@@ -16062,7 +16061,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Body Awareness",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16110,7 +16109,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16147,7 +16146,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -16163,7 +16162,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Boss": {
                 name: "Boss",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/boss.svg",
                 data: {
                     description: "",
@@ -16172,7 +16171,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Deploy Henchmen",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/boss.svg",
                             data: {
                                 description: "",
@@ -16191,7 +16190,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Boss",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16235,7 +16234,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16272,7 +16271,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -16288,7 +16287,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Bound": {
                 name: "Bound",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/bound.svg",
                 data: {
                     description: "",
@@ -16297,7 +16296,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Bound",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/bound.svg",
                             data: {
                                 description: "",
@@ -16316,7 +16315,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Bound",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16364,7 +16363,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16401,7 +16400,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -16417,7 +16416,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Burglar": {
                 name: "Burglar",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/burglar.svg",
                 data: {
                     description: "",
@@ -16426,7 +16425,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Burgle",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/burglar.svg",
                             data: {
                                 description: "",
@@ -16447,7 +16446,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Burglar",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16495,7 +16494,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16532,7 +16531,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -16548,7 +16547,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Chameleon": {
                 name: "Chameleon",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/chameleon.svg",
                 data: {
                     description: "",
@@ -16557,7 +16556,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Alter Appearance",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/chameleon.svg",
                             data: {
                                 description: "",
@@ -16575,7 +16574,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Chameleon",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16619,7 +16618,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "intuition"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16656,7 +16655,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "intuition",
                     currentHold: 0,
                     currentEdges: 0
@@ -16672,7 +16671,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Character Actor": {
                 name: "Character Actor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/character-actor.svg",
                 data: {
                     description: "",
@@ -16681,7 +16680,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Blend In",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/character-actor.svg",
                             data: {
                                 description: "",
@@ -16701,7 +16700,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Character Actor",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16749,7 +16748,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "intuition"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16786,7 +16785,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "intuition",
                     currentHold: 0,
                     currentEdges: 0
@@ -16802,7 +16801,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Charismatic Aura": {
                 name: "Charismatic Aura",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
                 data: {
                     description: "",
@@ -16811,7 +16810,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Radiate Charisma",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
                             data: {
                                 description: "",
@@ -16830,7 +16829,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Charismatic Aura",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16878,7 +16877,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -16915,7 +16914,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -16931,7 +16930,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Collector": {
                 name: "Collector",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/collector.svg",
                 data: {
                     description: "",
@@ -16940,7 +16939,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Seek Rare Item",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/collector.svg",
                             data: {
                                 description: "",
@@ -16950,7 +16949,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Collector",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -16992,7 +16991,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17029,7 +17028,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -17045,7 +17044,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Contagious Insanity": {
                 name: "Contagious Insanity",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
                 data: {
                     description: "",
@@ -17054,7 +17053,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Spread Madness",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
                             data: {
                                 description: "",
@@ -17074,7 +17073,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Contagious Insanity",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -17120,7 +17119,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17157,7 +17156,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -17173,7 +17172,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Crafty": {
                 name: "Crafty",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/crafty.svg",
                 data: {
                     description: "",
@@ -17182,7 +17181,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Pull a Long Con",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/crafty.svg",
                             data: {
                                 description: "",
@@ -17201,7 +17200,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Crafty",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -17247,7 +17246,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "intuition"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17284,7 +17283,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "intuition",
                     currentHold: 0,
                     currentEdges: 0
@@ -17300,7 +17299,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Crime Scene Investigator": {
                 name: "Crime Scene Investigator",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
                 data: {
                     description: "",
@@ -17309,7 +17308,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Investigate Crime Scene",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
                             data: {
                                 description: "",
@@ -17332,7 +17331,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Crime Scene Investigator",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -17380,7 +17379,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17417,7 +17416,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -17433,7 +17432,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Cult Leader": {
                 name: "Cult Leader",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/cult-leader.svg",
                 data: {
                     description: "",
@@ -17442,7 +17441,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Lead a Ritual",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/cult-leader.svg",
                             data: {
                                 description: "",
@@ -17463,7 +17462,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Cult Leader",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -17509,7 +17508,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17546,7 +17545,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -17562,7 +17561,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Dabbler in the Occult": {
                 name: "Dabbler in the Occult",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
                 data: {
                     description: "",
@@ -17571,7 +17570,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Perform a Ritual",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
                             data: {
                                 description: "",
@@ -17590,7 +17589,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Dabbler in the Occult",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -17634,7 +17633,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17671,7 +17670,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -17687,7 +17686,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Daredevil": {
                 name: "Daredevil",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/daredevil.svg",
                 data: {
                     description: "",
@@ -17705,7 +17704,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Live Dangerously",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/daredevil.svg",
                             data: {
                                 description: "",
@@ -17724,7 +17723,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Daredevil",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -17774,7 +17773,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17813,7 +17812,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -17829,7 +17828,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Data Retrieval": {
                 name: "Data Retrieval",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
                 data: {
                     description: "",
@@ -17838,7 +17837,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Perform Research",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
                             data: {
                                 description: "",
@@ -17859,7 +17858,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Data Retrieval",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -17907,7 +17906,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -17944,7 +17943,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -17960,7 +17959,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Deadly Stare": {
                 name: "Deadly Stare",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
                 data: {
                     description: "",
@@ -17969,7 +17968,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Death Stare",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
                             data: {
                                 description: "",
@@ -17979,7 +17978,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Deadly Stare",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18021,7 +18020,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18058,7 +18057,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -18074,7 +18073,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Death Drive": {
                 name: "Death Drive",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/death-drive.svg",
                 data: {
                     description: "",
@@ -18093,7 +18092,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Fight Recklessly",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/death-drive.svg",
                             data: {
                                 description: "",
@@ -18113,7 +18112,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Death Drive",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18163,7 +18162,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18202,7 +18201,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -18218,7 +18217,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Divine": {
                 name: "Divine",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/divine.svg",
                 data: {
                     description: "",
@@ -18227,7 +18226,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Sway Monster",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/divine.svg",
                             data: {
                                 description: "",
@@ -18245,7 +18244,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Divine",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18293,7 +18292,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18330,7 +18329,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -18346,7 +18345,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Dreamer": {
                 name: "Dreamer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/dreamer.svg",
                 data: {
                     description: "",
@@ -18355,7 +18354,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Navigate the Dream",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/dreamer.svg",
                             data: {
                                 description: "",
@@ -18365,7 +18364,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Dreamer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18407,7 +18406,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18444,7 +18443,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -18460,7 +18459,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Driver": {
                 name: "Driver",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/driver.svg",
                 data: {
                     description: "",
@@ -18479,7 +18478,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Drive Dangerously",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/driver.svg",
                             data: {
                                 description: "",
@@ -18499,7 +18498,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Driver",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18549,7 +18548,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18588,7 +18587,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -18604,7 +18603,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Elite Education": {
                 name: "Elite Education",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-education.svg",
                 data: {
                     description: "",
@@ -18613,7 +18612,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Request a Favor",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/elite-education.svg",
                             data: {
                                 description: "",
@@ -18633,7 +18632,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Elite Education",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18681,7 +18680,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18718,7 +18717,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -18734,7 +18733,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Enforcer": {
                 name: "Enforcer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/enforcer.svg",
                 data: {
                     description: "",
@@ -18743,7 +18742,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Threaten Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/enforcer.svg",
                             data: {
                                 description: "",
@@ -18763,7 +18762,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Enforcer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18807,7 +18806,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18844,7 +18843,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -18860,7 +18859,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Enhanced Awareness": {
                 name: "Enhanced Awareness",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
                 data: {
                     description: "",
@@ -18869,7 +18868,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Focus on the Illusion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
                             data: {
                                 description: "",
@@ -18879,7 +18878,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Enhanced Awareness",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -18921,7 +18920,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -18958,7 +18957,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -18974,7 +18973,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Erotic": {
                 name: "Erotic",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/erotic.svg",
                 data: {
                     description: "",
@@ -18983,7 +18982,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Incite Desire",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/erotic.svg",
                             data: {
                                 description: "",
@@ -19003,7 +19002,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Erotic",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19051,7 +19050,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19088,7 +19087,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -19104,7 +19103,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Escape Artist": {
                 name: "Escape Artist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/escape-artist.svg",
                 data: {
                     description: "",
@@ -19113,7 +19112,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Escape",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/escape-artist.svg",
                             data: {
                                 description: "",
@@ -19123,7 +19122,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Escape Artist",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19165,7 +19164,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19202,7 +19201,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -19218,7 +19217,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Exit Strategy": {
                 name: "Exit Strategy",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
                 data: {
                     description: "",
@@ -19227,7 +19226,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Make a Clean Exit",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
                             data: {
                                 description: "",
@@ -19246,7 +19245,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Exit Strategy",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19294,7 +19293,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19331,7 +19330,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -19347,7 +19346,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Exorcist": {
                 name: "Exorcist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/exorcist.svg",
                 data: {
                     description: "",
@@ -19356,7 +19355,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Perform Exorcism",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/exorcist.svg",
                             data: {
                                 description: "",
@@ -19375,7 +19374,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Exorcist",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19421,7 +19420,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19458,7 +19457,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -19474,7 +19473,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Explosives Expert": {
                 name: "Explosives Expert",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
                 data: {
                     description: "",
@@ -19483,7 +19482,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Improvise Explosive",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
                             data: {
                                 description: "",
@@ -19493,7 +19492,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Explosives Expert",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19535,7 +19534,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19549,7 +19548,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Disarm Explosive",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
                             data: {
                                 description: "",
@@ -19559,7 +19558,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Explosives Expert",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19601,7 +19600,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19638,7 +19637,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -19654,7 +19653,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Eye for Detail": {
                 name: "Eye for Detail",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
                 data: {
                     description: "",
@@ -19663,7 +19662,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Study Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
                             data: {
                                 description: "",
@@ -19684,7 +19683,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Eye for Detail",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19732,7 +19731,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19769,7 +19768,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -19785,7 +19784,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Fascination": {
                 name: "Fascination",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/fascination.svg",
                 data: {
                     description: "",
@@ -19794,7 +19793,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Artful Seduction",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/fascination.svg",
                             data: {
                                 description: "",
@@ -19820,7 +19819,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Fascination",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19867,7 +19866,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -19904,7 +19903,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -19920,7 +19919,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Fast Talk": {
                 name: "Fast Talk",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/fast-talk.svg",
                 data: {
                     description: "",
@@ -19929,7 +19928,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Fast Talk",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/fast-talk.svg",
                             data: {
                                 description: "",
@@ -19948,7 +19947,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Fast Talk",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -19996,7 +19995,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -20033,7 +20032,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -20049,7 +20048,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Field Agent": {
                 name: "Field Agent",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
                 data: {
                     description: "",
@@ -20068,7 +20067,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Surprise Strike",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
                             data: {
                                 description: "",
@@ -20090,7 +20089,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Field Agent",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -20127,7 +20126,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence",
                                 range: [
                                     "arm"
@@ -20146,7 +20145,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Enter Combat",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
                             data: {
                                 description: "",
@@ -20166,7 +20165,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Field Agent",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -20216,7 +20215,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -20255,7 +20254,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -20271,7 +20270,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Forbidden Inspiration": {
                 name: "Forbidden Inspiration",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
                 data: {
                     description: "",
@@ -20280,7 +20279,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Seek Inspiration",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
                             data: {
                                 description: "",
@@ -20299,7 +20298,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Forbidden Inspiration",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -20347,7 +20346,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -20384,7 +20383,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -20400,7 +20399,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Forked Tongue": {
                 name: "Forked Tongue",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
                 data: {
                     description: "",
@@ -20409,7 +20408,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Manipulate Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
                             data: {
                                 description: "",
@@ -20436,7 +20435,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Forked Tongue",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -20482,7 +20481,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -20519,7 +20518,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -20535,7 +20534,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Gang Leader": {
                 name: "Gang Leader",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/gang-leader.svg",
                 data: {
                     description: "",
@@ -20544,7 +20543,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Give Orders",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/gang-leader.svg",
                             data: {
                                 description: "",
@@ -20562,7 +20561,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Gang Leader",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -20606,7 +20605,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -20643,7 +20642,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -20659,7 +20658,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Genius": {
                 name: "Genius",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/genius.svg",
                 data: {
                     description: "",
@@ -20677,7 +20676,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Think Fast",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/genius.svg",
                             data: {
                                 description: "",
@@ -20696,7 +20695,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Genius",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -20746,7 +20745,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -20785,7 +20784,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -20801,7 +20800,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Hacker": {
                 name: "Hacker",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/hacker.svg",
                 data: {
                     description: "",
@@ -20810,7 +20809,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Hack",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/hacker.svg",
                             data: {
                                 description: "",
@@ -20828,7 +20827,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Hacker",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -20872,7 +20871,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -20909,7 +20908,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -20925,7 +20924,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Hunter": {
                 name: "Hunter",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/hunter.svg",
                 data: {
                     description: "",
@@ -20934,7 +20933,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Hunt Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/hunter.svg",
                             data: {
                                 description: "",
@@ -20953,7 +20952,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Hunter",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21001,7 +21000,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21038,7 +21037,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -21054,7 +21053,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Ice Cold": {
                 name: "Ice Cold",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/ice-cold.svg",
                 data: {
                     description: "",
@@ -21073,7 +21072,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Keep Cool",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/ice-cold.svg",
                             data: {
                                 description: "",
@@ -21093,7 +21092,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Ice Cold",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21143,7 +21142,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21182,7 +21181,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -21198,7 +21197,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Implanted Messages": {
                 name: "Implanted Messages",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
                 data: {
                     description: "",
@@ -21207,7 +21206,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Experiment on Human",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
                             data: {
                                 description: "",
@@ -21217,7 +21216,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Implanted Messages",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21259,7 +21258,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21296,7 +21295,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -21312,7 +21311,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Impostor": {
                 name: "Impostor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/impostor.svg",
                 data: {
                     description: "",
@@ -21321,7 +21320,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Exploit Rube",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/impostor.svg",
                             data: {
                                 description: "",
@@ -21331,7 +21330,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Impostor",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21373,7 +21372,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21410,7 +21409,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -21426,7 +21425,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Improviser": {
                 name: "Improviser",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/improviser.svg",
                 data: {
                     description: "",
@@ -21435,7 +21434,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Wing It",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/improviser.svg",
                             data: {
                                 description: "",
@@ -21455,7 +21454,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Improviser",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21501,7 +21500,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21538,7 +21537,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -21554,7 +21553,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Influential Friends": {
                 name: "Influential Friends",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/influential-friends.svg",
                 data: {
                     description: "",
@@ -21563,7 +21562,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Pull Strings",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/influential-friends.svg",
                             data: {
                                 description: "",
@@ -21573,7 +21572,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Influential Friends",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21615,7 +21614,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21652,7 +21651,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -21668,7 +21667,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Inner Power": {
                 name: "Inner Power",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/inner-power.svg",
                 data: {
                     description: "",
@@ -21677,7 +21676,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Release Power",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/inner-power.svg",
                             data: {
                                 description: "",
@@ -21687,7 +21686,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Inner Power",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21729,7 +21728,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21766,7 +21765,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -21782,7 +21781,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Intimidating": {
                 name: "Intimidating",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/intimidating.svg",
                 data: {
                     description: "",
@@ -21791,7 +21790,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Intimidate Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/intimidating.svg",
                             data: {
                                 description: "",
@@ -21801,7 +21800,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Intimidating",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21843,7 +21842,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -21880,7 +21879,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -21896,7 +21895,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Inventor": {
                 name: "Inventor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/inventor.svg",
                 data: {
                     description: "",
@@ -21905,7 +21904,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Create or Repair",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/inventor.svg",
                             data: {
                                 description: "",
@@ -21925,7 +21924,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Inventor",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -21971,7 +21970,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22008,7 +22007,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -22024,7 +22023,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Lay on Hands": {
                 name: "Lay on Hands",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
                 data: {
                     description: "",
@@ -22033,7 +22032,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Heal",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
                             data: {
                                 description: "",
@@ -22043,7 +22042,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Lay on Hands",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -22085,7 +22084,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22122,7 +22121,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -22138,7 +22137,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Lightning Fast": {
                 name: "Lightning Fast",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
                 data: {
                     description: "",
@@ -22156,7 +22155,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Accelerate",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
                             data: {
                                 description: "",
@@ -22175,7 +22174,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Lightning Fast",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -22225,7 +22224,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22264,7 +22263,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -22280,7 +22279,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Magical Intuition": {
                 name: "Magical Intuition",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
                 data: {
                     description: "",
@@ -22289,7 +22288,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Intuit the Illusion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
                             data: {
                                 description: "",
@@ -22308,7 +22307,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Magical Intuition",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -22356,7 +22355,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22393,7 +22392,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -22409,7 +22408,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Magnetic Attraction": {
                 name: "Magnetic Attraction",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
                 data: {
                     description: "",
@@ -22418,7 +22417,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Attract Attention",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
                             data: {
                                 description: "",
@@ -22437,7 +22436,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Magnetic Attraction",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -22485,7 +22484,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22522,7 +22521,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -22538,7 +22537,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Manhunter": {
                 name: "Manhunter",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/manhunter.svg",
                 data: {
                     description: "",
@@ -22547,7 +22546,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Investigate Person",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/manhunter.svg",
                             data: {
                                 description: "",
@@ -22568,7 +22567,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Manhunter",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -22616,7 +22615,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22653,7 +22652,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -22669,7 +22668,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Martial Arts Expert": {
                 name: "Martial Arts Expert",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
                 data: {
                     description: "",
@@ -22688,7 +22687,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Engage in Melee",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
                             data: {
                                 description: "",
@@ -22708,7 +22707,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Martial Arts Expert",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -22758,7 +22757,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22797,7 +22796,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -22813,7 +22812,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Moles": {
                 name: "Moles",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/moles.svg",
                 data: {
                     description: "",
@@ -22822,7 +22821,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Contact Mole",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/moles.svg",
                             data: {
                                 description: "",
@@ -22840,7 +22839,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Moles",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -22886,7 +22885,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -22923,7 +22922,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -22939,7 +22938,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Network of Contacts": {
                 name: "Network of Contacts",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
                 data: {
                     description: "",
@@ -22948,7 +22947,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Ask About Someone",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
                             data: {
                                 description: "",
@@ -22969,7 +22968,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Network of Contacts",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23017,7 +23016,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23054,7 +23053,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -23070,7 +23069,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Notorious": {
                 name: "Notorious",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/notorious.svg",
                 data: {
                     description: "",
@@ -23079,7 +23078,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Notorious",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/notorious.svg",
                             data: {
                                 description: "",
@@ -23089,7 +23088,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Notorious",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23131,7 +23130,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23168,7 +23167,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -23184,7 +23183,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Occult Library": {
                 name: "Occult Library",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/occult-library.svg",
                 data: {
                     description: "",
@@ -23193,7 +23192,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Do Library Research",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/occult-library.svg",
                             data: {
                                 description: "",
@@ -23213,7 +23212,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Occult Library",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23261,7 +23260,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23298,7 +23297,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -23314,7 +23313,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Occult Studies": {
                 name: "Occult Studies",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/occult-studies.svg",
                 data: {
                     description: "",
@@ -23323,7 +23322,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Encounter the Occult",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/occult-studies.svg",
                             data: {
                                 description: "",
@@ -23341,7 +23340,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Occult Studies",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23387,7 +23386,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23424,7 +23423,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -23440,7 +23439,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Officer": {
                 name: "Officer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/officer.svg",
                 data: {
                     description: "",
@@ -23459,7 +23458,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Fight Beside Ally",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/officer.svg",
                             data: {
                                 description: "",
@@ -23479,7 +23478,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Officer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23527,7 +23526,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23566,7 +23565,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -23582,7 +23581,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Parkour": {
                 name: "Parkour",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/parkour.svg",
                 data: {
                     description: "",
@@ -23591,7 +23590,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Execute Acrobatic Maneuver",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/parkour.svg",
                             data: {
                                 description: "",
@@ -23610,7 +23609,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Parkour",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23658,7 +23657,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23695,7 +23694,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -23711,7 +23710,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Perpetual Victim": {
                 name: "Perpetual Victim",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
                 data: {
                     description: "",
@@ -23720,7 +23719,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Appear Helpless",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
                             data: {
                                 description: "",
@@ -23739,7 +23738,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Perpetual Victim",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23785,7 +23784,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23822,7 +23821,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -23838,7 +23837,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Prepared": {
                 name: "Prepared",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/prepared.svg",
                 data: {
                     description: "",
@@ -23847,7 +23846,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Investigate Location",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/prepared.svg",
                             data: {
                                 description: "",
@@ -23866,7 +23865,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Prepared",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -23914,7 +23913,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -23951,7 +23950,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -23967,7 +23966,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Puppeteer": {
                 name: "Puppeteer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/puppeteer.svg",
                 data: {
                     description: "",
@@ -23976,7 +23975,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Play Your Pawns",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/puppeteer.svg",
                             data: {
                                 description: "",
@@ -23986,7 +23985,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Puppeteer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24028,7 +24027,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24065,7 +24064,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -24081,7 +24080,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Quick Thinker": {
                 name: "Quick Thinker",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
                 data: {
                     description: "",
@@ -24090,7 +24089,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Prepare for Danger",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
                             data: {
                                 description: "",
@@ -24109,7 +24108,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Quick Thinker",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24157,7 +24156,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24194,7 +24193,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -24210,7 +24209,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Read a Crowd": {
                 name: "Read a Crowd",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
                 data: {
                     description: "",
@@ -24219,7 +24218,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Mingle",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
                             data: {
                                 description: "",
@@ -24239,7 +24238,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Read a Crowd",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24287,7 +24286,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24324,7 +24323,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -24340,7 +24339,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Ruthless": {
                 name: "Ruthless",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/ruthless.svg",
                 data: {
                     description: "",
@@ -24358,7 +24357,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Sacrifice Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/ruthless.svg",
                             data: {
                                 description: "",
@@ -24377,7 +24376,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Ruthless",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24425,7 +24424,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24464,7 +24463,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -24480,7 +24479,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Seducer": {
                 name: "Seducer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/seducer.svg",
                 data: {
                     description: "",
@@ -24489,7 +24488,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Seduce",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/seducer.svg",
                             data: {
                                 description: "",
@@ -24510,7 +24509,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Seducer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24558,7 +24557,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24595,7 +24594,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -24611,7 +24610,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Shadow": {
                 name: "Shadow",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/shadow.svg",
                 data: {
                     description: "",
@@ -24620,7 +24619,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Shadow Someone",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/shadow.svg",
                             data: {
                                 description: "",
@@ -24630,7 +24629,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Shadow",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24672,7 +24671,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24686,7 +24685,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Evade a Shadow",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/shadow.svg",
                             data: {
                                 description: "",
@@ -24696,7 +24695,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Shadow",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24738,7 +24737,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24775,7 +24774,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -24791,7 +24790,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Sixth Sense": {
                 name: "Sixth Sense",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
                 data: {
                     description: "",
@@ -24800,7 +24799,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Sixth Sense",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
                             data: {
                                 description: "",
@@ -24819,7 +24818,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Sixth Sense",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24865,7 +24864,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -24902,7 +24901,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -24918,7 +24917,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Snake Charmer": {
                 name: "Snake Charmer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
                 data: {
                     description: "",
@@ -24927,7 +24926,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Charm",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
                             data: {
                                 description: "",
@@ -24945,7 +24944,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Snake Charmer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -24991,7 +24990,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25028,7 +25027,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -25044,7 +25043,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Sneak": {
                 name: "Sneak",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sneak.svg",
                 data: {
                     description: "",
@@ -25053,7 +25052,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Hide & Sneak",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sneak.svg",
                             data: {
                                 description: "",
@@ -25072,7 +25071,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Sneak",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -25120,7 +25119,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "coolness"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25157,7 +25156,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness",
                     currentHold: 0,
                     currentEdges: 0
@@ -25173,7 +25172,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Sniper": {
                 name: "Sniper",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sniper.svg",
                 data: {
                     description: "",
@@ -25182,7 +25181,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Scoped Shot",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sniper.svg",
                             data: {
                                 description: "",
@@ -25203,7 +25202,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Sniper",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -25249,7 +25248,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25286,7 +25285,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -25302,7 +25301,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Street Contacts": {
                 name: "Street Contacts",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/street-contacts.svg",
                 data: {
                     description: "",
@@ -25311,7 +25310,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Canvas Street Contacts",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/street-contacts.svg",
                             data: {
                                 description: "",
@@ -25331,7 +25330,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Street Contacts",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -25379,7 +25378,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25416,7 +25415,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -25432,7 +25431,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Streetfighter": {
                 name: "Streetfighter",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/streetfighter.svg",
                 data: {
                     description: "",
@@ -25450,7 +25449,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Engage in Melee",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/streetfighter.svg",
                             data: {
                                 description: "",
@@ -25476,7 +25475,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Streetfighter",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -25524,7 +25523,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25563,7 +25562,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -25579,7 +25578,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Streetwise": {
                 name: "Streetwise",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/streetwise.svg",
                 data: {
                     description: "",
@@ -25588,7 +25587,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Shop the Black Market",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/streetwise.svg",
                             data: {
                                 description: "",
@@ -25608,7 +25607,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Streetwise",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -25652,7 +25651,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "charisma"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25689,7 +25688,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma",
                     currentHold: 0,
                     currentEdges: 0
@@ -25705,7 +25704,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Stubborn": {
                 name: "Stubborn",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/stubborn.svg",
                 data: {
                     description: "",
@@ -25723,7 +25722,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Push Through",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/stubborn.svg",
                             data: {
                                 description: "",
@@ -25742,7 +25741,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Stubborn",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -25792,7 +25791,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25831,7 +25830,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -25847,7 +25846,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Survival Instinct": {
                 name: "Survival Instinct",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
                 data: {
                     description: "",
@@ -25856,7 +25855,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Refuse to Yield",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
                             data: {
                                 description: "",
@@ -25874,7 +25873,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Survival Instinct",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -25918,7 +25917,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -25955,7 +25954,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence",
                     currentHold: 0,
                     currentEdges: 0
@@ -25971,7 +25970,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Survivalist": {
                 name: "Survivalist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/survivalist.svg",
                 data: {
                     description: "",
@@ -25980,7 +25979,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Survivalist Skills",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/survivalist.svg",
                             data: {
                                 description: "",
@@ -25999,7 +25998,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Survivalist",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26047,7 +26046,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -26084,7 +26083,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -26100,7 +26099,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Tracer": {
                 name: "Tracer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/tracer.svg",
                 data: {
                     description: "",
@@ -26109,7 +26108,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Execute Trace",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/tracer.svg",
                             data: {
                                 description: "",
@@ -26129,7 +26128,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Tracer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26177,7 +26176,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "reason"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -26214,7 +26213,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason",
                     currentHold: 0,
                     currentEdges: 0
@@ -26230,7 +26229,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Voice of Insanity": {
                 name: "Voice of Insanity",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
                 data: {
                     description: "",
@@ -26239,7 +26238,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Mass Manipulation",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
                             data: {
                                 description: "",
@@ -26260,7 +26259,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Voice of Insanity",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26308,7 +26307,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -26345,7 +26344,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -26361,7 +26360,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Voice of Pain": {
                 name: "Voice of Pain",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
                 data: {
                     description: "",
@@ -26370,7 +26369,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Gain Insight from Pain",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
                             data: {
                                 description: "",
@@ -26389,7 +26388,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Voice of Pain",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26437,7 +26436,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -26474,7 +26473,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -26490,7 +26489,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Wanderer": {
                 name: "Wanderer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/wanderer.svg",
                 data: {
                     description: "",
@@ -26499,7 +26498,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Wander",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/wanderer.svg",
                             data: {
                                 description: "",
@@ -26519,7 +26518,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Wanderer",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26567,7 +26566,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "perception"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -26604,7 +26603,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception",
                     currentHold: 0,
                     currentEdges: 0
@@ -26620,7 +26619,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Wayfinder": {
                 name: "Wayfinder",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/wayfinder.svg",
                 data: {
                     description: "",
@@ -26629,7 +26628,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Mad Guidance",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/wayfinder.svg",
                             data: {
                                 description: "",
@@ -26639,7 +26638,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Wayfinder",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26681,7 +26680,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "soul"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -26718,7 +26717,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul",
                     currentHold: 0,
                     currentEdges: 0
@@ -26733,10 +26732,10 @@ export const ORIGINAL_MIGRATED_DATA = {
                 flags: {}
             }
         },
-        [K4ItemSubType.activeStatic]: {
+        ["active-static" /* K4ItemSubType.activeStatic */]: {
             "Arcane Researcher": {
                 name: "Arcane Researcher",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
                 data: {
                     description: "",
@@ -26745,7 +26744,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Invoke Arcane Studies",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
                             data: {
                                 description: "",
@@ -26755,7 +26754,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Arcane Researcher",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26797,7 +26796,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -26834,7 +26833,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -26850,7 +26849,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "At Any Cost": {
                 name: "At Any Cost",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
                 data: {
                     description: "",
@@ -26859,7 +26858,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Pay the Price",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
                             data: {
                                 description: "",
@@ -26869,7 +26868,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "At Any Cost",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -26911,7 +26910,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -26948,7 +26947,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -26964,7 +26963,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Code of Honor": {
                 name: "Code of Honor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
                 data: {
                     description: "",
@@ -26973,7 +26972,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Uphold Your Code",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
                             data: {
                                 description: "",
@@ -26983,7 +26982,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Code of Honor",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27025,7 +27024,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27062,7 +27061,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27078,7 +27077,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Desperate": {
                 name: "Desperate",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/desperate.svg",
                 data: {
                     description: "",
@@ -27087,7 +27086,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Fight Through",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/desperate.svg",
                             data: {
                                 description: "",
@@ -27097,7 +27096,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Desperate",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27139,7 +27138,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27176,7 +27175,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27192,7 +27191,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Divine Champion": {
                 name: "Divine Champion",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/divine-champion.svg",
                 data: {
                     description: "",
@@ -27201,7 +27200,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Fight for Your God",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/divine-champion.svg",
                             data: {
                                 description: "",
@@ -27211,7 +27210,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Divine Champion",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27253,7 +27252,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27267,7 +27266,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Fail your God",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/divine-champion.svg",
                             data: {
                                 description: "",
@@ -27277,7 +27276,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Divine Champion",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27319,7 +27318,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27356,7 +27355,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27372,7 +27371,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Eye for an Eye": {
                 name: "Eye for an Eye",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
                 data: {
                     description: "",
@@ -27381,7 +27380,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Promise Vengeance",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
                             data: {
                                 description: "",
@@ -27391,7 +27390,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Eye for an Eye",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27433,7 +27432,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27470,7 +27469,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27486,7 +27485,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Good Samaritan": {
                 name: "Good Samaritan",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
                 data: {
                     description: "",
@@ -27495,7 +27494,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Help and Heal",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
                             data: {
                                 description: "",
@@ -27505,7 +27504,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Good Samaritan",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27547,7 +27546,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27584,7 +27583,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27600,7 +27599,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Grudge": {
                 name: "Grudge",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/grudge.svg",
                 data: {
                     description: "",
@@ -27609,7 +27608,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Chase a Grudge",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/grudge.svg",
                             data: {
                                 description: "",
@@ -27619,7 +27618,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Grudge",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27661,7 +27660,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27698,7 +27697,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27714,7 +27713,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Manipulative": {
                 name: "Manipulative",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/manipulative.svg",
                 data: {
                     description: "",
@@ -27731,7 +27730,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Exploit Trust",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/manipulative.svg",
                             data: {
                                 description: "",
@@ -27749,7 +27748,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Manipulative",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27795,7 +27794,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27834,7 +27833,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27850,7 +27849,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Opportunist": {
                 name: "Opportunist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/opportunist.svg",
                 data: {
                     description: "",
@@ -27859,7 +27858,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Trample Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/opportunist.svg",
                             data: {
                                 description: "",
@@ -27869,7 +27868,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Opportunist",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -27911,7 +27910,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -27948,7 +27947,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -27964,7 +27963,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Rage": {
                 name: "Rage",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/rage.svg",
                 data: {
                     description: "",
@@ -27982,7 +27981,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Awaken Inner Rage",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/rage.svg",
                             data: {
                                 description: "",
@@ -28001,7 +28000,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Rage",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28047,7 +28046,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28086,7 +28085,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28102,7 +28101,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Sealed Fate": {
                 name: "Sealed Fate",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                 data: {
                     description: "",
@@ -28111,7 +28110,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Invoke Fate",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                             data: {
                                 description: "",
@@ -28121,7 +28120,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Sealed Fate",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28167,7 +28166,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28181,7 +28180,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Defy Death",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                             data: {
                                 description: "",
@@ -28191,7 +28190,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Sealed Fate",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28237,7 +28236,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28278,7 +28277,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28294,7 +28293,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Thirst for Knowledge": {
                 name: "Thirst for Knowledge",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
                 data: {
                     description: "",
@@ -28303,7 +28302,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Drink Deep",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
                             data: {
                                 description: "",
@@ -28313,7 +28312,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Thirst for Knowledge",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28355,7 +28354,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28392,7 +28391,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28408,7 +28407,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "To the Last Breath": {
                 name: "To the Last Breath",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
                 data: {
                     description: "",
@@ -28417,7 +28416,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Refuse to Give In",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
                             data: {
                                 description: "",
@@ -28427,7 +28426,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "To the Last Breath",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28473,7 +28472,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28512,7 +28511,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28528,7 +28527,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Watchers": {
                 name: "Watchers",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/watchers.svg",
                 data: {
                     description: "",
@@ -28547,7 +28546,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Invoke Watchers",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/watchers.svg",
                             data: {
                                 description: "",
@@ -28567,7 +28566,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Watchers",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28613,7 +28612,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28652,7 +28651,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28668,7 +28667,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Workaholic": {
                 name: "Workaholic",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/workaholic.svg",
                 data: {
                     description: "",
@@ -28677,7 +28676,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Lose Yourself in Work",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/workaholic.svg",
                             data: {
                                 description: "",
@@ -28687,7 +28686,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Workaholic",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28729,7 +28728,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28766,7 +28765,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28782,7 +28781,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Worldly": {
                 name: "Worldly",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/worldly.svg",
                 data: {
                     description: "",
@@ -28791,7 +28790,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Assert Familiarity",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/worldly.svg",
                             data: {
                                 description: "",
@@ -28801,7 +28800,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Worldly",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -28843,7 +28842,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -28880,7 +28879,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28895,10 +28894,10 @@ export const ORIGINAL_MIGRATED_DATA = {
                 flags: {}
             }
         },
-        [K4ItemSubType.passive]: {
+        ["passive" /* K4ItemSubType.passive */]: {
             "Analyst": {
                 name: "Analyst",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/analyst.svg",
                 data: {
                     description: "",
@@ -28942,7 +28941,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -28958,7 +28957,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Dead Shot": {
                 name: "Dead Shot",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/dead-shot.svg",
                 data: {
                     description: "",
@@ -28991,7 +28990,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29007,7 +29006,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Elite Sport (Athletic)": {
                 name: "Elite Sport (Athletic)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-sport-(athletic).svg",
                 data: {
                     description: "",
@@ -29038,7 +29037,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29054,7 +29053,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Elite Sport (Contact)": {
                 name: "Elite Sport (Contact)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg",
                 data: {
                     description: "",
@@ -29085,7 +29084,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29101,7 +29100,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Elite Sport (Fencing)": {
                 name: "Elite Sport (Fencing)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
                 data: {
                     description: "",
@@ -29110,7 +29109,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Riposte",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
                             data: {
                                 description: "",
@@ -29132,7 +29131,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Elite Sport (Fencing)",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -29169,7 +29168,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence",
                                 range: [
                                     "arm"
@@ -29213,7 +29212,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29229,7 +29228,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Endure Trauma": {
                 name: "Endure Trauma",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/endure-trauma.svg",
                 data: {
                     description: "",
@@ -29260,7 +29259,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29276,7 +29275,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Expert": {
                 name: "Expert",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/expert.svg",
                 data: {
                     description: "",
@@ -29325,7 +29324,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29341,7 +29340,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Extortionist": {
                 name: "Extortionist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/extortionist.svg",
                 data: {
                     description: "",
@@ -29382,7 +29381,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29398,7 +29397,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Gritted Teeth": {
                 name: "Gritted Teeth",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/gritted-teeth.svg",
                 data: {
                     description: "",
@@ -29431,7 +29430,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29447,7 +29446,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Hardened": {
                 name: "Hardened",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/hardened.svg",
                 data: {
                     description: "",
@@ -29480,7 +29479,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29496,7 +29495,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Instinct": {
                 name: "Instinct",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/instinct.svg",
                 data: {
                     description: "",
@@ -29529,7 +29528,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29545,7 +29544,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Interrogator": {
                 name: "Interrogator",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/interrogator.svg",
                 data: {
                     description: "",
@@ -29576,7 +29575,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29592,7 +29591,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Intuitive": {
                 name: "Intuitive",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/intuitive.svg",
                 data: {
                     description: "",
@@ -29625,7 +29624,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29641,7 +29640,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Jaded": {
                 name: "Jaded",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/jaded.svg",
                 data: {
                     description: "",
@@ -29674,7 +29673,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29690,7 +29689,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Keen-Eyed": {
                 name: "Keen-Eyed",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
                 data: {
                     description: "",
@@ -29733,7 +29732,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29749,7 +29748,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Observant": {
                 name: "Observant",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/observant.svg",
                 data: {
                     description: "",
@@ -29792,7 +29791,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29808,7 +29807,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Scientist": {
                 name: "Scientist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/scientist.svg",
                 data: {
                     description: "",
@@ -29850,7 +29849,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29866,7 +29865,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Vigilant": {
                 name: "Vigilant",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/vigilant.svg",
                 data: {
                     description: "",
@@ -29909,7 +29908,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -29925,7 +29924,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Weapon Master (Firearms)": {
                 name: "Weapon Master (Firearms)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
                 data: {
                     description: "",
@@ -29934,7 +29933,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Two In the Chest, One in the Head",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
                             data: {
                                 description: "",
@@ -29956,7 +29955,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Weapon Master (Firearms)",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -29993,7 +29992,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence",
                                 range: [
                                     "room"
@@ -30012,7 +30011,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Disarming Shot",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
                             data: {
                                 description: "",
@@ -30034,7 +30033,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Weapon Master (Firearms)",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30071,7 +30070,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence",
                                 range: [
                                     "room"
@@ -30113,7 +30112,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -30129,7 +30128,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Weapon Master (Melee)": {
                 name: "Weapon Master (Melee)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                 data: {
                     description: "",
@@ -30138,7 +30137,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Launching Attack",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
                                 description: "",
@@ -30160,7 +30159,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Weapon Master (Melee)",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30197,7 +30196,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence",
                                 range: [
                                     "room"
@@ -30216,7 +30215,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Precision Attack",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
                                 description: "",
@@ -30238,7 +30237,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Weapon Master (Melee)",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30275,7 +30274,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence",
                                 range: [
                                     "arm"
@@ -30294,7 +30293,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                         },
                         {
                             name: "Tripping Attack",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
                                 description: "",
@@ -30316,7 +30315,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Weapon Master (Melee)",
                                     id: "",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30353,7 +30352,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "violence",
                                 range: [
                                     "arm"
@@ -30395,7 +30394,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0,
                     currentEdges: 0
@@ -30412,10 +30411,10 @@ export const ORIGINAL_MIGRATED_DATA = {
         }
     },
     disadvantage: {
-        [K4ItemSubType.activeRolled]: {
+        ["active-rolled" /* K4ItemSubType.activeRolled */]: {
             "Bad Reputation": {
                 name: "Bad Reputation",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
                 data: {
                     description: "",
@@ -30424,7 +30423,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Bad Reputation",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
                             data: {
                                 description: "",
@@ -30434,7 +30433,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Bad Reputation",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30476,7 +30475,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -30513,7 +30512,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -30528,7 +30527,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Competitor": {
                 name: "Competitor",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/competitor.svg",
                 data: {
                     description: "",
@@ -30537,7 +30536,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Competitor",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/competitor.svg",
                             data: {
                                 description: "",
@@ -30547,7 +30546,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Competitor",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30589,7 +30588,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -30626,7 +30625,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -30641,7 +30640,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Condemned": {
                 name: "Condemned",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/condemned.svg",
                 data: {
                     description: "",
@@ -30650,7 +30649,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Condemned",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/condemned.svg",
                             data: {
                                 description: "",
@@ -30671,7 +30670,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Condemned",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30717,7 +30716,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -30756,7 +30755,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -30771,7 +30770,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Cursed": {
                 name: "Cursed",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/cursed.svg",
                 data: {
                     description: "",
@@ -30780,7 +30779,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Cursed",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/cursed.svg",
                             data: {
                                 description: "",
@@ -30790,7 +30789,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Cursed",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30832,7 +30831,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -30869,7 +30868,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -30884,7 +30883,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Depression": {
                 name: "Depression",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/depression.svg",
                 data: {
                     description: "",
@@ -30893,7 +30892,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Depression",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/depression.svg",
                             data: {
                                 description: "",
@@ -30903,7 +30902,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Depression",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -30945,7 +30944,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -30982,7 +30981,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -30997,7 +30996,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Drug Addict": {
                 name: "Drug Addict",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
                 data: {
                     description: "",
@@ -31006,7 +31005,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Drug Addict",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
                             data: {
                                 description: "",
@@ -31016,7 +31015,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Drug Addict",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31058,7 +31057,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31095,7 +31094,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31110,7 +31109,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Experiment Gone Wrong": {
                 name: "Experiment Gone Wrong",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
                 data: {
                     description: "",
@@ -31119,7 +31118,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Experiment Gone Wrong",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
                             data: {
                                 description: "",
@@ -31129,7 +31128,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Experiment Gone Wrong",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31171,7 +31170,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31208,7 +31207,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31223,7 +31222,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Fanatic": {
                 name: "Fanatic",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
                 data: {
                     description: "",
@@ -31232,7 +31231,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Fanatic",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
                             data: {
                                 description: "",
@@ -31242,7 +31241,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Fanatic",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31284,7 +31283,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31321,7 +31320,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31336,7 +31335,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Greedy": {
                 name: "Greedy",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/greedy.svg",
                 data: {
                     description: "",
@@ -31345,7 +31344,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Greedy",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/greedy.svg",
                             data: {
                                 description: "",
@@ -31355,7 +31354,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Greedy",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31397,7 +31396,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31434,7 +31433,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31449,7 +31448,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Guilt": {
                 name: "Guilt",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/guilt.svg",
                 data: {
                     description: "",
@@ -31458,7 +31457,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Guilt",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/guilt.svg",
                             data: {
                                 description: "",
@@ -31468,7 +31467,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Guilt",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31510,7 +31509,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31547,7 +31546,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31562,7 +31561,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Harassed": {
                 name: "Harassed",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/harassed.svg",
                 data: {
                     description: "",
@@ -31571,7 +31570,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Harassed",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/harassed.svg",
                             data: {
                                 description: "",
@@ -31581,7 +31580,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Harassed",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31623,7 +31622,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31660,7 +31659,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31675,7 +31674,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Haunted": {
                 name: "Haunted",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/haunted.svg",
                 data: {
                     description: "",
@@ -31684,7 +31683,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Haunted",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/haunted.svg",
                             data: {
                                 description: "",
@@ -31694,7 +31693,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Haunted",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31736,7 +31735,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31773,7 +31772,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31788,7 +31787,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Infirm": {
                 name: "Infirm",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/infirm.svg",
                 data: {
                     description: "",
@@ -31797,7 +31796,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Infirm",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/infirm.svg",
                             data: {
                                 description: "",
@@ -31807,7 +31806,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Infirm",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31849,7 +31848,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31886,7 +31885,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -31901,7 +31900,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Involuntary Medium": {
                 name: "Involuntary Medium",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
                 data: {
                     description: "",
@@ -31910,7 +31909,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Involuntary Medium",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
                             data: {
                                 description: "",
@@ -31920,7 +31919,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Involuntary Medium",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -31962,7 +31961,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -31999,7 +31998,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32014,7 +32013,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Jealousy": {
                 name: "Jealousy",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
                 data: {
                     description: "",
@@ -32023,7 +32022,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Jealousy",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
                             data: {
                                 description: "",
@@ -32033,7 +32032,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Jealousy",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32075,7 +32074,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32112,7 +32111,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32127,7 +32126,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Liar": {
                 name: "Liar",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/liar.svg",
                 data: {
                     description: "",
@@ -32136,7 +32135,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Liar",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/liar.svg",
                             data: {
                                 description: "",
@@ -32146,7 +32145,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Liar",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32188,7 +32187,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32225,7 +32224,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32240,7 +32239,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Lost Identity": {
                 name: "Lost Identity",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
                 data: {
                     description: "",
@@ -32249,7 +32248,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Lost Identity",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
                             data: {
                                 description: "",
@@ -32259,7 +32258,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Lost Identity",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32301,7 +32300,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32338,7 +32337,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32353,7 +32352,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Marked": {
                 name: "Marked",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/marked.svg",
                 data: {
                     description: "",
@@ -32362,7 +32361,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Marked",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/marked.svg",
                             data: {
                                 description: "",
@@ -32372,7 +32371,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Marked",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32414,7 +32413,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32451,7 +32450,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32466,7 +32465,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Mental Compulsion": {
                 name: "Mental Compulsion",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
                 data: {
                     description: "",
@@ -32492,7 +32491,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Mental Compulsion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
                             data: {
                                 description: "",
@@ -32519,7 +32518,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Mental Compulsion",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32563,7 +32562,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32602,7 +32601,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32617,7 +32616,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Nemesis": {
                 name: "Nemesis",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
                 data: {
                     description: "",
@@ -32626,7 +32625,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Nemesis",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
                             data: {
                                 description: "",
@@ -32636,7 +32635,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Nemesis",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32678,7 +32677,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32715,7 +32714,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32730,7 +32729,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Nightmares": {
                 name: "Nightmares",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
                 data: {
                     description: "",
@@ -32739,7 +32738,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Nightmares",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
                             data: {
                                 description: "",
@@ -32749,7 +32748,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Nightmares",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32791,7 +32790,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32828,7 +32827,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32843,7 +32842,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Oath of Revenge": {
                 name: "Oath of Revenge",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
                 data: {
                     description: "",
@@ -32852,7 +32851,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Oath of Revenge",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
                             data: {
                                 description: "",
@@ -32862,7 +32861,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Oath of Revenge",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -32904,7 +32903,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -32941,7 +32940,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -32956,7 +32955,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Object of Desire": {
                 name: "Object of Desire",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
                 data: {
                     description: "",
@@ -32965,7 +32964,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Object of Desire",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
                             data: {
                                 description: "",
@@ -32975,7 +32974,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Object of Desire",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33017,7 +33016,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33054,7 +33053,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33069,7 +33068,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Obsession": {
                 name: "Obsession",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/obsession.svg",
                 data: {
                     description: "",
@@ -33078,7 +33077,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Obsession",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/obsession.svg",
                             data: {
                                 description: "",
@@ -33088,7 +33087,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Obsession",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33130,7 +33129,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33167,7 +33166,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33182,7 +33181,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Owned": {
                 name: "Owned",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/owned.svg",
                 data: {
                     description: "",
@@ -33191,7 +33190,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Owned",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/owned.svg",
                             data: {
                                 description: "",
@@ -33201,7 +33200,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Owned",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33243,7 +33242,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33280,7 +33279,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33295,7 +33294,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Repressed Memories": {
                 name: "Repressed Memories",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
                 data: {
                     description: "",
@@ -33304,7 +33303,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Repressed Memories",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
                             data: {
                                 description: "",
@@ -33314,7 +33313,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Repressed Memories",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33356,7 +33355,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33393,7 +33392,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33408,7 +33407,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Rival": {
                 name: "Rival",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/rival.svg",
                 data: {
                     description: "",
@@ -33417,7 +33416,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Rival",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/rival.svg",
                             data: {
                                 description: "",
@@ -33427,7 +33426,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Rival",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33469,7 +33468,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33506,7 +33505,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33521,7 +33520,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Schizophrenia": {
                 name: "Schizophrenia",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
                 data: {
                     description: "",
@@ -33530,7 +33529,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Schizophrenia",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
                             data: {
                                 description: "",
@@ -33540,7 +33539,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Schizophrenia",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33582,7 +33581,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33619,7 +33618,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33634,7 +33633,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Sexual Neurosis": {
                 name: "Sexual Neurosis",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
                 data: {
                     description: "",
@@ -33643,7 +33642,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Sexual Neurosis",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
                             data: {
                                 description: "",
@@ -33662,7 +33661,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Sexual Neurosis",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33706,7 +33705,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33743,7 +33742,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33758,7 +33757,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Stalker": {
                 name: "Stalker",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/stalker.svg",
                 data: {
                     description: "",
@@ -33767,7 +33766,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Stalker",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/stalker.svg",
                             data: {
                                 description: "",
@@ -33777,7 +33776,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Stalker",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33819,7 +33818,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33856,7 +33855,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33871,7 +33870,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Victim of Passion": {
                 name: "Victim of Passion",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
                 data: {
                     description: "",
@@ -33880,7 +33879,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Victim of Passion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
                             data: {
                                 description: "",
@@ -33890,7 +33889,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Victim of Passion",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -33932,7 +33931,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -33969,7 +33968,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -33984,7 +33983,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Wanted": {
                 name: "Wanted",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/wanted.svg",
                 data: {
                     description: "",
@@ -33993,7 +33992,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Check: Wanted",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/wanted.svg",
                             data: {
                                 description: "",
@@ -34003,7 +34002,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Wanted",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -34045,7 +34044,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: "0"
                             },
                             folder: "CFDRHSLXwfRTtXnm",
@@ -34082,7 +34081,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -34096,10 +34095,10 @@ export const ORIGINAL_MIGRATED_DATA = {
                 flags: {}
             }
         },
-        [K4ItemSubType.activeStatic]: {
+        ["active-static" /* K4ItemSubType.activeStatic */]: {
             Phobia: {
                 name: "Phobia",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/phobia.svg",
                 data: {
                     description: "",
@@ -34108,7 +34107,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     subItems: [
                         {
                             name: "Face Fears",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/phobia.svg",
                             data: {
                                 description: "",
@@ -34118,7 +34117,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                 sourceItem: {
                                     name: "Phobia",
                                     id: "",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 pdfLink: "",
@@ -34160,7 +34159,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                                         hold: 0
                                     }
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: "0"
                             },
                             folder: "22ytJO3MvWaKOuz4",
@@ -34197,7 +34196,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -34211,10 +34210,10 @@ export const ORIGINAL_MIGRATED_DATA = {
                 flags: {}
             }
         },
-        [K4ItemSubType.passive]: {
+        ["passive" /* K4ItemSubType.passive */]: {
             Broken: {
                 name: "Broken",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/broken.svg",
                 data: {
                     description: "",
@@ -34247,7 +34246,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -34262,7 +34261,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             Rationalist: {
                 name: "Rationalist",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
                 data: {
                     description: "",
@@ -34305,7 +34304,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: "0",
                     currentHold: 0
                 },
@@ -34321,10 +34320,10 @@ export const ORIGINAL_MIGRATED_DATA = {
         }
     },
     move: {
-        [K4ItemSubType.activeRolled]: {
+        ["active-rolled" /* K4ItemSubType.activeRolled */]: {
             "Act Under Pressure": {
                 name: "Act Under Pressure",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/act-under-pressure.svg",
                 data: {
                     description: "",
@@ -34376,7 +34375,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "coolness"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34390,7 +34389,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Avoid Harm": {
                 name: "Avoid Harm",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/avoid-harm.svg",
                 data: {
                     description: "",
@@ -34442,7 +34441,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reflexes"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34456,7 +34455,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Endure Injury": {
                 name: "Endure Injury",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/endure-injury.svg",
                 data: {
                     description: "",
@@ -34531,7 +34530,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "fortitude"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34545,7 +34544,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Engage in Combat": {
                 name: "Engage in Combat",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/engage-in-combat.svg",
                 data: {
                     description: "",
@@ -34611,7 +34610,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34625,7 +34624,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Help Other": {
                 name: "Help Other",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/help-other.svg",
                 data: {
                     description: "",
@@ -34677,7 +34676,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "ask"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34691,7 +34690,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Hinder Other": {
                 name: "Hinder Other",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/hinder-other.svg",
                 data: {
                     description: "",
@@ -34743,7 +34742,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "ask"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34757,7 +34756,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Influence Other NPC": {
                 name: "Influence Other NPC",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/influence-other-npc.svg",
                 data: {
                     description: "",
@@ -34820,7 +34819,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34834,7 +34833,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Influence Other PC": {
                 name: "Influence Other PC",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/influence-other-pc.svg",
                 data: {
                     description: "",
@@ -34898,7 +34897,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "charisma"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34912,7 +34911,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Investigate": {
                 name: "Investigate",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/investigate.svg",
                 data: {
                     description: "",
@@ -34977,7 +34976,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "reason"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -34991,7 +34990,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Keep It Together": {
                 name: "Keep It Together",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/keep-it-together.svg",
                 data: {
                     description: "",
@@ -35069,7 +35068,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "willpower"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -35083,7 +35082,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Observe a Situation": {
                 name: "Observe a Situation",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/observe-a-situation.svg",
                 data: {
                     description: "",
@@ -35153,7 +35152,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "perception"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -35167,7 +35166,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Read a Person": {
                 name: "Read a Person",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/read-a-person.svg",
                 data: {
                     description: "",
@@ -35234,7 +35233,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "intuition"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -35248,7 +35247,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "See Through the Illusion": {
                 name: "See Through the Illusion",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/see-through-the-illusion.svg",
                 data: {
                     description: "",
@@ -35310,7 +35309,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                             hold: 0
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "soul"
                 },
                 folder: "wOgghWuCXJksMfFI",
@@ -35325,10 +35324,10 @@ export const ORIGINAL_MIGRATED_DATA = {
         }
     },
     darksecret: {
-        [K4ItemSubType.passive]: {
+        ["passive" /* K4ItemSubType.passive */]: {
             "Chosen One": {
                 name: "Chosen One",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/chosen-one.svg",
                 data: {
                     description: "",
@@ -35367,7 +35366,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35380,7 +35379,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Curse": {
                 name: "Curse",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/curse.svg",
                 data: {
                     description: "",
@@ -35419,7 +35418,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35432,7 +35431,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Family Secret": {
                 name: "Family Secret",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/family-secret.svg",
                 data: {
                     description: "",
@@ -35471,7 +35470,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35484,7 +35483,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Forbidden Knowledge": {
                 name: "Forbidden Knowledge",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/forbidden-knowledge.svg",
                 data: {
                     description: "",
@@ -35523,7 +35522,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35536,7 +35535,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Guardian": {
                 name: "Guardian",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/guardian.svg",
                 data: {
                     description: "",
@@ -35574,7 +35573,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35587,7 +35586,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Guilty of Crime": {
                 name: "Guilty of Crime",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/guilty-of-crime.svg",
                 data: {
                     description: "",
@@ -35627,7 +35626,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35640,7 +35639,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Heir": {
                 name: "Heir",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/heir.svg",
                 data: {
                     description: "",
@@ -35678,7 +35677,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35691,7 +35690,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Mental Illness": {
                 name: "Mental Illness",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/mental-illness.svg",
                 data: {
                     description: "",
@@ -35730,7 +35729,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35743,7 +35742,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Occult Experience": {
                 name: "Occult Experience",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/occult-experience.svg",
                 data: {
                     description: "",
@@ -35782,7 +35781,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35795,7 +35794,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Pact with Dark Forces": {
                 name: "Pact with Dark Forces",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/pact-with-dark-forces.svg",
                 data: {
                     description: "",
@@ -35834,7 +35833,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35847,7 +35846,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Responsible for Medical Experiments": {
                 name: "Responsible for Medical Experiments",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/responsible-for-medical-experiments.svg",
                 data: {
                     description: "",
@@ -35887,7 +35886,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35900,7 +35899,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Returned from the Other Side": {
                 name: "Returned from the Other Side",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/returned-from-the-other-side.svg",
                 data: {
                     description: "",
@@ -35939,7 +35938,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -35952,7 +35951,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Rootless": {
                 name: "Rootless",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/rootless.svg",
                 data: {
                     description: "",
@@ -35991,7 +35990,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -36004,7 +36003,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Strange Disappearance": {
                 name: "Strange Disappearance",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/strange-disappearance.svg",
                 data: {
                     description: "",
@@ -36043,7 +36042,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -36056,7 +36055,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Victim of Crime": {
                 name: "Victim of Crime",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/victim-of-crime.svg",
                 data: {
                     description: "",
@@ -36095,7 +36094,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -36108,7 +36107,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Victim of Medical Experiments": {
                 name: "Victim of Medical Experiments",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/victim-of-medical-experiments.svg",
                 data: {
                     description: "",
@@ -36148,7 +36147,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,
@@ -36161,7 +36160,7 @@ export const ORIGINAL_MIGRATED_DATA = {
             },
             "Visitations": {
                 name: "Visitations",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/visitations.svg",
                 data: {
                     description: "",
@@ -36200,7 +36199,7 @@ export const ORIGINAL_MIGRATED_DATA = {
                     currentHold: 0,
                     playerNotes: "",
                     gmNotes: "",
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 },
                 folder: "vCK73A1hRFC09gdG",
                 _id: null,

@@ -10,6 +10,11 @@ import K4PCSheet from '../../../documents/K4PCSheet';
 import K4NPCSheet from '../../../documents/K4NPCSheet';
 
 declare global {
+	declare const enum K4ActorType {
+		pc = "pc",
+		npc = "npc"
+	}
+
 	type ActorData = ACTORDATA.ActorData;
 
 	namespace Archetype {

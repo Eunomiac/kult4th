@@ -1,8 +1,3 @@
-// class ItemSheet<
-// 	Options extends ItemSheet.Options = ItemSheet.Options,
-// 	Data extends object = ItemSheet.Data<Options>
-// 	> extends DocumentSheet<Options, Data, InstanceType<ConfiguredDocumentClass<typeof Item>>> {
-import { K4ItemType } from "./K4Item.js";
 import C from "../scripts/constants.js";
 export default class K4ItemSheet extends ItemSheet {
     static get defaultOptions() {
@@ -16,8 +11,8 @@ export default class K4ItemSheet extends ItemSheet {
     get data() { return this.item.data.data; }
     get subType() { return this.data.subType; }
     get subItems() { return this.item.subItemData; }
-    get subMoves() { return this.item.subMoves; }
-    get attacks() { return this.item.subAttacks; }
+    get subMoves() { return this.item.subMoveData; }
+    get attacks() { return this.item.subAttackData; }
     isMove() { return this.type === "move"; }
     isAttack() { return this.type === "attack"; }
     isAdvantage() { return this.type === "advantage"; }
@@ -199,7 +194,7 @@ export default class K4ItemSheet extends ItemSheet {
                         $(this).on("click", () => self.actor?.getItemByName(iName)?.sheet?.render(true));
                     }
                     else {
-                        $(this).on("click", () => Array.from(C.game.items ?? []).find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type) && item.name === iName)?.sheet?.render(true));
+                        $(this).on("click", () => Array.from(C.game.items ?? []).find((item) => ["move" /* K4ItemType.move */, "attack" /* K4ItemType.attack */].includes(item.type) && item.name === iName)?.sheet?.render(true));
                     }
                 }
             });

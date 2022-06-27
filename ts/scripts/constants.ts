@@ -2,8 +2,8 @@
 export {UNMIGRATED_DATA, ORIGINAL_MIGRATED_DATA} from "./migration/migrationData.js";
 
 export const ActorTypes = {
-	PC: "Player Character",
-	NPC: "Non-Player Character"
+	pc: "Player Character",
+	npc: "Non-Player Character"
 };
 export const ItemTypes = {
 	move: "Move",

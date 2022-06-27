@@ -1,4 +1,3 @@
-import {K4ItemType, K4ItemSubType} from "../../documents/K4Item.js";
 
 type ItemDict<Type extends K4ItemType = K4ItemType> = Record<string,K4ItemData<Type>>;
 type SubTypeDict<Type extends K4ItemType = K4ItemType> = Record<K4ItemSubType,ItemDict<Type>>;

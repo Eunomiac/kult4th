@@ -1,43 +1,25 @@
-import { K4ItemType } from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-export var K4ActorType;
-(function (K4ActorType) {
-    K4ActorType["pc"] = "pc";
-    K4ActorType["npc"] = "npc";
-})(K4ActorType || (K4ActorType = {}));
 console.log("test");
-// EmbeddedCollection<K4Item<K4ItemType>, ActorData>
+// EmbeddedCollection<K4Item, ActorData>
 export default class K4Actor extends Actor {
     get items() { return super.items; }
-    // override prepareData() {
-    // 	super.prepareData();
-    // 	this.data.data.moves = {};
-    // 	this.items.filter((item) => item.type === "move")
-    // 		.forEach((move) => {
-    // 			this.data.data.moves[move.koFlags.linkType ?? "basic"] = this.data.data.moves[move.koFlags.linkType ?? "basic"] ?? [];
-    // 			this.data.data.moves[move.koFlags.linkType ?? "basic"].push(move);
-    // 		});
-    // 	const data = this.data as ActorData;
-    // 	const actorData = data.data;
-    // 	if (this.koFlags.archetype) {
-    // 		this.data.data.archetypeAdvantages = this.getAvailableAdvantages();
-    // 	}
-    // }
+    // #endregion 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪
+    get tData() { return this.data.data; }
     getItemsOfType(type) {
         return this.items.filter((item) => item.type === type);
     }
     getItemByName(iName) {
         return this.items.find((item) => item.name === iName);
     }
-    get moves() { return this.getItemsOfType(K4ItemType.move); }
-    get attacks() { return this.getItemsOfType(K4ItemType.attack); }
-    get advantages() { return this.getItemsOfType(K4ItemType.advantage); }
-    get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage); }
-    get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret); }
-    get weapons() { return this.getItemsOfType(K4ItemType.weapon); }
-    get gear() { return this.getItemsOfType(K4ItemType.gear); }
-    get relations() { return this.getItemsOfType(K4ItemType.relation); }
+    get moves() { return this.getItemsOfType("move" /* K4ItemType.move */); }
+    get attacks() { return this.getItemsOfType("attack" /* K4ItemType.attack */); }
+    get advantages() { return this.getItemsOfType("advantage" /* K4ItemType.advantage */); }
+    get disadvantages() { return this.getItemsOfType("disadvantage" /* K4ItemType.disadvantage */); }
+    get darkSecrets() { return this.getItemsOfType("darksecret" /* K4ItemType.darksecret */); }
+    get weapons() { return this.getItemsOfType("weapon" /* K4ItemType.weapon */); }
+    get gear() { return this.getItemsOfType("gear" /* K4ItemType.gear */); }
+    get relations() { return this.getItemsOfType("relation" /* K4ItemType.relation */); }
     get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem?.name); }
     get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem?.name)); }
     get attributeData() {
@@ -57,10 +39,12 @@ export default class K4Actor extends Actor {
     async _onCreate(...[actorData, ...args]) {
         console.log("ACTOR ON CREATE", actorData, args);
         await super._onCreate(actorData, ...args);
-        if (actorData.type === "PC") {
+        if (actorData.type === "pc" /* K4ActorType.pc */) {
             console.log("ACTOR TYPE OK", this);
             // @ts-expect-error Fucking useless...
-            const itemData = Array.from(game.items).filter((item) => item.type === "move" && !item.data.data.sourceItem.name).map((item) => item.data);
+            const itemData = Array.from(game.items)
+                .filter((item) => item.type === "move" /* K4ItemType.move */ && !item.tData.sourceItem.name)
+                .map((item) => item.data);
             // @ts-expect-error Fucking useless...
             this.createEmbeddedDocuments("Item", itemData);
         }
@@ -72,7 +56,7 @@ export default class K4Actor extends Actor {
 // }
 // interface K4PCData extends ActorData {
 // 	data: ToObjectFalseType<K4Actor["data"]>
-// 	sourceItem: K4Item<K4ItemType> | ""
+// 	sourceItem: K4Item | ""
 // }
 // export class kult4eOverridesActor extends kult4eActor {
 // 	_preparePCData(actorData) {

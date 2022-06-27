@@ -1,6 +1,5 @@
 import C from "./constants.js";
 import U from "./utilities.js";
-import {K4ItemType} from "../documents/K4Item.js";
 
 export function MIX(derivedCtor: K4Constructor, baseCtors: K4Constructor[]) {
 	baseCtors.forEach(baseCtor => {

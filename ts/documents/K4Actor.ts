@@ -1,39 +1,26 @@
-import K4Item, {K4ItemType} from "./K4Item.js";
+import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
 
-export enum K4ActorType {
-	pc = "pc",
-	npc = "npc"
-}
+
 console.log("test");
-// EmbeddedCollection<K4Item<K4ItemType>, ActorData>
+// EmbeddedCollection<K4Item, ActorData>
 export default class K4Actor<Type extends K4ActorType> extends Actor {
+
+	// #region 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪 ~
 	declare data: K4ActorData<Type>;
 	override get items() { return super.items as EmbeddedCollection<typeof K4Item, ActorData> }
+	// #endregion 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪
 
-	// override prepareData() {
-	// 	super.prepareData();
-	// 	this.data.data.moves = {};
-	// 	this.items.filter((item) => item.type === "move")
-	// 		.forEach((move) => {
-	// 			this.data.data.moves[move.koFlags.linkType ?? "basic"] = this.data.data.moves[move.koFlags.linkType ?? "basic"] ?? [];
-	// 			this.data.data.moves[move.koFlags.linkType ?? "basic"].push(move);
-	// 		});
-	// 	const data = this.data as ActorData;
-	// 	const actorData = data.data;
-	// 	if (this.koFlags.archetype) {
-	// 		this.data.data.archetypeAdvantages = this.getAvailableAdvantages();
-	// 	}
-	// }
+	get tData() { return this.data.data }
 
 	getItemsOfType<T extends K4ItemType>(type: T): Array<K4Item<T>> {
-		return this.items.filter((item: K4Item<K4ItemType>): item is K4Item<T> => item.type === type);
+		return this.items.filter((item) => item.type === type) as Array<K4Item<T>>;
 	}
 
-	getItemByName(iName: string): K4Item<K4ItemType> | undefined {
-		return this.items.find((item: K4Item<K4ItemType>) => item.name === iName);
+	getItemByName(iName: string): K4Item<any> | undefined {
+		return this.items.find((item) => item.name === iName);
 	}
 
 	get moves() { return this.getItemsOfType(K4ItemType.move) }
@@ -66,10 +53,12 @@ export default class K4Actor<Type extends K4ActorType> extends Actor {
 	override async _onCreate(...[actorData, ...args]: Parameters<Actor["_onCreate"]>) {
 		console.log("ACTOR ON CREATE", actorData, args);
 		await super._onCreate(actorData, ...args);
-		if (actorData.type === "PC") {
+		if (actorData.type === K4ActorType.pc) {
 			console.log("ACTOR TYPE OK", this);
 			// @ts-expect-error Fucking useless...
-			const itemData = Array.from(game.items as Array<K4Item<K4ItemType>>).filter((item: K4Item<K4ItemType>) => item.type === "move" && !item.data.data.sourceItem.name).map((item) => item.data);
+			const itemData = Array.from(game.items as K4Item[])
+				.filter((item): item is K4Item<K4ItemType.move> => item.type === K4ItemType.move && !item.tData.sourceItem.name)
+				.map((item) => item.data);
 			// @ts-expect-error Fucking useless...
 			this.createEmbeddedDocuments("Item", itemData);
 		}
@@ -83,7 +72,7 @@ export default class K4Actor<Type extends K4ActorType> extends Actor {
 
 // interface K4PCData extends ActorData {
 // 	data: ToObjectFalseType<K4Actor["data"]>
-// 	sourceItem: K4Item<K4ItemType> | ""
+// 	sourceItem: K4Item | ""
 // }
 
 

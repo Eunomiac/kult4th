@@ -1,7 +1,6 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
 import C, { K4Attribute } from "../../scripts/constants.js";
 import U from "../../scripts/utilities.js";
-import { K4ItemType, K4ItemSubType } from "../../documents/K4Item.js";
 const clearItems = async () => Item.deleteDocuments(Array.from(C.game.items?.values() ?? []).map((item) => item.id));
 const clearFolders = async () => Folder.deleteDocuments(Array.from(C.game.folders?.values() ?? []).map((folder) => folder.id));
 const isFolderEmpty = (folder) => {
@@ -378,22 +377,22 @@ const resetItems = async () => {
 (?<![\d>])[+|-]\d+(?!\)?<)
 */
 const ITEM_DATA = {
-    [K4ItemType.advantage]: {
-        [K4ItemSubType.activeRolled]: {
+    ["advantage" /* K4ItemType.advantage */]: {
+        ["active-rolled" /* K4ItemSubType.activeRolled */]: {
             "Academic Network": {
                 name: "Academic Network",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/academic-network.svg",
                 data: {
                     subItems: [
                         {
                             name: "Tap Academic Network",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/academic-network.svg",
                             data: {
                                 sourceItem: {
                                     name: "Academic Network",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -411,7 +410,7 @@ const ITEM_DATA = {
                                         result: "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#)."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -420,19 +419,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have academic contacts at universities around the world."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Access the Dark Net": {
                 name: "Access the Dark Net",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
                 data: {
                     subItems: [
                         {
                             name: "Access the Dark Net",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
                             data: {
                                 lists: {
@@ -447,7 +446,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Access the Dark Net",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -465,19 +464,19 @@ const ITEM_DATA = {
                                         result: "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Ace Up the Sleeve": {
                 name: "Ace Up the Sleeve",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
                 data: {
                     lists: {
@@ -493,7 +492,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Pull an Ace",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
                             data: {
                                 lists: {
@@ -508,7 +507,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Ace Up the Sleeve",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -541,7 +540,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
@@ -552,19 +551,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Animal Speaker": {
                 name: "Animal Speaker",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
                 data: {
                     subItems: [
                         {
                             name: "Control Animal",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
                             data: {
                                 lists: {
@@ -579,7 +578,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Animal Speaker",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -609,7 +608,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.intuition
                             }
                         }
@@ -618,13 +617,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are able to understand and control animals."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.intuition
                 }
             },
             "Artifact": {
                 name: "Artifact",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/artifact.svg",
                 data: {
                     lists: {
@@ -641,7 +640,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Activate Artifact",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/artifact.svg",
                             data: {
                                 lists: {
@@ -657,7 +656,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Artifact",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -684,7 +683,7 @@ const ITEM_DATA = {
                                         "powers"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -696,19 +695,19 @@ const ITEM_DATA = {
                             "powers"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Artistic Talent": {
                 name: "Artistic Talent",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
                 data: {
                     subItems: [
                         {
                             name: "Perform",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
                             data: {
                                 lists: {
@@ -724,7 +723,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Artistic Talent",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -754,25 +753,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Authority": {
                 name: "Authority",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/authority.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Authority",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/authority.svg",
                             data: {
                                 lists: {
@@ -788,7 +787,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Authority",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -818,7 +817,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -827,24 +826,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You're an academic authority in your field and a well-known name in newspapers, debate shows, and scientific journals."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Awe-Inspiring": {
                 name: "Awe-Inspiring",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
                 data: {
                     subItems: [
                         {
                             name: "Take Charge",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
                             data: {
                                 sourceItem: {
                                     name: "Awe-Inspiring",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -862,25 +861,25 @@ const ITEM_DATA = {
                                         result: "People feel like you're the leader, but one of them tries to challenge you for it. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Backstab": {
                 name: "Backstab",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/backstab.svg",
                 data: {
                     subItems: [
                         {
                             name: "Backstab",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/backstab.svg",
                             data: {
                                 lists: {
@@ -895,7 +894,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Backstab",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -922,25 +921,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Battlefield Medicine": {
                 name: "Battlefield Medicine",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
                 data: {
                     subItems: [
                         {
                             name: "Stabilize Injury",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
                             data: {
                                 lists: {
@@ -963,7 +962,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Battlefield Medicine",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -990,25 +989,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Body Awareness": {
                 name: "Body Awareness",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/body-awareness.svg",
                 data: {
                     subItems: [
                         {
                             name: "Perform Acrobatics",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/body-awareness.svg",
                             data: {
                                 lists: {
@@ -1023,7 +1022,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Body Awareness",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1053,7 +1052,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
@@ -1062,19 +1061,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "Your body and mind are as one."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Boss": {
                 name: "Boss",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/boss.svg",
                 data: {
                     subItems: [
                         {
                             name: "Deploy Henchmen",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/boss.svg",
                             data: {
                                 lists: {
@@ -1089,7 +1088,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Boss",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1107,7 +1106,7 @@ const ITEM_DATA = {
                                         result: "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
@@ -1116,19 +1115,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have five to ten criminal henchmen who are loyal to you, usually for as long as you continue paying them."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Bound": {
                 name: "Bound",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/bound.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Bound",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/bound.svg",
                             data: {
                                 lists: {
@@ -1143,7 +1142,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Bound",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1173,7 +1172,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -1182,19 +1181,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are bound to an extradimensional entity whose powers you can draw upon. Explain what you think it is when you take this Advantage."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Burglar": {
                 name: "Burglar",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/burglar.svg",
                 data: {
                     subItems: [
                         {
                             name: "Burgle",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/burglar.svg",
                             data: {
                                 lists: {
@@ -1211,7 +1210,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Burglar",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1241,25 +1240,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Chameleon": {
                 name: "Chameleon",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/chameleon.svg",
                 data: {
                     subItems: [
                         {
                             name: "Alter Appearance",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/chameleon.svg",
                             data: {
                                 lists: {
@@ -1273,7 +1272,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Chameleon",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1291,25 +1290,25 @@ const ITEM_DATA = {
                                         result: "Your disguise is only effective at a distance. If you attract any attention to yourself, you will be exposed."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.intuition
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.intuition
                 }
             },
             "Character Actor": {
                 name: "Character Actor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/character-actor.svg",
                 data: {
                     subItems: [
                         {
                             name: "Blend In",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/character-actor.svg",
                             data: {
                                 lists: {
@@ -1325,7 +1324,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Character Actor",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1355,25 +1354,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.intuition
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.intuition
                 }
             },
             "Charismatic Aura": {
                 name: "Charismatic Aura",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
                 data: {
                     subItems: [
                         {
                             name: "Radiate Appeal",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
                             data: {
                                 lists: {
@@ -1388,7 +1387,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Charismatic Aura",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1418,7 +1417,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -1427,24 +1426,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You radiate an aura that makes people trust you and seek your company."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Collector": {
                 name: "Collector",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/collector.svg",
                 data: {
                     subItems: [
                         {
                             name: "Seek Rare Item",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/collector.svg",
                             data: {
                                 sourceItem: {
                                     name: "Collector",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1462,25 +1461,25 @@ const ITEM_DATA = {
                                         result: "You know roughly where to start searching for it, but not the hazards or costs involved in pursuing it."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Contagious Insanity": {
                 name: "Contagious Insanity",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
                 data: {
                     subItems: [
                         {
                             name: "Spread Madness",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
                             data: {
                                 lists: {
@@ -1496,7 +1495,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Contagious Insanity",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1523,25 +1522,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Crafty": {
                 name: "Crafty",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/crafty.svg",
                 data: {
                     subItems: [
                         {
                             name: "Pull a Long Con",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/crafty.svg",
                             data: {
                                 lists: {
@@ -1556,7 +1555,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Crafty",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1583,25 +1582,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.intuition
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.intuition
                 }
             },
             "Crime Scene Investigator": {
                 name: "Crime Scene Investigator",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
                 data: {
                     subItems: [
                         {
                             name: "Perform Investigation",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
                             data: {
                                 lists: {
@@ -1620,7 +1619,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Crime Scene Investigator",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1650,25 +1649,25 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Cult Leader": {
                 name: "Cult Leader",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/cult-leader.svg",
                 data: {
                     subItems: [
                         {
                             name: "Lead a Ritual",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/cult-leader.svg",
                             data: {
                                 lists: {
@@ -1685,7 +1684,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Cult Leader",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1712,25 +1711,25 @@ const ITEM_DATA = {
                                         "visions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Dabbler in the Occult": {
                 name: "Dabbler in the Occult",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
                 data: {
                     subItems: [
                         {
                             name: "Perform a Ritual",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
                             data: {
                                 lists: {
@@ -1745,7 +1744,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Dabbler in the Occult",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1763,7 +1762,7 @@ const ITEM_DATA = {
                                         result: "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -1772,13 +1771,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You know a little of magical rituals, but have never gone beyond performing written instructions."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Daredevil": {
                 name: "Daredevil",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/daredevil.svg",
                 data: {
                     lists: {
@@ -1794,7 +1793,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Live Dangerously",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/daredevil.svg",
                             data: {
                                 lists: {
@@ -1809,7 +1808,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Daredevil",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1842,7 +1841,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
@@ -1853,19 +1852,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Data Retrieval": {
                 name: "Data Retrieval",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
                 data: {
                     subItems: [
                         {
                             name: "Perform Research",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
                             data: {
                                 lists: {
@@ -1882,7 +1881,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Data Retrieval",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1912,30 +1911,30 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Deadly Stare": {
                 name: "Deadly Stare",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
                 data: {
                     subItems: [
                         {
                             name: "Death Stare",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
                             data: {
                                 sourceItem: {
                                     name: "Deadly Stare",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -1953,19 +1952,19 @@ const ITEM_DATA = {
                                         result: "Your opponents see you as their primary threat."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Death Drive": {
                 name: "Death Drive",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/death-drive.svg",
                 data: {
                     lists: {
@@ -1982,7 +1981,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Fight Recklessly",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/death-drive.svg",
                             data: {
                                 lists: {
@@ -1998,7 +1997,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Death Drive",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2031,7 +2030,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -2042,19 +2041,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Divine": {
                 name: "Divine",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/divine.svg",
                 data: {
                     subItems: [
                         {
                             name: "Sway Monster",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/divine.svg",
                             data: {
                                 lists: {
@@ -2068,7 +2067,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Divine",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2098,7 +2097,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -2107,24 +2106,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "There is something about you that reminds your former servants of what you truly are."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Dreamer": {
                 name: "Dreamer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/dreamer.svg",
                 data: {
                     subItems: [
                         {
                             name: "Navigate the Dream",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/dreamer.svg",
                             data: {
                                 sourceItem: {
                                     name: "Dreamer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2142,7 +2141,7 @@ const ITEM_DATA = {
                                         result: "You are lost in the Dream and cannot wake up until you find your way back."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -2151,13 +2150,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are a talented, self-taught dream wanderer."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Driver": {
                 name: "Driver",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/driver.svg",
                 data: {
                     lists: {
@@ -2174,7 +2173,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Drive Dangerously",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/driver.svg",
                             data: {
                                 lists: {
@@ -2190,7 +2189,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Driver",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2223,7 +2222,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
@@ -2235,19 +2234,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Elite Education": {
                 name: "Elite Education",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-education.svg",
                 data: {
                     subItems: [
                         {
                             name: "Request a Favor",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/elite-education.svg",
                             data: {
                                 lists: {
@@ -2263,7 +2262,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Elite Education",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2293,7 +2292,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -2302,19 +2301,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have attended one of the world's most prestigious institutes of higher learning and have acquired contacts with power and influence."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Enforcer": {
                 name: "Enforcer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/enforcer.svg",
                 data: {
                     subItems: [
                         {
                             name: "Threaten Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/enforcer.svg",
                             data: {
                                 lists: {
@@ -2330,7 +2329,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Enforcer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2348,30 +2347,30 @@ const ITEM_DATA = {
                                         result: "Turns out you didn't have the advantage you thought you did. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Enhanced Awareness": {
                 name: "Enhanced Awareness",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
                 data: {
                     subItems: [
                         {
                             name: "Focus on the Illusion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
                             data: {
                                 sourceItem: {
                                     name: "Enhanced Awareness",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2389,25 +2388,25 @@ const ITEM_DATA = {
                                         result: "The Illusion tears. The veil is lifted temporarily, revealing an alternate dimension—the GM determines which one. The PC could be sucked into it or something may cross over into our reality. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Erotic": {
                 name: "Erotic",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/erotic.svg",
                 data: {
                     subItems: [
                         {
                             name: "Incite Desire",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/erotic.svg",
                             data: {
                                 lists: {
@@ -2423,7 +2422,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Erotic",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2453,30 +2452,30 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Escape Artist": {
                 name: "Escape Artist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/escape-artist.svg",
                 data: {
                     subItems: [
                         {
                             name: "Escape",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/escape-artist.svg",
                             data: {
                                 sourceItem: {
                                     name: "Escape Artist",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2494,7 +2493,7 @@ const ITEM_DATA = {
                                         result: "You are only half out the door when you're caught in a really bad spot. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
@@ -2503,19 +2502,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are a master at slipping away when the shit hits the fan."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Exit Strategy": {
                 name: "Exit Strategy",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
                 data: {
                     subItems: [
                         {
                             name: "Make a Clean Exit",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
                             data: {
                                 lists: {
@@ -2530,7 +2529,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Exit Strategy",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2560,25 +2559,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Exorcist": {
                 name: "Exorcist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/exorcist.svg",
                 data: {
                     subItems: [
                         {
                             name: "Perform Exorcism",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/exorcist.svg",
                             data: {
                                 lists: {
@@ -2593,7 +2592,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Exorcist",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2620,30 +2619,30 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Explosives Expert": {
                 name: "Explosives Expert",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
                 data: {
                     subItems: [
                         {
                             name: "Improvise Explosive",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
                             data: {
                                 sourceItem: {
                                     name: "Explosives Expert",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2661,18 +2660,18 @@ const ITEM_DATA = {
                                         result: "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         },
                         {
                             name: "Disarm Explosive",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
                             data: {
                                 sourceItem: {
                                     name: "Explosives Expert",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2690,7 +2689,7 @@ const ITEM_DATA = {
                                         result: "Fuck, that's not good! The bomb may go off in your hands, the timer starts counting down from 10, 9, 8, 7…, or even bigger problems occur. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
@@ -2699,19 +2698,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You can build and disarm bombs. If you have enough time and resources, you can build any kind of bomb you like without a roll."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Eye for Detail": {
                 name: "Eye for Detail",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
                 data: {
                     subItems: [
                         {
                             name: "Study Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
                             data: {
                                 lists: {
@@ -2728,7 +2727,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Eye for Detail",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2758,25 +2757,25 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Fascination": {
                 name: "Fascination",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/fascination.svg",
                 data: {
                     subItems: [
                         {
                             name: "Artful Seduction",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/fascination.svg",
                             data: {
                                 lists: {
@@ -2798,7 +2797,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Fascination",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2825,25 +2824,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Fast Talk": {
                 name: "Fast Talk",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/fast-talk.svg",
                 data: {
                     subItems: [
                         {
                             name: "Fast Talk",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/fast-talk.svg",
                             data: {
                                 lists: {
@@ -2858,7 +2857,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Fast Talk",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2888,19 +2887,19 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "XXX Field Agent": {
                 name: "XXX Field Agent",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
                 data: {
                     lists: {
@@ -2917,7 +2916,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Surprise Strike",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
                             data: {
                                 lists: {
@@ -2935,7 +2934,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "XXX Field Agent",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -2959,7 +2958,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
@@ -2969,7 +2968,7 @@ const ITEM_DATA = {
                         },
                         {
                             name: "Enter Combat",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/field-agent.svg",
                             data: {
                                 lists: {
@@ -2985,7 +2984,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "XXX Field Agent",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3018,7 +3017,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -3030,19 +3029,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Forbidden Inspiration": {
                 name: "Forbidden Inspiration",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
                 data: {
                     subItems: [
                         {
                             name: "Seek Inspiration",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
                             data: {
                                 lists: {
@@ -3057,7 +3056,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Forbidden Inspiration",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3087,25 +3086,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Forked Tongue": {
                 name: "Forked Tongue",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
                 data: {
                     subItems: [
                         {
                             name: "Manipulate Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
                             data: {
                                 lists: {
@@ -3128,7 +3127,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Forked Tongue",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3155,25 +3154,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Gang Leader": {
                 name: "Gang Leader",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/gang-leader.svg",
                 data: {
                     subItems: [
                         {
                             name: "Give Orders",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/gang-leader.svg",
                             data: {
                                 lists: {
@@ -3187,7 +3186,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Gang Leader",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3205,7 +3204,7 @@ const ITEM_DATA = {
                                         result: "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -3214,13 +3213,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You're the boss of a small gang of criminals."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Genius": {
                 name: "Genius",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/genius.svg",
                 data: {
                     lists: {
@@ -3236,7 +3235,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Think Fast",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/genius.svg",
                             data: {
                                 lists: {
@@ -3251,7 +3250,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Genius",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3284,7 +3283,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -3295,19 +3294,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Hacker": {
                 name: "Hacker",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/hacker.svg",
                 data: {
                     subItems: [
                         {
                             name: "Hack",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/hacker.svg",
                             data: {
                                 lists: {
@@ -3321,7 +3320,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Hacker",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3339,25 +3338,25 @@ const ITEM_DATA = {
                                         result: "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Hunter": {
                 name: "Hunter",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/hunter.svg",
                 data: {
                     subItems: [
                         {
                             name: "Hunt Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/hunter.svg",
                             data: {
                                 lists: {
@@ -3372,7 +3371,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Hunter",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3402,19 +3401,19 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Ice Cold": {
                 name: "Ice Cold",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/ice-cold.svg",
                 data: {
                     lists: {
@@ -3431,7 +3430,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Keep Cool",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/ice-cold.svg",
                             data: {
                                 lists: {
@@ -3447,7 +3446,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Ice Cold",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3480,7 +3479,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
@@ -3492,24 +3491,24 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Implanted Messages": {
                 name: "Implanted Messages",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
                 data: {
                     subItems: [
                         {
                             name: "Experiment on Human",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
                             data: {
                                 sourceItem: {
                                     name: "Implanted Messages",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3527,7 +3526,7 @@ const ITEM_DATA = {
                                         result: "Something goes wrong, such as they get hurt in the process or the order's outcome is different than what you imagined. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -3536,24 +3535,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You know how to implant orders into the minds of your \"subjects\"."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Impostor": {
                 name: "Impostor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/impostor.svg",
                 data: {
                     subItems: [
                         {
                             name: "Exploit Rube",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/impostor.svg",
                             data: {
                                 sourceItem: {
                                     name: "Impostor",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3571,7 +3570,7 @@ const ITEM_DATA = {
                                         result: "You know someone who can help, but they have already seen through your game. If you want their assistance it will require threats or blackmail to get them to provide it."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -3580,19 +3579,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You maintain relationships with numerous people who all believe you are their soulmate, yet are unaware of each other."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Improviser": {
                 name: "Improviser",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/improviser.svg",
                 data: {
                     subItems: [
                         {
                             name: "Wing It",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/improviser.svg",
                             data: {
                                 lists: {
@@ -3608,7 +3607,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Improviser",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3635,30 +3634,30 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Influential Friends": {
                 name: "Influential Friends",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/influential-friends.svg",
                 data: {
                     subItems: [
                         {
                             name: "Pull Strings",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/influential-friends.svg",
                             data: {
                                 sourceItem: {
                                     name: "Influential Friends",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3676,7 +3675,7 @@ const ITEM_DATA = {
                                         result: "They arrange for what you want, but you get on a powerful person's bad side or attract negative publicity. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -3685,24 +3684,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have friends with power and influence."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Inner Power": {
                 name: "Inner Power",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/inner-power.svg",
                 data: {
                     subItems: [
                         {
                             name: "Release Power",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/inner-power.svg",
                             data: {
                                 sourceItem: {
                                     name: "Inner Power",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3720,7 +3719,7 @@ const ITEM_DATA = {
                                         result: "The power attacks all living beings, including yourself, in the vicinity, causing #>text-keyword>2 Harm<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -3729,24 +3728,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You harbor a mysterious power, which you do not fully understand. The power can protect you, but you have no control over it."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Intimidating": {
                 name: "Intimidating",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/intimidating.svg",
                 data: {
                     subItems: [
                         {
                             name: "Intimidate Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/intimidating.svg",
                             data: {
                                 sourceItem: {
                                     name: "Intimidating",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3764,7 +3763,7 @@ const ITEM_DATA = {
                                         result: "They see you as their primary threat and act accordingly. #>text-gmtext>The GM makes a Move<# for them."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -3773,19 +3772,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "There is something about you that instinctively makes others fear you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Inventor": {
                 name: "Inventor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/inventor.svg",
                 data: {
                     subItems: [
                         {
                             name: "Create or Repair",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/inventor.svg",
                             data: {
                                 lists: {
@@ -3801,7 +3800,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Inventor",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3828,30 +3827,30 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Lay on Hands": {
                 name: "Lay on Hands",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
                 data: {
                     subItems: [
                         {
                             name: "Heal",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
                             data: {
                                 sourceItem: {
                                     name: "Lay on Hands",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3869,7 +3868,7 @@ const ITEM_DATA = {
                                         result: "You may choose to stabilize the injured, but if you do, the powers break free from your control."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -3878,13 +3877,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim. %n%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent. %n%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Lightning Fast": {
                 name: "Lightning Fast",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
                 data: {
                     lists: {
@@ -3900,7 +3899,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Accelerate",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
                             data: {
                                 lists: {
@@ -3915,7 +3914,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Lightning Fast",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -3948,7 +3947,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -3959,19 +3958,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Magical Intuition": {
                 name: "Magical Intuition",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
                 data: {
                     subItems: [
                         {
                             name: "Intuit the Illusion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
                             data: {
                                 lists: {
@@ -3986,7 +3985,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Magical Intuition",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4016,7 +4015,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -4025,19 +4024,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have an innate ability to perceive Kirlian auras and sense the presence of magic."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Magnetic Attraction": {
                 name: "Magnetic Attraction",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
                 data: {
                     subItems: [
                         {
                             name: "Attract Attention",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
                             data: {
                                 lists: {
@@ -4052,7 +4051,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Magnetic Attraction",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4082,25 +4081,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Manhunter": {
                 name: "Manhunter",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/manhunter.svg",
                 data: {
                     subItems: [
                         {
                             name: "Investigate Someone",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/manhunter.svg",
                             data: {
                                 lists: {
@@ -4117,7 +4116,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Manhunter",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4147,19 +4146,19 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Martial Arts Expert": {
                 name: "Martial Arts Expert",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
                 data: {
                     lists: {
@@ -4176,7 +4175,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Engage in Melee",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
                             data: {
                                 lists: {
@@ -4192,7 +4191,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Martial Arts Expert",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4225,7 +4224,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -4236,19 +4235,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Moles": {
                 name: "Moles",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/moles.svg",
                 data: {
                     subItems: [
                         {
                             name: "Contact Mole",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/moles.svg",
                             data: {
                                 lists: {
@@ -4262,7 +4261,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Moles",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4289,7 +4288,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -4298,19 +4297,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have placed a number of moles in groups or organizations of interest to you, such as business competitors, governments, or cults."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Network of Contacts": {
                 name: "Network of Contacts",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
                 data: {
                     subItems: [
                         {
                             name: "Ask About Someone",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
                             data: {
                                 lists: {
@@ -4327,7 +4326,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Network of Contacts",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4357,30 +4356,30 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Notorious": {
                 name: "Notorious",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/notorious.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Notorious",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/notorious.svg",
                             data: {
                                 sourceItem: {
                                     name: "Notorious",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4398,7 +4397,7 @@ const ITEM_DATA = {
                                         result: "They know of your reputation; the GM decides what they have heard."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -4407,19 +4406,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are famous in your trade."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Occult Library": {
                 name: "Occult Library",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/occult-library.svg",
                 data: {
                     subItems: [
                         {
                             name: "Do Library Research",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/occult-library.svg",
                             data: {
                                 lists: {
@@ -4435,7 +4434,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Occult Library",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4467,7 +4466,7 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
@@ -4476,19 +4475,19 @@ const ITEM_DATA = {
                     rules: {
                         holdText: "The GM can spend Hold at any time to make a hard or soft Move."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Occult Studies": {
                 name: "Occult Studies",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/occult-studies.svg",
                 data: {
                     subItems: [
                         {
                             name: "Encounter the Occult",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/occult-studies.svg",
                             data: {
                                 lists: {
@@ -4502,7 +4501,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Occult Studies",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4529,7 +4528,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
@@ -4538,13 +4537,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are a student of the occult."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Officer": {
                 name: "Officer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/officer.svg",
                 data: {
                     lists: {
@@ -4561,7 +4560,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Fight Beside Ally",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/officer.svg",
                             data: {
                                 lists: {
@@ -4577,7 +4576,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Officer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4606,7 +4605,7 @@ const ITEM_DATA = {
                                         result: "You misjudge the situation. Choose whether you have put yourself or one of your allies in harm's way. #>text-gmtext>The GM makes a Move<# for your opponent."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -4617,19 +4616,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Parkour": {
                 name: "Parkour",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/parkour.svg",
                 data: {
                     subItems: [
                         {
                             name: "Execute Acrobatic Maneuver",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/parkour.svg",
                             data: {
                                 lists: {
@@ -4644,7 +4643,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Parkour",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4674,7 +4673,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
@@ -4683,19 +4682,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are deft at running and jumping, even over difficult terrain."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Perpetual Victim": {
                 name: "Perpetual Victim",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
                 data: {
                     subItems: [
                         {
                             name: "Appear Helpless",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
                             data: {
                                 lists: {
@@ -4710,7 +4709,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Perpetual Victim",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4737,25 +4736,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Prepared": {
                 name: "Prepared",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/prepared.svg",
                 data: {
                     subItems: [
                         {
                             name: "Survey Location",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/prepared.svg",
                             data: {
                                 lists: {
@@ -4770,7 +4769,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Prepared",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4802,7 +4801,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
@@ -4811,24 +4810,24 @@ const ITEM_DATA = {
                     rules: {
                         holdText: "The GM can spend Hold at any time to make a hard or soft Move for the location."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Puppeteer": {
                 name: "Puppeteer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/puppeteer.svg",
                 data: {
                     subItems: [
                         {
                             name: "Play Your Pawns",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/puppeteer.svg",
                             data: {
                                 sourceItem: {
                                     name: "Puppeteer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4846,25 +4845,25 @@ const ITEM_DATA = {
                                         result: "Your plan is inadequate, revealed, and/or misguided. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Quick Thinker": {
                 name: "Quick Thinker",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
                 data: {
                     subItems: [
                         {
                             name: "Prepare for Danger",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
                             data: {
                                 lists: {
@@ -4879,7 +4878,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Quick Thinker",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4909,25 +4908,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Read a Crowd": {
                 name: "Read a Crowd",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
                 data: {
                     subItems: [
                         {
                             name: "Mingle",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
                             data: {
                                 lists: {
@@ -4943,7 +4942,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Read a Crowd",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -4973,19 +4972,19 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Ruthless": {
                 name: "Ruthless",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/ruthless.svg",
                 data: {
                     lists: {
@@ -5001,7 +5000,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Sacrifice Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/ruthless.svg",
                             data: {
                                 lists: {
@@ -5016,7 +5015,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Ruthless",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5045,7 +5044,7 @@ const ITEM_DATA = {
                                         result: "Things turns out in a bad way for you instead. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -5056,19 +5055,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Seducer": {
                 name: "Seducer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/seducer.svg",
                 data: {
                     subItems: [
                         {
                             name: "Seduce",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/seducer.svg",
                             data: {
                                 lists: {
@@ -5085,7 +5084,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Seducer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5115,7 +5114,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -5124,24 +5123,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You can consciously make people fall in love with you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Shadow": {
                 name: "Shadow",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/shadow.svg",
                 data: {
                     subItems: [
                         {
                             name: "Shadow Someone",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/shadow.svg",
                             data: {
                                 sourceItem: {
                                     name: "Shadow",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5159,18 +5158,18 @@ const ITEM_DATA = {
                                         result: "You are spotted or encounter some sort of problem along the way. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         },
                         {
                             name: "Evade a Shadow",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/shadow.svg",
                             data: {
                                 sourceItem: {
                                     name: "Shadow",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5188,25 +5187,25 @@ const ITEM_DATA = {
                                         result: "Your pursuers are still on your tail, and they can set up an ambush, disappear without a trace (only to show up when you least expect it), or refuse to go away. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Sixth Sense": {
                 name: "Sixth Sense",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Sixth Sense",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
                             data: {
                                 lists: {
@@ -5221,7 +5220,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Sixth Sense",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5248,7 +5247,7 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -5257,19 +5256,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have an intuition for things, both good and bad."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Snake Charmer": {
                 name: "Snake Charmer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
                 data: {
                     subItems: [
                         {
                             name: "Charm",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
                             data: {
                                 lists: {
@@ -5283,7 +5282,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Snake Charmer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5310,25 +5309,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Sneak": {
                 name: "Sneak",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sneak.svg",
                 data: {
                     subItems: [
                         {
                             name: "Hide & Sneak",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sneak.svg",
                             data: {
                                 lists: {
@@ -5343,7 +5342,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Sneak",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5373,25 +5372,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.coolness
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Sniper": {
                 name: "Sniper",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sniper.svg",
                 data: {
                     subItems: [
                         {
                             name: "Scoped Shot",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sniper.svg",
                             data: {
                                 lists: {
@@ -5408,7 +5407,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Sniper",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5435,25 +5434,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Street Contacts": {
                 name: "Street Contacts",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/street-contacts.svg",
                 data: {
                     subItems: [
                         {
                             name: "Canvas Street Contacts",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/street-contacts.svg",
                             data: {
                                 lists: {
@@ -5469,7 +5468,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Street Contacts",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5499,7 +5498,7 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
@@ -5508,13 +5507,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have contacts among the homeless, crazies, and other societal outsiders and outcasts."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Streetfighter": {
                 name: "Streetfighter",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/streetfighter.svg",
                 data: {
                     lists: {
@@ -5530,7 +5529,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Engage in Melee",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/streetfighter.svg",
                             data: {
                                 lists: {
@@ -5552,7 +5551,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Streetfighter",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5581,7 +5580,7 @@ const ITEM_DATA = {
                                         result: "You're unfocused and lose control. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
@@ -5592,19 +5591,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Streetwise": {
                 name: "Streetwise",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/streetwise.svg",
                 data: {
                     subItems: [
                         {
                             name: "Shop the Black Market",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/streetwise.svg",
                             data: {
                                 lists: {
@@ -5620,7 +5619,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Streetwise",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5638,19 +5637,19 @@ const ITEM_DATA = {
                                         result: "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.charisma
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Stubborn": {
                 name: "Stubborn",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/stubborn.svg",
                 data: {
                     lists: {
@@ -5666,7 +5665,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Push Through",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/stubborn.svg",
                             data: {
                                 lists: {
@@ -5681,7 +5680,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Stubborn",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5714,7 +5713,7 @@ const ITEM_DATA = {
                                         edges: 1
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
@@ -5725,19 +5724,19 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Survival Instinct": {
                 name: "Survival Instinct",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
                 data: {
                     subItems: [
                         {
                             name: "Refuse to Yield",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
                             data: {
                                 lists: {
@@ -5751,7 +5750,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Survival Instinct",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5769,25 +5768,25 @@ const ITEM_DATA = {
                                         result: "You overexert yourself and after a few moments your injuries cause you to pass out and collapse. After your next action, the GM decides when and how you pass out."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Survivalist": {
                 name: "Survivalist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/survivalist.svg",
                 data: {
                     subItems: [
                         {
                             name: "Survivalist Skills",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/survivalist.svg",
                             data: {
                                 lists: {
@@ -5802,7 +5801,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Survivalist",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5832,25 +5831,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Tracer": {
                 name: "Tracer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/tracer.svg",
                 data: {
                     subItems: [
                         {
                             name: "Execute Trace",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/tracer.svg",
                             data: {
                                 lists: {
@@ -5866,7 +5865,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Tracer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5896,25 +5895,25 @@ const ITEM_DATA = {
                                         "questions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.reason
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Voice of Insanity": {
                 name: "Voice of Insanity",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
                 data: {
                     subItems: [
                         {
                             name: "Mass Manipulation",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
                             data: {
                                 lists: {
@@ -5931,7 +5930,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Voice of Insanity",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -5961,25 +5960,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Voice of Pain": {
                 name: "Voice of Pain",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
                 data: {
                     subItems: [
                         {
                             name: "Gain Insight from Pain",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
                             data: {
                                 lists: {
@@ -5994,7 +5993,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Voice of Pain",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -6024,25 +6023,25 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             },
             "Wanderer": {
                 name: "Wanderer",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/wanderer.svg",
                 data: {
                     subItems: [
                         {
                             name: "Wander",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/wanderer.svg",
                             data: {
                                 lists: {
@@ -6058,7 +6057,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Wanderer",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -6088,30 +6087,30 @@ const ITEM_DATA = {
                                         "options"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.perception
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Wayfinder": {
                 name: "Wayfinder",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/wayfinder.svg",
                 data: {
                     subItems: [
                         {
                             name: "Mad Guidance",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/wayfinder.svg",
                             data: {
                                 sourceItem: {
                                     name: "Wayfinder",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -6129,99 +6128,99 @@ const ITEM_DATA = {
                                         result: "You discover a shortcut, but it leads you into a dangerous situation, such as the lair of some creature or an ambush set by some gang. #>text-gmtext>The GM makes a Move<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.soul
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             }
         },
-        [K4ItemSubType.activeStatic]: {
+        ["active-static" /* K4ItemSubType.activeStatic */]: {
             "Arcane Researcher": {
                 name: "Arcane Researcher",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
                 data: {
                     subItems: [
                         {
                             name: "Invoke Arcane Studies",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
                             data: {
                                 sourceItem: {
                                     name: "Arcane Researcher",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you venture into alternate planes of existence or meet entities from other dimensions,",
                                     outro: "you may declare that you have read about this dimension or creature before. Ask the GM what you learned from your past studies."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "At Any Cost": {
                 name: "At Any Cost",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
                 data: {
                     subItems: [
                         {
                             name: "Pay the Price",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
                             data: {
                                 sourceItem: {
                                     name: "At Any Cost",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you truly desire something,",
                                     outro: "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<##>text-keyword>Stability<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Code of Honor": {
                 name: "Code of Honor",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
                 data: {
                     subItems: [
                         {
                             name: "Uphold Your Code",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
                             data: {
                                 sourceItem: {
                                     name: "Code of Honor",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you take risks or make sacrifices for your code of honor,",
                                     outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -6230,181 +6229,181 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You abide by a strict code of honor. Decide its nature when you take this Advantage."
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Desperate": {
                 name: "Desperate",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/desperate.svg",
                 data: {
                     subItems: [
                         {
                             name: "Fight Through",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/desperate.svg",
                             data: {
                                 sourceItem: {
                                     name: "Desperate",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you try to make it through overwhelming odds,",
                                     outro: "take #>text-keyword>+1 ongoing<# on all rolls until you're clear of the threat."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Divine Champion": {
                 name: "Divine Champion",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/divine-champion.svg",
                 data: {
                     subItems: [
                         {
                             name: "Fight for Your God",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/divine-champion.svg",
                             data: {
                                 sourceItem: {
                                     name: "Divine Champion",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you fight your deity's enemies or fight to protect a sacred object,",
                                     outro: "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>text-movename>Endure Injury<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         },
                         {
                             name: "Fail your God",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/divine-champion.svg",
                             data: {
                                 sourceItem: {
                                     name: "Divine Champion",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you lose a battle against your deity's enemies or to protect a sacred object,",
                                     outro: "your deity becomes irate: You take #>text-negmod>−1<##>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Eye for an Eye": {
                 name: "Eye for an Eye",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
                 data: {
                     subItems: [
                         {
                             name: "Promise Vengeance",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
                             data: {
                                 sourceItem: {
                                     name: "Eye for an Eye",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you suffer a serious or critical injury, name the person you feel is responsible.",
                                     outro: "You get #>text-keyword>+2 ongoing<# to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Good Samaritan": {
                 name: "Good Samaritan",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
                 data: {
                     subItems: [
                         {
                             name: "Help and Heal",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
                             data: {
                                 sourceItem: {
                                     name: "Good Samaritan",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you help another at your own expense,",
                                     outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Grudge": {
                 name: "Grudge",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/grudge.svg",
                 data: {
                     subItems: [
                         {
                             name: "Chase a Grudge",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/grudge.svg",
                             data: {
                                 sourceItem: {
                                     name: "Grudge",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "When someone directly or indirectly ruins your plans,",
                                     outro: "you take #>text-keyword>+1 ongoing<# against them until you have taken revenge or received restitution of equal worth to what you lost."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Manipulative": {
                 name: "Manipulative",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/manipulative.svg",
                 data: {
                     lists: {
@@ -6419,7 +6418,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Exploit Trust",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/manipulative.svg",
                             data: {
                                 lists: {
@@ -6433,56 +6432,56 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Manipulative",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you do someone a favor or learn one of their secrets,",
                                     outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %list:options%"
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Opportunist": {
                 name: "Opportunist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/opportunist.svg",
                 data: {
                     subItems: [
                         {
                             name: "Trample Other",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/opportunist.svg",
                             data: {
                                 sourceItem: {
                                     name: "Opportunist",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you sacrifice someone else to further your own goals,",
                                     outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Rage": {
                 name: "Rage",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/rage.svg",
                 data: {
                     lists: {
@@ -6498,7 +6497,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Awaken Inner Rage",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/rage.svg",
                             data: {
                                 lists: {
@@ -6513,7 +6512,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Rage",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -6523,7 +6522,7 @@ const ITEM_DATA = {
                                         "edges"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -6534,49 +6533,49 @@ const ITEM_DATA = {
                             "edges"
                         ]
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Sealed Fate": {
                 name: "Sealed Fate",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                 data: {
                     subItems: [
                         {
                             name: "Invoke Fate",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                             data: {
                                 sourceItem: {
                                     name: "Sealed Fate",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are dealt a #>text-keyword>Critical Wound<#,",
                                     outro: "you may mark 1 Time from Condemned to immediately stabilize the #>text-keyword>Wound<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         },
                         {
                             name: "Defy Death",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
                             data: {
                                 sourceItem: {
                                     name: "Sealed Fate",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you die,",
                                     outro: "mark 2 Time from Condemned and reawaken, injured and weak, but alive, and with all of your #>text-keyword>Wounds<# stabilized."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -6587,61 +6586,61 @@ const ITEM_DATA = {
                             "Requires the Disadvantage Condemned"
                         ]
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Thirst for Knowledge": {
                 name: "Thirst for Knowledge",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
                 data: {
                     subItems: [
                         {
                             name: "Drink Deep",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
                             data: {
                                 sourceItem: {
                                     name: "Thirst for Knowledge",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you learn new information about alternate planes of existence, a supernatural entity, or a Higher Power,",
                                     outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "To the Last Breath": {
                 name: "To the Last Breath",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
                 data: {
                     subItems: [
                         {
                             name: "Refuse to Give In",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
                             data: {
                                 sourceItem: {
                                     name: "To the Last Breath",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you refuse to give in even if the odds turn against you,",
                                     outro: "mark 1 Time to reroll the dice."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -6652,13 +6651,13 @@ const ITEM_DATA = {
                             "Requires the Disadvantage Condemned"
                         ]
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Watchers": {
                 name: "Watchers",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/watchers.svg",
                 data: {
                     lists: {
@@ -6675,7 +6674,7 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Invoke Watchers",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/watchers.svg",
                             data: {
                                 lists: {
@@ -6691,7 +6690,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Watchers",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -6702,7 +6701,7 @@ const ITEM_DATA = {
                                         "watchers"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -6715,75 +6714,75 @@ const ITEM_DATA = {
                             "watchers"
                         ]
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Workaholic": {
                 name: "Workaholic",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/workaholic.svg",
                 data: {
                     subItems: [
                         {
                             name: "Lose Yourself in Work",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/workaholic.svg",
                             data: {
                                 sourceItem: {
                                     name: "Workaholic",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you create something or carry out an experiment,",
                                     outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             },
             "Worldly": {
                 name: "Worldly",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/worldly.svg",
                 data: {
                     subItems: [
                         {
                             name: "Assert Familiarity",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/worldly.svg",
                             data: {
                                 sourceItem: {
                                     name: "Worldly",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you arrive at a new location in the mundane world,",
                                     outro: "decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
                     ],
                     isCustom: false,
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             }
         },
-        [K4ItemSubType.passive]: {
+        ["passive" /* K4ItemSubType.passive */]: {
             "Analyst": {
                 name: "Analyst",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/analyst.svg",
                 data: {
                     lists: {
@@ -6803,13 +6802,13 @@ const ITEM_DATA = {
                             ">AppendList:move/#>text-movename>Investigate<#,questions"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Dead Shot": {
                 name: "Dead Shot",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/dead-shot.svg",
                 data: {
                     isCustom: false,
@@ -6819,45 +6818,45 @@ const ITEM_DATA = {
                             ">ModValue:weapon/firearm,harm,1"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Elite Sport (Athletic)": {
                 name: "Elite Sport (Athletic)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-sport-(athletic).svg",
                 data: {
                     isCustom: false,
                     rules: {
                         intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities. %n%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects."
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Elite Sport (Contact)": {
                 name: "Elite Sport (Contact)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg",
                 data: {
                     isCustom: false,
                     rules: {
                         intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit. %n%You take #>text-keyword>+1 ongoing<# to #>text-movename>Endure Injury<# rolls against close-combat attacks."
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Elite Sport (Fencing)": {
                 name: "Elite Sport (Fencing)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
                 data: {
                     subItems: [
                         {
                             name: "Riposte",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
                             data: {
                                 lists: {
@@ -6875,7 +6874,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Elite Sport (Fencing)",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -6899,7 +6898,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
@@ -6915,26 +6914,26 @@ const ITEM_DATA = {
                             ">AppendList:weapon/sword,attacks"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Endure Trauma": {
                 name: "Endure Trauma",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/endure-trauma.svg",
                 data: {
                     isCustom: false,
                     rules: {
                         intro: "You are not as easily affected by trauma as others. %n%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Expert": {
                 name: "Expert",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/expert.svg",
                 data: {
                     lists: {
@@ -6961,13 +6960,13 @@ const ITEM_DATA = {
                             "StoreInput: text=Field of Expertise #2>flags.field_2"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Extortionist": {
                 name: "Extortionist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/extortionist.svg",
                 data: {
                     lists: {
@@ -6989,13 +6988,13 @@ const ITEM_DATA = {
                             ">AppendList:move/#>text-movename>Read a Person<#,questions"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Gritted Teeth": {
                 name: "Gritted Teeth",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/gritted-teeth.svg",
                 data: {
                     isCustom: false,
@@ -7006,13 +7005,13 @@ const ITEM_DATA = {
                             "SetPenalty:CriticalWound,0"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Hardened": {
                 name: "Hardened",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/hardened.svg",
                 data: {
                     isCustom: false,
@@ -7022,13 +7021,13 @@ const ITEM_DATA = {
                             "BuffRoll:#>text-movename>Endure Injury<#,1"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Instinct": {
                 name: "Instinct",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/instinct.svg",
                 data: {
                     isCustom: false,
@@ -7039,26 +7038,26 @@ const ITEM_DATA = {
                             "AddNote:#>text-movename>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Interrogator": {
                 name: "Interrogator",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/interrogator.svg",
                 data: {
                     isCustom: false,
                     rules: {
                         intro: "Whenever you #>text-movename>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\" This doesn't count towards the number of questions you're allowed to normally ask."
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Intuitive": {
                 name: "Intuitive",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/intuitive.svg",
                 data: {
                     isCustom: false,
@@ -7068,13 +7067,13 @@ const ITEM_DATA = {
                             "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Jaded": {
                 name: "Jaded",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/jaded.svg",
                 data: {
                     isCustom: false,
@@ -7084,13 +7083,13 @@ const ITEM_DATA = {
                             "AddNote:#>text-movename>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Keen-Eyed": {
                 name: "Keen-Eyed",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
                 data: {
                     lists: {
@@ -7109,13 +7108,13 @@ const ITEM_DATA = {
                             ">AppendList:move/#>text-movename>Observe a Situation<#,questions"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Observant": {
                 name: "Observant",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/observant.svg",
                 data: {
                     lists: {
@@ -7134,13 +7133,13 @@ const ITEM_DATA = {
                             "AppendList:#>text-movename>Read a Person<#,questions"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Scientist": {
                 name: "Scientist",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/scientist.svg",
                 data: {
                     lists: {
@@ -7157,13 +7156,13 @@ const ITEM_DATA = {
                     rules: {
                         intro: "Whenever you #>text-movename>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list:questions%"
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Vigilant": {
                 name: "Vigilant",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/vigilant.svg",
                 data: {
                     lists: {
@@ -7182,19 +7181,19 @@ const ITEM_DATA = {
                             "AppendList:#>text-movename>Read a Person<#,questions"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Weapon Master (Firearms)": {
                 name: "Weapon Master (Firearms)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
                 data: {
                     subItems: [
                         {
                             name: "Two In the Chest, One in the Head",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
                             data: {
                                 lists: {
@@ -7212,7 +7211,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Weapon Master (Firearms)",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7236,7 +7235,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence,
                                 range: [
                                     "room"
@@ -7247,7 +7246,7 @@ const ITEM_DATA = {
                         },
                         {
                             name: "Disarming Shot",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
                             data: {
                                 lists: {
@@ -7265,7 +7264,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Weapon Master (Firearms)",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7289,7 +7288,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence,
                                 range: [
                                     "room"
@@ -7303,19 +7302,19 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are a master of gunplay. %n%When you #>text-movename>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list:inline-attacks%"
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             "Weapon Master (Melee)": {
                 name: "Weapon Master (Melee)",
-                type: K4ItemType.advantage,
+                type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                 data: {
                     subItems: [
                         {
                             name: "Launching Attack",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
                                 lists: {
@@ -7333,7 +7332,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Weapon Master (Melee)",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7357,7 +7356,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence,
                                 range: [
                                     "room"
@@ -7367,7 +7366,7 @@ const ITEM_DATA = {
                         },
                         {
                             name: "Precision Attack",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
                                 lists: {
@@ -7385,7 +7384,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Weapon Master (Melee)",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7409,7 +7408,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
@@ -7419,7 +7418,7 @@ const ITEM_DATA = {
                         },
                         {
                             name: "Tripping Attack",
-                            type: K4ItemType.attack,
+                            type: "attack" /* K4ItemType.attack */,
                             img: "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
                             data: {
                                 lists: {
@@ -7437,7 +7436,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Weapon Master (Melee)",
-                                    type: K4ItemType.advantage
+                                    type: "advantage" /* K4ItemType.advantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7461,7 +7460,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.violence,
                                 range: [
                                     "arm"
@@ -7474,28 +7473,28 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are a master of armed melee combat. %n%When you #>text-movename>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list:inline-attacks%"
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             }
         }
     },
-    [K4ItemType.disadvantage]: {
-        [K4ItemSubType.activeRolled]: {
+    ["disadvantage" /* K4ItemType.disadvantage */]: {
+        ["active-rolled" /* K4ItemSubType.activeRolled */]: {
             "Bad Reputation": {
                 name: "Bad Reputation",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Bad Reputation",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
                             data: {
                                 sourceItem: {
                                     name: "Bad Reputation",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7516,7 +7515,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7526,24 +7525,24 @@ const ITEM_DATA = {
                         intro: "For some reason, you have attracted the public's disapproval—even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
                         holdText: "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Competitor": {
                 name: "Competitor",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/competitor.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Competitor",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/competitor.svg",
                             data: {
                                 sourceItem: {
                                     name: "Competitor",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7564,7 +7563,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7574,19 +7573,19 @@ const ITEM_DATA = {
                         intro: "You have a competitor in the criminal underworld, whose business niche is similar to yours.",
                         holdText: "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Condemned": {
                 name: "Condemned",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/condemned.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Condemned",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/condemned.svg",
                             data: {
                                 lists: {
@@ -7603,7 +7602,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Condemned",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7630,7 +7629,7 @@ const ITEM_DATA = {
                                         "gmoptions"
                                     ]
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7642,24 +7641,24 @@ const ITEM_DATA = {
                             ">CreateTracker:Time,10"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Cursed": {
                 name: "Cursed",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/cursed.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Cursed",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/cursed.svg",
                             data: {
                                 sourceItem: {
                                     name: "Cursed",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7680,7 +7679,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7690,24 +7689,24 @@ const ITEM_DATA = {
                         intro: "You are cursed.",
                         holdText: "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Depression": {
                 name: "Depression",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/depression.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Depression",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/depression.svg",
                             data: {
                                 sourceItem: {
                                     name: "Depression",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7725,7 +7724,7 @@ const ITEM_DATA = {
                                         result: "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<##>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7734,24 +7733,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are constantly struggling with depression, which is only worsened by dejection and discouragement."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Drug Addict": {
                 name: "Drug Addict",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Drug Addict",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
                             data: {
                                 sourceItem: {
                                     name: "Drug Addict",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7772,7 +7771,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7782,24 +7781,24 @@ const ITEM_DATA = {
                         intro: "You are addicted to hard drugs; name at least one when you gain this Disadvantage.",
                         holdText: "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Experiment Gone Wrong": {
                 name: "Experiment Gone Wrong",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Experiment Gone Wrong",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
                             data: {
                                 sourceItem: {
                                     name: "Experiment Gone Wrong",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7820,7 +7819,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7830,24 +7829,24 @@ const ITEM_DATA = {
                         intro: "You have carried out a scientific experiment, which went horribly awry. The experiment gave rise to something unnatural, which escaped and disappeared without a trace. Recently, the 'results' of your experiment tracked you down, reappearing in your life, and forcing you to either escape or confront it.",
                         holdText: "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Fanatic": {
                 name: "Fanatic",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Fanatic",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
                             data: {
                                 sourceItem: {
                                     name: "Fanatic",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7865,7 +7864,7 @@ const ITEM_DATA = {
                                         result: "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<##>text-keyword>Stability<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7874,24 +7873,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are a fervent adherent of an ideology, which you must define when you take this Disadvantage. You interpret the whole world in accordance with your ideology, which must not be questioned."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Greedy": {
                 name: "Greedy",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/greedy.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Greedy",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/greedy.svg",
                             data: {
                                 sourceItem: {
                                     name: "Greedy",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7909,7 +7908,7 @@ const ITEM_DATA = {
                                         result: "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<##>text-keyword>Stability<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7918,24 +7917,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You are driven by an unquenchable desire for money and wealth, and are prepared to sacrifice your health, family, and friends to fill the emptiness inside."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Guilt": {
                 name: "Guilt",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/guilt.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Guilt",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/guilt.svg",
                             data: {
                                 sourceItem: {
                                     name: "Guilt",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -7956,7 +7955,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -7966,24 +7965,24 @@ const ITEM_DATA = {
                         intro: "You carry heavy guilt for your past sins, having harmed one or several people through your actions or inaction.",
                         holdText: "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Harassed": {
                 name: "Harassed",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/harassed.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Harassed",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/harassed.svg",
                             data: {
                                 sourceItem: {
                                     name: "Harassed",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8004,7 +8003,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8014,24 +8013,24 @@ const ITEM_DATA = {
                         intro: "For some reason, personal or otherwise, people tend to harass you; the authorities in particular.",
                         holdText: "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Haunted": {
                 name: "Haunted",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/haunted.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Haunted",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/haunted.svg",
                             data: {
                                 sourceItem: {
                                     name: "Haunted",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8052,7 +8051,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8062,24 +8061,24 @@ const ITEM_DATA = {
                         intro: "You are haunted by supernatural forces. With the GM's assistance, determine the nature of what you believe is haunting you.",
                         holdText: "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Infirm": {
                 name: "Infirm",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/infirm.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Infirm",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/infirm.svg",
                             data: {
                                 sourceItem: {
                                     name: "Infirm",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8097,7 +8096,7 @@ const ITEM_DATA = {
                                         result: "Your condition is aggravated with life threatening results (#>text-movename>Endure Injury<# with #>text-keyword>2 Harm<#)."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8106,24 +8105,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You suffer from a dangerous physical disease or condition, such as heart disease, hypertension, morbid obesity, or serious gastric ulcer."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Involuntary Medium": {
                 name: "Involuntary Medium",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Involuntary Medium",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
                             data: {
                                 sourceItem: {
                                     name: "Involuntary Medium",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8144,7 +8143,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8154,24 +8153,24 @@ const ITEM_DATA = {
                         intro: "You are an open vessel for any spirits or demonic entities who desire a medium to speak through or need a corporeal body to use for their purposes.",
                         holdText: "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Jealousy": {
                 name: "Jealousy",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Jealousy",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
                             data: {
                                 sourceItem: {
                                     name: "Jealousy",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8189,7 +8188,7 @@ const ITEM_DATA = {
                                         result: "Your jealousy takes hold of you. You must #>text-movename>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8198,24 +8197,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "There is someone who has the life you want to have, and you would do anything to possess it."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Liar": {
                 name: "Liar",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/liar.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Liar",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/liar.svg",
                             data: {
                                 sourceItem: {
                                     name: "Liar",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8236,7 +8235,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8246,24 +8245,24 @@ const ITEM_DATA = {
                         intro: "You're a compulsive liar, who invents stories at every opportunity, especially when it's beneficial for you.",
                         holdText: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Lost Identity": {
                 name: "Lost Identity",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Lost Identity",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
                             data: {
                                 sourceItem: {
                                     name: "Lost Identity",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8284,7 +8283,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8294,24 +8293,24 @@ const ITEM_DATA = {
                         intro: "Your true identity has been lost to a military or private-run secret agent program. You do not remember anything about your pre-employment life. Recently, memories of your true identity have started coming back to you.",
                         holdText: "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Marked": {
                 name: "Marked",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/marked.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Marked",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/marked.svg",
                             data: {
                                 sourceItem: {
                                     name: "Marked",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8332,7 +8331,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8342,13 +8341,13 @@ const ITEM_DATA = {
                         intro: "You are marked by the darkness. The mark can take the shape of a full-body tattoo, a demonic body part such as a vestigial arm, an extra eye or mouth, machine parts integrated with your flesh, or similar manifestations.",
                         holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>text-movename>Keep It Together<# to resist the darkness' influence."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Mental Compulsion": {
                 name: "Mental Compulsion",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
                 data: {
                     lists: {
@@ -8372,12 +8371,12 @@ const ITEM_DATA = {
                     subItems: [
                         {
                             name: "Check: Mental Compulsion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
                             data: {
                                 sourceItem: {
                                     name: "Mental Compulsion",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8395,7 +8394,7 @@ const ITEM_DATA = {
                                         result: "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<##>text-keyword>Stability<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8407,24 +8406,24 @@ const ITEM_DATA = {
                             "options"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Nemesis": {
                 name: "Nemesis",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Nemesis",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
                             data: {
                                 sourceItem: {
                                     name: "Nemesis",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8445,7 +8444,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8455,24 +8454,24 @@ const ITEM_DATA = {
                         intro: "Through some terrible act you have made an enemy, who does everything in their power to take revenge. Decide who your nemesis is and what you have done to earn their vengeance.",
                         holdText: "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Nightmares": {
                 name: "Nightmares",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Nightmares",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
                             data: {
                                 sourceItem: {
                                     name: "Nightmares",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8490,7 +8489,7 @@ const ITEM_DATA = {
                                         result: "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8499,24 +8498,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You suffer from recurring nightmares, probably connected to your Dark Secrets."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Oath of Revenge": {
                 name: "Oath of Revenge",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Oath of Revenge",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
                             data: {
                                 sourceItem: {
                                     name: "Oath of Revenge",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8534,7 +8533,7 @@ const ITEM_DATA = {
                                         result: "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>text-movename>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8543,24 +8542,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have sworn to avenge an unforgivable injustice. Decide who is the subject of your vengeance and what they have done to you. It could be a single individual, people who share a certain trait, or members of an organization."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Object of Desire": {
                 name: "Object of Desire",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Object of Desire",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
                             data: {
                                 sourceItem: {
                                     name: "Object of Desire",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8581,7 +8580,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8591,24 +8590,24 @@ const ITEM_DATA = {
                         intro: "There is just something special about you. You ignite deep unhealthy desires in others, which they are unable to keep in check.",
                         holdText: "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Obsession": {
                 name: "Obsession",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/obsession.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Obsession",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/obsession.svg",
                             data: {
                                 sourceItem: {
                                     name: "Obsession",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8629,7 +8628,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8639,24 +8638,24 @@ const ITEM_DATA = {
                         intro: "You have discovered a conspiracy or supernatural phenomenon, and you can't stop yourself from getting to the bottom of it.",
                         holdText: "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Owned": {
                 name: "Owned",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/owned.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Owned",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/owned.svg",
                             data: {
                                 sourceItem: {
                                     name: "Owned",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8677,7 +8676,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8687,24 +8686,24 @@ const ITEM_DATA = {
                         intro: "You used to be a dangerous person's private property, willingly or not. Since your escape, your former owner has been looking for you. Decide who your former owner is when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Repressed Memories": {
                 name: "Repressed Memories",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Repressed Memories",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
                             data: {
                                 sourceItem: {
                                     name: "Repressed Memories",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8722,7 +8721,7 @@ const ITEM_DATA = {
                                         result: "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<##>text-keyword>Stability<#."
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8731,24 +8730,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You have repressed a particularly unpleasant event from your past, but the memory of it sometimes rises to the surface. It could be a crime or some horrible thing you have done, been subjected to, or witnessed. The GM decides the nature of your repressed memory, usually based on your Dark Secrets."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Rival": {
                 name: "Rival",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/rival.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Rival",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/rival.svg",
                             data: {
                                 sourceItem: {
                                     name: "Rival",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8769,7 +8768,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8779,24 +8778,24 @@ const ITEM_DATA = {
                         intro: "You have an ambitious rival, who will do anything to be in your shoes. Choose who your rival is when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Schizophrenia": {
                 name: "Schizophrenia",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Schizophrenia",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
                             data: {
                                 sourceItem: {
                                     name: "Schizophrenia",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8817,7 +8816,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8827,19 +8826,19 @@ const ITEM_DATA = {
                         intro: "You struggle with recurring psychotic episodes and terrifying hallucinations.",
                         holdText: "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Sexual Neurosis": {
                 name: "Sexual Neurosis",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Sexual Neurosis",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
                             data: {
                                 lists: {
@@ -8854,7 +8853,7 @@ const ITEM_DATA = {
                                 },
                                 sourceItem: {
                                     name: "Sexual Neurosis",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8872,7 +8871,7 @@ const ITEM_DATA = {
                                         result: "You cannot resist having sex with the person and the GM chooses one option from the list below: %list:gmoptions%"
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8881,24 +8880,24 @@ const ITEM_DATA = {
                     rules: {
                         intro: "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Stalker": {
                 name: "Stalker",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/stalker.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Stalker",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/stalker.svg",
                             data: {
                                 sourceItem: {
                                     name: "Stalker",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8919,7 +8918,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8929,24 +8928,24 @@ const ITEM_DATA = {
                         intro: "You are hunted by a faceless enemy. Anyone you meet could be one of their minions—or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
                         holdText: "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Victim of Passion": {
                 name: "Victim of Passion",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Victim of Passion",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
                             data: {
                                 sourceItem: {
                                     name: "Victim of Passion",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -8967,7 +8966,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -8977,24 +8976,24 @@ const ITEM_DATA = {
                         intro: "You have an overwhelming passion for someone or something, seeking to possess it at any cost. Define the object of your passions when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<##>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>text-movename>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             },
             "Wanted": {
                 name: "Wanted",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/wanted.svg",
                 data: {
                     subItems: [
                         {
                             name: "Check: Wanted",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/wanted.svg",
                             data: {
                                 sourceItem: {
                                     name: "Wanted",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
@@ -9015,7 +9014,7 @@ const ITEM_DATA = {
                                         hold: 3
                                     }
                                 },
-                                subType: K4ItemSubType.activeRolled,
+                                subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -9025,33 +9024,33 @@ const ITEM_DATA = {
                         intro: "You are wanted by the authorities—local, state, or federal—for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
                         holdText: "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
                 }
             }
         },
-        [K4ItemSubType.activeStatic]: {
+        ["active-static" /* K4ItemSubType.activeStatic */]: {
             Phobia: {
                 name: "Phobia",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/phobia.svg",
                 data: {
                     subItems: [
                         {
                             name: "Face Fears",
-                            type: K4ItemType.move,
+                            type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/disadvantage/phobia.svg",
                             data: {
                                 sourceItem: {
                                     name: "Phobia",
-                                    type: K4ItemType.disadvantage
+                                    type: "disadvantage" /* K4ItemType.disadvantage */
                                 },
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're confronted by the object of your phobia,",
                                     outro: "you must #>text-movename>Keep It Together<#."
                                 },
-                                subType: K4ItemSubType.activeStatic,
+                                subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
                             }
                         }
@@ -9060,15 +9059,15 @@ const ITEM_DATA = {
                     rules: {
                         intro: "You harbor an overpowering fear of something. Choose the stimulus that frightens you when you take this Disadvantage."
                     },
-                    subType: K4ItemSubType.activeStatic,
+                    subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: K4Attribute.zero
                 }
             }
         },
-        [K4ItemSubType.passive]: {
+        ["passive" /* K4ItemSubType.passive */]: {
             Broken: {
                 name: "Broken",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/broken.svg",
                 data: {
                     notes: "SetTrait:actor/data.stability.max,6",
@@ -9079,13 +9078,13 @@ const ITEM_DATA = {
                             "SetTrait:actor/data.stability.max,6"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             },
             Rationalist: {
                 name: "Rationalist",
-                type: K4ItemType.disadvantage,
+                type: "disadvantage" /* K4ItemType.disadvantage */,
                 img: "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
                 data: {
                     lists: {
@@ -9106,17 +9105,17 @@ const ITEM_DATA = {
                             "gmoptions"
                         ]
                     },
-                    subType: K4ItemSubType.passive,
+                    subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
                 }
             }
         }
     },
-    [K4ItemType.move]: {
-        [K4ItemSubType.activeRolled]: {
+    ["move" /* K4ItemType.move */]: {
+        ["active-rolled" /* K4ItemSubType.activeRolled */]: {
             "Act Under Pressure": {
                 name: "Act Under Pressure",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/act-under-pressure.svg",
                 data: {
                     isCustom: false,
@@ -9135,13 +9134,13 @@ const ITEM_DATA = {
                             result: "There are serious consequences, you make a mistake, or you're exposed to the danger. #>text-gmtext>The GM makes a Move<#."
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
                 }
             },
             "Avoid Harm": {
                 name: "Avoid Harm",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/avoid-harm.svg",
                 data: {
                     isCustom: false,
@@ -9160,13 +9159,13 @@ const ITEM_DATA = {
                             result: "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any #>text-keyword>Harm<# at all, or you ended up in an even worse spot than before. #>text-gmtext>The GM makes a Move<#."
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reflexes
                 }
             },
             "Endure Injury": {
                 name: "Endure Injury",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/endure-injury.svg",
                 data: {
                     lists: {
@@ -9190,7 +9189,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When enduring an injury,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<# +#>text-keyword>Armor<# −#>text-negmod text-keyword>Harm<#.",
+                        outro: "roll #>text-rolltrait>+%data.attribute%<# #>text-keyword>+Armor<# #>text-negmod text-keyword>−Harm<#.",
                         effectFunctions: [
                             "Add #>text-keyword>Armor<# and subtract #>text-keyword text-negmod>Harm<# from #>text-rolltrait>Fortitude<# roll"
                         ]
@@ -9206,13 +9205,13 @@ const ITEM_DATA = {
                             result: "The injury is overwhelming. You choose if you... %list:options%"
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.fortitude
                 }
             },
             "Engage in Combat": {
                 name: "Engage in Combat",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/engage-in-combat.svg",
                 data: {
                     lists: {
@@ -9244,13 +9243,13 @@ const ITEM_DATA = {
                             result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
                 }
             },
             "Help Other": {
                 name: "Help Other",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/help-other.svg",
                 data: {
                     isCustom: false,
@@ -9269,13 +9268,13 @@ const ITEM_DATA = {
                             result: "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#."
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.ask
                 }
             },
             "Hinder Other": {
                 name: "Hinder Other",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/hinder-other.svg",
                 data: {
                     isCustom: false,
@@ -9294,13 +9293,13 @@ const ITEM_DATA = {
                             result: "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#."
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.ask
                 }
             },
             "Influence Other NPC": {
                 name: "Influence Other NPC",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/influence-other-npc.svg",
                 data: {
                     lists: {
@@ -9329,13 +9328,13 @@ const ITEM_DATA = {
                             result: "Your attempt has unintended repercussions. #>text-gmtext>The GM makes a Move<#."
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Influence Other PC": {
                 name: "Influence Other PC",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/influence-other-pc.svg",
                 data: {
                     lists: {
@@ -9372,13 +9371,13 @@ const ITEM_DATA = {
                             "options"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
                 }
             },
             "Investigate": {
                 name: "Investigate",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/investigate.svg",
                 data: {
                     lists: {
@@ -9416,13 +9415,13 @@ const ITEM_DATA = {
                             "questions"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
                 }
             },
             "Keep It Together": {
                 name: "Keep It Together",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/keep-it-together.svg",
                 data: {
                     lists: {
@@ -9470,13 +9469,13 @@ const ITEM_DATA = {
                             ]
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.willpower
                 }
             },
             "Observe a Situation": {
                 name: "Observe a Situation",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/observe-a-situation.svg",
                 data: {
                     lists: {
@@ -9520,13 +9519,13 @@ const ITEM_DATA = {
                             "questions"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
                 }
             },
             "Read a Person": {
                 name: "Read a Person",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/read-a-person.svg",
                 data: {
                     lists: {
@@ -9566,13 +9565,13 @@ const ITEM_DATA = {
                             "questions"
                         ]
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.intuition
                 }
             },
             "See Through the Illusion": {
                 name: "See Through the Illusion",
-                type: K4ItemType.move,
+                type: "move" /* K4ItemType.move */,
                 img: "systems/kult4th/assets/icons/move/see-through-the-illusion.svg",
                 data: {
                     lists: {
@@ -9600,17 +9599,17 @@ const ITEM_DATA = {
                             result: "The GM explains what you see. #>text-gmtext>The GM makes a Move<#."
                         }
                     },
-                    subType: K4ItemSubType.activeRolled,
+                    subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
                 }
             }
         }
     },
-    [K4ItemType.darksecret]: {
-        [K4ItemSubType.passive]: {
+    ["darksecret" /* K4ItemType.darksecret */]: {
+        ["passive" /* K4ItemSubType.passive */]: {
             "Chosen One": {
                 name: "Chosen One",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/chosen-one.svg",
                 data: {
                     lists: {
@@ -9633,12 +9632,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Curse": {
                 name: "Curse",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/curse.svg",
                 data: {
                     lists: {
@@ -9661,12 +9660,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Family Secret": {
                 name: "Family Secret",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/family-secret.svg",
                 data: {
                     lists: {
@@ -9689,12 +9688,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Forbidden Knowledge": {
                 name: "Forbidden Knowledge",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/forbidden-knowledge.svg",
                 data: {
                     lists: {
@@ -9717,12 +9716,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Guardian": {
                 name: "Guardian",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/guardian.svg",
                 data: {
                     lists: {
@@ -9744,12 +9743,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Guilty of Crime": {
                 name: "Guilty of Crime",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/guilty-of-crime.svg",
                 data: {
                     lists: {
@@ -9773,12 +9772,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Heir": {
                 name: "Heir",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/heir.svg",
                 data: {
                     lists: {
@@ -9800,12 +9799,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Mental Illness": {
                 name: "Mental Illness",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/mental-illness.svg",
                 data: {
                     lists: {
@@ -9828,12 +9827,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Occult Experience": {
                 name: "Occult Experience",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/occult-experience.svg",
                 data: {
                     lists: {
@@ -9856,12 +9855,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Pact with Dark Forces": {
                 name: "Pact with Dark Forces",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/pact-with-dark-forces.svg",
                 data: {
                     lists: {
@@ -9884,12 +9883,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Responsible for Medical Experiments": {
                 name: "Responsible for Medical Experiments",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/responsible-for-medical-experiments.svg",
                 data: {
                     lists: {
@@ -9913,12 +9912,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Returned from the Other Side": {
                 name: "Returned from the Other Side",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/returned-from-the-other-side.svg",
                 data: {
                     lists: {
@@ -9941,12 +9940,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Rootless": {
                 name: "Rootless",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/rootless.svg",
                 data: {
                     lists: {
@@ -9969,12 +9968,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Strange Disappearance": {
                 name: "Strange Disappearance",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/strange-disappearance.svg",
                 data: {
                     lists: {
@@ -9997,12 +9996,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Victim of Crime": {
                 name: "Victim of Crime",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/victim-of-crime.svg",
                 data: {
                     lists: {
@@ -10025,12 +10024,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Victim of Medical Experiments": {
                 name: "Victim of Medical Experiments",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/victim-of-medical-experiments.svg",
                 data: {
                     lists: {
@@ -10054,12 +10053,12 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             },
             "Visitations": {
                 name: "Visitations",
-                type: K4ItemType.darksecret,
+                type: "darksecret" /* K4ItemType.darksecret */,
                 img: "systems/kult4th/assets/icons/darksecret/visitations.svg",
                 data: {
                     lists: {
@@ -10082,7 +10081,7 @@ const ITEM_DATA = {
                             "drives"
                         ]
                     },
-                    subType: K4ItemSubType.passive
+                    subType: "passive" /* K4ItemSubType.passive */
                 }
             }
         }
