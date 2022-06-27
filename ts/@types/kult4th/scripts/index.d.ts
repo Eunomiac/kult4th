@@ -11,6 +11,7 @@ declare global {
 	type HTMLCode = string;
 	type HEXColor = string;
 	type RGBColor = string;
+	type K4Color = ValueOf<typeof C.Colors>;
 	type jQueryTextTerm = string | number | boolean | ((this: Element, index: number, text: string) => string | number | boolean);
 
 	type keyFunc = (key: number | string, val?: any) => unknown;

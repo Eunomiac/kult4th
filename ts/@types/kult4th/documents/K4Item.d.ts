@@ -1,5 +1,5 @@
 import EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs';
-import {ItemDataBaseProperties, ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
+import {ItemDataBaseProperties, ItemDataConstructorData, ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
 import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
 import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item.js";
@@ -57,34 +57,24 @@ declare global {
 	: T extends K4WeaponClass.bomb ? ("")
 	: "";
 
-
-
-	namespace K4ItemClass {
-		export type Move = K4Item<K4ItemType.move>;
-		export type Attack = K4Item<K4ItemType.attack>;
-		export type Advantage = K4Item<K4ItemType.advantage>;
-		export type Disadvantage = K4Item<K4ItemType.disadvantage>;
-		export type DarkSecret = K4Item<K4ItemType.darksecret>;
-		export type Weapon = K4Item<K4ItemType.weapon>;
-		export type Relation = K4Item<K4ItemType.relation>;
-		export type Gear = K4Item<K4ItemType.gear>
-	}
-	namespace K4ItemDataSchema {
+	interface K4Wound { }
+	namespace K4ItemTemplateData {
 
 		interface Base {
 			description: string,
 			lists: Record<string, {
 				name: string,
 				items: string[],
-				intro?: string
+				intro?: string,
+				isEditable?: boolean
 			}>,
 			isCustom: boolean,
 			pdfLink: string,
 			subType: K4ItemSubType
 		}
 
-		interface HasSubItems<T = K4ItemType.move | K4ItemType.attack> {
-			subItems: Array<K4ItemData<T>>
+		interface HasSubItems {
+			subItems: ItemDataSource[]
 		}
 
 		interface CanSubItem {
@@ -114,9 +104,8 @@ declare global {
 				}
 		}
 
-		interface ResultsData<ST extends K4ItemSubType = K4ItemSubType.activeRolled> {
-			results: ST extends K4ItemSubType.activeRolled
-			? Record<
+		interface ResultsData {
+			results: Record<
 					K4ItemResultType,
 					{
 						result: string,
@@ -128,35 +117,34 @@ declare global {
 				> & {
 					listRefs?: string[]
 				}
-			: undefined
 		}
 
-		export interface Move<ST extends K4ItemSubType = K4ItemSubType> extends Base, CanSubItem, RulesData<K4ItemType.move>, ResultsData<ST> {
+		export interface move extends Base, CanSubItem, RulesData<K4ItemType.move>, ResultsData {
 			attribute: K4Attribute
 		}
-		export interface Attack extends Move<K4ItemSubType.activeRolled> {
+		export interface attack extends move {
 			range: RangeType[],
 			harm: posInt,
 			ammo: posInt
 		}
-		export interface Advantage extends Base, HasSubItems, RulesData<K4ItemType.advantage> {
+		export interface advantage extends Base, HasSubItems, RulesData<K4ItemType.advantage> {
 			attribute: K4Attribute,
 			currentHold: posInt,
 			currentEdges: posInt
 		}
-		export interface Disadvantage extends Base, HasSubItems, RulesData<K4ItemType.disadvantage> {
+		export interface disadvantage extends Base, HasSubItems, RulesData<K4ItemType.disadvantage> {
 			attribute: K4Attribute,
 			currentHold: posInt
 		}
 
-		export interface DarkSecret extends Base, RulesData<K4ItemType.darksecret> {
+		export interface darksecret extends Base, RulesData<K4ItemType.darksecret> {
 			drive: string,
 			currentHold: posInt,
 			playerNotes: string,
 			gmNotes: string
 		}
 
-		export interface Relation extends Base {
+		export interface relation extends Base {
 			target: string,
 			strength: {
 				min: number,
@@ -165,7 +153,7 @@ declare global {
 			}
 		}
 
-		export interface Weapon<C extends WeaponClass, SC extends WeaponSubClass<C>> extends Base, HasSubItems<K4ItemSubType>, RulesData<K4ItemType.weapon> {
+		export interface weapon extends Base, HasSubItems, RulesData<K4ItemType.weapon> {
 			class: C,
 			subClass: SC,
 			ammo: {
@@ -175,57 +163,71 @@ declare global {
 			}
 		}
 
-		export interface Gear extends Base, RulesData {
+		export interface gear extends Base, RulesData<K4ItemType.gear> {
 			armor: number
 		}
 	}
 
-	type K4ItemConstructorData<Type extends K4ItemType = K4ItemType> = {
-		name: string,
-		img: string,
-		type: K4ItemType,
-		data: (Type extends K4ItemType.move ? K4ItemDataSchema.Move
-			: Type extends K4ItemType.attack ? K4ItemDataSchema.Attack
-			: Type extends K4ItemType.advantage ? K4ItemDataSchema.Advantage
-			: Type extends K4ItemType.disadvantage ? K4ItemDataSchema.Disadvantage
-			: Type extends K4ItemType.darksecret ? K4ItemDataSchema.DarkSecret
-			: Type extends K4ItemType.weapon ? K4ItemDataSchema.Weapon
-			: Type extends K4ItemType.relation ? K4ItemDataSchema.Relation
-			: Type extends K4ItemType.gear ? K4ItemDataSchema.Gear
-			: never),
+	namespace K4ItemSourceData {
+		export interface move {
+			type: K4ItemType.move,
+			data: K4ItemTemplateData.move
+		}
+		export interface attack {
+			type: K4ItemType.attack,
+			data: K4ItemTemplateData.attack
+		}
+		export interface advantage {
+			type: K4ItemType.advantage,
+			data: K4ItemTemplateData.advantage
+		}
+		export interface disadvantage {
+			type: K4ItemType.disadvantage,
+			data: K4ItemTemplateData.disadvantage
+		}
+		export interface darksecret {
+			type: K4ItemType.darksecret,
+			data: K4ItemTemplateData.darksecret
+		}
+		export interface relation {
+			type: K4ItemType.relation,
+			data: K4ItemTemplateData.relation
+		}
+		export interface weapon {
+			type: K4ItemType.weapon,
+			data: K4ItemTemplateData.weapon
+		}
+		export interface gear {
+			type: K4ItemType.gear,
+			data: K4ItemTemplateData.gear
+		}
 
+		export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
 	}
 
-	type K4ItemData<Type extends K4ItemType = K4ItemType> = {
-		name: string,
-		img: string,
-		type: K4ItemType,
-		data: (Type extends K4ItemType.move ? K4ItemDataSchema.Move
-		: Type extends K4ItemType.attack ? K4ItemDataSchema.Attack
-		: Type extends K4ItemType.advantage ? K4ItemDataSchema.Advantage
-		: Type extends K4ItemType.disadvantage ? K4ItemDataSchema.Disadvantage
-		: Type extends K4ItemType.darksecret ? K4ItemDataSchema.DarkSecret
-		: Type extends K4ItemType.weapon ? K4ItemDataSchema.Weapon
-		: Type extends K4ItemType.relation ? K4ItemDataSchema.Relation
-		: Type extends K4ItemType.gear ? K4ItemDataSchema.Gear
-		: never),
-		folder: string,
-		_id: string | null,
-		effects: any[],
-		sort: number,
-		permission: Record<string,0|1|2|3|undefined>,
-		flags: Record<string,any>
-	};
+	type K4ItemTemplate<T extends K4ItemType = K4ItemType> = (T extends K4ItemType.move ? K4ItemTemplateData.move
+		: T extends K4ItemType.attack ? K4ItemTemplateData.attack
+		: T extends K4ItemType.advantage ? K4ItemTemplateData.advantage
+		: T extends K4ItemType.disadvantage ? K4ItemTemplateData.disadvantage
+		: T extends K4ItemType.darksecret ? K4ItemTemplateData.darksecret
+		: T extends K4ItemType.weapon ? K4ItemTemplateData.weapon
+		: T extends K4ItemType.relation ? K4ItemTemplateData.relation
+		: T extends K4ItemType.gear ? K4ItemTemplateData.gear
+		: never)
 
-	namespace K4Collection {
-		export type Item = EmbeddedCollection<ConstructorOf<K4Item>, ActorData>;
-		export type Move = EmbeddedCollection<ConstructorOf<K4ItemClass.Move>, ActorData>;
-		export type Attack = EmbeddedCollection<ConstructorOf<K4ItemClass.Attack>, ActorData>;
-		export type Advantage = EmbeddedCollection<ConstructorOf<K4ItemClass.Advantage>, ActorData>;
-		export type Disadvantage = EmbeddedCollection<ConstructorOf<K4ItemClass.Disadvantage>, ActorData>;
-		export type DarkSecret = EmbeddedCollection<ConstructorOf<K4ItemClass.DarkSecret>, ActorData>;
-		export type Weapon = EmbeddedCollection<ConstructorOf<K4ItemClass.Weapon>, ActorData>;
-		export type Relation = EmbeddedCollection<ConstructorOf<K4ItemClass.Relation>, ActorData>;
-		export type Gear = EmbeddedCollection<ConstructorOf<K4ItemClass.Gear>, ActorData>;
-	}
+	// type K4ItemConstructorData<Type extends K4ItemType = K4ItemType> = {
+	// 	name: string,
+	// 	img: string,
+	// 	type: Type,
+	// 	data: (Type extends K4ItemType.move ? K4ItemDataSchema.Move
+	// 		: Type extends K4ItemType.attack ? K4ItemDataSchema.Attack
+	// 		: Type extends K4ItemType.advantage ? K4ItemDataSchema.Advantage
+	// 		: Type extends K4ItemType.disadvantage ? K4ItemDataSchema.Disadvantage
+	// 		: Type extends K4ItemType.darksecret ? K4ItemDataSchema.DarkSecret
+	// 		: Type extends K4ItemType.weapon ? K4ItemDataSchema.Weapon
+	// 		: Type extends K4ItemType.relation ? K4ItemDataSchema.Relation
+	// 		: Type extends K4ItemType.gear ? K4ItemDataSchema.Gear
+	// 		: never),
+
+	// }
 }

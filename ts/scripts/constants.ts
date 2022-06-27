@@ -1,5 +1,5 @@
 // export {SORTED_DATA} from "./migration/sortedData.js";
-export {UNMIGRATED_DATA, ORIGINAL_MIGRATED_DATA} from "./migration/migrationData.js";
+// export {UNMIGRATED_DATA, ORIGINAL_MIGRATED_DATA} from "./migration/migrationData.js";
 
 export const ActorTypes = {
 	pc: "Player Character",

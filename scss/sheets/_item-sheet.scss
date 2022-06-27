@@ -1,5 +1,5 @@
 & {
-	--sheet-min-height: 200px;
+	--sheet-min-height: 50px;
 	--sheet-min-width: 400px;
 	--sheet-top-padding: 0px;
 
@@ -116,12 +116,13 @@
 						display: inline !important;
 						border: none !important;
 
-						& + .text-tag {
-							padding: 0 2.5px;
-						}
+						// & + .text-tag {
+						// 	padding: 0 2.5px;
+						// }
 
 						&.text-negmod,
-						&.text-negmod + .text-keyword {
+						&.text-negmod + .text-keyword,
+						&.text-negmod + .text-attributename {
 							color: var(--red);
 						}
 

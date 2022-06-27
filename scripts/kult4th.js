@@ -9,7 +9,7 @@ import { formatStringForKult, HandlebarHelpers } from "./scripts/helpers.js";
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
 // import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "../kult4eoverrides/migratorts";
-import { resetItems } from "./scripts/migration/migratedData.js";
+import { resetItems } from "./scripts/migratedData.js";
 import gsap from "/scripts/greensock/esm/all.js";
 Hooks.once("init", () => {
     console.log("Initializing Kult 4E");

@@ -10,24 +10,24 @@
 	</header>
 	<main class="tab-content">
 		<div class="rules-text">
-			{{#unless (areEmpty item.data.data.rules.intro item.data.data.rules.trigger item.data.data.rules.outro)}}
+			{{#unless (areEmpty item.tData.rules.intro item.tData.rules.trigger item.tData.rules.outro)}}
 			<p class="rules-top">
-			{{~#if item.data.data.rules.intro}}<span class="text-intro">{{{formatForKult item.data.data.rules.intro}}}</span>{{/if}}
-			{{~#if item.data.data.rules.trigger}} <em class="text-trigger">{{{formatForKult item.data.data.rules.trigger}}}</em> {{/if}}
-			{{~#if item.data.data.rules.outro}}<span class="text-outro">{{{formatForKult item.data.data.rules.outro}}}</span>{{/if}}
+			{{~#if item.tData.rules.intro}}<span class="text-intro">{{{formatForKult item.tData.rules.intro}}}</span>{{/if}}
+			{{~#if item.tData.rules.trigger}} <em class="text-trigger">{{{formatForKult item.tData.rules.trigger}}}</em> {{/if}}
+			{{~#if item.tData.rules.outro}}<span class="text-outro">{{{formatForKult item.tData.rules.outro}}}</span>{{/if}}
 			</p>
 			{{/unless}}
 
-			{{#each item.subMoves as |subMove|}}
+			{{#each item.subMoveData as |subMove|}}
 			{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subMove}}
 			{{/each}}
 
-			{{~#if item.data.data.rules.listRefs}}
-				{{~#with item.data.data.lists as |LISTS|}}
-				{{~#each ../item.data.data.rules.listRefs as |listKey|}}
+			{{~#if item.tData.rules.listRefs}}
+				{{~#with item.tData.lists as |LISTS|}}
+				{{~#each ../item.tData.rules.listRefs as |listKey|}}
 					{{~#with (lookup LISTS listKey) as |listData|}}
 					{{#if (test listKey "==" "edges")}}
-					<span class="edges-header">This {{case "title" ../../../item.data.type}} grants Edges:</span>
+					<span class="edges-header">This {{case "title" ../../../item.type}} grants Edges:</span>
 					{{else}}
 					<h2 class="list-name">{{listData.name}}</h2>
 					{{/if}}
@@ -42,9 +42,9 @@
 				{{/with}}
 			{{/if}}
 
-		{{#if item.data.data.rules.holdText}}
-		<span class="hold-header">This {{case "title" item.data.type}} grants Hold</span>
-		<span class="hold-body">{{{formatForKult item.data.data.rules.holdText}}}</span>
+		{{#if item.tData.rules.holdText}}
+		<span class="hold-header">This {{case "title" item.type}} grants Hold</span>
+		<span class="hold-body">{{{formatForKult item.tData.rules.holdText}}}</span>
 		{{/if}}
 		</div>
 

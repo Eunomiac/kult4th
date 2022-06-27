@@ -1,25 +1,23 @@
 import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
+import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 
 
-console.log("test");
-// EmbeddedCollection<K4Item, ActorData>
-export default class K4Actor<Type extends K4ActorType> extends Actor {
+export default class K4Actor extends Actor {
 
 	// #region 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪 ~
-	declare data: K4ActorData<Type>;
-	override get items() { return super.items as EmbeddedCollection<typeof K4Item, ActorData> }
+	// override get items() { return super.items }
 	// #endregion 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪
 
-	get tData() { return this.data.data }
+	override get type() { return super.type}
+	get tData() { return this.data._source.data }
 
-	getItemsOfType<T extends K4ItemType>(type: T): Array<K4Item<T>> {
-		return this.items.filter((item) => item.type === type) as Array<K4Item<T>>;
+	getItemsOfType<T extends K4ItemType>(type: T) {
+		return this.items.filter((item): item is K4Item<T> => item.type === type);
 	}
 
-	getItemByName(iName: string): K4Item<any> | undefined {
+	getItemByName(iName: string): K4Item | undefined {
 		return this.items.find((item) => item.name === iName);
 	}
 
@@ -32,18 +30,21 @@ export default class K4Actor<Type extends K4ActorType> extends Actor {
 	get gear() { return this.getItemsOfType(K4ItemType.gear) }
 	get relations() { return this.getItemsOfType(K4ItemType.relation) }
 
-	get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem?.name) }
-	get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem?.name)) }
+	get basicMoves() { return this.moves.filter((move) => !move.tData.sourceItem?.name) }
+	get derivedMoves() { return this.moves.filter((move) => Boolean(move.tData.sourceItem?.name)) }
 
 	get attributeData() {
-		const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as Attribute.Any[];
-		return attrList.map((attrName) => ({
-			name: U.tCase(attrName),
-			key: attrName,
-			min: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].min,
-			max: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].max,
-			value: this.data.data.attributes[attrName as keyof K4ActorData<K4ActorType>["data"]["attributes"]].value
-		})) as Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
+		if (this.type === K4ActorType.pc) {
+			const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as Attribute.Any[];
+			return attrList.map((attrName) => ({
+				name: U.tCase(attrName),
+				key: attrName,
+				min: this.tData.attributes[attrName].min,
+				max: this.tData.attributes[attrName].max,
+				value: this.tData.attributes[attrName].value
+			})) as Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
+		}
+		return [];
 	}
 	get attributes() {
 		return Object.fromEntries(Object.entries(this.attributeData)
@@ -55,13 +56,18 @@ export default class K4Actor<Type extends K4ActorType> extends Actor {
 		await super._onCreate(actorData, ...args);
 		if (actorData.type === K4ActorType.pc) {
 			console.log("ACTOR TYPE OK", this);
-			// @ts-expect-error Fucking useless...
-			const itemData = Array.from(game.items as K4Item[])
-				.filter((item): item is K4Item<K4ItemType.move> => item.type === K4ItemType.move && !item.tData.sourceItem.name)
-				.map((item) => item.data);
-			// @ts-expect-error Fucking useless...
+			const itemData = (Array.from(game.items ?? []) as K4Item[])
+				.filter((item): item is K4Item<K4ItemType.move> => item.type === K4ItemType.move)
+				.filter((item) => !item.tData.sourceItem?.name)
+				.map((item) => item.data) as Array<Record<string,unknown> & ItemData>;
 			this.createEmbeddedDocuments("Item", itemData);
 		}
+	}
+}
+
+declare global {
+	interface DocumentClassConfig {
+		Actor: typeof K4Actor
 	}
 }
 

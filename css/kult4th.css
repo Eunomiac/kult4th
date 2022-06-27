@@ -459,8 +459,6 @@
       position: absolute;
       z-index: 20;
       display: block;
-      background: -o-radial-gradient(transparent 50%, lime);
-      background: radial-gradient(transparent 50%, lime);
       height: var(--nav-tab-size);
       width: var(--nav-tab-size);
       border-radius: calc(0.5 * var(--nav-tab-size));
@@ -495,19 +493,45 @@
       .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .nav-panel .tabs .nav-tab[data-tab="settings"] {
         top: calc(50% + var(--side-tab-vert-shift) + var(--nav-tab-vert-spacing));
         left: calc(var(--nav-tab-size) + var(--nav-tab-horiz-shift)); }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .nav-panel .tabs .nav-tab .nav-tab-label {
+        position: absolute;
+        display: block;
+        opacity: 0;
+        color: var(--red-bright);
+        font-family: Sokol;
+        font-size: 24px;
+        z-index: 2;
+        pointer-events: none;
+        text-align: center;
+        text-shadow: 0 0 2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black);
+        overflow: visible;
+        white-space: nowrap;
+        width: 500%;
+        margin-left: calc(-0.5 * (500% - var(--nav-tab-size))); }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .nav-panel .tabs .nav-tab .nav-tab-animation {
+        position: absolute;
+        display: block;
+        opacity: 0;
+        height: 100%;
+        width: 100%;
+        -webkit-transform-origin: center center;
+        -ms-transform-origin: center center;
+        transform-origin: center center;
+        pointer-events: none; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .nav-panel .header-button {
       position: absolute;
       font-size: 24px;
-      text-shadow: 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color);
-      opacity: 0; }
+      text-shadow: 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color); }
       .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .nav-panel .header-button.close {
         --button-glow-color: var(--red-glow);
         color: var(--black);
-        left: 15%; }
+        left: 15%;
+        top: 100px; }
       .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .nav-panel .header-button.minimize {
         --button-glow-color: var(--blue-glow);
         color: var(--black);
-        right: 15%; }
+        right: 15%;
+        top: 100px; }
   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .bg-container {
     --bg-vert-shift: 29px;
     --border-vert-shift: 42px;
@@ -834,7 +858,7 @@
           grid-area: darksecrets; }
 
 .vtt.game.system-kult4th .app.window-app.sheet.item {
-  --sheet-min-height: 200px;
+  --sheet-min-height: 50px;
   --sheet-min-width: 400px;
   --sheet-top-padding: 0px;
   --sheet-horiz-padding: 0px;
@@ -917,10 +941,9 @@
         text-shadow: none;
         display: inline !important;
         border: none !important; }
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag + .text-tag {
-          padding: 0 2.5px; }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-negmod,
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-negmod + .text-keyword {
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-negmod + .text-keyword,
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-negmod + .text-attributename {
           color: var(--red); }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-gmtext {
           color: var(--red);

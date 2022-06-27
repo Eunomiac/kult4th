@@ -1,11 +1,11 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-console.log("test");
-// EmbeddedCollection<K4Item, ActorData>
 export default class K4Actor extends Actor {
-    get items() { return super.items; }
+    // #region 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪 ~
+    // override get items() { return super.items }
     // #endregion 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪
-    get tData() { return this.data.data; }
+    get type() { return super.type; }
+    get tData() { return this.data._source.data; }
     getItemsOfType(type) {
         return this.items.filter((item) => item.type === type);
     }
@@ -20,17 +20,20 @@ export default class K4Actor extends Actor {
     get weapons() { return this.getItemsOfType("weapon" /* K4ItemType.weapon */); }
     get gear() { return this.getItemsOfType("gear" /* K4ItemType.gear */); }
     get relations() { return this.getItemsOfType("relation" /* K4ItemType.relation */); }
-    get basicMoves() { return this.moves.filter((move) => !move.data.data.sourceItem?.name); }
-    get derivedMoves() { return this.moves.filter((move) => Boolean(move.data.data.sourceItem?.name)); }
+    get basicMoves() { return this.moves.filter((move) => !move.tData.sourceItem?.name); }
+    get derivedMoves() { return this.moves.filter((move) => Boolean(move.tData.sourceItem?.name)); }
     get attributeData() {
-        const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)];
-        return attrList.map((attrName) => ({
-            name: U.tCase(attrName),
-            key: attrName,
-            min: this.data.data.attributes[attrName].min,
-            max: this.data.data.attributes[attrName].max,
-            value: this.data.data.attributes[attrName].value
-        }));
+        if (this.type === "pc" /* K4ActorType.pc */) {
+            const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)];
+            return attrList.map((attrName) => ({
+                name: U.tCase(attrName),
+                key: attrName,
+                min: this.tData.attributes[attrName].min,
+                max: this.tData.attributes[attrName].max,
+                value: this.tData.attributes[attrName].value
+            }));
+        }
+        return [];
     }
     get attributes() {
         return Object.fromEntries(Object.entries(this.attributeData)
@@ -41,11 +44,10 @@ export default class K4Actor extends Actor {
         await super._onCreate(actorData, ...args);
         if (actorData.type === "pc" /* K4ActorType.pc */) {
             console.log("ACTOR TYPE OK", this);
-            // @ts-expect-error Fucking useless...
-            const itemData = Array.from(game.items)
-                .filter((item) => item.type === "move" /* K4ItemType.move */ && !item.tData.sourceItem.name)
+            const itemData = Array.from(game.items ?? [])
+                .filter((item) => item.type === "move" /* K4ItemType.move */)
+                .filter((item) => !item.tData.sourceItem?.name)
                 .map((item) => item.data);
-            // @ts-expect-error Fucking useless...
             this.createEmbeddedDocuments("Item", itemData);
         }
     }

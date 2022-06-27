@@ -15,8 +15,6 @@ declare global {
 		npc = "npc"
 	}
 
-	type ActorData = ACTORDATA.ActorData;
-
 	namespace Archetype {
 		export type Any = Sleeper | Custom | Aware | Awakened;
 		export type Sleeper = "sleeper";
@@ -29,9 +27,8 @@ declare global {
 		export type Active = keyof typeof C.Attributes.Active;
 		export type Passive = keyof typeof C.Attributes.Passive;
 	}
-
-	interface K4ActorData<Type extends K4ActorType> extends ActorData {
-		data: ActorData["data"] & {
+	namespace K4ActorTemplateData {
+		export interface pc {
 			archetype: Archetype.Any,
 			description: string,
 			history: string,
@@ -92,33 +89,57 @@ declare global {
 					value: int
 				}
 			},
-			wounds: [],
+			wounds: K4Wound[],
+			penalties: {
+				forUnstableSeriousWounds: [int,int,int,int],
+				forCriticalWound: int,
+				forSeriousAndCriticalWounds: int
+			},
 			stability: {
 				min: int,
 				max: int,
 				value: int
+			},
+			edges: {
+				sourceName: string,
+				value: posInt
 			}
 		}
+		export interface npc extends Pick<pc, description|wounds|penalties> { }
 	}
 
-	namespace K4PCSheet {
-		export interface Options extends ActorSheet.Options { }
-
-		export interface Data<Options extends K4PCSheet.Options = K4PCSheet.Options> extends ActorSheet.Data<Options> {
-			// Embedded Item Categories
-			baseMoves: K4Item.Move[],
-			derivedMoves: K4Item.Move[];
-			advantages: K4Item.Advantage[];
-			disadvantages: K4Item.Disadvantage[];
-			darksecrets: K4Item.DarkSecret[];
-			relations: K4Item.Relation[];
-			weapons: K4Item.Weapon[];
-			gear: K4Item.Gear[];
-			attacks: K4Item.Attack[];
-
-			attributes: Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
-
-			actorData: ToObjectFalseType<K4Actor<K4ActorType.pc>>
+	namespace K4ActorSourceData {
+		export interface pc {
+			type: K4ActorType.pc,
+			data: K4ActorTemplateData.pc
 		}
+		export interface npc {
+			type: K4ActorType.npc,
+			data: K4ActorTemplateData.npc
+		}
+
+		export type any = pc|npc
 	}
+
+
+	// namespace K4PCSheet {
+	// 	export interface Options extends ActorSheet.Options { }
+
+	// 	export interface Data<Options extends K4PCSheet.Options = K4PCSheet.Options> extends ActorSheet.Data<Options> {
+	// 		// Embedded Item Categories
+	// 		baseMoves: K4Item.Move[],
+	// 		derivedMoves: K4Item.Move[];
+	// 		advantages: K4Item.Advantage[];
+	// 		disadvantages: K4Item.Disadvantage[];
+	// 		darksecrets: K4Item.DarkSecret[];
+	// 		relations: K4Item.Relation[];
+	// 		weapons: K4Item.Weapon[];
+	// 		gear: K4Item.Gear[];
+	// 		attacks: K4Item.Attack[];
+
+	// 		attributes: Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
+
+	// 		actorData: ToObjectFalseType<K4Actor<K4ActorType.pc>>
+	// 	}
+	// }
 }

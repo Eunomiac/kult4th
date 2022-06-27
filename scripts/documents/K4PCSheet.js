@@ -8,9 +8,9 @@ const ANIMATIONS = {
             .timeline({
             reversed: true
         }).to(target, {
-            scale: 2,
-            x: 50,
-            y: 100,
+            scale: 1.25,
+            x: 10,
+            y: 20,
             duration: 0.5,
             ease: "back"
         }, 0).to(U.getSiblings(target), {
@@ -18,30 +18,41 @@ const ANIMATIONS = {
             filter: "blur(5px)",
             duration: 0.5,
             ease: "back"
-        }, 0).fromTo(headerButtons, {
+        }, 0).to(headerButtons, {
             scale: 0.75,
-            y: 100,
-            opacity: 0
-        }, {
-            scale: 0.75,
-            y: 0,
+            y: -100,
             duration: 0.5,
             stagger: 0.1,
             ease: "back.out(3)",
-            opacity: 1
+            // opacity: 1
         }, 0);
     },
     hoverTab(target, context) {
+        const tabLabel$ = $(target).find(".nav-tab-label");
+        const tabAnimation$ = $(target).find(".nav-tab-animation");
         return gsap
             .timeline({
             reversed: true
-        }).to(target, {
+        }).fromTo(tabLabel$, {
+            scale: 3,
+            opacity: 0,
+            filter: "blur(10px)"
+        }, {
             scale: 2,
-            background: "lime",
-            fontSize: 30,
-            color: "white",
+            opacity: 1,
+            filter: "none",
             duration: 1,
-            ease: "power2.in"
+            ease: "back"
+        }, 0).fromTo(tabAnimation$, {
+            scale: 1,
+            opacity: 0,
+            filter: "blur(10px)"
+        }, {
+            scale: 5,
+            opacity: 0.75,
+            filter: "none",
+            duration: 1,
+            ease: "back"
         }, 0);
     },
     hoverMove(target, context, isDerivedMove = true) {
@@ -133,27 +144,30 @@ export default class K4PCSheet extends ActorSheet {
         });
     }
     get template() { return "systems/kult4th/templates/sheets/pc-sheet.hbs"; }
-    get actor() { return super.actor; }
     hoverTimeline;
     hoverTimelineTarget;
     devTools = GSDevTools;
     async getData() {
-        const data = await super.getData();
-        data.actorData = data.data.data;
-        data.baseMoves = this.actor.basicMoves;
-        data.derivedMoves = this.actor.derivedMoves;
-        data.advantages = this.actor.advantages;
-        data.disadvantages = this.actor.disadvantages;
-        data.darksecrets = this.actor.darkSecrets;
-        data.relations = this.actor.relations;
-        data.weapons = this.actor.weapons;
-        data.gear = this.actor.gear;
-        data.attacks = this.actor.attacks;
-        data.attributes = this.actor.attributeData;
+        const baseData = await super.getData();
+        const data = {
+            ...baseData,
+            actorData: this.actor.tData,
+            baseMoves: this.actor.basicMoves,
+            derivedMoves: this.actor.derivedMoves,
+            advantages: this.actor.advantages,
+            disadvantages: this.actor.disadvantages,
+            darksecrets: this.actor.darkSecrets,
+            relations: this.actor.relations,
+            weapons: this.actor.weapons,
+            gear: this.actor.gear,
+            attacks: this.actor.attacks,
+            attributes: this.actor.attributeData
+        };
         /*DEVCODE*/ console.log("Final Data", data); /*!DEVCODE*/
         return data;
     }
     activateListeners(html) {
+        const ISDEBUGGING = false;
         super.activateListeners(html);
         const self = this;
         const positionKeys = [
@@ -166,7 +180,7 @@ export default class K4PCSheet extends ActorSheet {
             "rotX",
             "rotY"
         ];
-        if (!$("#position-display")[0]) {
+        if (ISDEBUGGING && !$("#position-display")[0]) {
             $("body").append([
                 "<div id='position-display'>",
                 ...positionKeys.map((key) => [
@@ -180,14 +194,16 @@ export default class K4PCSheet extends ActorSheet {
         }
         const positionDisplays = Object.fromEntries(positionKeys.map((key) => [key, $(`#${key}`)]));
         function updateDisplay(key, data) {
-            positionDisplays[key]?.text(String(U.pFloat(data, 3)));
+            if (ISDEBUGGING) {
+                positionDisplays[key]?.text(String(U.pFloat(data, 3)));
+            }
         }
         $(() => {
             console.log("ACTOR SHEET HTML OBJECT", html);
             const hoverTimelines = [];
-            html.find(".nav-panel")
-                .each(function initNavPanel() {
-                const [navPanel] = $(this);
+            const [navPanel] = html.find(".nav-panel");
+            $(navPanel)
+                .each(() => {
                 gsap.set(navPanel, {
                     xPercent: -50,
                     yPercent: -50,
@@ -195,47 +211,55 @@ export default class K4PCSheet extends ActorSheet {
                     perspective: 600,
                     transformStyle: "preserve-3d"
                 });
-                hoverTimelines.push([navPanel, ANIMATIONS.hoverNav(navPanel, html)]);
-                $(navPanel)
-                    .on("mouseenter", () => $(this).data({ isHovered: true }))
-                    .on("mouseleave", () => $(this).data({ isHovered: false }));
-                $(document).on("mousemove", (pos) => {
-                    if ($(navPanel).data("isHovered")) {
-                        const maxX = $(navPanel).width() ?? 0;
-                        const maxY = $(navPanel).height() ?? 0;
-                        updateDisplay("maxX", maxX);
-                        updateDisplay("maxY", maxY);
-                        if (!maxX || !maxY) {
-                            return;
-                        }
-                        const posX = pos.offsetX;
-                        const posY = pos.offsetY;
-                        updateDisplay("posX", posX);
-                        updateDisplay("posY", posY);
-                        const percentX = (100 / (maxX / posX)) - 50;
-                        const percentY = (100 / (maxY / posY)) - 50;
-                        updateDisplay("percentX", percentX);
-                        updateDisplay("percentY", percentY);
-                        const maxRotX = 25;
-                        const maxRotY = 25;
-                        const rotX = (maxRotY / 100) * percentY;
-                        const rotY = (-maxRotX / 100) * percentX;
-                        updateDisplay("rotX", rotX);
-                        updateDisplay("rotY", rotY);
-                        gsap.to(navPanel, {
-                            rotationX: rotX,
-                            rotationY: rotY,
-                            ease: "back.out",
-                            duration: 0.5
-                        });
+                const hoverTimeline = ANIMATIONS.hoverNav(navPanel, html);
+                $(navPanel).on("mouseenter", () => {
+                    if (!$(navPanel).data("isHovered")) {
+                        $(navPanel).data({ isHovered: true });
+                        hoverTimeline.reversed(false);
                     }
-                    else {
-                        gsap.to(navPanel, {
-                            rotationX: 0,
-                            rotationY: 0,
-                            duration: 2,
-                            ease: "power3.out"
-                        });
+                });
+                $(document).on("mousemove", (event) => {
+                    if ($(navPanel).data("isHovered")) {
+                        if (!document.elementsFromPoint(event.clientX, event.clientY)
+                            .find((elem) => $(elem).hasClass("nav-panel"))) {
+                            $(navPanel).data({ isHovered: false });
+                            gsap.to(navPanel, {
+                                rotationX: 0,
+                                rotationY: 0,
+                                duration: 2,
+                                ease: "power3.out"
+                            });
+                            hoverTimeline.reversed(true);
+                        }
+                        else {
+                            const maxX = $(navPanel).width() ?? 0;
+                            const maxY = $(navPanel).height() ?? 0;
+                            updateDisplay("maxX", maxX);
+                            updateDisplay("maxY", maxY);
+                            if (!maxX || !maxY) {
+                                return;
+                            }
+                            const posX = U.pInt(event.clientX) - (self.position.left ?? 0); // event.offsetX;
+                            const posY = U.pInt(event.clientY) - (self.position.top ?? 0); // event.offsetY;
+                            updateDisplay("posX", posX);
+                            updateDisplay("posY", posY);
+                            const percentX = (100 / (maxX / posX)) - 50;
+                            const percentY = (100 / (maxY / posY)) - 50;
+                            updateDisplay("percentX", percentX);
+                            updateDisplay("percentY", percentY);
+                            const maxRotX = 10;
+                            const maxRotY = 10;
+                            const rotX = (maxRotY / 100) * percentY;
+                            const rotY = (-maxRotX / 100) * percentX;
+                            updateDisplay("rotX", rotX);
+                            updateDisplay("rotY", rotY);
+                            gsap.to(navPanel, {
+                                rotationX: rotX,
+                                rotationY: rotY,
+                                ease: "back.out",
+                                duration: 0.5
+                            });
+                        }
                     }
                 });
             });
@@ -244,18 +268,43 @@ export default class K4PCSheet extends ActorSheet {
                 gsap.set(this, { xPercent: -50, yPercent: -50, opacity: 1 });
                 hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
             });
-            // html.find(".nav-panel .header-button")
-            // 	.each(function initHeaderButtons() {
-            // 		gsap.set(this, {scale: 2, opacity: 0, y: 100});
-            // 	});
-            html.find("*[data-action=\"edit\"]")
-                .each(function addItemEditEvents() {
-                const iName = $(this).attr("data-item-name");
+            function createOpenLinkFromName(elem, iName) {
                 if (iName) {
-                    $(this).on("click", () => self.actor.getItemByName(iName)?.sheet?.render(true));
+                    $(elem).on("click", () => self.actor.getItemByName(iName)?.sheet?.render(true));
                 }
+            }
+            function createRollLinkFromName(elem, iName) {
+                if (iName) {
+                    $(elem).on("click", () => console.log(`${self.actor?.name} Rolling (Embedded) ${iName}`));
+                }
+            }
+            function createChatLinkFromName(elem, iName) {
+                if (iName) {
+                    $(elem).on("click", () => console.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
+                }
+            }
+            function createDeleteLinkFromName(elem, iName) {
+                if (iName) {
+                    $(elem).on("click", () => console.log(`${self.actor?.name} Deleting (Embedded) ${iName}`));
+                }
+            }
+            html.find("*[data-action=\"open\"]")
+                .each(function addItemOpenEvents() {
+                createOpenLinkFromName(this, $(this).attr("data-item-name"));
             });
-            html.find(".basic-move-item, .derived-move-item")
+            html.find("*[data-action=\"roll\"]")
+                .each(function addItemOpenEvents() {
+                createRollLinkFromName(this, $(this).attr("data-item-name"));
+            });
+            html.find("*[data-action=\"chat\"]")
+                .each(function addItemOpenEvents() {
+                createChatLinkFromName(this, $(this).attr("data-item-name"));
+            });
+            html.find("*[data-action=\"drop\"]")
+                .each(function addItemOpenEvents() {
+                createDeleteLinkFromName(this, $(this).attr("data-item-name"));
+            });
+            html.find(".item-card")
                 .each(function addMoveHoverEvents() {
                 if (!self.hoverTimeline) {
                     self.hoverTimeline = ANIMATIONS.hoverMove(this, html, false);

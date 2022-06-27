@@ -1,6 +1,6 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
-import C, { K4Attribute } from "../../scripts/constants.js";
-import U from "../../scripts/utilities.js";
+import C, { K4Attribute } from "./constants.js";
+import U from "./utilities.js";
 const clearItems = async () => Item.deleteDocuments(Array.from(game.items?.values() ?? []).map((item) => item.id));
 const clearFolders = async () => Folder.deleteDocuments(Array.from(game.folders?.values() ?? []).map((folder) => folder.id));
 const isFolderEmpty = (folder) => {
@@ -373,7 +373,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When it would be useful to know someone at a university,",
-                                    outro: "provide the person's name, field of study, and how you got to know one another, then roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "provide the person's name, field of study, and how you got to know one another, then %insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -427,14 +427,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you search the Dark Net for forbidden information, rare items, or myths,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You discover what you're looking for, and may also choose one option: %list:options%"
+                                        result: "You discover what you're looking for, and may also choose one option: %list.options%"
                                     },
                                     partialSuccess: {
-                                        result: "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must #>text-movename name:Keep_It_Together>Keep It Together<# to see how it affects you."
+                                        result: "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to see how it affects you."
                                     },
                                     failure: {
                                         result: "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. #>text-gmtext>The GM makes a Move<#."
@@ -488,7 +488,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever someone's got you up against the wall or in a tight spot,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -559,7 +559,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you attempt to control an animal,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -605,6 +605,13 @@ const ITEM_DATA = {
                     lists: {
                         powers: {
                             name: "Powers",
+                            isEditable: true,
+                            items: [
+                                "Configure your artifact's powers with the help of the GM."
+                            ]
+                        },
+                        examplepowers: {
+                            name: "Example Powers",
                             items: [
                                 "See the true form of a creature or location.",
                                 "Receive a vision of what threatens you.",
@@ -622,6 +629,13 @@ const ITEM_DATA = {
                                 lists: {
                                     powers: {
                                         name: "Powers",
+                                        isEditable: true,
+                                        items: [
+                                            "Configure your artifact's powers with the help of the GM."
+                                        ]
+                                    },
+                                    examplepowers: {
+                                        name: "Example Powers",
                                         items: [
                                             "See the true form of a creature or location.",
                                             "Receive a vision of what threatens you.",
@@ -637,7 +651,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you activate the object,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -666,10 +680,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You own a seemingly mundane item, which actually possesses mystical powers. Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required). Work with the GM to devise a list of options appropriate to the artifact, using this list as an example:",
-                        listRefs: [
-                            "powers"
-                        ]
+                        intro: "You own a seemingly mundane item, which actually possesses mystical powers.%insert.break%Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).%insert.break%Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: %list.examplepowers%"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
@@ -704,7 +715,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you perform your chosen art form or show your works to an audience,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to influence your audience at any time during the scene."
+                                    outro: "%insert.rollPrompt% to influence your audience at any time during the scene."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -754,7 +765,7 @@ const ITEM_DATA = {
                                     options: {
                                         name: "Options",
                                         items: [
-                                            "Automatically #>text-movename name:Influence_Other>Influence<# someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
+                                            "Automatically #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence<# someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
                                             "Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
                                             "Make a statement about something or someone in mass media.",
                                             "Gain access to people or places under the pretense of engaging in your research or studies."
@@ -768,7 +779,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "At the beginning of each game session,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -824,7 +835,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you make a show of being the boss,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -863,7 +874,7 @@ const ITEM_DATA = {
                                         name: "Options",
                                         items: [
                                             "Aim for the sensitive parts: Deal #>text-keyword>+1 Harm<#.",
-                                            "Knock out: The NPC is rendered unconcious. PCs roll to #>text-movename name:Endure_Injury>Endure Injury<# and become neutralized on a #>text-resultlabel>(—9)<#.",
+                                            "Knock out: The NPC is rendered unconcious. PCs roll to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# and become neutralized on a #>text-resultlabel>(—9)<#.",
                                             "Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
                                         ]
                                     }
@@ -875,7 +886,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you attack someone who's unprepared for it,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -930,7 +941,7 @@ const ITEM_DATA = {
                                     complications: {
                                         name: "Complications",
                                         items: [
-                                            "You leave cosmetic scars or defects (the patient loses #>text-negmod>−2<##>text-keyword>Stability<#.",
+                                            "You leave cosmetic scars or defects (the patient loses #>text-negmod>−2<# #>text-keyword>Stability<#.",
                                             "There are lingering side effects (#>text-negmod>−1<# to all rolls the wound could feasibly affect until it's fully healed).",
                                             "The patient remains knocked out until the GM determines that they awaken."
                                         ]
@@ -943,7 +954,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you stabilize an injured person's wounds, even if you don't have access to medical equipment,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -953,7 +964,7 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "You may choose one option from the list below, but you must also choose one complication: %list:complications%",
+                                        result: "You may choose one option from the list below, but you must also choose one complication: %list.complications%",
                                         listRefs: [
                                             "options"
                                         ]
@@ -1003,7 +1014,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you perform acrobatic or agile feats,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1069,14 +1080,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you send your henchmen to do a risky job,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "They follow your orders and everything goes according to plan."
                                     },
                                     partialSuccess: {
-                                        result: "They follow your orders, but GM picks one option: %list:gmoptions%"
+                                        result: "They follow your orders, but GM picks one option: %list.gmoptions%"
                                     },
                                     failure: {
                                         result: "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. #>text-gmtext>The GM makes a Move<#."
@@ -1123,7 +1134,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "At the start of each game session,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1191,7 +1202,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you make use of your expertise in breaking and entering,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1253,14 +1264,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you imitate another's appearance or conceal your own identity to trick someone,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "Your disguise is convincing, as long as you keep the act going."
                                     },
                                     partialSuccess: {
-                                        result: "You manage to trick everyone who doesn't examine you in detail, but choose one complication: %list:complications%"
+                                        result: "You manage to trick everyone who doesn't examine you in detail, but choose one complication: %list.complications%"
                                     },
                                     failure: {
                                         result: "Your disguise is only effective at a distance. If you attract any attention to yourself, you will be exposed."
@@ -1305,7 +1316,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you try to blend into a place or crowd by adapting your appearance and behavior to the others present,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1368,7 +1379,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever your aura is truly noticeable,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1424,7 +1435,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you search for an unusual or rare item,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1476,7 +1487,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you allow your madness to infect someone you're speaking with,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1492,7 +1503,7 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     failure: {
-                                        result: "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>text-movename name:Keep_It_Together>Keep It Together<#."
+                                        result: "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                                     },
                                     listRefs: [
                                         "options"
@@ -1536,7 +1547,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you manipulate an NPC in a longer conversation,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1600,7 +1611,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you investigate a crime scene,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1665,7 +1676,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you and your followers perform a ritual,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1725,14 +1736,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you attempt to perform a magical ritual from a set of instructions,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You perform every step correctly; the ritual works as intended."
                                     },
                                     partialSuccess: {
-                                        result: "You make a minor error. The GM chooses one: %list:gmoptions%"
+                                        result: "You make a minor error. The GM chooses one: %list.gmoptions%"
                                     },
                                     failure: {
                                         result: "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. #>text-gmtext>The GM makes a Move<#."
@@ -1789,7 +1800,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're entering a dangerous situation,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -1862,7 +1873,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you look for information on a subject in a library, research archive, or on the Internet,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#. %n%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized."
+                                    outro: "%insert.rollPrompt%. %insert.break%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1915,7 +1926,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you find yourself in a charged situation,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1978,7 +1989,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you fight with no regard for your personal safety,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -1999,7 +2010,7 @@ const ITEM_DATA = {
                                         edges: 2
                                     },
                                     failure: {
-                                        result: "Gain 1 Edge, but afterwards you discover you have been injured without noticing it (#>text-movename name:Endure_Injury>Endure Injury<#; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
+                                        result: "Gain 1 Edge, but afterwards you discover you have been injured without noticing it (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
                                         listRefs: [
                                             "edges"
                                         ],
@@ -2048,7 +2059,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you encounter a monstrous creature,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2104,7 +2115,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you want to meet someone or find out the truth about something in the Dream,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2170,7 +2181,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -2243,7 +2254,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you ask your contacts for a favor,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2299,7 +2310,7 @@ const ITEM_DATA = {
                                             "They offer you something they think you'd rather have.",
                                             "Retreat from the scene.",
                                             "They are terrorized; you have #>text-keyword>+1 ongoing<# on all rolls against them until they've proven they're not afraid of you.",
-                                            "They attack you from a disadvantaged position. You take #>text-posmod>+2<# on your roll to #>text-movename name:Engage_in_Combat>Engage in Combat<# if you counterattack."
+                                            "They attack you from a disadvantaged position. You take #>text-posmod>+2<# on your roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# if you counterattack."
                                         ]
                                     }
                                 },
@@ -2310,14 +2321,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you credibly threaten someone directly or suggestively,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "They must decide to either do what you want or defy you with the knowledge that you can execute your threat."
                                     },
                                     partialSuccess: {
-                                        result: "You must give them a third option. Choose one: %list:options%"
+                                        result: "You must give them a third option. Choose one: %list.options%"
                                     },
                                     failure: {
                                         result: "Turns out you didn't have the advantage you thought you did. #>text-gmtext>The GM makes a Move<#."
@@ -2351,7 +2362,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you focus your senses at a location where the Illusion is weak,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2403,7 +2414,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you make moves to attract an NPC to you,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2456,7 +2467,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you need to escape a dangerous situation,",
-                                    outro: "outline your plan and roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "outline your plan and %insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2510,7 +2521,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you have killed someone covertly and leave the scene of the murder,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2573,7 +2584,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you perform an exorcism to banish a spirit or extradimensional creature,",
-                                    outro: "explain what the ritual looks like and roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "explain what the ritual looks like and %insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2623,7 +2634,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're building an improvised bomb under time pressure,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2652,7 +2663,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you are disarming a bomb,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2708,7 +2719,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you have had time to study somebody for a while,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2778,7 +2789,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you use your art to seduce an NPC,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2788,7 +2799,7 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option from the list below, but the GM also chooses one of the following: %list:gmoptions%",
+                                        result: "Choose one option from the list below, but the GM also chooses one of the following: %list.gmoptions%",
                                         listRefs: [
                                             "options"
                                         ]
@@ -2838,7 +2849,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you talk to an NPC to get their attention,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2885,7 +2896,7 @@ const ITEM_DATA = {
                                 "#>edge-name>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
                                 "#>edge-name>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
                                 "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
-                                "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object. %list:inline-attacks%"
+                                "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object. %list.inline-attacks%"
                             ]
                         }
                     },
@@ -2915,7 +2926,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent within arm's reach in close combat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2954,7 +2965,7 @@ const ITEM_DATA = {
                                             "#>edge-name>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
                                             "#>edge-name>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
                                             "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
-                                            "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %list:parent-attacks%"
+                                            "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %list.parent-attacks%"
                                         ]
                                     }
                                 },
@@ -2965,7 +2976,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you enter combat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -3025,7 +3036,7 @@ const ITEM_DATA = {
                                         name: "Options",
                                         items: [
                                             "Enticement: Entice an entity to come to you.",
-                                            "Visions: #>text-movename name:See_Through_the_Illusion>See Through the Illusion<# into a specific place of your choice.",
+                                            "Visions: #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# into a specific place of your choice.",
                                             "Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
                                         ]
                                     }
@@ -3037,7 +3048,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you dive deep into your art and allow yourself to be inspired by the Truth,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3087,7 +3098,7 @@ const ITEM_DATA = {
                                     options: {
                                         name: "Options",
                                         items: [
-                                            "They trust you (PC takes #>text-posmod>+1<##>text-keyword>Relation<# with you).",
+                                            "They trust you (PC takes #>text-posmod>+1<# #>text-keyword>Relation<# with you).",
                                             "They're spellbound by you (take #>text-keyword>+1 ongoing<# against them during this scene).",
                                             "They reveal a weakness, which you can exploit later."
                                         ]
@@ -3108,7 +3119,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you manipulate someone,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3118,7 +3129,7 @@ const ITEM_DATA = {
                                         ]
                                     },
                                     partialSuccess: {
-                                        result: "Choose one option from the list below, but there is also a complication, chosen by the GM or the targeted PC: %list:complications%",
+                                        result: "Choose one option from the list below, but there is also a complication, chosen by the GM or the targeted PC: %list.complications%",
                                         listRefs: [
                                             "options"
                                         ]
@@ -3167,14 +3178,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you give your gang orders that are risky and/ or may result in them paying a high price,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "They enact your orders without question."
                                     },
                                     partialSuccess: {
-                                        result: "They do as you want, but there is a complication (choose one): %list:complications%"
+                                        result: "They do as you want, but there is a complication (choose one): %list.complications%"
                                     },
                                     failure: {
                                         result: "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. #>text-gmtext>The GM makes a Move<#."
@@ -3203,7 +3214,7 @@ const ITEM_DATA = {
                             name: "Edges",
                             items: [
                                 "#>edge-name>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-                                "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>text-movename name:Avoid_Harm>Avoid Harm<# whenever you exploit it.",
+                                "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
                                 "#>edge-name>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                             ]
                         }
@@ -3219,7 +3230,7 @@ const ITEM_DATA = {
                                         name: "Edges",
                                         items: [
                                             "#>edge-name>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-                                            "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>text-movename name:Avoid_Harm>Avoid Harm<# whenever you exploit it.",
+                                            "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
                                             "#>edge-name>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                                         ]
                                     }
@@ -3231,7 +3242,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you find yourself in a life-threatening situation,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if you can discover a way out.",
+                                    outro: "%insert.rollPrompt% to see if you can discover a way out.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -3301,14 +3312,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you penetrate digital networks in the pursuit of confidential data, crack software, or disable security systems,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You accomplish your task without a problem."
                                     },
                                     partialSuccess: {
-                                        result: "Complications arise. Choose one option: %list:complications%"
+                                        result: "Complications arise. Choose one option: %list.complications%"
                                     },
                                     failure: {
                                         result: "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. #>text-gmtext>The GM makes a Move<#."
@@ -3340,8 +3351,8 @@ const ITEM_DATA = {
                                         name: "Options",
                                         items: [
                                             "Prepare Ambush - Deal your weapon's #>text-keyword>Harm<# when your enemy stumbles in.",
-                                            "Camouflage - Take #>text-keyword>+2 ongoing<# to #>text-movename name:Act_Under_Pressure>Act Under Pressure<# for as long as you remain hiding.",
-                                            "Move in Shadows - Take #>text-keyword>+2 ongoing<# to #>text-movename name:Avoid_Harm>Avoid Harm<# from ranged weapons."
+                                            "Camouflage - Take #>text-keyword>+2 ongoing<# to #>item-button text-movename:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<# for as long as you remain hiding.",
+                                            "Move in Shadows - Take #>text-keyword>+2 ongoing<# to #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# from ranged weapons."
                                         ]
                                     }
                                 },
@@ -3352,7 +3363,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are hunting someone or something,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3427,7 +3438,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are in a violent conflict,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -3489,7 +3500,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you experiment on a human and wish to implant an order into them,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3533,7 +3544,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you need money, a safehouse, protection, or other help one of your victims can provide,",
-                                    outro: "describe who they are and roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "describe who they are and %insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3577,7 +3588,7 @@ const ITEM_DATA = {
                                             "Lie - Come up with a convincing lie.",
                                             "Gear Up - Find something you can use as a makeshift melee weapon. The GM will tell you what it is.",
                                             "Hide - Stay out of a pursuer's sight.",
-                                            "Prepare - Set a trap that gives you a #>text-posmod>+2<# surprise bonus the first time you #>text-movename name:Engage_in_Combat>Engage in Combat<# after the trap is sprung."
+                                            "Prepare - Set a trap that gives you a #>text-posmod>+2<# surprise bonus the first time you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# after the trap is sprung."
                                         ]
                                     }
                                 },
@@ -3588,7 +3599,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you attempt to get out of a dangerous situation by winging it,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3638,7 +3649,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you need to acquire an object, gain access to a restricted location, or meet a specific person,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3682,7 +3693,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you release your inner power,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3726,7 +3737,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're trying to frighten another person,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3781,7 +3792,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are about to create or repair something,",
-                                    outro: "explain what you are about to do. The GM will tell you what you need to succeed, and once you have collected these materials, you may roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "explain what you are about to do. The GM will tell you what you need to succeed, and once you have collected these materials, you may %insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3831,7 +3842,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you lay your hands on a seriously or critically wounded person and pray,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3851,7 +3862,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim. %n%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent. %n%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
+                        intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim. %insert.break%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent. %insert.break%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
@@ -3867,7 +3878,7 @@ const ITEM_DATA = {
                             name: "Edges",
                             items: [
                                 "#>edge-name>Dodge<# &mdash; Avoid an attack.",
-                                "#>edge-name>Blinding Speed<# &mdash; #>text-movename name:Engage_in_Combat>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+                                "#>edge-name>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
                                 "#>edge-name>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
                             ]
                         }
@@ -3883,7 +3894,7 @@ const ITEM_DATA = {
                                         name: "Edges",
                                         items: [
                                             "#>edge-name>Dodge<# &mdash; Avoid an attack.",
-                                            "#>edge-name>Blinding Speed<# &mdash; #>text-movename name:Engage_in_Combat>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+                                            "#>edge-name>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
                                             "#>edge-name>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
                                         ]
                                     }
@@ -3895,7 +3906,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you move unexpectedly fast in combat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -3966,7 +3977,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you utilize your magical intuition,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4032,7 +4043,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you attract everyone's attention,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4097,7 +4108,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're out to get information about someone,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4142,7 +4153,7 @@ const ITEM_DATA = {
                             name: "Edges",
                             items: [
                                 "#>edge-name>Block<# &mdash; Avoid a melee attack.",
-                                "#>edge-name>Roundhouse Strike<# &mdash; #>text-movename name:Engage_in_Combat>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
+                                "#>edge-name>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
                                 "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon.",
                                 "#>edge-name>Throw<# &mdash; Reposition an opponent or drop them to the ground."
                             ]
@@ -4159,7 +4170,7 @@ const ITEM_DATA = {
                                         name: "Edges",
                                         items: [
                                             "#>edge-name>Block<# &mdash; Avoid a melee attack.",
-                                            "#>edge-name>Roundhouse Strike<# &mdash; #>text-movename name:Engage_in_Combat>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
+                                            "#>edge-name>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
                                             "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon.",
                                             "#>edge-name>Throw<# &mdash; Reposition an opponent or drop them to the ground."
                                         ]
@@ -4172,7 +4183,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're fighting in close quarters,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -4242,7 +4253,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you make contact with one of your moles to acquire info or services,",
-                                    outro: "explain what group or organization the mole belongs to, name them, and then roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "explain what group or organization the mole belongs to, name them, and then %insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4307,7 +4318,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you check in with your contacts regarding an individual of your choosing,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4360,11 +4371,11 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you encounter someone who has likely heard about you,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>text-movename name:Influence>Influence<# them."
+                                        result: "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-movename:data-item-name='Influence':data-action='open'>Influence<# them."
                                     },
                                     partialSuccess: {
                                         result: "They know of your reputation; you can decide what they have heard."
@@ -4415,7 +4426,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are in your library researching the supernatural,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold at any time to make a hard or soft Move."
                                 },
                                 results: {
@@ -4482,7 +4493,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Upon coming in contact with a magical discipline, entity, or phenomenon for the first time,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4526,9 +4537,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>text-movename name:Engage_in_Combat>Engage in Combat<#.",
-                                "#>edge-name>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>text-movename name:Engage_in_Combat>Engage in Combat<# with firearms while in the fight.",
-                                "#>edge-name>\"Go For The Head!\"<# &mdash; You or one of your allies' #>text-movename name:Engage_in_Combat>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
+                                "#>edge-name>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
+                                "#>edge-name>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
+                                "#>edge-name>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
                                 "#>edge-name>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
                             ]
                         }
@@ -4543,9 +4554,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>text-movename name:Engage_in_Combat>Engage in Combat<#.",
-                                            "#>edge-name>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>text-movename name:Engage_in_Combat>Engage in Combat<# with firearms while in the fight.",
-                                            "#>edge-name>\"Go For The Head!\"<# &mdash; You or one of your allies' #>text-movename name:Engage_in_Combat>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
+                                            "#>edge-name>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
+                                            "#>edge-name>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
+                                            "#>edge-name>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
                                             "#>edge-name>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
                                         ]
                                     }
@@ -4557,7 +4568,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are in combat with at least one ally by your side,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -4624,7 +4635,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you execute acrobatic maneuvers,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4690,7 +4701,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you appear defenseless during a dangerous experience,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4750,7 +4761,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you investigate a location prior to visiting it,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold at any time to make a hard or soft Move for the location."
                                 },
                                 results: {
@@ -4808,7 +4819,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you execute a plan using other people as pawns,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4859,7 +4870,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you commence a dangerous mission,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4923,7 +4934,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you move through a small crowd to gather information,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#. %n%Examples of a 'small crowd' include a party, bar/restaurant, or an office. You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
+                                    outro: "%insert.rollPrompt%. %insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office. You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4996,7 +5007,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you sacrifice another to save your own skin,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -5053,8 +5064,8 @@ const ITEM_DATA = {
                                             "Give you something you want.",
                                             "Reveal a secret.",
                                             "Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
-                                            "Make them feel bad for opposing you (they must #>text-movename name:Keep_It_Together>Keep It Together<#)",
-                                            "They feel happy in your presence, and gain #>text-posmod>+2<##>text-keyword>Stability<#."
+                                            "Make them feel bad for opposing you (they must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#)",
+                                            "They feel happy in your presence, and gain #>text-posmod>+2<# #>text-keyword>Stability<#."
                                         ]
                                     }
                                 },
@@ -5065,7 +5076,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you have an intimate moment with someone,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5121,7 +5132,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When shadowing someone,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5150,7 +5161,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you want to lose someone shadowing you,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5201,7 +5212,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "At the start of each game session,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5263,7 +5274,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you perform your chosen art form for an intelligent, monstrous creature,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to awaken a desire within them."
+                                    outro: "%insert.rollPrompt% to awaken a desire within them."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5323,7 +5334,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you keep hidden and try to avoid drawing attention to yourself,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5388,7 +5399,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you fire at a distant target utilizing a scoped rifle,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5449,7 +5460,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you need to know something and check in with your contacts,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5520,7 +5531,7 @@ const ITEM_DATA = {
                                     complications: {
                                         name: "Complications",
                                         items: [
-                                            "You risk losing control during the fight (#>text-movename name:Keep_It_Together>Keep It Together<# to prevent it).",
+                                            "You risk losing control during the fight (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to prevent it).",
                                             "You earn an enemy, who will try to get back at you later."
                                         ]
                                     }
@@ -5532,7 +5543,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you fight in close combat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -5546,7 +5557,7 @@ const ITEM_DATA = {
                                         edges: 3
                                     },
                                     partialSuccess: {
-                                        result: "Gain 2 Edges, but the GM also gets to pick one complication: %list:complications%",
+                                        result: "Gain 2 Edges, but the GM also gets to pick one complication: %list.complications%",
                                         listRefs: [
                                             "edges"
                                         ],
@@ -5600,14 +5611,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you want to acquire items or services from the criminal underworld,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "No problem—you get what you're after. Someone will fix you right up."
                                     },
                                     partialSuccess: {
-                                        result: "The GM chooses one option from the list below: %list:gmoptions%"
+                                        result: "The GM chooses one option from the list below: %list.gmoptions%"
                                     },
                                     failure: {
                                         result: "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. #>text-gmtext>The GM makes a Move<#."
@@ -5661,7 +5672,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you push yourself to the limit to overcome a threat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -5682,7 +5693,7 @@ const ITEM_DATA = {
                                         edges: 2
                                     },
                                     failure: {
-                                        result: "Gain 1 Edge, but you push yourself past your breaking point. Decrease #>text-negmod>−2<##>text-keyword>Stability<#.",
+                                        result: "Gain 1 Edge, but you push yourself past your breaking point. Decrease #>text-negmod>−2<# #>text-keyword>Stability<#.",
                                         listRefs: [
                                             "edges"
                                         ],
@@ -5719,8 +5730,8 @@ const ITEM_DATA = {
                                     options: {
                                         name: "Options",
                                         items: [
-                                            "Viciousness — #>text-keyword>+1 ongoing<# to #>text-movename name:Engage_in_Combat>Engage in Combat<# rolls for the remainder of the fight.",
-                                            "Adrenaline Rush — #>text-keyword>+1 ongoing<# to #>text-movename name:Endure_Injury>Endure Injury<# rolls for the remainder of the fight."
+                                            "Viciousness — #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# rolls for the remainder of the fight.",
+                                            "Adrenaline Rush — #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls for the remainder of the fight."
                                         ]
                                     }
                                 },
@@ -5731,11 +5742,11 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you suffer a serious or critical injury yet refuse to yield,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#. %n%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
+                                    outro: "%insert.rollPrompt%. %insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "You ignore your injuries until the conflict is over, and you may choose one option from the list below: %list:options%"
+                                        result: "You ignore your injuries until the conflict is over, and you may choose one option from the list below: %list.options%"
                                     },
                                     partialSuccess: {
                                         result: "You ignore your injuries until the conflict is over."
@@ -5782,7 +5793,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you utilize your survivalist skills,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5846,7 +5857,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you utilize your intelligence networks to trace someone or something,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5911,7 +5922,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you manipulate a crowd,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5961,9 +5972,9 @@ const ITEM_DATA = {
                                     options: {
                                         name: "Options",
                                         items: [
-                                            "You realize how to get through your opponent's defenses (take #>text-posmod>+1<# to #>text-movename name:Engage_in_Combat>Engage in Combat<# with them).",
-                                            "You find your opponent's weak spot (deal #>text-keyword>+1 Harm<# whenever you #>text-movename name:Engage_in_Combat>Engage in Combat<# with them).",
-                                            "You perceive your opponent's pattern of attack (take #>text-posmod>+1<# to #>text-movename name:Avoid_Harm>Avoid Harm<# whenever they attack you). These effects are permanent against this opponent."
+                                            "You realize how to get through your opponent's defenses (take #>text-posmod>+1<# to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
+                                            "You find your opponent's weak spot (deal #>text-keyword>+1 Harm<# whenever you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
+                                            "You perceive your opponent's pattern of attack (take #>text-posmod>+1<# to #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever they attack you). These effects are permanent against this opponent."
                                         ]
                                     }
                                 },
@@ -5974,7 +5985,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When an opponent seriously or critically wounds you for the first time,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -6038,7 +6049,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are heading out to a community or another part of the city,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -6091,7 +6102,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you travel between two places in the city and allow your madness to guide you through the alleys,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -6164,7 +6175,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you truly desire something,",
-                                    outro: "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<##>text-keyword>Stability<#."
+                                    outro: "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6194,7 +6205,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you take risks or make sacrifices for your code of honor,",
-                                    outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
+                                    outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6257,7 +6268,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you fight your deity's enemies or fight to protect a sacred object,",
-                                    outro: "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>text-movename name:Endure_Injury>Endure Injury<#."
+                                    outro: "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6275,7 +6286,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you lose a battle against your deity's enemies or to protect a sacred object,",
-                                    outro: "your deity becomes irate: You take #>text-negmod>−1<##>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
+                                    outro: "your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6335,7 +6346,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you help another at your own expense,",
-                                    outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
+                                    outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6386,8 +6397,8 @@ const ITEM_DATA = {
                         options: {
                             name: "Options",
                             items: [
-                                "Take #>text-posmod>+2<# to #>text-movename name:Influence_Other>Influence Other<# rolls made against them.",
-                                "Take #>text-posmod>+2<# to #>text-movename name:Hinder_Other>Hinder Other<# rolls made against them."
+                                "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence Other<# rolls made against them.",
+                                "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder_Other':data-action='open'>Hinder Other<# rolls made against them."
                             ]
                         }
                     },
@@ -6401,8 +6412,8 @@ const ITEM_DATA = {
                                     options: {
                                         name: "Options",
                                         items: [
-                                            "Take #>text-posmod>+2<# to #>text-movename name:Influence_Other>Influence Other<# rolls made against them.",
-                                            "Take #>text-posmod>+2<# to #>text-movename name:Hinder_Other>Hinder Other<# rolls made against them."
+                                            "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence Other<# rolls made against them.",
+                                            "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder_Other':data-action='open'>Hinder Other<# rolls made against them."
                                         ]
                                     }
                                 },
@@ -6413,7 +6424,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you do someone a favor or learn one of their secrets,",
-                                    outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %list:options%"
+                                    outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %list.options%"
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6443,7 +6454,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you sacrifice someone else to further your own goals,",
-                                    outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
+                                    outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6465,7 +6476,7 @@ const ITEM_DATA = {
                             name: "Edges",
                             items: [
                                 "#>edge-name>Brutal Assault<# &mdash; Take #>text-keyword>+1 Harm<# to your attack.",
-                                "#>edge-name>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>text-movename name:Endure_Injury>Endure Injury<#.",
+                                "#>edge-name>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
                                 "#>edge-name>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
                             ]
                         }
@@ -6481,7 +6492,7 @@ const ITEM_DATA = {
                                         name: "Edges",
                                         items: [
                                             "#>edge-name>Brutal Assault<# &mdash; Take #>text-keyword>+1 Harm<# to your attack.",
-                                            "#>edge-name>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>text-movename name:Endure_Injury>Endure Injury<#.",
+                                            "#>edge-name>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
                                             "#>edge-name>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
                                         ]
                                     }
@@ -6493,7 +6504,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you choose to awaken your inner rage in combat,",
-                                    outro: "lose #>text-negmod>−1<##>text-keyword>Stability<# and mark 1 Rage. %n%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#). %n%Rage lasts until the end of the combat. %n%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
+                                    outro: "lose #>text-negmod>−1<# #>text-keyword>Stability<# and mark 1 Rage. %insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#). %insert.break%Rage lasts until the end of the combat. %insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
                                     listRefs: [
                                         "edges"
                                     ]
@@ -6584,7 +6595,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you learn new information about alternate planes of existence, a supernatural entity, or a Higher Power,",
-                                    outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
+                                    outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6712,7 +6723,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you create something or carry out an experiment,",
-                                    outro: "gain #>text-posmod>+1<##>text-keyword>Stability<#."
+                                    outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -6773,9 +6784,9 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "When you #>text-movename name:Investigate>Investigate<#, you may also choose from these additional questions: %list:questions%",
+                        intro: "When you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, you may also choose from these additional questions: %list.questions%",
                         effectFunctions: [
-                            ">AppendList:move/#>text-movename name:Investigate>Investigate<#,questions"
+                            "AppendList,Investigate,questions,questions"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -6789,7 +6800,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You are a seasoned marksman. %n%You deal #>text-keyword>+1 Harm<# with firearms.",
+                        intro: "You are a seasoned marksman. %insert.break%You deal #>text-keyword>+1 Harm<# with firearms.",
                         effectFunctions: [
                             ">ModValue:weapon/firearm,harm,1"
                         ]
@@ -6805,7 +6816,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities. %n%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects."
+                        intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities. %insert.break%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -6818,7 +6829,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit. %n%You take #>text-keyword>+1 ongoing<# to #>text-movename name:Endure_Injury>Endure Injury<# rolls against close-combat attacks."
+                        intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit. %insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -6855,7 +6866,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent within arm's reach in close combat, including immediately after a successful parry,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -6885,9 +6896,9 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You've competed professionally in fencing. %n%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list:inline-attacks%",
+                        intro: "You've competed professionally in fencing. %insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
                         effectFunctions: [
-                            ">AppendList:weapon/sword,attacks"
+                            "AppendList,weapon/sword,attacks,attacks"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -6901,7 +6912,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You are not as easily affected by trauma as others. %n%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
+                        intro: "You are not as easily affected by trauma as others. %insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -6929,9 +6940,9 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list:expertise%Whenever you #>text-movename name:Investigate>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
+                        intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
                         effectFunctions: [
-                            "GET: ReplaceList (#>text-movename name:Investigate>Investigate<#, Questions)",
+                            "GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
                             "StoreInput: text=Field of Expertise #1>flags.field_1",
                             "StoreInput: text=Field of Expertise #2>flags.field_2"
                         ]
@@ -6956,12 +6967,12 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Read_a_Person>Read a Person<#, you may choose from these questions in addition to the usual ones:",
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones:",
                         listRefs: [
                             "questions"
                         ],
                         effectFunctions: [
-                            ">AppendList:move/#>text-movename name:Read_a_Person>Read a Person<#,questions"
+                            "AppendList,Read a Person,questions,questions"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -6975,7 +6986,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore. %n%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
+                        intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore. %insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
                         effectFunctions: [
                             "SetPenalty:SeriousWound,0",
                             "SetPenalty:CriticalWound,0"
@@ -6992,9 +7003,9 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You take #>text-keyword>+1 ongoing<# to all #>text-movename name:Endure_Injury>Endure Injury<# rolls.",
+                        intro: "You take #>text-keyword>+1 ongoing<# to all #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls.",
                         effectFunctions: [
-                            "BuffRoll:#>text-movename name:Endure_Injury>Endure Injury<#,1"
+                            "BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -7008,10 +7019,10 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Observe_a_Situation>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
                         effectFunctions: [
-                            "AddNote:#>text-movename name:Observe_a_Situation>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
-                            "AddNote:#>text-movename name:Observe_a_Situation>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
+                            "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
+                            "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -7025,7 +7036,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Read_a_Person>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\" This doesn't count towards the number of questions you're allowed to normally ask."
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\" This doesn't count towards the number of questions you're allowed to normally ask."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -7038,7 +7049,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior. %n%Whenever you #>text-movename name:Read_a_Person>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
+                        intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior. %insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
                         effectFunctions: [
                             "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
                         ]
@@ -7054,9 +7065,9 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Keep_It_Together>Keep It Together<# and the result is a Partial Success, you may suppress your emotions and postpone their effects until the next scene.",
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a Partial Success, you may suppress your emotions and postpone their effects until the next scene.",
                         effectFunctions: [
-                            "AddNote:#>text-movename name:Keep_It_Together>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
+                            "AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -7079,9 +7090,9 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Observe_a_Situation>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list:questions%",
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
                         effectFunctions: [
-                            ">AppendList:move/#>text-movename name:Observe_a_Situation>Observe a Situation<#,questions"
+                            "AppendList,Observe a Situation,questions,questions"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -7104,9 +7115,9 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Read_a_Person>Read a Person<#, you may choose from these questions in addition to the usual ones: %list:questions%",
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
                         effectFunctions: [
-                            "AppendList:#>text-movename name:Read_a_Person>Read a Person<#,questions"
+                            "AppendList,Read a Person,questions,questions"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -7130,7 +7141,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Investigate>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list:questions%"
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -7152,9 +7163,9 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>text-movename name:Read_a_Person>Read a Person<#, you may choose from these questions in addition to the usual ones: %list:questions%",
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
                         effectFunctions: [
-                            "AppendList:#>text-movename name:Read_a_Person>Read a Person<#,questions"
+                            "AppendList,Read a Person,questions,questions"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
@@ -7192,7 +7203,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                                    outro: "expend 2 Ammo and roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "expend 2 Ammo and %insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7245,7 +7256,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                                    outro: "expend 1 Ammo and roll #>text-rolltrait>+%data.attribute%<#. A targeted PC must #>text-movename name:Act_Under_Pressure>Act Under Pressure<#."
+                                    outro: "expend 1 Ammo and %insert.rollPrompt%. A targeted PC must #>item-button text-movename:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<#."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7276,7 +7287,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a master of gunplay. %n%When you #>text-movename name:Engage_in_Combat>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list:inline-attacks%"
+                        intro: "You are a master of gunplay. %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -7313,7 +7324,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7365,7 +7376,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent within arm's reach in close combat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7417,7 +7428,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you engage an able opponent within arm's reach in close combat,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7447,7 +7458,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a master of armed melee combat. %n%When you #>text-movename name:Engage_in_Combat>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list:inline-attacks%"
+                        intro: "You are a master of armed melee combat. %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -7475,7 +7486,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you attract the public's attention,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
                                 },
                                 results: {
@@ -7523,7 +7534,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you neglect to protect your interests or are distracted elsewhere,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if your competitor managed to damage your business.",
+                                    outro: "%insert.rollPrompt% to see if your competitor managed to damage your business.",
                                     holdText: "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
                                 },
                                 results: {
@@ -7569,7 +7580,7 @@ const ITEM_DATA = {
                                         name: "GM Options",
                                         items: [
                                             "You mark 1 Time.",
-                                            "You're tortured by dreams or visions of your fate. Reduce #>text-negmod>−2<##>text-keyword>Stability<#.",
+                                            "You're tortured by dreams or visions of your fate. Reduce #>text-negmod>−2<# #>text-keyword>Stability<#.",
                                             "You're haunted by the entity or event that sealed your fate.",
                                             "Someone in your vicinity is negatively affected by your fate.",
                                             "Something provides you with false hope of escaping your fate."
@@ -7583,7 +7594,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "At the start of every game session,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7639,7 +7650,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first session and whenever you're confronted by the supernatural,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see how strongly the curse influences you.",
+                                    outro: "%insert.rollPrompt% to see how strongly the curse influences you.",
                                     holdText: "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
                                 },
                                 results: {
@@ -7687,7 +7698,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever facing personal setbacks,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7697,7 +7708,7 @@ const ITEM_DATA = {
                                         result: "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll."
                                     },
                                     failure: {
-                                        result: "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<##>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
+                                        result: "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -7731,7 +7742,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you have been using, or have the opportunity to use,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
                                 },
                                 results: {
@@ -7779,7 +7790,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first session and whenever things seem in control,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
                                 },
                                 results: {
@@ -7827,7 +7838,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever someone questions your ideology,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -7837,7 +7848,7 @@ const ITEM_DATA = {
                                         result: "You become angry, confused, or frustrated. You take #>text-negmod>−1<# to your next roll."
                                     },
                                     failure: {
-                                        result: "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<##>text-keyword>Stability<#."
+                                        result: "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -7871,17 +7882,17 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When an opportunity to increase your wealth arises,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if you are in control of your desire."
+                                    outro: "%insert.rollPrompt% to see if you are in control of your desire."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You keep your greed in check."
                                     },
                                     partialSuccess: {
-                                        result: "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>−1<##>text-keyword>ongoing<# to any rolls you make."
+                                        result: "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>−1<# #>text-keyword>ongoing<# to any rolls you make."
                                     },
                                     failure: {
-                                        result: "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<##>text-keyword>Stability<#."
+                                        result: "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -7915,7 +7926,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever everything appears okay,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
                                 },
                                 results: {
@@ -7963,7 +7974,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you draw attention to yourself,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if you're harassed.",
+                                    outro: "%insert.rollPrompt% to see if you're harassed.",
                                     holdText: "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
                                 },
                                 results: {
@@ -8011,7 +8022,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first session and whenever you are distracted or weakened,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if the entity gains power over you.",
+                                    outro: "%insert.rollPrompt% to see if the entity gains power over you.",
                                     holdText: "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
                                 },
                                 results: {
@@ -8059,7 +8070,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are subjected to major physical or psychological stress,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -8069,7 +8080,7 @@ const ITEM_DATA = {
                                         result: "Your condition triggers, causing pain and daze (#>text-negmod>−1<# to all rolls until the scene ends)."
                                     },
                                     failure: {
-                                        result: "Your condition is aggravated with life threatening results (#>text-movename name:Endure_Injury>Endure Injury<# with #>text-keyword>2 Harm<#)."
+                                        result: "Your condition is aggravated with life threatening results (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -8103,7 +8114,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you encounter spiritual entities or haunted places,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
                                 },
                                 results: {
@@ -8151,17 +8162,17 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you encounter the subject of your jealousy or their life's trappings (possessions, family, friends, etc),",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if you can keep your cool."
+                                    outro: "%insert.rollPrompt% to see if you can keep your cool."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You maintain control over your jealousy."
                                     },
                                     partialSuccess: {
-                                        result: "You're afflicted by jealousy and take #>text-negmod>−1<##>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
+                                        result: "You're afflicted by jealousy and take #>text-negmod>−1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
                                     },
                                     failure: {
-                                        result: "Your jealousy takes hold of you. You must #>text-movename name:Keep_It_Together>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
+                                        result: "Your jealousy takes hold of you. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -8195,7 +8206,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "At the start of every session,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see what trouble your lies have gotten you into this time.",
+                                    outro: "%insert.rollPrompt% to see what trouble your lies have gotten you into this time.",
                                     holdText: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
                                 },
                                 results: {
@@ -8243,7 +8254,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you encounter something from your repressed past,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
                                 },
                                 results: {
@@ -8291,8 +8302,8 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you consciously #>text-keyword>Harm<# someone,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
-                                    holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>text-movename name:Keep_It_Together>Keep It Together<# to resist the darkness' influence."
+                                    outro: "%insert.rollPrompt%.",
+                                    holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -8315,7 +8326,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "You are marked by the darkness. The mark can take the shape of a full-body tattoo, a demonic body part such as a vestigial arm, an extra eye or mouth, machine parts integrated with your flesh, or similar manifestations.",
-                        holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>text-movename name:Keep_It_Together>Keep It Together<# to resist the darkness' influence."
+                        holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
@@ -8357,17 +8368,17 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In situations where you could be distracted by your compulsion,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You control your compulsions and can focus on other things."
                                     },
                                     partialSuccess: {
-                                        result: "You become distracted and take #>text-negmod>−1<##>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
+                                        result: "You become distracted and take #>text-negmod>−1<# #>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
                                     },
                                     failure: {
-                                        result: "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<##>text-keyword>Stability<#."
+                                        result: "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -8404,7 +8415,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you let your guard down,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if your nemesis moves against you.",
+                                    outro: "%insert.rollPrompt% to see if your nemesis moves against you.",
                                     holdText: "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
                                 },
                                 results: {
@@ -8452,14 +8463,14 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "During any scene when you sleep,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You sleep in peace."
                                     },
                                     partialSuccess: {
-                                        result: "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<##>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>text-movename name:Keep_It_Together>Keep It Together<#) when you wake up."
+                                        result: "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#) when you wake up."
                                     },
                                     failure: {
                                         result: "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
@@ -8496,17 +8507,17 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever the target of your vengeance (or someone/something associated with them) appears,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You remain in control of your vengeful nature and can act rationally."
                                     },
                                     partialSuccess: {
-                                        result: "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<##>text-keyword>ongoing<# until the target's involvement in the scene ends."
+                                        result: "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
                                     },
                                     failure: {
-                                        result: "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>text-movename name:Keep_It_Together>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
+                                        result: "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -8540,7 +8551,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "At the first game session and whenever you meet one or more new people,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
                                 },
                                 results: {
@@ -8588,7 +8599,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "At the first game session and whenever you encounter something associated with your obsession,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
                                 },
                                 results: {
@@ -8636,7 +8647,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you draw attention to yourself in public,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
                                 },
                                 results: {
@@ -8684,17 +8695,17 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In situations associated with your repressed memories,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to determine if the memories resurface."
+                                    outro: "%insert.rollPrompt% to determine if the memories resurface."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You continue to suppress the memories."
                                     },
                                     partialSuccess: {
-                                        result: "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>text-movename name:Keep_It_Together>Keep It Together<#."
+                                        result: "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                                     },
                                     failure: {
-                                        result: "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<##>text-keyword>Stability<#."
+                                        result: "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -8728,7 +8739,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you make a mistake or let down your guard,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
                                 },
                                 results: {
@@ -8776,7 +8787,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you go through difficult experiences,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
                                 },
                                 results: {
@@ -8834,17 +8845,17 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you have the opportunity to have consensual sex or take advantage of someone vulnerable to your advances,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
                                         result: "You can control your urges."
                                     },
                                     partialSuccess: {
-                                        result: "Choose between having sex with the person or reduce your #>text-negmod>−1<##>text-keyword>Stability<#."
+                                        result: "Choose between having sex with the person or reduce your #>text-negmod>−1<# #>text-keyword>Stability<#."
                                     },
                                     failure: {
-                                        result: "You cannot resist having sex with the person and the GM chooses one option from the list below: %list:gmoptions%"
+                                        result: "You cannot resist having sex with the person and the GM chooses one option from the list below: %list.gmoptions%"
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -8878,7 +8889,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you expose your current location,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
+                                    outro: "%insert.rollPrompt%.",
                                     holdText: "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
                                 },
                                 results: {
@@ -8926,8 +8937,8 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<#.",
-                                    holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<##>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>text-movename name:Keep_It_Together>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+                                    outro: "%insert.rollPrompt%.",
+                                    holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -8950,7 +8961,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "You have an overwhelming passion for someone or something, seeking to possess it at any cost. Define the object of your passions when you take this Disadvantage.",
-                        holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<##>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>text-movename name:Keep_It_Together>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+                        holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.zero
@@ -8974,7 +8985,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you attract attention to yourself or forget to keep your head down,",
-                                    outro: "roll #>text-rolltrait>+%data.attribute%<# to see if you've been discovered.",
+                                    outro: "%insert.rollPrompt% to see if you've been discovered.",
                                     holdText: "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
                                 },
                                 results: {
@@ -9024,7 +9035,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're confronted by the object of your phobia,",
-                                    outro: "you must #>text-movename name:Keep_It_Together>Keep It Together<#."
+                                    outro: "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
                                 attribute: K4Attribute.zero
@@ -9048,7 +9059,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it. %n%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
+                        intro: "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it. %insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
                         effectFunctions: [
                             "SetTrait:actor/data.stability.max,6"
                         ]
@@ -9075,7 +9086,7 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you. %n%in addition to the standard effects, the GM may choose one option from the list below:",
+                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you. %insert.break%in addition to the standard effects, the GM may choose one option from the list below:",
                         listRefs: [
                             "gmoptions"
                         ]
@@ -9096,7 +9107,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you do something risky, under time pressure, or try to avoid danger,",
-                        outro: "the GM will explain what the consequences for failure are and you roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "the GM will explain what the consequences for failure are and you %insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
@@ -9121,7 +9132,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you dodge, parry, or block #>text-keyword>Harm<#,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
@@ -9164,9 +9175,9 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When enduring an injury,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<# #>text-keyword>+Armor<# #>text-negmod text-keyword>−Harm<#.",
+                        outro: "%insert.rollPrompt% #>item-button text-keyword:data-item-name='Endure Injury':data-action='roll'>+Armor<# #>item-button text-negmod text-keyword:data-item-name='Endure Injury':data-action='roll'>−Harm<#.",
                         effectFunctions: [
-                            "Add #>text-keyword>Armor<# and subtract #>text-keyword text-negmod>Harm<# from #>text-rolltrait>Fortitude<# roll"
+                            "Add Armor, subtract Harm from roll"
                         ]
                     },
                     results: {
@@ -9174,10 +9185,10 @@ const ITEM_DATA = {
                             result: "You ride out the pain and keep going."
                         },
                         partialSuccess: {
-                            result: "You are still standing, but the GM picks one condition: %list:gmoptions%"
+                            result: "You are still standing, but the GM picks one condition: %list.gmoptions%"
                         },
                         failure: {
-                            result: "The injury is overwhelming. You choose if you... %list:options%"
+                            result: "The injury is overwhelming. You choose if you... %list.options%"
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -9205,14 +9216,14 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you engage an able opponent in combat,",
-                        outro: "explain how and roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "explain how and %insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
                             result: "You inflict damage to your opponent and avoid counterattacks."
                         },
                         partialSuccess: {
-                            result: "You inflict damage, but at a cost. The GM chooses one: %list:gmoptions%"
+                            result: "You inflict damage, but at a cost. The GM chooses one: %list.gmoptions%"
                         },
                         failure: {
                             result: "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
@@ -9290,14 +9301,14 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you influence an NPC through negotiation, argument, or from a position of power,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
                             result: "She does what you ask."
                         },
                         partialSuccess: {
-                            result: "She does what you ask, but the GM chooses one: %list:gmoptions%"
+                            result: "She does what you ask, but the GM chooses one: %list.gmoptions%"
                         },
                         failure: {
                             result: "Your attempt has unintended repercussions. #>text-gmtext>The GM makes a Move<#."
@@ -9317,14 +9328,14 @@ const ITEM_DATA = {
                             name: "Options",
                             items: [
                                 "She's motivated to do what you ask, and recieves #>text-posmod>+1<# for her next roll, if she does it.",
-                                "She's worried of the consequences if she doesn't do what you ask, and gets #>text-negmod>−1<##>text-keyword>Stability<# if she doesn't do it."
+                                "She's worried of the consequences if she doesn't do what you ask, and gets #>text-negmod>−1<# #>text-keyword>Stability<# if she doesn't do it."
                             ]
                         }
                     },
                     isCustom: false,
                     rules: {
                         trigger: "When you influence another PC,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
@@ -9368,7 +9379,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you investigate something,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
@@ -9403,11 +9414,11 @@ const ITEM_DATA = {
                         options: {
                             name: "Options",
                             items: [
-                                "You become angry (#>text-negmod>−1<##>text-keyword>Stability<#).",
-                                "You become sad (#>text-negmod>−1<##>text-keyword>Stability<#).",
-                                "You become scared (#>text-negmod>−1<##>text-keyword>Stability<#).",
-                                "You become guilt-ridden (#>text-negmod>−1<##>text-keyword>Stability<#).",
-                                "You become obsessed (#>text-posmod>+1<##>text-keyword>Relation<# to whatever caused the condition).",
+                                "You become angry (#>text-negmod>−1<# #>text-keyword>Stability<#).",
+                                "You become sad (#>text-negmod>−1<# #>text-keyword>Stability<#).",
+                                "You become scared (#>text-negmod>−1<# #>text-keyword>Stability<#).",
+                                "You become guilt-ridden (#>text-negmod>−1<# #>text-keyword>Stability<#).",
+                                "You become obsessed (#>text-posmod>+1<# #>text-keyword>Relation<# to whatever caused the condition).",
                                 "You become distracted (#>text-negmod>−2<# in situations where the condition limits you).",
                                 "You will be haunted by the experience at a later time."
                             ]
@@ -9417,31 +9428,25 @@ const ITEM_DATA = {
                             items: [
                                 "You cower powerless in the threat's presence.",
                                 "You panic with no control of your actions.",
-                                "You suffer emotional trauma (#>text-negmod>−2<##>text-keyword>Stability<#).",
-                                "You suffer life-changing trauma (#>text-negmod>−4<##>text-keyword>Stability<#)."
+                                "You suffer emotional trauma (#>text-negmod>−2<# #>text-keyword>Stability<#).",
+                                "You suffer life-changing trauma (#>text-negmod>−4<# #>text-keyword>Stability<#)."
                             ]
                         }
                     },
                     isCustom: false,
                     rules: {
                         trigger: "When you exercise self-control to keep from succumbing to stress, traumatic experiences, psychic influence, or supernatural forces,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
                             result: "You grit your teeth and stay the course."
                         },
                         partialSuccess: {
-                            result: "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>−1<# in situations where this condition would be a hindrance to you. Choose one:",
-                            listRefs: [
-                                "options"
-                            ]
+                            result: "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>−1<# in situations where this condition would be a hindrance to you. Choose one: %list.options%"
                         },
                         failure: {
-                            result: "The strain is too much for your mind to handle. The GM chooses your reaction:",
-                            listRefs: [
-                                "gmoptions"
-                            ]
+                            result: "The strain is too much for your mind to handle. The GM chooses your reaction: %list.gmoptions%"
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
@@ -9469,7 +9474,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you observe a situation,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
@@ -9518,7 +9523,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you read a person,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
@@ -9561,14 +9566,14 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         trigger: "When you suffer shock, injuries, or distort your perception through drugs or rituals,",
-                        outro: "roll #>text-rolltrait>+%data.attribute%<#."
+                        outro: "%insert.rollPrompt%."
                     },
                     results: {
                         completeSuccess: {
                             result: "You perceive things as they truly are."
                         },
                         partialSuccess: {
-                            result: "You see Reality, but you also affect the Illusion. The GM chooses one: %list:gmoptions%"
+                            result: "You see Reality, but you also affect the Illusion. The GM chooses one: %list.gmoptions%"
                         },
                         failure: {
                             result: "The GM explains what you see. #>text-gmtext>The GM makes a Move<#."

@@ -48,49 +48,106 @@ export const HandlebarHelpers = {
         // Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
         const iData = context.data.root.data;
         console.log("[FormatForKult]", { str, iData, "this": this });
-        // #>text-rolltrait>+%data.attribute%<#   `#>text-rolltrait>+%data.attribute%<#`.match(/#>([^>]+)>/)?.pop()
-        str = str.replace(/(?:#>([^>]+)>)?(\S+?)?%([^%\s]+)%(?:<#)?/g, (_, spanTag, prefix, refStr) => {
-            console.log({ _, spanTag, prefix, refStr });
-            if (/^data\./.test(refStr)) {
-                const key = refStr.split(".").pop();
-                console.log("[FormatForKult] Found DATA. Key =", key);
-                if (["attack" /* K4ItemType.attack */, "move" /* K4ItemType.move */].includes(iData.type)) {
-                    return formatStringForKult([
-                        spanTag ? `#>${spanTag}>` : "",
-                        prefix,
-                        U.tCase(iData.data[key]),
-                        spanTag ? "<#" : ""
-                    ].join(""));
+        const self = this;
+        // Step One: Replace any data object references.
+        str = str.replace(/%([^%\.]+)\.([^%\.]+)%/g, (_, sourceRef, dataKey) => {
+            switch (sourceRef) {
+                case "data": {
+                    return U.tCase(iData.data[dataKey]);
                 }
-                return formatStringForKult([
-                    "to <a class='item-button' data-action='edit' data-item-name='",
-                    this.name,
-                    "'>#>text-movename>",
-                    this.name,
-                    "<#</a> (",
-                    "#>text-keyword>",
-                    prefix,
-                    U.tCase(iData.data[key]),
-                    "<#)"
-                ].join(""));
-            }
-            else if (/^list:/.test(refStr)) {
-                const listKey = refStr.split(":").pop();
-                console.log(`[FormatForKult] Found LIST. Key = ${listKey}`, iData.data.lists);
-                if (listKey && (listKey in iData.data.lists)) {
-                    return [
-                        `<ul class='inline-list list-${listKey}'>`,
-                        ...iData.data.lists[listKey].items.map((item) => `<li>${formatStringForKult(item)}</li>`),
-                        "</ul>"
-                    ].join("");
+                case "list": {
+                    switch (dataKey) {
+                        case "inline-attacks": {
+                            return "<span style='color: red;'>Inline Attacks TBD...</span>";
+                        }
+                        case "parent-attacks": {
+                            return "<span style='color: red;'>Inline PARENT Attacks TBD...</span>";
+                        }
+                        default: {
+                            if (dataKey && (dataKey in iData.data.lists)) {
+                                return [
+                                    `<ul class='inline-list list-${dataKey}'>`,
+                                    ...iData.data.lists[dataKey].items.map((item) => `<li>${item}</li>`),
+                                    "</ul>"
+                                ].join("");
+                            }
+                            return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
+                        }
+                    }
                 }
-                return `<span style='color: red;'>No Such List: ${listKey}</span>`;
+                case "insert": {
+                    switch (dataKey) {
+                        case "break": {
+                            return "<p></p>";
+                        }
+                        case "rollPrompt": {
+                            if (["attack" /* K4ItemType.attack */, "move" /* K4ItemType.move */].includes(iData.type)) {
+                                return [
+                                    "roll ",
+                                    "#>",
+                                    "item-button text-attributename",
+                                    `:data-item-name='${iData.name}'`,
+                                    ":data-action='roll'",
+                                    ">",
+                                    `+${U.tCase(iData.data.attribute)}`,
+                                    "<#"
+                                ].join("");
+                            }
+                            return [
+                                "roll to ",
+                                ...[
+                                    "#>",
+                                    "item-button text-movename",
+                                    `:data-item-name='${self.name}'`,
+                                    ":data-action='open'",
+                                    ">",
+                                    self.name,
+                                    "<#"
+                                ],
+                                " (",
+                                ...[
+                                    "#>",
+                                    "item-button text-attributename",
+                                    `:data-item-name='${iData.name}'`,
+                                    ":data-action='roll'",
+                                    ">",
+                                    U.tCase(iData.data.attribute),
+                                    "<#"
+                                ],
+                                ")"
+                            ].join("");
+                        }
+                        default: {
+                            return `<span style='color: red;'>No Such Prompt: ${dataKey}</span>`;
+                        }
+                    }
+                }
+                default: return `<span style='color: red;'>No Such Source: ${sourceRef}.${dataKey}</span>`;
             }
-            else if (/^n$/.test(refStr)) {
-                return "<p></p>";
-            }
-            return refStr;
         });
-        return formatStringForKult(str.replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>"));
+        // Step Two: Apply span styling.
+        // #>text-keyword>+1 ongoing<#
+        // #>item-button text-keyword text-movename:data-item-name='Engage_in_Combat':data-action='open'>Engage in Combat<#
+        str = str.replace(/#>([^>:]+)(:[^>]+)?>([^<]+)<#/g, (_, classRefs, attrRefs, contents) => {
+            classRefs = ["text-tag", classRefs ?? ""].join(" ").trim();
+            const htmlParts = [
+                "<span class='",
+                classRefs,
+                "'"
+            ];
+            if (attrRefs) {
+                htmlParts.push(attrRefs.replace(/:/g, " "));
+            }
+            htmlParts.push(...[
+                ">",
+                contents,
+                "</span>"
+            ]);
+            return htmlParts.join("");
+        });
+        // Step Three: Apply final specific fixes to formatting
+        str = str
+            .replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>"); // Remove empty <p> elements, except when used as breaks
+        return str;
     }
 };
