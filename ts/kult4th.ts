@@ -65,6 +65,20 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", async () => {
+	const ACTOR = game.actors?.values().next().value as K4Actor;
+	const ITEM = game.items?.values().next().value as K4Item<K4ItemType>;
+	const EMBED = ACTOR.items?.values().next().value as K4Item<K4ItemType>;
+	const ACTORSHEET = ACTOR.sheet as unknown as K4PCSheet;
+	const ITEMSHEET = ITEM.sheet as unknown as K4ItemSheet<K4ItemType>;
+	const EMBEDSHEET = EMBED.sheet as unknown as K4ItemSheet<K4ItemType>;
+
+	Object.assign(globalThis, {
+		ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
+		ENTITIES: [ACTOR, ITEM, EMBED],
+		SHEETS: [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
+		DOCS: [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
+	});
+
 	// #region ████████ TinyMCE Config: Configuring TinyMCE Instances with Custom Styles ████████ ~
 	// CONFIG.TinyMCE.plugins += " searchreplace preview template";
 	// CONFIG.TinyMCE.toolbar += " | searchreplace template";

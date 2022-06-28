@@ -1,10 +1,11 @@
 import {ItemDataConstructorData, ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
+import K4Actor from "./K4Actor.js";
 
 export default class K4Item<T extends K4ItemType = K4ItemType> extends Item {
+
 	get tData() { return this.data._source.data as K4ItemTemplate<T> }
 	override get type() { return super.type as T}
-	// override get type(): Type { return super.type as Type }
 
 	subItems?: K4Item[];
 	hasSubItems(): this is K4Item<K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.weapon> { return Boolean("subItems" in this.tData && this.tData.subItems.length) }

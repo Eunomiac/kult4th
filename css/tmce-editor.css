@@ -52,44 +52,81 @@
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7); }
 
 @font-face {
+  font {
+    family: Alverata;
+    weight: 0 350;
+    style: normal; }
+  src: url("../assets/fonts/alverata/alverataIrreg-light.ttf") format("truetype"), url("../assets/fonts/alverata/alverataIrreg-light.otf") format("opentype"), url("../assets/fonts/alverata/alverataIrreg-light.woff") format("woff"), url("../assets/fonts/alverata/alverataIrreg-light.woff2") format("woff2"), url("../assets/fonts/alverata/alverataIrreg-light.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 351 450;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 451 550;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 551 650;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 651 800;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 801 1000;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-black.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 0 350;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 351 450;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 451 550;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 551 650;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 651 800;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 801 1000;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black-italic.svg") format("svg"); }
+
+@font-face {
   font-family: Infidel;
   src: url("../assets/fonts/infidel.ttf"); }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata.ttf");
-  font-weight: 400;
-  font-style: normal; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-bold.ttf");
-  font-weight: 700;
-  font-style: normal; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-black.ttf");
-  font-weight: 800;
-  font-style: normal; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-italic.ttf");
-  font-weight: 400;
-  font-style: italic; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-bold-italic.ttf");
-  font-weight: 700;
-  font-style: italic; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-light.ttf");
-  font-weight: 300;
-  font-style: normal; }
 
 @font-face {
   font-family: Sokol;
@@ -139,7 +176,7 @@
     color: var(--blue-bright);
     font-weight: bold;
     font-style: italic; }
-  #tinymce .edge-name {
+  #tinymce .text-edgename {
     font-weight: 900; }
   #tinymce .text-trigger {
     color: var(--gold-brightest); }

@@ -9880,7 +9880,7 @@ function listCheck(listLines) {
 			if (isLabeled) {
 				const [edgeName, edgeEffect] = line.split(/ - /);
 				line = [
-					tagWrap("span", edgeName, "edge-name"),
+					tagWrap("span", edgeName, "text-edgename"),
 					" — ",
 					edgeEffect
 				].join("");

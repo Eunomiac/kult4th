@@ -12,6 +12,22 @@ type K4ItemSheetOptions = DocumentSheetOptions & {
 };
 
 export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet {
+
+	_actor?: any;
+	get $entity(): K4Entity { return this.object ?? this }
+	get $sheet(): K4Sheet|false { return (this.$entity.sheet ?? false) as K4Sheet|false }
+	get $actor(): K4Actor|false {
+		return (this._actor = this._actor
+			?? this.actor
+			?? (this.$entity.documentName === "Actor" ? this.$entity : false));
+	}
+
+	get $id() { return this.$entity.id }
+	get $type() { return this.$entity.type }
+
+	get $root() { return this.$entity.data }
+	get $data() { return this.$root.data }
+
 	static override get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: [C.SYSTEM_ID, "item", "sheet"]

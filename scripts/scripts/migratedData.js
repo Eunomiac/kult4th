@@ -459,9 +459,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Reveal a Weapon<# &mdash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
-                                "#>edge-name>Spot a Weakness<# &mdash; You realize your opponent has a weakness you can exploit (take #>text-posmod>+2<# to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
-                                "#>edge-name>Find an Exit<# &mdash; You spot a way out. Ask the GM what it is. Take #>text-posmod>+2<# to your next roll to make use of it."
+                                "#>text-edgename>Reveal a Weapon<# &mdash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
+                                "#>text-edgename>Spot a Weakness<# &mdash; You realize your opponent has a weakness you can exploit (take #>text-posmod>+2<# to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
+                                "#>text-edgename>Find an Exit<# &mdash; You spot a way out. Ask the GM what it is. Take #>text-posmod>+2<# to your next roll to make use of it."
                             ]
                         }
                     },
@@ -475,9 +475,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Reveal a Weapon<# &mdash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
-                                            "#>edge-name>Spot a Weakness<# &mdash; You realize your opponent has a weakness you can exploit (take #>text-posmod>+2<# to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
-                                            "#>edge-name>Find an Exit<# &mdash; You spot a way out. Ask the GM what it is. Take #>text-posmod>+2<# to your next roll to make use of it."
+                                            "#>text-edgename>Reveal a Weapon<# &mdash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
+                                            "#>text-edgename>Spot a Weakness<# &mdash; You realize your opponent has a weakness you can exploit (take #>text-posmod>+2<# to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
+                                            "#>text-edgename>Find an Exit<# &mdash; You spot a way out. Ask the GM what it is. Take #>text-posmod>+2<# to your next roll to make use of it."
                                         ]
                                     }
                                 },
@@ -591,7 +591,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are able to understand and control animals."
+                        intro: "#>text-center>You are able to understand and control animals.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.intuition
@@ -1046,7 +1046,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "Your body and mind are as one."
+                        intro: "#>text-center>Your body and mind are as one.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.perception
@@ -1771,9 +1771,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>On a Swivel<# &mdash; Discover a threat before it discovers you.",
-                                "#>edge-name>Not Today<# &mdash; Avoid an attack.",
-                                "#>edge-name>Sucker Punch<# &mdash; Get the jump on them: Harm your opponent before they can react."
+                                "#>text-edgename>On a Swivel<# &mdash; Discover a threat before it discovers you.",
+                                "#>text-edgename>Not Today<# &mdash; Avoid an attack.",
+                                "#>text-edgename>Sucker Punch<# &mdash; Get the jump on them: Harm your opponent before they can react."
                             ]
                         }
                     },
@@ -1787,9 +1787,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>On a Swivel<# &mdash; Discover a threat before it discovers you.",
-                                            "#>edge-name>Not Today<# &mdash; Avoid an attack.",
-                                            "#>edge-name>Sucker Punch<# &mdash; Get the jump on them: Harm your opponent before they can react."
+                                            "#>text-edgename>On a Swivel<# &mdash; Discover a threat before it discovers you.",
+                                            "#>text-edgename>Not Today<# &mdash; Avoid an attack.",
+                                            "#>text-edgename>Sucker Punch<# &mdash; Get the jump on them: Harm your opponent before they can react."
                                         ]
                                     }
                                 },
@@ -1958,10 +1958,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Bring 'Em On<# &mdash; Engage an additional hostile in Combat.",
-                                "#>edge-name>Savagery<# &mdash; Deal #>text-keyword>+2 Harm<# with one attack.",
-                                "#>edge-name>Charge<# &mdash; Get within reach to attack a hostile.",
-                                "#>edge-name>Go Crazy<# &mdash; Frighten your opponents by laughing into the face of death (#>text-keyword>+1 ongoing<# during the fight)."
+                                "#>text-edgename>Bring 'Em On<# &mdash; Engage an additional hostile in Combat.",
+                                "#>text-edgename>Savagery<# &mdash; Deal #>text-keyword>+2 Harm<# with one attack.",
+                                "#>text-edgename>Charge<# &mdash; Get within reach to attack a hostile.",
+                                "#>text-edgename>Go Crazy<# &mdash; Frighten your opponents by laughing into the face of death (#>text-keyword>+1 ongoing<# during the fight)."
                             ]
                         }
                     },
@@ -1975,10 +1975,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Bring 'Em On<# &mdash; Engage an additional hostile in Combat.",
-                                            "#>edge-name>Savagery<# &mdash; Deal #>text-keyword>+2 Harm<# with one attack.",
-                                            "#>edge-name>Charge<# &mdash; Get within reach to attack a hostile.",
-                                            "#>edge-name>Go Crazy<# &mdash; Frighten your opponents by laughing into the face of death (#>text-keyword>+1 ongoing<# during the fight)."
+                                            "#>text-edgename>Bring 'Em On<# &mdash; Engage an additional hostile in Combat.",
+                                            "#>text-edgename>Savagery<# &mdash; Deal #>text-keyword>+2 Harm<# with one attack.",
+                                            "#>text-edgename>Charge<# &mdash; Get within reach to attack a hostile.",
+                                            "#>text-edgename>Go Crazy<# &mdash; Frighten your opponents by laughing into the face of death (#>text-keyword>+1 ongoing<# during the fight)."
                                         ]
                                     }
                                 },
@@ -2135,7 +2135,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a talented, self-taught dream wanderer."
+                        intro: "#>text-center>You are a talented, self-taught dream wanderer.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
@@ -2150,10 +2150,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Defensive Driving<# &mdash; Make a risky maneuver to get out of the way.",
-                                "#>edge-name>Evasive Driving<# &mdash; Shake off one pursuing vehicle.",
-                                "#>edge-name>Deadly Driving<# &mdash; Use your vehicle as a weapon against a pedestrian (#>text-keyword>2-4 Harm<# depending on speed).",
-                                "#>edge-name>Reckless Driving<# &mdash; Sideswipe another vehicle off the road."
+                                "#>text-edgename>Defensive Driving<# &mdash; Make a risky maneuver to get out of the way.",
+                                "#>text-edgename>Evasive Driving<# &mdash; Shake off one pursuing vehicle.",
+                                "#>text-edgename>Deadly Driving<# &mdash; Use your vehicle as a weapon against a pedestrian (#>text-keyword>2-4 Harm<# depending on speed).",
+                                "#>text-edgename>Reckless Driving<# &mdash; Sideswipe another vehicle off the road."
                             ]
                         }
                     },
@@ -2167,10 +2167,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Defensive Driving<# &mdash; Make a risky maneuver to get out of the way.",
-                                            "#>edge-name>Evasive Driving<# &mdash; Shake off one pursuing vehicle.",
-                                            "#>edge-name>Deadly Driving<# &mdash; Use your vehicle as a weapon against a pedestrian (#>text-keyword>2-4 Harm<# depending on speed).",
-                                            "#>edge-name>Reckless Driving<# &mdash; Sideswipe another vehicle off the road."
+                                            "#>text-edgename>Defensive Driving<# &mdash; Make a risky maneuver to get out of the way.",
+                                            "#>text-edgename>Evasive Driving<# &mdash; Shake off one pursuing vehicle.",
+                                            "#>text-edgename>Deadly Driving<# &mdash; Use your vehicle as a weapon against a pedestrian (#>text-keyword>2-4 Harm<# depending on speed).",
+                                            "#>text-edgename>Reckless Driving<# &mdash; Sideswipe another vehicle off the road."
                                         ]
                                     }
                                 },
@@ -2487,7 +2487,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a master at slipping away when the shit hits the fan."
+                        intro: "#>text-center>You are a master at slipping away when the shit hits the fan.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.coolness
@@ -2893,10 +2893,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
-                                "#>edge-name>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
-                                "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
-                                "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object. %list.inline-attacks%"
+                                "#>text-edgename>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
+                                "#>text-edgename>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
+                                "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
+                                "#>text-edgename>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object. %list.inline-attacks%"
                             ]
                         }
                     },
@@ -2962,10 +2962,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
-                                            "#>edge-name>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
-                                            "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
-                                            "#>edge-name>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %list.parent-attacks%"
+                                            "#>text-edgename>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
+                                            "#>text-edgename>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
+                                            "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
+                                            "#>text-edgename>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %list.parent-attacks%"
                                         ]
                                     }
                                 },
@@ -3198,7 +3198,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You're the boss of a small gang of criminals."
+                        intro: "#>text-center>You're the boss of a small gang of criminals.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.violence
@@ -3213,9 +3213,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-                                "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
-                                "#>edge-name>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+                                "#>text-edgename>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
+                                "#>text-edgename>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
+                                "#>text-edgename>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                             ]
                         }
                     },
@@ -3229,9 +3229,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-                                            "#>edge-name>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
-                                            "#>edge-name>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+                                            "#>text-edgename>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
+                                            "#>text-edgename>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
+                                            "#>text-edgename>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
                                         ]
                                     }
                                 },
@@ -3407,10 +3407,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Easy Dodge<# &mdash; Avoid an attack.",
-                                "#>edge-name>Opportunity Calls<# &mdash; Manage to snatch something.",
-                                "#>edge-name>Patience, Patience<# &mdash; Maneuver into a better position.",
-                                "#>edge-name>Clever Trick<# &mdash; Put someone in a bad position (everyone gets #>text-posmod>+2<# to any attack Moves)."
+                                "#>text-edgename>Easy Dodge<# &mdash; Avoid an attack.",
+                                "#>text-edgename>Opportunity Calls<# &mdash; Manage to snatch something.",
+                                "#>text-edgename>Patience, Patience<# &mdash; Maneuver into a better position.",
+                                "#>text-edgename>Clever Trick<# &mdash; Put someone in a bad position (everyone gets #>text-posmod>+2<# to any attack Moves)."
                             ]
                         }
                     },
@@ -3424,10 +3424,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Easy Dodge<# &mdash; Avoid an attack.",
-                                            "#>edge-name>Opportunity Calls<# &mdash; Manage to snatch something.",
-                                            "#>edge-name>Patience, Patience<# &mdash; Maneuver into a better position.",
-                                            "#>edge-name>Clever Trick<# &mdash; Put someone in a bad position (everyone gets #>text-posmod>+2<# to any attack Moves)."
+                                            "#>text-edgename>Easy Dodge<# &mdash; Avoid an attack.",
+                                            "#>text-edgename>Opportunity Calls<# &mdash; Manage to snatch something.",
+                                            "#>text-edgename>Patience, Patience<# &mdash; Maneuver into a better position.",
+                                            "#>text-edgename>Clever Trick<# &mdash; Put someone in a bad position (everyone gets #>text-posmod>+2<# to any attack Moves)."
                                         ]
                                     }
                                 },
@@ -3669,7 +3669,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You have friends with power and influence."
+                        intro: "#>text-center>You have friends with power and influence.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
@@ -3877,9 +3877,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Dodge<# &mdash; Avoid an attack.",
-                                "#>edge-name>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
-                                "#>edge-name>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
+                                "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
+                                "#>text-edgename>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+                                "#>text-edgename>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
                             ]
                         }
                     },
@@ -3893,9 +3893,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Dodge<# &mdash; Avoid an attack.",
-                                            "#>edge-name>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
-                                            "#>edge-name>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
+                                            "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
+                                            "#>text-edgename>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+                                            "#>text-edgename>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
                                         ]
                                     }
                                 },
@@ -4152,10 +4152,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Block<# &mdash; Avoid a melee attack.",
-                                "#>edge-name>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
-                                "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon.",
-                                "#>edge-name>Throw<# &mdash; Reposition an opponent or drop them to the ground."
+                                "#>text-edgename>Block<# &mdash; Avoid a melee attack.",
+                                "#>text-edgename>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
+                                "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon.",
+                                "#>text-edgename>Throw<# &mdash; Reposition an opponent or drop them to the ground."
                             ]
                         }
                     },
@@ -4169,10 +4169,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Block<# &mdash; Avoid a melee attack.",
-                                            "#>edge-name>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
-                                            "#>edge-name>Disarm<# &mdash; Remove an opponent's weapon.",
-                                            "#>edge-name>Throw<# &mdash; Reposition an opponent or drop them to the ground."
+                                            "#>text-edgename>Block<# &mdash; Avoid a melee attack.",
+                                            "#>text-edgename>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
+                                            "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon.",
+                                            "#>text-edgename>Throw<# &mdash; Reposition an opponent or drop them to the ground."
                                         ]
                                     }
                                 },
@@ -4375,7 +4375,7 @@ const ITEM_DATA = {
                                 },
                                 results: {
                                     completeSuccess: {
-                                        result: "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-movename:data-item-name='Influence':data-action='open'>Influence<# them."
+                                        result: "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence<# them."
                                     },
                                     partialSuccess: {
                                         result: "They know of your reputation; you can decide what they have heard."
@@ -4391,7 +4391,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are famous in your trade."
+                        intro: "#>text-center>You are famous in your trade.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
@@ -4522,7 +4522,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a student of the occult."
+                        intro: "#>text-center>You are a student of the occult.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.reason
@@ -4537,10 +4537,10 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
-                                "#>edge-name>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
-                                "#>edge-name>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
-                                "#>edge-name>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
+                                "#>text-edgename>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
+                                "#>text-edgename>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
+                                "#>text-edgename>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
+                                "#>text-edgename>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
                             ]
                         }
                     },
@@ -4554,10 +4554,10 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
-                                            "#>edge-name>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
-                                            "#>edge-name>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
-                                            "#>edge-name>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
+                                            "#>text-edgename>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
+                                            "#>text-edgename>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
+                                            "#>text-edgename>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
+                                            "#>text-edgename>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
                                         ]
                                     }
                                 },
@@ -4934,7 +4934,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you move through a small crowd to gather information,",
-                                    outro: "%insert.rollPrompt%. %insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office. You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
+                                    outro: "%insert.rollPrompt%. %insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office. %insert.break%You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4978,9 +4978,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Meat Shield<# &mdash; Force them to take all the #>text-keyword>Harm<# from one attack for you.",
-                                "#>edge-name>Nothing But Bait<# &mdash; Expose someone to danger so you can flank an enemy (deal #>text-keyword>+1 Harm<#).",
-                                "#>edge-name>Leave Them Behind<# &mdash; Abandon them to the enemy while you slip away."
+                                "#>text-edgename>Meat Shield<# &mdash; Force them to take all the #>text-keyword>Harm<# from one attack for you.",
+                                "#>text-edgename>Nothing But Bait<# &mdash; Expose someone to danger so you can flank an enemy (deal #>text-keyword>+1 Harm<#).",
+                                "#>text-edgename>Leave Them Behind<# &mdash; Abandon them to the enemy while you slip away."
                             ]
                         }
                     },
@@ -4994,9 +4994,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Meat Shield<# &mdash; Force them to take all the #>text-keyword>Harm<# from one attack for you.",
-                                            "#>edge-name>Nothing But Bait<# &mdash; Expose someone to danger so you can flank an enemy (deal #>text-keyword>+1 Harm<#).",
-                                            "#>edge-name>Leave Them Behind<# &mdash; Abandon them to the enemy while you slip away."
+                                            "#>text-edgename>Meat Shield<# &mdash; Force them to take all the #>text-keyword>Harm<# from one attack for you.",
+                                            "#>text-edgename>Nothing But Bait<# &mdash; Expose someone to danger so you can flank an enemy (deal #>text-keyword>+1 Harm<#).",
+                                            "#>text-edgename>Leave Them Behind<# &mdash; Abandon them to the enemy while you slip away."
                                         ]
                                     }
                                 },
@@ -5108,7 +5108,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You can consciously make people fall in love with you."
+                        intro: "#>text-center>You can consciously make people fall in love with you.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.charisma
@@ -5241,7 +5241,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You have an intuition for things, both good and bad."
+                        intro: "#>text-center>You have an intuition for things, both good and bad.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: K4Attribute.soul
@@ -5507,9 +5507,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Dodge<# &mdash; Avoid an attack.",
-                                "#>edge-name>Flurry of Blows<# &mdash; Take #>text-posmod>+2<# on your roll to attack an opponent.",
-                                "#>edge-name>Dirty Strike<# &mdash; Momentarily stun an opponent by striking them where it hurts."
+                                "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
+                                "#>text-edgename>Flurry of Blows<# &mdash; Take #>text-posmod>+2<# on your roll to attack an opponent.",
+                                "#>text-edgename>Dirty Strike<# &mdash; Momentarily stun an opponent by striking them where it hurts."
                             ]
                         }
                     },
@@ -5523,9 +5523,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Dodge<# &mdash; Avoid an attack.",
-                                            "#>edge-name>Flurry of Blows<# &mdash; Take #>text-posmod>+2<# on your roll to attack an opponent.",
-                                            "#>edge-name>Dirty Strike<# &mdash; Momentarily stun an opponent by striking them where it hurts."
+                                            "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
+                                            "#>text-edgename>Flurry of Blows<# &mdash; Take #>text-posmod>+2<# on your roll to attack an opponent.",
+                                            "#>text-edgename>Dirty Strike<# &mdash; Momentarily stun an opponent by striking them where it hurts."
                                         ]
                                     },
                                     complications: {
@@ -5643,9 +5643,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Refuse to Give Up<# &mdash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
-                                "#>edge-name>Will Over Skill<# &mdash; Roll #>text-rolltrait>+Willpower<# instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
-                                "#>edge-name>Steel Yourself<# &mdash; Break free from a supernatural effect."
+                                "#>text-edgename>Refuse to Give Up<# &mdash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
+                                "#>text-edgename>Will Over Skill<# &mdash; Roll #>text-rolltrait>+Willpower<# instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
+                                "#>text-edgename>Steel Yourself<# &mdash; Break free from a supernatural effect."
                             ]
                         }
                     },
@@ -5659,9 +5659,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Refuse to Give Up<# &mdash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
-                                            "#>edge-name>Will Over Skill<# &mdash; Roll #>text-rolltrait>+Willpower<# instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
-                                            "#>edge-name>Steel Yourself<# &mdash; Break free from a supernatural effect."
+                                            "#>text-edgename>Refuse to Give Up<# &mdash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
+                                            "#>text-edgename>Will Over Skill<# &mdash; Roll #>text-rolltrait>+Willpower<# instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
+                                            "#>text-edgename>Steel Yourself<# &mdash; Break free from a supernatural effect."
                                         ]
                                     }
                                 },
@@ -6398,7 +6398,7 @@ const ITEM_DATA = {
                             name: "Options",
                             items: [
                                 "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence Other<# rolls made against them.",
-                                "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder_Other':data-action='open'>Hinder Other<# rolls made against them."
+                                "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder Other':data-action='open'>Hinder Other<# rolls made against them."
                             ]
                         }
                     },
@@ -6413,7 +6413,7 @@ const ITEM_DATA = {
                                         name: "Options",
                                         items: [
                                             "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence Other<# rolls made against them.",
-                                            "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder_Other':data-action='open'>Hinder Other<# rolls made against them."
+                                            "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder Other':data-action='open'>Hinder Other<# rolls made against them."
                                         ]
                                     }
                                 },
@@ -6475,9 +6475,9 @@ const ITEM_DATA = {
                         edges: {
                             name: "Edges",
                             items: [
-                                "#>edge-name>Brutal Assault<# &mdash; Take #>text-keyword>+1 Harm<# to your attack.",
-                                "#>edge-name>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
-                                "#>edge-name>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
+                                "#>text-edgename>Brutal Assault<# &mdash; Take #>text-keyword>+1 Harm<# to your attack.",
+                                "#>text-edgename>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
+                                "#>text-edgename>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
                             ]
                         }
                     },
@@ -6491,9 +6491,9 @@ const ITEM_DATA = {
                                     edges: {
                                         name: "Edges",
                                         items: [
-                                            "#>edge-name>Brutal Assault<# &mdash; Take #>text-keyword>+1 Harm<# to your attack.",
-                                            "#>edge-name>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
-                                            "#>edge-name>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
+                                            "#>text-edgename>Brutal Assault<# &mdash; Take #>text-keyword>+1 Harm<# to your attack.",
+                                            "#>text-edgename>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
+                                            "#>text-edgename>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
                                         ]
                                     }
                                 },
@@ -6800,7 +6800,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You are a seasoned marksman. %insert.break%You deal #>text-keyword>+1 Harm<# with firearms.",
+                        intro: "#>text-center>You are a seasoned marksman.<# %insert.break%You deal #>text-keyword>+1 Harm<# with firearms.",
                         effectFunctions: [
                             ">ModValue:weapon/firearm,harm,1"
                         ]
@@ -6896,7 +6896,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You've competed professionally in fencing. %insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
+                        intro: "#>text-center>You've competed professionally in fencing.<# %insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
                         effectFunctions: [
                             "AppendList,weapon/sword,attacks,attacks"
                         ]
@@ -6912,7 +6912,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You are not as easily affected by trauma as others. %insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
+                        intro: "#>text-center>You are not as easily affected by trauma as others.<# %insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -7036,7 +7036,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\" This doesn't count towards the number of questions you're allowed to normally ask."
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\" %insert.break%This doesn't count towards the number of questions you're allowed to normally ask."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -7065,7 +7065,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a Partial Success, you may suppress your emotions and postpone their effects until the next scene.",
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
                         effectFunctions: [
                             "AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
                         ]
@@ -7287,7 +7287,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a master of gunplay. %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
+                        intro: "#>text-center>You are a master of gunplay.<# %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -7458,7 +7458,7 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are a master of armed melee combat. %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
+                        intro: "#>text-center>You are a master of armed melee combat.<# %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
                     attribute: K4Attribute.zero
@@ -9131,7 +9131,7 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        trigger: "When you dodge, parry, or block #>text-keyword>Harm<#,",
+                        trigger: "When you dodge, parry, or block Harm,",
                         outro: "%insert.rollPrompt%."
                     },
                     results: {

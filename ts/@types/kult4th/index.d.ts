@@ -4,6 +4,12 @@ import K4Item from "../../documents/K4Item.js";
 import "./documents";
 import "./scripts";
 declare global {
+
+	type K4ActorSheet = K4PCSheet|K4NPCSheet
+	type K4Sheet = K4ActorSheet|K4ItemSheet<K4ItemType>
+	type K4Entity = K4Actor|K4Item
+	type K4Document = K4Entity|K4Sheet
+	type K4Constructor = ConstructorOf<K4Document>;
 	interface LenientGlobalVariableTypes {
     game: never;
   }
@@ -12,4 +18,6 @@ declare global {
 		Item: K4ItemSourceData.any
 	}
 
+}
+declare global {
 }

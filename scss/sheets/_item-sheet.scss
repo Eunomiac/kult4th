@@ -110,29 +110,37 @@
 					text-align: justify;
 
 					.text-tag {
-						color: var(--blue);
-						font-weight: bold;
-						text-shadow: none;
-						display: inline !important;
-						border: none !important;
+						--text-color: var(--blue-dark);
+						--text-weight: bold;
+						--text-style: normal;
+						--text-shadow: none;
 
-						// & + .text-tag {
-						// 	padding: 0 2.5px;
-						// }
+						color: var(--text-color);
+						font-weight: var(--text-weight);
+						font-style: var(--text-style);
+						text-shadow: var(--text-shadow);
+
+						display: inline;
+						border: none;
 
 						&.text-negmod,
 						&.text-negmod + .text-keyword,
 						&.text-negmod + .text-attributename {
-							color: var(--red);
+							--text-color: var(--red);
+						}
+
+						&.text-resultlabel {
+							--text-color: var(--red-glow);
+							--text-weight: 900;
 						}
 
 						&.text-gmtext {
-							color: var(--red);
-							font-weight: 900;
+							--text-color: var(--red-glow);
+							--text-weight: 900;
 						}
 
 						&.text-movename {
-							font-style: italic;
+							--text-style: italic;
 						}
 					}
 
@@ -144,6 +152,11 @@
 
 					.text-extra-bold {
 						font-weight: 900;
+					}
+
+					.text-center {
+						display: block;
+						text-align: center;
 					}
 
 					.rules-text {
@@ -165,7 +178,7 @@
 							display: block;
 							text-align: center;
 							font-family: 'Alverata';
-							font-size: 22px;
+							font-size: 20px;
 							color: var(--header-color);
 							background: linear-gradient(to right, transparent, var(--bg-color) 15%, var(--bg-color) 85%, transparent);
 							// text-shadow:
@@ -177,9 +190,8 @@
 							// 	0 0 2px var(--black);
 							font-weight: 900;
 							text-transform: uppercase;
-							line-height: 21px;
 							margin-bottom: 5px;
-							padding: 5px 0;
+							padding: 5px 0 4px 0;
 
 							&.edges-header {
 								--header-color: var(--blue-glow);
@@ -188,8 +200,9 @@
 						}
 
 						.hold-body {
-							padding: 0 20px;
 							display: block;
+							margin-bottom: 10px;
+							padding: 0 20px;
 						}
 
 						.result-entry {
@@ -198,9 +211,7 @@
 							font-size: 16px;
 							clear: both;
 
-							label {
-								color: var(--red-glow);
-								font-weight: 900;
+							> label {
 								text-align: right;
 								display: block;
 								width: 60px;
@@ -209,7 +220,7 @@
 								margin-right: 10px;
 							}
 
-							span {
+							> span {
 								display: inline-block;
 								width: calc(100% - 70px);
 								margin-bottom: 4px;
@@ -219,7 +230,7 @@
 								border-image: linear-gradient(to right, var(--gold), transparent 75%) 1;
 							}
 
-							&:last-of-type span {
+							&:last-of-type > span {
 								border-bottom: none;
 							}
 						}

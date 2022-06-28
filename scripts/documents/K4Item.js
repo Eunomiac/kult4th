@@ -1,7 +1,6 @@
 export default class K4Item extends Item {
     get tData() { return this.data._source.data; }
     get type() { return super.type; }
-    // override get type(): Type { return super.type as Type }
     subItems;
     hasSubItems() { return Boolean("subItems" in this.tData && this.tData.subItems.length); }
     get subItemData() {

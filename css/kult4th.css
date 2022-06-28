@@ -52,44 +52,81 @@
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7); }
 
 @font-face {
+  font {
+    family: Alverata;
+    weight: 0 350;
+    style: normal; }
+  src: url("../assets/fonts/alverata/alverataIrreg-light.ttf") format("truetype"), url("../assets/fonts/alverata/alverataIrreg-light.otf") format("opentype"), url("../assets/fonts/alverata/alverataIrreg-light.woff") format("woff"), url("../assets/fonts/alverata/alverataIrreg-light.woff2") format("woff2"), url("../assets/fonts/alverata/alverataIrreg-light.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 351 450;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 451 550;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 551 650;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 651 800;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 801 1000;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-black.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 0 350;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 351 450;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 451 550;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 551 650;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 651 800;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold-italic.svg") format("svg"); }
+
+@font-face {
+  font-family: Alverata;
+  font-weight: 801 1000;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black-italic.svg") format("svg"); }
+
+@font-face {
   font-family: Infidel;
   src: url("../assets/fonts/infidel.ttf"); }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata.ttf");
-  font-weight: 400;
-  font-style: normal; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-bold.ttf");
-  font-weight: 700;
-  font-style: normal; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-black.ttf");
-  font-weight: 800;
-  font-style: normal; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-italic.ttf");
-  font-weight: 400;
-  font-style: italic; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-bold-italic.ttf");
-  font-weight: 700;
-  font-style: italic; }
-
-@font-face {
-  font-family: Alverata;
-  src: url("../assets/fonts/alverata-light.ttf");
-  font-weight: 300;
-  font-style: normal; }
 
 @font-face {
   font-family: Sokol;
@@ -181,7 +218,8 @@
     width: 100%;
     overflow: visible;
     padding: 0;
-    background: none; }
+    background: none;
+    line-height: 22px; }
     .vtt.game.system-kult4th .app.window-app.sheet .window-content form {
       --border-color: var(--gold);
       height: 100%;
@@ -251,7 +289,7 @@
           color: var(--blue-bright);
           font-weight: bold;
           font-style: italic; }
-        .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content .edge-name {
+        .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content .text-edgename {
           font-weight: 900; }
         .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content .text-trigger {
           color: var(--gold-brightest); }
@@ -936,26 +974,37 @@
       hyphens: auto;
       text-align: justify; }
       .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag {
-        color: var(--blue);
-        font-weight: bold;
-        text-shadow: none;
-        display: inline !important;
-        border: none !important; }
+        --text-color: var(--blue-dark);
+        --text-weight: bold;
+        --text-style: normal;
+        --text-shadow: none;
+        color: var(--text-color);
+        font-weight: var(--text-weight);
+        font-style: var(--text-style);
+        text-shadow: var(--text-shadow);
+        display: inline;
+        border: none; }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-negmod,
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-negmod + .text-keyword,
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-negmod + .text-attributename {
-          color: var(--red); }
+          --text-color: var(--red); }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-resultlabel {
+          --text-color: var(--red-glow);
+          --text-weight: 900; }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-gmtext {
-          color: var(--red);
-          font-weight: 900; }
+          --text-color: var(--red-glow);
+          --text-weight: 900; }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-tag.text-movename {
-          font-style: italic; }
+          --text-style: italic; }
       .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-trigger {
         font-style: italic;
         text-shadow: none;
         font-weight: 900; }
       .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-extra-bold {
         font-weight: 900; }
+      .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .text-center {
+        display: block;
+        text-align: center; }
       .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text {
         display: block;
         height: unset;
@@ -971,38 +1020,36 @@
           display: block;
           text-align: center;
           font-family: 'Alverata';
-          font-size: 22px;
+          font-size: 20px;
           color: var(--header-color);
           background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(15%, var(--bg-color)), color-stop(85%, var(--bg-color)), to(transparent));
           background: -o-linear-gradient(left, transparent, var(--bg-color) 15%, var(--bg-color) 85%, transparent);
           background: linear-gradient(to right, transparent, var(--bg-color) 15%, var(--bg-color) 85%, transparent);
           font-weight: 900;
           text-transform: uppercase;
-          line-height: 21px;
           margin-bottom: 5px;
-          padding: 5px 0; }
+          padding: 5px 0 4px 0; }
           .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .hold-header.edges-header,
           .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .edges-header.edges-header {
             --header-color: var(--blue-glow);
             --bg-color: var(--blue-darkest); }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .hold-body {
-          padding: 0 20px;
-          display: block; }
+          display: block;
+          margin-bottom: 10px;
+          padding: 0 20px; }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .result-entry {
           display: block;
           margin: 0 20px;
           font-size: 16px;
           clear: both; }
-          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .result-entry label {
-            color: var(--red-glow);
-            font-weight: 900;
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .result-entry > label {
             text-align: right;
             display: block;
             width: 60px;
             height: 100%;
             float: left;
             margin-right: 10px; }
-          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .result-entry span {
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .result-entry > span {
             display: inline-block;
             width: calc(100% - 70px);
             margin-bottom: 4px;
@@ -1012,7 +1059,7 @@
             -o-border-image: -o-linear-gradient(left, var(--gold), transparent 75%) 1;
             border-image: -webkit-gradient(linear, left top, right top, from(var(--gold)), color-stop(75%, transparent)) 1;
             border-image: linear-gradient(to right, var(--gold), transparent 75%) 1; }
-          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .result-entry:last-of-type span {
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .result-entry:last-of-type > span {
             border-bottom: none; }
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content .rules-text .inline-attack {
           display: inline;

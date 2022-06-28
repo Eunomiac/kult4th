@@ -1,15 +1,4 @@
 import U from "./utilities.js";
-export function MIX(derivedCtor, baseCtors) {
-    baseCtors.forEach(baseCtor => {
-        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-            const propDescriptor = Object.getOwnPropertyDescriptor(baseCtor.prototype, name);
-            if (propDescriptor) {
-                Object.defineProperty(derivedCtor.prototype, name, propDescriptor);
-            }
-        });
-    });
-    return derivedCtor;
-}
 export function formatStringForKult(str) {
     // Apply spans around all hash-tag indicators
     return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
@@ -83,12 +72,12 @@ export const HandlebarHelpers = {
                         case "rollPrompt": {
                             if (["attack" /* K4ItemType.attack */, "move" /* K4ItemType.move */].includes(iData.type)) {
                                 return [
-                                    "roll ",
                                     "#>",
                                     "item-button text-attributename",
                                     `:data-item-name='${iData.name}'`,
                                     ":data-action='roll'",
                                     ">",
+                                    "roll ",
                                     `+${U.tCase(iData.data.attribute)}`,
                                     "<#"
                                 ].join("");
@@ -111,7 +100,7 @@ export const HandlebarHelpers = {
                                     `:data-item-name='${iData.name}'`,
                                     ":data-action='roll'",
                                     ">",
-                                    U.tCase(iData.data.attribute),
+                                    `+${U.tCase(iData.data.attribute)}`,
                                     "<#"
                                 ],
                                 ")"

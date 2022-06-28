@@ -23,7 +23,7 @@ const ANIMATIONS = {
             y: -100,
             duration: 0.5,
             stagger: 0.1,
-            ease: "back.out(3)",
+            ease: "back.out(3)"
             // opacity: 1
         }, 0);
     },
@@ -135,6 +135,18 @@ const ANIMATIONS = {
     }
 };
 export default class K4PCSheet extends ActorSheet {
+    _actor;
+    get $entity() { return this.object ?? this; }
+    get $sheet() { return (this.$entity.sheet ?? false); }
+    get $actor() {
+        return (this._actor = this._actor
+            ?? this.actor
+            ?? (this.$entity.documentName === "Actor" ? this.$entity : false));
+    }
+    get $id() { return this.$entity.id; }
+    get $type() { return this.$entity.type; }
+    get $root() { return this.$entity.data; }
+    get $data() { return this.$root.data; }
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: [C.SYSTEM_ID, "actor", "sheet"],

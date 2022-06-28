@@ -54,6 +54,18 @@ Hooks.once("init", () => {
     });
 });
 Hooks.once("ready", async () => {
+    const ACTOR = game.actors?.values().next().value;
+    const ITEM = game.items?.values().next().value;
+    const EMBED = ACTOR.items?.values().next().value;
+    const ACTORSHEET = ACTOR.sheet;
+    const ITEMSHEET = ITEM.sheet;
+    const EMBEDSHEET = EMBED.sheet;
+    Object.assign(globalThis, {
+        ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
+        ENTITIES: [ACTOR, ITEM, EMBED],
+        SHEETS: [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
+        DOCS: [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
+    });
     // #region ████████ TinyMCE Config: Configuring TinyMCE Instances with Custom Styles ████████ ~
     // CONFIG.TinyMCE.plugins += " searchreplace preview template";
     // CONFIG.TinyMCE.toolbar += " | searchreplace template";

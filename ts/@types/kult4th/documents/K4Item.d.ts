@@ -8,9 +8,7 @@ import { K4Attribute } from '../../../scripts/constants';
 
 declare global {
 
-	// interface K4ItemDataBaseProperties<Type extends K4ItemType> extends ItemDataBaseProperties {
-	// 	data:
-	// }
+	type K4Item<T extends K4ItemType = K4ItemType> = InstanceType<typeof K4Item<T>>
 
 	declare const enum K4ItemType {
 		advantage = "advantage",
