@@ -1,10 +1,22 @@
 export default class K4Item extends Item {
-    get tData() { return this.data._source.data; }
-    get type() { return super.type; }
+    // declare data: typeof super.data & {
+    // 	data: K4ItemData<T>
+    // }
+    get tData() { return this.data.data; }
+    // override get type() { return super.type as T}
+    prepareData() {
+        super.prepareData();
+        if (this.type === "advantage" /* K4ItemType.advantage */) {
+            this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === "move" /* K4ItemType.move */);
+            // @ts-expect-error Types aren't discriminating the .data.data union type
+            this.tData.subAttackData = this.subItemData.filter((iData) => iData.type === "attack" /* K4ItemType.attack */);
+        }
+    }
     subItems;
     hasSubItems() { return Boolean("subItems" in this.tData && this.tData.subItems.length); }
     get subItemData() {
         if (this.hasSubItems()) {
+            // @ts-expect-error Types aren't discriminating the .data.data union type
             return this.tData.subItems.map((subIData) => {
                 if (subIData.data && ("sourceItem" in subIData.data)) {
                     subIData.data.sourceItem = {
@@ -16,12 +28,6 @@ export default class K4Item extends Item {
             });
         }
         return [];
-    }
-    get subMoveData() {
-        return this.subItemData.filter((iData) => iData.type === "move" /* K4ItemType.move */);
-    }
-    get subAttackData() {
-        return this.subItemData.filter((iData) => iData.type === "attack" /* K4ItemType.attack */);
     }
     applyEffectFunction(functionStr) {
         const [funcName, ...params] = functionStr.split(/,/);
@@ -55,5 +61,13 @@ export default class K4Item extends Item {
                 this.tData.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
             }
         }
+    }
+    async displayItemSummary(speaker) {
+        const template = await getTemplate(this.sheet?.template ?? "");
+        const content = template(Object.assign(this, { cssClass: "kult4th-chat editable" }));
+        ChatMessage.create({
+            content,
+            speaker: ChatMessage.getSpeaker({ alias: speaker ?? "" })
+        });
     }
 }

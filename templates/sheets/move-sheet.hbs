@@ -1,71 +1,70 @@
 {{log this}}
 {{log "DATA" data}}
 
-<form class="{{cssClass}}" autocomplete="off">
-		<header class="sheet-header">
-			<span class="header-bullet">•</span>
-			<span class="header-name">{{item.name}}</span>
-			<span class="header-filler"></span>
-			{{!-- <input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" /> --}}
-		</header>
-		<main class="tab-content">
-				<div class="rules-text">
-					{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
-					<p class="rules-top">
-					{{~#if data.data.rules.intro}}<span class="text-intro">{{{formatForKult data.data.rules.intro}}}</span>{{/if}}
-					{{~#if data.data.rules.trigger}} <em class="text-trigger">{{{formatForKult data.data.rules.trigger}}}</em> {{/if}}
-					{{~#if data.data.rules.outro}}<span class="text-outro">{{{formatForKult data.data.rules.outro}}}</span>{{/if}}
-					</p>
-					{{/unless}}
+<form class="kult4th-form {{cssClass}}" autocomplete="off">
+	<header class="sheet-header move-header">
+		{{!-- <span class="header-bullet">•</span> --}}
+		<span class="header-name">{{data.name}}</span>
+		<span class="header-filler"></span>
+	</header>
+	<main class="kult-text-container tab-content">
+		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
+		<p class="rules-top">
+			{{~#if data.data.rules.intro}}<span class="text-intro">{{{formatForKult data.data.rules.intro}}}</span>{{/if}}
+			{{~#if data.data.rules.trigger}} <span class="text-trigger">{{{formatForKult
+				data.data.rules.trigger}}}</span>{{/if}}
+			{{~#if data.data.rules.outro}} <span class="text-outro">{{{formatForKult data.data.rules.outro}}}</span>{{/if}}
+		</p>
+		{{/unless}}
 
-					{{~#if (test data.data.subType "==" "active-rolled")}}
-					<p class="results-summary">
-					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
-					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(9—14)" result=data.data.results.partialSuccess.result}}
-					{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
-					{{~#if data.data.results.listRefs}}
-						{{~#with data.data.lists as |LISTS|}}
+		{{~#if (test data.data.subType "==" "active-rolled")}}
+			<p class="results-summary">
+				{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
+				{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(9—14)" result=data.data.results.partialSuccess.result}}
+				{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
+				{{~#if data.data.results.listRefs}}
+					{{~#with data.data.lists as |LISTS|}}
 						{{~#each ../data.data.results.listRefs as |listKey|}}
 							{{~#with (lookup LISTS listKey) as |listData|}}
-							<h2 class="list-name">{{listData.name}}</h2>
-							{{~#if listData.intro}}<span class="list-intro">{{{formatForKult listData.intro}}}</span>{{/if}}
-							<ul class="rules-list list-{{listKey}}">
-								{{#each listData.items as |item|}}
-								<li>{{{formatForKult item}}}</li>
-								{{/each}}
-							</ul>
+								<h2 class="list-name">{{listData.name}}</h2>
+								{{~#if listData.intro}}
+									<span class="list-intro">{{{formatForKult listData.intro}}}</span>
+								{{/if}}
+								<ul class="rules-list list-{{listKey}}">
+									{{#each listData.items as |item|}}
+										<li>{{{formatForKult item}}}</li>
+									{{/each}}
+								</ul>
 							{{/with}}
 						{{/each}}
-						{{/with}}
-					{{/if}}
-					</p>
-					{{/if}}
+					{{/with}}
+				{{/if}}
+			</p>
+		{{/if}}
 
-					{{~#if data.data.rules.listRefs}}
-						{{~#with data.data.lists as |LISTS|}}
-						{{~#each ../data.data.rules.listRefs as |listKey|}}
-							{{~#with (lookup LISTS listKey) as |listData|}}
-							{{#if (test listKey "==" "edges")}}
-							<span class="edges-header">This {{case "title" ../../../data.type}} grants Edges:</span>
-							{{else}}
-							<h2 class="list-name">{{listData.name}}</h2>
-							{{/if}}
-							{{~#if listData.intro}}<span class="list-intro">{{{formatForKult listData.intro}}}</span>{{/if}}
-							<ul class="rules-list list-{{listKey}}">
-								{{#each listData.items as |item|}}
-								<li>{{{formatForKult item}}}</li>
-								{{/each}}
-							</ul>
-							{{/with}}
-						{{/each}}
-						{{/with}}
-					{{/if}}
+		{{~#if data.data.rules.listRefs}}
+		{{~#with data.data.lists as |LISTS|}}
+		{{~#each ../data.data.rules.listRefs as |listKey|}}
+		{{~#with (lookup LISTS listKey) as |listData|}}
+		{{#if (test listKey "==" "edges")}}
+		<span class="edges-header">This {{case "title" ../../../data.type}} grants Edges:</span>
+		{{else}}
+		<h2 class="list-name">{{listData.name}}</h2>
+		{{/if}}
+		{{~#if listData.intro}}<span class="list-intro">{{{formatForKult listData.intro}}}</span>{{/if}}
+		<ul class="rules-list list-{{listKey}}">
+			{{#each listData.items as |item|}}
+			<li>{{{formatForKult item}}}</li>
+			{{/each}}
+		</ul>
+		{{/with}}
+		{{/each}}
+		{{/with}}
+		{{/if}}
 
-					{{#if data.data.rules.holdText}}
-					<span class="hold-header">This {{case "title" data.type}} grants Hold</span>
-					<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
-					{{/if}}
-					{{~#if data.data.rules.suffix}}<span class="text-outro">{{{formatForKult data.data.rules.suffix}}}</span>{{/if}}
-				</div>
-		</main>
+		{{#if data.data.rules.holdText}}
+		<span class="hold-header">This {{case "title" data.type}} grants Hold</span>
+		<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
+		{{/if}}
+	</main>
 </form>

@@ -1,6 +1,7 @@
-@import 'globals/colors';
+// @import 'globals/colors';
 @import 'globals/functions';
-@import 'globals/typography';
+// @import 'globals/typography';
+@import 'globals/text-styles';
 
 #position-display {
 	height: 200px;
@@ -13,7 +14,6 @@
 	padding: 10px;
 	border:  3px solid lime;
 	border-radius: 20px;
-	line-height: 22px;
 
 	display: none;
 }
@@ -21,13 +21,22 @@
 .vtt.game.system-kult4th {
 
 	.app.window-app {
-		@import 'globals/app';
+		box-shadow: none;
 
 		&.sheet {
 			@import 'sheets/sheet';
 
 			&.actor { @import 'sheets/actor-sheet' }
 			&.item { @import 'sheets/item-sheet' }
+		}
+	}
+
+	// #ui-left, #ui-middle { display: none }
+	// #ui-right { margin-left: 100px; }
+
+	#ui-right {
+		#sidebar {
+			#chat { @import 'sidebar/chat' }
 		}
 	}
 }

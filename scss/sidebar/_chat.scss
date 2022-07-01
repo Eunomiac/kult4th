@@ -1,0 +1,128 @@
+#chat-log {
+
+	.chat-message {
+		--color-body-text: #{$gold};
+		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
+		margin: 3px 0;
+		padding: 0;
+		border: 2px outset #{$gold-dark};
+		position: relative;
+
+		.message-header {
+			opacity: 0;
+			transition: 0.25s;
+			position: absolute;
+			color: #{$gold-brightest};
+			padding: 0 5px;
+			height: 20px;
+			top: 0px;
+			left: -2px;
+			border: 2px outset #{$gold-dark};
+			border-bottom: none;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			background: linear-gradient(#{$gold-dark}, #{$gold-darkest} 22px, transparent 24px);
+			width: calc(100% + 4px);
+
+			&:hover {
+				opacity: 1;
+				top: -24px;
+				height: 56px;
+			}
+
+		}
+
+		.message-content {
+			form, form.kult4th-chat {
+				--horiz-padding: 2px;
+				--kText-font-size: #{$rem-12};
+				--kText-line-height: #{$rem-16};
+
+				* {
+					--kText-font-size: #{$rem-12};
+					--kText-line-height: #{$rem-16};
+				}
+
+
+				.text-posmod,
+				.text-keyword,
+				.text-attributename,
+				.text-movename,
+				.text-edgename {
+					--kText-color: #{$blue-brightest};
+				}
+
+				.text-trigger {
+					--kText-color: #{$gold-brightest};
+				}
+
+				.text-negmod,
+				.text-negmod+.text-keyword,
+				.text-negmod+.text-attributename,
+				.text-gmtext {
+					--kText-color: #{$red-glow};
+				}
+
+				ul {
+					margin-left: 0;
+
+					li {
+						text-indent: -15px;
+					}
+
+					li:before {
+						margin-right: 0;
+						transform: scaleX(1.25) scale(0.6);
+						opacity: 0.5;
+					}
+				}
+
+				.sheet-header {
+					.header-filler { display: none; }
+					.header-name {
+						--kText-font-size: #{$rem-16};
+						--kText-color: #{$black};
+						--kText-line-height: #{$rem-24};
+						--kText-font-weight: var(--font-weight-bold);
+						--kText-background: linear-gradient(to right,
+							#{$gold-darkest},
+							#{$gold-bright} 30px,
+							#{$gold-bright} calc(100% - 30px),
+							#{$gold-darkest}
+						);
+						--kText-text-shadow: 1px 1px 0px #{$gold};
+						width: 100%;
+						display: block;
+						text-indent: 8px;
+					}
+				}
+
+				.kult-text-container {
+					margin: 0;
+
+					.result-entry {
+						margin: 0;
+
+						> label {
+							width: 50px;
+							white-space: nowrap;
+							margin-right: 5px;
+						}
+
+						> span {
+							--kText-text-align: left;
+							width: calc(100% - 50px - 5px);
+						}
+
+					}
+				}
+			}
+
+		}
+
+	}
+
+	font-size: 12px;
+
+
+}

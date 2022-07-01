@@ -155,6 +155,7 @@ export default class K4PCSheet extends ActorSheet {
             ]
         });
     }
+    // override get template() { return "systems/kult4th/templates/sheets/pc-sheet-copy.hbs" }
     get template() { return "systems/kult4th/templates/sheets/pc-sheet.hbs"; }
     hoverTimeline;
     hoverTimelineTarget;
@@ -292,7 +293,7 @@ export default class K4PCSheet extends ActorSheet {
             }
             function createChatLinkFromName(elem, iName) {
                 if (iName) {
-                    $(elem).on("click", () => console.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
+                    $(elem).on("click", () => self.actor.getItemByName(iName)?.displayItemSummary(self.actor?.name ?? ""));
                 }
             }
             function createDeleteLinkFromName(elem, iName) {

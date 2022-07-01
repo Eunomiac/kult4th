@@ -1,16 +1,32 @@
+import U from "../scripts/utilities.js";
 import {ItemDataConstructorData, ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import K4Actor from "./K4Actor.js";
 
 export default class K4Item<T extends K4ItemType = K4ItemType> extends Item {
 
-	get tData() { return this.data._source.data as K4ItemTemplate<T> }
-	override get type() { return super.type as T}
+	// declare data: typeof super.data & {
+	// 	data: K4ItemData<T>
+	// }
+
+	get tData() { return this.data.data }
+	// override get type() { return super.type as T}
+
+	override prepareData() {
+		super.prepareData();
+		if (this.type === K4ItemType.advantage) {
+			this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === K4ItemType.move) as K4ItemDataSchema.move[];
+			// @ts-expect-error Types aren't discriminating the .data.data union type
+			this.tData.subAttackData = this.subItemData.filter((iData) => iData.type === K4ItemType.attack) as K4ItemDataSchema.attack[];
+
+		}
+	}
 
 	subItems?: K4Item[];
-	hasSubItems(): this is K4Item<K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.weapon> { return Boolean("subItems" in this.tData && this.tData.subItems.length) }
+	hasSubItems(): this is typeof K4Item<K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.weapon> { return Boolean("subItems" in this.tData && this.tData.subItems.length) }
 	get subItemData(): Array<Record<string,unknown> & ItemDataConstructorData> {
 		if (this.hasSubItems()) {
+			// @ts-expect-error Types aren't discriminating the .data.data union type
 			return this.tData.subItems.map((subIData) => {
 				if (subIData.data && ("sourceItem" in subIData.data)) {
 					subIData.data.sourceItem = {
@@ -22,12 +38,6 @@ export default class K4Item<T extends K4ItemType = K4ItemType> extends Item {
 			});
 		}
 		return [];
-	}
-	get subMoveData() {
-		return this.subItemData.filter((iData) => iData.type === K4ItemType.move);
-	}
-	get subAttackData() {
-		return this.subItemData.filter((iData) => iData.type === K4ItemType.attack);
 	}
 
 	applyEffectFunction(functionStr: string) {
@@ -63,6 +73,19 @@ export default class K4Item<T extends K4ItemType = K4ItemType> extends Item {
 				this.tData.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
 			}
 		}
+	}
+
+	async displayItemSummary(speaker?: string) {
+		const template = await getTemplate(this.sheet?.template ?? "");
+
+		const content = template(Object.assign(
+			this,
+			{cssClass: "kult4th-chat editable"}
+		));
+		ChatMessage.create({
+			content,
+			speaker: ChatMessage.getSpeaker({alias: speaker ?? ""})
+		});
 	}
 }
 

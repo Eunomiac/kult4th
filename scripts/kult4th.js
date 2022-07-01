@@ -22,6 +22,7 @@ Hooks.once("init", () => {
     Items.registerSheet("kult4th", K4ItemSheet, { makeDefault: true });
     loadTemplates([
         "systems/kult4th/templates/sheets/pc-sheet.hbs",
+        "systems/kult4th/templates/sheets/pc-sheet-copy.hbs",
         "systems/kult4th/templates/sheets/npc-sheet.hbs",
         "systems/kult4th/templates/sheets/move-sheet.hbs",
         "systems/kult4th/templates/sheets/advantage-sheet.hbs",

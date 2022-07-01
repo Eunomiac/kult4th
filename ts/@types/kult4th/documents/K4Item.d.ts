@@ -213,6 +213,80 @@ declare global {
 		: T extends K4ItemType.gear ? K4ItemTemplateData.gear
 		: never)
 
+	namespace K4ItemPropertiesData {
+
+		interface Base {
+			subMoveData?: Array<K4ItemData<K4ItemType.move>>
+		}
+		interface HasSubItems {
+
+		}
+		export interface move extends K4ItemTemplateData.move, Base {
+		}
+		export interface attack extends K4ItemTemplateData.attack, Base {
+		}
+		export interface advantage extends K4ItemTemplateData.advantage, Base, HasSubItems {
+		}
+		export interface disadvantage extends K4ItemTemplateData.disadvantage, Base, HasSubItems {
+		}
+		export interface darksecret extends K4ItemTemplateData.darksecret, Base {
+		}
+		export interface relation extends K4ItemTemplateData.relation, Base {
+		}
+		export interface weapon extends K4ItemTemplateData.weapon, Base, HasSubItems {
+		}
+		export interface gear extends K4ItemTemplateData.gear, Base, HasSubItems {
+		}
+
+	}
+
+	namespace K4ItemDataSchema {
+		export interface move {
+			type: K4ItemType.move,
+			data: K4ItemPropertiesData.move
+		}
+		export interface attack {
+			type: K4ItemType.attack,
+			data: K4ItemPropertiesData.attack
+		}
+		export interface advantage {
+			type: K4ItemType.advantage,
+			data: K4ItemPropertiesData.advantage
+		}
+		export interface disadvantage {
+			type: K4ItemType.disadvantage,
+			data: K4ItemPropertiesData.disadvantage
+		}
+		export interface darksecret {
+			type: K4ItemType.darksecret,
+			data: K4ItemPropertiesData.darksecret
+		}
+		export interface relation {
+			type: K4ItemType.relation,
+			data: K4ItemPropertiesData.relation
+		}
+		export interface weapon {
+			type: K4ItemType.weapon,
+			data: K4ItemPropertiesData.weapon
+		}
+		export interface gear {
+			type: K4ItemType.gear,
+			data: K4ItemPropertiesData.gear
+		}
+
+		export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
+	}
+
+	type K4ItemData<T extends K4ItemType = K4ItemType> = (T extends K4ItemType.move ? K4ItemDataSchema.move
+		: T extends K4ItemType.attack ? K4ItemDataSchema.attack
+		: T extends K4ItemType.advantage ? K4ItemDataSchema.advantage
+		: T extends K4ItemType.disadvantage ? K4ItemDataSchema.disadvantage
+		: T extends K4ItemType.darksecret ? K4ItemDataSchema.darksecret
+		: T extends K4ItemType.weapon ? K4ItemDataSchema.weapon
+		: T extends K4ItemType.relation ? K4ItemDataSchema.relation
+		: T extends K4ItemType.gear ? K4ItemDataSchema.gear
+		: never)
+
 	// type K4ItemConstructorData<Type extends K4ItemType = K4ItemType> = {
 	// 	name: string,
 	// 	img: string,

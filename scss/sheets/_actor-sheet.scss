@@ -1,5 +1,3 @@
-
-
 & {
 	--sheet-min-height: 525px;
 	--sheet-min-width: 700px;
@@ -11,23 +9,11 @@
 	--sheet-header-height: 60px;
 
 	.window-content {
+		--color-body-text: #{$gold};
 
 		form {
-			// --border-color: var(--gold);
-			// height: 100%;
-			// width: 100%;
-			// overflow: visible;
 
-			// display: grid;
-			// position: relative;
-			// padding: 0 var(--sheet-horiz-padding) var(--sheet-bottom-padding);
-			// grid-template-areas:
-			// 	"header"
-			// 	"content";
-			// grid-template-rows: 60px 1fr;
-			// grid-template-columns: 1fr;
-
-			> * {
+			>* {
 				position: relative;
 				z-index: 2;
 			}
@@ -42,7 +28,7 @@
 				background-size: contain;
 				background-repeat: no-repeat;
 				z-index: 7;
-				filter: drop-shadow(20px 20px 10px var(--black));
+				filter: drop-shadow(20px 20px 10px #{$black});
 				transform: translate(-50%, -50%);
 
 				.profile-image {
@@ -98,30 +84,37 @@
 							top: calc(0.5 * var(--nav-tab-size) + var(--nav-tab-vert-pad));
 							left: calc(50% + var(--nav-tab-horiz-shift));
 						}
+
 						&[data-tab="bio"] {
 							top: calc(50% + var(--side-tab-vert-shift) - var(--nav-tab-vert-spacing));
 							left: calc(100% - var(--nav-tab-size) + var(--nav-tab-horiz-shift));
 						}
+
 						&[data-tab="assets"] {
 							top: calc(50% + var(--side-tab-vert-shift));
 							left: calc(100% - var(--nav-tab-size) + var(--nav-tab-horiz-shift))
 						}
+
 						&[data-tab="notes"] {
 							top: calc(50% + var(--side-tab-vert-shift) + var(--nav-tab-vert-spacing));
 							left: calc(100% - var(--nav-tab-size) + var(--nav-tab-horiz-shift))
 						}
+
 						&[data-tab="advancement"] {
 							top: calc(100% - 0.5 * var(--nav-tab-size) - var(--nav-tab-vert-pad));
 							left: calc(50% + var(--nav-tab-horiz-shift));
 						}
+
 						&[data-action="toggleLock"] {
 							top: calc(50% + var(--side-tab-vert-shift) - var(--nav-tab-vert-spacing));
 							left: calc(var(--nav-tab-size) + var(--nav-tab-horiz-shift));
 						}
+
 						&[data-edit="img"] {
 							top: calc(50% + var(--side-tab-vert-shift));
 							left: calc(var(--nav-tab-size) + var(--nav-tab-horiz-shift));
 						}
+
 						&[data-tab="settings"] {
 							top: calc(50% + var(--side-tab-vert-shift) + var(--nav-tab-vert-spacing));
 							left: calc(var(--nav-tab-size) + var(--nav-tab-horiz-shift));
@@ -131,13 +124,13 @@
 							position: absolute;
 							display: block;
 							opacity: 0;
-							color: var(--red-bright);
-							font-family: Sokol;
-							font-size: 24px;
+							--kText-color: #{$red-bright};
+							--kText-font-family: var(--font-primary-caps);
+							--kText-font-size: #{$rem-24};
 							z-index: 2;
 							pointer-events: none;
 							text-align: center;
-							text-shadow: 0 0 2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black);
+							text-shadow: 0 0 2px #{$black}, 0 0 2px #{$black}, 0 0 2px #{$black}, 0 0 2px #{$black};
 							overflow: visible;
 							white-space: nowrap;
 							width: 500%;
@@ -162,15 +155,15 @@
 					text-shadow: 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color);
 
 					&.close {
-						--button-glow-color: var(--red-glow);
-						color: var(--black);
+						--button-glow-color: #{$red-glow};
+						--kText-color: #{$black};
 						left: 15%;
 						top: 100px;
 					}
 
 					&.minimize {
-						--button-glow-color: var(--blue-glow);
-						color: var(--black);
+						--button-glow-color: #{$blue-glow};
+						--kText-color: #{$black};
 						right: 15%;
 						top: 100px;
 					}
@@ -284,44 +277,22 @@
 				}
 			}
 
-			// .sheet-content {
-			// 	display: grid;
-			// 	position: relative;
-			// 	height: calc(100% - var(--border-margin));
-			// 	width: calc(100% - 2 * var(--border-margin));
-			// 	margin: 0 var(--border-margin) var(--border-margin);
-			// 	grid-template-areas:
-			// 		"header"
-			// 		"content";
-			// 	grid-template-rows: 60px 1fr;
-			// 	grid-template-columns: 1fr;
-			// 	top: -29px;
-
-			// 	>* {
-			// 		position: relative;
-			// 		z-index: 2;
-			// 	}
-
 			.sheet-header {
 				height: 80px;
 				top: -20px;
 
 				.actor-name {
-					--shadow-color: var(--red);
 					height: auto;
 					max-width: 625px;
 					margin: 0 auto;
 					padding: 27px 50px 0;
-					font-family: var(--font-heading);
-					color: var(--gold);
-					font-size: 48px;
-					background: none;
+					--kText-font-family: var(--font-heading);
+					--kText-color: #{$gold};
+					--kText-font-size: #{$rem-48};
 					border: none;
 					outline: none;
-					background-image: to-url("layout/header-frame.webp");
-					background-repeat: no-repeat;
-					background-position: center 2px;
-					text-align: center;
+					--kText-background: transparent #{to-url("layout/header-frame.webp")} no-repeat center 2px;
+					--kText-text-align: center;
 				}
 			}
 
@@ -342,24 +313,10 @@
 					grid-template-rows: 40px 80px auto auto;
 
 					.subsection {
+						--horiz-padding: 5px;
 						box-sizing: border-box;
-						border: 1px solid var(--gold);
-						padding: 0 5px 5px;
-
-						.subsection-header {
-							position: relative;
-							height: 24px;
-							width: calc(100% + var(--horiz-padding));
-							left: calc(-0.5 * var(--horiz-padding));
-							margin: 0 0 5px 0;
-
-							font-family: var(--font-body);
-							font-size: 18px;
-							line-height: 26px;
-							color: var(--black);
-							background: var(--gold);
-							text-align: center;
-						}
+						border: 1px solid #{$gold};
+						padding: 0 var(--horiz-padding) 5px;
 
 						&.flex-item-list {
 							display: flex;
@@ -390,14 +347,13 @@
 							padding: 0;
 
 							.hook-label {
-								position: absolute;
-								font-size: 34px;
-								color: var(--gold-dark);
-								font-family: Sokol;
-								left: 60px;
-								transform-origin: left;
-								transform: scale(1.3);
-								line-height: 43px;
+								display: inline-block;
+								margin: 0 0 0 55px;
+								--kText-font-size: #{$rem-40};
+								--kText-line-height: #{$rem-40};
+								--kText-color: #{$gold-dark};
+								--kText-font-family: var(--font-decorative);
+								float: left;
 							}
 
 							.dramatic-hook {
@@ -405,29 +361,36 @@
 								margin: 4px 0 4px 107px;
 								white-space: nowrap;
 
-								&:nth-of-type(1) { margin-bottom: 0 }
-								&:nth-of-type(2) { margin-top: 0 }
+								&:nth-of-type(1) {
+									margin-bottom: 0
+								}
+
+								&:nth-of-type(2) {
+									margin-top: 0
+								}
 
 								input[type="checkbox"] {
 									display: inline-block;
-									margin: 0;
+									float: left;
+									margin: 3px 0 0;
 									padding: 0;
-									height: calc(100% - 8px);
-									vertical-align: middle;
+									height: calc(50%);
 								}
 
 								input[type="text"] {
 									display: inline-block;
 									border: none;
+									margin: 0;
 									padding: 0;
-									font-size: 12px;
-									line-height: 10px;
+									--kText-color: #{$gold-bright};
+									--kText-font-size: #{$rem-12};
 									height: 100%;
 									box-shadow: none;
-									font-weight: 700;
-									font-style: italic;
+									--kText-font-weight: var(--font-weight-bold);
+									--kText-font-style: italic;
 									transform-origin: left center;
 									transform: scaleX(0.9);
+									vertical-align: top;
 								}
 							}
 						}
@@ -439,13 +402,11 @@
 
 						.attributes {
 							grid-area: attributes;
-							background: to-url("layout/attributes-spread.webp");
-							background-size: contain;
-							background-repeat: no-repeat;
-							background-position: center 28px;
+							--kText-background: transparent #{to-url("layout/attributes-spread.webp")} no-repeat center 28px/contain;
 
 							.attribute-box {
 								--panel-size: 200px;
+								--kText-background: none;
 								height: var(--panel-size);
 								width: var(--panel-size);
 								position: absolute;
@@ -459,74 +420,105 @@
 									opacity: 0;
 								}
 
-								.animation-mask {
-									--mask-size: 34px;
-									position: absolute;
-									display: block;
-									height: var(--mask-size);
-									width: var(--mask-size);
-									top: calc(50% - (0.5 * var(--mask-size)));
-									left: calc(50% - (0.5 * var(--mask-size)));
-									background: var(--black);
-									border-radius: calc(0.5 * var(--mask-size));
-									filter: blur(2px);
-								}
-
-								// &[data-attribute="reflexes"] .video-mask,
-								// &[data-attribute="fortitude"] .video-mask,
-								// &[data-attribute="willpower"] .video-mask {
-								// 	background: blue;
-								// }
-
 								.attribute-title {
+									--kText-font-size: #{$rem-10};
+									// --kText-color: #{$gold};
+									--kText-text-align: center;
+									--kText-font-weight: var(--font-weight-bold);
 									position: absolute;
-									font-family: var(--font-body);
-									font-size: 10px;
-									color: var(--gold);
-									text-align: center;
 									width: 100%;
-									display: block;
-									font-weight: 700;
 									top: 130px;
 								}
 
 								.attribute-value {
+									--kText-font-size: #{$rem-20};
+									--kText-text-align: center;
+									--kText-font-weight: var(--font-weight-black);
 									position: absolute;
 									width: 40px;
 									border: none;
-									font-size: 20px;
 									left: calc(50% - (40px / 2));
 									top: 87px;
 									pointer-events: all;
 									appearance: none;
-									text-align: center;
 
-									&[value="7"], option[value="7"] { color: var(--white) }
-									&[value="6"], option[value="6"] { color: var(--white) }
-									&[value="5"], option[value="5"] { color: var(--gold-brightest) }
-									&[value="4"], option[value="4"] { color: var(--gold-brightest) }
-									&[value="3"], option[value="3"] { color: var(--gold-bright) }
-									&[value="2"], option[value="2"] { color: var(--gold) }
-									&[value="1"], option[value="1"] { color: var(--gold-dark) }
-									&[value="0"], option[value="0"] { color: var(--gold-darker) }
-									&[value="-1"], option[value="-1"] { color: var(--red-brightest) }
-									&[value="-2"], option[value="-2"] { color: var(--red-bright) }
-									&[value="-3"], option[value="-3"] { color: var(--red) }
-									&[value="-4"], option[value="-4"] { color: var(--red-dark) }
-									&[value="-5"], option[value="-5"] { color: var(--red-darkest) }
+									&[value="7"],
+									option[value="7"] {
+										--kText-color: #{$white}
+									}
+
+									&[value="6"],
+									option[value="6"] {
+										--kText-color: #{$white}
+									}
+
+									&[value="5"],
+									option[value="5"] {
+										--kText-color: #{$gold-brightest}
+									}
+
+									&[value="4"],
+									option[value="4"] {
+										--kText-color: #{$gold-brightest}
+									}
+
+									&[value="3"],
+									option[value="3"] {
+										--kText-color: #{$gold-bright}
+									}
+
+									&[value="2"],
+									option[value="2"] {
+										--kText-color: #{$gold}
+									}
+
+									&[value="1"],
+									option[value="1"] {
+										--kText-color: #{$gold-dark}
+									}
+
+									&[value="0"],
+									option[value="0"] {
+										--kText-color: #{$gold-darker}
+									}
+
+									&[value="-1"],
+									option[value="-1"] {
+										--kText-color: #{$red-brightest}
+									}
+
+									&[value="-2"],
+									option[value="-2"] {
+										--kText-color: #{$red-bright}
+									}
+
+									&[value="-3"],
+									option[value="-3"] {
+										--kText-color: #{$red}
+									}
+
+									&[value="-4"],
+									option[value="-4"] {
+										--kText-color: #{$red-dark}
+									}
+
+									&[value="-5"],
+									option[value="-5"] {
+										--kText-color: #{$red-darkest}
+									}
 								}
 
 								&[data-attribute="fortitude"],
 								&[data-attribute="reason"],
 								&[data-attribute="coolness"] {
-									left: -59px;
+									left: -59.5px;
 								}
 
 								&[data-attribute="willpower"],
 								&[data-attribute="perception"],
 								&[data-attribute="charisma"],
 								&[data-attribute="soul"] {
-									left: 12px;
+									left: 11.5px;
 								}
 
 								&[data-attribute="reflexes"],
@@ -535,38 +527,54 @@
 									left: 83px;
 								}
 
-								&[data-attribute="willpower"] { top: 91px }
+								&[data-attribute="willpower"] {
+									top: 90px
+								}
 
 								&[data-attribute="fortitude"],
 								&[data-attribute="reflexes"] {
-									top: 134px;
+									top: 133.5px;
 								}
 
 								&[data-attribute="reason"],
 								&[data-attribute="intuition"] {
-									top: 216px;
+									top: 216.5px;
 								}
 
-								&[data-attribute="perception"] { top: 257px }
+								&[data-attribute="perception"] {
+									top: 256.5px
+								}
 
 								&[data-attribute="coolness"],
 								&[data-attribute="violence"] {
-									top: 297px;
+									top: 296.5px;
 								}
 
-								&[data-attribute="charisma"] { top: 335px }
+								&[data-attribute="charisma"] {
+									top: 335px
+								}
 
-								&[data-attribute="soul"] { top: 415px }
+								&[data-attribute="soul"] {
+									top: 414.5px
+								}
 							}
 						}
 
-						.basic-moves { grid-area: basic-moves }
+						.basic-moves {
+							grid-area: basic-moves
+						}
 
-						.special-moves { grid-area: special-moves }
+						.special-moves {
+							grid-area: special-moves
+						}
 
-						.session-checks { grid-area: session-checks }
+						.session-checks {
+							grid-area: session-checks
+						}
 
-						.attacks { grid-area: attacks }
+						.attacks {
+							grid-area: attacks
+						}
 					}
 
 					&.bio {
@@ -577,14 +585,68 @@
 
 						.description {
 							grid-area: description;
+
 							.editor {
 								margin-left: 50px;
 								width: calc(100% - 50px);
 							}
 						}
-						.relations { grid-area: relations }
-						.advantages { grid-area: advantages }
-						.darksecrets { grid-area: darksecrets }
+
+						.relations {
+							grid-area: relations
+						}
+
+						.advantages {
+							grid-area: advantages
+						}
+
+						.darksecrets {
+							grid-area: darksecrets
+						}
+					}
+				}
+			}
+
+			&.actor-npc {
+				.nav-panel {
+					left: -90px !important;
+					top: 20px !important;
+				}
+
+				.tab-content {
+					.tab.front {
+						--attributes-width: 200px;
+						--attributes-height: calc(var(--attributes-width) * (494 / 261) + 30px + 20px);
+						grid-template-areas:
+							"description description description"
+							"description description description"
+							"attributes history history"
+							". history history";
+						grid-template-columns: var(--attributes-width) 1fr 1fr;
+						grid-template-rows: 40px 140px var(--attributes-height) 1000px;
+
+						.description {
+							grid-area: description
+						}
+
+						.questions {
+							grid-area: history
+						}
+
+						.attributes {
+							position: relative;
+
+							.attribute-box {
+								margin-top: -135px;
+								margin-left: -11px;
+								--kText-font-weight: var(--font-weight-black);
+							}
+						}
+					}
+					.tab.bio, .tab.assets {
+						grid-template-areas: unset;
+						grid-template-columns: 1fr 1fr;
+						grid-template-rows: 1fr;
 					}
 				}
 			}

@@ -221,6 +221,7 @@ const BUILDFILES = {
 		[`./dist/${SYSTEM}/assets/`]: ["assets/**/*.*"],
 		[`./dist/${SYSTEM}/`]: ["system.json", "template.json", "LICENSE.txt", "package.json"],
 		["./scripts/"]: ["rawscripts/*.mjs"],
+		[`./dist/${SYSTEM}/packs/`]: ["packs/**/*.*"],
 		[`./dist/${SYSTEM}/css/`]: ["scss/**/*.css"],
 		"./css/": ["scss/**/*.css"]
 	}

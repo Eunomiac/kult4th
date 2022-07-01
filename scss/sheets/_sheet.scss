@@ -10,21 +10,20 @@
 
 	min-width: var(--sheet-min-width);
 	min-height: var(--sheet-min-height);
-	background: none;
 	overflow: visible;
 	filter: drop-shadow(25px 25px 15px rgba(0, 0, 0, 0.8));
 	margin: 0;
+	background: none;
 
 	select,
 	input,
 	textarea {
-		font-family: var(--font-body);
-		color: var(--gold);
+		--kText-color: #{$gold};
 		box-shadow: none;
 	}
 
 	option {
-		background: var(--black);
+		background: #{$black};
 	}
 
 	img {
@@ -33,7 +32,7 @@
 
 	.window-header {
 		z-index: 6;
-		font-size: 0;
+		--kText-font-size: 0;
 		max-height: 20px;
 		overflow: visible;
 		border: none;
@@ -44,6 +43,7 @@
 		.header-button {
 			position: absolute;
 			right: -40px;
+			--kText-font-size: 0;
 
 			&:nth-of-type(1) { top: 75px }
 			&:nth-of-type(2) { top: 100px }
@@ -55,16 +55,23 @@
 			&:last-of-type { top: 50px }
 
 			i {
-				font-size: 16px;
+				--kText-font-size: #{$rem-16};
 				text-shadow:
-					0 0 3px var(--black),
-					0 0 3px var(--black),
-					0 0 3px var(--black),
-					0 0 3px var(--black),
-					0 0 3px var(--black),
-					0 0 5px var(--gold-bright),
-					0 0 5px var(--gold-bright);
-				color: var(--gold);
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 5px #{$gold-bright},
+					0 0 5px #{$gold-bright};
+				--kText-color: #{$gold};
+				--kText-font-family: "Font Awesome 5 Free";
+
+				color: red;
+				left: 900px;
+				width: 200px;
+				white-space: nowrap;
+				overflow: visible;
 			}
 
 			&.close { display: none }
@@ -78,10 +85,9 @@
 		overflow: visible;
 		padding: 0;
 		background: none;
-		line-height: 22px;
 
 		form {
-			--border-color: var(--gold);
+			--border-color: #{$gold};
 			height: 100%;
 			width: 100%;
 			overflow: visible;
@@ -110,34 +116,38 @@
 			}
 		}
 
-		h1, h2, h3, h4 {
-			font-family: var(--font-body);
-			font-weight: 900;
-			border: none;
-		}
-
 		.tab:not(.active) {
 			display: none !important;
 		}
 
 		.editor {
 			height: 100%;
-			.editor-content { @import '../tinymce/tinymce' }
+			overflow: visible;
+
+			.editor-content {
+				position: relative;
+				width: calc(100% + (2 * var(--horiz-padding)));
+				left: calc(-1 * var(--horiz-padding));
+				overflow-x: hidden;
+				padding: 0 var(--horiz-padding);
+				@import '../globals/text-styles';
+			}
 			.tox.tox-tinymce .tox-editor-container .tox-editor-header {
 				transform-origin: top left;
 				transform: scale(0.75);
 				width: calc(100% / 0.75);
 			}
+			.editor-edit { color: #{$gold} }
 		}
 
 		.item-card {
 			--border-width: 1px;
 			--icon-size: 28px;
 			--icon-margin: calc((30px - var(--icon-size)) / 2);
-			--icon-background: var(--black);
+			--icon-background: #{$black};
 			--icon-filter: none;
-			--popout-background: var(--gold);
-			--popout-spacer-color: var(--black);
+			--popout-background: #{$gold};
+			--popout-spacer-color: #{$black};
 			position: relative;
 			height: 30px;
 			white-space: nowrap;
@@ -154,7 +164,7 @@
 				margin: var(--icon-margin);
 				transform-origin: center center;
 				box-sizing: border-box;
-				border: var(--border-width) solid var(--gold);
+				border: var(--border-width) solid #{$gold};
 				border-radius: calc(var(--icon-size) / 2);
 				overflow: hidden;
 				white-space: nowrap;
@@ -173,7 +183,7 @@
 				}
 
 				.item-button {
-					font-family: var(--font-body);
+					font-family: var(--font-primary);
 					position: relative;
 					display: inline-block;
 					height: 100%;
@@ -185,11 +195,11 @@
 						var(--popout-background) 85%,
 						var(--popout-spacer-color) 85%
 					);
-					font-weight: 700;
-					line-height: 28px;
+					font-weight: var(--font-weight-bold);
+					--kText-line-height: #{$rem-32};
 					font-size: 11px;
 					text-align: center;
-					text-shadow: 0 0 var(--black);
+					text-shadow: 0 0 #{$black};
 					vertical-align: top;
 				}
 			}
@@ -208,18 +218,18 @@
 					width: calc(100% - 10px);
 					top: calc((var(--icon-size) - 20px) / 2);
 					left: 10px;
-					background: var(--black);
+					background: #{$black};
 					display: block;
-					border-bottom: 1px solid var(--gold);
+					border-bottom: 1px solid #{$gold};
 				}
 
 				.item-text {
 					position: absolute;
-					font-family: var(--font-body);
-					font-size: 14px;
-					color: var(--gold);
-					line-height: 22px;
-					font-weight: 700;
+					font-family: var(--font-primary);
+					--kText-font-size: #{$rem-16};
+					--kText-line-height: #{$rem-20};
+					--kText-color: #{$gold};
+					font-weight: var(--font-weight-bold);
 					height: 20px;
 					top: calc((var(--icon-size) - 20px) / 2);
 					left: calc(var(--icon-size) + 5px);
@@ -232,12 +242,12 @@
 				pointer-events: none;
 				position: absolute;
 				display: block;
-				font-family: var(--font-body);
+				font-family: var(--font-primary);
 				font-size: 10px;
 				text-align: center;
 				font-style: italic;
 				width: 100%;
-				color: var(--white);
+				--kText-color: #{$white};
 				opacity: 0;
 				bottom: 0;
 				left: 0;
@@ -245,14 +255,14 @@
 				white-space: break-spaces;
 
 				padding: 4px;
-				background: var(--black);
+				background: #{$black};
 				border-radius: 20px;
 			}
 
 			&.basic-move-item {
-				--icon-background: var(--gold);
-				--popout-background: var(--gold);
-				--popout-spacer-color: var(--black);
+				--icon-background: #{$gold};
+				--popout-background: #{$gold};
+				--popout-spacer-color: #{$black};
 				.item-icon {
 					&.active-item {
 					--icon-filter: invert(1);

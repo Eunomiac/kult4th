@@ -10,8 +10,29 @@ export default class K4Actor extends Actor {
 	// override get items() { return super.items }
 	// #endregion 🟪🟪🟪 SHOULD BE UNNECESSARY - RESEARCH MORE TYPESCRIPT 🟪🟪🟪
 
-	override get type() { return super.type}
-	get tData() { return this.data._source.data }
+	// override get type() { return super.type}
+	get tData() { return this.data.data }
+
+	override prepareData() {
+		super.prepareData();
+		if (this.type === K4ActorType.pc) {
+			this.preparePCData();
+		}
+	}
+
+	preparePCData() {
+		this.tData.moves = this.moves;
+		this.tData.basicMoves = this.basicMoves;
+		this.tData.derivedMoves = this.derivedMoves;
+
+		this.tData.attacks = this.attacks;
+		this.tData.advantages = this.advantages;
+		this.tData.disadvantages = this.disadvantages;
+		this.tData.darkSecrets = this.darkSecrets;
+		this.tData.weapons = this.weapons;
+		this.tData.gear = this.gear;
+		this.tData.relations = this.relations;
+	}
 
 	getItemsOfType<T extends K4ItemType>(type: T) {
 		return this.items.filter((item): item is K4Item<T> => item.type === type);
@@ -21,7 +42,6 @@ export default class K4Actor extends Actor {
 		return this.items.find((item) => item.name === iName);
 	}
 
-	get moves() { return this.getItemsOfType(K4ItemType.move) }
 	get attacks() { return this.getItemsOfType(K4ItemType.attack) }
 	get advantages() { return this.getItemsOfType(K4ItemType.advantage) }
 	get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage) }
@@ -30,8 +50,17 @@ export default class K4Actor extends Actor {
 	get gear() { return this.getItemsOfType(K4ItemType.gear) }
 	get relations() { return this.getItemsOfType(K4ItemType.relation) }
 
-	get basicMoves() { return this.moves.filter((move) => !move.tData.sourceItem?.name) }
-	get derivedMoves() { return this.moves.filter((move) => Boolean(move.tData.sourceItem?.name)) }
+	get moves(): Array<K4Item<K4ItemType.move>> { return this.getItemsOfType(K4ItemType.move) }
+	get basicMoves() {
+		return this.moves.filter((move): move is K4Item<K4ItemType.move> => {
+			// @ts-expect-error Types aren't discriminating the .data.data union type
+			return !move.data.data.sourceItem?.name;
+		});
+	}
+	get derivedMoves() {
+		// @ts-expect-error Types aren't discriminating the .data.data union type
+		return this.moves.filter((move) => Boolean(move.tData.sourceItem?.name));
+	}
 
 	get attributeData() {
 		if (this.type === K4ActorType.pc) {
@@ -53,15 +82,31 @@ export default class K4Actor extends Actor {
 
 	override async _onCreate(...[actorData, ...args]: Parameters<Actor["_onCreate"]>) {
 		console.log("ACTOR ON CREATE", actorData, args);
-		await super._onCreate(actorData, ...args);
-		if (actorData.type === K4ActorType.pc) {
-			console.log("ACTOR TYPE OK", this);
-			const itemData = (Array.from(game.items ?? []) as K4Item[])
-				.filter((item): item is K4Item<K4ItemType.move> => item.type === K4ItemType.move)
-				.filter((item) => !item.tData.sourceItem?.name)
-				.map((item) => item.data) as Array<Record<string,unknown> & ItemData>;
-			this.createEmbeddedDocuments("Item", itemData);
+
+		if (this.type === K4ActorType.pc){
+			const pack = await game.packs.get("kult4th.k4-basic-player-moves");
+			if (pack) {
+				const index = await pack.getIndex();
+				const moveArray = await Array.from(index);
+				const newItems = await Promise.all(moveArray.map(async (move) => {
+					const moveData = await pack.getDocument(move._id);
+					return moveData?.data ?? {};
+				}));
+				if (newItems) {
+					this.createEmbeddedDocuments("Item", newItems);
+				}
+			}
 		}
+
+		// await super._onCreate(actorData, ...args);
+		// if (actorData.type === K4ActorType.pc) {
+		// 	console.log("ACTOR TYPE OK", this);
+		// 	const itemData = (Array.from(game.items ?? []) as K4Item[])
+		// 		.filter((item): item is K4Item<K4ItemType.move> => item.type === K4ItemType.move)
+		// 		.filter((item) => !item.tData.sourceItem?.name)
+		// 		.map((item) => item.data) as Array<Record<string,unknown> & ItemData>;
+		// 	this.createEmbeddedDocuments("Item", itemData);
+		// }
 	}
 }
 

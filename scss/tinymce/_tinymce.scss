@@ -1,71 +1,73 @@
 & {
-	text-align: justify;
-	hyphens: auto;
-	color: var(--gold);
-	font-family: var(--font-body);
-	font-size: 12px;
+
+	--kText-color: #{$gold};
+	// text-align: justify;
+	// hyphens: auto;
+	// color: var(--gold);
+	// font-family: var(--font-primary);
+	// font-size: 12px;
 
 
-	* {
-		text-align: justify;
-		hyphens: auto;
-		color: var(--gold);
-		font-family: var(--font-body);
-	}
+	// * {
+	// 	text-align: justify;
+	// 	hyphens: auto;
+	// 	color: var(--gold);
+	// 	font-family: var(--font-primary);
+	// }
 
-	h1 {
-		font-family: var(--font-body);
-		color: var(--white);
-		margin: 0 0 10px 0;
-		line-height: 1em;
-		height: 0.9em;
-		text-shadow: 0px 0px 5px var(--red-glow);
-	}
+	// h1 {
+	// 	font-family: var(--font-primary);
+	// 	color: var(--white);
+	// 	margin: 0 0 10px 0;
+	// 	line-height: 1em;
+	// 	height: 0.9em;
+	// 	text-shadow: 0px 0px 5px var(--red-glow);
+	// }
 
-	h2,
-	h3 {
-		color: var(--gold-bright);
-		font-variant: small-caps;
-	}
+	// h2,
+	// h3 {
+	// 	color: var(--gold-bright);
+	// 	font-variant: small-caps;
+	// }
 
-	h2 {
-		height: 24px;
-	}
+	// h2 {
+	// 	height: 24px;
+	// }
 
-	p {
-		font-size: inherit;
-	}
+	// p {
+	// 	font-size: inherit;
+	// }
 
-	h3 {
-		height: 16px;
-	}
+	// h3 {
+	// 	height: 16px;
+	// }
 
-	.text-keyword {
-		color: var(--blue-bright);
-		font-weight: bold;
-		font-style: normal;
-	}
+	// .text-keyword {
+	// 	color: var(--blue-bright);
+	// 	font-weight: bold;
+	// 	font-style: normal;
+	// }
 
-	.text-movename {
-		color: var(--blue-bright);
-		font-weight: bold;
-		font-style: italic;
-	}
+	// .text-movename {
+	// 	color: var(--blue-bright);
+	// 	font-weight: bold;
+	// 	font-style: italic;
+	// }
 
-	.text-edgename {
-		font-weight: 900;
-	}
+	// .text-edgename {
+	// 	font-weight: 900;
+	// }
 
-	.text-trigger {
-		color: var(--gold-brightest);
-	}
+	// .text-trigger {
+	// 	color: var(--gold-brightest);
+	// }
 
-	.text-extra-bold {
-		font-weight: 900;
-	}
+	// .text-extra-bold {
+	// 	font-weight: 900;
+	// }
 
-	.text-gmtext {
-		color: var(--red-glow);
-		font-weight: bold;
-	}
+	// .text-gmtext {
+	// 	color: var(--red-glow);
+	// 	font-weight: bold;
+	// }
 }

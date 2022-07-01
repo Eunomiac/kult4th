@@ -214,6 +214,7 @@ export default class K4PCSheet extends ActorSheet {
 			]
 		});
 	}
+	// override get template() { return "systems/kult4th/templates/sheets/pc-sheet-copy.hbs" }
 	override get template() { return "systems/kult4th/templates/sheets/pc-sheet.hbs" }
 
 	hoverTimeline?: gsapAnim;
@@ -375,7 +376,7 @@ export default class K4PCSheet extends ActorSheet {
 
 			function createChatLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
-					$(elem).on("click", () => console.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
+					$(elem).on("click", () => self.actor.getItemByName(iName)?.displayItemSummary(self.actor?.name ?? ""));
 				}
 			}
 

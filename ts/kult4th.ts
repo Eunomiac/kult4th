@@ -27,6 +27,7 @@ Hooks.once("init", () => {
 
 	loadTemplates([
 		"systems/kult4th/templates/sheets/pc-sheet.hbs",
+		"systems/kult4th/templates/sheets/pc-sheet-copy.hbs",
 		"systems/kult4th/templates/sheets/npc-sheet.hbs",
 
 		"systems/kult4th/templates/sheets/move-sheet.hbs",

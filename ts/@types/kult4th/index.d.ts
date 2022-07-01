@@ -18,6 +18,14 @@ declare global {
 		Item: K4ItemSourceData.any
 	}
 
-}
-declare global {
+	interface DataConfig {
+		Actor: K4ActorData.any,
+		Item: K4ItemDataSchema.any
+	}
+
+	interface DocumentClassConfig {
+		Actor: typeof K4Actor,
+		Item: typeof K4Item
+	}
+
 }

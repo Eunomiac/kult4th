@@ -1,7 +1,7 @@
 {{log this}}
 {{log "DATA" data}}
 
-<form class="{{cssClass}}" autocomplete="off">
+<form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
 	<nav class="nav-panel">
 		<img class="img-border" src="../systems/kult4th/assets/layout/portrait-frame.webp" />
 		<img class="profile-image blur-background" src="{{actor.img}}" />
@@ -75,28 +75,28 @@
 				<div class="dice-modifiers"></div>
 			</section>
 			<section class="subsection attributes">
-				<h1 class="subsection-header">Attributes</h1>
+				<h1>Attributes</h1>
 				{{#each attributes}}
 				{{> "systems/kult4th/templates/partials/attribute-box.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list basic-moves">
-				<h1 class="subsection-header">Basic Moves</h1>
+				<h1>Basic Moves</h1>
 				{{#each baseMoves}}
 				{{> "systems/kult4th/templates/partials/basic-move-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list special-moves">
-				<h1 class="subsection-header">Special Moves</h1>
+				<h1>Special Moves</h1>
 				{{#each derivedMoves}}
 				{{> "systems/kult4th/templates/partials/derived-move-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list session-checks">
-				<h1 class="subsection-header">Session Checks</h1>
+				<h1>Session Checks</h1>
 			</section>
 			<section class="subsection flex-item-list attacks">
-				<h1 class="subsection-header">Attacks</h1>
+				<h1>Attacks</h1>
 				{{#each attacks}}
 				{{> "systems/kult4th/templates/partials/attack-card.hbs"}}
 				{{/each}}
@@ -105,29 +105,29 @@
 
 		<section class="tab bio" data-group="primary" data-tab="bio">
 			<section class="subsection description">
-				<h1 class="subsection-header">Description</h1>
+				<h1>Description</h1>
 				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection flex-item-list advantages">
-				<h1 class="subsection-header">Advantages</h1>
+				<h1>Advantages</h1>
 				{{#each advantages}}
 				{{> "systems/kult4th/templates/partials/advantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list disadvantages">
-				<h1 class="subsection-header">Disadvantages</h1>
+				<h1>Disadvantages</h1>
 				{{#each disadvantages}}
 				{{> "systems/kult4th/templates/partials/disadvantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list darksecrets">
-				<h1 class="subsection-header">Dark Secrets</h1>
+				<h1>Dark Secrets</h1>
 				{{#each darksecrets}}
 				{{> "systems/kult4th/templates/partials/dark-secret-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list relations">
-				<h1 class="subsection-header">Relations</h1>
+				<h1>Relations</h1>
 				{{#each relations}}
 				{{> "systems/kult4th/templates/partials/relation-card.hbs"}}
 				{{/each}}

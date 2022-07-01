@@ -121,6 +121,39 @@ declare global {
 		export type any = pc|npc
 	}
 
+	namespace K4ActorPropertiesData {
+		export interface pc extends K4ActorTemplateData.pc {
+			moves: Array<K4Item<K4ItemType.move>>;
+			basicMoves: Array<K4Item<K4ItemType.move>>;
+			derivedMoves: Array<K4Item<K4ItemType.move>>;
+
+			attacks: Array<K4Item<K4ItemType.attack>>;
+			advantages: Array<K4Item<K4ItemType.advantage>>;
+			disadvantages: Array<K4Item<K4ItemType.disadvantage>>;
+			darkSecrets: Array<K4Item<K4ItemType.darksecret>>;
+			weapons: Array<K4Item<K4ItemType.weapon>>;
+			gear: Array<K4Item<K4ItemType.gear>>;
+			relations: Array<K4Item<K4ItemType.relation>>;
+		}
+		export interface npc extends K4ActorTemplateData.npc {
+			moves: Array<K4Item<K4ItemType.move>>;
+		}
+
+	}
+
+	namespace K4ActorData {
+		export interface pc {
+			type: K4ActorType.pc,
+			data: K4ActorPropertiesData.pc
+		}
+		export interface npc {
+			type: K4ActorType.npc,
+			data: K4ActorPropertiesData.npc
+		}
+
+		export type any = pc|npc
+	}
+
 
 	// namespace K4PCSheet {
 	// 	export interface Options extends ActorSheet.Options { }

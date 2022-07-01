@@ -6940,7 +6940,8 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
+                        intro: "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%",
+                        outro: "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
                         effectFunctions: [
                             "GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
                             "StoreInput: text=Field of Expertise #1>flags.field_1",

@@ -1,5 +1,12 @@
-@import 'globals/colors';
+// @import 'globals/colors';
 @import 'globals/functions';
-@import 'globals/typography';
+// @import 'globals/typography';
+@import 'globals/text-styles';
 
-#tinymce { @import 'tinymce/tinymce' }
+#tinymce {
+	// @import 'globals/colors';
+	@import 'globals/functions';
+	// @import 'globals/typography';
+	@import 'globals/text-styles';
+	@import 'tinymce/tinymce';
+}

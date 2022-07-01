@@ -23,7 +23,9 @@ export default class K4ItemSheet extends ItemSheet {
     get tData() { return this.item.tData; }
     get subType() { return this.tData.subType; }
     get subItems() { return this.item.subItemData; }
+    // @ts-expect-error Types aren't discriminating the .data.data union type
     get subMoves() { return this.item.subMoveData; }
+    // @ts-expect-error Types aren't discriminating the .data.data union type
     get attacks() { return this.item.subAttackData; }
     activateListeners(html) {
         super.activateListeners(html);
