@@ -1,5 +1,5 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
-import C, { K4Attribute } from "./constants.js";
+import C from "./constants.js";
 import U from "./utilities.js";
 const clearItems = async () => Item.deleteDocuments(Array.from(game.items?.values() ?? []).map((item) => item.id));
 const clearFolders = async () => Folder.deleteDocuments(Array.from(game.folders?.values() ?? []).map((folder) => folder.id));
@@ -387,7 +387,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -396,7 +396,7 @@ const ITEM_DATA = {
                         intro: "You have academic contacts at universities around the world."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Access the Dark Net": {
@@ -441,13 +441,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Ace Up the Sleeve": {
@@ -517,7 +517,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
@@ -528,7 +528,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Animal Speaker": {
@@ -585,7 +585,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.intuition
+                                attribute: "intuition" /* K4Attribute.intuition */
                             }
                         }
                     ],
@@ -594,7 +594,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You are able to understand and control animals.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.intuition
+                    attribute: "intuition" /* K4Attribute.intuition */
                 }
             },
             "Artifact": {
@@ -674,7 +674,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -683,7 +683,7 @@ const ITEM_DATA = {
                         intro: "You own a seemingly mundane item, which actually possesses mystical powers.%insert.break%Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).%insert.break%Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: %list.examplepowers%"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Artistic Talent": {
@@ -741,13 +741,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Authority": {
@@ -805,7 +805,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -814,7 +814,7 @@ const ITEM_DATA = {
                         intro: "You're an academic authority in your field and a well-known name in newspapers, debate shows, and scientific journals."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Awe-Inspiring": {
@@ -849,13 +849,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Backstab": {
@@ -909,13 +909,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Battlefield Medicine": {
@@ -977,13 +977,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Body Awareness": {
@@ -1040,7 +1040,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
@@ -1049,7 +1049,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>Your body and mind are as one.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Boss": {
@@ -1094,7 +1094,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
@@ -1103,7 +1103,7 @@ const ITEM_DATA = {
                         intro: "You have five to ten criminal henchmen who are loyal to you, usually for as long as you continue paying them."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Bound": {
@@ -1160,7 +1160,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -1169,7 +1169,7 @@ const ITEM_DATA = {
                         intro: "You are bound to an extradimensional entity whose powers you can draw upon. Explain what you think it is when you take this Advantage."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Burglar": {
@@ -1228,13 +1228,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Chameleon": {
@@ -1278,13 +1278,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.intuition
+                                attribute: "intuition" /* K4Attribute.intuition */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.intuition
+                    attribute: "intuition" /* K4Attribute.intuition */
                 }
             },
             "Character Actor": {
@@ -1342,13 +1342,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.intuition
+                                attribute: "intuition" /* K4Attribute.intuition */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.intuition
+                    attribute: "intuition" /* K4Attribute.intuition */
                 }
             },
             "Charismatic Aura": {
@@ -1405,7 +1405,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -1414,7 +1414,7 @@ const ITEM_DATA = {
                         intro: "You radiate an aura that makes people trust you and seek your company."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Collector": {
@@ -1449,13 +1449,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Contagious Insanity": {
@@ -1510,13 +1510,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Crafty": {
@@ -1570,13 +1570,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.intuition
+                                attribute: "intuition" /* K4Attribute.intuition */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.intuition
+                    attribute: "intuition" /* K4Attribute.intuition */
                 }
             },
             "Crime Scene Investigator": {
@@ -1637,13 +1637,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Cult Leader": {
@@ -1699,13 +1699,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Dabbler in the Occult": {
@@ -1750,7 +1750,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -1759,7 +1759,7 @@ const ITEM_DATA = {
                         intro: "You know a little of magical rituals, but have never gone beyond performing written instructions."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Daredevil": {
@@ -1829,7 +1829,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
@@ -1840,7 +1840,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Data Retrieval": {
@@ -1873,7 +1873,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you look for information on a subject in a library, research archive, or on the Internet,",
-                                    outro: "%insert.rollPrompt%. %insert.break%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized."
+                                    outro: "%insert.rollPrompt%.%insert.break%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1899,13 +1899,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Deadly Stare": {
@@ -1940,13 +1940,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Death Drive": {
@@ -2018,7 +2018,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -2029,7 +2029,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Divine": {
@@ -2085,7 +2085,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -2094,7 +2094,7 @@ const ITEM_DATA = {
                         intro: "There is something about you that reminds your former servants of what you truly are."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Dreamer": {
@@ -2129,7 +2129,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -2138,7 +2138,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You are a talented, self-taught dream wanderer.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Driver": {
@@ -2210,7 +2210,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
@@ -2222,7 +2222,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Elite Education": {
@@ -2280,7 +2280,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -2289,7 +2289,7 @@ const ITEM_DATA = {
                         intro: "You have attended one of the world's most prestigious institutes of higher learning and have acquired contacts with power and influence."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Enforcer": {
@@ -2335,13 +2335,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Enhanced Awareness": {
@@ -2376,13 +2376,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Erotic": {
@@ -2440,13 +2440,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Escape Artist": {
@@ -2481,7 +2481,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
@@ -2490,7 +2490,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You are a master at slipping away when the shit hits the fan.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Exit Strategy": {
@@ -2547,13 +2547,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Exorcist": {
@@ -2607,13 +2607,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Explosives Expert": {
@@ -2648,7 +2648,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         },
                         {
@@ -2677,7 +2677,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
@@ -2686,7 +2686,7 @@ const ITEM_DATA = {
                         intro: "You can build and disarm bombs. If you have enough time and resources, you can build any kind of bomb you like without a roll."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Eye for Detail": {
@@ -2745,13 +2745,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Fascination": {
@@ -2812,13 +2812,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Fast Talk": {
@@ -2875,13 +2875,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "XXX Field Agent": {
@@ -2946,7 +2946,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence,
+                                attribute: "violence" /* K4Attribute.violence */,
                                 range: [
                                     "arm"
                                 ],
@@ -3005,7 +3005,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -3017,7 +3017,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Forbidden Inspiration": {
@@ -3074,13 +3074,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Forked Tongue": {
@@ -3142,13 +3142,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Gang Leader": {
@@ -3192,7 +3192,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -3201,7 +3201,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You're the boss of a small gang of criminals.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Genius": {
@@ -3271,7 +3271,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -3282,7 +3282,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Hacker": {
@@ -3326,13 +3326,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Hunter": {
@@ -3389,13 +3389,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Ice Cold": {
@@ -3467,7 +3467,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
@@ -3479,7 +3479,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Implanted Messages": {
@@ -3514,7 +3514,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -3523,7 +3523,7 @@ const ITEM_DATA = {
                         intro: "You know how to implant orders into the minds of your \"subjects\"."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Impostor": {
@@ -3558,7 +3558,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -3567,7 +3567,7 @@ const ITEM_DATA = {
                         intro: "You maintain relationships with numerous people who all believe you are their soulmate, yet are unaware of each other."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Improviser": {
@@ -3622,13 +3622,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Influential Friends": {
@@ -3663,7 +3663,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -3672,7 +3672,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You have friends with power and influence.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Inner Power": {
@@ -3707,7 +3707,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -3716,7 +3716,7 @@ const ITEM_DATA = {
                         intro: "You harbor a mysterious power, which you do not fully understand. The power can protect you, but you have no control over it."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Intimidating": {
@@ -3751,7 +3751,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -3760,7 +3760,7 @@ const ITEM_DATA = {
                         intro: "There is something about you that instinctively makes others fear you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Inventor": {
@@ -3815,13 +3815,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Lay on Hands": {
@@ -3856,16 +3856,16 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim. %insert.break%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent. %insert.break%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
+                        intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim.%insert.break%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent.%insert.break%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Lightning Fast": {
@@ -3935,7 +3935,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -3946,7 +3946,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Magical Intuition": {
@@ -4003,7 +4003,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -4012,7 +4012,7 @@ const ITEM_DATA = {
                         intro: "You have an innate ability to perceive Kirlian auras and sense the presence of magic."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Magnetic Attraction": {
@@ -4069,13 +4069,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Manhunter": {
@@ -4134,13 +4134,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Martial Arts Expert": {
@@ -4212,7 +4212,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -4223,7 +4223,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Moles": {
@@ -4276,7 +4276,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -4285,7 +4285,7 @@ const ITEM_DATA = {
                         intro: "You have placed a number of moles in groups or organizations of interest to you, such as business competitors, governments, or cults."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Network of Contacts": {
@@ -4344,13 +4344,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Notorious": {
@@ -4385,7 +4385,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -4394,7 +4394,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You are famous in your trade.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Occult Library": {
@@ -4454,7 +4454,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
@@ -4463,7 +4463,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold at any time to make a hard or soft Move."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Occult Studies": {
@@ -4516,7 +4516,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
@@ -4525,7 +4525,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You are a student of the occult.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Officer": {
@@ -4593,7 +4593,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -4604,7 +4604,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Parkour": {
@@ -4661,7 +4661,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
@@ -4670,7 +4670,7 @@ const ITEM_DATA = {
                         intro: "You are deft at running and jumping, even over difficult terrain."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Perpetual Victim": {
@@ -4724,13 +4724,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Prepared": {
@@ -4789,7 +4789,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
@@ -4798,7 +4798,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold at any time to make a hard or soft Move for the location."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Puppeteer": {
@@ -4833,13 +4833,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Quick Thinker": {
@@ -4896,13 +4896,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Read a Crowd": {
@@ -4934,7 +4934,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you move through a small crowd to gather information,",
-                                    outro: "%insert.rollPrompt%. %insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office. %insert.break%You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
+                                    outro: "%insert.rollPrompt%.%insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office.%insert.break%You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4960,13 +4960,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Ruthless": {
@@ -5032,7 +5032,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -5043,7 +5043,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Seducer": {
@@ -5102,7 +5102,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -5111,7 +5111,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You can consciously make people fall in love with you.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Shadow": {
@@ -5146,7 +5146,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         },
                         {
@@ -5175,13 +5175,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Sixth Sense": {
@@ -5235,7 +5235,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -5244,7 +5244,7 @@ const ITEM_DATA = {
                         intro: "#>text-center>You have an intuition for things, both good and bad.<#"
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Snake Charmer": {
@@ -5297,13 +5297,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Sneak": {
@@ -5360,13 +5360,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.coolness
+                                attribute: "coolness" /* K4Attribute.coolness */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Sniper": {
@@ -5422,13 +5422,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Street Contacts": {
@@ -5486,7 +5486,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
@@ -5495,7 +5495,7 @@ const ITEM_DATA = {
                         intro: "You have contacts among the homeless, crazies, and other societal outsiders and outcasts."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Streetfighter": {
@@ -5568,7 +5568,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
@@ -5579,7 +5579,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Streetwise": {
@@ -5625,13 +5625,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.charisma
+                                attribute: "charisma" /* K4Attribute.charisma */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Stubborn": {
@@ -5701,7 +5701,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
@@ -5712,7 +5712,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Survival Instinct": {
@@ -5742,7 +5742,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you suffer a serious or critical injury yet refuse to yield,",
-                                    outro: "%insert.rollPrompt%. %insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
+                                    outro: "%insert.rollPrompt%.%insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5756,13 +5756,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence
+                                attribute: "violence" /* K4Attribute.violence */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Survivalist": {
@@ -5819,13 +5819,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Tracer": {
@@ -5883,13 +5883,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.reason
+                                attribute: "reason" /* K4Attribute.reason */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Voice of Insanity": {
@@ -5948,13 +5948,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Voice of Pain": {
@@ -6011,13 +6011,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             },
             "Wanderer": {
@@ -6075,13 +6075,13 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.perception
+                                attribute: "perception" /* K4Attribute.perception */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Wayfinder": {
@@ -6116,13 +6116,13 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.soul
+                                attribute: "soul" /* K4Attribute.soul */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             }
         },
@@ -6148,13 +6148,13 @@ const ITEM_DATA = {
                                     outro: "you may declare that you have read about this dimension or creature before. Ask the GM what you learned from your past studies."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "At Any Cost": {
@@ -6178,13 +6178,13 @@ const ITEM_DATA = {
                                     outro: "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Code of Honor": {
@@ -6208,7 +6208,7 @@ const ITEM_DATA = {
                                     outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -6217,7 +6217,7 @@ const ITEM_DATA = {
                         intro: "You abide by a strict code of honor. Decide its nature when you take this Advantage."
                     },
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Desperate": {
@@ -6241,13 +6241,13 @@ const ITEM_DATA = {
                                     outro: "take #>text-keyword>+1 ongoing<# on all rolls until you're clear of the threat."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Divine Champion": {
@@ -6271,7 +6271,7 @@ const ITEM_DATA = {
                                     outro: "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         },
                         {
@@ -6289,13 +6289,13 @@ const ITEM_DATA = {
                                     outro: "your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Eye for an Eye": {
@@ -6319,13 +6319,13 @@ const ITEM_DATA = {
                                     outro: "You get #>text-keyword>+2 ongoing<# to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Good Samaritan": {
@@ -6349,13 +6349,13 @@ const ITEM_DATA = {
                                     outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Grudge": {
@@ -6379,13 +6379,13 @@ const ITEM_DATA = {
                                     outro: "you take #>text-keyword>+1 ongoing<# against them until you have taken revenge or received restitution of equal worth to what you lost."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Manipulative": {
@@ -6427,13 +6427,13 @@ const ITEM_DATA = {
                                     outro: "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %list.options%"
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Opportunist": {
@@ -6457,13 +6457,13 @@ const ITEM_DATA = {
                                     outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Rage": {
@@ -6504,13 +6504,13 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "When you choose to awaken your inner rage in combat,",
-                                    outro: "lose #>text-negmod>−1<# #>text-keyword>Stability<# and mark 1 Rage. %insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#). %insert.break%Rage lasts until the end of the combat. %insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
+                                    outro: "lose #>text-negmod>−1<# #>text-keyword>Stability<# and mark 1 Rage.%insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#).%insert.break%Rage lasts until the end of the combat.%insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
                                     listRefs: [
                                         "edges"
                                     ]
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -6521,7 +6521,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Sealed Fate": {
@@ -6545,7 +6545,7 @@ const ITEM_DATA = {
                                     outro: "you may mark 1 Time from Condemned to immediately stabilize the #>text-keyword>Wound<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         },
                         {
@@ -6563,7 +6563,7 @@ const ITEM_DATA = {
                                     outro: "mark 2 Time from Condemned and reawaken, injured and weak, but alive, and with all of your #>text-keyword>Wounds<# stabilized."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -6574,7 +6574,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Thirst for Knowledge": {
@@ -6598,13 +6598,13 @@ const ITEM_DATA = {
                                     outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "To the Last Breath": {
@@ -6628,7 +6628,7 @@ const ITEM_DATA = {
                                     outro: "mark 1 Time to reroll the dice."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -6639,7 +6639,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Watchers": {
@@ -6689,7 +6689,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -6702,7 +6702,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Workaholic": {
@@ -6726,13 +6726,13 @@ const ITEM_DATA = {
                                     outro: "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Worldly": {
@@ -6756,13 +6756,13 @@ const ITEM_DATA = {
                                     outro: "decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
                     isCustom: false,
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             }
         },
@@ -6790,7 +6790,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Dead Shot": {
@@ -6800,13 +6800,13 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "#>text-center>You are a seasoned marksman.<# %insert.break%You deal #>text-keyword>+1 Harm<# with firearms.",
+                        intro: "#>text-center>You are a seasoned marksman.<#%insert.break%#>text-center>You deal #>text-keyword>+1 Harm<# with firearms.<#",
                         effectFunctions: [
                             ">ModValue:weapon/firearm,harm,1"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Elite Sport (Athletic)": {
@@ -6816,10 +6816,10 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities. %insert.break%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects."
+                        intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.%insert.break%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Elite Sport (Contact)": {
@@ -6829,10 +6829,10 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit. %insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks."
+                        intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Elite Sport (Fencing)": {
@@ -6886,7 +6886,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence,
+                                attribute: "violence" /* K4Attribute.violence */,
                                 range: [
                                     "arm"
                                 ],
@@ -6896,13 +6896,13 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "#>text-center>You've competed professionally in fencing.<# %insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
+                        intro: "#>text-center>You've competed professionally in fencing.<#%insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
                         effectFunctions: [
                             "AppendList,weapon/sword,attacks,attacks"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Endure Trauma": {
@@ -6912,10 +6912,10 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "#>text-center>You are not as easily affected by trauma as others.<# %insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
+                        intro: "#>text-center>You are not as easily affected by trauma as others.<#%insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Expert": {
@@ -6949,7 +6949,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Extortionist": {
@@ -6977,7 +6977,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Gritted Teeth": {
@@ -6987,14 +6987,14 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore. %insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
+                        intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.%insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
                         effectFunctions: [
                             "SetPenalty:SeriousWound,0",
                             "SetPenalty:CriticalWound,0"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Hardened": {
@@ -7010,7 +7010,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Instinct": {
@@ -7027,7 +7027,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Interrogator": {
@@ -7037,10 +7037,10 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\" %insert.break%This doesn't count towards the number of questions you're allowed to normally ask."
+                        intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask."
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Intuitive": {
@@ -7050,13 +7050,13 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior. %insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
+                        intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
                         effectFunctions: [
                             "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Jaded": {
@@ -7072,7 +7072,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Keen-Eyed": {
@@ -7097,7 +7097,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Observant": {
@@ -7122,7 +7122,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Scientist": {
@@ -7145,7 +7145,7 @@ const ITEM_DATA = {
                         intro: "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Vigilant": {
@@ -7170,7 +7170,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Weapon Master (Firearms)": {
@@ -7224,7 +7224,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence,
+                                attribute: "violence" /* K4Attribute.violence */,
                                 range: [
                                     "room"
                                 ],
@@ -7277,7 +7277,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence,
+                                attribute: "violence" /* K4Attribute.violence */,
                                 range: [
                                     "room"
                                 ],
@@ -7288,10 +7288,10 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "#>text-center>You are a master of gunplay.<# %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
+                        intro: "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Weapon Master (Melee)": {
@@ -7345,7 +7345,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence,
+                                attribute: "violence" /* K4Attribute.violence */,
                                 range: [
                                     "room"
                                 ],
@@ -7397,7 +7397,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence,
+                                attribute: "violence" /* K4Attribute.violence */,
                                 range: [
                                     "arm"
                                 ],
@@ -7449,7 +7449,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.violence,
+                                attribute: "violence" /* K4Attribute.violence */,
                                 range: [
                                     "arm"
                                 ],
@@ -7459,10 +7459,10 @@ const ITEM_DATA = {
                     ],
                     isCustom: false,
                     rules: {
-                        intro: "#>text-center>You are a master of armed melee combat.<# %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
+                        intro: "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             }
         }
@@ -7504,7 +7504,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7514,7 +7514,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Competitor": {
@@ -7552,7 +7552,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7562,7 +7562,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Condemned": {
@@ -7618,7 +7618,7 @@ const ITEM_DATA = {
                                     ]
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7630,7 +7630,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Cursed": {
@@ -7668,7 +7668,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7678,7 +7678,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Depression": {
@@ -7713,7 +7713,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7722,7 +7722,7 @@ const ITEM_DATA = {
                         intro: "You are constantly struggling with depression, which is only worsened by dejection and discouragement."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Drug Addict": {
@@ -7760,7 +7760,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7770,7 +7770,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Experiment Gone Wrong": {
@@ -7808,7 +7808,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7818,7 +7818,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Fanatic": {
@@ -7853,7 +7853,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7862,7 +7862,7 @@ const ITEM_DATA = {
                         intro: "You are a fervent adherent of an ideology, which you must define when you take this Disadvantage. You interpret the whole world in accordance with your ideology, which must not be questioned."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Greedy": {
@@ -7897,7 +7897,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7906,7 +7906,7 @@ const ITEM_DATA = {
                         intro: "You are driven by an unquenchable desire for money and wealth, and are prepared to sacrifice your health, family, and friends to fill the emptiness inside."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Guilt": {
@@ -7944,7 +7944,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -7954,7 +7954,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Harassed": {
@@ -7992,7 +7992,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8002,7 +8002,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Haunted": {
@@ -8040,7 +8040,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8050,7 +8050,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Infirm": {
@@ -8085,7 +8085,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8094,7 +8094,7 @@ const ITEM_DATA = {
                         intro: "You suffer from a dangerous physical disease or condition, such as heart disease, hypertension, morbid obesity, or serious gastric ulcer."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Involuntary Medium": {
@@ -8132,7 +8132,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8142,7 +8142,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Jealousy": {
@@ -8177,7 +8177,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8186,7 +8186,7 @@ const ITEM_DATA = {
                         intro: "There is someone who has the life you want to have, and you would do anything to possess it."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Liar": {
@@ -8224,7 +8224,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8234,7 +8234,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Lost Identity": {
@@ -8272,7 +8272,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8282,7 +8282,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Marked": {
@@ -8320,7 +8320,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8330,7 +8330,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Mental Compulsion": {
@@ -8383,7 +8383,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8395,7 +8395,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Nemesis": {
@@ -8433,7 +8433,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8443,7 +8443,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Nightmares": {
@@ -8478,7 +8478,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8487,7 +8487,7 @@ const ITEM_DATA = {
                         intro: "You suffer from recurring nightmares, probably connected to your Dark Secrets."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Oath of Revenge": {
@@ -8522,7 +8522,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8531,7 +8531,7 @@ const ITEM_DATA = {
                         intro: "You have sworn to avenge an unforgivable injustice. Decide who is the subject of your vengeance and what they have done to you. It could be a single individual, people who share a certain trait, or members of an organization."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Object of Desire": {
@@ -8569,7 +8569,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8579,7 +8579,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Obsession": {
@@ -8617,7 +8617,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8627,7 +8627,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Owned": {
@@ -8665,7 +8665,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8675,7 +8675,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Repressed Memories": {
@@ -8710,7 +8710,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8719,7 +8719,7 @@ const ITEM_DATA = {
                         intro: "You have repressed a particularly unpleasant event from your past, but the memory of it sometimes rises to the surface. It could be a crime or some horrible thing you have done, been subjected to, or witnessed. The GM decides the nature of your repressed memory, usually based on your Dark Secrets."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Rival": {
@@ -8757,7 +8757,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8767,7 +8767,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Schizophrenia": {
@@ -8805,7 +8805,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8815,7 +8815,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Sexual Neurosis": {
@@ -8860,7 +8860,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8869,7 +8869,7 @@ const ITEM_DATA = {
                         intro: "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Stalker": {
@@ -8907,7 +8907,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8917,7 +8917,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Victim of Passion": {
@@ -8955,7 +8955,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -8965,7 +8965,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             "Wanted": {
@@ -9003,7 +9003,7 @@ const ITEM_DATA = {
                                     }
                                 },
                                 subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -9013,7 +9013,7 @@ const ITEM_DATA = {
                         holdText: "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             }
         },
@@ -9039,7 +9039,7 @@ const ITEM_DATA = {
                                     outro: "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                                 },
                                 subType: "active-static" /* K4ItemSubType.activeStatic */,
-                                attribute: K4Attribute.zero
+                                attribute: "zero" /* K4Attribute.zero */
                             }
                         }
                     ],
@@ -9048,7 +9048,7 @@ const ITEM_DATA = {
                         intro: "You harbor an overpowering fear of something. Choose the stimulus that frightens you when you take this Disadvantage."
                     },
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             }
         },
@@ -9060,13 +9060,13 @@ const ITEM_DATA = {
                 data: {
                     isCustom: false,
                     rules: {
-                        intro: "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it. %insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
+                        intro: "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.%insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
                         effectFunctions: [
                             "SetTrait:actor/data.stability.max,6"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             },
             Rationalist: {
@@ -9087,13 +9087,13 @@ const ITEM_DATA = {
                     },
                     isCustom: false,
                     rules: {
-                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you. %insert.break%in addition to the standard effects, the GM may choose one option from the list below:",
+                        intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.%insert.break%in addition to the standard effects, the GM may choose one option from the list below:",
                         listRefs: [
                             "gmoptions"
                         ]
                     },
                     subType: "passive" /* K4ItemSubType.passive */,
-                    attribute: K4Attribute.zero
+                    attribute: "zero" /* K4Attribute.zero */
                 }
             }
         }
@@ -9122,7 +9122,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.coolness
+                    attribute: "coolness" /* K4Attribute.coolness */
                 }
             },
             "Avoid Harm": {
@@ -9147,7 +9147,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reflexes
+                    attribute: "reflexes" /* K4Attribute.reflexes */
                 }
             },
             "Endure Injury": {
@@ -9193,7 +9193,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.fortitude
+                    attribute: "fortitude" /* K4Attribute.fortitude */
                 }
             },
             "Engage in Combat": {
@@ -9231,7 +9231,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.violence
+                    attribute: "violence" /* K4Attribute.violence */
                 }
             },
             "Help Other": {
@@ -9256,7 +9256,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.ask
+                    attribute: "ask" /* K4Attribute.ask */
                 }
             },
             "Hinder Other": {
@@ -9281,7 +9281,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.ask
+                    attribute: "ask" /* K4Attribute.ask */
                 }
             },
             "Influence Other NPC": {
@@ -9316,7 +9316,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Influence Other PC": {
@@ -9359,7 +9359,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.charisma
+                    attribute: "charisma" /* K4Attribute.charisma */
                 }
             },
             "Investigate": {
@@ -9403,7 +9403,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.reason
+                    attribute: "reason" /* K4Attribute.reason */
                 }
             },
             "Keep It Together": {
@@ -9451,7 +9451,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.willpower
+                    attribute: "willpower" /* K4Attribute.willpower */
                 }
             },
             "Observe a Situation": {
@@ -9501,7 +9501,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.perception
+                    attribute: "perception" /* K4Attribute.perception */
                 }
             },
             "Read a Person": {
@@ -9547,7 +9547,7 @@ const ITEM_DATA = {
                         ]
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.intuition
+                    attribute: "intuition" /* K4Attribute.intuition */
                 }
             },
             "See Through the Illusion": {
@@ -9581,7 +9581,7 @@ const ITEM_DATA = {
                         }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
-                    attribute: K4Attribute.soul
+                    attribute: "soul" /* K4Attribute.soul */
                 }
             }
         }

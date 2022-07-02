@@ -64,32 +64,27 @@ export const Attributes = {
         reflexes: {}
     }
 };
-export var K4ItemType;
-(function (K4ItemType) {
-    K4ItemType["advantage"] = "advantage";
-    K4ItemType["disadvantage"] = "disadvantage";
-    K4ItemType["move"] = "move";
-    K4ItemType["darksecret"] = "darksecret";
-    K4ItemType["relation"] = "relation";
-    K4ItemType["gear"] = "gear";
-    K4ItemType["attack"] = "attack";
-    K4ItemType["weapon"] = "weapon";
-})(K4ItemType || (K4ItemType = {}));
-export var K4Attribute;
-(function (K4Attribute) {
-    K4Attribute["ask"] = "ask";
-    K4Attribute["zero"] = "0";
-    K4Attribute["fortitude"] = "fortitude";
-    K4Attribute["reflexes"] = "reflexes";
-    K4Attribute["willpower"] = "willpower";
-    K4Attribute["reason"] = "reason";
-    K4Attribute["intuition"] = "intuition";
-    K4Attribute["perception"] = "perception";
-    K4Attribute["coolness"] = "coolness";
-    K4Attribute["violence"] = "violence";
-    K4Attribute["charisma"] = "charisma";
-    K4Attribute["soul"] = "soul";
-})(K4Attribute || (K4Attribute = {}));
+export const AttributeButtons = (resolve) => {
+    const attrButtons = {};
+    [
+        "zero" /* K4Attribute.zero */,
+        "willpower" /* K4Attribute.willpower */,
+        "fortitude" /* K4Attribute.fortitude */,
+        "reflexes" /* K4Attribute.reflexes */,
+        "reason" /* K4Attribute.reason */,
+        "perception" /* K4Attribute.perception */,
+        "coolness" /* K4Attribute.coolness */,
+        "violence" /* K4Attribute.violence */,
+        "charisma" /* K4Attribute.charisma */,
+        "soul" /* K4Attribute.soul */
+    ].forEach((attr) => {
+        attrButtons[attr] = {
+            label: `${String(attr).charAt(0).toUpperCase()}${String(attr).slice(1)}`,
+            callback: () => resolve({ attribute: attr })
+        };
+    });
+    return attrButtons;
+};
 export const Colors = {
     "GOLD": "#958b68",
     "GOLD +2": "#e4ddc3",
@@ -171,6 +166,8 @@ const C = {
     SYSTEM_ID: "kult4th",
     SYSTEM_NAME: "Kult: Divinity Lost",
     SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",
+    TEMPLATE_ROOT: "systems/kult4th/templates/",
+    getTemplatePath(subFolder, fileName) { return `${this.TEMPLATE_ROOT}/${subFolder}/${fileName}.hbs`; },
     awareArchetypes: Archetypes.Aware,
     awareArchetypeAdvantages: {
         academic: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],
@@ -205,7 +202,8 @@ const C = {
         timeAndSpaceMagician: []
     },
     ActorTypes, ItemTypes,
-    Attributes,
+    Attributes, AttributeButtons,
+    AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
     Colors,
     Ranges,
     RegExpPatterns

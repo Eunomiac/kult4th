@@ -1,5 +1,5 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
-import C, {K4Attribute} from "./constants.js";
+import C from "./constants.js";
 import U from "./utilities.js";
 import {FolderDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/folderData.js";
 import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData.js";
@@ -1931,7 +1931,7 @@ const ITEM_DATA: Partial<Record<
 								isCustom: false,
 								rules: {
 									trigger: "Whenever you look for information on a subject in a library, research archive, or on the Internet,",
-									outro: "%insert.rollPrompt%. %insert.break%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized."
+									outro: "%insert.rollPrompt%.%insert.break%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized."
 								},
 								results: {
 									completeSuccess: {
@@ -3920,7 +3920,7 @@ const ITEM_DATA: Partial<Record<
 					],
 					isCustom: false,
 					rules: {
-						intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim. %insert.break%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent. %insert.break%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
+						intro: "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim.%insert.break%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent.%insert.break%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original."
 					},
 					subType: K4ItemSubType.activeRolled,
 					attribute: K4Attribute.soul
@@ -4992,7 +4992,7 @@ const ITEM_DATA: Partial<Record<
 								isCustom: false,
 								rules: {
 									trigger: "Whenever you move through a small crowd to gather information,",
-									outro: "%insert.rollPrompt%. %insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office. %insert.break%You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
+									outro: "%insert.rollPrompt%.%insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office.%insert.break%You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information."
 								},
 								results: {
 									completeSuccess: {
@@ -5800,7 +5800,7 @@ const ITEM_DATA: Partial<Record<
 								isCustom: false,
 								rules: {
 									trigger: "Whenever you suffer a serious or critical injury yet refuse to yield,",
-									outro: "%insert.rollPrompt%. %insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
+									outro: "%insert.rollPrompt%.%insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
 								},
 								results: {
 									completeSuccess: {
@@ -6562,7 +6562,7 @@ const ITEM_DATA: Partial<Record<
 								isCustom: false,
 								rules: {
 									trigger: "When you choose to awaken your inner rage in combat,",
-									outro: "lose #>text-negmod>−1<# #>text-keyword>Stability<# and mark 1 Rage. %insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#). %insert.break%Rage lasts until the end of the combat. %insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
+									outro: "lose #>text-negmod>−1<# #>text-keyword>Stability<# and mark 1 Rage.%insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#).%insert.break%Rage lasts until the end of the combat.%insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
 									listRefs: [
 										"edges"
 									]
@@ -6858,7 +6858,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "#>text-center>You are a seasoned marksman.<# %insert.break%You deal #>text-keyword>+1 Harm<# with firearms.",
+						intro: "#>text-center>You are a seasoned marksman.<#%insert.break%#>text-center>You deal #>text-keyword>+1 Harm<# with firearms.<#",
 						effectFunctions: [
 							">ModValue:weapon/firearm,harm,1"
 						]
@@ -6874,7 +6874,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities. %insert.break%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects."
+						intro: "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.%insert.break%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects."
 					},
 					subType: K4ItemSubType.passive,
 					attribute: K4Attribute.zero
@@ -6887,7 +6887,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit. %insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks."
+						intro: "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks."
 					},
 					subType: K4ItemSubType.passive,
 					attribute: K4Attribute.zero
@@ -6954,7 +6954,7 @@ const ITEM_DATA: Partial<Record<
 					],
 					isCustom: false,
 					rules: {
-						intro: "#>text-center>You've competed professionally in fencing.<# %insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
+						intro: "#>text-center>You've competed professionally in fencing.<#%insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
 						effectFunctions: [
 							"AppendList,weapon/sword,attacks,attacks"
 						]
@@ -6970,7 +6970,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "#>text-center>You are not as easily affected by trauma as others.<# %insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
+						intro: "#>text-center>You are not as easily affected by trauma as others.<#%insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal."
 					},
 					subType: K4ItemSubType.passive,
 					attribute: K4Attribute.zero
@@ -7045,7 +7045,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore. %insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
+						intro: "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.%insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
 						effectFunctions: [
 							"SetPenalty:SeriousWound,0",
 							"SetPenalty:CriticalWound,0"
@@ -7095,7 +7095,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\" %insert.break%This doesn't count towards the number of questions you're allowed to normally ask."
+						intro: "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask."
 					},
 					subType: K4ItemSubType.passive,
 					attribute: K4Attribute.zero
@@ -7108,7 +7108,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior. %insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
+						intro: "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
 						effectFunctions: [
 							"AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
 						]
@@ -7346,7 +7346,7 @@ const ITEM_DATA: Partial<Record<
 					],
 					isCustom: false,
 					rules: {
-						intro: "#>text-center>You are a master of gunplay.<# %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
+						intro: "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
 					},
 					subType: K4ItemSubType.passive,
 					attribute: K4Attribute.zero
@@ -7517,7 +7517,7 @@ const ITEM_DATA: Partial<Record<
 					],
 					isCustom: false,
 					rules: {
-						intro: "#>text-center>You are a master of armed melee combat.<# %insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
+						intro: "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%"
 					},
 					subType: K4ItemSubType.passive,
 					attribute: K4Attribute.zero
@@ -9118,7 +9118,7 @@ const ITEM_DATA: Partial<Record<
 				data: {
 					isCustom: false,
 					rules: {
-						intro: "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it. %insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
+						intro: "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.%insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
 						effectFunctions: [
 							"SetTrait:actor/data.stability.max,6"
 						]
@@ -9145,7 +9145,7 @@ const ITEM_DATA: Partial<Record<
 					},
 					isCustom: false,
 					rules: {
-						intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you. %insert.break%in addition to the standard effects, the GM may choose one option from the list below:",
+						intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.%insert.break%in addition to the standard effects, the GM may choose one option from the list below:",
 						listRefs: [
 							"gmoptions"
 						]

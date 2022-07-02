@@ -15,6 +15,68 @@ declare global {
 		npc = "npc"
 	}
 
+	declare const enum K4Attribute {
+		ask = "ask",
+		zero = "zero",
+		fortitude = "fortitude",
+		reflexes = "reflexes",
+		willpower = "willpower",
+		reason = "reason",
+		intuition = "intuition",
+		perception = "perception",
+		coolness = "coolness",
+		violence = "violence",
+		charisma = "charisma",
+		soul = "soul"
+	}
+
+	declare const enum K4CharAttribute {
+		fortitude = "fortitude",
+		reflexes = "reflexes",
+		willpower = "willpower",
+		reason = "reason",
+		intuition = "intuition",
+		perception = "perception",
+		coolness = "coolness",
+		violence = "violence",
+		charisma = "charisma",
+		soul = "soul"
+	}
+
+	declare const enum K4RollType {
+		zero = "zero",
+		attribute = "attribute",
+		move = "move",
+		attack = "attack"
+	}
+
+	type K4RollModData = Record<string,number>;
+
+	type K4RollSource = K4ItemSpec<K4ItemType.move|K4ItemType.attack>|K4CharAttribute|K4Attribute.zero;
+
+	type K4RollAttribute = Exclude<K4Attribute,K4Attribute.ask>;
+	interface K4RollOptions {
+		type: K4RollType|K4ItemType.move|K4ItemType.attack,
+		isAssisting?: boolean,
+		modifiers?: K4RollModifier[]
+	}
+	interface K4RollData {
+		type: K4RollType,
+		source: K4RollSource,
+		attrVal: number,
+		stabMod: number,
+		woundMod: number,
+		miscMod: number
+	}
+	declare const enum K4WoundType {
+		serious = "serious",
+		critical = "critical"
+	}
+	interface K4Wound {
+		type: K4WoundType,
+		description: string,
+		isStabilized: boolean
+	}
 	namespace Archetype {
 		export type Any = Sleeper | Custom | Aware | Awakened;
 		export type Sleeper = "sleeper";
@@ -27,7 +89,7 @@ declare global {
 		export type Active = keyof typeof C.Attributes.Active;
 		export type Passive = keyof typeof C.Attributes.Passive;
 	}
-	namespace K4ActorTemplateData {
+	namespace K4ActorSourceSchema {
 		export interface pc {
 			archetype: Archetype.Any,
 			description: string,
@@ -43,57 +105,58 @@ declare global {
 				}
 			],
 			attributes: {
-				willpower: {
+				[K4CharAttribute.willpower]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				fortitude: {
+				[K4CharAttribute.fortitude]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				reflexes: {
+				[K4CharAttribute.reflexes]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				reason: {
+				[K4CharAttribute.reason]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				perception: {
+				[K4CharAttribute.perception]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				coolness: {
+				[K4CharAttribute.coolness]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				violence: {
+				[K4CharAttribute.violence]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				charisma: {
+				[K4CharAttribute.charisma]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				soul: {
+				[K4CharAttribute.soul]: {
 					min: int,
 					max: int,
 					value: int
 				}
 			},
 			wounds: K4Wound[],
-			penalties: {
-				forUnstableSeriousWounds: [int,int,int,int],
-				forCriticalWound: int,
-				forSeriousAndCriticalWounds: int
+			modifiers: {
+				seriousWounds: K4RollModData[],
+				criticalWounds: K4RollModData[],
+				seriousAndCriticalWounds: K4RollModData[],
+				stability: K4RollModData[]
 			},
 			stability: {
 				min: int,
@@ -111,68 +174,58 @@ declare global {
 	namespace K4ActorSourceData {
 		export interface pc {
 			type: K4ActorType.pc,
-			data: K4ActorTemplateData.pc
+			data: K4ActorSourceSchema.pc
 		}
 		export interface npc {
 			type: K4ActorType.npc,
-			data: K4ActorTemplateData.npc
+			data: K4ActorSourceSchema.npc
 		}
 
 		export type any = pc|npc
+	}
+
+	namespace K4ActorPropertiesSchema {
+		export interface pc extends K4ActorSourceSchema.pc {
+			moves: Array<K4ItemSpec<K4ItemType.move>>;
+			basicMoves: Array<K4ItemSpec<K4ItemType.move>>;
+			derivedMoves: Array<K4ItemSpec<K4ItemType.move>>;
+			attacks: Array<K4ItemSpec<K4ItemType.attack>>;
+			advantages: Array<K4ItemSpec<K4ItemType.advantage>>;
+			disadvantages: Array<K4ItemSpec<K4ItemType.disadvantage>>;
+			darkSecrets: Array<K4ItemSpec<K4ItemType.darksecret>>;
+			weapons: Array<K4ItemSpec<K4ItemType.weapon>>;
+			gear: Array<K4ItemSpec<K4ItemType.gear>>;
+			relations: Array<K4ItemSpec<K4ItemType.relation>>;
+
+			maxWounds: {
+				serious: int,
+				critical: int
+			}
+		}
+		export interface npc extends K4ActorSourceSchema.npc {
+			moves: Array<K4ItemSpec<K4ItemType.move>>;
+		}
+
 	}
 
 	namespace K4ActorPropertiesData {
-		export interface pc extends K4ActorTemplateData.pc {
-			moves: Array<K4Item<K4ItemType.move>>;
-			basicMoves: Array<K4Item<K4ItemType.move>>;
-			derivedMoves: Array<K4Item<K4ItemType.move>>;
-
-			attacks: Array<K4Item<K4ItemType.attack>>;
-			advantages: Array<K4Item<K4ItemType.advantage>>;
-			disadvantages: Array<K4Item<K4ItemType.disadvantage>>;
-			darkSecrets: Array<K4Item<K4ItemType.darksecret>>;
-			weapons: Array<K4Item<K4ItemType.weapon>>;
-			gear: Array<K4Item<K4ItemType.gear>>;
-			relations: Array<K4Item<K4ItemType.relation>>;
-		}
-		export interface npc extends K4ActorTemplateData.npc {
-			moves: Array<K4Item<K4ItemType.move>>;
-		}
-
-	}
-
-	namespace K4ActorData {
 		export interface pc {
 			type: K4ActorType.pc,
-			data: K4ActorPropertiesData.pc
+			data: K4ActorPropertiesSchema.pc
 		}
 		export interface npc {
 			type: K4ActorType.npc,
-			data: K4ActorPropertiesData.npc
+			data: K4ActorPropertiesSchema.npc
 		}
 
 		export type any = pc|npc
 	}
 
+	type K4ActorSchema<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorPropertiesSchema.pc
+		: T extends K4ActorType.npc ? K4ActorPropertiesSchema.npc
+		: never)
 
-	// namespace K4PCSheet {
-	// 	export interface Options extends ActorSheet.Options { }
-
-	// 	export interface Data<Options extends K4PCSheet.Options = K4PCSheet.Options> extends ActorSheet.Data<Options> {
-	// 		// Embedded Item Categories
-	// 		baseMoves: K4Item.Move[],
-	// 		derivedMoves: K4Item.Move[];
-	// 		advantages: K4Item.Advantage[];
-	// 		disadvantages: K4Item.Disadvantage[];
-	// 		darksecrets: K4Item.DarkSecret[];
-	// 		relations: K4Item.Relation[];
-	// 		weapons: K4Item.Weapon[];
-	// 		gear: K4Item.Gear[];
-	// 		attacks: K4Item.Attack[];
-
-	// 		attributes: Array<{name: Capitalize<Attribute.Any>, key: Attribute.Any, min: number, max: number, value: number}>;
-
-	// 		actorData: ToObjectFalseType<K4Actor<K4ActorType.pc>>
-	// 	}
-	// }
+	type K4ActorData<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorPropertiesData.pc
+		: T extends K4ActorType.npc ? K4ActorPropertiesData.npc
+		: never)
 }

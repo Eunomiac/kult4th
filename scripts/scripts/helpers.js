@@ -67,7 +67,7 @@ export const HandlebarHelpers = {
                 case "insert": {
                     switch (dataKey) {
                         case "break": {
-                            return "<p></p>";
+                            return "<br /><br />"; // <p></p>";
                         }
                         case "rollPrompt": {
                             if (["attack" /* K4ItemType.attack */, "move" /* K4ItemType.move */].includes(iData.type)) {
@@ -115,28 +115,45 @@ export const HandlebarHelpers = {
             }
         });
         // Step Two: Apply span styling.
-        // #>text-keyword>+1 ongoing<#
-        // #>item-button text-keyword text-movename:data-item-name='Engage_in_Combat':data-action='open'>Engage in Combat<#
-        str = str.replace(/#>([^>:]+)(:[^>]+)?>([^<]+)<#/g, (_, classRefs, attrRefs, contents) => {
-            classRefs = ["text-tag", classRefs ?? ""].join(" ").trim();
-            const htmlParts = [
-                "<span class='",
-                classRefs,
-                "'"
-            ];
-            if (attrRefs) {
-                htmlParts.push(attrRefs.replace(/:/g, " "));
-            }
-            htmlParts.push(...[
-                ">",
-                contents,
-                "</span>"
-            ]);
-            return htmlParts.join("");
-        });
-        // Step Three: Apply final specific fixes to formatting
-        str = str
-            .replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>"); // Remove empty <p> elements, except when used as breaks
+        /*
+        const strings = [
+                                            "#>text-center>You get #>text-keyword>+1 ongoing<# against this guy<#",
+                                            "#>text-keyword>+1 ongoing<#",
+                                            "#>item-button text-keyword text-movename:data-item-name='Engage_in_Combat':data-action='open'>Engage in Combat<#",
+                                            "#>text-center>You are a seasoned marksman.<#%insert.break%#>text-center>You deal #>text-keyword>+1 Harm<# with firearms.<#"
+                                        ];
+
+        strings.forEach((str) => {
+            // Insert function to test
+            console.log(str);
+        } */
+        str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
+        let prevStr;
+        while (str !== prevStr) {
+            prevStr = str;
+            str = str.replace(/#>([^>:]+)(:[^>]+)?>([^#]+)<#/g, (_, classRefs, attrRefs, contents) => {
+                classRefs = ["text-tag", classRefs ?? ""].join(" ").trim();
+                const htmlParts = [
+                    "<span class='",
+                    classRefs,
+                    "'"
+                ];
+                if (attrRefs) {
+                    htmlParts.push(attrRefs.replace(/:/g, " "));
+                }
+                htmlParts.push(...[
+                    ">",
+                    contents,
+                    "</span>"
+                ]);
+                return htmlParts.join("");
+            });
+        }
+        str = str.replace(/CHECK/g, "Check: ");
+        // // Step Three: Apply final specific fixes to formatting
+        // str = str
+        // 	.replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>") // Remove empty <p> elements, except when used as breaks
+        // 	.replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
         return str;
     }
 };

@@ -71,15 +71,40 @@
 				}
 			},
 			"wounds": [],
-			"penalties": {
-				"forUnstableSeriousWounds": [1,1,1,1],
-				"forCriticalWound": 1,
-				"forSeriousAndCriticalWounds": 2
+			"modifiers": {
+				"seriousWounds": [
+					{},
+					{"all": -1},
+					{"all": -1},
+					{"all": -1},
+					{"all": -1}
+				],
+				"criticalWounds": [
+					{},
+					{"all": -1}
+				],
+				"seriousAndCriticalWounds": [
+					{},
+					{"all": -2}
+				],
+				"stability": [
+					{"disadvantage": -3, "Keep it Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep it Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep it Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep it Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep it Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -2, "Keep it Together": -1},
+					{"disadvantage": -2, "Keep it Together": -1},
+					{"disadvantage": -2, "Keep it Together": -1},
+					{"disadvantage": -1},
+					{"disadvantage": -1},
+					{}
+				]
 			},
 			"stability": {
-				"min": 0,
-				"max": 9,
-				"value": 0
+				"min": 1,
+				"max": 10,
+				"value": 10
 			},
 			"edges": {
 				"sourceName": "",

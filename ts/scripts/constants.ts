@@ -65,30 +65,27 @@ export const Attributes = {
 		reflexes: {}
 	}
 } as const;
-export enum K4ItemType {
-	advantage = "advantage",
-	disadvantage = "disadvantage",
-	move = "move",
-	darksecret = "darksecret",
-	relation = "relation",
-	gear = "gear",
-	attack = "attack",
-	weapon = "weapon"
-}
-export enum K4Attribute {
-	ask = "ask",
-	zero = "0",
-	fortitude = "fortitude",
-	reflexes = "reflexes",
-	willpower = "willpower",
-	reason = "reason",
-	intuition = "intuition",
-	perception = "perception",
-	coolness = "coolness",
-	violence = "violence",
-	charisma = "charisma",
-	soul = "soul"
-}
+export const AttributeButtons = (resolve: (value: {attribute: K4Attribute}) => void) => {
+	const attrButtons: Record<string,Dialog.Button> = {};
+	[
+		K4Attribute.zero,
+		K4Attribute.willpower,
+		K4Attribute.fortitude,
+		K4Attribute.reflexes,
+		K4Attribute.reason,
+		K4Attribute.perception,
+		K4Attribute.coolness,
+		K4Attribute.violence,
+		K4Attribute.charisma,
+		K4Attribute.soul
+	].forEach((attr) => {
+		attrButtons[attr] = {
+			label: `${String(attr).charAt(0).toUpperCase()}${String(attr).slice(1)}`,
+			callback: () => resolve({attribute: attr})
+		};
+	});
+	return attrButtons;
+};
 export const Colors = {
 	"GOLD": "#958b68",
 	"GOLD +2": "#e4ddc3",
@@ -171,6 +168,8 @@ const C = {
 	SYSTEM_ID: "kult4th",
 	SYSTEM_NAME: "Kult: Divinity Lost",
 	SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",
+	TEMPLATE_ROOT: "systems/kult4th/templates/",
+	getTemplatePath(subFolder: string, fileName: string) { return `${this.TEMPLATE_ROOT}/${subFolder}/${fileName}.hbs` },
 	awareArchetypes: Archetypes.Aware,
 	awareArchetypeAdvantages: {
 		academic: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],
@@ -205,7 +204,8 @@ const C = {
 		timeAndSpaceMagician: []
 	},
 	ActorTypes, ItemTypes,
-	Attributes,
+	Attributes, AttributeButtons,
+	AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
 	Colors,
 	Ranges,
 	RegExpPatterns

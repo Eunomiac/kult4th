@@ -1,6 +1,7 @@
 import C from "../../scripts/constants";
 import K4Actor from "../../documents/K4Actor.js";
 import K4Item from "../../documents/K4Item.js";
+import K4ActiveEffect from "../../documents/K4ActiveEffect.js";
 import "./documents";
 import "./scripts";
 declare global {
@@ -10,6 +11,12 @@ declare global {
 	type K4Entity = K4Actor|K4Item
 	type K4Document = K4Entity|K4Sheet
 	type K4Constructor = ConstructorOf<K4Document>;
+
+	declare interface Game {
+		dice3d: {
+			showForRoll: (r: Roll) => Promise<void>
+		}
+	}
 	interface LenientGlobalVariableTypes {
     game: never;
   }
@@ -19,13 +26,14 @@ declare global {
 	}
 
 	interface DataConfig {
-		Actor: K4ActorData.any,
-		Item: K4ItemDataSchema.any
+		Actor: K4ActorPropertiesData.any,
+		Item: K4ItemPropertiesData.any
 	}
 
 	interface DocumentClassConfig {
 		Actor: typeof K4Actor,
-		Item: typeof K4Item
+		Item: typeof K4Item,
+		ActiveEffect: typeof K4ActiveEffect
 	}
 
 }

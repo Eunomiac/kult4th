@@ -11,7 +11,7 @@ type K4ItemSheetOptions = DocumentSheetOptions & {
 	testing: true
 };
 
-export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet {
+export default class K4ItemSheet extends ItemSheet {
 
 	_actor?: any;
 	get $entity(): K4Entity { return this.object ?? this }
@@ -35,15 +35,13 @@ export default class K4ItemSheet<Type extends K4ItemType> extends ItemSheet {
 	}
 	override get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs` }
 
-	override get item(): K4Item<Type> { return super.item as K4Item<Type> }
-	get type(): Type { return this.item.type as Type }
-	get tData() { return this.item.tData }
+	override get item(): K4Item { return super.item }
+	get type() { return this.item.data.type }
+	get tData() { return this.item.data.data }
 	get subType() { return this.tData.subType }
-	get subItems() { return this.item.subItemData }
-	// @ts-expect-error Types aren't discriminating the .data.data union type
-	get subMoves() { return this.item.subMoveData }
-	// @ts-expect-error Types aren't discriminating the .data.data union type
-	get attacks() { return this.item.subAttackData }
+	get subItems() { return this.tData.subItemData }
+	get subMoves() { return this.tData.subMoveData }
+	get attacks() { return this.tData.subAttackData }
 
 	override activateListeners(html: JQuery<HTMLElement>): void {
 		super.activateListeners(html);

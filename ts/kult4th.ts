@@ -3,6 +3,7 @@ import K4Item from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
+import K4ActiveEffect from "./documents/K4ActiveEffect.js";
 import C from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
 import {formatStringForKult, HandlebarHelpers} from "./scripts/helpers.js";
@@ -25,9 +26,10 @@ Hooks.once("init", () => {
 	Items.unregisterSheet("core", ItemSheet);
 	Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
+	CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
+
 	loadTemplates([
 		"systems/kult4th/templates/sheets/pc-sheet.hbs",
-		"systems/kult4th/templates/sheets/pc-sheet-copy.hbs",
 		"systems/kult4th/templates/sheets/npc-sheet.hbs",
 
 		"systems/kult4th/templates/sheets/move-sheet.hbs",
@@ -48,7 +50,9 @@ Hooks.once("init", () => {
 		"systems/kult4th/templates/partials/relation-card.hbs",
 		"systems/kult4th/templates/partials/attribute-box.hbs",
 		"systems/kult4th/templates/partials/roll-result-entry.hbs",
-		"systems/kult4th/templates/partials/derived-item-summary.hbs"
+		"systems/kult4th/templates/partials/derived-item-summary.hbs",
+
+		"systems/kult4th/templates/dialog/ask-for-attribute.hbs"
 	]);
 
 	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func as Handlebars.HelperDelegate));
@@ -67,11 +71,11 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", async () => {
 	const ACTOR = game.actors?.values().next().value as K4Actor;
-	const ITEM = game.items?.values().next().value as K4Item<K4ItemType>;
-	const EMBED = ACTOR.items?.values().next().value as K4Item<K4ItemType>;
+	const ITEM = game.items?.values().next().value as K4Item;
+	const EMBED = ACTOR.items?.values().next().value as K4Item;
 	const ACTORSHEET = ACTOR.sheet as unknown as K4PCSheet;
-	const ITEMSHEET = ITEM.sheet as unknown as K4ItemSheet<K4ItemType>;
-	const EMBEDSHEET = EMBED.sheet as unknown as K4ItemSheet<K4ItemType>;
+	const ITEMSHEET = ITEM.sheet as unknown as K4ItemSheet;
+	const EMBEDSHEET = EMBED.sheet as unknown as K4ItemSheet;
 
 	Object.assign(globalThis, {
 		ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,

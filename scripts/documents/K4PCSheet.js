@@ -155,7 +155,6 @@ export default class K4PCSheet extends ActorSheet {
             ]
         });
     }
-    // override get template() { return "systems/kult4th/templates/sheets/pc-sheet-copy.hbs" }
     get template() { return "systems/kult4th/templates/sheets/pc-sheet.hbs"; }
     hoverTimeline;
     hoverTimelineTarget;
@@ -164,7 +163,7 @@ export default class K4PCSheet extends ActorSheet {
         const baseData = await super.getData();
         const data = {
             ...baseData,
-            actorData: this.actor.tData,
+            actorData: this.actor.data.data,
             baseMoves: this.actor.basicMoves,
             derivedMoves: this.actor.derivedMoves,
             advantages: this.actor.advantages,
@@ -288,7 +287,7 @@ export default class K4PCSheet extends ActorSheet {
             }
             function createRollLinkFromName(elem, iName) {
                 if (iName) {
-                    $(elem).on("click", () => console.log(`${self.actor?.name} Rolling (Embedded) ${iName}`));
+                    $(elem).on("click", () => self.actor.roll(iName));
                 }
             }
             function createChatLinkFromName(elem, iName) {

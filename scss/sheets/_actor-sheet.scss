@@ -561,7 +561,9 @@
 						}
 
 						.basic-moves {
-							grid-area: basic-moves
+							grid-area: basic-moves;
+							padding-bottom: 0;
+							justify-content: space-evenly;
 						}
 
 						.special-moves {

@@ -19,14 +19,12 @@ export default class K4ItemSheet extends ItemSheet {
     }
     get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs`; }
     get item() { return super.item; }
-    get type() { return this.item.type; }
-    get tData() { return this.item.tData; }
+    get type() { return this.item.data.type; }
+    get tData() { return this.item.data.data; }
     get subType() { return this.tData.subType; }
-    get subItems() { return this.item.subItemData; }
-    // @ts-expect-error Types aren't discriminating the .data.data union type
-    get subMoves() { return this.item.subMoveData; }
-    // @ts-expect-error Types aren't discriminating the .data.data union type
-    get attacks() { return this.item.subAttackData; }
+    get subItems() { return this.tData.subItemData; }
+    get subMoves() { return this.tData.subMoveData; }
+    get attacks() { return this.tData.subAttackData; }
     activateListeners(html) {
         super.activateListeners(html);
         const self = this;

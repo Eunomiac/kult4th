@@ -213,7 +213,6 @@ export default class K4NPCSheet extends ActorSheet {
 			]
 		});
 	}
-	// override get template() { return "systems/kult4th/templates/sheets/pc-sheet-copy.hbs" }
 	override get template() { return "systems/kult4th/templates/sheets/npc-sheet.hbs" }
 
 	hoverTimeline?: gsapAnim;
@@ -224,7 +223,7 @@ export default class K4NPCSheet extends ActorSheet {
 		const baseData = await super.getData();
 		const data = {
 			...baseData,
-			actorData: this.actor.tData,
+			actorData: this.actor.data.data,
 			baseMoves: this.actor.basicMoves,
 			derivedMoves: this.actor.derivedMoves,
 			advantages: this.actor.advantages,

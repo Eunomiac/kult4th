@@ -11,7 +11,7 @@
 {{~#if (test data.data.subType "==" "active-rolled")}}
 <p class="results-summary">
 {{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
-{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(9—14)" result=data.data.results.partialSuccess.result}}
+{{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(9&minus;14)" result=data.data.results.partialSuccess.result}}
 {{> "systems/kult4th/templates/partials/roll-result-entry.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
 {{~#if data.data.results.listRefs}}
 	{{~#with data.data.lists as |LISTS|}}

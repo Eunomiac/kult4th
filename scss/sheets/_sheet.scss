@@ -186,6 +186,7 @@
 					font-family: var(--font-primary);
 					position: relative;
 					display: inline-block;
+					--kText-color: var(--black);
 					height: 100%;
 					width: calc((100% - var(--icon-size)) / 4);
 					background: linear-gradient(
@@ -208,15 +209,15 @@
 				position: absolute;
 				display: inline-block;
 				width: 100%;
-				height: 30px;
+				height: 32px;
 				left: 0;
 
 				.item-bg {
 					position: absolute;
 					z-index: 0;
-					height: 20px;
+					height: 24px;
 					width: calc(100% - 10px);
-					top: calc((var(--icon-size) - 20px) / 2);
+					top: calc((var(--icon-size) - 24px) / 2);
 					left: 10px;
 					background: #{$black};
 					display: block;
@@ -227,11 +228,11 @@
 					position: absolute;
 					font-family: var(--font-primary);
 					--kText-font-size: #{$rem-16};
-					--kText-line-height: #{$rem-20};
+					--kText-line-height: #{$rem-28};
 					--kText-color: #{$gold};
-					font-weight: var(--font-weight-bold);
-					height: 20px;
-					top: calc((var(--icon-size) - 20px) / 2);
+					font-weight: var(--font-weight-semi);
+					height: 24px;
+					top: calc((var(--icon-size) - 24px) / 2);
 					left: calc(var(--icon-size) + 5px);
 					z-index: 5;
 					white-space: nowrap;
@@ -244,9 +245,11 @@
 				display: block;
 				font-family: var(--font-primary);
 				font-size: 10px;
+				--kText-line-height: #{$rem-12};
 				text-align: center;
 				font-style: italic;
 				width: 100%;
+				--kText-text-align: left;
 				--kText-color: #{$white};
 				opacity: 0;
 				bottom: 0;

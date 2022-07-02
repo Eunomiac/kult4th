@@ -1483,6 +1483,7 @@
             font-family: var(--font-primary);
             position: relative;
             display: inline-block;
+            --kText-color: var(--black);
             height: 100%;
             width: calc((100% - var(--icon-size)) / 4);
             background: -webkit-gradient(linear, left top, right top, color-stop(15%, var(--popout-spacer-color)), color-stop(15%, var(--popout-background)), color-stop(85%, var(--popout-background)), color-stop(85%, var(--popout-spacer-color)));
@@ -1498,14 +1499,14 @@
           position: absolute;
           display: inline-block;
           width: 100%;
-          height: 30px;
+          height: 32px;
           left: 0; }
           .vtt.game.system-kult4th .app.window-app.sheet .window-content .item-card .item-name .item-bg {
             position: absolute;
             z-index: 0;
-            height: 20px;
+            height: 24px;
             width: calc(100% - 10px);
-            top: calc((var(--icon-size) - 20px) / 2);
+            top: calc((var(--icon-size) - 24px) / 2);
             left: 10px;
             background: #000000;
             display: block;
@@ -1514,11 +1515,11 @@
             position: absolute;
             font-family: var(--font-primary);
             --kText-font-size: 1rem;
-            --kText-line-height: 1.25rem;
+            --kText-line-height: 1.75rem;
             --kText-color: #958b68;
-            font-weight: var(--font-weight-bold);
-            height: 20px;
-            top: calc((var(--icon-size) - 20px) / 2);
+            font-weight: var(--font-weight-semi);
+            height: 24px;
+            top: calc((var(--icon-size) - 24px) / 2);
             left: calc(var(--icon-size) + 5px);
             z-index: 5;
             white-space: nowrap; }
@@ -1528,9 +1529,11 @@
           display: block;
           font-family: var(--font-primary);
           font-size: 10px;
+          --kText-line-height: 0.75rem;
           text-align: center;
           font-style: italic;
           width: 100%;
+          --kText-text-align: left;
           --kText-color: #ffffff;
           opacity: 0;
           bottom: 0;
@@ -1997,7 +2000,11 @@
                 .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="soul"] {
                   top: 414.5px; }
             .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .basic-moves {
-              grid-area: basic-moves; }
+              grid-area: basic-moves;
+              padding-bottom: 0;
+              -webkit-box-pack: space-evenly;
+              -ms-flex-pack: space-evenly;
+              justify-content: space-evenly; }
             .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .special-moves {
               grid-area: special-moves; }
             .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .session-checks {
@@ -2129,7 +2136,7 @@
     background: transparent url("../assets/backgrounds/bg-black-leather.webp") repeat center/500px 500px;
     margin: 3px 0;
     padding: 0;
-    border: 2px outset #685f43;
+    border: none;
     position: relative; }
     .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-header {
       opacity: 0;
@@ -2157,9 +2164,6 @@
       --horiz-padding: 2px;
       --kText-font-size: 0.75rem;
       --kText-line-height: 1rem; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form *, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat * {
-        --kText-font-size: 0.75rem;
-        --kText-line-height: 1rem; }
       .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-posmod,
       .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-keyword,
       .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-attributename,
