@@ -5,14 +5,14 @@
 .kult4th-form,
 .kult-text-container,
 .kult-text-block,
-.mce-content-body {
-	--horiz-padding: 0;
+.mce-content-body,
+.kult4th.window-app .window-content {
 	--kText-color: var(--color-body-text);
 	--kText-background: transparent;
 	--kText-font-family: var(--font-primary);
 	--kText-font-size: #{$rem-12};
 	--kText-line-height: #{$rem-16};
-	--kText-font-weight: var(--font-weight-normal);
+	--kText-font-weight: #{$font-weight-normal};
 	--kText-font-style: normal;
 	--kText-text-shadow: none; // 0px 0px 0px var(--color-body-text);
 	--kText-text-align: justify;
@@ -24,12 +24,11 @@
 	}
 
 	&.kult-text-container {
-		--horiz-padding: 5px;
-		margin: 0px 10px;
-		padding: var(--horiz-padding);
+		margin: 0;
+		padding: var(--kText-vert-padding) var(--kText-horiz-padding);
 	}
 
-	*, input[type="text"], input[type="number"], select, option, ul, li {
+	&, *, input[type="text"], input[type="number"], select, option, ul, li {
 		color: var(--kText-color);
 		background: var(--kText-background);
 		font: {
@@ -81,7 +80,7 @@
 
 	h1, h2, h3, h4 {
 		--kText-text-align: left;
-		margin: #{$rem-12} 0 0;
+		margin: #{$rem-8} 0 0;
 		border: none;
 	}
 
@@ -90,7 +89,7 @@
 		--kText-font-family: var(--font-primary-caps);
 		--kText-font-size: #{$rem-20};
 		--kText-line-height: #{$rem-20};
-		--kText-font-weight: var(--font-weight-bold);
+		--kText-font-weight: #{$font-weight-bold};
 		--kText-text-align: center;
 		--kText-background: #{$gold};
 
@@ -111,7 +110,7 @@
 		--kText-font-family: var(--font-primary-caps);
 		--kText-font-size: #{$rem-18};
 		--kText-line-height: #{$rem-18};
-		--kText-font-weight: var(--font-weight-bold);
+		--kText-font-weight: #{$font-weight-bold};
 		font-variant: small-caps;
 		border-bottom: 2px solid #{$red-dark};
 	 }
@@ -121,13 +120,13 @@
 		--kText-font-family: var(--font-primary);
 		--kText-font-size: #{$rem-16};
 		--kText-line-height: #{$rem-16};
-		--kText-font-weight: var(--font-weight-semi);
+		--kText-font-weight: #{$font-weight-semi};
 	}
 
 	h4 {
 		--kText-color: #{$gold-bright};
 		--kText-font-style: italic;
-		--kText-font-weight: var(--font-weight-bold);
+		--kText-font-weight: #{$font-weight-bold};
 		--kText-line-height: #{$rem-12};
 		+p, +span, +div {
 			margin-top: 0
@@ -146,7 +145,7 @@
 	.text-movename,
 	.text-edgename {
 		--kText-color: #{$blue};
-		--kText-font-weight: var(--font-weight-bold);
+		--kText-font-weight: #{$font-weight-bold};
 	}
 
 	.text-negmod,
@@ -158,7 +157,7 @@
 	.text-gmtext,
 	.text-resultlabel {
 		--kText-color: #{$red};
-		--kText-font-weight: var(--font-weight-black);
+		--kText-font-weight: #{$font-weight-black};
 	}
 
 	.text-movename {
@@ -167,7 +166,7 @@
 
 	.text-trigger {
 		--kText-font-style: italic;
-		--kText-font-weight: var(--font-weight-semi);
+		--kText-font-weight: #{$font-weight-semi};
 	}
 
 	.text-highlight {
@@ -175,7 +174,7 @@
 	}
 
 	.text-extra-bold {
-		--kText-font-weight: var(--font-weight-black);
+		--kText-font-weight: #{$font-weight-black};
 	}
 
 	.text-center {
@@ -186,7 +185,7 @@
 	.hold-header,
 	.edges-header {
 		--kText-font-size: #{$rem-20};
-		--kText-font-weight: var(--font-weight-black);
+		--kText-font-weight: #{$font-weight-black};
 		--kText-text-align: center;
 		--kText-hyphens: none;
 		--kText-background: linear-gradient(
@@ -239,7 +238,7 @@
 			padding-bottom: 4px;
 			border-bottom-style: solid;
 			border-bottom-width: 3px;
-			border-image: linear-gradient(to right, #{$gold}, transparent 75%) 1;
+			border-image: linear-gradient(to right, #{$gold} 50%, transparent) 1;
 		}
 
 		&:last-of-type>span {

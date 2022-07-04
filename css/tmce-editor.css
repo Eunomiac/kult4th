@@ -233,34 +233,20 @@
   --font-primary: Alverata;
   --font-primary-caps: AlverataCaps;
   --font-heading: Infidel;
-  --font-decorative: Sokol;
-  --font-size-28: 1.75rem;
-  --font-size-32: 2rem;
-  --font-size-36: 2.25rem;
-  --font-size-42: 2.625rem;
-  --font-size-48: 3rem;
-  --font-size-56: 3.5rem;
-  --font-size-64: 4rem;
-  --font-size-72: 4.5rem;
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semi: 600;
-  --font-weight-bold: 700;
-  --font-weight-black: 900; }
+  --font-decorative: Sokol; }
 
 .kult4th,
 .kult4th-form,
 .kult-text-container,
 .kult-text-block,
-.mce-content-body {
-  --horiz-padding: 0;
+.mce-content-body,
+.kult4th.window-app .window-content {
   --kText-color: var(--color-body-text);
   --kText-background: transparent;
   --kText-font-family: var(--font-primary);
   --kText-font-size: 0.75rem;
   --kText-line-height: 1rem;
-  --kText-font-weight: var(--font-weight-normal);
+  --kText-font-weight: 400;
   --kText-font-style: normal;
   --kText-text-shadow: none;
   --kText-text-align: justify;
@@ -269,18 +255,20 @@
   .kult4th-form.kult-text-block,
   .kult-text-container.kult-text-block,
   .kult-text-block.kult-text-block,
-  .mce-content-body.kult-text-block {
+  .mce-content-body.kult-text-block,
+  .kult4th.window-app .window-content.kult-text-block {
     display: block;
     height: unset; }
   .kult4th.kult-text-container,
   .kult4th-form.kult-text-container,
   .kult-text-container.kult-text-container,
   .kult-text-block.kult-text-container,
-  .mce-content-body.kult-text-container {
-    --horiz-padding: 5px;
-    margin: 0px 10px;
-    padding: var(--horiz-padding); }
-  .kult4th *, .kult4th input[type="text"], .kult4th input[type="number"], .kult4th select, .kult4th option, .kult4th ul, .kult4th li,
+  .mce-content-body.kult-text-container,
+  .kult4th.window-app .window-content.kult-text-container {
+    margin: 0;
+    padding: var(--kText-vert-padding) var(--kText-horiz-padding); }
+  .kult4th, .kult4th *, .kult4th input[type="text"], .kult4th input[type="number"], .kult4th select, .kult4th option, .kult4th ul, .kult4th li,
+  .kult4th-form,
   .kult4th-form *,
   .kult4th-form input[type="text"],
   .kult4th-form input[type="number"],
@@ -288,6 +276,7 @@
   .kult4th-form option,
   .kult4th-form ul,
   .kult4th-form li,
+  .kult-text-container,
   .kult-text-container *,
   .kult-text-container input[type="text"],
   .kult-text-container input[type="number"],
@@ -295,6 +284,7 @@
   .kult-text-container option,
   .kult-text-container ul,
   .kult-text-container li,
+  .kult-text-block,
   .kult-text-block *,
   .kult-text-block input[type="text"],
   .kult-text-block input[type="number"],
@@ -302,13 +292,22 @@
   .kult-text-block option,
   .kult-text-block ul,
   .kult-text-block li,
+  .mce-content-body,
   .mce-content-body *,
   .mce-content-body input[type="text"],
   .mce-content-body input[type="number"],
   .mce-content-body select,
   .mce-content-body option,
   .mce-content-body ul,
-  .mce-content-body li {
+  .mce-content-body li,
+  .kult4th.window-app .window-content,
+  .kult4th.window-app .window-content *,
+  .kult4th.window-app .window-content input[type="text"],
+  .kult4th.window-app .window-content input[type="number"],
+  .kult4th.window-app .window-content select,
+  .kult4th.window-app .window-content option,
+  .kult4th.window-app .window-content ul,
+  .kult4th.window-app .window-content li {
     color: var(--kText-color);
     background: var(--kText-background);
     font-family: var(--kText-font-family);
@@ -325,26 +324,30 @@
   .kult4th-form i[class^="fa"],
   .kult-text-container i[class^="fa"],
   .kult-text-block i[class^="fa"],
-  .mce-content-body i[class^="fa"] {
+  .mce-content-body i[class^="fa"],
+  .kult4th.window-app .window-content i[class^="fa"] {
     --kText-color: var(--gold);
     --kText-font-family: "Font Awesome 5 Free"; }
   .kult4th p,
   .kult4th-form p,
   .kult-text-container p,
   .kult-text-block p,
-  .mce-content-body p {
+  .mce-content-body p,
+  .kult4th.window-app .window-content p {
     margin: 0.25rem 0 0.5rem; }
   .kult4th ul,
   .kult4th-form ul,
   .kult-text-container ul,
   .kult-text-block ul,
-  .mce-content-body ul {
+  .mce-content-body ul,
+  .kult4th.window-app .window-content ul {
     margin-left: 10px; }
     .kult4th ul li,
     .kult4th-form ul li,
     .kult-text-container ul li,
     .kult-text-block ul li,
-    .mce-content-body ul li {
+    .mce-content-body ul li,
+    .kult4th.window-app .window-content ul li {
       --kText-text-align: left;
       list-style: none;
       text-indent: -24px; }
@@ -352,7 +355,8 @@
     .kult4th-form ul li:before,
     .kult-text-container ul li:before,
     .kult-text-block ul li:before,
-    .mce-content-body ul li:before {
+    .mce-content-body ul li:before,
+    .kult4th.window-app .window-content ul li:before {
       content: '';
       display: inline-block;
       height: 18px;
@@ -385,20 +389,25 @@
   .mce-content-body h1,
   .mce-content-body h2,
   .mce-content-body h3,
-  .mce-content-body h4 {
+  .mce-content-body h4,
+  .kult4th.window-app .window-content h1,
+  .kult4th.window-app .window-content h2,
+  .kult4th.window-app .window-content h3,
+  .kult4th.window-app .window-content h4 {
     --kText-text-align: left;
-    margin: 0.75rem 0 0;
+    margin: 0.5rem 0 0;
     border: none; }
   .kult4th h1,
   .kult4th-form h1,
   .kult-text-container h1,
   .kult-text-block h1,
-  .mce-content-body h1 {
+  .mce-content-body h1,
+  .kult4th.window-app .window-content h1 {
     --kText-color: #000000;
     --kText-font-family: var(--font-primary-caps);
     --kText-font-size: 1.25rem;
     --kText-line-height: 1.25rem;
-    --kText-font-weight: var(--font-weight-bold);
+    --kText-font-weight: 700;
     --kText-text-align: center;
     --kText-background: #958b68;
     border: none;
@@ -411,38 +420,42 @@
     .kult4th-form h1:first-child,
     .kult-text-container h1:first-child,
     .kult-text-block h1:first-child,
-    .mce-content-body h1:first-child {
+    .mce-content-body h1:first-child,
+    .kult4th.window-app .window-content h1:first-child {
       margin-top: 0; }
   .kult4th h2,
   .kult4th-form h2,
   .kult-text-container h2,
   .kult-text-block h2,
-  .mce-content-body h2 {
+  .mce-content-body h2,
+  .kult4th.window-app .window-content h2 {
     --kText-color: #e4ddc3;
     --kText-font-family: var(--font-primary-caps);
     --kText-font-size: 1.125rem;
     --kText-line-height: 1.125rem;
-    --kText-font-weight: var(--font-weight-bold);
+    --kText-font-weight: 700;
     font-variant: small-caps;
     border-bottom: 2px solid #730606; }
   .kult4th h3,
   .kult4th-form h3,
   .kult-text-container h3,
   .kult-text-block h3,
-  .mce-content-body h3 {
+  .mce-content-body h3,
+  .kult4th.window-app .window-content h3 {
     --kText-color: #e4ddc3;
     --kText-font-family: var(--font-primary);
     --kText-font-size: 1rem;
     --kText-line-height: 1rem;
-    --kText-font-weight: var(--font-weight-semi); }
+    --kText-font-weight: 600; }
   .kult4th h4,
   .kult4th-form h4,
   .kult-text-container h4,
   .kult-text-block h4,
-  .mce-content-body h4 {
+  .mce-content-body h4,
+  .kult4th.window-app .window-content h4 {
     --kText-color: #b9af8f;
     --kText-font-style: italic;
-    --kText-font-weight: var(--font-weight-bold);
+    --kText-font-weight: 700;
     --kText-line-height: 0.75rem; }
     .kult4th h4 + p, .kult4th h4 + span, .kult4th h4 + div,
     .kult4th-form h4 + p,
@@ -456,13 +469,17 @@
     .kult-text-block h4 + div,
     .mce-content-body h4 + p,
     .mce-content-body h4 + span,
-    .mce-content-body h4 + div {
+    .mce-content-body h4 + div,
+    .kult4th.window-app .window-content h4 + p,
+    .kult4th.window-app .window-content h4 + span,
+    .kult4th.window-app .window-content h4 + div {
       margin-top: 0; }
   .kult4th .text-tag,
   .kult4th-form .text-tag,
   .kult-text-container .text-tag,
   .kult-text-block .text-tag,
-  .mce-content-body .text-tag {
+  .mce-content-body .text-tag,
+  .kult4th.window-app .window-content .text-tag {
     display: inline;
     border: none; }
   .kult4th .text-posmod,
@@ -494,9 +511,15 @@
   .mce-content-body .text-keyword,
   .mce-content-body .text-attributename,
   .mce-content-body .text-movename,
-  .mce-content-body .text-edgename {
+  .mce-content-body .text-edgename,
+  .kult4th.window-app .window-content .text-posmod,
+  .kult4th.window-app .window-content .text-negmod,
+  .kult4th.window-app .window-content .text-keyword,
+  .kult4th.window-app .window-content .text-attributename,
+  .kult4th.window-app .window-content .text-movename,
+  .kult4th.window-app .window-content .text-edgename {
     --kText-color: #2a548a;
-    --kText-font-weight: var(--font-weight-bold); }
+    --kText-font-weight: 700; }
   .kult4th .text-negmod,
   .kult4th .text-negmod + .text-keyword,
   .kult4th .text-negmod + .text-attributename,
@@ -511,7 +534,10 @@
   .kult-text-block .text-negmod + .text-attributename,
   .mce-content-body .text-negmod,
   .mce-content-body .text-negmod + .text-keyword,
-  .mce-content-body .text-negmod + .text-attributename {
+  .mce-content-body .text-negmod + .text-attributename,
+  .kult4th.window-app .window-content .text-negmod,
+  .kult4th.window-app .window-content .text-negmod + .text-keyword,
+  .kult4th.window-app .window-content .text-negmod + .text-attributename {
     --kText-color: #9a1f1f; }
   .kult4th .text-gmtext,
   .kult4th .text-resultlabel,
@@ -522,39 +548,46 @@
   .kult-text-block .text-gmtext,
   .kult-text-block .text-resultlabel,
   .mce-content-body .text-gmtext,
-  .mce-content-body .text-resultlabel {
+  .mce-content-body .text-resultlabel,
+  .kult4th.window-app .window-content .text-gmtext,
+  .kult4th.window-app .window-content .text-resultlabel {
     --kText-color: #9a1f1f;
-    --kText-font-weight: var(--font-weight-black); }
+    --kText-font-weight: 900; }
   .kult4th .text-movename,
   .kult4th-form .text-movename,
   .kult-text-container .text-movename,
   .kult-text-block .text-movename,
-  .mce-content-body .text-movename {
+  .mce-content-body .text-movename,
+  .kult4th.window-app .window-content .text-movename {
     --kText-font-style: italic; }
   .kult4th .text-trigger,
   .kult4th-form .text-trigger,
   .kult-text-container .text-trigger,
   .kult-text-block .text-trigger,
-  .mce-content-body .text-trigger {
+  .mce-content-body .text-trigger,
+  .kult4th.window-app .window-content .text-trigger {
     --kText-font-style: italic;
-    --kText-font-weight: var(--font-weight-semi); }
+    --kText-font-weight: 600; }
   .kult4th .text-highlight,
   .kult4th-form .text-highlight,
   .kult-text-container .text-highlight,
   .kult-text-block .text-highlight,
-  .mce-content-body .text-highlight {
+  .mce-content-body .text-highlight,
+  .kult4th.window-app .window-content .text-highlight {
     --kText-color: #e4ddc3; }
   .kult4th .text-extra-bold,
   .kult4th-form .text-extra-bold,
   .kult-text-container .text-extra-bold,
   .kult-text-block .text-extra-bold,
-  .mce-content-body .text-extra-bold {
-    --kText-font-weight: var(--font-weight-black); }
+  .mce-content-body .text-extra-bold,
+  .kult4th.window-app .window-content .text-extra-bold {
+    --kText-font-weight: 900; }
   .kult4th .text-center,
   .kult4th-form .text-center,
   .kult-text-container .text-center,
   .kult-text-block .text-center,
-  .mce-content-body .text-center {
+  .mce-content-body .text-center,
+  .kult4th.window-app .window-content .text-center {
     --kText-text-align: center;
     display: block; }
   .kult4th .hold-header,
@@ -566,9 +599,11 @@
   .kult-text-block .hold-header,
   .kult-text-block .edges-header,
   .mce-content-body .hold-header,
-  .mce-content-body .edges-header {
+  .mce-content-body .edges-header,
+  .kult4th.window-app .window-content .hold-header,
+  .kult4th.window-app .window-content .edges-header {
     --kText-font-size: 1.25rem;
-    --kText-font-weight: var(--font-weight-black);
+    --kText-font-weight: 900;
     --kText-text-align: center;
     --kText-hyphens: none;
     --kText-background: linear-gradient(
@@ -586,21 +621,24 @@
   .kult4th-form .hold-header,
   .kult-text-container .hold-header,
   .kult-text-block .hold-header,
-  .mce-content-body .hold-header {
+  .mce-content-body .hold-header,
+  .kult4th.window-app .window-content .hold-header {
     --kText-color: #ff0000;
     --header-bg-color: #490000; }
   .kult4th .edges-header,
   .kult4th-form .edges-header,
   .kult-text-container .edges-header,
   .kult-text-block .edges-header,
-  .mce-content-body .edges-header {
+  .mce-content-body .edges-header,
+  .kult4th.window-app .window-content .edges-header {
     --kText-color: #3f93ff;
     --header-bg-color: #082b58; }
   .kult4th .hold-body,
   .kult4th-form .hold-body,
   .kult-text-container .hold-body,
   .kult-text-block .hold-body,
-  .mce-content-body .hold-body {
+  .mce-content-body .hold-body,
+  .kult4th.window-app .window-content .hold-body {
     display: block;
     margin-bottom: 10px;
     padding: 0 20px; }
@@ -608,7 +646,8 @@
   .kult4th-form .result-entry,
   .kult-text-container .result-entry,
   .kult-text-block .result-entry,
-  .mce-content-body .result-entry {
+  .mce-content-body .result-entry,
+  .kult4th.window-app .window-content .result-entry {
     display: block;
     margin: 0 20px;
     font-size: 16px;
@@ -617,7 +656,8 @@
     .kult4th-form .result-entry > label,
     .kult-text-container .result-entry > label,
     .kult-text-block .result-entry > label,
-    .mce-content-body .result-entry > label {
+    .mce-content-body .result-entry > label,
+    .kult4th.window-app .window-content .result-entry > label {
       --kText-text-align: right;
       display: block;
       width: 60px;
@@ -628,21 +668,23 @@
     .kult4th-form .result-entry > span,
     .kult-text-container .result-entry > span,
     .kult-text-block .result-entry > span,
-    .mce-content-body .result-entry > span {
+    .mce-content-body .result-entry > span,
+    .kult4th.window-app .window-content .result-entry > span {
       display: inline-block;
       width: calc(100% - 70px);
       margin-bottom: 4px;
       padding-bottom: 4px;
       border-bottom-style: solid;
       border-bottom-width: 3px;
-      -o-border-image: -o-linear-gradient(left, #958b68, transparent 75%) 1;
-      border-image: -webkit-gradient(linear, left top, right top, from(#958b68), color-stop(75%, transparent)) 1;
-      border-image: linear-gradient(to right, #958b68, transparent 75%) 1; }
+      -o-border-image: -o-linear-gradient(left, #958b68 50%, transparent) 1;
+      border-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #958b68), to(transparent)) 1;
+      border-image: linear-gradient(to right, #958b68 50%, transparent) 1; }
     .kult4th .result-entry:last-of-type > span,
     .kult4th-form .result-entry:last-of-type > span,
     .kult-text-container .result-entry:last-of-type > span,
     .kult-text-block .result-entry:last-of-type > span,
-    .mce-content-body .result-entry:last-of-type > span {
+    .mce-content-body .result-entry:last-of-type > span,
+    .kult4th.window-app .window-content .result-entry:last-of-type > span {
       border-bottom: none; }
 
 #tinymce * {
@@ -900,34 +942,20 @@
   --font-primary: Alverata;
   --font-primary-caps: AlverataCaps;
   --font-heading: Infidel;
-  --font-decorative: Sokol;
-  --font-size-28: 1.75rem;
-  --font-size-32: 2rem;
-  --font-size-36: 2.25rem;
-  --font-size-42: 2.625rem;
-  --font-size-48: 3rem;
-  --font-size-56: 3.5rem;
-  --font-size-64: 4rem;
-  --font-size-72: 4.5rem;
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semi: 600;
-  --font-weight-bold: 700;
-  --font-weight-black: 900; }
+  --font-decorative: Sokol; }
 
 #tinymce .kult4th,
 #tinymce .kult4th-form,
 #tinymce .kult-text-container,
 #tinymce .kult-text-block,
-#tinymce .mce-content-body {
-  --horiz-padding: 0;
+#tinymce .mce-content-body,
+#tinymce .kult4th.window-app .window-content {
   --kText-color: var(--color-body-text);
   --kText-background: transparent;
   --kText-font-family: var(--font-primary);
   --kText-font-size: 0.75rem;
   --kText-line-height: 1rem;
-  --kText-font-weight: var(--font-weight-normal);
+  --kText-font-weight: 400;
   --kText-font-style: normal;
   --kText-text-shadow: none;
   --kText-text-align: justify;
@@ -936,18 +964,20 @@
   #tinymce .kult4th-form.kult-text-block,
   #tinymce .kult-text-container.kult-text-block,
   #tinymce .kult-text-block.kult-text-block,
-  #tinymce .mce-content-body.kult-text-block {
+  #tinymce .mce-content-body.kult-text-block,
+  #tinymce .kult4th.window-app .window-content.kult-text-block {
     display: block;
     height: unset; }
   #tinymce .kult4th.kult-text-container,
   #tinymce .kult4th-form.kult-text-container,
   #tinymce .kult-text-container.kult-text-container,
   #tinymce .kult-text-block.kult-text-container,
-  #tinymce .mce-content-body.kult-text-container {
-    --horiz-padding: 5px;
-    margin: 0px 10px;
-    padding: var(--horiz-padding); }
-  #tinymce .kult4th *, #tinymce .kult4th input[type="text"], #tinymce .kult4th input[type="number"], #tinymce .kult4th select, #tinymce .kult4th option, #tinymce .kult4th ul, #tinymce .kult4th li,
+  #tinymce .mce-content-body.kult-text-container,
+  #tinymce .kult4th.window-app .window-content.kult-text-container {
+    margin: 0;
+    padding: var(--kText-vert-padding) var(--kText-horiz-padding); }
+  #tinymce .kult4th, #tinymce .kult4th *, #tinymce .kult4th input[type="text"], #tinymce .kult4th input[type="number"], #tinymce .kult4th select, #tinymce .kult4th option, #tinymce .kult4th ul, #tinymce .kult4th li,
+  #tinymce .kult4th-form,
   #tinymce .kult4th-form *,
   #tinymce .kult4th-form input[type="text"],
   #tinymce .kult4th-form input[type="number"],
@@ -955,6 +985,7 @@
   #tinymce .kult4th-form option,
   #tinymce .kult4th-form ul,
   #tinymce .kult4th-form li,
+  #tinymce .kult-text-container,
   #tinymce .kult-text-container *,
   #tinymce .kult-text-container input[type="text"],
   #tinymce .kult-text-container input[type="number"],
@@ -962,6 +993,7 @@
   #tinymce .kult-text-container option,
   #tinymce .kult-text-container ul,
   #tinymce .kult-text-container li,
+  #tinymce .kult-text-block,
   #tinymce .kult-text-block *,
   #tinymce .kult-text-block input[type="text"],
   #tinymce .kult-text-block input[type="number"],
@@ -969,13 +1001,22 @@
   #tinymce .kult-text-block option,
   #tinymce .kult-text-block ul,
   #tinymce .kult-text-block li,
+  #tinymce .mce-content-body,
   #tinymce .mce-content-body *,
   #tinymce .mce-content-body input[type="text"],
   #tinymce .mce-content-body input[type="number"],
   #tinymce .mce-content-body select,
   #tinymce .mce-content-body option,
   #tinymce .mce-content-body ul,
-  #tinymce .mce-content-body li {
+  #tinymce .mce-content-body li,
+  #tinymce .kult4th.window-app .window-content,
+  #tinymce .kult4th.window-app .window-content *,
+  #tinymce .kult4th.window-app .window-content input[type="text"],
+  #tinymce .kult4th.window-app .window-content input[type="number"],
+  #tinymce .kult4th.window-app .window-content select,
+  #tinymce .kult4th.window-app .window-content option,
+  #tinymce .kult4th.window-app .window-content ul,
+  #tinymce .kult4th.window-app .window-content li {
     color: var(--kText-color);
     background: var(--kText-background);
     font-family: var(--kText-font-family);
@@ -992,26 +1033,30 @@
   #tinymce .kult4th-form i[class^="fa"],
   #tinymce .kult-text-container i[class^="fa"],
   #tinymce .kult-text-block i[class^="fa"],
-  #tinymce .mce-content-body i[class^="fa"] {
+  #tinymce .mce-content-body i[class^="fa"],
+  #tinymce .kult4th.window-app .window-content i[class^="fa"] {
     --kText-color: var(--gold);
     --kText-font-family: "Font Awesome 5 Free"; }
   #tinymce .kult4th p,
   #tinymce .kult4th-form p,
   #tinymce .kult-text-container p,
   #tinymce .kult-text-block p,
-  #tinymce .mce-content-body p {
+  #tinymce .mce-content-body p,
+  #tinymce .kult4th.window-app .window-content p {
     margin: 0.25rem 0 0.5rem; }
   #tinymce .kult4th ul,
   #tinymce .kult4th-form ul,
   #tinymce .kult-text-container ul,
   #tinymce .kult-text-block ul,
-  #tinymce .mce-content-body ul {
+  #tinymce .mce-content-body ul,
+  #tinymce .kult4th.window-app .window-content ul {
     margin-left: 10px; }
     #tinymce .kult4th ul li,
     #tinymce .kult4th-form ul li,
     #tinymce .kult-text-container ul li,
     #tinymce .kult-text-block ul li,
-    #tinymce .mce-content-body ul li {
+    #tinymce .mce-content-body ul li,
+    #tinymce .kult4th.window-app .window-content ul li {
       --kText-text-align: left;
       list-style: none;
       text-indent: -24px; }
@@ -1019,7 +1064,8 @@
     #tinymce .kult4th-form ul li:before,
     #tinymce .kult-text-container ul li:before,
     #tinymce .kult-text-block ul li:before,
-    #tinymce .mce-content-body ul li:before {
+    #tinymce .mce-content-body ul li:before,
+    #tinymce .kult4th.window-app .window-content ul li:before {
       content: '';
       display: inline-block;
       height: 18px;
@@ -1052,20 +1098,25 @@
   #tinymce .mce-content-body h1,
   #tinymce .mce-content-body h2,
   #tinymce .mce-content-body h3,
-  #tinymce .mce-content-body h4 {
+  #tinymce .mce-content-body h4,
+  #tinymce .kult4th.window-app .window-content h1,
+  #tinymce .kult4th.window-app .window-content h2,
+  #tinymce .kult4th.window-app .window-content h3,
+  #tinymce .kult4th.window-app .window-content h4 {
     --kText-text-align: left;
-    margin: 0.75rem 0 0;
+    margin: 0.5rem 0 0;
     border: none; }
   #tinymce .kult4th h1,
   #tinymce .kult4th-form h1,
   #tinymce .kult-text-container h1,
   #tinymce .kult-text-block h1,
-  #tinymce .mce-content-body h1 {
+  #tinymce .mce-content-body h1,
+  #tinymce .kult4th.window-app .window-content h1 {
     --kText-color: #000000;
     --kText-font-family: var(--font-primary-caps);
     --kText-font-size: 1.25rem;
     --kText-line-height: 1.25rem;
-    --kText-font-weight: var(--font-weight-bold);
+    --kText-font-weight: 700;
     --kText-text-align: center;
     --kText-background: #958b68;
     border: none;
@@ -1078,38 +1129,42 @@
     #tinymce .kult4th-form h1:first-child,
     #tinymce .kult-text-container h1:first-child,
     #tinymce .kult-text-block h1:first-child,
-    #tinymce .mce-content-body h1:first-child {
+    #tinymce .mce-content-body h1:first-child,
+    #tinymce .kult4th.window-app .window-content h1:first-child {
       margin-top: 0; }
   #tinymce .kult4th h2,
   #tinymce .kult4th-form h2,
   #tinymce .kult-text-container h2,
   #tinymce .kult-text-block h2,
-  #tinymce .mce-content-body h2 {
+  #tinymce .mce-content-body h2,
+  #tinymce .kult4th.window-app .window-content h2 {
     --kText-color: #e4ddc3;
     --kText-font-family: var(--font-primary-caps);
     --kText-font-size: 1.125rem;
     --kText-line-height: 1.125rem;
-    --kText-font-weight: var(--font-weight-bold);
+    --kText-font-weight: 700;
     font-variant: small-caps;
     border-bottom: 2px solid #730606; }
   #tinymce .kult4th h3,
   #tinymce .kult4th-form h3,
   #tinymce .kult-text-container h3,
   #tinymce .kult-text-block h3,
-  #tinymce .mce-content-body h3 {
+  #tinymce .mce-content-body h3,
+  #tinymce .kult4th.window-app .window-content h3 {
     --kText-color: #e4ddc3;
     --kText-font-family: var(--font-primary);
     --kText-font-size: 1rem;
     --kText-line-height: 1rem;
-    --kText-font-weight: var(--font-weight-semi); }
+    --kText-font-weight: 600; }
   #tinymce .kult4th h4,
   #tinymce .kult4th-form h4,
   #tinymce .kult-text-container h4,
   #tinymce .kult-text-block h4,
-  #tinymce .mce-content-body h4 {
+  #tinymce .mce-content-body h4,
+  #tinymce .kult4th.window-app .window-content h4 {
     --kText-color: #b9af8f;
     --kText-font-style: italic;
-    --kText-font-weight: var(--font-weight-bold);
+    --kText-font-weight: 700;
     --kText-line-height: 0.75rem; }
     #tinymce .kult4th h4 + p, #tinymce .kult4th h4 + span, #tinymce .kult4th h4 + div,
     #tinymce .kult4th-form h4 + p,
@@ -1123,13 +1178,17 @@
     #tinymce .kult-text-block h4 + div,
     #tinymce .mce-content-body h4 + p,
     #tinymce .mce-content-body h4 + span,
-    #tinymce .mce-content-body h4 + div {
+    #tinymce .mce-content-body h4 + div,
+    #tinymce .kult4th.window-app .window-content h4 + p,
+    #tinymce .kult4th.window-app .window-content h4 + span,
+    #tinymce .kult4th.window-app .window-content h4 + div {
       margin-top: 0; }
   #tinymce .kult4th .text-tag,
   #tinymce .kult4th-form .text-tag,
   #tinymce .kult-text-container .text-tag,
   #tinymce .kult-text-block .text-tag,
-  #tinymce .mce-content-body .text-tag {
+  #tinymce .mce-content-body .text-tag,
+  #tinymce .kult4th.window-app .window-content .text-tag {
     display: inline;
     border: none; }
   #tinymce .kult4th .text-posmod,
@@ -1161,9 +1220,15 @@
   #tinymce .mce-content-body .text-keyword,
   #tinymce .mce-content-body .text-attributename,
   #tinymce .mce-content-body .text-movename,
-  #tinymce .mce-content-body .text-edgename {
+  #tinymce .mce-content-body .text-edgename,
+  #tinymce .kult4th.window-app .window-content .text-posmod,
+  #tinymce .kult4th.window-app .window-content .text-negmod,
+  #tinymce .kult4th.window-app .window-content .text-keyword,
+  #tinymce .kult4th.window-app .window-content .text-attributename,
+  #tinymce .kult4th.window-app .window-content .text-movename,
+  #tinymce .kult4th.window-app .window-content .text-edgename {
     --kText-color: #2a548a;
-    --kText-font-weight: var(--font-weight-bold); }
+    --kText-font-weight: 700; }
   #tinymce .kult4th .text-negmod,
   #tinymce .kult4th .text-negmod + .text-keyword,
   #tinymce .kult4th .text-negmod + .text-attributename,
@@ -1178,7 +1243,10 @@
   #tinymce .kult-text-block .text-negmod + .text-attributename,
   #tinymce .mce-content-body .text-negmod,
   #tinymce .mce-content-body .text-negmod + .text-keyword,
-  #tinymce .mce-content-body .text-negmod + .text-attributename {
+  #tinymce .mce-content-body .text-negmod + .text-attributename,
+  #tinymce .kult4th.window-app .window-content .text-negmod,
+  #tinymce .kult4th.window-app .window-content .text-negmod + .text-keyword,
+  #tinymce .kult4th.window-app .window-content .text-negmod + .text-attributename {
     --kText-color: #9a1f1f; }
   #tinymce .kult4th .text-gmtext,
   #tinymce .kult4th .text-resultlabel,
@@ -1189,39 +1257,46 @@
   #tinymce .kult-text-block .text-gmtext,
   #tinymce .kult-text-block .text-resultlabel,
   #tinymce .mce-content-body .text-gmtext,
-  #tinymce .mce-content-body .text-resultlabel {
+  #tinymce .mce-content-body .text-resultlabel,
+  #tinymce .kult4th.window-app .window-content .text-gmtext,
+  #tinymce .kult4th.window-app .window-content .text-resultlabel {
     --kText-color: #9a1f1f;
-    --kText-font-weight: var(--font-weight-black); }
+    --kText-font-weight: 900; }
   #tinymce .kult4th .text-movename,
   #tinymce .kult4th-form .text-movename,
   #tinymce .kult-text-container .text-movename,
   #tinymce .kult-text-block .text-movename,
-  #tinymce .mce-content-body .text-movename {
+  #tinymce .mce-content-body .text-movename,
+  #tinymce .kult4th.window-app .window-content .text-movename {
     --kText-font-style: italic; }
   #tinymce .kult4th .text-trigger,
   #tinymce .kult4th-form .text-trigger,
   #tinymce .kult-text-container .text-trigger,
   #tinymce .kult-text-block .text-trigger,
-  #tinymce .mce-content-body .text-trigger {
+  #tinymce .mce-content-body .text-trigger,
+  #tinymce .kult4th.window-app .window-content .text-trigger {
     --kText-font-style: italic;
-    --kText-font-weight: var(--font-weight-semi); }
+    --kText-font-weight: 600; }
   #tinymce .kult4th .text-highlight,
   #tinymce .kult4th-form .text-highlight,
   #tinymce .kult-text-container .text-highlight,
   #tinymce .kult-text-block .text-highlight,
-  #tinymce .mce-content-body .text-highlight {
+  #tinymce .mce-content-body .text-highlight,
+  #tinymce .kult4th.window-app .window-content .text-highlight {
     --kText-color: #e4ddc3; }
   #tinymce .kult4th .text-extra-bold,
   #tinymce .kult4th-form .text-extra-bold,
   #tinymce .kult-text-container .text-extra-bold,
   #tinymce .kult-text-block .text-extra-bold,
-  #tinymce .mce-content-body .text-extra-bold {
-    --kText-font-weight: var(--font-weight-black); }
+  #tinymce .mce-content-body .text-extra-bold,
+  #tinymce .kult4th.window-app .window-content .text-extra-bold {
+    --kText-font-weight: 900; }
   #tinymce .kult4th .text-center,
   #tinymce .kult4th-form .text-center,
   #tinymce .kult-text-container .text-center,
   #tinymce .kult-text-block .text-center,
-  #tinymce .mce-content-body .text-center {
+  #tinymce .mce-content-body .text-center,
+  #tinymce .kult4th.window-app .window-content .text-center {
     --kText-text-align: center;
     display: block; }
   #tinymce .kult4th .hold-header,
@@ -1233,9 +1308,11 @@
   #tinymce .kult-text-block .hold-header,
   #tinymce .kult-text-block .edges-header,
   #tinymce .mce-content-body .hold-header,
-  #tinymce .mce-content-body .edges-header {
+  #tinymce .mce-content-body .edges-header,
+  #tinymce .kult4th.window-app .window-content .hold-header,
+  #tinymce .kult4th.window-app .window-content .edges-header {
     --kText-font-size: 1.25rem;
-    --kText-font-weight: var(--font-weight-black);
+    --kText-font-weight: 900;
     --kText-text-align: center;
     --kText-hyphens: none;
     --kText-background: linear-gradient(
@@ -1253,21 +1330,24 @@
   #tinymce .kult4th-form .hold-header,
   #tinymce .kult-text-container .hold-header,
   #tinymce .kult-text-block .hold-header,
-  #tinymce .mce-content-body .hold-header {
+  #tinymce .mce-content-body .hold-header,
+  #tinymce .kult4th.window-app .window-content .hold-header {
     --kText-color: #ff0000;
     --header-bg-color: #490000; }
   #tinymce .kult4th .edges-header,
   #tinymce .kult4th-form .edges-header,
   #tinymce .kult-text-container .edges-header,
   #tinymce .kult-text-block .edges-header,
-  #tinymce .mce-content-body .edges-header {
+  #tinymce .mce-content-body .edges-header,
+  #tinymce .kult4th.window-app .window-content .edges-header {
     --kText-color: #3f93ff;
     --header-bg-color: #082b58; }
   #tinymce .kult4th .hold-body,
   #tinymce .kult4th-form .hold-body,
   #tinymce .kult-text-container .hold-body,
   #tinymce .kult-text-block .hold-body,
-  #tinymce .mce-content-body .hold-body {
+  #tinymce .mce-content-body .hold-body,
+  #tinymce .kult4th.window-app .window-content .hold-body {
     display: block;
     margin-bottom: 10px;
     padding: 0 20px; }
@@ -1275,7 +1355,8 @@
   #tinymce .kult4th-form .result-entry,
   #tinymce .kult-text-container .result-entry,
   #tinymce .kult-text-block .result-entry,
-  #tinymce .mce-content-body .result-entry {
+  #tinymce .mce-content-body .result-entry,
+  #tinymce .kult4th.window-app .window-content .result-entry {
     display: block;
     margin: 0 20px;
     font-size: 16px;
@@ -1284,7 +1365,8 @@
     #tinymce .kult4th-form .result-entry > label,
     #tinymce .kult-text-container .result-entry > label,
     #tinymce .kult-text-block .result-entry > label,
-    #tinymce .mce-content-body .result-entry > label {
+    #tinymce .mce-content-body .result-entry > label,
+    #tinymce .kult4th.window-app .window-content .result-entry > label {
       --kText-text-align: right;
       display: block;
       width: 60px;
@@ -1295,21 +1377,23 @@
     #tinymce .kult4th-form .result-entry > span,
     #tinymce .kult-text-container .result-entry > span,
     #tinymce .kult-text-block .result-entry > span,
-    #tinymce .mce-content-body .result-entry > span {
+    #tinymce .mce-content-body .result-entry > span,
+    #tinymce .kult4th.window-app .window-content .result-entry > span {
       display: inline-block;
       width: calc(100% - 70px);
       margin-bottom: 4px;
       padding-bottom: 4px;
       border-bottom-style: solid;
       border-bottom-width: 3px;
-      -o-border-image: -o-linear-gradient(left, #958b68, transparent 75%) 1;
-      border-image: -webkit-gradient(linear, left top, right top, from(#958b68), color-stop(75%, transparent)) 1;
-      border-image: linear-gradient(to right, #958b68, transparent 75%) 1; }
+      -o-border-image: -o-linear-gradient(left, #958b68 50%, transparent) 1;
+      border-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #958b68), to(transparent)) 1;
+      border-image: linear-gradient(to right, #958b68 50%, transparent) 1; }
     #tinymce .kult4th .result-entry:last-of-type > span,
     #tinymce .kult4th-form .result-entry:last-of-type > span,
     #tinymce .kult-text-container .result-entry:last-of-type > span,
     #tinymce .kult-text-block .result-entry:last-of-type > span,
-    #tinymce .mce-content-body .result-entry:last-of-type > span {
+    #tinymce .mce-content-body .result-entry:last-of-type > span,
+    #tinymce .kult4th.window-app .window-content .result-entry:last-of-type > span {
       border-bottom: none; }
 
 #tinymce {

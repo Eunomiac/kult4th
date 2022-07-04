@@ -46,6 +46,21 @@ declare global {
 		failure = "failure"
 	}
 
+	type ResultsData = {
+		results: Record<
+				K4ItemResultType,
+				{
+					result: string,
+					listRefs?: string[],
+					effectFunctions?: string[],
+					edges: posInt,
+					hold: posInt
+				}
+			> & {
+				listRefs?: string[]
+			}
+	}
+
 	type WeaponSubClass<T extends K4WeaponClass> =
 		T extends K4WeaponClass.meleeUnarmed ? ("")
 	: T extends K4WeaponClass.meleeCrush ? ("")
@@ -89,21 +104,6 @@ declare global {
 					listRefs?: string[],
 					effectFunctions?: string[],
 					holdText?: string
-				}
-		}
-
-		interface ResultsData {
-			results: Record<
-					K4ItemResultType,
-					{
-						result: string,
-						listRefs?: string[],
-						effectFunctions?: string[],
-						edges: posInt,
-						hold: posInt
-					}
-				> & {
-					listRefs?: string[]
 				}
 		}
 

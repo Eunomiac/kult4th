@@ -33,6 +33,10 @@ Hooks.once("init", () => {
         "systems/kult4th/templates/sheets/relation-sheet.hbs",
         "systems/kult4th/templates/sheets/gear-sheet.hbs",
         /*DEVCODE*/ "systems/kult4th/templates/debug/template-entry.hbs",
+        "systems/kult4th/templates/components/form-header.hbs",
+        "systems/kult4th/templates/components/item-list.hbs",
+        "systems/kult4th/templates/components/rules-block.hbs",
+        "systems/kult4th/templates/components/roll-result.hbs",
         "systems/kult4th/templates/partials/basic-move-card.hbs",
         "systems/kult4th/templates/partials/derived-move-card.hbs",
         "systems/kult4th/templates/partials/attack-card.hbs",
@@ -41,8 +45,8 @@ Hooks.once("init", () => {
         "systems/kult4th/templates/partials/dark-secret-card.hbs",
         "systems/kult4th/templates/partials/relation-card.hbs",
         "systems/kult4th/templates/partials/attribute-box.hbs",
-        "systems/kult4th/templates/partials/roll-result-entry.hbs",
         "systems/kult4th/templates/partials/derived-item-summary.hbs",
+        "systems/kult4th/templates/chat/roll-result.hbs",
         "systems/kult4th/templates/dialog/ask-for-attribute.hbs"
     ]);
     Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func));

@@ -35,7 +35,8 @@
 
 		.message-content {
 			form, form.kult4th-chat {
-				--horiz-padding: 2px;
+				--kText-horiz-padding: 5px;
+				--kText-vert-padding: 0;
 				--kText-font-size: #{$rem-12};
 				--kText-line-height: #{$rem-16};
 
@@ -68,7 +69,6 @@
 					li:before {
 						margin-right: 0;
 						transform: scaleX(1.25) scale(0.6);
-						opacity: 0.5;
 					}
 				}
 
@@ -78,7 +78,7 @@
 						--kText-font-size: #{$rem-16};
 						--kText-color: #{$black};
 						--kText-line-height: #{$rem-24};
-						--kText-font-weight: var(--font-weight-bold);
+						--kText-font-weight: #{$font-weight-bold};
 						--kText-background: linear-gradient(to right,
 							#{$gold-darkest},
 							#{$gold-bright} 30px,
@@ -92,25 +92,37 @@
 					}
 				}
 
-				.kult-text-container {
+				// .kult-text-container {
+					// margin: 0;
+
+				.result-entry {
 					margin: 0;
 
+					> label {
+						width: 34px;
+						white-space: nowrap;
+						margin-right: 3px;
+					}
+
+					> span {
+						--kText-text-align: left;
+						width: calc(100% - 34px - 3px);
+						vertical-align: top;
+					}
+
+				}
+
+				&.chat-roll-result {
 					.result-entry {
-						margin: 0;
-
-						> label {
-							width: 50px;
-							white-space: nowrap;
-							margin-right: 5px;
-						}
-
+						--kText-font-size: #{$rem-14};
+						--kText-line-height: #{$rem-18};
 						> span {
-							--kText-text-align: left;
-							width: calc(100% - 50px - 5px);
-						}
+							width: unset;
 
+						}
 					}
 				}
+				// }
 			}
 
 		}

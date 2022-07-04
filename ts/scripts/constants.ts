@@ -168,7 +168,7 @@ const C = {
 	SYSTEM_ID: "kult4th",
 	SYSTEM_NAME: "Kult: Divinity Lost",
 	SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",
-	TEMPLATE_ROOT: "systems/kult4th/templates/",
+	TEMPLATE_ROOT: "systems/kult4th/templates",
 	getTemplatePath(subFolder: string, fileName: string) { return `${this.TEMPLATE_ROOT}/${subFolder}/${fileName}.hbs` },
 	awareArchetypes: Archetypes.Aware,
 	awareArchetypeAdvantages: {

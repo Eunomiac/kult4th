@@ -8,6 +8,26 @@
 
 	--sheet-header-height: 40px;
 
+	--kText-horiz-padding: 15px;
+	--kText-vert-padding: 10px;
+
+	.kult4th-form,
+	.kult-text-container,
+	.kult-text-block,
+	.mce-content-body {
+		--kText-font-size: #{$rem-16};
+		--kText-line-height: #{$rem-20};
+		--kText-font-weight: #{$font-weight-medium};
+
+		h1 {
+
+		}
+
+		h2 {
+			--kText-color: #{$black};
+		}
+	}
+
 	.window-header {
 		.header-button {
 			right: -25px;
@@ -57,12 +77,11 @@
 
 			.sheet-header {
 				border-bottom: 3px solid black;
-				margin-right: 10px;
+				// margin-right: 10px;
 				flex-wrap: nowrap;
-				--kText-color: #{$gold};
-				--kText-font-size: #{$rem-24};
-				--kText-font-weight: var(--font-weight-medium);
-				--kText-line-height: var(--sheet-header-height);
+				// --kText-color: #{$gold};
+				// --kText-font-size: #{$rem-24};
+				// --kText-font-weight: #{$font-weight-medium};
 
 				.header-bullet,
 				.header-name {
@@ -71,24 +90,22 @@
 
 				.header-bullet {
 					display: none;
-					--kText-text-align: center;
-					flex: 0;
-					z-index: 4;
-					flex-basis: 20px;
-					margin-right: -20px;
+					// --kText-text-align: center;
+					// flex: 0;
+					// z-index: 4;
+					// flex-basis: 20px;
+					// margin-right: -20px;
 				}
 
 				.header-name {
 					--kText-background: #{$black};
 					--kText-text-align: left;
-					--kText-font-weight: var(--font-weight-bold);
+					--kText-font-size: #{$rem-24};
+					--kText-font-weight: #{$font-weight-bold};
 
-					height: 100%;
-					border-radius: 0px;
-					outline: 0;
-					border: 0;
 					white-space: nowrap;
-					padding: 0 10px 0 20px;
+					text-transform: none;
+					padding: 14px 20px 10px var(--kText-horiz-padding);
 				}
 
 				.header-filler {
@@ -97,8 +114,10 @@
 				}
 
 				&.move-header {
-					--kText-color: #{$black};
-					.header-name { --kText-background: #{$gold} }
+					.header-name {
+						--kText-color: #{$black};
+						--kText-background: #{$gold}
+					}
 				}
 			}
 

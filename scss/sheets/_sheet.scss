@@ -196,7 +196,7 @@
 						var(--popout-background) 85%,
 						var(--popout-spacer-color) 85%
 					);
-					font-weight: var(--font-weight-bold);
+					font-weight: $font-weight-bold;
 					--kText-line-height: #{$rem-32};
 					font-size: 11px;
 					text-align: center;
@@ -230,7 +230,7 @@
 					--kText-font-size: #{$rem-16};
 					--kText-line-height: #{$rem-28};
 					--kText-color: #{$gold};
-					font-weight: var(--font-weight-semi);
+					font-weight: $font-weight-semi;
 					height: 24px;
 					top: calc((var(--icon-size) - 24px) / 2);
 					left: calc(var(--icon-size) + 5px);

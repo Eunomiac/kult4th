@@ -1,5 +1,6 @@
 import C from "./constants.js";
 import U from "./utilities.js";
+import K4Item from "../documents/K4Item.js";
 
 export function formatStringForKult(str: string) {
 	// Apply spans around all hash-tag indicators
@@ -28,9 +29,11 @@ export const HandlebarHelpers = {
 	"areEmpty": function(...args: [...Array<string|string[]>, never]) {
 		return !Object.values(args).flat().join("");
 	},
-	"formatForKult": function(str: string, context: List<any>) {
+	"formatForKult": function(str: string, context: List<any> | K4Item) {
 		// Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
-		const iData = context.data.root.data;
+		const iData = context instanceof K4Item
+			? context.data
+			: context.data.root.data;
 		console.log("[FormatForKult]", {str, iData, "this": this});
 		const self = this as Record<string,any>;
 

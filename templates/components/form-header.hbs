@@ -1,0 +1,8 @@
+{{log "{comp} form-header.hbs" this}}
+<header class="sheet-header {{docType}}-header">
+	{{~#if isBullet}}
+	<span class="header-bullet">•</span>
+	{{/if~}}
+	<h1 class="header-name">{{docName}}</h1>
+	<span class="header-filler"></span>
+</header>

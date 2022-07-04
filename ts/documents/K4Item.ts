@@ -79,18 +79,14 @@ export default class K4Item extends Item {
 
 		const content = template(Object.assign(
 			this,
-			{cssClass: "kult4th-chat editable"}
+			{cssClass: "kult4th-chat"}
 		));
 		ChatMessage.create({
 			content,
-			speaker: ChatMessage.getSpeaker({alias: speaker ?? ""})
+			speaker: ChatMessage.getSpeaker({alias: speaker ?? ""}),
+			options: {
+				cssClass: "kult4th-chat"
+			}
 		});
-	}
-}
-
-
-declare global {
-	interface DocumentClassConfig {
-		Item: typeof K4Item
 	}
 }

@@ -63,10 +63,13 @@ export default class K4Item extends Item {
     }
     async displayItemSummary(speaker) {
         const template = await getTemplate(this.sheet?.template ?? "");
-        const content = template(Object.assign(this, { cssClass: "kult4th-chat editable" }));
+        const content = template(Object.assign(this, { cssClass: "kult4th-chat" }));
         ChatMessage.create({
             content,
-            speaker: ChatMessage.getSpeaker({ alias: speaker ?? "" })
+            speaker: ChatMessage.getSpeaker({ alias: speaker ?? "" }),
+            options: {
+                cssClass: "kult4th-chat"
+            }
         });
     }
 }

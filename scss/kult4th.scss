@@ -29,6 +29,9 @@
 			&.actor { @import 'sheets/actor-sheet' }
 			&.item { @import 'sheets/item-sheet' }
 		}
+		&.dialog {
+			@import 'dialog/dialog';
+		}
 	}
 
 	// #ui-left, #ui-middle { display: none }

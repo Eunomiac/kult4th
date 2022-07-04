@@ -1,4 +1,5 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
+import C from "./constants.js";
 import { gsap } from "/scripts/greensock/esm/all.js";
 // #endregion ▮▮▮▮ IMPORTS ▮▮▮▮
 // #region ▮▮▮▮▮▮▮ [HELPERS] Internal Functions, Data & References Used by Utility Functions ▮▮▮▮▮▮▮ ~
@@ -488,15 +489,15 @@ const getUID = (id) => {
 };
 // #endregion ░░░░[Content]░░░░
 // #region ░░░░░░░[Localization]░░░░ Simplified Localization Functionality ░░░░░░░ ~
-/* const Loc = (locRef, formatDict = {}) => {
-    if (/^"?scion\./u.test(JSON.stringify(locRef)) && typeof game.i18n.localize(locRef) === "string") {
+const loc = (locRef, formatDict = {}) => {
+    if ((new RegExp(`^"?${C.SYSTEM_ID}\\.`, "u")).test(locRef) && typeof game.i18n.localize(locRef) === "string") {
         for (const [key, val] of Object.entries(formatDict)) {
-            formatDict[key] = Loc(val);
+            formatDict[key] = loc(val);
         }
         return game.i18n.format(locRef, formatDict) || "";
     }
     return locRef;
-}; */
+};
 // #endregion ░░░░[Localization]░░░░
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 // #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
@@ -565,7 +566,7 @@ const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num, [min = 0, max = Infinity] = []) => gsap.utils.wrap(min, max, num);
 const cycleAngle = (angle, range = [0, 360]) => cycleNum(angle, range);
 const roundNum = (num, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
-const sum = (...nums) => nums.flat().reduce((num, tot) => tot + num, 0);
+const sum = (...nums) => Object.values(nums.flat()).reduce((num, tot) => tot + num, 0);
 const average = (...nums) => sum(...nums) / nums.flat().length;
 // #region ░░░░░░░[Positioning]░░░░ Relationships On 2D Cartesian Plane ░░░░░░░ ~
 const getDistance = ({ x: x1, y: y1 }, { x: x2, y: y2 }) => (((x1 - x2) ** 2) + ((y1 - y2) ** 2)) ** 0.5;
@@ -838,7 +839,6 @@ function objMerge(target, source, { isMutatingOk = false, isStrictlySafe = false
         for (const [key, val] of Object.entries(source)) {
             const targetVal = target[key];
             if (isConcatenatingArrays && isArray(target[key]) && isArray(val)) {
-                // @ts-expect-error Compiler won't let me convert Tx[keyof Tx] to an array.
                 target[key].push(...val);
             }
             else if (val !== null && typeof val === "object") {
@@ -1033,7 +1033,7 @@ export default {
     // ░░░░░░░ Content ░░░░░░░
     loremIpsum, randString, randWord,
     // ░░░░░░░ Localization ░░░░░░░
-    //~ loc,
+    loc,
     // ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
     isIn, isInExact,
     // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████

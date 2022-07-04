@@ -79,12 +79,17 @@ export default class K4Actor extends Actor {
 			message
 		});
 		const userOutput = await new Promise((resolve) => {
-			new Dialog({
-				"title": "Attribute Selection",
-				content,
-				"default": K4Attribute.zero,
-				"buttons": C.AttributeButtons(resolve)
-			}).render(true);
+			new Dialog(
+				{
+					"title": "Attribute Selection",
+					content,
+					"default": K4Attribute.zero,
+					"buttons": C.AttributeButtons(resolve)
+				},
+				{
+					classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
+				}
+			).render(true);
 		}) as {attribute: K4Attribute};
 		return userOutput.attribute;
 	}
@@ -157,22 +162,57 @@ export default class K4Actor extends Actor {
 		};
 	}
 
-	displayRollResult(roll: Roll, rollSource: K4RollSource, options: K4RollOptions) {
+	async displayRollResult(roll: Roll, rollSource: K4RollSource, options: K4RollOptions) {
 		console.log("DISPLAYING ROLL RESULT", {roll, rollSource, options});
+		if (U.isUndefined(roll.total)) { return }
+		if (!(rollSource instanceof K4Item && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack))) { return }
+		const template = await getTemplate(C.getTemplatePath("chat", "roll-result"));
+		const templateData: {result?: ValueOf<ResultsData["results"]>, cssClass: string, context: K4Item} = {
+			cssClass: "kult4th-chat chat-roll-result",
+			context: rollSource
+		};
+		if (roll.total >= 15) {
+			templateData.result = rollSource.data.data.results.completeSuccess;
+		} else if (roll.total >= 9) {
+			templateData.result = rollSource.data.data.results.partialSuccess;
+		} else {
+			templateData.result = rollSource.data.data.results.failure;
+		}
 
-		// ChatMessage.create({
-		// 	content: `
-		//     <div class='move-name'>${moveName}</div>
-		//     <div class='move-name'>${resultText}!</div>
-		//     <div class='move-result'>${moveResultText}</div>
-		//     <div class='result-roll'>
-		//       <div class='tooltip'>
-		//         ${roll.total}
-		//         <span class='tooltiptext'>${roll.result}</span>
-		//       </div>
-		//     </div>`,
-		// 	speaker: ChatMessage.getSpeaker({alias: this.name})
+		const content = template(templateData);
+		ChatMessage.create({
+			content,
+			speaker: ChatMessage.getSpeaker()
+		});
+
+
+		const sourceItem: {name?: string, type?: K4ItemType} = {};
+		// Is source of roll an item?
+		if (rollSource instanceof K4Item && [K4ItemType.move, K4ItemType.attack].includes(rollSource.data.type)) {
+			if (rollSource.data.data.sourceItem?.name) {
+				sourceItem.name = rollSource.data.data.sourceItem.name;
+				sourceItem.type = rollSource.data.data.sourceItem?.type;
+			}
+		}
+
+		// const template = await getTemplate(C.getTemplatePath("dialog", "ask-for-attribute"));
+		// const content = template({
+		// 	id: this.id,
+		// 	message
 		// });
+		// const userOutput = await new Promise((resolve) => {
+		// 	new Dialog(
+		// 		{
+		// 			"title": "Attribute Selection",
+		// 			content,
+		// 			"default": K4Attribute.zero,
+		// 			"buttons": C.AttributeButtons(resolve)
+		// 		},
+		// 		{
+		// 			classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
+		// 		}
+		// 	).render(true);
+		// }) as {attribute: K4Attribute};
 	}
 
 	async roll(rollSource: string, options: Partial<K4RollOptions> = {}) {

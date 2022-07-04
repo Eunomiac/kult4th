@@ -1,4 +1,5 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
+import C from "./constants.js";
 import {gsap} from "gsap/all";
 // #endregion ▮▮▮▮ IMPORTS ▮▮▮▮
 
@@ -472,15 +473,15 @@ const getUID = (id: string): string => {
 };
 // #endregion ░░░░[Content]░░░░
 // #region ░░░░░░░[Localization]░░░░ Simplified Localization Functionality ░░░░░░░ ~
-/* const Loc = (locRef, formatDict = {}) => {
-	if (/^"?scion\./u.test(JSON.stringify(locRef)) && typeof game.i18n.localize(locRef) === "string") {
+const loc = (locRef: string, formatDict: Record<string,string> = {}) => {
+	if ((new RegExp(`^"?${C.SYSTEM_ID}\\.`, "u")).test(locRef) && typeof game.i18n.localize(locRef) === "string") {
 		for (const [key, val] of Object.entries(formatDict)) {
-			formatDict[key] = Loc(val);
+			formatDict[key] = loc(val);
 		}
 		return game.i18n.format(locRef, formatDict) || "";
 	}
 	return locRef;
-}; */
+};
 // #endregion ░░░░[Localization]░░░░
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
@@ -551,7 +552,7 @@ const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num: number, [min = 0, max = Infinity] = []): number => gsap.utils.wrap(min, max, num);
 const cycleAngle = (angle: number, range: [number, number] = [0, 360]) => cycleNum(angle, range);
 const roundNum = (num: number, sigDigits: posInt = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
-const sum = (...nums: Array<number | number[]>) => nums.flat().reduce((num, tot) => tot + num, 0);
+const sum = (...nums: Array<number | number[]/* | Record<key,number > */>) => Object.values(nums.flat()).reduce((num, tot) => tot + num, 0);
 const average = (...nums: Array<number | number[]>) => sum(...nums) / nums.flat().length;
 // #region ░░░░░░░[Positioning]░░░░ Relationships On 2D Cartesian Plane ░░░░░░░ ~
 const getDistance = ({x: x1, y: y1}: Point, {x: x2, y: y2}: Point) => (((x1 - x2) ** 2) + ((y1 - y2) ** 2)) ** 0.5;
@@ -804,8 +805,7 @@ function objMerge<Tx,Ty>(target: Tx, source: Ty, {isMutatingOk = false, isStrict
 		for (const [key, val] of Object.entries(source)) {
 			const targetVal = target[key as KeyOf<typeof target>];
 			if (isConcatenatingArrays && isArray(target[key as KeyOf<typeof target>]) && isArray(val)) {
-				// @ts-expect-error Compiler won't let me convert Tx[keyof Tx] to an array.
-				(target[key as KeyOf<typeof target>] as any[]).push(...val);
+				(target[key as KeyOf<typeof target>] as unknown as any[]).push(...val);
 			} else if (val !== null && typeof val === "object") {
 				if (isUndefined(targetVal) && !(val instanceof Application)) {
 					// @ts-expect-error TS doesn't recognize __proto__.
@@ -1011,7 +1011,7 @@ export default {
 	// ░░░░░░░ Content ░░░░░░░
 	loremIpsum, randString, randWord,
 	// ░░░░░░░ Localization ░░░░░░░
-	//~ loc,
+	loc,
 
 	// ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
 	isIn, isInExact,

@@ -1,0 +1,23 @@
+{{log "{comp} item-list.hbs" this}}
+
+{{#with this as |data|}}
+{{~#each data.listRefs as |listKey|}}
+	{{~#with (lookup data.lists listKey) as |listData|}}
+		{{~#if data.isDisplayingName}}
+			{{#if (test listKey "==" "edges")}}
+				<span class="edges-header">This {{case "title" data.itemData.type}} grants Edges:</span>
+			{{else}}
+				<h2 class="list-name">{{listData.name}}</h2>
+			{{/if}}
+		{{/if}}
+		{{~#if listData.intro}}
+			<span class="list-intro">{{{formatForKult listData.intro}}}</span>
+		{{/if}}
+		<ul class="rules-list list-{{listKey}}">
+			{{#each listData.items as |item|}}
+				<li>{{{formatForKult item}}}</li>
+			{{/each}}
+		</ul>
+	{{/with}}
+{{/each}}
+{{/with}}

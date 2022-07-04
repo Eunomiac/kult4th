@@ -1,4 +1,5 @@
 import U from "./utilities.js";
+import K4Item from "../documents/K4Item.js";
 export function formatStringForKult(str) {
     // Apply spans around all hash-tag indicators
     return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
@@ -35,7 +36,9 @@ export const HandlebarHelpers = {
     },
     "formatForKult": function (str, context) {
         // Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
-        const iData = context.data.root.data;
+        const iData = context instanceof K4Item
+            ? context.data
+            : context.data.root.data;
         console.log("[FormatForKult]", { str, iData, "this": this });
         const self = this;
         // Step One: Replace any data object references.

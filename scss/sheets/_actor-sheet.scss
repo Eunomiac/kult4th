@@ -386,7 +386,7 @@
 									--kText-font-size: #{$rem-12};
 									height: 100%;
 									box-shadow: none;
-									--kText-font-weight: var(--font-weight-bold);
+									--kText-font-weight: #{$font-weight-bold};
 									--kText-font-style: italic;
 									transform-origin: left center;
 									transform: scaleX(0.9);
@@ -424,7 +424,7 @@
 									--kText-font-size: #{$rem-10};
 									// --kText-color: #{$gold};
 									--kText-text-align: center;
-									--kText-font-weight: var(--font-weight-bold);
+									--kText-font-weight: #{$font-weight-bold};
 									position: absolute;
 									width: 100%;
 									top: 130px;
@@ -433,7 +433,7 @@
 								.attribute-value {
 									--kText-font-size: #{$rem-20};
 									--kText-text-align: center;
-									--kText-font-weight: var(--font-weight-black);
+									--kText-font-weight: #{$font-weight-black};
 									position: absolute;
 									width: 40px;
 									border: none;
@@ -641,7 +641,7 @@
 							.attribute-box {
 								margin-top: -135px;
 								margin-left: -11px;
-								--kText-font-weight: var(--font-weight-black);
+								--kText-font-weight: #{$font-weight-black};
 							}
 						}
 					}
