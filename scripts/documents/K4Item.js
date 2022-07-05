@@ -15,7 +15,6 @@ export default class K4Item extends Item {
     hasSubItems() { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }
     get subItemData() {
         if (this.hasSubItems()) {
-            // @ts-expect-error Types aren't discriminating the .data.data union type
             return this.data.data.subItems.map((subIData) => {
                 if (subIData.data && ("sourceItem" in subIData.data)) {
                     subIData.data.sourceItem = {

@@ -88,9 +88,9 @@ export const AttributeButtons = (resolve) => {
 export const Colors = {
     "GOLD": "#958b68",
     "GOLD +2": "#e4ddc3",
-    "GOLD +1": "#b9af8f",
+    "GOLD +1": "#c3bba1",
     "GOLD -1": "#685f43",
-    "GOLD -2": "#362f17",
+    "GOLD -2": "#42391a",
     "GOLD -3": "#19160b",
     "GOLD GLOW": "#ffd958",
     "RED": "#9a1f1f",

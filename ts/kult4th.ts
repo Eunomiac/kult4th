@@ -13,6 +13,8 @@ import {formatStringForKult, HandlebarHelpers} from "./scripts/helpers.js";
 // import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "../kult4eoverrides/migratorts";
 import ITEM_DATA, {resetItems} from "./scripts/migratedData.js";
 import gsap from "gsap/all";
+import K4Dialog from "./documents/K4Dialog.js";
+import K4ChatMessage from "./documents/K4ChatMessage.js";
 
 Hooks.once("init", () => {
 	console.log("Initializing Kult 4E");
@@ -27,6 +29,26 @@ Hooks.once("init", () => {
 	Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
 	CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
+	CONFIG.ChatMessage.documentClass = K4ChatMessage;
+	// CONFIG.Dialog.documentClass = K4Dialog;
+
+	CONFIG.canvasTextStyle = new PIXI.TextStyle({
+		fontFamily: "AlverataSemiBold",
+		fontSize: 32,
+		fill: C.Colors["GOLD +1"],
+		stroke: C.Colors["GOLD -3"],
+		strokeThickness: 1,
+		dropShadow: true,
+		dropShadowColor: C.Colors.BLACK,
+		dropShadowBlur: 4,
+		dropShadowAngle: 0,
+		dropShadowDistance: 0,
+		align: "center",
+		wordWrap: false,
+		padding: 1
+	});
+	CONFIG.fontFamilies = ["Alverata", "AlverataCaps", "Infidel", "Sokol"];
+	CONFIG.defaultFontFamily = "Alverata";
 
 	loadTemplates([
 		"systems/kult4th/templates/sheets/pc-sheet.hbs",

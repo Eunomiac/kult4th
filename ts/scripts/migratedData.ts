@@ -3,6 +3,7 @@ import C from "./constants.js";
 import U from "./utilities.js";
 import {FolderDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/folderData.js";
 import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData.js";
+import {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 // #endregion ▮▮▮▮[IMPORTS]▮▮▮▮
 // #region ▮▮▮▮▮▮▮ UTILITY ▮▮▮▮▮▮▮ ~
 type iDataDict = Record<string, Partial<ItemDataConstructorData>>;
@@ -141,7 +142,8 @@ const sortIntoFolders = async (itemData: Partial<ItemDataRecord>) => {
 				}
 			}
 			if (iData.data && "subItems" in iData.data && iData.data.subItems && iData.data.subItems.length) {
-				iData.data.subItems = iData.data.subItems!.map((subItemData: Partial<ItemDataConstructorData>) => {
+				iData.data.subItems = iData.data.subItems!.map((subItemData?: DeepPartial<ItemDataSource>) => {
+					subItemData ??= {};
 					const derivedFolderName = folderNames[`derived_${subItemData.type}` as KeyOf<typeof folderNames>];
 					const subFolder = C.game.folders!.get(folderMap[`derived_${subItemData.type}` as KeyOf<typeof folderMap>][subItemData.data!.subType as "active-rolled" | "active-static" | "passive"])!;
 					if (!folderIDRecord.includes(subFolder.id)) {

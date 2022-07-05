@@ -233,6 +233,30 @@
 }
 
 @font-face {
+	font: {
+		family: AlverataSemiBold;
+		style: normal;
+	}
+	src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"),
+			 url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"),
+			 url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"),
+			 url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"),
+			 url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg");
+}
+
+@font-face {
+	font: {
+		family: AlverataSemiBold;
+		style: italic;
+	}
+	src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"),
+			 url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"),
+			 url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"),
+			 url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"),
+			 url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg");
+}
+
+@font-face {
 	font-family: Infidel;
 	src: url("../assets/fonts/infidel.ttf");
 }

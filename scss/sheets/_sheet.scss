@@ -84,7 +84,7 @@
 		width: 100%;
 		overflow: visible;
 		padding: 0;
-		background: none;
+		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
 
 		form {
 			--border-color: #{$gold};

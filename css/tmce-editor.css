@@ -1,9 +1,9 @@
 * {
   --gold: #958b68;
   --gold-brightest: #e4ddc3;
-  --gold-bright: #b9af8f;
+  --gold-bright: #c3bba1;
   --gold-dark: #685f43;
-  --gold-darker: #362f17;
+  --gold-darker: #42391a;
   --gold-darkest: #19160b;
   --gold-glow: #ffd958;
   --red: #9a1f1f
@@ -36,15 +36,12 @@
 	--color-text-light-highlight: #f0f0e0;
   --color-text-light-heading: #c9c7b8;
   --color-text-light-primary: #b5b3a4;
-
   --color-text-dark-primary: #191813;
   --color-text-dark-secondary: #4b4a44;
   --color-text-dark-header: #23221d;
   --color-text-dark-inactive: #7a7971;
-
-	--color-text-hyperlink: #ff6400;
-
-	--color-text-light-0: #fff;
+  --color-text-hyperlink: #ff6400;
+  --color-text-light-0: #fff;
   --color-text-light-1: #eee;
   --color-text-light-2: #ddd;
   --color-text-light-3: #ccc;
@@ -52,32 +49,26 @@
   --color-text-light-5: #aaa;
   --color-text-light-6: #999;
   --color-text-light-7: #888;
-
-	--color-text-dark-1: #111;
+  --color-text-dark-1: #111;
   --color-text-dark-2: #222;
   --color-text-dark-3: #444;
   --color-text-dark-4: #555;
   --color-text-dark-5: #666;
   --color-text-dark-6: #777;
-
-	--color-border-light-1: #ddd;
+  --color-border-light-1: #ddd;
   --color-border-light-2: #999;
-
-	--color-border-dark-1: #111;
+  --color-border-dark-1: #111;
   --color-border-dark-2: #222;
   --color-border-dark-3: #333;
   --color-border-dark-4: #444;
   --color-border-dark-5: #666;
-
-	--color-shadow-primary: #ff0000;
+  --color-shadow-primary: #ff0000;
   --color-shadow-highlight: #ff6400;
   --color-shadow-dark: #000;
-
-	--color-underline-inactive: #7a7971;
+  --color-underline-inactive: #7a7971;
   --color-underline-active: #44191A;
   --color-underline-header: #782e22;
-
-	--color-border-light-highlight: #f0f0e0;
+  --color-border-light-highlight: #f0f0e0;
   --color-border-light-primary: #b5b3a4;
   --color-border-light-secondary: #c9c7b8;
   --color-border-light-tertiary: #7a7971;
@@ -87,11 +78,86 @@
   --color-border-dark-tertiary: #4b4a44;
   --color-border-highlight: #ff6400;
   --color-border-highlight-alt: #ff0000;
-
   --color-bg-btn-minor-inactive: #c9c7b8;
   --color-bg-btn-minor-active: #b5b3a4;
   --color-bg-option: #dad8cc;
-	*/ }
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+  --sidebar-width: 300px;
+  --sidebar-header-height: 0px;
+  --sidebar-item-height: 80px;
+  --hotbar-height: 32px;
+  --hotbar-width: 378px;
+  --macro-size: 40px;
+  --players-width: 200px;
+  --form-field-height: 26px;
+  --font-primary: "Signika", sans-serif;
+  --font-mono: monospace;
+	*/
+  --color-text-light-highlight: #c3bba1;
+  --color-text-light-heading: #c3bba1;
+  --color-text-light-primary: #b5b3a4;
+  --color-text-dark-primary: #c3bba1;
+  --color-text-dark-secondary: #958b68;
+  --color-text-dark-header: #e4ddc3;
+  --color-text-dark-inactive: #7a7971;
+  --color-text-hyperlink: #2a548a;
+  --color-text-light-0: #fff;
+  --color-text-light-1: #e4ddc3;
+  --color-text-light-2: #e4ddc3;
+  --color-text-light-3: #c3bba1;
+  --color-text-light-4: #c3bba1;
+  --color-text-light-5: #c3bba1;
+  --color-text-light-6: #958b68;
+  --color-text-light-7: #958b68;
+  --color-text-dark-1: #19160b;
+  --color-text-dark-2: #19160b;
+  --color-text-dark-3: #42391a;
+  --color-text-dark-4: #42391a;
+  --color-text-dark-5: #685f43;
+  --color-text-dark-6: #685f43;
+  --color-border-light-1: #c3bba1;
+  --color-border-light-2: #958b68;
+  --color-border-dark-1: #19160b;
+  --color-border-dark-2: #19160b;
+  --color-border-dark-3: #42391a;
+  --color-border-dark-4: #42391a;
+  --color-border-dark-5: #685f43;
+  --color-shadow-primary: #958b68;
+  --color-shadow-highlight: #958b68;
+  --color-shadow-dark: #000;
+  --color-underline-inactive: #183f72;
+  --color-underline-active: #426899;
+  --color-underline-header: #958b68;
+  --color-border-light-highlight: #e4ddc3;
+  --color-border-light-primary: #e4ddc3;
+  --color-border-light-secondary: #c3bba1;
+  --color-border-light-tertiary: #958b68;
+  --color-border-dark: #000;
+  --color-border-dark-primary: #19160b;
+  --color-border-dark-secondary: #42391a;
+  --color-border-dark-tertiary: #685f43;
+  --color-border-highlight: #c3bba1;
+  --color-border-highlight-alt: #e4ddc3;
+  --color-bg-btn-minor-inactive: #c3bba1;
+  --color-bg-btn-minor-active: #e4ddc3;
+  --color-bg-option: #e4ddc3;
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+  --sidebar-width: 300px;
+  --sidebar-header-height: 0px;
+  --sidebar-item-height: 80px;
+  --hotbar-height: 32px;
+  --hotbar-width: 378px;
+  --macro-size: 40px;
+  --players-width: 200px;
+  --form-field-height: 26px;
+  --font-primary: Alverata, sans-serif;
+  --font-mono: monospace; }
   * .dark-on-dark {
     color: #333;
     background-color: #666;
@@ -220,6 +286,16 @@
   font-weight: 801 1000;
   font-style: normal;
   src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black.svg") format("svg"); }
+
+@font-face {
+  font-family: AlverataSemiBold;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); }
+
+@font-face {
+  font-family: AlverataSemiBold;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
 
 @font-face {
   font-family: Infidel;
@@ -453,7 +529,7 @@
   .kult-text-block h4,
   .mce-content-body h4,
   .kult4th.window-app .window-content h4 {
-    --kText-color: #b9af8f;
+    --kText-color: #c3bba1;
     --kText-font-style: italic;
     --kText-font-weight: 700;
     --kText-line-height: 0.75rem; }
@@ -690,9 +766,9 @@
 #tinymce * {
   --gold: #958b68;
   --gold-brightest: #e4ddc3;
-  --gold-bright: #b9af8f;
+  --gold-bright: #c3bba1;
   --gold-dark: #685f43;
-  --gold-darker: #362f17;
+  --gold-darker: #42391a;
   --gold-darkest: #19160b;
   --gold-glow: #ffd958;
   --red: #9a1f1f
@@ -725,15 +801,12 @@
 	--color-text-light-highlight: #f0f0e0;
   --color-text-light-heading: #c9c7b8;
   --color-text-light-primary: #b5b3a4;
-
   --color-text-dark-primary: #191813;
   --color-text-dark-secondary: #4b4a44;
   --color-text-dark-header: #23221d;
   --color-text-dark-inactive: #7a7971;
-
-	--color-text-hyperlink: #ff6400;
-
-	--color-text-light-0: #fff;
+  --color-text-hyperlink: #ff6400;
+  --color-text-light-0: #fff;
   --color-text-light-1: #eee;
   --color-text-light-2: #ddd;
   --color-text-light-3: #ccc;
@@ -741,32 +814,26 @@
   --color-text-light-5: #aaa;
   --color-text-light-6: #999;
   --color-text-light-7: #888;
-
-	--color-text-dark-1: #111;
+  --color-text-dark-1: #111;
   --color-text-dark-2: #222;
   --color-text-dark-3: #444;
   --color-text-dark-4: #555;
   --color-text-dark-5: #666;
   --color-text-dark-6: #777;
-
-	--color-border-light-1: #ddd;
+  --color-border-light-1: #ddd;
   --color-border-light-2: #999;
-
-	--color-border-dark-1: #111;
+  --color-border-dark-1: #111;
   --color-border-dark-2: #222;
   --color-border-dark-3: #333;
   --color-border-dark-4: #444;
   --color-border-dark-5: #666;
-
-	--color-shadow-primary: #ff0000;
+  --color-shadow-primary: #ff0000;
   --color-shadow-highlight: #ff6400;
   --color-shadow-dark: #000;
-
-	--color-underline-inactive: #7a7971;
+  --color-underline-inactive: #7a7971;
   --color-underline-active: #44191A;
   --color-underline-header: #782e22;
-
-	--color-border-light-highlight: #f0f0e0;
+  --color-border-light-highlight: #f0f0e0;
   --color-border-light-primary: #b5b3a4;
   --color-border-light-secondary: #c9c7b8;
   --color-border-light-tertiary: #7a7971;
@@ -776,11 +843,86 @@
   --color-border-dark-tertiary: #4b4a44;
   --color-border-highlight: #ff6400;
   --color-border-highlight-alt: #ff0000;
-
   --color-bg-btn-minor-inactive: #c9c7b8;
   --color-bg-btn-minor-active: #b5b3a4;
   --color-bg-option: #dad8cc;
-	*/ }
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+  --sidebar-width: 300px;
+  --sidebar-header-height: 0px;
+  --sidebar-item-height: 80px;
+  --hotbar-height: 32px;
+  --hotbar-width: 378px;
+  --macro-size: 40px;
+  --players-width: 200px;
+  --form-field-height: 26px;
+  --font-primary: "Signika", sans-serif;
+  --font-mono: monospace;
+	*/
+  --color-text-light-highlight: #c3bba1;
+  --color-text-light-heading: #c3bba1;
+  --color-text-light-primary: #b5b3a4;
+  --color-text-dark-primary: #c3bba1;
+  --color-text-dark-secondary: #958b68;
+  --color-text-dark-header: #e4ddc3;
+  --color-text-dark-inactive: #7a7971;
+  --color-text-hyperlink: #2a548a;
+  --color-text-light-0: #fff;
+  --color-text-light-1: #e4ddc3;
+  --color-text-light-2: #e4ddc3;
+  --color-text-light-3: #c3bba1;
+  --color-text-light-4: #c3bba1;
+  --color-text-light-5: #c3bba1;
+  --color-text-light-6: #958b68;
+  --color-text-light-7: #958b68;
+  --color-text-dark-1: #19160b;
+  --color-text-dark-2: #19160b;
+  --color-text-dark-3: #42391a;
+  --color-text-dark-4: #42391a;
+  --color-text-dark-5: #685f43;
+  --color-text-dark-6: #685f43;
+  --color-border-light-1: #c3bba1;
+  --color-border-light-2: #958b68;
+  --color-border-dark-1: #19160b;
+  --color-border-dark-2: #19160b;
+  --color-border-dark-3: #42391a;
+  --color-border-dark-4: #42391a;
+  --color-border-dark-5: #685f43;
+  --color-shadow-primary: #958b68;
+  --color-shadow-highlight: #958b68;
+  --color-shadow-dark: #000;
+  --color-underline-inactive: #183f72;
+  --color-underline-active: #426899;
+  --color-underline-header: #958b68;
+  --color-border-light-highlight: #e4ddc3;
+  --color-border-light-primary: #e4ddc3;
+  --color-border-light-secondary: #c3bba1;
+  --color-border-light-tertiary: #958b68;
+  --color-border-dark: #000;
+  --color-border-dark-primary: #19160b;
+  --color-border-dark-secondary: #42391a;
+  --color-border-dark-tertiary: #685f43;
+  --color-border-highlight: #c3bba1;
+  --color-border-highlight-alt: #e4ddc3;
+  --color-bg-btn-minor-inactive: #c3bba1;
+  --color-bg-btn-minor-active: #e4ddc3;
+  --color-bg-option: #e4ddc3;
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+  --sidebar-width: 300px;
+  --sidebar-header-height: 0px;
+  --sidebar-item-height: 80px;
+  --hotbar-height: 32px;
+  --hotbar-width: 378px;
+  --macro-size: 40px;
+  --players-width: 200px;
+  --form-field-height: 26px;
+  --font-primary: Alverata, sans-serif;
+  --font-mono: monospace; }
   #tinymce * .dark-on-dark {
     color: #333;
     background-color: #666;
@@ -927,6 +1069,18 @@
     font-weight: 801 1000;
     font-style: normal;
     src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black.svg") format("svg"); } }
+
+@font-face {
+  #tinymce {
+    font-family: AlverataSemiBold;
+    font-style: normal;
+    src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); } }
+
+@font-face {
+  #tinymce {
+    font-family: AlverataSemiBold;
+    font-style: italic;
+    src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); } }
 
 @font-face {
   #tinymce {
@@ -1162,7 +1316,7 @@
   #tinymce .kult-text-block h4,
   #tinymce .mce-content-body h4,
   #tinymce .kult4th.window-app .window-content h4 {
-    --kText-color: #b9af8f;
+    --kText-color: #c3bba1;
     --kText-font-style: italic;
     --kText-font-weight: 700;
     --kText-line-height: 0.75rem; }

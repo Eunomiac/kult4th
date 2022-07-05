@@ -1,5 +1,5 @@
 import EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs';
-import {ItemDataBaseProperties, ItemDataConstructorData, ItemDataSchema} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData';
+import {ItemDataBaseProperties, ItemDataConstructorData, ItemDataSchema, ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
 import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item.js";
@@ -259,4 +259,5 @@ declare global {
 	}
 
 	type K4ItemSpec<Type extends K4ItemType> = K4Item & {data: {type: Type, _source: {type: Type}}}
+	type K4HasSubItems<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {data: {data: {subItems: ItemDataSource[]}}}
 }

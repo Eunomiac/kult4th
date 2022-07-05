@@ -19,8 +19,10 @@
 }
 
 .vtt.game.system-kult4th {
+	@import 'globals/globals';
 
 	.app.window-app {
+		@import 'globals/app';
 		box-shadow: none;
 
 		&.sheet {
@@ -39,6 +41,7 @@
 
 	#ui-right {
 		#sidebar {
+			@import 'sidebar/sidebar';
 			#chat { @import 'sidebar/chat' }
 		}
 	}

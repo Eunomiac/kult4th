@@ -1,7 +1,6 @@
 #chat-log {
 
 	.chat-message {
-		--color-body-text: #{$gold};
 		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
 		margin: 3px 0;
 		padding: 0;
@@ -117,8 +116,9 @@
 						--kText-font-size: #{$rem-14};
 						--kText-line-height: #{$rem-18};
 						> span {
+							--kText-text-align: justify;
 							width: unset;
-
+							padding-bottom: 0;
 						}
 					}
 				}
@@ -128,8 +128,28 @@
 		}
 
 	}
+}
 
-	font-size: 12px;
+#chat-controls {
+	.chat-control-icon {
 
+	}
+	.roll-type-select {
+		font-family: AlverataSemiBold;
+		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
+		color: var(--color-body-text);
+		margin-top: 2px;
+		border-radius: 0;
+	}
+
+}
+
+#chat-form {
+	#chat-message {
+		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
+		border-color: $gold;
+		color: var(--color-body-text);
+		font-family: AlverataSemiBold;
+	}
 
 }

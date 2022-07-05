@@ -11,6 +11,9 @@
 	.window-content {
 		--color-body-text: #{$gold};
 
+		button { color: var(--gold-bright) }
+		background: none;
+
 		form {
 
 			>* {

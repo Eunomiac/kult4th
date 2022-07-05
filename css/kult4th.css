@@ -1,9 +1,9 @@
 * {
   --gold: #958b68;
   --gold-brightest: #e4ddc3;
-  --gold-bright: #b9af8f;
+  --gold-bright: #c3bba1;
   --gold-dark: #685f43;
-  --gold-darker: #362f17;
+  --gold-darker: #42391a;
   --gold-darkest: #19160b;
   --gold-glow: #ffd958;
   --red: #9a1f1f
@@ -36,15 +36,12 @@
 	--color-text-light-highlight: #f0f0e0;
   --color-text-light-heading: #c9c7b8;
   --color-text-light-primary: #b5b3a4;
-
   --color-text-dark-primary: #191813;
   --color-text-dark-secondary: #4b4a44;
   --color-text-dark-header: #23221d;
   --color-text-dark-inactive: #7a7971;
-
-	--color-text-hyperlink: #ff6400;
-
-	--color-text-light-0: #fff;
+  --color-text-hyperlink: #ff6400;
+  --color-text-light-0: #fff;
   --color-text-light-1: #eee;
   --color-text-light-2: #ddd;
   --color-text-light-3: #ccc;
@@ -52,32 +49,26 @@
   --color-text-light-5: #aaa;
   --color-text-light-6: #999;
   --color-text-light-7: #888;
-
-	--color-text-dark-1: #111;
+  --color-text-dark-1: #111;
   --color-text-dark-2: #222;
   --color-text-dark-3: #444;
   --color-text-dark-4: #555;
   --color-text-dark-5: #666;
   --color-text-dark-6: #777;
-
-	--color-border-light-1: #ddd;
+  --color-border-light-1: #ddd;
   --color-border-light-2: #999;
-
-	--color-border-dark-1: #111;
+  --color-border-dark-1: #111;
   --color-border-dark-2: #222;
   --color-border-dark-3: #333;
   --color-border-dark-4: #444;
   --color-border-dark-5: #666;
-
-	--color-shadow-primary: #ff0000;
+  --color-shadow-primary: #ff0000;
   --color-shadow-highlight: #ff6400;
   --color-shadow-dark: #000;
-
-	--color-underline-inactive: #7a7971;
+  --color-underline-inactive: #7a7971;
   --color-underline-active: #44191A;
   --color-underline-header: #782e22;
-
-	--color-border-light-highlight: #f0f0e0;
+  --color-border-light-highlight: #f0f0e0;
   --color-border-light-primary: #b5b3a4;
   --color-border-light-secondary: #c9c7b8;
   --color-border-light-tertiary: #7a7971;
@@ -87,11 +78,86 @@
   --color-border-dark-tertiary: #4b4a44;
   --color-border-highlight: #ff6400;
   --color-border-highlight-alt: #ff0000;
-
   --color-bg-btn-minor-inactive: #c9c7b8;
   --color-bg-btn-minor-active: #b5b3a4;
   --color-bg-option: #dad8cc;
-	*/ }
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+  --sidebar-width: 300px;
+  --sidebar-header-height: 0px;
+  --sidebar-item-height: 80px;
+  --hotbar-height: 32px;
+  --hotbar-width: 378px;
+  --macro-size: 40px;
+  --players-width: 200px;
+  --form-field-height: 26px;
+  --font-primary: "Signika", sans-serif;
+  --font-mono: monospace;
+	*/
+  --color-text-light-highlight: #c3bba1;
+  --color-text-light-heading: #c3bba1;
+  --color-text-light-primary: #b5b3a4;
+  --color-text-dark-primary: #c3bba1;
+  --color-text-dark-secondary: #958b68;
+  --color-text-dark-header: #e4ddc3;
+  --color-text-dark-inactive: #7a7971;
+  --color-text-hyperlink: #2a548a;
+  --color-text-light-0: #fff;
+  --color-text-light-1: #e4ddc3;
+  --color-text-light-2: #e4ddc3;
+  --color-text-light-3: #c3bba1;
+  --color-text-light-4: #c3bba1;
+  --color-text-light-5: #c3bba1;
+  --color-text-light-6: #958b68;
+  --color-text-light-7: #958b68;
+  --color-text-dark-1: #19160b;
+  --color-text-dark-2: #19160b;
+  --color-text-dark-3: #42391a;
+  --color-text-dark-4: #42391a;
+  --color-text-dark-5: #685f43;
+  --color-text-dark-6: #685f43;
+  --color-border-light-1: #c3bba1;
+  --color-border-light-2: #958b68;
+  --color-border-dark-1: #19160b;
+  --color-border-dark-2: #19160b;
+  --color-border-dark-3: #42391a;
+  --color-border-dark-4: #42391a;
+  --color-border-dark-5: #685f43;
+  --color-shadow-primary: #958b68;
+  --color-shadow-highlight: #958b68;
+  --color-shadow-dark: #000;
+  --color-underline-inactive: #183f72;
+  --color-underline-active: #426899;
+  --color-underline-header: #958b68;
+  --color-border-light-highlight: #e4ddc3;
+  --color-border-light-primary: #e4ddc3;
+  --color-border-light-secondary: #c3bba1;
+  --color-border-light-tertiary: #958b68;
+  --color-border-dark: #000;
+  --color-border-dark-primary: #19160b;
+  --color-border-dark-secondary: #42391a;
+  --color-border-dark-tertiary: #685f43;
+  --color-border-highlight: #c3bba1;
+  --color-border-highlight-alt: #e4ddc3;
+  --color-bg-btn-minor-inactive: #c3bba1;
+  --color-bg-btn-minor-active: #e4ddc3;
+  --color-bg-option: #e4ddc3;
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+  --sidebar-width: 300px;
+  --sidebar-header-height: 0px;
+  --sidebar-item-height: 80px;
+  --hotbar-height: 32px;
+  --hotbar-width: 378px;
+  --macro-size: 40px;
+  --players-width: 200px;
+  --form-field-height: 26px;
+  --font-primary: Alverata, sans-serif;
+  --font-mono: monospace; }
   * .dark-on-dark {
     color: #333;
     background-color: #666;
@@ -220,6 +286,16 @@
   font-weight: 801 1000;
   font-style: normal;
   src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black.svg") format("svg"); }
+
+@font-face {
+  font-family: AlverataSemiBold;
+  font-style: normal;
+  src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); }
+
+@font-face {
+  font-family: AlverataSemiBold;
+  font-style: italic;
+  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
 
 @font-face {
   font-family: Infidel;
@@ -453,7 +529,7 @@
   .kult-text-block h4,
   .mce-content-body h4,
   .kult4th.window-app .window-content h4 {
-    --kText-color: #b9af8f;
+    --kText-color: #c3bba1;
     --kText-font-style: italic;
     --kText-font-weight: 700;
     --kText-line-height: 0.75rem; }
@@ -700,9 +776,27 @@
   border-radius: 20px;
   display: none; }
 
+.vtt.game.system-kult4th ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px; }
+
+.vtt.game.system-kult4th ::-webkit-scrollbar-track {
+  -webkit-box-shadow: 0 0 1px #958b68 inset;
+  box-shadow: 0 0 1px #958b68 inset;
+  border-radius: 4px; }
+
+.vtt.game.system-kult4th ::-webkit-scrollbar-thumb {
+  outline: none;
+  border-radius: 2px;
+  background: transparent url("../assets/backgrounds/red-felt-bg.webp") repeat center/1000px 1000px;
+  border: 1px outset #685f43; }
+
 .vtt.game.system-kult4th .app.window-app {
   -webkit-box-shadow: none;
   box-shadow: none; }
+  .vtt.game.system-kult4th .app.window-app {
+    -webkit-box-shadow: none;
+    box-shadow: none; }
   .vtt.game.system-kult4th .app.window-app.sheet {
     --sheet-min-height: 0px;
     --sheet-min-width: 0px;
@@ -756,7 +850,7 @@
           top: 50px; }
         .vtt.game.system-kult4th .app.window-app.sheet .window-header .header-button i {
           --kText-font-size: 1rem;
-          text-shadow: 0 0 3px #000000, 0 0 3px #000000, 0 0 3px #000000, 0 0 3px #000000, 0 0 3px #000000, 0 0 5px #b9af8f, 0 0 5px #b9af8f;
+          text-shadow: 0 0 3px #000000, 0 0 3px #000000, 0 0 3px #000000, 0 0 3px #000000, 0 0 3px #000000, 0 0 5px #c3bba1, 0 0 5px #c3bba1;
           --kText-color: #958b68;
           --kText-font-family: "Font Awesome 5 Free";
           color: red;
@@ -772,7 +866,7 @@
       width: 100%;
       overflow: visible;
       padding: 0;
-      background: none; }
+      background: transparent url("../assets/backgrounds/bg-black-leather.webp") repeat center/500px 500px; }
       .vtt.game.system-kult4th .app.window-app.sheet .window-content form {
         --border-color: #958b68;
         height: 100%;
@@ -808,9 +902,9 @@
           .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content * {
             --gold: #958b68;
             --gold-brightest: #e4ddc3;
-            --gold-bright: #b9af8f;
+            --gold-bright: #c3bba1;
             --gold-dark: #685f43;
-            --gold-darker: #362f17;
+            --gold-darker: #42391a;
             --gold-darkest: #19160b;
             --gold-glow: #ffd958;
             --red: #9a1f1f
@@ -843,15 +937,12 @@
 	--color-text-light-highlight: #f0f0e0;
   --color-text-light-heading: #c9c7b8;
   --color-text-light-primary: #b5b3a4;
-
   --color-text-dark-primary: #191813;
   --color-text-dark-secondary: #4b4a44;
   --color-text-dark-header: #23221d;
   --color-text-dark-inactive: #7a7971;
-
-	--color-text-hyperlink: #ff6400;
-
-	--color-text-light-0: #fff;
+  --color-text-hyperlink: #ff6400;
+  --color-text-light-0: #fff;
   --color-text-light-1: #eee;
   --color-text-light-2: #ddd;
   --color-text-light-3: #ccc;
@@ -859,32 +950,26 @@
   --color-text-light-5: #aaa;
   --color-text-light-6: #999;
   --color-text-light-7: #888;
-
-	--color-text-dark-1: #111;
+  --color-text-dark-1: #111;
   --color-text-dark-2: #222;
   --color-text-dark-3: #444;
   --color-text-dark-4: #555;
   --color-text-dark-5: #666;
   --color-text-dark-6: #777;
-
-	--color-border-light-1: #ddd;
+  --color-border-light-1: #ddd;
   --color-border-light-2: #999;
-
-	--color-border-dark-1: #111;
+  --color-border-dark-1: #111;
   --color-border-dark-2: #222;
   --color-border-dark-3: #333;
   --color-border-dark-4: #444;
   --color-border-dark-5: #666;
-
-	--color-shadow-primary: #ff0000;
+  --color-shadow-primary: #ff0000;
   --color-shadow-highlight: #ff6400;
   --color-shadow-dark: #000;
-
-	--color-underline-inactive: #7a7971;
+  --color-underline-inactive: #7a7971;
   --color-underline-active: #44191A;
   --color-underline-header: #782e22;
-
-	--color-border-light-highlight: #f0f0e0;
+  --color-border-light-highlight: #f0f0e0;
   --color-border-light-primary: #b5b3a4;
   --color-border-light-secondary: #c9c7b8;
   --color-border-light-tertiary: #7a7971;
@@ -894,11 +979,86 @@
   --color-border-dark-tertiary: #4b4a44;
   --color-border-highlight: #ff6400;
   --color-border-highlight-alt: #ff0000;
-
   --color-bg-btn-minor-inactive: #c9c7b8;
   --color-bg-btn-minor-active: #b5b3a4;
   --color-bg-option: #dad8cc;
-	*/ }
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+  --sidebar-width: 300px;
+  --sidebar-header-height: 0px;
+  --sidebar-item-height: 80px;
+  --hotbar-height: 32px;
+  --hotbar-width: 378px;
+  --macro-size: 40px;
+  --players-width: 200px;
+  --form-field-height: 26px;
+  --font-primary: "Signika", sans-serif;
+  --font-mono: monospace;
+	*/
+            --color-text-light-highlight: #c3bba1;
+            --color-text-light-heading: #c3bba1;
+            --color-text-light-primary: #b5b3a4;
+            --color-text-dark-primary: #c3bba1;
+            --color-text-dark-secondary: #958b68;
+            --color-text-dark-header: #e4ddc3;
+            --color-text-dark-inactive: #7a7971;
+            --color-text-hyperlink: #2a548a;
+            --color-text-light-0: #fff;
+            --color-text-light-1: #e4ddc3;
+            --color-text-light-2: #e4ddc3;
+            --color-text-light-3: #c3bba1;
+            --color-text-light-4: #c3bba1;
+            --color-text-light-5: #c3bba1;
+            --color-text-light-6: #958b68;
+            --color-text-light-7: #958b68;
+            --color-text-dark-1: #19160b;
+            --color-text-dark-2: #19160b;
+            --color-text-dark-3: #42391a;
+            --color-text-dark-4: #42391a;
+            --color-text-dark-5: #685f43;
+            --color-text-dark-6: #685f43;
+            --color-border-light-1: #c3bba1;
+            --color-border-light-2: #958b68;
+            --color-border-dark-1: #19160b;
+            --color-border-dark-2: #19160b;
+            --color-border-dark-3: #42391a;
+            --color-border-dark-4: #42391a;
+            --color-border-dark-5: #685f43;
+            --color-shadow-primary: #958b68;
+            --color-shadow-highlight: #958b68;
+            --color-shadow-dark: #000;
+            --color-underline-inactive: #183f72;
+            --color-underline-active: #426899;
+            --color-underline-header: #958b68;
+            --color-border-light-highlight: #e4ddc3;
+            --color-border-light-primary: #e4ddc3;
+            --color-border-light-secondary: #c3bba1;
+            --color-border-light-tertiary: #958b68;
+            --color-border-dark: #000;
+            --color-border-dark-primary: #19160b;
+            --color-border-dark-secondary: #42391a;
+            --color-border-dark-tertiary: #685f43;
+            --color-border-highlight: #c3bba1;
+            --color-border-highlight-alt: #e4ddc3;
+            --color-bg-btn-minor-inactive: #c3bba1;
+            --color-bg-btn-minor-active: #e4ddc3;
+            --color-bg-option: #e4ddc3;
+            --z-index-canvas: 0;
+            --z-index-app: 30;
+            --z-index-ui: 60;
+            --z-index-window: 100;
+            --sidebar-width: 300px;
+            --sidebar-header-height: 0px;
+            --sidebar-item-height: 80px;
+            --hotbar-height: 32px;
+            --hotbar-width: 378px;
+            --macro-size: 40px;
+            --players-width: 200px;
+            --form-field-height: 26px;
+            --font-primary: Alverata, sans-serif;
+            --font-mono: monospace; }
             .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content * .dark-on-dark {
               color: #333;
               background-color: #666;
@@ -1045,6 +1205,18 @@
     font-weight: 801 1000;
     font-style: normal;
     src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black.svg") format("svg"); } }
+
+@font-face {
+  .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content {
+    font-family: AlverataSemiBold;
+    font-style: normal;
+    src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); } }
+
+@font-face {
+  .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content {
+    font-family: AlverataSemiBold;
+    font-style: italic;
+    src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); } }
 
 @font-face {
   .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content {
@@ -1278,7 +1450,7 @@
             .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content .kult-text-block h4,
             .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content .mce-content-body h4,
             .vtt.game.system-kult4th .app.window-app.sheet .window-content .editor .editor-content .kult4th.window-app .window-content h4 {
-              --kText-color: #b9af8f;
+              --kText-color: #c3bba1;
               --kText-font-style: italic;
               --kText-font-weight: 700;
               --kText-line-height: 0.75rem; }
@@ -1660,7 +1832,10 @@
     --sheet-bottom-padding: 1.5%;
     --sheet-header-height: 60px; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content {
-      --color-body-text: #958b68; }
+      --color-body-text: #958b68;
+      background: none; }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content button {
+        color: var(--gold-bright); }
       .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form > * {
         position: relative;
         z-index: 2; }
@@ -1955,7 +2130,7 @@
                   border: none;
                   margin: 0;
                   padding: 0;
-                  --kText-color: #b9af8f;
+                  --kText-color: #c3bba1;
                   --kText-font-size: 0.75rem;
                   height: 100%;
                   -webkit-box-shadow: none;
@@ -2029,7 +2204,7 @@
 									; }
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="3"],
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="3"] {
-                    --kText-color: #b9af8f
+                    --kText-color: #c3bba1
 									; }
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="2"],
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="2"] {
@@ -2041,7 +2216,7 @@
 									; }
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="0"],
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="0"] {
-                    --kText-color: #362f17
+                    --kText-color: #42391a
 									; }
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-1"],
                   .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-1"] {
@@ -2175,137 +2350,158 @@
         .vtt.game.system-kult4th .app.window-app.sheet.item .window-header .header-button:last-of-type i {
           font-size: 24px;
           --kText-color: #ff0000; }
-    .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form {
-      background: url("../assets/backgrounds/bg-white-paper.webp"); }
-      .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header {
-        border-bottom: 3px solid black;
-        -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap; }
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-bullet,
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-name {
-          position: relative; }
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-bullet {
-          display: none; }
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-name {
-          --kText-background: #000000;
-          --kText-text-align: left;
-          --kText-font-size: 1.5rem;
-          --kText-font-weight: 700;
-          white-space: nowrap;
-          text-transform: none;
-          padding: 14px 20px 10px var(--kText-horiz-padding); }
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-filler {
-          -ms-flex-preferred-size: 0;
-          flex-basis: 0;
-          -webkit-box-flex: 1;
-          -ms-flex-positive: 1;
-          flex-grow: 1; }
-        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header.move-header .header-name {
-          --kText-color: #000000;
-          --kText-background: #958b68
+    .vtt.game.system-kult4th .app.window-app.sheet.item .window-content {
+      background: none; }
+      .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form {
+        background: url("../assets/backgrounds/bg-white-paper.webp"); }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header {
+          border-bottom: 3px solid black;
+          -ms-flex-wrap: nowrap;
+          flex-wrap: nowrap; }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-bullet,
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-name {
+            position: relative; }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-bullet {
+            display: none; }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-name {
+            --kText-background: #000000;
+            --kText-text-align: left;
+            --kText-font-size: 1.5rem;
+            --kText-font-weight: 700;
+            white-space: nowrap;
+            text-transform: none;
+            padding: 14px 20px 10px var(--kText-horiz-padding); }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header .header-filler {
+            -ms-flex-preferred-size: 0;
+            flex-basis: 0;
+            -webkit-box-flex: 1;
+            -ms-flex-positive: 1;
+            flex-grow: 1; }
+          .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .sheet-header.move-header .header-name {
+            --kText-color: #000000;
+            --kText-background: #958b68
 					; }
-      .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content {
-        overflow-x: hidden;
-        overflow-y: auto; }
+        .vtt.game.system-kult4th .app.window-app.sheet.item .window-content form .tab-content {
+          overflow-x: hidden;
+          overflow-y: auto; }
     .vtt.game.system-kult4th .app.window-app.sheet.item .window-resizable-handle {
       top: -50px;
       -ms-flex-preferred-size: 10px;
       flex-basis: 10px; }
 
-.vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log {
-  font-size: 12px; }
-  .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message {
-    --color-body-text: #958b68;
-    background: transparent url("../assets/backgrounds/bg-black-leather.webp") repeat center/500px 500px;
-    margin: 3px 0;
-    padding: 0;
-    border: none;
-    position: relative; }
-    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-header {
-      opacity: 0;
-      -webkit-transition: 0.25s;
-      -o-transition: 0.25s;
-      transition: 0.25s;
-      position: absolute;
-      color: #e4ddc3;
-      padding: 0 5px;
-      height: 20px;
-      top: 0px;
-      left: -2px;
-      border: 2px outset #685f43;
-      border-bottom: none;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      background: -o-linear-gradient(#685f43, #19160b 22px, transparent 24px);
-      background: linear-gradient(#685f43, #19160b 22px, transparent 24px);
-      width: calc(100% + 4px); }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-header:hover {
-        opacity: 1;
-        top: -24px;
-        height: 56px; }
-    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat {
-      --kText-horiz-padding: 5px;
-      --kText-vert-padding: 0;
-      --kText-font-size: 0.75rem;
-      --kText-line-height: 1rem; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-posmod,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-keyword,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-attributename,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-movename,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-edgename, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-posmod,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-keyword,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-attributename,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-movename,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-edgename {
-        --kText-color: #688ab5; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-trigger, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-trigger {
-        --kText-color: #e4ddc3; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-negmod,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-negmod + .text-keyword,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-negmod + .text-attributename,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-gmtext, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-negmod,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-negmod + .text-keyword,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-negmod + .text-attributename,
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-gmtext {
-        --kText-color: #ff0000; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form ul, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat ul {
-        margin-left: 0; }
-        .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form ul li, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat ul li {
-          text-indent: -15px; }
-        .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form ul li:before, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat ul li:before {
-          margin-right: 0;
-          -webkit-transform: scaleX(1.25) scale(0.6);
-          -ms-transform: scaleX(1.25) scale(0.6);
-          transform: scaleX(1.25) scale(0.6); }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .sheet-header .header-filler, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .sheet-header .header-filler {
-        display: none; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .sheet-header .header-name, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .sheet-header .header-name {
-        --kText-font-size: 1rem;
-        --kText-color: #000000;
-        --kText-line-height: 1.5rem;
-        --kText-font-weight: 700;
-        --kText-background: linear-gradient(to right,
+.vtt.game.system-kult4th #ui-right #sidebar {
+  background: none;
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  --color-body-text: #c3bba1; }
+
+.vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message {
+  background: transparent url("../assets/backgrounds/bg-black-leather.webp") repeat center/500px 500px;
+  margin: 3px 0;
+  padding: 0;
+  border: none;
+  position: relative; }
+  .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-header {
+    opacity: 0;
+    -webkit-transition: 0.25s;
+    -o-transition: 0.25s;
+    transition: 0.25s;
+    position: absolute;
+    color: #e4ddc3;
+    padding: 0 5px;
+    height: 20px;
+    top: 0px;
+    left: -2px;
+    border: 2px outset #685f43;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: -o-linear-gradient(#685f43, #19160b 22px, transparent 24px);
+    background: linear-gradient(#685f43, #19160b 22px, transparent 24px);
+    width: calc(100% + 4px); }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-header:hover {
+      opacity: 1;
+      top: -24px;
+      height: 56px; }
+  .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat {
+    --kText-horiz-padding: 5px;
+    --kText-vert-padding: 0;
+    --kText-font-size: 0.75rem;
+    --kText-line-height: 1rem; }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-posmod,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-keyword,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-attributename,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-movename,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-edgename, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-posmod,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-keyword,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-attributename,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-movename,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-edgename {
+      --kText-color: #688ab5; }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-trigger, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-trigger {
+      --kText-color: #e4ddc3; }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-negmod,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-negmod + .text-keyword,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-negmod + .text-attributename,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .text-gmtext, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-negmod,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-negmod + .text-keyword,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-negmod + .text-attributename,
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .text-gmtext {
+      --kText-color: #ff0000; }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form ul, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat ul {
+      margin-left: 0; }
+      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form ul li, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat ul li {
+        text-indent: -15px; }
+      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form ul li:before, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat ul li:before {
+        margin-right: 0;
+        -webkit-transform: scaleX(1.25) scale(0.6);
+        -ms-transform: scaleX(1.25) scale(0.6);
+        transform: scaleX(1.25) scale(0.6); }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .sheet-header .header-filler, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .sheet-header .header-filler {
+      display: none; }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .sheet-header .header-name, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .sheet-header .header-name {
+      --kText-font-size: 1rem;
+      --kText-color: #000000;
+      --kText-line-height: 1.5rem;
+      --kText-font-weight: 700;
+      --kText-background: linear-gradient(to right,
 							#19160b,
-							#b9af8f 30px,
-							#b9af8f calc(100% - 30px),
+							#c3bba1 30px,
+							#c3bba1 calc(100% - 30px),
 							#19160b
 						);
-        --kText-text-shadow: 1px 1px 0px #958b68;
-        width: 100%;
-        display: block;
-        text-indent: 8px; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .result-entry, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .result-entry {
-        margin: 0; }
-        .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .result-entry > label, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .result-entry > label {
-          width: 34px;
-          white-space: nowrap;
-          margin-right: 3px; }
-        .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .result-entry > span, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .result-entry > span {
-          --kText-text-align: left;
-          width: calc(100% - 34px - 3px);
-          vertical-align: top; }
-      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.chat-roll-result .result-entry, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat.chat-roll-result .result-entry {
-        --kText-font-size: 0.875rem;
-        --kText-line-height: 1.125rem; }
-        .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.chat-roll-result .result-entry > span, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat.chat-roll-result .result-entry > span {
-          width: unset; }
+      --kText-text-shadow: 1px 1px 0px #958b68;
+      width: 100%;
+      display: block;
+      text-indent: 8px; }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .result-entry, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .result-entry {
+      margin: 0; }
+      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .result-entry > label, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .result-entry > label {
+        width: 34px;
+        white-space: nowrap;
+        margin-right: 3px; }
+      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form .result-entry > span, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat .result-entry > span {
+        --kText-text-align: left;
+        width: calc(100% - 34px - 3px);
+        vertical-align: top; }
+    .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.chat-roll-result .result-entry, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat.chat-roll-result .result-entry {
+      --kText-font-size: 0.875rem;
+      --kText-line-height: 1.125rem; }
+      .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.chat-roll-result .result-entry > span, .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log .chat-message .message-content form.kult4th-chat.chat-roll-result .result-entry > span {
+        --kText-text-align: justify;
+        width: unset;
+        padding-bottom: 0; }
+
+.vtt.game.system-kult4th #ui-right #sidebar #chat #chat-controls .roll-type-select {
+  font-family: AlverataSemiBold;
+  background: transparent url("../assets/backgrounds/bg-black-leather.webp") repeat center/500px 500px;
+  color: var(--color-body-text);
+  margin-top: 2px;
+  border-radius: 0; }
+
+.vtt.game.system-kult4th #ui-right #sidebar #chat #chat-form #chat-message {
+  background: transparent url("../assets/backgrounds/bg-black-leather.webp") repeat center/500px 500px;
+  border-color: #958b68;
+  color: var(--color-body-text);
+  font-family: AlverataSemiBold; }

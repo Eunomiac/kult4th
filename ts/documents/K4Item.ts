@@ -22,10 +22,9 @@ export default class K4Item extends Item {
 	}
 
 	subItems?: K4Item[];
-	hasSubItems(): this is typeof K4Item { return Boolean("subItems" in this.data.data && this.data.data.subItems.length) }
-	get subItemData(): Array<Record<string,unknown> & ItemDataConstructorData> {
+	hasSubItems(): this is K4HasSubItems<typeof this.data.type> { return Boolean("subItems" in this.data.data && this.data.data.subItems.length) }
+	get subItemData(): ItemDataSource[] {
 		if (this.hasSubItems()) {
-			// @ts-expect-error Types aren't discriminating the .data.data union type
 			return this.data.data.subItems.map((subIData) => {
 				if (subIData.data && ("sourceItem" in subIData.data)) {
 					subIData.data.sourceItem = {
@@ -66,7 +65,7 @@ export default class K4Item extends Item {
 		await super._onCreate(...args);
 		if (this.isEmbedded && this.parent instanceof Actor) {
 			if (this.hasSubItems()) {
-				this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData) as K4Item[];
+				this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData as Array<Record<string,any>>) as K4Item[];
 			}
 			if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
 				this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));

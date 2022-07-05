@@ -130,6 +130,7 @@ const sortIntoFolders = async (itemData) => {
         }
         if (iData.data && "subItems" in iData.data && iData.data.subItems && iData.data.subItems.length) {
             iData.data.subItems = iData.data.subItems.map((subItemData) => {
+                subItemData ??= {};
                 const derivedFolderName = folderNames[`derived_${subItemData.type}`];
                 const subFolder = C.game.folders.get(folderMap[`derived_${subItemData.type}`][subItemData.data.subType]);
                 if (!folderIDRecord.includes(subFolder.id)) {
