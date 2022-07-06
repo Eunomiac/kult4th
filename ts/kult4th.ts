@@ -7,6 +7,7 @@ import K4ActiveEffect from "./documents/K4ActiveEffect.js";
 import C from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
 import {formatStringForKult, HandlebarHelpers} from "./scripts/helpers.js";
+import registerSettings from "./scripts/settings.js";
 
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
@@ -18,6 +19,7 @@ import K4ChatMessage from "./documents/K4ChatMessage.js";
 
 Hooks.once("init", () => {
 	console.log("Initializing Kult 4E");
+	registerSettings();
 
 	CONFIG.Actor.documentClass = K4Actor;
 	Actors.unregisterSheet("core", ActorSheet);

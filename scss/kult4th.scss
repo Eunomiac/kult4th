@@ -1,29 +1,19 @@
-// @import 'globals/colors';
 @import 'globals/functions';
-// @import 'globals/typography';
-@import 'globals/text-styles';
+@import 'globals/colors';
+@import 'globals/typography';
 
-#position-display {
-	height: 200px;
-	width: 200px;
-	position: absolute;
-	color: lime;
-	left: 100px;
-	top: 100px;
-	background: rgba(0, 100, 0, 0.2);
-	padding: 10px;
-	border:  3px solid lime;
-	border-radius: 20px;
-
-	display: none;
-}
+$isDebugging: false;
+$isDebuggingChat: false;
+@import 'debug';
 
 .vtt.game.system-kult4th {
-	@import 'globals/globals';
+	// --color-body-text: #{$gold};
+	@import 'globals/root';
+	@import 'globals/layout';
+	@import 'globals/text-styles';
 
 	.app.window-app {
 		@import 'globals/app';
-		box-shadow: none;
 
 		&.sheet {
 			@import 'sheets/sheet';
@@ -35,9 +25,6 @@
 			@import 'dialog/dialog';
 		}
 	}
-
-	// #ui-left, #ui-middle { display: none }
-	// #ui-right { margin-left: 100px; }
 
 	#ui-right {
 		#sidebar {

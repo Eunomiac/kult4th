@@ -1,25 +1,29 @@
 {{log "{SHEET} advantage-sheet.hbs" this}}
 
 <form class="kult4th-form {{cssClass}}" autocomplete="off">
-	<header class="sheet-header">
-		{{!-- <span class="header-bullet">•</span> --}}
-		<span class="header-name">{{data.name}}</span>
-		<span class="header-filler"></span>
-		{{!-- <input type="text" class="item-name" name="name" value="{{item.name}}" placeholder="" /> --}}
-	</header>
+	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
 	<main class="kult-text-container tab-content">
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
-		<p class="rules-top">
-			{{~#if data.data.rules.intro}}<span class="text-intro">{{{formatForKult data.data.rules.intro}}}</span>{{/if}}
-			{{~#if data.data.rules.trigger}} <em class="text-trigger">{{{formatForKult data.data.rules.trigger}}}</em>
-			{{/if}}
-			{{~#if data.data.rules.outro}} <span class="text-outro">{{{formatForKult data.data.rules.outro}}}</span>{{/if}}
-		</p>
+		{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
 		{{/unless}}
 
 		{{#each data.data.subMoveData as |subMove|}}
 		{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subMove}}
 		{{/each}}
+
+		{{~#if data.data.rules.listRefs}}
+			{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.data.lists listRefs=data.data.rules.listRefs itemData=data isDisplayingName=true}}
+		{{/if}}
+
+		{{#if data.data.rules.holdText}}
+			<span class="hold-header">This {{case "title" data.type}} grants Hold</span>
+			<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
+		{{/if}}
+	</main>
+</form>
+
+
+	{{!-- <main class="kult-text-container tab-content">
 
 		{{~#if data.data.rules.listRefs}}
 		{{~#with data.data.lists as |LISTS|}}
@@ -46,4 +50,4 @@
 		<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
 		{{/if}}
 	</main>
-</form>
+</form> --}}

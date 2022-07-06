@@ -9,9 +9,8 @@
 	--sheet-header-height: 60px;
 
 	.window-content {
-		--color-body-text: #{$gold};
 
-		button { color: var(--gold-bright) }
+		// button { color: $gold-bright }
 		background: none;
 
 		form {
@@ -127,9 +126,9 @@
 							position: absolute;
 							display: block;
 							opacity: 0;
-							--kText-color: #{$red-bright};
-							--kText-font-family: var(--font-primary-caps);
-							--kText-font-size: #{$rem-24};
+							--k4-color: #{$red-bright};
+							--k4-font-family: var(--font-primary-caps);
+							--k4-font-size: #{$rem-24};
 							z-index: 2;
 							pointer-events: none;
 							text-align: center;
@@ -159,150 +158,153 @@
 
 					&.close {
 						--button-glow-color: #{$red-glow};
-						--kText-color: #{$black};
+						--k4-color: #{$black};
 						left: 15%;
 						top: 100px;
 					}
 
 					&.minimize {
 						--button-glow-color: #{$blue-glow};
-						--kText-color: #{$black};
+						--k4-color: #{$black};
 						right: 15%;
 						top: 100px;
 					}
 				}
 			}
 
+			.border-container,
 			.bg-container {
 				--bg-vert-shift: 29px;
 				--border-vert-shift: 42px;
 				--border-horiz-shift: 42px;
-				position: absolute;
-				pointer-events: none;
-				height: 100%;
+				height: calc(100% - var(--bg-vert-shift));
 				width: 100%;
+				position: absolute;
 				top: var(--bg-vert-shift);
-				display: grid;
-				background: to-url("backgrounds/bg-black-leather.webp");
-				background-size: 1000px 1000px;
-				background-repeat: repeat;
-				grid-template-areas:
-					"top-left top-left top top-right top-right"
-					"top-left top-left . top-right top-right"
-					"left . . . right"
-					"bot-left bot-left . bot-right bot-right"
-					"bot-left bot-left bot bot-right bot-right";
-				grid-template-columns: 22px minmax(auto, 200px) 1fr minmax(auto, 200px) 22px;
-				grid-template-rows: 17px minmax(auto, 200px) 1fr minmax(auto, 200px) 17px;
 
-				.sheet-border {
-					background-repeat: no-repeat;
-					pointer-events: none;
-					position: relative;
+				&.bg-container {
+					background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
+					z-index: 1;
+				}
+
+				&.border-container {
 					z-index: 3;
+					pointer-events: none;
+					display: grid;
+					grid-template-areas:
+						"top-left top-left top top-right top-right"
+						"top-left top-left . top-right top-right"
+						"left . . . right"
+						"bot-left bot-left . bot-right bot-right"
+						"bot-left bot-left bot bot-right bot-right";
+					grid-template-columns: 22px minmax(auto, 200px) 1fr minmax(auto, 200px) 22px;
+					grid-template-rows: 17px minmax(auto, 200px) 1fr minmax(auto, 200px) 17px;
 
-					&.corner {
-						background-size: 360px 480px;
+					.sheet-border {
+						pointer-events: none;
+						position: relative;
 
-						&.top-right {
-							grid-area: top-right;
-							background-image: to-url("layout/border-top-right.webp");
-							top: calc(-1 * var(--border-vert-shift));
-							right: calc(-1 * var(--border-horiz-shift));
-							background-position: right top;
+						&.corner {
+
+							&.top-right {
+								grid-area: top-right;
+								background: transparent #{to-url("layout/border-top-right.webp")} no-repeat right top/360px 480px;
+								top: calc(-1 * var(--border-vert-shift));
+								right: calc(-1 * var(--border-horiz-shift));
+							}
+
+							&.top-left {
+								grid-area: top-left;
+								background: transparent #{to-url("layout/border-top-left.webp")} no-repeat left top/360px 480px;
+								top: calc(-1 * var(--border-vert-shift));
+								left: calc(-1 * var(--border-horiz-shift));
+							}
+
+							&.bot-right {
+								grid-area: bot-right;
+								background: transparent #{to-url("layout/border-bot-left.webp")} no-repeat right bottom/360px 480px;
+								bottom: calc(-1 * var(--border-vert-shift));
+								right: calc(-1 * var(--border-horiz-shift));
+							}
+
+							&.bot-left {
+								grid-area: bot-left;
+								background: transparent #{to-url("layout/border-bot-right.webp")} no-repeat left bottom/360px 480px;
+								bottom: calc(-1 * var(--border-vert-shift));
+								left: calc(-1 * var(--border-horiz-shift));
+							}
 						}
 
-						&.top-left {
-							grid-area: top-left;
-							background-image: to-url("layout/border-top-left.webp");
-							top: calc(-1 * var(--border-vert-shift));
+						&.horiz-bar {
+							height: 37px;
+							width: calc(100% + 2 * var(--border-horiz-shift));
 							left: calc(-1 * var(--border-horiz-shift));
-							background-position: left top;
+							background: transparent #{to-url("layout/border-side-horiz.webp")} repeat no-repeat center center/200px 37px;
+
+							&.top {
+								grid-area: top;
+								top: -16px;
+							}
+
+							&.bot {
+								grid-area: bot;
+								bottom: 8px;
+							}
 						}
 
-						&.bot-right {
-							grid-area: bot-right;
-							background-image: to-url("layout/border-bot-left.webp");
-							bottom: calc(-1 * var(--border-vert-shift));
-							right: calc(-1 * var(--border-horiz-shift));
-							background-position: right bottom;
-						}
+						&.vert-bar {
+							height: calc(100% + 2 * var(--border-vert-shift));
+							width: 37px;
+							top: calc(-1 * var(--border-vert-shift));
+							z-index: 10;
+							background: transparent #{to-url("layout/border-side-vert.webp")} no-repeat repeat center center/37px 200px;
+							// background: transparent #{to-url("layout/border-side-vert.webp")};
+							// background-size: 37px 200px;
+							// background-position: center center;
+							// background-repeat-y: repeat;
 
-						&.bot-left {
-							grid-area: bot-left;
-							background-image: to-url("layout/border-bot-right.webp");
-							bottom: calc(-1 * var(--border-vert-shift));
-							left: calc(-1 * var(--border-horiz-shift));
-							background-position: left bottom;
-						}
-					}
+							&.left {
+								grid-area: left;
+								left: -16px;
+							}
 
-					&.horiz-bar {
-						height: 37px;
-						width: calc(100% + 2 * var(--border-horiz-shift));
-						left: calc(-1 * var(--border-horiz-shift));
-						background-image: to-url("layout/border-side-horiz.webp");
-						background-size: 200px 37px;
-						background-position: center center;
-						background-repeat-x: repeat;
-
-						&.top {
-							grid-area: top;
-							top: -16px;
-						}
-
-						&.bot {
-							grid-area: bot;
-							bottom: 8px;
-						}
-					}
-
-					&.vert-bar {
-						height: calc(100% + 2 * var(--border-vert-shift));
-						width: 37px;
-						top: calc(-1 * var(--border-vert-shift));
-						z-index: 10;
-						background-image: to-url("layout/border-side-vert.webp");
-						background-size: 37px 200px;
-						background-position: center center;
-						background-repeat-y: repeat;
-
-						&.left {
-							grid-area: left;
-							left: -16px;
-						}
-
-						&.right {
-							grid-area: right;
-							right: -5px;
+							&.right {
+								grid-area: right;
+								right: -5px;
+							}
 						}
 					}
 				}
+
 			}
+
+
 
 			.sheet-header {
 				height: 80px;
 				top: -20px;
+				z-index: 3;
 
 				.actor-name {
 					height: auto;
 					max-width: 625px;
 					margin: 0 auto;
 					padding: 27px 50px 0;
-					--kText-font-family: var(--font-heading);
-					--kText-color: #{$gold};
-					--kText-font-size: #{$rem-48};
+					--k4-font-family: var(--font-heading);
+					--k4-color: #{$gold};
+					--k4-font-size: #{$rem-48};
 					border: none;
 					outline: none;
-					--kText-background: transparent #{to-url("layout/header-frame.webp")} no-repeat center 2px;
-					--kText-text-align: center;
+					--k4-background: transparent #{to-url("layout/header-frame.webp")} no-repeat center 2px;
+					--k4-text-align: center;
 				}
 			}
 
 			.tab-content {
 				overflow-x: hidden;
 				overflow-y: scroll;
-				margin-bottom: -30px;
+
+				// margin-bottom: -30px;
 
 				.tab {
 					--horiz-padding: 10px;
@@ -343,7 +345,7 @@
 							"attributes basic-moves special-moves"
 							"session-checks attacks special-moves";
 						grid-template-columns: var(--attributes-width) 1fr 1fr;
-						grid-template-rows: 40px 80px var(--attributes-height) auto;
+						grid-template-rows: 40px 80px minmax(auto, var(--attributes-height)) minmax(auto, 200px);
 
 						.dramatic-hooks {
 							grid-area: dramatic-hooks;
@@ -352,10 +354,10 @@
 							.hook-label {
 								display: inline-block;
 								margin: 0 0 0 55px;
-								--kText-font-size: #{$rem-40};
-								--kText-line-height: #{$rem-40};
-								--kText-color: #{$gold-dark};
-								--kText-font-family: var(--font-decorative);
+								--k4-font-size: #{$rem-40};
+								--k4-line-height: #{$rem-40};
+								--k4-color: #{$gold-dark};
+								--k4-font-family: var(--font-decorative);
 								float: left;
 							}
 
@@ -385,12 +387,12 @@
 									border: none;
 									margin: 0;
 									padding: 0;
-									--kText-color: #{$gold-bright};
-									--kText-font-size: #{$rem-12};
+									--k4-color: #{$gold-bright};
+									--k4-font-size: #{$rem-12};
 									height: 100%;
 									box-shadow: none;
-									--kText-font-weight: #{$font-weight-bold};
-									--kText-font-style: italic;
+									--k4-font-weight: #{$font-weight-bold};
+									--k4-font-style: italic;
 									transform-origin: left center;
 									transform: scaleX(0.9);
 									vertical-align: top;
@@ -405,11 +407,11 @@
 
 						.attributes {
 							grid-area: attributes;
-							--kText-background: transparent #{to-url("layout/attributes-spread.webp")} no-repeat center 28px/contain;
+							background: transparent #{to-url("layout/attributes-spread.webp")} no-repeat center/100% auto;
 
 							.attribute-box {
 								--panel-size: 200px;
-								--kText-background: none;
+								--k4-background: none;
 								height: var(--panel-size);
 								width: var(--panel-size);
 								position: absolute;
@@ -424,90 +426,93 @@
 								}
 
 								.attribute-title {
-									--kText-font-size: #{$rem-10};
-									// --kText-color: #{$gold};
-									--kText-text-align: center;
-									--kText-font-weight: #{$font-weight-bold};
 									position: absolute;
 									width: 100%;
 									top: 130px;
+									font-size: $rem-10;
+									text-align: center;
+									font-weight: $font-weight-bold;
 								}
 
 								.attribute-value {
-									--kText-font-size: #{$rem-20};
-									--kText-text-align: center;
-									--kText-font-weight: #{$font-weight-black};
 									position: absolute;
 									width: 40px;
 									border: none;
 									left: calc(50% - (40px / 2));
 									top: 87px;
 									pointer-events: all;
+									font-size: $rem-20;
+									text-align: center;
+									font-weight: $font-weight-black;
 									appearance: none;
+
+									option {
+										text-align: center;
+									}
 
 									&[value="7"],
 									option[value="7"] {
-										--kText-color: #{$white}
+										color: $white;
 									}
 
 									&[value="6"],
 									option[value="6"] {
-										--kText-color: #{$white}
+										color: $white;
 									}
 
 									&[value="5"],
 									option[value="5"] {
-										--kText-color: #{$gold-brightest}
+										color: $gold-brightest;
 									}
 
 									&[value="4"],
 									option[value="4"] {
-										--kText-color: #{$gold-brightest}
+										color: $gold-brightest;
 									}
 
 									&[value="3"],
 									option[value="3"] {
-										--kText-color: #{$gold-bright}
+										color: $gold-bright;
 									}
 
 									&[value="2"],
 									option[value="2"] {
-										--kText-color: #{$gold}
+										color: $gold;
 									}
 
 									&[value="1"],
 									option[value="1"] {
-										--kText-color: #{$gold-dark}
+										color: $gold-dark;
 									}
 
 									&[value="0"],
 									option[value="0"] {
-										--kText-color: #{$gold-darker}
+										color: $gold-darker;
 									}
 
 									&[value="-1"],
 									option[value="-1"] {
-										--kText-color: #{$red-brightest}
+										color: $red-brightest;
 									}
 
 									&[value="-2"],
 									option[value="-2"] {
-										--kText-color: #{$red-bright}
+										color: $red-bright;
 									}
 
 									&[value="-3"],
 									option[value="-3"] {
-										--kText-color: #{$red}
+										color: $red;
 									}
 
 									&[value="-4"],
 									option[value="-4"] {
-										--kText-color: #{$red-dark}
+										color: $red-dark;
 									}
 
 									&[value="-5"],
 									option[value="-5"] {
-										--kText-color: #{$red-darkest}
+										color: $red-darkest;
 									}
 								}
 
@@ -566,7 +571,7 @@
 						.basic-moves {
 							grid-area: basic-moves;
 							padding-bottom: 0;
-							justify-content: space-evenly;
+							justify-content: space-around;
 						}
 
 						.special-moves {
@@ -644,7 +649,7 @@
 							.attribute-box {
 								margin-top: -135px;
 								margin-left: -11px;
-								--kText-font-weight: #{$font-weight-black};
+								--k4-font-weight: #{$font-weight-black};
 							}
 						}
 					}

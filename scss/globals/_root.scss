@@ -1,0 +1,28 @@
+::-webkit-scrollbar {
+  width: 6px;
+  // height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: 0 0 1px #{$gold} inset;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  outline: none;
+  border-radius: 2px;
+	background: #{$red-dark};
+  border: 1px outset #{$gold-dark};
+}
+
+:root {
+	/* FOUNDRY OVERRIDES */
+	--hotbar-height: 32px; // 52px;
+  --hotbar-width: 378px; // 578px;
+  --macro-size: 40px; // 50px;
+  --players-width: 200px;
+  --z-index-canvas: 0;
+  --z-index-app: 30;
+  --z-index-ui: 60;
+  --z-index-window: 100;
+}

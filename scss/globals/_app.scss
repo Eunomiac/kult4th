@@ -1,3 +1,25 @@
 & {
+  --form-field-height: 26px;
 	box-shadow: none;
+
+	.window-header {
+		.header-button {
+			font-size: 0;
+			i[class^="fa"] {
+				font-size: $rem-16;
+				text-shadow:
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 3px #{$black},
+					0 0 5px #{$gold-bright},
+					0 0 5px #{$gold-bright};
+			}
+		}
+	}
+
+	.window-content {
+		color: var(--KKK-color-primary);
+	}
 }

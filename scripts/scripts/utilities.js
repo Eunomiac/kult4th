@@ -498,6 +498,7 @@ const loc = (locRef, formatDict = {}) => {
     }
     return locRef;
 };
+const getSetting = (setting) => game.settings.get(C.SYSTEM_ID, setting);
 // #endregion ░░░░[Localization]░░░░
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 // #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
@@ -1032,8 +1033,8 @@ export default {
     signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
     // ░░░░░░░ Content ░░░░░░░
     loremIpsum, randString, randWord,
-    // ░░░░░░░ Localization ░░░░░░░
-    loc,
+    // ░░░░░░░ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) ░░░░░░░
+    loc, getSetting,
     // ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
     isIn, isInExact,
     // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████

@@ -1,0 +1,32 @@
+{{log "{SHEET} attack-sheet.hbs" this}}
+
+<form class="kult4th-form {{cssClass}}" autocomplete="off">
+	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
+	<main class="kult-text-container tab-content">
+		<div class="attack-specs">
+			<span class="attack-harm">{{data.data.harm}}</span><label class="attack-harm">{{loc "kult4th.trait.harm"}}</label>
+		</div>
+		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
+		{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
+		{{/unless}}
+
+		{{~#if (test data.data.subType "==" "active-rolled")}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=data.data.results.partialSuccess.result}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
+
+			{{~#if data.data.results.listRefs}}
+				{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.data.lists listRefs=data.data.results.listRefs itemData=data isDisplayingName=true}}
+			{{/if}}
+		{{/if}}
+
+		{{~#if data.data.rules.listRefs}}
+			{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.data.lists listRefs=data.data.rules.listRefs itemData=data isDisplayingName=true}}
+		{{/if}}
+
+		{{#if data.data.rules.holdText}}
+			<span class="hold-header">This {{case "title" data.type}} grants Hold</span>
+			<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
+		{{/if}}
+	</main>
+</form>

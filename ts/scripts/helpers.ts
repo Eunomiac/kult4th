@@ -29,6 +29,21 @@ export const HandlebarHelpers = {
 	"areEmpty": function(...args: [...Array<string|string[]>, never]) {
 		return !Object.values(args).flat().join("");
 	},
+	"loc": function(...args: [...string[], never]) {
+		args.pop();
+		const locString = args.shift();
+		if (typeof locString === "string") {
+			const formatDict: Record<string,string> = {};
+			while (args.length && args.length % 2 === 0) {
+				const [dictKey, dictVal] = [args.shift(), args.shift()];
+				if (typeof dictKey === "string" && typeof dictVal === "string") {
+					formatDict[dictKey] = dictVal;
+				}
+			}
+			return U.loc(locString, formatDict);
+		}
+		throw new Error(`Bad Localization String: ${String(locString)}`);
+	},
 	"formatForKult": function(str: string, context: List<any> | K4Item) {
 		// Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
 		const iData = context instanceof K4Item

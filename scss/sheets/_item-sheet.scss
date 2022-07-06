@@ -8,23 +8,25 @@
 
 	--sheet-header-height: 40px;
 
-	--kText-horiz-padding: 15px;
-	--kText-vert-padding: 10px;
+	--k4-horiz-padding: 15px;
+	--k4-vert-padding: 10px;
+
+	--color-body-text: #{$black};
+	--k4-font-size: #{$rem-16};
+	--k4-line-height: #{$rem-20};
+	--k4-font-weight: #{$font-weight-medium};
 
 	.kult4th-form,
 	.kult-text-container,
 	.kult-text-block,
 	.mce-content-body {
-		--kText-font-size: #{$rem-16};
-		--kText-line-height: #{$rem-20};
-		--kText-font-weight: #{$font-weight-medium};
+		// --k4-font-size: #{$rem-16};
+		// --k4-line-height: #{$rem-20};
+		// --k4-font-weight: #{$font-weight-medium};
 
-		h1 {
-
-		}
 
 		h2 {
-			--kText-color: #{$black};
+			--k4-color: #{$black};
 		}
 	}
 
@@ -64,7 +66,7 @@
 
 				i {
 					font-size: 24px;
-					--kText-color: #{$red-glow};
+					--k4-color: #{$red-glow};
 				}
 			}
 		}
@@ -80,9 +82,9 @@
 				border-bottom: 3px solid black;
 				// margin-right: 10px;
 				flex-wrap: nowrap;
-				// --kText-color: #{$gold};
-				// --kText-font-size: #{$rem-24};
-				// --kText-font-weight: #{$font-weight-medium};
+				// --k4-color: #{$gold};
+				// --k4-font-size: #{$rem-24};
+				// --k4-font-weight: #{$font-weight-medium};
 
 				.header-bullet,
 				.header-name {
@@ -91,7 +93,7 @@
 
 				.header-bullet {
 					display: none;
-					// --kText-text-align: center;
+					// --k4-text-align: center;
 					// flex: 0;
 					// z-index: 4;
 					// flex-basis: 20px;
@@ -99,14 +101,14 @@
 				}
 
 				.header-name {
-					--kText-background: #{$black};
-					--kText-text-align: left;
-					--kText-font-size: #{$rem-24};
-					--kText-font-weight: #{$font-weight-bold};
+					--k4-background: #{$black};
+					--k4-text-align: left;
+					--k4-font-size: #{$rem-24};
+					--k4-font-weight: #{$font-weight-bold};
 
 					white-space: nowrap;
 					text-transform: none;
-					padding: 14px 20px 10px var(--kText-horiz-padding);
+					padding: 14px 20px 10px var(--k4-horiz-padding);
 				}
 
 				.header-filler {
@@ -116,8 +118,8 @@
 
 				&.move-header {
 					.header-name {
-						--kText-color: #{$black};
-						--kText-background: #{$gold}
+						--k4-color: #{$black};
+						--k4-background: #{$gold}
 					}
 				}
 			}

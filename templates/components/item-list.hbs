@@ -5,7 +5,7 @@
 	{{~#with (lookup data.lists listKey) as |listData|}}
 		{{~#if data.isDisplayingName}}
 			{{#if (test listKey "==" "edges")}}
-				<span class="edges-header">This {{case "title" data.itemData.type}} grants Edges:</span>
+				<h1 class="edges-header">This {{case "title" data.itemData.type}} grants Edges:</h1>
 			{{else}}
 				<h2 class="list-name">{{listData.name}}</h2>
 			{{/if}}

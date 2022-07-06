@@ -8,42 +8,42 @@
 		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
 		<div class="tabs" data-group="primary">
 			<a class="nav-tab" data-tab="front">
-				<span class="nav-tab-label">Front</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
 			<a class="nav-tab" data-tab="bio">
-				<span class="nav-tab-label">Bio</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
 			<a class="nav-tab" data-tab="assets">
-				<span class="nav-tab-label">Assets</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
 			<a class="nav-tab" data-tab="notes">
-				<span class="nav-tab-label">Journal</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.notes")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
 			<a class="nav-tab" data-tab="advancement">
-				<span class="nav-tab-label">Advancement</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
 			<a class="nav-tab" data-action="toggleLock">
-				<span class="nav-tab-label">Lock</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.lock")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
 			<a class="nav-tab" data-action="selectImg">
-				<span class="nav-tab-label">Image</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.image")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
 			<a class="nav-tab" data-tab="settings">
-				<span class="nav-tab-label">Settings</span>
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.settings")}}</span>
 				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
 			</a>
   	</div>
 		<a class="header-button close"><i class="fas fa-times"></i></a>
 		<a class="header-button minimize"><i class="fas fa-minus"></i></a>
 	</nav>
-	<div class="bg-container">
+	<div class="border-container">
 		<div class="sheet-border corner top-left"></div>
 		<div class="sheet-border horiz-bar top"></div>
 		<div class="sheet-border corner top-right"></div>
@@ -53,6 +53,7 @@
 		<div class="sheet-border horiz-bar bot"></div>
 		<div class="sheet-border corner bot-right"></div>
 	</div>
+	<div class="bg-container"></div>
 	<header class="sheet-header">
 		<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
 	</header>
@@ -60,7 +61,7 @@
 
 		<section class="active tab front" data-group="primary" data-tab="front">
 			<section class="subsection dramatic-hooks">
-				<label class="hook-label">Hooks</label>
+				<label class="hook-label">{{case "title" (loc "kult4th.sheet.hooks")}}</label>
 				{{#each data.data.dramaticHooks}}
 				<div class="dramatic-hook">
 					<input type="checkbox" name="data.dramaticHooks.{{@index}}.isChecked" {{checked isChecked}} />
@@ -75,28 +76,28 @@
 				<div class="dice-modifiers"></div>
 			</section>
 			<section class="subsection attributes">
-				<h1>Attributes</h1>
+				<h1 class="tight">{{case "upper" (loc "kult4th.trait.attributes")}}</h1>
 				{{#each attributes}}
 				{{> "systems/kult4th/templates/partials/attribute-box.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list basic-moves">
-				<h1>Basic Moves</h1>
+				<h1 class="tight">{{case "upper" (loc "kult4th.item.type.basicPlayerMoves")}}</h1>
 				{{#each baseMoves}}
 				{{> "systems/kult4th/templates/partials/basic-move-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list special-moves">
-				<h1>Special Moves</h1>
+				<h1 class="tight">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</h1>
 				{{#each derivedMoves}}
 				{{> "systems/kult4th/templates/partials/derived-move-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list session-checks">
-				<h1>Session Checks</h1>
+				<h1 class="tight">{{case "upper" (loc "kult4th.sheet.sessionChecks")}}</h1>
 			</section>
 			<section class="subsection flex-item-list attacks">
-				<h1>Attacks</h1>
+				<h1 class="tight">{{case "upper" (loc "kult4th.item.type.attacks")}}</h1>
 				{{#each attacks}}
 				{{> "systems/kult4th/templates/partials/attack-card.hbs"}}
 				{{/each}}

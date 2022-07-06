@@ -1,30 +1,17 @@
 import C from "../scripts/constants.js";
 export default class K4ItemSheet extends ItemSheet {
-    _actor;
-    get $entity() { return this.object ?? this; }
-    get $sheet() { return (this.$entity.sheet ?? false); }
-    get $actor() {
-        return (this._actor = this._actor
-            ?? this.actor
-            ?? (this.$entity.documentName === "Actor" ? this.$entity : false));
-    }
-    get $id() { return this.$entity.id; }
-    get $type() { return this.$entity.type; }
-    get $root() { return this.$entity.data; }
-    get $data() { return this.$root.data; }
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: [C.SYSTEM_ID, "item", "sheet"]
+            classes: [C.SYSTEM_ID, "item", "sheet", "dark-on-light"]
         });
     }
     get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs`; }
     get item() { return super.item; }
     get type() { return this.item.data.type; }
-    get tData() { return this.item.data.data; }
-    get subType() { return this.tData.subType; }
-    get subItems() { return this.tData.subItemData; }
-    get subMoves() { return this.tData.subMoveData; }
-    get attacks() { return this.tData.subAttackData; }
+    get subType() { return this.item.data.data.subType; }
+    get subItems() { return this.item.data.data.subItemData; }
+    get subMoves() { return this.item.data.data.subMoveData; }
+    get attacks() { return this.item.data.data.subAttackData; }
     activateListeners(html) {
         super.activateListeners(html);
         const self = this;

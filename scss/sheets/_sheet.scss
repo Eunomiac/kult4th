@@ -15,24 +15,9 @@
 	margin: 0;
 	background: none;
 
-	select,
-	input,
-	textarea {
-		--kText-color: #{$gold};
-		box-shadow: none;
-	}
-
-	option {
-		background: #{$black};
-	}
-
-	img {
-		border: none;
-	}
-
 	.window-header {
 		z-index: 6;
-		--kText-font-size: 0;
+		--k4-font-size: 0;
 		max-height: 20px;
 		overflow: visible;
 		border: none;
@@ -43,7 +28,7 @@
 		.header-button {
 			position: absolute;
 			right: -40px;
-			--kText-font-size: 0;
+			--k4-font-size: 0;
 
 			&:nth-of-type(1) { top: 75px }
 			&:nth-of-type(2) { top: 100px }
@@ -55,7 +40,7 @@
 			&:last-of-type { top: 50px }
 
 			i {
-				--kText-font-size: #{$rem-16};
+				--k4-font-size: #{$rem-16};
 				text-shadow:
 					0 0 3px #{$black},
 					0 0 3px #{$black},
@@ -64,12 +49,12 @@
 					0 0 3px #{$black},
 					0 0 5px #{$gold-bright},
 					0 0 5px #{$gold-bright};
-				--kText-color: #{$gold};
-				--kText-font-family: "Font Awesome 5 Free";
+				--k4-color: #{$gold};
+				--k4-font-family: "Font Awesome 5 Free";
 
-				color: red;
-				left: 900px;
-				width: 200px;
+				// color: red;
+				// left: 900px;
+				// width: 200px;
 				white-space: nowrap;
 				overflow: visible;
 			}
@@ -114,6 +99,21 @@
 				position: relative;
 				z-index: 2;
 			}
+
+			.edges-header, .hold-header {
+				animation: none;
+				--k4-font-weight: bold;
+				--k4-font-size: #{$rem-24};
+			}
+
+			.edges-header {
+				--k4-color: #{$blue};
+				--header-bg-color: #{$blue-bright};
+			}
+			.hold-header {
+				--k4-color: #{$red};
+				--header-bg-color: #{$red-bright};
+			}
 		}
 
 		.tab:not(.active) {
@@ -137,7 +137,7 @@
 				transform: scale(0.75);
 				width: calc(100% / 0.75);
 			}
-			.editor-edit { color: #{$gold} }
+			// .editor-edit { color: #{$gold} }
 		}
 
 		.item-card {
@@ -186,7 +186,7 @@
 					font-family: var(--font-primary);
 					position: relative;
 					display: inline-block;
-					--kText-color: var(--black);
+					--k4-color: #{$black};
 					height: 100%;
 					width: calc((100% - var(--icon-size)) / 4);
 					background: linear-gradient(
@@ -197,7 +197,7 @@
 						var(--popout-spacer-color) 85%
 					);
 					font-weight: $font-weight-bold;
-					--kText-line-height: #{$rem-32};
+					--k4-line-height: #{$rem-32};
 					font-size: 11px;
 					text-align: center;
 					text-shadow: 0 0 #{$black};
@@ -227,9 +227,9 @@
 				.item-text {
 					position: absolute;
 					font-family: var(--font-primary);
-					--kText-font-size: #{$rem-16};
-					--kText-line-height: #{$rem-28};
-					--kText-color: #{$gold};
+					--k4-font-size: #{$rem-16};
+					--k4-line-height: #{$rem-28};
+					--k4-color: #{$gold};
 					font-weight: $font-weight-semi;
 					height: 24px;
 					top: calc((var(--icon-size) - 24px) / 2);
@@ -245,12 +245,12 @@
 				display: block;
 				font-family: var(--font-primary);
 				font-size: 10px;
-				--kText-line-height: #{$rem-12};
+				--k4-line-height: #{$rem-12};
 				text-align: center;
 				font-style: italic;
 				width: 100%;
-				--kText-text-align: left;
-				--kText-color: #{$white};
+				--k4-text-align: left;
+				--k4-color: #{$white};
 				opacity: 0;
 				bottom: 0;
 				left: 0;

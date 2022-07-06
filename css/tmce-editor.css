@@ -1,107 +1,17 @@
-* {
-  --gold: #958b68;
-  --gold-brightest: #e4ddc3;
-  --gold-bright: #c3bba1;
-  --gold-dark: #685f43;
-  --gold-darker: #42391a;
-  --gold-darkest: #19160b;
-  --gold-glow: #ffd958;
-  --red: #9a1f1f
-	--red-brightest: #e37070;
-  --red-bright: #ba3e3e;
-  --red-dark: #730606;
-  --red-darkest: #490000;
-  --red-glow: #ff0000;
-  --blue: #2a548a;
-  --blue-brightest: #688ab5;
-  --blue-bright: #4084dd;
-  --blue-dark: #183f72;
-  --blue-darkest: #082b58;
-  --blue-glow: #3f93ff;
-  --blue-bright: #4084dd;
-  --white: #ffffff;
-  --grey: #888888;
-  --black: #000000;
-  --gradient-teal-orange: linear-gradient(#f4791f, #659999);
-  --gradient-red-burgundy: linear-gradient(to right, #c31432, #240b36);
-  --gradient-teal-gold: linear-gradient(to right, #3e5151, #decba4);
-  --gradient-dkgold-gold: linear-gradient(to right, #6d6027, #d3cbb8);
-  --gradient-dkdkgold-upright: linear-gradient(14deg, var(--gold-darker), var(--gold-darkest));
-  --textShadow-inset: 1px 1px 0px var(--gold-dark), -1px -1px 1px var(--black);
-  /* Darker text on medium background */
-  /* Medium text on lighter background */
-  /* Middle-tone colors with 1 shadow */
-  /* Middle-tone colors with 2 shadows */
-  /* Foundry Defaults:
-	--color-text-light-highlight: #f0f0e0;
-  --color-text-light-heading: #c9c7b8;
-  --color-text-light-primary: #b5b3a4;
-  --color-text-dark-primary: #191813;
-  --color-text-dark-secondary: #4b4a44;
-  --color-text-dark-header: #23221d;
-  --color-text-dark-inactive: #7a7971;
-  --color-text-hyperlink: #ff6400;
-  --color-text-light-0: #fff;
-  --color-text-light-1: #eee;
-  --color-text-light-2: #ddd;
-  --color-text-light-3: #ccc;
-  --color-text-light-4: #bbb;
-  --color-text-light-5: #aaa;
-  --color-text-light-6: #999;
-  --color-text-light-7: #888;
-  --color-text-dark-1: #111;
-  --color-text-dark-2: #222;
-  --color-text-dark-3: #444;
-  --color-text-dark-4: #555;
-  --color-text-dark-5: #666;
-  --color-text-dark-6: #777;
-  --color-border-light-1: #ddd;
-  --color-border-light-2: #999;
-  --color-border-dark-1: #111;
-  --color-border-dark-2: #222;
-  --color-border-dark-3: #333;
-  --color-border-dark-4: #444;
-  --color-border-dark-5: #666;
-  --color-shadow-primary: #ff0000;
-  --color-shadow-highlight: #ff6400;
-  --color-shadow-dark: #000;
-  --color-underline-inactive: #7a7971;
-  --color-underline-active: #44191A;
-  --color-underline-header: #782e22;
-  --color-border-light-highlight: #f0f0e0;
-  --color-border-light-primary: #b5b3a4;
-  --color-border-light-secondary: #c9c7b8;
-  --color-border-light-tertiary: #7a7971;
-  --color-border-dark: #000;
-  --color-border-dark-primary: #191813;
-  --color-border-dark-secondary: #23221d;
-  --color-border-dark-tertiary: #4b4a44;
-  --color-border-highlight: #ff6400;
-  --color-border-highlight-alt: #ff0000;
-  --color-bg-btn-minor-inactive: #c9c7b8;
-  --color-bg-btn-minor-active: #b5b3a4;
-  --color-bg-option: #dad8cc;
-  --z-index-canvas: 0;
-  --z-index-app: 30;
-  --z-index-ui: 60;
-  --z-index-window: 100;
-  --sidebar-width: 300px;
-  --sidebar-header-height: 0px;
-  --sidebar-item-height: 80px;
-  --hotbar-height: 32px;
-  --hotbar-width: 378px;
-  --macro-size: 40px;
-  --players-width: 200px;
-  --form-field-height: 26px;
-  --font-primary: "Signika", sans-serif;
-  --font-mono: monospace;
-	*/
+#tinymce > * {
+  /* FOUNDRY OVERRIDES */
+  --color-text-light-primary: lime;
+  --color-text-light-highlight: magenta;
+  --color-text-light-heading: red;
+  --color-text-dark-primary: var(--KKK-color-primary);
+  --color-text-dark-secondary: cyan;
+  --color-text-dark-header: purple;
+  --color-text-light-primary: #958b68;
   --color-text-light-highlight: #c3bba1;
   --color-text-light-heading: #c3bba1;
-  --color-text-light-primary: #b5b3a4;
-  --color-text-dark-primary: #c3bba1;
-  --color-text-dark-secondary: #958b68;
-  --color-text-dark-header: #e4ddc3;
+  --color-text-dark-primary: #19160b;
+  --color-text-dark-secondary: #685f43;
+  --color-text-dark-header: #42391a;
   --color-text-dark-inactive: #7a7971;
   --color-text-hyperlink: #2a548a;
   --color-text-light-0: #fff;
@@ -129,7 +39,7 @@
   --color-shadow-highlight: #958b68;
   --color-shadow-dark: #000;
   --color-underline-inactive: #183f72;
-  --color-underline-active: #426899;
+  --color-underline-active: #4084dd;
   --color-underline-header: #958b68;
   --color-border-light-highlight: #e4ddc3;
   --color-border-light-primary: #e4ddc3;
@@ -143,804 +53,7 @@
   --color-border-highlight-alt: #e4ddc3;
   --color-bg-btn-minor-inactive: #c3bba1;
   --color-bg-btn-minor-active: #e4ddc3;
-  --color-bg-option: #e4ddc3;
-  --z-index-canvas: 0;
-  --z-index-app: 30;
-  --z-index-ui: 60;
-  --z-index-window: 100;
-  --sidebar-width: 300px;
-  --sidebar-header-height: 0px;
-  --sidebar-item-height: 80px;
-  --hotbar-height: 32px;
-  --hotbar-width: 378px;
-  --macro-size: 40px;
-  --players-width: 200px;
-  --form-field-height: 26px;
-  --font-primary: Alverata, sans-serif;
-  --font-mono: monospace; }
-  * .dark-on-dark {
-    color: #333;
-    background-color: #666;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-    /* 50% white from bottom */ }
-  * .med-on-light {
-    color: #666;
-    background-color: #aaa;
-    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
-    /* 50% black coming from the top */ }
-  * .mid-one-shadow {
-    color: #3b5957;
-    background-color: #5d8d89;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5); }
-  * .mid-two-shadow {
-    color: #3b5957;
-    background-color: #5d8d89;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7); }
-
-@font-face {
-  font {
-    family: Alverata;
-    weight: 0 350;
-    style: normal; }
-  src: url("../assets/fonts/alverata/irreg/alverataIrreg-light.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata;
-  font-weight: 351 450;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/irreg/alverataIrreg.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata;
-  font-weight: 451 550;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata;
-  font-weight: 551 650;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata;
-  font-weight: 651 800;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata;
-  font-weight: 801 1000;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/irreg/alverataIrreg-black.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata, AlverataCaps;
-  font-weight: 0 350;
-  font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light-italic.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata, AlverataCaps;
-  font-weight: 351 450;
-  font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-italic.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata, AlverataCaps;
-  font-weight: 451 550;
-  font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med-italic.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata, AlverataCaps;
-  font-weight: 551 650;
-  font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata, AlverataCaps;
-  font-weight: 651 800;
-  font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold-italic.svg") format("svg"); }
-
-@font-face {
-  font-family: Alverata, AlverataCaps;
-  font-weight: 801 1000;
-  font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black-italic.svg") format("svg"); }
-
-@font-face {
-  font {
-    family: AlverataCaps;
-    weight: 0 350;
-    style: normal; }
-  src: url("../assets/fonts/alverata/reg/alverata-light.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light.svg") format("svg"); }
-
-@font-face {
-  font-family: AlverataCaps;
-  font-weight: 351 450;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata.svg") format("svg"); }
-
-@font-face {
-  font-family: AlverataCaps;
-  font-weight: 451 550;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-med.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med.svg") format("svg"); }
-
-@font-face {
-  font-family: AlverataCaps;
-  font-weight: 551 650;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-semi.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi.svg") format("svg"); }
-
-@font-face {
-  font-family: AlverataCaps;
-  font-weight: 651 800;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-bold.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold.svg") format("svg"); }
-
-@font-face {
-  font-family: AlverataCaps;
-  font-weight: 801 1000;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black.svg") format("svg"); }
-
-@font-face {
-  font-family: AlverataSemiBold;
-  font-style: normal;
-  src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); }
-
-@font-face {
-  font-family: AlverataSemiBold;
-  font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
-
-@font-face {
-  font-family: Infidel;
-  src: url("../assets/fonts/infidel.ttf"); }
-
-@font-face {
-  font-family: Sokol;
-  src: url("../assets/fonts/sokol.ttf"); }
-
-* {
-  --font-primary: Alverata;
-  --font-primary-caps: AlverataCaps;
-  --font-heading: Infidel;
-  --font-decorative: Sokol; }
-
-.kult4th,
-.kult4th-form,
-.kult-text-container,
-.kult-text-block,
-.mce-content-body,
-.kult4th.window-app .window-content {
-  --kText-color: var(--color-body-text);
-  --kText-background: transparent;
-  --kText-font-family: var(--font-primary);
-  --kText-font-size: 0.75rem;
-  --kText-line-height: 1rem;
-  --kText-font-weight: 400;
-  --kText-font-style: normal;
-  --kText-text-shadow: none;
-  --kText-text-align: justify;
-  --kText-hyphens: auto; }
-  .kult4th.kult-text-block,
-  .kult4th-form.kult-text-block,
-  .kult-text-container.kult-text-block,
-  .kult-text-block.kult-text-block,
-  .mce-content-body.kult-text-block,
-  .kult4th.window-app .window-content.kult-text-block {
-    display: block;
-    height: unset; }
-  .kult4th.kult-text-container,
-  .kult4th-form.kult-text-container,
-  .kult-text-container.kult-text-container,
-  .kult-text-block.kult-text-container,
-  .mce-content-body.kult-text-container,
-  .kult4th.window-app .window-content.kult-text-container {
-    margin: 0;
-    padding: var(--kText-vert-padding) var(--kText-horiz-padding); }
-  .kult4th, .kult4th *, .kult4th input[type="text"], .kult4th input[type="number"], .kult4th select, .kult4th option, .kult4th ul, .kult4th li,
-  .kult4th-form,
-  .kult4th-form *,
-  .kult4th-form input[type="text"],
-  .kult4th-form input[type="number"],
-  .kult4th-form select,
-  .kult4th-form option,
-  .kult4th-form ul,
-  .kult4th-form li,
-  .kult-text-container,
-  .kult-text-container *,
-  .kult-text-container input[type="text"],
-  .kult-text-container input[type="number"],
-  .kult-text-container select,
-  .kult-text-container option,
-  .kult-text-container ul,
-  .kult-text-container li,
-  .kult-text-block,
-  .kult-text-block *,
-  .kult-text-block input[type="text"],
-  .kult-text-block input[type="number"],
-  .kult-text-block select,
-  .kult-text-block option,
-  .kult-text-block ul,
-  .kult-text-block li,
-  .mce-content-body,
-  .mce-content-body *,
-  .mce-content-body input[type="text"],
-  .mce-content-body input[type="number"],
-  .mce-content-body select,
-  .mce-content-body option,
-  .mce-content-body ul,
-  .mce-content-body li,
-  .kult4th.window-app .window-content,
-  .kult4th.window-app .window-content *,
-  .kult4th.window-app .window-content input[type="text"],
-  .kult4th.window-app .window-content input[type="number"],
-  .kult4th.window-app .window-content select,
-  .kult4th.window-app .window-content option,
-  .kult4th.window-app .window-content ul,
-  .kult4th.window-app .window-content li {
-    color: var(--kText-color);
-    background: var(--kText-background);
-    font-family: var(--kText-font-family);
-    font-size: var(--kText-font-size);
-    font-weight: var(--kText-font-weight);
-    font-style: var(--kText-font-style);
-    line-height: var(--kText-line-height);
-    text-shadow: var(--kText-text-shadow);
-    -webkit-hyphens: var(--kText-hyphens);
-    -ms-hyphens: var(--kText-hyphens);
-    hyphens: var(--kText-hyphens);
-    text-align: var(--kText-text-align); }
-  .kult4th i[class^="fa"],
-  .kult4th-form i[class^="fa"],
-  .kult-text-container i[class^="fa"],
-  .kult-text-block i[class^="fa"],
-  .mce-content-body i[class^="fa"],
-  .kult4th.window-app .window-content i[class^="fa"] {
-    --kText-color: var(--gold);
-    --kText-font-family: "Font Awesome 5 Free"; }
-  .kult4th p,
-  .kult4th-form p,
-  .kult-text-container p,
-  .kult-text-block p,
-  .mce-content-body p,
-  .kult4th.window-app .window-content p {
-    margin: 0.25rem 0 0.5rem; }
-  .kult4th ul,
-  .kult4th-form ul,
-  .kult-text-container ul,
-  .kult-text-block ul,
-  .mce-content-body ul,
-  .kult4th.window-app .window-content ul {
-    margin-left: 10px; }
-    .kult4th ul li,
-    .kult4th-form ul li,
-    .kult-text-container ul li,
-    .kult-text-block ul li,
-    .mce-content-body ul li,
-    .kult4th.window-app .window-content ul li {
-      --kText-text-align: left;
-      list-style: none;
-      text-indent: -24px; }
-    .kult4th ul li:before,
-    .kult4th-form ul li:before,
-    .kult-text-container ul li:before,
-    .kult-text-block ul li:before,
-    .mce-content-body ul li:before,
-    .kult4th.window-app .window-content ul li:before {
-      content: '';
-      display: inline-block;
-      height: 18px;
-      width: 17px;
-      background-image: url("../assets/icons/bullet2.svg");
-      background-size: cover;
-      background-repeat: no-repeat;
-      margin-bottom: -4px;
-      margin-left: -3px;
-      margin-right: 9px;
-      -webkit-transform-origin: center center;
-      -ms-transform-origin: center center;
-      transform-origin: center center;
-      -webkit-transform: scaleX(1.25) scale(0.8);
-      -ms-transform: scaleX(1.25) scale(0.8);
-      transform: scaleX(1.25) scale(0.8); }
-  .kult4th h1, .kult4th h2, .kult4th h3, .kult4th h4,
-  .kult4th-form h1,
-  .kult4th-form h2,
-  .kult4th-form h3,
-  .kult4th-form h4,
-  .kult-text-container h1,
-  .kult-text-container h2,
-  .kult-text-container h3,
-  .kult-text-container h4,
-  .kult-text-block h1,
-  .kult-text-block h2,
-  .kult-text-block h3,
-  .kult-text-block h4,
-  .mce-content-body h1,
-  .mce-content-body h2,
-  .mce-content-body h3,
-  .mce-content-body h4,
-  .kult4th.window-app .window-content h1,
-  .kult4th.window-app .window-content h2,
-  .kult4th.window-app .window-content h3,
-  .kult4th.window-app .window-content h4 {
-    --kText-text-align: left;
-    margin: 0.5rem 0 0;
-    border: none; }
-  .kult4th h1,
-  .kult4th-form h1,
-  .kult-text-container h1,
-  .kult-text-block h1,
-  .mce-content-body h1,
-  .kult4th.window-app .window-content h1 {
-    --kText-color: #000000;
-    --kText-font-family: var(--font-primary-caps);
-    --kText-font-size: 1.25rem;
-    --kText-line-height: 1.25rem;
-    --kText-font-weight: 700;
-    --kText-text-align: center;
-    --kText-background: #958b68;
-    border: none;
-    text-transform: uppercase;
-    padding-top: 1px;
-    position: relative;
-    width: calc(100% + 2 * var(--horiz-padding));
-    left: calc(-1 * var(--horiz-padding)); }
-    .kult4th h1:first-child,
-    .kult4th-form h1:first-child,
-    .kult-text-container h1:first-child,
-    .kult-text-block h1:first-child,
-    .mce-content-body h1:first-child,
-    .kult4th.window-app .window-content h1:first-child {
-      margin-top: 0; }
-  .kult4th h2,
-  .kult4th-form h2,
-  .kult-text-container h2,
-  .kult-text-block h2,
-  .mce-content-body h2,
-  .kult4th.window-app .window-content h2 {
-    --kText-color: #e4ddc3;
-    --kText-font-family: var(--font-primary-caps);
-    --kText-font-size: 1.125rem;
-    --kText-line-height: 1.125rem;
-    --kText-font-weight: 700;
-    font-variant: small-caps;
-    border-bottom: 2px solid #730606; }
-  .kult4th h3,
-  .kult4th-form h3,
-  .kult-text-container h3,
-  .kult-text-block h3,
-  .mce-content-body h3,
-  .kult4th.window-app .window-content h3 {
-    --kText-color: #e4ddc3;
-    --kText-font-family: var(--font-primary);
-    --kText-font-size: 1rem;
-    --kText-line-height: 1rem;
-    --kText-font-weight: 600; }
-  .kult4th h4,
-  .kult4th-form h4,
-  .kult-text-container h4,
-  .kult-text-block h4,
-  .mce-content-body h4,
-  .kult4th.window-app .window-content h4 {
-    --kText-color: #c3bba1;
-    --kText-font-style: italic;
-    --kText-font-weight: 700;
-    --kText-line-height: 0.75rem; }
-    .kult4th h4 + p, .kult4th h4 + span, .kult4th h4 + div,
-    .kult4th-form h4 + p,
-    .kult4th-form h4 + span,
-    .kult4th-form h4 + div,
-    .kult-text-container h4 + p,
-    .kult-text-container h4 + span,
-    .kult-text-container h4 + div,
-    .kult-text-block h4 + p,
-    .kult-text-block h4 + span,
-    .kult-text-block h4 + div,
-    .mce-content-body h4 + p,
-    .mce-content-body h4 + span,
-    .mce-content-body h4 + div,
-    .kult4th.window-app .window-content h4 + p,
-    .kult4th.window-app .window-content h4 + span,
-    .kult4th.window-app .window-content h4 + div {
-      margin-top: 0; }
-  .kult4th .text-tag,
-  .kult4th-form .text-tag,
-  .kult-text-container .text-tag,
-  .kult-text-block .text-tag,
-  .mce-content-body .text-tag,
-  .kult4th.window-app .window-content .text-tag {
-    display: inline;
-    border: none; }
-  .kult4th .text-posmod,
-  .kult4th .text-negmod,
-  .kult4th .text-keyword,
-  .kult4th .text-attributename,
-  .kult4th .text-movename,
-  .kult4th .text-edgename,
-  .kult4th-form .text-posmod,
-  .kult4th-form .text-negmod,
-  .kult4th-form .text-keyword,
-  .kult4th-form .text-attributename,
-  .kult4th-form .text-movename,
-  .kult4th-form .text-edgename,
-  .kult-text-container .text-posmod,
-  .kult-text-container .text-negmod,
-  .kult-text-container .text-keyword,
-  .kult-text-container .text-attributename,
-  .kult-text-container .text-movename,
-  .kult-text-container .text-edgename,
-  .kult-text-block .text-posmod,
-  .kult-text-block .text-negmod,
-  .kult-text-block .text-keyword,
-  .kult-text-block .text-attributename,
-  .kult-text-block .text-movename,
-  .kult-text-block .text-edgename,
-  .mce-content-body .text-posmod,
-  .mce-content-body .text-negmod,
-  .mce-content-body .text-keyword,
-  .mce-content-body .text-attributename,
-  .mce-content-body .text-movename,
-  .mce-content-body .text-edgename,
-  .kult4th.window-app .window-content .text-posmod,
-  .kult4th.window-app .window-content .text-negmod,
-  .kult4th.window-app .window-content .text-keyword,
-  .kult4th.window-app .window-content .text-attributename,
-  .kult4th.window-app .window-content .text-movename,
-  .kult4th.window-app .window-content .text-edgename {
-    --kText-color: #2a548a;
-    --kText-font-weight: 700; }
-  .kult4th .text-negmod,
-  .kult4th .text-negmod + .text-keyword,
-  .kult4th .text-negmod + .text-attributename,
-  .kult4th-form .text-negmod,
-  .kult4th-form .text-negmod + .text-keyword,
-  .kult4th-form .text-negmod + .text-attributename,
-  .kult-text-container .text-negmod,
-  .kult-text-container .text-negmod + .text-keyword,
-  .kult-text-container .text-negmod + .text-attributename,
-  .kult-text-block .text-negmod,
-  .kult-text-block .text-negmod + .text-keyword,
-  .kult-text-block .text-negmod + .text-attributename,
-  .mce-content-body .text-negmod,
-  .mce-content-body .text-negmod + .text-keyword,
-  .mce-content-body .text-negmod + .text-attributename,
-  .kult4th.window-app .window-content .text-negmod,
-  .kult4th.window-app .window-content .text-negmod + .text-keyword,
-  .kult4th.window-app .window-content .text-negmod + .text-attributename {
-    --kText-color: #9a1f1f; }
-  .kult4th .text-gmtext,
-  .kult4th .text-resultlabel,
-  .kult4th-form .text-gmtext,
-  .kult4th-form .text-resultlabel,
-  .kult-text-container .text-gmtext,
-  .kult-text-container .text-resultlabel,
-  .kult-text-block .text-gmtext,
-  .kult-text-block .text-resultlabel,
-  .mce-content-body .text-gmtext,
-  .mce-content-body .text-resultlabel,
-  .kult4th.window-app .window-content .text-gmtext,
-  .kult4th.window-app .window-content .text-resultlabel {
-    --kText-color: #9a1f1f;
-    --kText-font-weight: 900; }
-  .kult4th .text-movename,
-  .kult4th-form .text-movename,
-  .kult-text-container .text-movename,
-  .kult-text-block .text-movename,
-  .mce-content-body .text-movename,
-  .kult4th.window-app .window-content .text-movename {
-    --kText-font-style: italic; }
-  .kult4th .text-trigger,
-  .kult4th-form .text-trigger,
-  .kult-text-container .text-trigger,
-  .kult-text-block .text-trigger,
-  .mce-content-body .text-trigger,
-  .kult4th.window-app .window-content .text-trigger {
-    --kText-font-style: italic;
-    --kText-font-weight: 600; }
-  .kult4th .text-highlight,
-  .kult4th-form .text-highlight,
-  .kult-text-container .text-highlight,
-  .kult-text-block .text-highlight,
-  .mce-content-body .text-highlight,
-  .kult4th.window-app .window-content .text-highlight {
-    --kText-color: #e4ddc3; }
-  .kult4th .text-extra-bold,
-  .kult4th-form .text-extra-bold,
-  .kult-text-container .text-extra-bold,
-  .kult-text-block .text-extra-bold,
-  .mce-content-body .text-extra-bold,
-  .kult4th.window-app .window-content .text-extra-bold {
-    --kText-font-weight: 900; }
-  .kult4th .text-center,
-  .kult4th-form .text-center,
-  .kult-text-container .text-center,
-  .kult-text-block .text-center,
-  .mce-content-body .text-center,
-  .kult4th.window-app .window-content .text-center {
-    --kText-text-align: center;
-    display: block; }
-  .kult4th .hold-header,
-  .kult4th .edges-header,
-  .kult4th-form .hold-header,
-  .kult4th-form .edges-header,
-  .kult-text-container .hold-header,
-  .kult-text-container .edges-header,
-  .kult-text-block .hold-header,
-  .kult-text-block .edges-header,
-  .mce-content-body .hold-header,
-  .mce-content-body .edges-header,
-  .kult4th.window-app .window-content .hold-header,
-  .kult4th.window-app .window-content .edges-header {
-    --kText-font-size: 1.25rem;
-    --kText-font-weight: 900;
-    --kText-text-align: center;
-    --kText-hyphens: none;
-    --kText-background: linear-gradient(
-			to right,
-			transparent,
-			var(--header-bg-color) 15%,
-			var(--header-bg-color) 85%,
-			transparent
-		);
-    display: block;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    padding: 5px 0 4px 0; }
-  .kult4th .hold-header,
-  .kult4th-form .hold-header,
-  .kult-text-container .hold-header,
-  .kult-text-block .hold-header,
-  .mce-content-body .hold-header,
-  .kult4th.window-app .window-content .hold-header {
-    --kText-color: #ff0000;
-    --header-bg-color: #490000; }
-  .kult4th .edges-header,
-  .kult4th-form .edges-header,
-  .kult-text-container .edges-header,
-  .kult-text-block .edges-header,
-  .mce-content-body .edges-header,
-  .kult4th.window-app .window-content .edges-header {
-    --kText-color: #3f93ff;
-    --header-bg-color: #082b58; }
-  .kult4th .hold-body,
-  .kult4th-form .hold-body,
-  .kult-text-container .hold-body,
-  .kult-text-block .hold-body,
-  .mce-content-body .hold-body,
-  .kult4th.window-app .window-content .hold-body {
-    display: block;
-    margin-bottom: 10px;
-    padding: 0 20px; }
-  .kult4th .result-entry,
-  .kult4th-form .result-entry,
-  .kult-text-container .result-entry,
-  .kult-text-block .result-entry,
-  .mce-content-body .result-entry,
-  .kult4th.window-app .window-content .result-entry {
-    display: block;
-    margin: 0 20px;
-    font-size: 16px;
-    clear: both; }
-    .kult4th .result-entry > label,
-    .kult4th-form .result-entry > label,
-    .kult-text-container .result-entry > label,
-    .kult-text-block .result-entry > label,
-    .mce-content-body .result-entry > label,
-    .kult4th.window-app .window-content .result-entry > label {
-      --kText-text-align: right;
-      display: block;
-      width: 60px;
-      height: 100%;
-      float: left;
-      margin-right: 10px; }
-    .kult4th .result-entry > span,
-    .kult4th-form .result-entry > span,
-    .kult-text-container .result-entry > span,
-    .kult-text-block .result-entry > span,
-    .mce-content-body .result-entry > span,
-    .kult4th.window-app .window-content .result-entry > span {
-      display: inline-block;
-      width: calc(100% - 70px);
-      margin-bottom: 4px;
-      padding-bottom: 4px;
-      border-bottom-style: solid;
-      border-bottom-width: 3px;
-      -o-border-image: -o-linear-gradient(left, #958b68 50%, transparent) 1;
-      border-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #958b68), to(transparent)) 1;
-      border-image: linear-gradient(to right, #958b68 50%, transparent) 1; }
-    .kult4th .result-entry:last-of-type > span,
-    .kult4th-form .result-entry:last-of-type > span,
-    .kult-text-container .result-entry:last-of-type > span,
-    .kult-text-block .result-entry:last-of-type > span,
-    .mce-content-body .result-entry:last-of-type > span,
-    .kult4th.window-app .window-content .result-entry:last-of-type > span {
-      border-bottom: none; }
-
-#tinymce * {
-  --gold: #958b68;
-  --gold-brightest: #e4ddc3;
-  --gold-bright: #c3bba1;
-  --gold-dark: #685f43;
-  --gold-darker: #42391a;
-  --gold-darkest: #19160b;
-  --gold-glow: #ffd958;
-  --red: #9a1f1f
-	--red-brightest: #e37070;
-  --red-bright: #ba3e3e;
-  --red-dark: #730606;
-  --red-darkest: #490000;
-  --red-glow: #ff0000;
-  --blue: #2a548a;
-  --blue-brightest: #688ab5;
-  --blue-bright: #4084dd;
-  --blue-dark: #183f72;
-  --blue-darkest: #082b58;
-  --blue-glow: #3f93ff;
-  --blue-bright: #4084dd;
-  --white: #ffffff;
-  --grey: #888888;
-  --black: #000000;
-  --gradient-teal-orange: linear-gradient(#f4791f, #659999);
-  --gradient-red-burgundy: linear-gradient(to right, #c31432, #240b36);
-  --gradient-teal-gold: linear-gradient(to right, #3e5151, #decba4);
-  --gradient-dkgold-gold: linear-gradient(to right, #6d6027, #d3cbb8);
-  --gradient-dkdkgold-upright: linear-gradient(14deg, var(--gold-darker), var(--gold-darkest));
-  --textShadow-inset: 1px 1px 0px var(--gold-dark), -1px -1px 1px var(--black);
-  /* Darker text on medium background */
-  /* Medium text on lighter background */
-  /* Middle-tone colors with 1 shadow */
-  /* Middle-tone colors with 2 shadows */
-  /* Foundry Defaults:
-	--color-text-light-highlight: #f0f0e0;
-  --color-text-light-heading: #c9c7b8;
-  --color-text-light-primary: #b5b3a4;
-  --color-text-dark-primary: #191813;
-  --color-text-dark-secondary: #4b4a44;
-  --color-text-dark-header: #23221d;
-  --color-text-dark-inactive: #7a7971;
-  --color-text-hyperlink: #ff6400;
-  --color-text-light-0: #fff;
-  --color-text-light-1: #eee;
-  --color-text-light-2: #ddd;
-  --color-text-light-3: #ccc;
-  --color-text-light-4: #bbb;
-  --color-text-light-5: #aaa;
-  --color-text-light-6: #999;
-  --color-text-light-7: #888;
-  --color-text-dark-1: #111;
-  --color-text-dark-2: #222;
-  --color-text-dark-3: #444;
-  --color-text-dark-4: #555;
-  --color-text-dark-5: #666;
-  --color-text-dark-6: #777;
-  --color-border-light-1: #ddd;
-  --color-border-light-2: #999;
-  --color-border-dark-1: #111;
-  --color-border-dark-2: #222;
-  --color-border-dark-3: #333;
-  --color-border-dark-4: #444;
-  --color-border-dark-5: #666;
-  --color-shadow-primary: #ff0000;
-  --color-shadow-highlight: #ff6400;
-  --color-shadow-dark: #000;
-  --color-underline-inactive: #7a7971;
-  --color-underline-active: #44191A;
-  --color-underline-header: #782e22;
-  --color-border-light-highlight: #f0f0e0;
-  --color-border-light-primary: #b5b3a4;
-  --color-border-light-secondary: #c9c7b8;
-  --color-border-light-tertiary: #7a7971;
-  --color-border-dark: #000;
-  --color-border-dark-primary: #191813;
-  --color-border-dark-secondary: #23221d;
-  --color-border-dark-tertiary: #4b4a44;
-  --color-border-highlight: #ff6400;
-  --color-border-highlight-alt: #ff0000;
-  --color-bg-btn-minor-inactive: #c9c7b8;
-  --color-bg-btn-minor-active: #b5b3a4;
-  --color-bg-option: #dad8cc;
-  --z-index-canvas: 0;
-  --z-index-app: 30;
-  --z-index-ui: 60;
-  --z-index-window: 100;
-  --sidebar-width: 300px;
-  --sidebar-header-height: 0px;
-  --sidebar-item-height: 80px;
-  --hotbar-height: 32px;
-  --hotbar-width: 378px;
-  --macro-size: 40px;
-  --players-width: 200px;
-  --form-field-height: 26px;
-  --font-primary: "Signika", sans-serif;
-  --font-mono: monospace;
-	*/
-  --color-text-light-highlight: #c3bba1;
-  --color-text-light-heading: #c3bba1;
-  --color-text-light-primary: #b5b3a4;
-  --color-text-dark-primary: #c3bba1;
-  --color-text-dark-secondary: #958b68;
-  --color-text-dark-header: #e4ddc3;
-  --color-text-dark-inactive: #7a7971;
-  --color-text-hyperlink: #2a548a;
-  --color-text-light-0: #fff;
-  --color-text-light-1: #e4ddc3;
-  --color-text-light-2: #e4ddc3;
-  --color-text-light-3: #c3bba1;
-  --color-text-light-4: #c3bba1;
-  --color-text-light-5: #c3bba1;
-  --color-text-light-6: #958b68;
-  --color-text-light-7: #958b68;
-  --color-text-dark-1: #19160b;
-  --color-text-dark-2: #19160b;
-  --color-text-dark-3: #42391a;
-  --color-text-dark-4: #42391a;
-  --color-text-dark-5: #685f43;
-  --color-text-dark-6: #685f43;
-  --color-border-light-1: #c3bba1;
-  --color-border-light-2: #958b68;
-  --color-border-dark-1: #19160b;
-  --color-border-dark-2: #19160b;
-  --color-border-dark-3: #42391a;
-  --color-border-dark-4: #42391a;
-  --color-border-dark-5: #685f43;
-  --color-shadow-primary: #958b68;
-  --color-shadow-highlight: #958b68;
-  --color-shadow-dark: #000;
-  --color-underline-inactive: #183f72;
-  --color-underline-active: #426899;
-  --color-underline-header: #958b68;
-  --color-border-light-highlight: #e4ddc3;
-  --color-border-light-primary: #e4ddc3;
-  --color-border-light-secondary: #c3bba1;
-  --color-border-light-tertiary: #958b68;
-  --color-border-dark: #000;
-  --color-border-dark-primary: #19160b;
-  --color-border-dark-secondary: #42391a;
-  --color-border-dark-tertiary: #685f43;
-  --color-border-highlight: #c3bba1;
-  --color-border-highlight-alt: #e4ddc3;
-  --color-bg-btn-minor-inactive: #c3bba1;
-  --color-bg-btn-minor-active: #e4ddc3;
-  --color-bg-option: #e4ddc3;
-  --z-index-canvas: 0;
-  --z-index-app: 30;
-  --z-index-ui: 60;
-  --z-index-window: 100;
-  --sidebar-width: 300px;
-  --sidebar-header-height: 0px;
-  --sidebar-item-height: 80px;
-  --hotbar-height: 32px;
-  --hotbar-width: 378px;
-  --macro-size: 40px;
-  --players-width: 200px;
-  --form-field-height: 26px;
-  --font-primary: Alverata, sans-serif;
-  --font-mono: monospace; }
-  #tinymce * .dark-on-dark {
-    color: #333;
-    background-color: #666;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-    /* 50% white from bottom */ }
-  #tinymce * .med-on-light {
-    color: #666;
-    background-color: #aaa;
-    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
-    /* 50% black coming from the top */ }
-  #tinymce * .mid-one-shadow {
-    color: #3b5957;
-    background-color: #5d8d89;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5); }
-  #tinymce * .mid-two-shadow {
-    color: #3b5957;
-    background-color: #5d8d89;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7); }
+  --color-bg-option: #e4ddc3; }
 
 @font-face {
   #tinymce {
@@ -1093,462 +206,232 @@
     src: url("../assets/fonts/sokol.ttf"); } }
 
 #tinymce * {
-  --font-primary: Alverata;
-  --font-primary-caps: AlverataCaps;
-  --font-heading: Infidel;
-  --font-decorative: Sokol; }
+  /* FOUNDRY OVERRIDES */
+  --font-primary: Alverata, serif;
+  --font-mono: monospace;
+  --font-size-11: 0.6875rem;
+  --font-size-12: 0.75rem;
+  --font-size-13: 0.8125rem;
+  --font-size-14: 0.875rem;
+  --font-size-16: 1rem;
+  --font-size-18: 1.125rem;
+  --font-size-20: 1.25rem;
+  --font-size-24: 1.5rem;
+  --font-size-28: 1.75rem;
+  --line-height-12: 0.75rem;
+  --line-height-16: 1rem;
+  --line-height-20: 1.25rem;
+  --line-height-30: 1.875rem;
+  --font-primary-caps: AlverataCaps, serif;
+  --font-heading: Infidel, sans-serif;
+  --font-decorative: Sokol, serif; }
 
-#tinymce .kult4th,
-#tinymce .kult4th-form,
-#tinymce .kult-text-container,
-#tinymce .kult-text-block,
+#tinymce .dark-on-light {
+  --KKK-color-primary: #000000;
+  --KKK-color-primary-contrast: #958b68;
+  --KKK-color-strong: #000000;
+  --KKK-color-strongest: #000000;
+  --KKK-color-trigger: #000000;
+  --KKK-color-result-label: #9a1f1f;
+  --KKK-color-keyword: #2a548a;
+  --KKK-color-attribute: #2a548a;
+  --KKK-color-roll-link: #183f72;
+  --KKK-color-edge: #2a548a;
+  --KKK-color-gm-text: #9a1f1f;
+  --KKK-color-pos-mod: #183f72;
+  --KKK-color-neg-mod: #730606; }
+
+#tinymce, #tinymce > *, #tinymce .light-on-dark {
+  --KKK-color-primary: #958b68;
+  --KKK-color-primary-contrast: #000000;
+  --KKK-color-strong: #c3bba1;
+  --KKK-color-strongest: #e4ddc3;
+  --KKK-color-trigger: #e4ddc3;
+  --KKK-color-result-label: #ba3e3e;
+  --KKK-color-keyword: #4084dd;
+  --KKK-color-attribute: #4084dd;
+  --KKK-color-roll-link: #688ab5;
+  --KKK-color-edge: #4084dd;
+  --KKK-color-gm-text: #ba3e3e;
+  --KKK-color-pos-mod: #4084dd;
+  --KKK-color-neg-mod: #e37070; }
+
+#tinymce,
+#tinymce *,
+#tinymce input[type="text"],
+#tinymce input[type="number"],
+#tinymce textarea,
+#tinymce select,
+#tinymce option,
+#tinymce img,
+#tinymce ul,
+#tinymce li,
 #tinymce .mce-content-body,
-#tinymce .kult4th.window-app .window-content {
-  --kText-color: var(--color-body-text);
-  --kText-background: transparent;
-  --kText-font-family: var(--font-primary);
-  --kText-font-size: 0.75rem;
-  --kText-line-height: 1rem;
-  --kText-font-weight: 400;
-  --kText-font-style: normal;
-  --kText-text-shadow: none;
-  --kText-text-align: justify;
-  --kText-hyphens: auto; }
-  #tinymce .kult4th.kult-text-block,
-  #tinymce .kult4th-form.kult-text-block,
-  #tinymce .kult-text-container.kult-text-block,
-  #tinymce .kult-text-block.kult-text-block,
-  #tinymce .mce-content-body.kult-text-block,
-  #tinymce .kult4th.window-app .window-content.kult-text-block {
-    display: block;
-    height: unset; }
-  #tinymce .kult4th.kult-text-container,
-  #tinymce .kult4th-form.kult-text-container,
-  #tinymce .kult-text-container.kult-text-container,
-  #tinymce .kult-text-block.kult-text-container,
-  #tinymce .mce-content-body.kult-text-container,
-  #tinymce .kult4th.window-app .window-content.kult-text-container {
-    margin: 0;
-    padding: var(--kText-vert-padding) var(--kText-horiz-padding); }
-  #tinymce .kult4th, #tinymce .kult4th *, #tinymce .kult4th input[type="text"], #tinymce .kult4th input[type="number"], #tinymce .kult4th select, #tinymce .kult4th option, #tinymce .kult4th ul, #tinymce .kult4th li,
-  #tinymce .kult4th-form,
-  #tinymce .kult4th-form *,
-  #tinymce .kult4th-form input[type="text"],
-  #tinymce .kult4th-form input[type="number"],
-  #tinymce .kult4th-form select,
-  #tinymce .kult4th-form option,
-  #tinymce .kult4th-form ul,
-  #tinymce .kult4th-form li,
-  #tinymce .kult-text-container,
-  #tinymce .kult-text-container *,
-  #tinymce .kult-text-container input[type="text"],
-  #tinymce .kult-text-container input[type="number"],
-  #tinymce .kult-text-container select,
-  #tinymce .kult-text-container option,
-  #tinymce .kult-text-container ul,
-  #tinymce .kult-text-container li,
-  #tinymce .kult-text-block,
-  #tinymce .kult-text-block *,
-  #tinymce .kult-text-block input[type="text"],
-  #tinymce .kult-text-block input[type="number"],
-  #tinymce .kult-text-block select,
-  #tinymce .kult-text-block option,
-  #tinymce .kult-text-block ul,
-  #tinymce .kult-text-block li,
-  #tinymce .mce-content-body,
-  #tinymce .mce-content-body *,
-  #tinymce .mce-content-body input[type="text"],
-  #tinymce .mce-content-body input[type="number"],
-  #tinymce .mce-content-body select,
-  #tinymce .mce-content-body option,
-  #tinymce .mce-content-body ul,
-  #tinymce .mce-content-body li,
-  #tinymce .kult4th.window-app .window-content,
-  #tinymce .kult4th.window-app .window-content *,
-  #tinymce .kult4th.window-app .window-content input[type="text"],
-  #tinymce .kult4th.window-app .window-content input[type="number"],
-  #tinymce .kult4th.window-app .window-content select,
-  #tinymce .kult4th.window-app .window-content option,
-  #tinymce .kult4th.window-app .window-content ul,
-  #tinymce .kult4th.window-app .window-content li {
-    color: var(--kText-color);
-    background: var(--kText-background);
-    font-family: var(--kText-font-family);
-    font-size: var(--kText-font-size);
-    font-weight: var(--kText-font-weight);
-    font-style: var(--kText-font-style);
-    line-height: var(--kText-line-height);
-    text-shadow: var(--kText-text-shadow);
-    -webkit-hyphens: var(--kText-hyphens);
-    -ms-hyphens: var(--kText-hyphens);
-    hyphens: var(--kText-hyphens);
-    text-align: var(--kText-text-align); }
-  #tinymce .kult4th i[class^="fa"],
-  #tinymce .kult4th-form i[class^="fa"],
-  #tinymce .kult-text-container i[class^="fa"],
-  #tinymce .kult-text-block i[class^="fa"],
-  #tinymce .mce-content-body i[class^="fa"],
-  #tinymce .kult4th.window-app .window-content i[class^="fa"] {
-    --kText-color: var(--gold);
-    --kText-font-family: "Font Awesome 5 Free"; }
-  #tinymce .kult4th p,
-  #tinymce .kult4th-form p,
-  #tinymce .kult-text-container p,
-  #tinymce .kult-text-block p,
-  #tinymce .mce-content-body p,
-  #tinymce .kult4th.window-app .window-content p {
-    margin: 0.25rem 0 0.5rem; }
-  #tinymce .kult4th ul,
-  #tinymce .kult4th-form ul,
-  #tinymce .kult-text-container ul,
-  #tinymce .kult-text-block ul,
-  #tinymce .mce-content-body ul,
-  #tinymce .kult4th.window-app .window-content ul {
-    margin-left: 10px; }
-    #tinymce .kult4th ul li,
-    #tinymce .kult4th-form ul li,
-    #tinymce .kult-text-container ul li,
-    #tinymce .kult-text-block ul li,
-    #tinymce .mce-content-body ul li,
-    #tinymce .kult4th.window-app .window-content ul li {
-      --kText-text-align: left;
-      list-style: none;
-      text-indent: -24px; }
-    #tinymce .kult4th ul li:before,
-    #tinymce .kult4th-form ul li:before,
-    #tinymce .kult-text-container ul li:before,
-    #tinymce .kult-text-block ul li:before,
-    #tinymce .mce-content-body ul li:before,
-    #tinymce .kult4th.window-app .window-content ul li:before {
-      content: '';
-      display: inline-block;
-      height: 18px;
-      width: 17px;
-      background-image: url("../assets/icons/bullet2.svg");
-      background-size: cover;
-      background-repeat: no-repeat;
-      margin-bottom: -4px;
-      margin-left: -3px;
-      margin-right: 9px;
-      -webkit-transform-origin: center center;
-      -ms-transform-origin: center center;
-      transform-origin: center center;
-      -webkit-transform: scaleX(1.25) scale(0.8);
-      -ms-transform: scaleX(1.25) scale(0.8);
-      transform: scaleX(1.25) scale(0.8); }
-  #tinymce .kult4th h1, #tinymce .kult4th h2, #tinymce .kult4th h3, #tinymce .kult4th h4,
-  #tinymce .kult4th-form h1,
-  #tinymce .kult4th-form h2,
-  #tinymce .kult4th-form h3,
-  #tinymce .kult4th-form h4,
-  #tinymce .kult-text-container h1,
-  #tinymce .kult-text-container h2,
-  #tinymce .kult-text-container h3,
-  #tinymce .kult-text-container h4,
-  #tinymce .kult-text-block h1,
-  #tinymce .kult-text-block h2,
-  #tinymce .kult-text-block h3,
-  #tinymce .kult-text-block h4,
-  #tinymce .mce-content-body h1,
-  #tinymce .mce-content-body h2,
-  #tinymce .mce-content-body h3,
-  #tinymce .mce-content-body h4,
-  #tinymce .kult4th.window-app .window-content h1,
-  #tinymce .kult4th.window-app .window-content h2,
-  #tinymce .kult4th.window-app .window-content h3,
-  #tinymce .kult4th.window-app .window-content h4 {
-    --kText-text-align: left;
-    margin: 0.5rem 0 0;
-    border: none; }
-  #tinymce .kult4th h1,
-  #tinymce .kult4th-form h1,
-  #tinymce .kult-text-container h1,
-  #tinymce .kult-text-block h1,
-  #tinymce .mce-content-body h1,
-  #tinymce .kult4th.window-app .window-content h1 {
-    --kText-color: #000000;
-    --kText-font-family: var(--font-primary-caps);
-    --kText-font-size: 1.25rem;
-    --kText-line-height: 1.25rem;
-    --kText-font-weight: 700;
-    --kText-text-align: center;
-    --kText-background: #958b68;
-    border: none;
-    text-transform: uppercase;
-    padding-top: 1px;
-    position: relative;
-    width: calc(100% + 2 * var(--horiz-padding));
-    left: calc(-1 * var(--horiz-padding)); }
-    #tinymce .kult4th h1:first-child,
-    #tinymce .kult4th-form h1:first-child,
-    #tinymce .kult-text-container h1:first-child,
-    #tinymce .kult-text-block h1:first-child,
-    #tinymce .mce-content-body h1:first-child,
-    #tinymce .kult4th.window-app .window-content h1:first-child {
-      margin-top: 0; }
-  #tinymce .kult4th h2,
-  #tinymce .kult4th-form h2,
-  #tinymce .kult-text-container h2,
-  #tinymce .kult-text-block h2,
-  #tinymce .mce-content-body h2,
-  #tinymce .kult4th.window-app .window-content h2 {
-    --kText-color: #e4ddc3;
-    --kText-font-family: var(--font-primary-caps);
-    --kText-font-size: 1.125rem;
-    --kText-line-height: 1.125rem;
-    --kText-font-weight: 700;
-    font-variant: small-caps;
-    border-bottom: 2px solid #730606; }
-  #tinymce .kult4th h3,
-  #tinymce .kult4th-form h3,
-  #tinymce .kult-text-container h3,
-  #tinymce .kult-text-block h3,
-  #tinymce .mce-content-body h3,
-  #tinymce .kult4th.window-app .window-content h3 {
-    --kText-color: #e4ddc3;
-    --kText-font-family: var(--font-primary);
-    --kText-font-size: 1rem;
-    --kText-line-height: 1rem;
-    --kText-font-weight: 600; }
-  #tinymce .kult4th h4,
-  #tinymce .kult4th-form h4,
-  #tinymce .kult-text-container h4,
-  #tinymce .kult-text-block h4,
-  #tinymce .mce-content-body h4,
-  #tinymce .kult4th.window-app .window-content h4 {
-    --kText-color: #c3bba1;
-    --kText-font-style: italic;
-    --kText-font-weight: 700;
-    --kText-line-height: 0.75rem; }
-    #tinymce .kult4th h4 + p, #tinymce .kult4th h4 + span, #tinymce .kult4th h4 + div,
-    #tinymce .kult4th-form h4 + p,
-    #tinymce .kult4th-form h4 + span,
-    #tinymce .kult4th-form h4 + div,
-    #tinymce .kult-text-container h4 + p,
-    #tinymce .kult-text-container h4 + span,
-    #tinymce .kult-text-container h4 + div,
-    #tinymce .kult-text-block h4 + p,
-    #tinymce .kult-text-block h4 + span,
-    #tinymce .kult-text-block h4 + div,
-    #tinymce .mce-content-body h4 + p,
-    #tinymce .mce-content-body h4 + span,
-    #tinymce .mce-content-body h4 + div,
-    #tinymce .kult4th.window-app .window-content h4 + p,
-    #tinymce .kult4th.window-app .window-content h4 + span,
-    #tinymce .kult4th.window-app .window-content h4 + div {
-      margin-top: 0; }
-  #tinymce .kult4th .text-tag,
-  #tinymce .kult4th-form .text-tag,
-  #tinymce .kult-text-container .text-tag,
-  #tinymce .kult-text-block .text-tag,
-  #tinymce .mce-content-body .text-tag,
-  #tinymce .kult4th.window-app .window-content .text-tag {
-    display: inline;
-    border: none; }
-  #tinymce .kult4th .text-posmod,
-  #tinymce .kult4th .text-negmod,
-  #tinymce .kult4th .text-keyword,
-  #tinymce .kult4th .text-attributename,
-  #tinymce .kult4th .text-movename,
-  #tinymce .kult4th .text-edgename,
-  #tinymce .kult4th-form .text-posmod,
-  #tinymce .kult4th-form .text-negmod,
-  #tinymce .kult4th-form .text-keyword,
-  #tinymce .kult4th-form .text-attributename,
-  #tinymce .kult4th-form .text-movename,
-  #tinymce .kult4th-form .text-edgename,
-  #tinymce .kult-text-container .text-posmod,
-  #tinymce .kult-text-container .text-negmod,
-  #tinymce .kult-text-container .text-keyword,
-  #tinymce .kult-text-container .text-attributename,
-  #tinymce .kult-text-container .text-movename,
-  #tinymce .kult-text-container .text-edgename,
-  #tinymce .kult-text-block .text-posmod,
-  #tinymce .kult-text-block .text-negmod,
-  #tinymce .kult-text-block .text-keyword,
-  #tinymce .kult-text-block .text-attributename,
-  #tinymce .kult-text-block .text-movename,
-  #tinymce .kult-text-block .text-edgename,
-  #tinymce .mce-content-body .text-posmod,
-  #tinymce .mce-content-body .text-negmod,
-  #tinymce .mce-content-body .text-keyword,
-  #tinymce .mce-content-body .text-attributename,
-  #tinymce .mce-content-body .text-movename,
-  #tinymce .mce-content-body .text-edgename,
-  #tinymce .kult4th.window-app .window-content .text-posmod,
-  #tinymce .kult4th.window-app .window-content .text-negmod,
-  #tinymce .kult4th.window-app .window-content .text-keyword,
-  #tinymce .kult4th.window-app .window-content .text-attributename,
-  #tinymce .kult4th.window-app .window-content .text-movename,
-  #tinymce .kult4th.window-app .window-content .text-edgename {
-    --kText-color: #2a548a;
-    --kText-font-weight: 700; }
-  #tinymce .kult4th .text-negmod,
-  #tinymce .kult4th .text-negmod + .text-keyword,
-  #tinymce .kult4th .text-negmod + .text-attributename,
-  #tinymce .kult4th-form .text-negmod,
-  #tinymce .kult4th-form .text-negmod + .text-keyword,
-  #tinymce .kult4th-form .text-negmod + .text-attributename,
-  #tinymce .kult-text-container .text-negmod,
-  #tinymce .kult-text-container .text-negmod + .text-keyword,
-  #tinymce .kult-text-container .text-negmod + .text-attributename,
-  #tinymce .kult-text-block .text-negmod,
-  #tinymce .kult-text-block .text-negmod + .text-keyword,
-  #tinymce .kult-text-block .text-negmod + .text-attributename,
-  #tinymce .mce-content-body .text-negmod,
-  #tinymce .mce-content-body .text-negmod + .text-keyword,
-  #tinymce .mce-content-body .text-negmod + .text-attributename,
-  #tinymce .kult4th.window-app .window-content .text-negmod,
-  #tinymce .kult4th.window-app .window-content .text-negmod + .text-keyword,
-  #tinymce .kult4th.window-app .window-content .text-negmod + .text-attributename {
-    --kText-color: #9a1f1f; }
-  #tinymce .kult4th .text-gmtext,
-  #tinymce .kult4th .text-resultlabel,
-  #tinymce .kult4th-form .text-gmtext,
-  #tinymce .kult4th-form .text-resultlabel,
-  #tinymce .kult-text-container .text-gmtext,
-  #tinymce .kult-text-container .text-resultlabel,
-  #tinymce .kult-text-block .text-gmtext,
-  #tinymce .kult-text-block .text-resultlabel,
-  #tinymce .mce-content-body .text-gmtext,
-  #tinymce .mce-content-body .text-resultlabel,
-  #tinymce .kult4th.window-app .window-content .text-gmtext,
-  #tinymce .kult4th.window-app .window-content .text-resultlabel {
-    --kText-color: #9a1f1f;
-    --kText-font-weight: 900; }
-  #tinymce .kult4th .text-movename,
-  #tinymce .kult4th-form .text-movename,
-  #tinymce .kult-text-container .text-movename,
-  #tinymce .kult-text-block .text-movename,
-  #tinymce .mce-content-body .text-movename,
-  #tinymce .kult4th.window-app .window-content .text-movename {
-    --kText-font-style: italic; }
-  #tinymce .kult4th .text-trigger,
-  #tinymce .kult4th-form .text-trigger,
-  #tinymce .kult-text-container .text-trigger,
-  #tinymce .kult-text-block .text-trigger,
-  #tinymce .mce-content-body .text-trigger,
-  #tinymce .kult4th.window-app .window-content .text-trigger {
-    --kText-font-style: italic;
-    --kText-font-weight: 600; }
-  #tinymce .kult4th .text-highlight,
-  #tinymce .kult4th-form .text-highlight,
-  #tinymce .kult-text-container .text-highlight,
-  #tinymce .kult-text-block .text-highlight,
-  #tinymce .mce-content-body .text-highlight,
-  #tinymce .kult4th.window-app .window-content .text-highlight {
-    --kText-color: #e4ddc3; }
-  #tinymce .kult4th .text-extra-bold,
-  #tinymce .kult4th-form .text-extra-bold,
-  #tinymce .kult-text-container .text-extra-bold,
-  #tinymce .kult-text-block .text-extra-bold,
-  #tinymce .mce-content-body .text-extra-bold,
-  #tinymce .kult4th.window-app .window-content .text-extra-bold {
-    --kText-font-weight: 900; }
-  #tinymce .kult4th .text-center,
-  #tinymce .kult4th-form .text-center,
-  #tinymce .kult-text-container .text-center,
-  #tinymce .kult-text-block .text-center,
-  #tinymce .mce-content-body .text-center,
-  #tinymce .kult4th.window-app .window-content .text-center {
-    --kText-text-align: center;
-    display: block; }
-  #tinymce .kult4th .hold-header,
-  #tinymce .kult4th .edges-header,
-  #tinymce .kult4th-form .hold-header,
-  #tinymce .kult4th-form .edges-header,
-  #tinymce .kult-text-container .hold-header,
-  #tinymce .kult-text-container .edges-header,
-  #tinymce .kult-text-block .hold-header,
-  #tinymce .kult-text-block .edges-header,
-  #tinymce .mce-content-body .hold-header,
-  #tinymce .mce-content-body .edges-header,
-  #tinymce .kult4th.window-app .window-content .hold-header,
-  #tinymce .kult4th.window-app .window-content .edges-header {
-    --kText-font-size: 1.25rem;
-    --kText-font-weight: 900;
-    --kText-text-align: center;
-    --kText-hyphens: none;
-    --kText-background: linear-gradient(
-			to right,
-			transparent,
-			var(--header-bg-color) 15%,
-			var(--header-bg-color) 85%,
-			transparent
-		);
-    display: block;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    padding: 5px 0 4px 0; }
-  #tinymce .kult4th .hold-header,
-  #tinymce .kult4th-form .hold-header,
-  #tinymce .kult-text-container .hold-header,
-  #tinymce .kult-text-block .hold-header,
-  #tinymce .mce-content-body .hold-header,
-  #tinymce .kult4th.window-app .window-content .hold-header {
-    --kText-color: #ff0000;
-    --header-bg-color: #490000; }
-  #tinymce .kult4th .edges-header,
-  #tinymce .kult4th-form .edges-header,
-  #tinymce .kult-text-container .edges-header,
-  #tinymce .kult-text-block .edges-header,
-  #tinymce .mce-content-body .edges-header,
-  #tinymce .kult4th.window-app .window-content .edges-header {
-    --kText-color: #3f93ff;
-    --header-bg-color: #082b58; }
-  #tinymce .kult4th .hold-body,
-  #tinymce .kult4th-form .hold-body,
-  #tinymce .kult-text-container .hold-body,
-  #tinymce .kult-text-block .hold-body,
-  #tinymce .mce-content-body .hold-body,
-  #tinymce .kult4th.window-app .window-content .hold-body {
-    display: block;
-    margin-bottom: 10px;
-    padding: 0 20px; }
-  #tinymce .kult4th .result-entry,
-  #tinymce .kult4th-form .result-entry,
-  #tinymce .kult-text-container .result-entry,
-  #tinymce .kult-text-block .result-entry,
-  #tinymce .mce-content-body .result-entry,
-  #tinymce .kult4th.window-app .window-content .result-entry {
-    display: block;
-    margin: 0 20px;
-    font-size: 16px;
-    clear: both; }
-    #tinymce .kult4th .result-entry > label,
-    #tinymce .kult4th-form .result-entry > label,
-    #tinymce .kult-text-container .result-entry > label,
-    #tinymce .kult-text-block .result-entry > label,
-    #tinymce .mce-content-body .result-entry > label,
-    #tinymce .kult4th.window-app .window-content .result-entry > label {
-      --kText-text-align: right;
-      display: block;
-      width: 60px;
-      height: 100%;
-      float: left;
-      margin-right: 10px; }
-    #tinymce .kult4th .result-entry > span,
-    #tinymce .kult4th-form .result-entry > span,
-    #tinymce .kult-text-container .result-entry > span,
-    #tinymce .kult-text-block .result-entry > span,
-    #tinymce .mce-content-body .result-entry > span,
-    #tinymce .kult4th.window-app .window-content .result-entry > span {
-      display: inline-block;
-      width: calc(100% - 70px);
-      margin-bottom: 4px;
-      padding-bottom: 4px;
-      border-bottom-style: solid;
-      border-bottom-width: 3px;
-      -o-border-image: -o-linear-gradient(left, #958b68 50%, transparent) 1;
-      border-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #958b68), to(transparent)) 1;
-      border-image: linear-gradient(to right, #958b68 50%, transparent) 1; }
-    #tinymce .kult4th .result-entry:last-of-type > span,
-    #tinymce .kult4th-form .result-entry:last-of-type > span,
-    #tinymce .kult-text-container .result-entry:last-of-type > span,
-    #tinymce .kult-text-block .result-entry:last-of-type > span,
-    #tinymce .mce-content-body .result-entry:last-of-type > span,
-    #tinymce .kult4th.window-app .window-content .result-entry:last-of-type > span {
-      border-bottom: none; }
+#tinymce .mce-content-body *,
+#tinymce .mce-content-body input[type="text"],
+#tinymce .mce-content-body input[type="number"],
+#tinymce .mce-content-body textarea,
+#tinymce .mce-content-body select,
+#tinymce .mce-content-body option,
+#tinymce .mce-content-body img,
+#tinymce .mce-content-body ul,
+#tinymce .mce-content-body li {
+  color: var(--KKK-color-primary);
+  background: transparent;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.25rem;
+  text-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  text-align: justify; }
+
+#tinymce option,
+#tinymce .mce-content-body option {
+  background: #000000; }
+
+#tinymce i[class^="fa"],
+#tinymce .mce-content-body i[class^="fa"] {
+  color: var(--KKK-color-primary);
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-align: center; }
+
+#tinymce ul li:before,
+#tinymce .mce-content-body ul li:before {
+  content: "";
+  display: inline-block;
+  background: transparent url("../assets/icons/bullet2.svg") no-repeat center/cover;
+  -webkit-transform-origin: right center;
+  -ms-transform-origin: right center;
+  transform-origin: right center;
+  -webkit-transform: scaleX(1.25) scale(0.8);
+  -ms-transform: scaleX(1.25) scale(0.8);
+  transform: scaleX(1.25) scale(0.8); }
+
+#tinymce h1,
+#tinymce h2,
+#tinymce h3,
+#tinymce h4,
+#tinymce .mce-content-body h1,
+#tinymce .mce-content-body h2,
+#tinymce .mce-content-body h3,
+#tinymce .mce-content-body h4 {
+  font-family: var(--font-primary-caps);
+  font-weight: 700;
+  border: none; }
+  #tinymce h1.tight,
+  #tinymce h2.tight,
+  #tinymce h3.tight,
+  #tinymce h4.tight,
+  #tinymce .mce-content-body h1.tight,
+  #tinymce .mce-content-body h2.tight,
+  #tinymce .mce-content-body h3.tight,
+  #tinymce .mce-content-body h4.tight {
+    margin-top: 0;
+    margin-bottom: 0; }
+
+#tinymce h1,
+#tinymce .mce-content-body h1 {
+  color: var(--KKK-color-primary-contrast);
+  width: calc(100% + 2 * var(--KKK-horiz-padding));
+  margin-left: calc(-1 * var(--KKK-horiz-padding));
+  background: var(--KKK-color-primary);
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  text-align: center;
+  text-transform: uppercase;
+  padding-top: 2px; }
+
+#tinymce .text-posmod,
+#tinymce .text-negmod,
+#tinymce .text-keyword,
+#tinymce .text-attributename,
+#tinymce .text-movename,
+#tinymce .text-edgename,
+#tinymce .text-gmtext,
+#tinymce .text-resultlabel,
+#tinymce .mce-content-body .text-posmod,
+#tinymce .mce-content-body .text-negmod,
+#tinymce .mce-content-body .text-keyword,
+#tinymce .mce-content-body .text-attributename,
+#tinymce .mce-content-body .text-movename,
+#tinymce .mce-content-body .text-edgename,
+#tinymce .mce-content-body .text-gmtext,
+#tinymce .mce-content-body .text-resultlabel {
+  font-weight: 700; }
+
+#tinymce .text-keyword,
+#tinymce .mce-content-body .text-keyword {
+  color: var(--KKK-color-keyword); }
+
+#tinymce .text-attributename,
+#tinymce .mce-content-body .text-attributename {
+  color: var(--KKK-color-attribute); }
+
+#tinymce .text-movename,
+#tinymce .mce-content-body .text-movename {
+  color: var(--KKK-color-roll-link);
+  font-style: italic; }
+
+#tinymce .text-edgename,
+#tinymce .mce-content-body .text-edgename {
+  color: var(--KKK-color-edge); }
+
+#tinymce .text-posmod,
+#tinymce .text-posmod + .text-keyword,
+#tinymce .text-posmod + .text-attributename,
+#tinymce .mce-content-body .text-posmod,
+#tinymce .mce-content-body .text-posmod + .text-keyword,
+#tinymce .mce-content-body .text-posmod + .text-attributename {
+  color: var(--KKK-color-pos-mod); }
+
+#tinymce .text-negmod,
+#tinymce .text-negmod + .text-keyword,
+#tinymce .text-negmod + .text-attributename,
+#tinymce .mce-content-body .text-negmod,
+#tinymce .mce-content-body .text-negmod + .text-keyword,
+#tinymce .mce-content-body .text-negmod + .text-attributename {
+  color: var(--KKK-color-neg-mod); }
+
+#tinymce .text-gmtext,
+#tinymce .mce-content-body .text-gmtext {
+  color: var(--KKK-color-gm-text); }
+
+#tinymce .text-resultlabel,
+#tinymce .mce-content-body .text-resultlabel {
+  color: var(--KKK-color-result-label); }
+
+#tinymce .text-trigger,
+#tinymce .mce-content-body .text-trigger {
+  color: var(--KKK-color-trigger);
+  font-weight: 600;
+  font-style: italic; }
+
+#tinymce .edges-header,
+#tinymce .mce-content-body .edges-header {
+  -webkit-animation: neonGlow 2s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  animation: neonGlow 2s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+
+@-webkit-keyframes neonGlow {
+  0% {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 12.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.5), 0 0 21px rgba(65, 132, 220, 0.5), 0 0 29px rgba(65, 132, 220, 0.5), 0 0 41.5px rgba(65, 132, 220, 0.5); }
+  100% {
+    text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(65, 132, 220, 0.8), 0 0 6px rgba(65, 132, 220, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 10.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.8); } }
+
+@keyframes neonGlow {
+  0% {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 12.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.5), 0 0 21px rgba(65, 132, 220, 0.5), 0 0 29px rgba(65, 132, 220, 0.5), 0 0 41.5px rgba(65, 132, 220, 0.5); }
+  100% {
+    text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(65, 132, 220, 0.8), 0 0 6px rgba(65, 132, 220, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 10.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.8); } }
 
 #tinymce {
   --kText-color: #958b68; }

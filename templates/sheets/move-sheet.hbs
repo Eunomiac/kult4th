@@ -1,7 +1,7 @@
 {{log "{SHEET} move-sheet.hbs" this}}
 
 <form class="kult4th-form {{cssClass}}" autocomplete="off">
-	{{> "systems/kult4th/templates/components/form-header.hbs" docType="move" docName=data.name isBullet=false}}
+	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
 	<main class="kult-text-container tab-content">
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
 			{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
@@ -9,7 +9,7 @@
 
 		{{~#if (test data.data.subType "==" "active-rolled")}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
-			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(9-14)" result=data.data.results.partialSuccess.result}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=data.data.results.partialSuccess.result}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
 
 			{{~#if data.data.results.listRefs}}
