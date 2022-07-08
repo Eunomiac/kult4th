@@ -26,50 +26,90 @@ Hooks.once("init", () => {
     Items.registerSheet("kult4th", K4ItemSheet, { makeDefault: true });
     CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
     CONFIG.ChatMessage.documentClass = K4ChatMessage;
+    CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
     // CONFIG.Dialog.documentClass = K4Dialog;
+    // CONFIG.canvasTextStyle = new PIXI.TextStyle({
+    // 	fontFamily: "AlverataSemiBold",
+    // 	fontSize: 32,
+    // 	fill: C.Colors["GOLD +1"],
+    // 	stroke: C.Colors["GOLD -3"],
+    // 	strokeThickness: 1,
+    // 	dropShadow: true,
+    // 	dropShadowColor: C.Colors.BLACK,
+    // 	dropShadowBlur: 4,
+    // 	dropShadowAngle: 0,
+    // 	dropShadowDistance: 0,
+    // 	align: "center",
+    // 	wordWrap: false,
+    // 	padding: 1
+    // });
     CONFIG.canvasTextStyle = new PIXI.TextStyle({
+        align: "center",
+        dropShadow: true,
+        dropShadowAngle: U.degToRad(45),
+        dropShadowBlur: 8,
+        dropShadowColor: C.Colors.BLACK,
+        dropShadowDistance: 4,
+        fill: [
+            C.Colors["GOLD +2"],
+            C.Colors.GOLD
+        ],
+        fillGradientType: 1,
+        fillGradientStops: [
+            0,
+            0.3
+        ],
         fontFamily: "AlverataSemiBold",
         fontSize: 32,
-        fill: C.Colors["GOLD +1"],
-        stroke: C.Colors["GOLD -3"],
-        strokeThickness: 1,
-        dropShadow: true,
-        dropShadowColor: C.Colors.BLACK,
-        dropShadowBlur: 4,
-        dropShadowAngle: 0,
-        dropShadowDistance: 0,
-        align: "center",
-        wordWrap: false,
-        padding: 1
+        letterSpacing: 2,
+        lineHeight: 32,
+        lineJoin: "round",
+        padding: 4,
+        stroke: C.Colors["GOLD -2"],
+        strokeThickness: 3,
+        trim: true,
+        whiteSpace: "normal",
+        wordWrap: true,
+        wordWrapWidth: 0.1
     });
     CONFIG.fontFamilies = ["Alverata", "AlverataCaps", "Infidel", "Sokol"];
     CONFIG.defaultFontFamily = "Alverata";
     loadTemplates([
-        "systems/kult4th/templates/sheets/pc-sheet.hbs",
-        "systems/kult4th/templates/sheets/npc-sheet.hbs",
-        "systems/kult4th/templates/sheets/move-sheet.hbs",
-        "systems/kult4th/templates/sheets/advantage-sheet.hbs",
-        "systems/kult4th/templates/sheets/disadvantage-sheet.hbs",
-        "systems/kult4th/templates/sheets/darksecret-sheet.hbs",
-        "systems/kult4th/templates/sheets/weapon-sheet.hbs",
-        "systems/kult4th/templates/sheets/relation-sheet.hbs",
-        "systems/kult4th/templates/sheets/gear-sheet.hbs",
-        /*DEVCODE*/ "systems/kult4th/templates/debug/template-entry.hbs",
-        "systems/kult4th/templates/components/form-header.hbs",
-        "systems/kult4th/templates/components/item-list.hbs",
-        "systems/kult4th/templates/components/rules-block.hbs",
-        "systems/kult4th/templates/components/roll-result.hbs",
-        "systems/kult4th/templates/partials/basic-move-card.hbs",
-        "systems/kult4th/templates/partials/derived-move-card.hbs",
-        "systems/kult4th/templates/partials/attack-card.hbs",
-        "systems/kult4th/templates/partials/advantage-card.hbs",
-        "systems/kult4th/templates/partials/disadvantage-card.hbs",
-        "systems/kult4th/templates/partials/dark-secret-card.hbs",
-        "systems/kult4th/templates/partials/relation-card.hbs",
-        "systems/kult4th/templates/partials/attribute-box.hbs",
-        "systems/kult4th/templates/partials/derived-item-summary.hbs",
-        "systems/kult4th/templates/chat/roll-result.hbs",
-        "systems/kult4th/templates/dialog/ask-for-attribute.hbs"
+        ...U.getTemplatePath("sheets", [
+            "pc-sheet",
+            "npc-sheet",
+            "move-sheet",
+            "advantage-sheet",
+            "disadvantage-sheet",
+            "darksecret-sheet",
+            "weapon-sheet",
+            "relation-sheet",
+            "gear-sheet"
+        ]),
+        ...U.getTemplatePath("components", [
+            "form-header",
+            "item-list",
+            "rules-block",
+            "roll-result",
+            "attribute-box"
+        ]),
+        ...U.getTemplatePath("partials", [
+            "basic-move-card",
+            "derived-move-card",
+            "attack-card",
+            "advantage-card",
+            "disadvantage-card",
+            "dark-secret-card",
+            "relation-card",
+            "derived-item-summary"
+        ]),
+        ...U.getTemplatePath("sidebar", [
+            "chat-message",
+            "roll-result"
+        ]),
+        ...U.getTemplatePath("dialog", [
+            "ask-for-attribute"
+        ])
     ]);
     Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func));
     console.log("HANDLEBARS", Handlebars);

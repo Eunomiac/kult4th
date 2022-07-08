@@ -483,6 +483,14 @@ const loc = (locRef: string, formatDict: Record<string,string> = {}) => {
 	return locRef;
 };
 const getSetting = (setting: string) => game.settings.get(C.SYSTEM_ID, setting);
+function getTemplatePath(subFolder: string, fileName: string): string
+function getTemplatePath(subFolder: string, fileName: string[]): string[]
+function getTemplatePath(subFolder: string, fileName: string|string[]) {
+	if (typeof fileName === "string") {
+		return `${C.TEMPLATE_ROOT}/${subFolder}/${fileName.replace(/\..*$/, "")}.hbs`;
+	}
+	return fileName.map((fName) => getTemplatePath(subFolder, fName));
+}
 // #endregion ░░░░[Localization]░░░░
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
@@ -1013,7 +1021,7 @@ export default {
 	loremIpsum, randString, randWord,
 
 	// ░░░░░░░ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) ░░░░░░░
-	loc, getSetting,
+	loc, getSetting, getTemplatePath,
 
 	// ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
 	isIn, isInExact,

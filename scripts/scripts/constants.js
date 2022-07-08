@@ -167,7 +167,6 @@ const C = {
     SYSTEM_NAME: "Kult: Divinity Lost",
     SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",
     TEMPLATE_ROOT: "systems/kult4th/templates",
-    getTemplatePath(subFolder, fileName) { return `${this.TEMPLATE_ROOT}/${subFolder}/${fileName}.hbs`; },
     awareArchetypes: Archetypes.Aware,
     awareArchetypeAdvantages: {
         academic: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],

@@ -114,15 +114,13 @@
 		outline: none;
 		hyphens: auto;
 		text-align: justify;
-	}
 
-	option {
-		background: $black;
+		option { background: $black }
 	}
 
 	i[class^="fa"] {
 		color: var(--KKK-color-primary);
-		font-family: "Font Awesome 5 Free";
+		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
 		font-size: $rem-14;
 		text-align: center;

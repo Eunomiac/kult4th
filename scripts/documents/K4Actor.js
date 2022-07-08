@@ -63,7 +63,7 @@ export default class K4Actor extends Actor {
         return Object.fromEntries(this.attributeData.map((aData) => [aData.key, aData.value]));
     }
     async askForAttribute(message) {
-        const template = await getTemplate(C.getTemplatePath("dialog", "ask-for-attribute"));
+        const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-attribute"));
         const content = template({
             id: this.id,
             message
@@ -142,7 +142,7 @@ export default class K4Actor extends Actor {
         if (!(rollSource instanceof K4Item && (rollSource.data.type === "move" /* K4ItemType.move */ || rollSource.data.type === "attack" /* K4ItemType.attack */))) {
             return;
         }
-        const template = await getTemplate(C.getTemplatePath("chat", "roll-result"));
+        const template = await getTemplate(U.getTemplatePath("sidebar", "roll-result"));
         const templateData = {
             cssClass: "kult4th-chat chat-roll-result",
             context: rollSource

@@ -33,6 +33,8 @@
 				filter: drop-shadow(20px 20px 10px #{$black});
 				transform: translate(-50%, -50%);
 
+				display: none;
+
 				.profile-image {
 					position: absolute;
 					left: 50%;
@@ -172,11 +174,73 @@
 				}
 			}
 
+			.gear-container {
+				position: absolute;
+				pointer-events: none;
+				transform: translate(-50%, -50%);
+
+				&.gear-nav {
+					top: 28px;
+					left: 0px;
+					height: 180px;
+					width: 180px;
+					pointer-events: all;
+					z-index: 4;
+
+					.nav-lens, .profile-image-bg {
+						pointer-events: none;
+						top: 10px;
+						left: 10px;
+						height: 160px;
+						width: 160px;
+					}
+
+					.profile-image {
+						display: none;
+					}
+
+					.profile-image-bg {
+						position: absolute;
+						background: $black;
+						border-radius: 50%;
+						z-index: -1;
+					}
+				}
+				&.gear-top-left {
+					top: 10px;
+					left: 120px;
+					height: 80px;
+					width: 80px;
+				}
+				&.gear-top-right {
+					top: 29px;
+					right: -100px;
+					height: 100px;
+					width: 100px;
+				}
+				&.gear-bottom-left {
+					bottom: -94px;
+					left: 0px;
+					height: 100px;
+					width: 100px;
+				}
+				&.gear-bottom-right {
+					bottom: -74px;
+					right: -80px;
+					height: 80px;
+					width: 80px;
+				}
+
+				img {
+					position: absolute;
+				}
+			}
+
 			.border-container,
 			.bg-container {
 				--bg-vert-shift: 29px;
-				--border-vert-shift: 42px;
-				--border-horiz-shift: 42px;
+				--border-vert-shift: 15px;
+				--border-horiz-shift: 19px;
 				height: calc(100% - var(--bg-vert-shift));
 				width: 100%;
 				position: absolute;
@@ -184,6 +248,7 @@
 
 				&.bg-container {
 					background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
+					background: transparent #{to-url("backgrounds/bg-brown-gold.webp")} repeat center/500px 500px;
 					z-index: 1;
 				}
 
@@ -198,38 +263,48 @@
 						"bot-left bot-left . bot-right bot-right"
 						"bot-left bot-left bot bot-right bot-right";
 					grid-template-columns: 22px minmax(auto, 200px) 1fr minmax(auto, 200px) 22px;
-					grid-template-rows: 17px minmax(auto, 200px) 1fr minmax(auto, 200px) 17px;
+					grid-template-rows: 17px 75px 1fr 75px 17px;
 
 					.sheet-border {
 						pointer-events: none;
 						position: relative;
+						background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/337px 92px;
 
 						&.corner {
+							z-index: 5;
 
 							&.top-right {
 								grid-area: top-right;
-								background: transparent #{to-url("layout/border-top-right.webp")} no-repeat right top/360px 480px;
+								--border-image: #{to-url("layout/border-top-right.webp")};
+								--border-horiz-align: right;
+								--border-vert-align: top;
 								top: calc(-1 * var(--border-vert-shift));
 								right: calc(-1 * var(--border-horiz-shift));
 							}
 
 							&.top-left {
 								grid-area: top-left;
-								background: transparent #{to-url("layout/border-top-left.webp")} no-repeat left top/360px 480px;
+								--border-image: #{to-url("layout/border-top-left.webp")};
+								--border-horiz-align: left;
+								--border-vert-align: top;
 								top: calc(-1 * var(--border-vert-shift));
 								left: calc(-1 * var(--border-horiz-shift));
 							}
 
 							&.bot-right {
 								grid-area: bot-right;
-								background: transparent #{to-url("layout/border-bot-left.webp")} no-repeat right bottom/360px 480px;
+								--border-image: #{to-url("layout/border-bottom-right.webp")};
+								--border-horiz-align: right;
+								--border-vert-align: bottom;
 								bottom: calc(-1 * var(--border-vert-shift));
 								right: calc(-1 * var(--border-horiz-shift));
 							}
 
 							&.bot-left {
 								grid-area: bot-left;
-								background: transparent #{to-url("layout/border-bot-right.webp")} no-repeat left bottom/360px 480px;
+								--border-image: #{to-url("layout/border-bottom-left.webp")};
+								--border-horiz-align: left;
+								--border-vert-align: bottom;
 								bottom: calc(-1 * var(--border-vert-shift));
 								left: calc(-1 * var(--border-horiz-shift));
 							}
@@ -248,29 +323,25 @@
 
 							&.bot {
 								grid-area: bot;
-								bottom: 8px;
+								bottom: 12px;
 							}
 						}
 
 						&.vert-bar {
-							height: calc(100% + 2 * var(--border-vert-shift));
-							width: 37px;
-							top: calc(-1 * var(--border-vert-shift));
-							z-index: 10;
-							background: transparent #{to-url("layout/border-side-vert.webp")} no-repeat repeat center center/37px 200px;
-							// background: transparent #{to-url("layout/border-side-vert.webp")};
-							// background-size: 37px 200px;
-							// background-position: center center;
-							// background-repeat-y: repeat;
+							z-index: 4;
+							height: calc(100% + 2 * var(--border-vert-shift) + 40px);
+							width: 20px;
+							top: calc(-1 * var(--border-vert-shift) - 20px);
+							background: transparent #{to-url("layout/chain-link.webp")} no-repeat repeat center center/12px 26px;
 
 							&.left {
 								grid-area: left;
-								left: -16px;
+								left: -9px;
 							}
 
 							&.right {
 								grid-area: right;
-								right: -5px;
+								right: -10px;
 							}
 						}
 					}
@@ -419,16 +490,18 @@
 
 								img {
 									position: absolute;
-									height: 100%;
-									width: 100%;
+									// height: 100%;
+									// width: 100%;
 									filter: sepia(1);
 									opacity: 0;
+									top: -2px;
 								}
 
 								.attribute-title {
-									position: absolute;
+									display: block;
+									position: relative;
 									width: 100%;
-									top: 130px;
+									top: 125px;
 									font-size: $rem-10;
 									text-align: center;
 									font-weight: $font-weight-bold;
@@ -436,19 +509,18 @@
 
 								.attribute-value {
 									position: absolute;
+									height: 40px;
 									width: 40px;
 									border: none;
 									left: calc(50% - (40px / 2));
-									top: 87px;
+									top: 78px;
 									pointer-events: all;
 									font-size: $rem-20;
 									text-align: center;
 									font-weight: $font-weight-black;
 									appearance: none;
 
-									option {
-										text-align: center;
-									}
+									option { text-align: center }
 
 									&[value="7"],
 									option[value="7"] {
@@ -571,7 +643,7 @@
 						.basic-moves {
 							grid-area: basic-moves;
 							padding-bottom: 0;
-							justify-content: space-around;
+							justify-content: space-between;
 						}
 
 						.special-moves {

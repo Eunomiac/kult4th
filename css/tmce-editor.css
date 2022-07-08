@@ -223,6 +223,7 @@
   --line-height-20: 1.25rem;
   --line-height-30: 1.875rem;
   --font-primary-caps: AlverataCaps, serif;
+  --font-icon: "Font Awesome 5 Free";
   --font-heading: Infidel, sans-serif;
   --font-decorative: Sokol, serif; }
 
@@ -292,15 +293,32 @@
   -ms-hyphens: auto;
   hyphens: auto;
   text-align: justify; }
-
-#tinymce option,
-#tinymce .mce-content-body option {
-  background: #000000; }
+  #tinymce option,
+  #tinymce * option,
+  #tinymce input[type="text"] option,
+  #tinymce input[type="number"] option,
+  #tinymce textarea option,
+  #tinymce select option,
+  #tinymce option option,
+  #tinymce img option,
+  #tinymce ul option,
+  #tinymce li option,
+  #tinymce .mce-content-body option,
+  #tinymce .mce-content-body * option,
+  #tinymce .mce-content-body input[type="text"] option,
+  #tinymce .mce-content-body input[type="number"] option,
+  #tinymce .mce-content-body textarea option,
+  #tinymce .mce-content-body select option,
+  #tinymce .mce-content-body option option,
+  #tinymce .mce-content-body img option,
+  #tinymce .mce-content-body ul option,
+  #tinymce .mce-content-body li option {
+    background: #000000; }
 
 #tinymce i[class^="fa"],
 #tinymce .mce-content-body i[class^="fa"] {
   color: var(--KKK-color-primary);
-  font-family: "Font Awesome 5 Free";
+  font-family: var(--font-icon);
   font-weight: 900;
   font-size: 0.875rem;
   text-align: center; }
