@@ -9,8 +9,6 @@
 	--sheet-header-height: 60px;
 
 	.window-content {
-
-		// button { color: $gold-bright }
 		background: none;
 
 		form {
@@ -19,6 +17,23 @@
 				position: relative;
 				z-index: 2;
 			}
+
+			$corner-height: 75px;
+			$corner-width: 200px;
+
+			$vert-width: 12px;
+			$vert-height: 12px;
+			$vert-vert-center: 15px;
+			$corner-horiz-shift: $vert-vert-center - 0.5 * $vert-width;
+			$vert-grid-width: $vert-width;
+			$corner-grid-width: $corner-width - $vert-grid-width - $corner-horiz-shift;
+
+			$horiz-width: 600px;
+			$horiz-height: 20px;
+			$horiz-horiz-center: 10px;
+			$corner-vert-shift: $horiz-horiz-center - 0.5 * $horiz-height;
+			$horiz-grid-height: $horiz-height;
+			$corner-grid-height: $corner-height - $horiz-grid-height - $corner-vert-shift;
 
 			.nav-panel {
 				position: absolute;
@@ -238,110 +253,102 @@
 
 			.border-container,
 			.bg-container {
-				--bg-vert-shift: 29px;
-				--border-vert-shift: 15px;
-				--border-horiz-shift: 19px;
-				height: calc(100% - var(--bg-vert-shift));
-				width: 100%;
 				position: absolute;
-				top: var(--bg-vert-shift);
+				pointer-events: none;
+				display: grid;
 
 				&.bg-container {
-					background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
-					background: transparent #{to-url("backgrounds/bg-brown-gold.webp")} repeat center/500px 500px;
-					z-index: 1;
+
 				}
 
 				&.border-container {
+					height: 100%;
+					width: 100%;
 					z-index: 3;
-					pointer-events: none;
-					display: grid;
+
 					grid-template-areas:
 						"top-left top-left top top-right top-right"
-						"top-left top-left . top-right top-right"
-						"left . . . right"
-						"bot-left bot-left . bot-right bot-right"
+						"top-left top-left  .  top-right top-right"
+						"    left    .      .     .          right"
+						"bot-left bot-left  .  bot-right bot-right"
 						"bot-left bot-left bot bot-right bot-right";
-					grid-template-columns: 22px minmax(auto, 200px) 1fr minmax(auto, 200px) 22px;
-					grid-template-rows: 17px 75px 1fr 75px 17px;
+					grid-template-columns: #{$vert-grid-width} #{$corner-grid-width} 1fr #{$corner-grid-width} #{$vert-grid-width};
+					grid-template-rows: #{$horiz-grid-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
 
 					.sheet-border {
 						pointer-events: none;
 						position: relative;
-						background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/337px 92px;
+						background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/ #{$corner-width} #{$corner-height};
 
 						&.corner {
 							z-index: 5;
-
-							&.top-right {
-								grid-area: top-right;
-								--border-image: #{to-url("layout/border-top-right.webp")};
-								--border-horiz-align: right;
-								--border-vert-align: top;
-								top: calc(-1 * var(--border-vert-shift));
-								right: calc(-1 * var(--border-horiz-shift));
-							}
+							height: $corner-height;
+							width: $corner-width;
 
 							&.top-left {
 								grid-area: top-left;
-								--border-image: #{to-url("layout/border-top-left.webp")};
+								--border-image: #{to-url("layout/simple-border-top-left.webp")};
 								--border-horiz-align: left;
 								--border-vert-align: top;
-								top: calc(-1 * var(--border-vert-shift));
-								left: calc(-1 * var(--border-horiz-shift));
+								top: -1 * $corner-vert-shift;
+								left: -1 * $corner-horiz-shift;
 							}
 
-							&.bot-right {
-								grid-area: bot-right;
-								--border-image: #{to-url("layout/border-bottom-right.webp")};
+							&.top-right {
+								grid-area: top-right;
+								--border-image: #{to-url("layout/simple-border-top-right.webp")};
 								--border-horiz-align: right;
-								--border-vert-align: bottom;
-								bottom: calc(-1 * var(--border-vert-shift));
-								right: calc(-1 * var(--border-horiz-shift));
+								--border-vert-align: top;
+								top: -1 * $corner-vert-shift;
 							}
 
 							&.bot-left {
 								grid-area: bot-left;
-								--border-image: #{to-url("layout/border-bottom-left.webp")};
+								--border-image: #{to-url("layout/simple-border-bot-left.webp")};
 								--border-horiz-align: left;
 								--border-vert-align: bottom;
-								bottom: calc(-1 * var(--border-vert-shift));
-								left: calc(-1 * var(--border-horiz-shift));
+								bottom: -1 * $corner-vert-shift;
+								left: -1 * $corner-horiz-shift;
+							}
+
+							&.bot-right {
+								grid-area: bot-right;
+								--border-image: #{to-url("layout/simple-border-bot-right.webp")};
+								--border-horiz-align: right;
+								--border-vert-align: bottom;
+								// bottom: -1 * $corner-vert-shift;
+								// right: -1 * $corner-horiz-shift;
+								top: $corner-vert-shift;
+								left: $corner-horiz-shift;
 							}
 						}
 
 						&.horiz-bar {
-							height: 37px;
-							width: calc(100% + 2 * var(--border-horiz-shift));
-							left: calc(-1 * var(--border-horiz-shift));
-							background: transparent #{to-url("layout/border-side-horiz.webp")} repeat no-repeat center center/200px 37px;
+							background: transparent #{to-url("layout/simple-border-horiz-bar.webp")} repeat no-repeat center center/#{$horiz-width} #{$horiz-height};
+							left: -1 * $corner-horiz-shift;
+							width: calc(100% + 2 * #{$corner-horiz-shift});
 
 							&.top {
 								grid-area: top;
-								top: -16px;
 							}
 
 							&.bot {
 								grid-area: bot;
-								bottom: 12px;
 							}
 						}
 
 						&.vert-bar {
 							z-index: 4;
-							height: calc(100% + 2 * var(--border-vert-shift) + 40px);
-							width: 20px;
-							top: calc(-1 * var(--border-vert-shift) - 20px);
-							background: transparent #{to-url("layout/chain-link.webp")} no-repeat repeat center center/12px 26px;
+							height: 100%;
+							width: $vert-width;
+							background: transparent #{to-url("layout/chain.svg")} no-repeat repeat center center/#{$vert-width} #{$vert-height};
 
 							&.left {
 								grid-area: left;
-								left: -9px;
 							}
 
 							&.right {
 								grid-area: right;
-								right: -10px;
 							}
 						}
 					}
@@ -373,7 +380,7 @@
 
 			.tab-content {
 				overflow-x: hidden;
-				overflow-y: scroll;
+				// overflow-y: scroll;
 
 				// margin-bottom: -30px;
 
