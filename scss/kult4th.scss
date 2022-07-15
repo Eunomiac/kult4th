@@ -7,19 +7,24 @@ $isDebuggingChat: false;
 @import 'debug';
 
 .vtt.game.system-kult4th {
-	// --color-body-text: #{$gold};
+
 	@import 'globals/root';
-	@import 'globals/layout';
 	@import 'globals/text-styles';
 
 	.app.window-app {
 		@import 'globals/app';
 
 		&.sheet {
-			@import 'sheets/sheet';
+			// @import 'sheets/sheet';
 
-			&.actor { @import 'sheets/actor-sheet' }
-			&.item { @import 'sheets/item-sheet' }
+			&.actor {
+				@import 'sheets/sheet';
+				@import 'sheets/actor-sheet';
+			}
+			&.item {
+				@import 'sheets/sheet';
+				@import 'sheets/item-sheet';
+			}
 		}
 		&.dialog {
 			@import 'dialog/dialog';

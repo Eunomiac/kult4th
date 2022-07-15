@@ -2,6 +2,63 @@ import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import gsap, { GSDevTools } from "/scripts/greensock/esm/all.js";
 const ANIMATIONS = {
+    navFade(target) {
+        // const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
+        const navMainGear$ = $(target).find(".svg-gear-nav");
+        const navLens$ = $(target).find(".nav-lens");
+        const profileImg$ = $(target).find(".profile-image");
+        const profileBg$ = $(target).find(".profile-image-bg");
+        const animation$ = $(target).find(".profile-image-animation");
+        const buttonSpikes$ = $(target).find(".nav-tab");
+        const closeButton$ = $(target).find(".header-button.close");
+        const minimizeButton$ = $(target).find(".header-button.minimize");
+        return gsap
+            .timeline({
+            reversed: true
+        }).to(target, {
+            scale: 1,
+            duration: 1,
+            ease: "sine"
+        }, 0).to([navMainGear$, navLens$], {
+            rotation: "+=180",
+            duration: 1,
+            ease: "sine.inOut"
+        }, 0).fromTo(buttonSpikes$, {
+            rotation(i) { return -45 + (i * 25); },
+            width: 50
+        }, {
+            // rotation: "+=150",
+            width: 125,
+            duration: 0.5,
+            stagger: {
+                amount: 0.5
+            },
+            ease: "sine"
+        }, 0).from([closeButton$, minimizeButton$], {
+            opacity: 0,
+            zIndex: -2,
+            filter: "blur(5px)",
+            ease: "sine",
+            duration: 0.5
+        }, 0).to(animation$, {
+            outlineWidth: 0,
+            duration: 1,
+            ease: "sine.inOut"
+        }, 0).to(navLens$, {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2"
+        }, 0.5).to(profileImg$, {
+            filter: "blur(5px)",
+            opacity: 0.5,
+            duration: 1,
+            ease: "power2.out"
+        }, 0).to(profileBg$, {
+            opacity: 0.75,
+            duration: 1,
+            ease: "sine"
+        }, 0);
+    },
     hoverNav(target, context) {
         const headerButtons = target.getElementsByClassName("header-button");
         return gsap
@@ -182,103 +239,91 @@ export default class K4PCSheet extends ActorSheet {
         const ISDEBUGGING = false;
         super.activateListeners(html);
         const self = this;
-        const positionKeys = [
-            "maxX",
-            "maxY",
-            "posX",
-            "posY",
-            "percentX",
-            "percentY",
-            "rotX",
-            "rotY"
-        ];
-        if (ISDEBUGGING && !$("#position-display")[0]) {
-            $("body").append([
-                "<div id='position-display'>",
-                ...positionKeys.map((key) => [
-                    "<div class='position-entry'>",
-                    `<label>${key}:</label>`,
-                    `<span id="${key}" class='position-value'></span>`,
-                    "</div>"
-                ].join("\n")),
-                "</div>"
-            ].join("\n"));
-        }
-        const positionDisplays = Object.fromEntries(positionKeys.map((key) => [key, $(`#${key}`)]));
-        function updateDisplay(key, data) {
-            if (ISDEBUGGING) {
-                positionDisplays[key]?.text(String(U.pFloat(data, 3)));
-            }
-        }
         $(() => {
             console.log("ACTOR SHEET HTML OBJECT", html);
             const hoverTimelines = [];
-            const [navPanel] = html.find(".nav-panel");
+            /* const [navPanel] = html.find(".nav-panel");
             $(navPanel)
                 .each(() => {
-                gsap.set(navPanel, {
-                    xPercent: -50,
-                    yPercent: -50,
-                    transformPerspective: 1000,
-                    perspective: 600,
-                    transformStyle: "preserve-3d"
-                });
-                const hoverTimeline = ANIMATIONS.hoverNav(navPanel, html);
-                $(navPanel).on("mouseenter", () => {
-                    if (!$(navPanel).data("isHovered")) {
-                        $(navPanel).data({ isHovered: true });
-                        hoverTimeline.reversed(false);
-                    }
-                });
-                $(document).on("mousemove", (event) => {
-                    if ($(navPanel).data("isHovered")) {
-                        if (!document.elementsFromPoint(event.clientX, event.clientY)
-                            .find((elem) => $(elem).hasClass("nav-panel"))) {
-                            $(navPanel).data({ isHovered: false });
-                            gsap.to(navPanel, {
-                                rotationX: 0,
-                                rotationY: 0,
-                                duration: 2,
-                                ease: "power3.out"
-                            });
-                            hoverTimeline.reversed(true);
+                    gsap.set(navPanel, {
+                        xPercent: -50,
+                        yPercent: -50,
+                        transformPerspective: 1000,
+                        perspective: 600,
+                        transformStyle: "preserve-3d"
+                    });
+                    const hoverTimeline = ANIMATIONS.hoverNav(navPanel, html);
+
+                    $(navPanel).on("mouseenter", () => {
+                        if (!$(navPanel).data("isHovered")) {
+                            $(navPanel).data({isHovered: true});
+                            hoverTimeline.reversed(false);
                         }
-                        else {
-                            const maxX = $(navPanel).width() ?? 0;
-                            const maxY = $(navPanel).height() ?? 0;
-                            updateDisplay("maxX", maxX);
-                            updateDisplay("maxY", maxY);
-                            if (!maxX || !maxY) {
-                                return;
+                    });
+
+                    $(document).on("mousemove", (event) => {
+                        if ($(navPanel).data("isHovered")) {
+                            if (!document.elementsFromPoint(event.clientX, event.clientY)
+                                .find((elem) => $(elem).hasClass("nav-panel"))) {
+                                $(navPanel).data({isHovered: false});
+                                gsap.to(navPanel, {
+                                    rotationX: 0,
+                                    rotationY: 0,
+                                    duration: 2,
+                                    ease: "power3.out"
+                                });
+                                hoverTimeline.reversed(true);
+                            } else {
+                                const maxX = $(navPanel).width() ?? 0;
+                                const maxY = $(navPanel).height() ?? 0;
+
+                                updateDisplay("maxX", maxX);
+                                updateDisplay("maxY", maxY);
+
+                                if (!maxX || !maxY) { return }
+
+                                const posX = U.pInt(event.clientX) - (self.position.left ?? 0); // event.offsetX;
+                                const posY = U.pInt(event.clientY) - (self.position.top ?? 0); // event.offsetY;
+
+                                updateDisplay("posX", posX);
+                                updateDisplay("posY", posY);
+
+                                const percentX = (100 / (maxX / posX)) - 50;
+                                const percentY = (100 / (maxY / posY)) - 50;
+
+                                updateDisplay("percentX", percentX);
+                                updateDisplay("percentY", percentY);
+
+                                const maxRotX = 10;
+                                const maxRotY = 10;
+
+                                const rotX = (maxRotY / 100) * percentY;
+                                const rotY = (-maxRotX / 100) * percentX;
+
+                                updateDisplay("rotX", rotX);
+                                updateDisplay("rotY", rotY);
+
+                                gsap.to(navPanel, {
+                                    rotationX: rotX,
+                                    rotationY: rotY,
+                                    ease: "back.out",
+                                    duration: 0.5
+                                });
                             }
-                            const posX = U.pInt(event.clientX) - (self.position.left ?? 0); // event.offsetX;
-                            const posY = U.pInt(event.clientY) - (self.position.top ?? 0); // event.offsetY;
-                            updateDisplay("posX", posX);
-                            updateDisplay("posY", posY);
-                            const percentX = (100 / (maxX / posX)) - 50;
-                            const percentY = (100 / (maxY / posY)) - 50;
-                            updateDisplay("percentX", percentX);
-                            updateDisplay("percentY", percentY);
-                            const maxRotX = 10;
-                            const maxRotY = 10;
-                            const rotX = (maxRotY / 100) * percentY;
-                            const rotY = (-maxRotX / 100) * percentX;
-                            updateDisplay("rotX", rotX);
-                            updateDisplay("rotY", rotY);
-                            gsap.to(navPanel, {
-                                rotationX: rotX,
-                                rotationY: rotY,
-                                ease: "back.out",
-                                duration: 0.5
-                            });
                         }
-                    }
+                    });
                 });
-            });
+
             html.find(".nav-tab")
                 .each(function initNavTab() {
-                gsap.set(this, { xPercent: -50, yPercent: -50, opacity: 1 });
-                hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+                    gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
+                    hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+                });
+            */
+            $(document).find(".gear-container.gear-nav")
+                .each(function initNavHover() {
+                console.log("Found Something", this);
+                hoverTimelines.push([this, ANIMATIONS.navFade(this)]);
             });
             function createOpenLinkFromName(elem, iName) {
                 if (iName) {

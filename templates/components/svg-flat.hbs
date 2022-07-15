@@ -1,0 +1,5 @@
+<svg class="svg-def svg-{{this}}" viewBox="0 0 512 512">
+	{{#each (getSVGPaths this) as |path|}}
+	<path class="d-{{@index}}" d="{{{path.d}}}" />
+	{{/each}}
+</svg>

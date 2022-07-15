@@ -21,5 +21,6 @@
 
 	.window-content {
 		color: var(--KKK-color-primary);
+		background: transparent #{to-url("backgrounds/bg-dgold-paper.webp")} repeat repeat center center/1000px 1000px;
 	}
 }

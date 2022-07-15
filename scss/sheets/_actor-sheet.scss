@@ -3,10 +3,416 @@
 	--sheet-min-width: 700px;
 	--sheet-top-padding: 0px;
 
-	--sheet-horiz-padding: 10px;
+	--sheet-horiz-padding: 30px;
 	--sheet-bottom-padding: 1.5%;
 
 	--sheet-header-height: 60px;
+
+	filter: none;
+
+	$nav-horiz-shift: 25px;
+	$nav-vert-shift: 25px;
+
+	$mask-size: 200px;
+	$mask-radius: 37;
+
+	$corner-height: 75px;
+	$corner-width: 200px;
+
+	$vert-width: 30px;
+	$vert-height: 12px;
+	$vert-vert-center: 15px;
+	$corner-horiz-shift: $vert-vert-center - 0.5 * $vert-width;
+	$vert-grid-width: $vert-width;
+	$corner-grid-width: $corner-width - $vert-grid-width - $corner-horiz-shift;
+
+	$horiz-width: 600px;
+	$horiz-height: 20px;
+	$horiz-sub-height: 13px;
+	$horiz-horiz-center: 10px;
+	$horiz-horiz-sub-center: 6.5px;
+	$corner-vert-shift: $horiz-horiz-center - 0.5 * $horiz-height;
+	$horiz-grid-height: $horiz-height;
+	$corner-grid-height: $corner-height - $horiz-grid-height - $corner-vert-shift;
+
+	.nav-panel.gear-container {
+		$size: 180px;
+		$frame-width: 10px;
+		top: $nav-vert-shift; // $horiz-horiz-sub-center;
+		left: $nav-horiz-shift; // (0.5 * $vert-width);
+		height: $size;
+		width: $size;
+		pointer-events: all;
+		z-index: 5;
+		transform: translate(-50%, -50%) scale(0.75);
+
+		.svg-def {
+			fill: $gold;
+			fill-opacity: 1;
+			stroke: none; // $gold-darkest;
+			stroke-width: 2px;
+			stroke-opacity: 1;
+			filter: none;
+			opacity: 1;
+			z-index: 2;
+		}
+
+		.nav-lens, .profile-image-bg, .profile-image-animation {
+			pointer-events: none;
+			top: $frame-width;
+			left: $frame-width;
+			height: $size - 2 * $frame-width;
+			width: $size - 2 * $frame-width;
+		}
+
+		.nav-lens {
+			z-index: 1;
+		}
+
+		.profile-image {
+			height: auto;
+			width: auto;
+			max-width: $size - 2 * $frame-width;
+			top: $size / 2;
+			left: $size / 2;
+			transform: translate(-50%, -50%);
+			z-index: 0;
+			clip-path: circle(closest-side);
+		}
+
+		.profile-image-bg {
+			position: absolute;
+			border-radius: 50%;
+			background: $black;
+			z-index: -1;
+		}
+
+		.profile-image-animation {
+			position: absolute;
+			border-radius: 50%;
+			background: transparent #{to-url("animations/gears-perspective.gif")} no-repeat no-repeat 90% center/266px auto;
+			// background: transparent #{to-url("animations/gears-steampunk.gif")} no-repeat no-repeat center center/185px auto;
+			z-index: -2;
+			outline: 12px solid #{$gold};
+		}
+
+		.header-button {
+			// opacity: 0;
+			display: block;
+			font-size: $rem-24;
+			width: 30px;
+			position: absolute;
+			z-index: 2;
+			text-align: center;
+			text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
+			transform: translate(-50%, -50%);
+
+
+			&.close {
+				top: 35px;
+				left: 110px;
+			}
+
+			&.minimize {
+				left: 135px;
+				top: 60px;
+			}
+		}
+
+		.tabs {
+			$tab-spike-height: 40px;
+			$tab-spike-length: 150px;
+			height: 100%;
+			width: 100%;
+			position: relative;
+			z-index: -3;
+
+			.nav-tab {
+				transform-origin: right center;
+				transform: translate(-50%, -50%);
+				height: $tab-spike-height;
+				width: 5px;
+				top: 50%;
+
+				&, > * {
+					display: block;
+					position: absolute;
+				}
+
+				svg {
+					width: 100%;
+				}
+
+				.nav-tab-label {
+					opacity: 0;
+				}
+			}
+		}
+
+	}
+
+	.gear-container {
+		position: absolute;
+		pointer-events: none;
+		transform: translate(-50%, -50%);
+		z-index: -2;
+
+		.svg-def {
+			position: absolute;
+			fill: $gold-dark;
+			fill-opacity: 0.3;
+			stroke: none;
+			filter: blur(2px);
+			opacity: 0;
+		}
+
+		&.gear-top-left {
+			$size: 80px;
+			top: $horiz-horiz-sub-center;
+			left: 120px;
+			height: $size;
+			width: $size;
+		}
+		&.gear-top-right {
+			$size: 100px;
+			top: $horiz-horiz-sub-center;
+			right: -1 * $size + (0.5 * $vert-width);
+			height: $size;
+			width: $size;
+		}
+		&.gear-bottom-left {
+			$size: 100px;
+			bottom: -1 * $size + $horiz-horiz-sub-center;
+			left: (0.5 * $vert-width);
+			height: $size;
+			width: $size;
+
+			.svg-def {
+				fill: unset;
+				.d-0 {
+					fill: $gold-dark;
+				}
+				.d-1 {
+					fill: $gold-darker;
+				}
+			}
+		}
+		&.gear-bottom-right {
+			$size: 80px;
+			bottom: -1 * $size + $horiz-horiz-sub-center;
+			right: -1 * $size + (0.5 * $vert-width);
+			height: $size;
+			width: $size;
+		}
+
+		img {
+			position: absolute;
+		}
+	}
+
+	.border-container,
+	.bg-container {
+		position: absolute;
+		pointer-events: none;
+		display: grid;
+
+		&.bg-container {
+			$bg-horiz-padding: 0.7 * $vert-width;
+			$bg-vert-padding: 0.25 * $bg-horiz-padding;
+
+			$bg-vert-height: 1000px;
+			$bg-vert-width: 100px;
+			$bg-vert-feather: 20px;
+
+			$bg-horiz-height: 100px;
+			$bg-horiz-width: 1000px;
+			$bg-horiz-feather: 20px;
+
+			$bg-corner-height: 32px;
+			$bg-corner-width: 32px;
+
+			height: calc(100% - (2 * #{$bg-vert-padding}));
+			width: calc(100% - (2 * #{$bg-horiz-padding}));
+			top: $bg-vert-padding;
+			left: $bg-horiz-padding;
+			z-index: -1;
+
+			@include to-mask($mask-size, $mask-radius, (#{-1 * $bg-horiz-padding + $nav-horiz-shift} #{-1 * $bg-vert-padding + $nav-vert-shift}), $isExclusion: true)
+
+			grid-template-areas:
+				"top-left  top top-right"
+				"left    center    right"
+				"bot-left  bot bot-right";
+			grid-template-columns: #{$bg-corner-width} 1fr #{$bg-corner-width};
+			grid-template-rows: #{$bg-corner-height} 1fr #{$bg-corner-height};
+
+			.sheet-bg {
+				position: relative;
+				height: 100%;
+				width: 100%;
+
+				&.vert-edge {
+					width: $bg-vert-width;
+
+					&.left {
+						grid-area: left;
+						background: transparent #{to-url("backgrounds/bg-dgold-paper-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
+					}
+
+					&.right {
+						grid-area: right;
+						background: transparent #{to-url("backgrounds/bg-dgold-paper-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
+						right: $bg-vert-width - $bg-corner-width;
+					}
+				}
+
+				&.horiz-edge {
+					height: $bg-horiz-height;
+
+					&.top {
+						grid-area: top;
+						background: transparent #{to-url("backgrounds/bg-dgold-paper-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
+					}
+
+					&.bot {
+						grid-area: bot;
+						background: transparent #{to-url("backgrounds/bg-dgold-paper-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
+						bottom: $bg-horiz-height - $bg-corner-height;
+					}
+				}
+
+				&.corner {
+					background: transparent #{to-url("backgrounds/bg-dgold-paper.webp")} repeat repeat center center/#{$bg-corner-width} #{$bg-corner-height};
+					position: absolute;
+					-webkit-mask-composite: destination-out;
+					mask-composite: exclude;
+
+					&.top-left {
+						grid-area: top-left;
+						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+					}
+					&.top-right {
+						grid-area: top-right;
+						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+					}
+					&.bot-left {
+						grid-area: bot-left;
+						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+					}
+					&.bot-right {
+						grid-area: bot-right;
+						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
+					}
+				}
+
+				&.center {
+					grid-area: center;
+					z-index: -2;
+					background: transparent #{to-url("backgrounds/bg-dgold-paper.webp")} repeat repeat center center/500px 500px;
+				}
+			}
+		}
+
+		&.border-container {
+			height: 100%;
+			width: 100%;
+			z-index: 3;
+
+			grid-template-areas:
+				"top-left top-left top top-right top-right"
+				"top-left top-left  .  top-right top-right"
+				"    left    .      .     .          right"
+				"bot-left bot-left  .  bot-right bot-right"
+				"bot-left bot-left bot bot-right bot-right";
+			grid-template-columns: #{$vert-grid-width} #{$corner-grid-width} 1fr #{$corner-grid-width} #{$vert-grid-width};
+			grid-template-rows: #{$horiz-grid-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
+
+			@include to-mask($mask-size, $mask-radius, (#{$nav-horiz-shift} #{$nav-vert-shift}), $isExclusion: true);
+			.sheet-border {
+				pointer-events: none;
+				position: relative;
+				background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/ #{$corner-width} #{$corner-height};
+
+				&.corner {
+					z-index: 5;
+					height: $corner-height;
+					width: $corner-width;
+
+					&.top-left {
+						grid-area: top-left;
+						--border-image: #{to-url("layout/simple-border-top-left.webp")};
+						--border-horiz-align: left;
+						--border-vert-align: top;
+						top: -1 * $corner-vert-shift;
+						left: -1 * $corner-horiz-shift;
+					}
+
+					&.top-right {
+						grid-area: top-right;
+						--border-image: #{to-url("layout/simple-border-top-right.webp")};
+						--border-horiz-align: right;
+						--border-vert-align: top;
+						top: -1 * $corner-vert-shift;
+						right: 0;
+					}
+
+					&.bot-left {
+						grid-area: bot-left;
+						--border-image: #{to-url("layout/simple-border-bot-left.webp")};
+						--border-horiz-align: left;
+						--border-vert-align: bottom;
+						bottom: -1 * $corner-vert-shift;
+						left: -1 * $corner-horiz-shift;
+					}
+
+					&.bot-right {
+						grid-area: bot-right;
+						--border-image: #{to-url("layout/simple-border-bot-right.webp")};
+						--border-horiz-align: right;
+						--border-vert-align: bottom;
+						bottom: -1 * $corner-vert-shift;
+						right: 0;
+					}
+				}
+
+				&.horiz-bar {
+					background: transparent #{to-url("layout/simple-border-horiz-bar.webp")} repeat no-repeat center center/#{$horiz-width} #{$horiz-height};
+					left: -1 * $corner-horiz-shift;
+					width: calc(100% + 2 * #{$corner-horiz-shift});
+
+					&.top {
+						grid-area: top;
+					}
+
+					&.bot {
+						grid-area: bot;
+					}
+				}
+
+				&.vert-bar {
+					$vert-spacer: 0px;
+					z-index: 4;
+					height: calc(100% - 2 * #{$vert-spacer});
+					top: $vert-spacer;
+					width: $vert-width;
+					background: transparent #{to-url("layout/chain.svg")} no-repeat repeat center center/#{$vert-height} #{$vert-height};
+
+					&.left {
+						grid-area: left;
+					}
+
+					&.right {
+						grid-area: right;
+					}
+				}
+			}
+		}
+
+	}
 
 	.window-content {
 		background: none;
@@ -15,366 +421,27 @@
 
 			>* {
 				position: relative;
-				z-index: 2;
+				z-index: 3;
 			}
-
-			$corner-height: 75px;
-			$corner-width: 200px;
-
-			$vert-width: 12px;
-			$vert-height: 12px;
-			$vert-vert-center: 15px;
-			$corner-horiz-shift: $vert-vert-center - 0.5 * $vert-width;
-			$vert-grid-width: $vert-width;
-			$corner-grid-width: $corner-width - $vert-grid-width - $corner-horiz-shift;
-
-			$horiz-width: 600px;
-			$horiz-height: 20px;
-			$horiz-horiz-center: 10px;
-			$corner-vert-shift: $horiz-horiz-center - 0.5 * $horiz-height;
-			$horiz-grid-height: $horiz-height;
-			$corner-grid-height: $corner-height - $horiz-grid-height - $corner-vert-shift;
-
-			.nav-panel {
-				position: absolute;
-				top: 100px;
-				left: -15px;
-				width: 155px;
-				height: calc(155px * 1.634);
-				background: to-url("layout/portrait-bg-internal.webp");
-				background-size: contain;
-				background-repeat: no-repeat;
-				z-index: 7;
-				filter: drop-shadow(20px 20px 10px #{$black});
-				transform: translate(-50%, -50%);
-
-				display: none;
-
-				.profile-image {
-					position: absolute;
-					left: 50%;
-					top: 50%;
-					transform: translate(-50%, -50%);
-					z-index: 2;
-
-					mask-image: to-url("layout/portrait-bg-internal.webp");
-					mask-size: 155px calc(155px * 1.634);
-					mask-repeat: no-repeat;
-					mask-position: center center;
-
-					&.blur-background {
-						height: 100%;
-						width: 100%;
-						filter: blur(5px);
-						pointer-events: none;
-					}
-				}
-
-				.img-border {
-					position: absolute;
-					height: 100%;
-					width: 100%;
-					z-index: 7;
-					pointer-events: none;
-				}
-
-				.tabs {
-					.nav-tab {
-						// display: none !important;
-						--nav-tab-size: 30px;
-						--nav-tab-vert-pad: 10px;
-						--nav-tab-horiz-shift: -1px;
-						--side-tab-vert-shift: -15px;
-						--nav-tab-vert-spacing: 50px;
-						position: absolute;
-						z-index: 20;
-						display: block;
-						// background: radial-gradient(transparent 50%, lime);
-						height: var(--nav-tab-size);
-						width: var(--nav-tab-size);
-						border-radius: calc(0.5 * var(--nav-tab-size));
-						line-height: var(--nav-tab-size);
-						font-size: 40px;
-						text-align: center;
-						transform-origin: center;
-						opacity: 0;
-
-						&[data-tab="front"] {
-							top: calc(0.5 * var(--nav-tab-size) + var(--nav-tab-vert-pad));
-							left: calc(50% + var(--nav-tab-horiz-shift));
-						}
-
-						&[data-tab="bio"] {
-							top: calc(50% + var(--side-tab-vert-shift) - var(--nav-tab-vert-spacing));
-							left: calc(100% - var(--nav-tab-size) + var(--nav-tab-horiz-shift));
-						}
-
-						&[data-tab="assets"] {
-							top: calc(50% + var(--side-tab-vert-shift));
-							left: calc(100% - var(--nav-tab-size) + var(--nav-tab-horiz-shift))
-						}
-
-						&[data-tab="notes"] {
-							top: calc(50% + var(--side-tab-vert-shift) + var(--nav-tab-vert-spacing));
-							left: calc(100% - var(--nav-tab-size) + var(--nav-tab-horiz-shift))
-						}
-
-						&[data-tab="advancement"] {
-							top: calc(100% - 0.5 * var(--nav-tab-size) - var(--nav-tab-vert-pad));
-							left: calc(50% + var(--nav-tab-horiz-shift));
-						}
-
-						&[data-action="toggleLock"] {
-							top: calc(50% + var(--side-tab-vert-shift) - var(--nav-tab-vert-spacing));
-							left: calc(var(--nav-tab-size) + var(--nav-tab-horiz-shift));
-						}
-
-						&[data-edit="img"] {
-							top: calc(50% + var(--side-tab-vert-shift));
-							left: calc(var(--nav-tab-size) + var(--nav-tab-horiz-shift));
-						}
-
-						&[data-tab="settings"] {
-							top: calc(50% + var(--side-tab-vert-shift) + var(--nav-tab-vert-spacing));
-							left: calc(var(--nav-tab-size) + var(--nav-tab-horiz-shift));
-						}
-
-						.nav-tab-label {
-							position: absolute;
-							display: block;
-							opacity: 0;
-							--k4-color: #{$red-bright};
-							--k4-font-family: var(--font-primary-caps);
-							--k4-font-size: #{$rem-24};
-							z-index: 2;
-							pointer-events: none;
-							text-align: center;
-							text-shadow: 0 0 2px #{$black}, 0 0 2px #{$black}, 0 0 2px #{$black}, 0 0 2px #{$black};
-							overflow: visible;
-							white-space: nowrap;
-							width: 500%;
-							margin-left: calc(-0.5 * (500% - var(--nav-tab-size)));
-						}
-
-						.nav-tab-animation {
-							position: absolute;
-							display: block;
-							opacity: 0;
-							height: 100%;
-							width: 100%;
-							transform-origin: center center;
-							pointer-events: none;
-						}
-					}
-				}
-
-				.header-button {
-					position: absolute;
-					font-size: 24px;
-					text-shadow: 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color), 0 0 2px var(--button-glow-color);
-
-					&.close {
-						--button-glow-color: #{$red-glow};
-						--k4-color: #{$black};
-						left: 15%;
-						top: 100px;
-					}
-
-					&.minimize {
-						--button-glow-color: #{$blue-glow};
-						--k4-color: #{$black};
-						right: 15%;
-						top: 100px;
-					}
-				}
-			}
-
-			.gear-container {
-				position: absolute;
-				pointer-events: none;
-				transform: translate(-50%, -50%);
-
-				&.gear-nav {
-					top: 28px;
-					left: 0px;
-					height: 180px;
-					width: 180px;
-					pointer-events: all;
-					z-index: 4;
-
-					.nav-lens, .profile-image-bg {
-						pointer-events: none;
-						top: 10px;
-						left: 10px;
-						height: 160px;
-						width: 160px;
-					}
-
-					.profile-image {
-						display: none;
-					}
-
-					.profile-image-bg {
-						position: absolute;
-						background: $black;
-						border-radius: 50%;
-						z-index: -1;
-					}
-				}
-				&.gear-top-left {
-					top: 10px;
-					left: 120px;
-					height: 80px;
-					width: 80px;
-				}
-				&.gear-top-right {
-					top: 29px;
-					right: -100px;
-					height: 100px;
-					width: 100px;
-				}
-				&.gear-bottom-left {
-					bottom: -94px;
-					left: 0px;
-					height: 100px;
-					width: 100px;
-				}
-				&.gear-bottom-right {
-					bottom: -74px;
-					right: -80px;
-					height: 80px;
-					width: 80px;
-				}
-
-				img {
-					position: absolute;
-				}
-			}
-
-			.border-container,
-			.bg-container {
-				position: absolute;
-				pointer-events: none;
-				display: grid;
-
-				&.bg-container {
-
-				}
-
-				&.border-container {
-					height: 100%;
-					width: 100%;
-					z-index: 3;
-
-					grid-template-areas:
-						"top-left top-left top top-right top-right"
-						"top-left top-left  .  top-right top-right"
-						"    left    .      .     .          right"
-						"bot-left bot-left  .  bot-right bot-right"
-						"bot-left bot-left bot bot-right bot-right";
-					grid-template-columns: #{$vert-grid-width} #{$corner-grid-width} 1fr #{$corner-grid-width} #{$vert-grid-width};
-					grid-template-rows: #{$horiz-grid-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
-
-					.sheet-border {
-						pointer-events: none;
-						position: relative;
-						background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/ #{$corner-width} #{$corner-height};
-
-						&.corner {
-							z-index: 5;
-							height: $corner-height;
-							width: $corner-width;
-
-							&.top-left {
-								grid-area: top-left;
-								--border-image: #{to-url("layout/simple-border-top-left.webp")};
-								--border-horiz-align: left;
-								--border-vert-align: top;
-								top: -1 * $corner-vert-shift;
-								left: -1 * $corner-horiz-shift;
-							}
-
-							&.top-right {
-								grid-area: top-right;
-								--border-image: #{to-url("layout/simple-border-top-right.webp")};
-								--border-horiz-align: right;
-								--border-vert-align: top;
-								top: -1 * $corner-vert-shift;
-							}
-
-							&.bot-left {
-								grid-area: bot-left;
-								--border-image: #{to-url("layout/simple-border-bot-left.webp")};
-								--border-horiz-align: left;
-								--border-vert-align: bottom;
-								bottom: -1 * $corner-vert-shift;
-								left: -1 * $corner-horiz-shift;
-							}
-
-							&.bot-right {
-								grid-area: bot-right;
-								--border-image: #{to-url("layout/simple-border-bot-right.webp")};
-								--border-horiz-align: right;
-								--border-vert-align: bottom;
-								// bottom: -1 * $corner-vert-shift;
-								// right: -1 * $corner-horiz-shift;
-								top: $corner-vert-shift;
-								left: $corner-horiz-shift;
-							}
-						}
-
-						&.horiz-bar {
-							background: transparent #{to-url("layout/simple-border-horiz-bar.webp")} repeat no-repeat center center/#{$horiz-width} #{$horiz-height};
-							left: -1 * $corner-horiz-shift;
-							width: calc(100% + 2 * #{$corner-horiz-shift});
-
-							&.top {
-								grid-area: top;
-							}
-
-							&.bot {
-								grid-area: bot;
-							}
-						}
-
-						&.vert-bar {
-							z-index: 4;
-							height: 100%;
-							width: $vert-width;
-							background: transparent #{to-url("layout/chain.svg")} no-repeat repeat center center/#{$vert-width} #{$vert-height};
-
-							&.left {
-								grid-area: left;
-							}
-
-							&.right {
-								grid-area: right;
-							}
-						}
-					}
-				}
-
-			}
-
 
 
 			.sheet-header {
-				height: 80px;
-				top: -20px;
+				height: var(--sheet-header-height);
+				overflow: visible;
 				z-index: 3;
+				padding-top: 20px;
 
 				.actor-name {
 					height: auto;
 					max-width: 625px;
 					margin: 0 auto;
-					padding: 27px 50px 0;
-					--k4-font-family: var(--font-heading);
-					--k4-color: #{$gold};
-					--k4-font-size: #{$rem-48};
+					font-family: var(--font-heading);
+					color: #{$gold};
+					font-size: #{$rem-48};
 					border: none;
 					outline: none;
-					--k4-background: transparent #{to-url("layout/header-frame.webp")} no-repeat center 2px;
-					--k4-text-align: center;
+					background: transparent; // #{to-url("layout/header-frame.webp")} no-repeat center 2px;
+					text-align: center;
 				}
 			}
 
@@ -385,13 +452,14 @@
 				// margin-bottom: -30px;
 
 				.tab {
+					$grid-gap: 5px;
 					--horiz-padding: 10px;
 					--top-padding: 5px;
 					--bottom-padding: 10px;
 					padding: var(--top-padding) var(--horiz-padding) var(--bottom-padding);
 					height: calc(100% - (var(--top-padding) + var(--bottom-padding)));
 					display: grid;
-					grid-gap: 5px;
+					grid-gap: $grid-gap;
 					grid-template-columns: 1fr 1fr 1fr;
 					grid-template-rows: 40px 80px auto auto;
 
@@ -415,33 +483,39 @@
 					}
 
 					&.front {
-						--attributes-width: 200px;
-						--attributes-height: calc(var(--attributes-width) * (494 / 261) + 30px + 20px);
+						$attributes-width: 200px;
+						$attributes-height: $attributes-width * (494 / 261) + 30px + 20px;
+						$nav-buffer: 60px;
+
+						--attributes-width: #{$attributes-width};
+						--attributes-height: #{$attributes-height};
 						grid-template-areas:
-							"dramatic-hooks dramatic-hooks dramatic-hooks"
-							"status status status"
-							"attributes basic-moves special-moves"
-							"session-checks attacks special-moves";
-						grid-template-columns: var(--attributes-width) 1fr 1fr;
-						grid-template-rows: 40px 80px minmax(auto, var(--attributes-height)) minmax(auto, 200px);
+							". dramatic-hooks dramatic-hooks dramatic-hooks"
+							"status status status status"
+							"attributes attributes basic-moves special-moves"
+							"session-checks session-checks attacks special-moves"
+							"footer footer footer footer";
+						grid-template-columns: #{$nav-buffer} #{$attributes-width - $nav-buffer - $grid-gap} 1fr 1fr;
+						grid-template-rows: 40px 80px var(--attributes-height) auto 40px;
 
 						.dramatic-hooks {
 							grid-area: dramatic-hooks;
 							padding: 0;
+							background: change-color($black, $alpha: 0.75);
 
 							.hook-label {
 								display: inline-block;
-								margin: 0 0 0 55px;
-								--k4-font-size: #{$rem-40};
-								--k4-line-height: #{$rem-40};
-								--k4-color: #{$gold-dark};
-								--k4-font-family: var(--font-decorative);
+								margin: 0 0 0 10px;
+								font-size: $rem-40;
+								line-height: $rem-40;
+								color: $gold-dark;
+								font-family: var(--font-decorative);
 								float: left;
 							}
 
 							.dramatic-hook {
 								height: 16px;
-								margin: 4px 0 4px 107px;
+								margin: 4px 0;
 								white-space: nowrap;
 
 								&:nth-of-type(1) {
@@ -465,14 +539,14 @@
 									border: none;
 									margin: 0;
 									padding: 0;
-									--k4-color: #{$gold-bright};
-									--k4-font-size: #{$rem-12};
+									color: #{$gold-bright};
+									font-size: #{$rem-12};
 									height: 100%;
 									box-shadow: none;
-									--k4-font-weight: #{$font-weight-bold};
-									--k4-font-style: italic;
+									font-weight: #{$font-weight-bold};
+									font-style: italic;
 									transform-origin: left center;
-									transform: scaleX(0.9);
+									// transform: scaleX(0.9);
 									vertical-align: top;
 								}
 							}
@@ -651,6 +725,7 @@
 							grid-area: basic-moves;
 							padding-bottom: 0;
 							justify-content: space-between;
+							min-width: 232px;
 						}
 
 						.special-moves {

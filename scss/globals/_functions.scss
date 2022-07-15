@@ -1,7 +1,24 @@
-@function to-url($path){
+@import '../helpers/sassmeister';
+
+@function to-url($path) {
 	@return unquote(str-insert(str-insert('url("../assets/',
 				$path,
 				1000),
 			'")',
 			1000));
+}
+
+@mixin to-mask($size, $radius, $padding: (0px 0px), $filter: none, $isExclusion: false) {
+	$cx: 50; $cy: 50; $r: $radius;
+
+	$padding-x: to-number(nth($padding, 1));
+	$padding-y: to-number(nth($padding, 2));
+	// @debug $padding-x;
+	$sheet-mask: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="#{$cx}" cy="#{$cy}" r="#{$r}" fill="black" filter="#{$filter}" /></svg>';
+
+	@if ($isExclusion) {
+		mask-composite: exclude;
 	}
+
+	mask: url('#{$sheet-mask}') #{$padding-x - 0.5 * $size} #{$padding-y - 0.5 * $size}/#{$size} #{$size} no-repeat, linear-gradient(#fff, #fff);
+}

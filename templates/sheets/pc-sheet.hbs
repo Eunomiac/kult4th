@@ -1,86 +1,108 @@
 {{log this}}
 {{log "DATA" data}}
 
+<nav class="nav-panel gear-container gear-nav">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav"}}
+	<img class="nav-lens" src="../systems/kult4th/assets/layout/nav-lens.webp" />
+	<img class="profile-image" src="{{actor.img}}" data-edit="img" />
+	<div class="profile-image-bg"></div>
+	<div class="profile-image-animation"></div>
+	<div class="tabs" data-group="primary">
+		<a class="nav-tab" data-tab="front">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+		</a>
+		<a class="nav-tab" data-tab="bio">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+		</a>
+		<a class="nav-tab" data-tab="assets">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+		</a>
+		<a class="nav-tab" data-tab="notes">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.notes")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+		</a>
+		<a class="nav-tab" data-tab="advancement">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+		</a>
+		<a class="nav-tab" data-action="toggleLock">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.lock")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+		</a>
+		<a class="nav-tab" data-action="selectImg">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.image")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+		</a>
+		<a class="nav-tab" data-tab="settings">
+			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.settings")}}</span>
+			<svg viewbox="0 0 100 20">
+				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+			</svg>
+			{{!-- <img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" /> --}}
+		</a>
+	</div>
+	<a class="header-button close"><i class="fas fa-times"></i></a>
+	<a class="header-button minimize"><i class="fas fa-minus"></i></a>
+</nav>
+<div class="gear-container gear-top-left">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-a"}}
+</div>
+<div class="gear-container gear-top-right">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-e"}}
+</div>
+<div class="gear-container gear-bottom-left">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-c"}}
+</div>
+<div class="gear-container gear-bottom-right">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-g"}}
+</div>
+<div class="border-container">
+	<div class="sheet-border corner top-left"></div>
+	<div class="sheet-border horiz-bar top"></div>
+	<div class="sheet-border corner top-right"></div>
+	<div class="sheet-border vert-bar left"></div>
+	<div class="sheet-border vert-bar right"></div>
+	<div class="sheet-border corner bot-left"></div>
+	<div class="sheet-border horiz-bar bot"></div>
+	<div class="sheet-border corner bot-right"></div>
+</div>
+<div class="bg-container">
+  <div class="sheet-bg corner top-left"></div>
+	<div class="sheet-bg horiz-edge top"></div>
+  <div class="sheet-bg corner top-right"></div>
+  <div class="sheet-bg vert-edge left"></div>
+	<div class="sheet-bg vert-edge right"></div>
+  <div class="sheet-bg corner bot-left"></div>
+	<div class="sheet-bg horiz-edge bot"></div>
+  <div class="sheet-bg corner bot-right"></div>
+	<div class="sheet-bg center"></div>
+</div>
 <form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
-	<nav class="nav-panel">
-		<img class="img-border" src="../systems/kult4th/assets/layout/portrait-frame.webp" />
-		<img class="profile-image blur-background" src="{{actor.img}}" />
-		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
-		<div class="tabs" data-group="primary">
-			<a class="nav-tab" data-tab="front">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-			<a class="nav-tab" data-tab="bio">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-			<a class="nav-tab" data-tab="assets">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-			<a class="nav-tab" data-tab="notes">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.notes")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-			<a class="nav-tab" data-tab="advancement">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-			<a class="nav-tab" data-action="toggleLock">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.lock")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-			<a class="nav-tab" data-action="selectImg">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.image")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-			<a class="nav-tab" data-tab="settings">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.settings")}}</span>
-				<img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" />
-			</a>
-  	</div>
-		<a class="header-button close"><i class="fas fa-times"></i></a>
-		<a class="header-button minimize"><i class="fas fa-minus"></i></a>
-	</nav>
-	<div class="gear-container gear-nav">
-		<img class="nav-gear" src="../systems/kult4th/assets/layout/gears/gear-nav.svg" height="180" width="180" />
-		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
-		<div class="profile-image-bg"></div>
-	</div>
-	<div class="gear-container gear-top-left">
-		<img class="nav-gear" src="../systems/kult4th/assets/layout/gears/gear-a.svg" height="80" width="80" />
-	</div>
-	<div class="gear-container gear-top-right">
-		<img class="nav-gear" src="../systems/kult4th/assets/layout/gears/gear-e.svg" height="100" width="100" />
-	</div>
-	<div class="gear-container gear-bottom-left">
-		<img class="nav-gear" src="../systems/kult4th/assets/layout/gears/gear-c.svg" />
-	</div>
-	<div class="gear-container gear-bottom-right">
-		<img class="nav-gear" src="../systems/kult4th/assets/layout/gears/gear-g.svg" />
-	</div>
-	<div class="border-container">
-		<div class="sheet-border corner top-left"></div>
-		<div class="sheet-border horiz-bar top"></div>
-		<div class="sheet-border corner top-right"></div>
-		<div class="sheet-border vert-bar left"></div>
-		<div class="sheet-border vert-bar right"></div>
-		<div class="sheet-border corner bot-left"></div>
-		<div class="sheet-border horiz-bar bot"></div>
-		<div class="sheet-border corner bot-right"></div>
-	</div>
-	<div class="bg-container">
-		<div class="sheet-bg corner top-left"></div>
-		<div class="sheet-bg horiz-bar top"></div>
-		<div class="sheet-bg corner top-right"></div>
-		<div class="sheet-bg vert-bar left"></div>
-		<div class="sheet-bg center"></div>
-		<div class="sheet-bg vert-bar right"></div>
-		<div class="sheet-bg corner bot-left"></div>
-		<div class="sheet-bg horiz-bar bot"></div>
-		<div class="sheet-bg corner bot-right"></div>
-	</div>
 	<header class="sheet-header">
 		<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
 	</header>

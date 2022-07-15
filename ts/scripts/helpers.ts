@@ -1,5 +1,6 @@
 import C from "./constants.js";
 import U from "./utilities.js";
+import SVGDATA from "./svgdata.js";
 import K4Item from "../documents/K4Item.js";
 
 export function formatStringForKult(str: string) {
@@ -169,5 +170,19 @@ export const HandlebarHelpers = {
 		// 	.replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
 
 		return str;
+	},
+	"getSVGPaths": function(str: string) {
+		if (str in SVGDATA.Paths) {
+			const pathData = SVGDATA.Paths[str as KeyOf<typeof SVGDATA["Paths"]>] as Array<Record<string,string|number>>;
+			return pathData.map((pData) => ({
+				d: pData.d,
+				fill: pData.fill ?? C.Colors.WHITE,
+				fillOpacity: pData.fillOpacity ?? 1,
+				stroke: pData.stroke ?? C.Colors.BLACK,
+				strokeOpacity: pData.strokeOpacity ?? 1,
+				strokeWidth: pData.strokeWidth ?? 5
+			}));
+		}
+		throw new Error(`No such SVG path: '${String(str)}'`);
 	}
 };

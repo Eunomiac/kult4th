@@ -4,6 +4,96 @@ import K4Actor from "./K4Actor.js";
 import gsap, {GSDevTools} from "gsap/all";
 
 const ANIMATIONS = {
+	navFade(target: HTMLElement): gsapAnim {
+		// const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
+		const navMainGear$ = $(target).find(".svg-gear-nav");
+		const navLens$ = $(target).find(".nav-lens");
+		const profileImg$ = $(target).find(".profile-image");
+		const profileBg$ = $(target).find(".profile-image-bg");
+		const animation$ = $(target).find(".profile-image-animation");
+		const buttonSpikes$ = $(target).find(".nav-tab");
+		const closeButton$ = $(target).find(".header-button.close");
+		const minimizeButton$ = $(target).find(".header-button.minimize");
+		return gsap
+			.timeline({
+				reversed: true
+			}).to(
+				target,
+				{
+					scale: 1,
+					duration: 1,
+					ease: "sine"
+				},
+				0
+			).to(
+				[navMainGear$, navLens$],
+				{
+					rotation: "+=180",
+					duration: 1,
+					ease: "sine.inOut"
+				},
+				0
+			).fromTo(
+				buttonSpikes$,
+				{
+					rotation(i) { return -45 + (i * 25) },
+					width: 50
+				},
+				{
+					// rotation: "+=150",
+					width: 125,
+					duration: 0.5,
+					stagger: {
+						amount: 0.5
+					},
+					ease: "sine"
+				},
+				0
+			).from(
+				[closeButton$, minimizeButton$],
+				{
+					opacity: 0,
+					zIndex: -2,
+					filter: "blur(5px)",
+					ease: "sine",
+					duration: 0.5
+				},
+				0
+			).to(
+				animation$,
+				{
+					outlineWidth: 0,
+					duration: 1,
+					ease: "sine.inOut"
+				},
+				0
+			).to(
+				navLens$,
+				{
+					opacity: 0,
+					duration: 0.5,
+					ease: "power2"
+				},
+				0.5
+			).to(
+				profileImg$,
+				{
+					filter: "blur(5px)",
+					opacity: 0.5,
+					duration: 1,
+					ease: "power2.out"
+				},
+				0
+			).to(
+				profileBg$,
+				{
+					opacity: 0.75,
+					duration: 1,
+					ease: "sine"
+				},
+				0
+			);
+	},
 	hoverNav(target: HTMLElement, context: JQuery): gsapAnim {
 		const headerButtons = target.getElementsByClassName("header-button");
 		return gsap
@@ -246,44 +336,11 @@ export default class K4PCSheet extends ActorSheet {
 		super.activateListeners(html);
 		const self = this;
 
-		const positionKeys = [
-			"maxX",
-			"maxY",
-			"posX",
-			"posY",
-			"percentX",
-			"percentY",
-			"rotX",
-			"rotY"
-		];
-
-		if (ISDEBUGGING && !$("#position-display")[0]) {
-			$("body").append([
-				"<div id='position-display'>",
-				...positionKeys.map((key) => [
-					"<div class='position-entry'>",
-					`<label>${key}:</label>`,
-					`<span id="${key}" class='position-value'></span>`,
-					"</div>"
-				].join("\n")),
-				"</div>"
-			].join("\n"));
-		}
-
-		const positionDisplays = Object.fromEntries(positionKeys.map((key) => [key, $(`#${key}`)]));
-
-		function updateDisplay(key: KeyOf<typeof positionDisplays>, data: number) {
-			if (ISDEBUGGING) {
-				positionDisplays[key]?.text(String(U.pFloat(data, 3)));
-			}
-		}
-
 		$(() => {
 			console.log("ACTOR SHEET HTML OBJECT", html);
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
 
-			const [navPanel] = html.find(".nav-panel");
-
+			/* const [navPanel] = html.find(".nav-panel");
 			$(navPanel)
 				.each(() => {
 					gsap.set(navPanel, {
@@ -360,6 +417,13 @@ export default class K4PCSheet extends ActorSheet {
 					gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
 					hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
 				});
+			*/
+
+			$(document).find(".gear-container.gear-nav")
+				.each(function initNavHover() {
+					console.log("Found Something", this);
+					hoverTimelines.push([this, ANIMATIONS.navFade(this)]);
+				});
 
 			function createOpenLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
@@ -417,7 +481,6 @@ export default class K4PCSheet extends ActorSheet {
 					.on("mouseenter", () => anim.reversed(false))
 					.on("mouseleave", () => anim.reversed(true));
 			});
-
 		});
 	}
 

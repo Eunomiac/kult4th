@@ -1,29 +1,3 @@
-@import "colors";
-@import "typography";
-
-// $rem-8: 0.5rem;
-// $rem-10: 0.625rem;
-// $rem-12: 0.75rem;
-// $rem-14: 0.875rem;
-// $rem-16: 1rem;
-// $rem-18: 1.125rem;
-// $rem-20: 1.25rem;
-// $rem-24: 1.5rem;
-// $rem-28: 1.75rem;
-// $rem-32: 2rem;
-// $rem-40: 2.5rem;
-// $rem-48: 3rem;
-// $rem-56: 3.5rem;
-// $rem-64: 4rem;
-// $rem-72: 4.5rem;
-
-// $font-weight-light: 300;
-// $font-weight-normal: 400;
-// $font-weight-medium: 500;
-// $font-weight-semi: 600;
-// $font-weight-bold: 700;
-// $font-weight-black: 900;
-
 .dark-on-light {
 	--KKK-color-primary: #{$black};
 	--KKK-color-primary-contrast: #{$gold};
@@ -98,61 +72,58 @@
 	ul,
 	li {
 		color: var(--KKK-color-primary);
-		background: transparent;
 
 		font: {
 			family: var(--font-primary);
-			size: $rem-16;
+			// size: $rem-16;
 			weight: $font-weight-normal;
-			style: normal;
+			// style: normal;
 		}
 
-		line-height: $rem-20;
-		text-shadow: none;
-		box-shadow: none;
-		border: none;
-		outline: none;
-		hyphens: auto;
-		text-align: justify;
+		// line-height: $rem-20;
+		// text-shadow: none;
+		// box-shadow: none;
+		// border: none;
+		// outline: none;
+		// hyphens: auto;
+		// text-align: justify;
 
-		option { background: $black }
+		// option { background: $black }
 	}
 
 	i[class^="fa"] {
-		color: var(--KKK-color-primary);
+		// color: $gold;
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
-		font-size: $rem-14;
-		text-align: center;
-		// --k4-color: #{$gold};
-		// --k4-font-family: "Font Awesome 5 Free";
+		// font-size: $rem-16;
+		// text-align: center;
 	}
 
 	p {
 		// margin: 0.25rem 0 0.5rem;
 	}
 
+	img {
+		border: none;
+	}
 
-	ul {
-		// margin-left: 10px;
+
+	ul.rules-list, ul.inline-list {
+		margin-left: 10px;
 
 		li {
-			// --k4-text-align: left;
-			// list-style: none;
-			// text-indent: -24px;
+			--k4-text-align: left;
+			list-style: none;
+			text-indent: -24px;
 		}
 
 		li:before {
 			content: "";
 			display: inline-block;
-			// height: 18px;
-			// width: 17px;
-			background: transparent #{to-url("icons/bullet2.svg")} no-repeat center/cover;
-			// margin-bottom: -4px;
-			// margin-left: -3px;
-			// margin-right: 9px;
-			transform-origin: right center;
-			transform: scaleX(1.25) scale(0.8);
+			height: 18px;
+			width: 17px;
+			background: transparent #{to-url("icons/bullet.svg")} no-repeat center center/12px;
+			vertical-align: middle;
 		}
 	}
 

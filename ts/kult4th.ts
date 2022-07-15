@@ -101,7 +101,8 @@ Hooks.once("init", () => {
 			"item-list",
 			"rules-block",
 			"roll-result",
-			"attribute-box"
+			"attribute-box",
+			"svg-flat"
 		]),
 		...U.getTemplatePath("partials", [
 			"basic-move-card",

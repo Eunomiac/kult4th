@@ -17,11 +17,13 @@
 
 	.window-header {
 		z-index: 6;
-		--k4-font-size: 0;
+		font-size: 0;
 		max-height: 20px;
 		overflow: visible;
 		border: none;
 		padding: 0;
+		width: calc(100% - 150px);
+		margin-left: 100px;
 
 		.window-title { display: none }
 
@@ -233,7 +235,7 @@
 					// --k4-font-size: #{$rem-16};
 					// --k4-line-height: #{$rem-28};
 					// --k4-color: #{$gold};
-					font-weight: $font-weight-semi;
+					font-weight: $font-weight-medium;
 					height: 24px;
 					top: calc((var(--icon-size) - 24px) / 2);
 					left: calc(var(--icon-size) + 5px);
