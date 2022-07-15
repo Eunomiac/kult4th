@@ -13,9 +13,11 @@ import registerSettings from "./scripts/settings.js";
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
 // import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "../kult4eoverrides/migratorts";
 import ITEM_DATA, {resetItems} from "./scripts/migratedData.js";
-import gsap from "gsap/all";
+import gsap, {MorphSVGPlugin} from "gsap/all";
 import K4Dialog from "./documents/K4Dialog.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
+
+gsap.registerPlugin(MorphSVGPlugin);
 
 Hooks.once("init", () => {
 	console.log("Initializing Kult 4E");
@@ -129,6 +131,7 @@ Hooks.once("init", () => {
 
 	Object.assign(globalThis, {
 		gsap,
+		MorphSVGPlugin,
 		U,
 		C,
 		resetItems,

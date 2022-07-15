@@ -173,14 +173,9 @@ export const HandlebarHelpers = {
 	},
 	"getSVGPaths": function(str: string) {
 		if (str in SVGDATA.Paths) {
-			const pathData = SVGDATA.Paths[str as KeyOf<typeof SVGDATA["Paths"]>] as Array<Record<string,string|number>>;
+			const pathData = SVGDATA.Paths[str as KeyOf<typeof SVGDATA["Paths"]>];
 			return pathData.map((pData) => ({
-				d: pData.d,
-				fill: pData.fill ?? C.Colors.WHITE,
-				fillOpacity: pData.fillOpacity ?? 1,
-				stroke: pData.stroke ?? C.Colors.BLACK,
-				strokeOpacity: pData.strokeOpacity ?? 1,
-				strokeWidth: pData.strokeWidth ?? 5
+				d: pData.d
 			}));
 		}
 		throw new Error(`No such SVG path: '${String(str)}'`);

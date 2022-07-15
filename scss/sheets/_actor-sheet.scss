@@ -18,6 +18,7 @@
 
 	$corner-height: 75px;
 	$corner-width: 200px;
+	$top-corner-width: 125px;
 
 	$vert-width: 30px;
 	$vert-height: 12px;
@@ -36,12 +37,13 @@
 	$corner-grid-height: $corner-height - $horiz-grid-height - $corner-vert-shift;
 
 	.nav-panel.gear-container {
-		$size: 180px;
+		$gear-size: 180px;
+		$full-size: 230px;
 		$frame-width: 10px;
 		top: $nav-vert-shift; // $horiz-horiz-sub-center;
 		left: $nav-horiz-shift; // (0.5 * $vert-width);
-		height: $size;
-		width: $size;
+		height: $gear-size;
+		width: $gear-size;
 		pointer-events: all;
 		z-index: 5;
 		transform: translate(-50%, -50%) scale(0.75);
@@ -55,26 +57,49 @@
 			filter: none;
 			opacity: 1;
 			z-index: 2;
+			height: $full-size;
+			width: $full-size;
+			top: -1 * $nav-vert-shift;
+			left: -1 * $nav-horiz-shift;
+
+			// path {
+			// 	height: $full-size;
+			// 	width: $full-size;
+			// 	transform-origin: center center;
+			// 	// transform: translate(-50%, -50%);
+			// 	// top: 115px;
+			// 	// left: 115px;
+			// }
+
+			&.svg-gear-nav { fill: $gold-dark }
+			&.svg-gear-nav-inner-ring { fill: $gold-bright }
+			&.svg-gear-nav-outer-ring { fill: $gold }
+			&.svg-gear-nav-spikes { fill: $gold-darker }
+			&.svg-gear-nav-gears-hover { fill: $gold-dark; opacity: 0 !important}
 		}
 
 		.nav-lens, .profile-image-bg, .profile-image-animation {
 			pointer-events: none;
 			top: $frame-width;
 			left: $frame-width;
-			height: $size - 2 * $frame-width;
-			width: $size - 2 * $frame-width;
+			height: $gear-size - 2 * $frame-width;
+			width: $gear-size - 2 * $frame-width;
 		}
 
 		.nav-lens {
 			z-index: 1;
+			top: 0;
+			left: 0;
+			height: $gear-size;
+			width: $gear-size;
 		}
 
 		.profile-image {
 			height: auto;
 			width: auto;
-			max-width: $size - 2 * $frame-width;
-			top: $size / 2;
-			left: $size / 2;
+			max-width: $gear-size - 2 * $frame-width;
+			top: $gear-size / 2;
+			left: $gear-size / 2;
 			transform: translate(-50%, -50%);
 			z-index: 0;
 			clip-path: circle(closest-side);
@@ -90,10 +115,9 @@
 		.profile-image-animation {
 			position: absolute;
 			border-radius: 50%;
-			background: transparent #{to-url("animations/gears-perspective.gif")} no-repeat no-repeat 90% center/266px auto;
-			// background: transparent #{to-url("animations/gears-steampunk.gif")} no-repeat no-repeat center center/185px auto;
+			// background: transparent #{to-url("animations/gears-perspective.gif")} no-repeat no-repeat 90% center/266px auto;
+			background: transparent #{to-url("animations/gears-steampunk.gif")} no-repeat no-repeat center center/185px auto;
 			z-index: -2;
-			outline: 12px solid #{$gold};
 		}
 
 		.header-button {
@@ -219,25 +243,26 @@
 		&.bg-container {
 			$bg-horiz-padding: 0.7 * $vert-width;
 			$bg-vert-padding: 0.25 * $bg-horiz-padding;
+			$bg-top-vert-padding: $vert-height;
 
 			$bg-vert-height: 1000px;
-			$bg-vert-width: 100px;
-			$bg-vert-feather: 20px;
+			$bg-vert-width: 44px;
+			$bg-vert-feather: 12px;
 
-			$bg-horiz-height: 100px;
+			$bg-horiz-height: 44px;
 			$bg-horiz-width: 1000px;
-			$bg-horiz-feather: 20px;
+			$bg-horiz-feather: 12px;
 
-			$bg-corner-height: 32px;
-			$bg-corner-width: 32px;
+			$bg-corner-height: $bg-horiz-height - $bg-horiz-feather;
+			$bg-corner-width: $bg-vert-width - $bg-vert-feather;
 
-			height: calc(100% - (2 * #{$bg-vert-padding}));
+			height: calc(100% - (2 * #{$bg-vert-padding}) - #{$bg-top-vert-padding});
 			width: calc(100% - (2 * #{$bg-horiz-padding}));
-			top: $bg-vert-padding;
+			top: $bg-vert-padding + $bg-top-vert-padding;
 			left: $bg-horiz-padding;
 			z-index: -1;
 
-			@include to-mask($mask-size, $mask-radius, (#{-1 * $bg-horiz-padding + $nav-horiz-shift} #{-1 * $bg-vert-padding + $nav-vert-shift}), $isExclusion: true)
+			@include to-mask($mask-size, $mask-radius, (#{-1 * $bg-horiz-padding + $nav-horiz-shift} #{-1 * $bg-vert-padding - $bg-top-vert-padding + $nav-vert-shift}), $isExclusion: true)
 
 			grid-template-areas:
 				"top-left  top top-right"
@@ -256,12 +281,12 @@
 
 					&.left {
 						grid-area: left;
-						background: transparent #{to-url("backgrounds/bg-dgold-paper-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
+						background: transparent #{to-url("backgrounds/bg-dgold-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
 					}
 
 					&.right {
 						grid-area: right;
-						background: transparent #{to-url("backgrounds/bg-dgold-paper-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
+						background: transparent #{to-url("backgrounds/bg-dgold-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
 						right: $bg-vert-width - $bg-corner-width;
 					}
 				}
@@ -271,18 +296,18 @@
 
 					&.top {
 						grid-area: top;
-						background: transparent #{to-url("backgrounds/bg-dgold-paper-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
+						background: transparent #{to-url("backgrounds/bg-dgold-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
 					}
 
 					&.bot {
 						grid-area: bot;
-						background: transparent #{to-url("backgrounds/bg-dgold-paper-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
+						background: transparent #{to-url("backgrounds/bg-dgold-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
 						bottom: $bg-horiz-height - $bg-corner-height;
 					}
 				}
 
 				&.corner {
-					background: transparent #{to-url("backgrounds/bg-dgold-paper.webp")} repeat repeat center center/#{$bg-corner-width} #{$bg-corner-height};
+					background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/#{$bg-corner-width} #{$bg-corner-height};
 					position: absolute;
 					-webkit-mask-composite: destination-out;
 					mask-composite: exclude;
@@ -312,7 +337,7 @@
 				&.center {
 					grid-area: center;
 					z-index: -2;
-					background: transparent #{to-url("backgrounds/bg-dgold-paper.webp")} repeat repeat center center/500px 500px;
+					background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/500px 500px;
 				}
 			}
 		}
@@ -323,19 +348,19 @@
 			z-index: 3;
 
 			grid-template-areas:
-				"top-left top-left top top-right top-right"
+				"top-left top-left  .  top-right top-right"
 				"top-left top-left  .  top-right top-right"
 				"    left    .      .     .          right"
 				"bot-left bot-left  .  bot-right bot-right"
 				"bot-left bot-left bot bot-right bot-right";
 			grid-template-columns: #{$vert-grid-width} #{$corner-grid-width} 1fr #{$corner-grid-width} #{$vert-grid-width};
-			grid-template-rows: #{$horiz-grid-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
+			grid-template-rows: #{$horiz-grid-height + $vert-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
 
 			@include to-mask($mask-size, $mask-radius, (#{$nav-horiz-shift} #{$nav-vert-shift}), $isExclusion: true);
 			.sheet-border {
 				pointer-events: none;
 				position: relative;
-				background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/ #{$corner-width} #{$corner-height};
+				background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/contain;
 
 				&.corner {
 					z-index: 5;
@@ -349,6 +374,8 @@
 						--border-vert-align: top;
 						top: -1 * $corner-vert-shift;
 						left: -1 * $corner-horiz-shift;
+						background-size: 125px 87px;
+						height: 87px;
 					}
 
 					&.top-right {
@@ -358,6 +385,8 @@
 						--border-vert-align: top;
 						top: -1 * $corner-vert-shift;
 						right: 0;
+						background-size: 125px 87px;
+						height: 87px;
 					}
 
 					&.bot-left {
@@ -386,6 +415,7 @@
 
 					&.top {
 						grid-area: top;
+						display: none;
 					}
 
 					&.bot {
@@ -429,19 +459,27 @@
 				height: var(--sheet-header-height);
 				overflow: visible;
 				z-index: 3;
-				padding-top: 20px;
 
-				.actor-name {
-					height: auto;
-					max-width: 625px;
+				.actor-name-container {
+					position: relative;
+					top: -10px;
+					max-height: 55px;
+					max-width: calc(100% - (2 * #{$top-corner-width}));
 					margin: 0 auto;
-					font-family: var(--font-heading);
-					color: #{$gold};
-					font-size: #{$rem-48};
-					border: none;
-					outline: none;
-					background: transparent; // #{to-url("layout/header-frame.webp")} no-repeat center 2px;
-					text-align: center;
+					overflow: visible;
+					background: linear-gradient(-45deg, transparent 10%, black 15%, black 85%, transparent 95%);
+
+					.actor-name {
+						height: 100%;
+						width: 100%;
+						font-family: var(--font-heading);
+						color: #{$gold};
+						font-size: #{$rem-48};
+						border: none;
+						outline: none;
+						background: transparent; // #{to-url("layout/header-frame.webp")} no-repeat center 2px;
+						text-align: center;
+					}
 				}
 			}
 
@@ -508,7 +546,7 @@
 								margin: 0 0 0 10px;
 								font-size: $rem-40;
 								line-height: $rem-40;
-								color: $gold-dark;
+								// color: $gold-dark;
 								font-family: var(--font-decorative);
 								float: left;
 							}
@@ -559,7 +597,7 @@
 
 						.attributes {
 							grid-area: attributes;
-							background: transparent #{to-url("layout/attributes-spread.webp")} no-repeat center/100% auto;
+							background: transparent #{to-url("layout/attributes-spread.webp")} no-repeat bottom center/100% auto;
 
 							.attribute-box {
 								--panel-size: 200px;
@@ -672,14 +710,14 @@
 								&[data-attribute="fortitude"],
 								&[data-attribute="reason"],
 								&[data-attribute="coolness"] {
-									left: -59.5px;
+									left: -61px;
 								}
 
 								&[data-attribute="willpower"],
 								&[data-attribute="perception"],
 								&[data-attribute="charisma"],
 								&[data-attribute="soul"] {
-									left: 11.5px;
+									left: 10px;
 								}
 
 								&[data-attribute="reflexes"],
@@ -689,34 +727,34 @@
 								}
 
 								&[data-attribute="willpower"] {
-									top: 90px
+									top: 95px
 								}
 
 								&[data-attribute="fortitude"],
 								&[data-attribute="reflexes"] {
-									top: 133.5px;
+									top: 139px;
 								}
 
 								&[data-attribute="reason"],
 								&[data-attribute="intuition"] {
-									top: 216.5px;
+									top: 224px;
 								}
 
 								&[data-attribute="perception"] {
-									top: 256.5px
+									top: 264px
 								}
 
 								&[data-attribute="coolness"],
 								&[data-attribute="violence"] {
-									top: 296.5px;
+									top: 303px;
 								}
 
 								&[data-attribute="charisma"] {
-									top: 335px
+									top: 342px
 								}
 
 								&[data-attribute="soul"] {
-									top: 414.5px
+									top: 423px
 								}
 							}
 						}

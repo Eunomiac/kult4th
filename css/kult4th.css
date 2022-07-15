@@ -861,7 +861,22 @@
       -webkit-filter: none;
       filter: none;
       opacity: 1;
-      z-index: 2; }
+      z-index: 2;
+      height: 230px;
+      width: 230px;
+      top: -25px;
+      left: -25px; }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav {
+        fill: #685f43; }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-inner-ring {
+        fill: #b9af8f; }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-outer-ring {
+        fill: #958b68; }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-spikes {
+        fill: #42391a; }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-gears-hover {
+        fill: #685f43;
+        opacity: 0 !important; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .nav-lens, .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .profile-image-bg, .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .profile-image-animation {
       pointer-events: none;
       top: 10px;
@@ -869,7 +884,11 @@
       height: 160px;
       width: 160px; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .nav-lens {
-      z-index: 1; }
+      z-index: 1;
+      top: 0;
+      left: 0;
+      height: 180px;
+      width: 180px; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .profile-image {
       height: auto;
       width: auto;
@@ -890,9 +909,8 @@
     .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .profile-image-animation {
       position: absolute;
       border-radius: 50%;
-      background: transparent url("../assets/animations/gears-perspective.gif") no-repeat no-repeat 90% center/266px auto;
-      z-index: -2;
-      outline: 12px solid #958b68; }
+      background: transparent url("../assets/animations/gears-steampunk.gif") no-repeat no-repeat center center/185px auto;
+      z-index: -2; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .nav-panel.gear-container .header-button {
       display: block;
       font-size: 1.5rem;
@@ -982,17 +1000,17 @@
     display: grid; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container,
     .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container {
-      height: calc(100% - (2 * 5.25px));
+      height: calc(100% - (2 * 5.25px) - 12px);
       width: calc(100% - (2 * 21px));
-      top: 5.25px;
+      top: 17.25px;
       left: 21px;
       z-index: -1;
       -webkit-mask-composite: xor;
       mask-composite: exclude;
-      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -80.25px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -80.25px/200px 200px no-repeat, linear-gradient(#fff, #fff);
-      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -80.25px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -80.25px/200px 200px no-repeat, linear-gradient(#fff, #fff);
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, linear-gradient(#fff, #fff);
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, linear-gradient(#fff, #fff);
       grid-template-areas: "top-left  top top-right" "left    center    right" "bot-left  bot bot-right";
       grid-template-columns: 32px 1fr 32px;
       grid-template-rows: 32px 1fr 32px; }
@@ -1003,31 +1021,31 @@
         width: 100%; }
         .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container .sheet-bg.vert-edge,
         .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.vert-edge {
-          width: 100px; }
+          width: 44px; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container .sheet-bg.vert-edge.left,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.vert-edge.left {
             grid-area: left;
-            background: transparent url("../assets/backgrounds/bg-dgold-paper-left.webp") no-repeat repeat left center/100px 1000px; }
+            background: transparent url("../assets/backgrounds/bg-dgold-left.webp") no-repeat repeat left center/44px 1000px; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container .sheet-bg.vert-edge.right,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.vert-edge.right {
             grid-area: right;
-            background: transparent url("../assets/backgrounds/bg-dgold-paper-right.webp") no-repeat repeat right center/100px 1000px;
-            right: 68px; }
+            background: transparent url("../assets/backgrounds/bg-dgold-right.webp") no-repeat repeat right center/44px 1000px;
+            right: 12px; }
         .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container .sheet-bg.horiz-edge,
         .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.horiz-edge {
-          height: 100px; }
+          height: 44px; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container .sheet-bg.horiz-edge.top,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.horiz-edge.top {
             grid-area: top;
-            background: transparent url("../assets/backgrounds/bg-dgold-paper-top.webp") repeat no-repeat center top/1000px 100px; }
+            background: transparent url("../assets/backgrounds/bg-dgold-top.webp") repeat no-repeat center top/1000px 44px; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container .sheet-bg.horiz-edge.bot,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.horiz-edge.bot {
             grid-area: bot;
-            background: transparent url("../assets/backgrounds/bg-dgold-paper-bot.webp") repeat no-repeat center bottom/1000px 100px;
-            bottom: 68px; }
+            background: transparent url("../assets/backgrounds/bg-dgold-bot.webp") repeat no-repeat center bottom/1000px 44px;
+            bottom: 12px; }
         .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.bg-container .sheet-bg.corner,
         .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.corner {
-          background: transparent url("../assets/backgrounds/bg-dgold-paper.webp") repeat repeat center center/32px 32px;
+          background: transparent url("../assets/backgrounds/bg-dgold.webp") repeat repeat center center/32px 32px;
           position: absolute;
           -webkit-mask-composite: destination-out;
           mask-composite: exclude; }
@@ -1063,15 +1081,15 @@
         .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.bg-container .sheet-bg.center {
           grid-area: center;
           z-index: -2;
-          background: transparent url("../assets/backgrounds/bg-dgold-paper.webp") repeat repeat center center/500px 500px; }
+          background: transparent url("../assets/backgrounds/bg-dgold.webp") repeat repeat center center/500px 500px; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.border-container,
     .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.border-container {
       height: 100%;
       width: 100%;
       z-index: 3;
-      grid-template-areas: "top-left top-left top top-right top-right" "top-left top-left  .  top-right top-right" "    left    .      .     .          right" "bot-left bot-left  .  bot-right bot-right" "bot-left bot-left bot bot-right bot-right";
+      grid-template-areas: "top-left top-left  .  top-right top-right" "top-left top-left  .  top-right top-right" "    left    .      .     .          right" "bot-left bot-left  .  bot-right bot-right" "bot-left bot-left bot bot-right bot-right";
       grid-template-columns: 30px 170px 1fr 170px 30px;
-      grid-template-rows: 20px 55px 1fr 55px 20px;
+      grid-template-rows: 32px 55px 1fr 55px 20px;
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -75px -75px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
@@ -1082,7 +1100,7 @@
       .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.border-container .sheet-border {
         pointer-events: none;
         position: relative;
-        background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/ 200px 75px; }
+        background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/contain; }
         .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.border-container .sheet-border.corner,
         .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.border-container .sheet-border.corner {
           z-index: 5;
@@ -1095,7 +1113,9 @@
             --border-horiz-align: left;
             --border-vert-align: top;
             top: 0px;
-            left: 0px; }
+            left: 0px;
+            background-size: 125px 87px;
+            height: 87px; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.border-container .sheet-border.corner.top-right,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.border-container .sheet-border.corner.top-right {
             grid-area: top-right;
@@ -1103,7 +1123,9 @@
             --border-horiz-align: right;
             --border-vert-align: top;
             top: 0px;
-            right: 0; }
+            right: 0;
+            background-size: 125px 87px;
+            height: 87px; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.border-container .sheet-border.corner.bot-left,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.border-container .sheet-border.corner.bot-left {
             grid-area: bot-left;
@@ -1127,7 +1149,8 @@
           width: calc(100% + 2 * 0px); }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.border-container .sheet-border.horiz-bar.top,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.border-container .sheet-border.horiz-bar.top {
-            grid-area: top; }
+            grid-area: top;
+            display: none; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .border-container.border-container .sheet-border.horiz-bar.bot,
           .vtt.game.system-kult4th .app.window-app.sheet.actor .bg-container.border-container .sheet-border.horiz-bar.bot {
             grid-area: bot; }
@@ -1152,19 +1175,26 @@
     .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .sheet-header {
       height: var(--sheet-header-height);
       overflow: visible;
-      z-index: 3;
-      padding-top: 20px; }
-      .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .sheet-header .actor-name {
-        height: auto;
-        max-width: 625px;
+      z-index: 3; }
+      .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .sheet-header .actor-name-container {
+        position: relative;
+        top: -10px;
+        max-height: 55px;
+        max-width: calc(100% - (2 * 125px));
         margin: 0 auto;
-        font-family: var(--font-heading);
-        color: #958b68;
-        font-size: 3rem;
-        border: none;
-        outline: none;
-        background: transparent;
-        text-align: center; }
+        overflow: visible;
+        background: -o-linear-gradient(135deg, transparent 10%, black 15%, black 85%, transparent 95%);
+        background: linear-gradient(-45deg, transparent 10%, black 15%, black 85%, transparent 95%); }
+        .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .sheet-header .actor-name-container .actor-name {
+          height: 100%;
+          width: 100%;
+          font-family: var(--font-heading);
+          color: #958b68;
+          font-size: 3rem;
+          border: none;
+          outline: none;
+          background: transparent;
+          text-align: center; }
     .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content {
       overflow-x: hidden; }
       .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab {
@@ -1217,7 +1247,6 @@
               margin: 0 0 0 10px;
               font-size: 2.5rem;
               line-height: 2.5rem;
-              color: #685f43;
               font-family: var(--font-decorative);
               float: left; }
             .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .dramatic-hooks .dramatic-hook {
@@ -1257,7 +1286,7 @@
             display: flex; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes {
             grid-area: attributes;
-            background: transparent url("../assets/layout/attributes-spread.webp") no-repeat center/100% auto; }
+            background: transparent url("../assets/layout/attributes-spread.webp") no-repeat bottom center/100% auto; }
             .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box {
               --panel-size: 200px;
               --k4-background: none;
@@ -1335,25 +1364,25 @@
                 .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-5"] {
                   color: #490000; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="fortitude"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="reason"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="coolness"] {
-                left: -59.5px; }
+                left: -61px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="willpower"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="perception"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="charisma"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="soul"] {
-                left: 11.5px; }
+                left: 10px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="reflexes"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="intuition"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="violence"] {
                 left: 83px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="willpower"] {
-                top: 90px; }
+                top: 95px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="fortitude"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="reflexes"] {
-                top: 133.5px; }
+                top: 139px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="reason"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="intuition"] {
-                top: 216.5px; }
+                top: 224px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="perception"] {
-                top: 256.5px; }
+                top: 264px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="coolness"], .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="violence"] {
-                top: 296.5px; }
+                top: 303px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="charisma"] {
-                top: 335px; }
+                top: 342px; }
               .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .attributes .attribute-box[data-attribute="soul"] {
-                top: 414.5px; }
+                top: 423px; }
           .vtt.game.system-kult4th .app.window-app.sheet.actor .window-content form .tab-content .tab.front .basic-moves {
             grid-area: basic-moves;
             padding-bottom: 0;

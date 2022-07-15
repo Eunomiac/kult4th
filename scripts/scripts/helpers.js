@@ -1,4 +1,3 @@
-import C from "./constants.js";
 import U from "./utilities.js";
 import SVGDATA from "./svgdata.js";
 import K4Item from "../documents/K4Item.js";
@@ -180,12 +179,7 @@ export const HandlebarHelpers = {
         if (str in SVGDATA.Paths) {
             const pathData = SVGDATA.Paths[str];
             return pathData.map((pData) => ({
-                d: pData.d,
-                fill: pData.fill ?? C.Colors.WHITE,
-                fillOpacity: pData.fillOpacity ?? 1,
-                stroke: pData.stroke ?? C.Colors.BLACK,
-                strokeOpacity: pData.strokeOpacity ?? 1,
-                strokeWidth: pData.strokeWidth ?? 5
+                d: pData.d
             }));
         }
         throw new Error(`No such SVG path: '${String(str)}'`);

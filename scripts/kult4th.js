@@ -12,8 +12,9 @@ import registerSettings from "./scripts/settings.js";
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
 // import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "../kult4eoverrides/migratorts";
 import { resetItems } from "./scripts/migratedData.js";
-import gsap from "/scripts/greensock/esm/all.js";
+import gsap, { MorphSVGPlugin } from "/scripts/greensock/esm/all.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
+gsap.registerPlugin(MorphSVGPlugin);
 Hooks.once("init", () => {
     console.log("Initializing Kult 4E");
     registerSettings();
@@ -116,6 +117,7 @@ Hooks.once("init", () => {
     console.log("HANDLEBARS", Handlebars);
     Object.assign(globalThis, {
         gsap,
+        MorphSVGPlugin,
         U,
         C,
         resetItems,

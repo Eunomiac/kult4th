@@ -3,6 +3,10 @@
 
 <nav class="nav-panel gear-container gear-nav">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-inner-ring"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-outer-ring"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-gears-hover"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-spikes"}}
 	<img class="nav-lens" src="../systems/kult4th/assets/layout/nav-lens.webp" />
 	<img class="profile-image" src="{{actor.img}}" data-edit="img" />
 	<div class="profile-image-bg"></div>
@@ -104,7 +108,9 @@
 </div>
 <form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
 	<header class="sheet-header">
-		<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
+		<div class="actor-name-container">
+			<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
+		</div>
 	</header>
 	<main class="tab-content">
 

@@ -1,19 +1,30 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
+import SVGDATA from "../scripts/svgdata.js";
 import K4Actor from "./K4Actor.js";
-import gsap, {GSDevTools} from "gsap/all";
+import gsap, {GSDevTools, MorphSVGPlugin} from "gsap/all";
+
+gsap.registerPlugin(MorphSVGPlugin);
 
 const ANIMATIONS = {
 	navFade(target: HTMLElement): gsapAnim {
 		// const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
-		const navMainGear$ = $(target).find(".svg-gear-nav");
 		const navLens$ = $(target).find(".nav-lens");
 		const profileImg$ = $(target).find(".profile-image");
 		const profileBg$ = $(target).find(".profile-image-bg");
-		const animation$ = $(target).find(".profile-image-animation");
 		const buttonSpikes$ = $(target).find(".nav-tab");
 		const closeButton$ = $(target).find(".header-button.close");
 		const minimizeButton$ = $(target).find(".header-button.minimize");
+
+		const [svgBaseGear] = $(target).find(".svg-gear-nav");
+		const [svgInnerRing] = $(target).find(".svg-gear-nav-inner-ring");
+		const [svgOuterRing] = $(target).find(".svg-gear-nav-outer-ring");
+
+		const svgNavSpikes$ = $(target).find(".svg-gear-nav-spikes");
+		const svgGearTeeth$ = $(target).find(".svg-gear-nav-gears-hover");
+		// const gearSpikes$ = $(target).find(".svg-gear-nav-spikes-retracted").children();
+		// console.log(gearSpikes$);
+		// @ts-expect-error MorphSVG does indeed accept functions.
 		return gsap
 			.timeline({
 				reversed: true
@@ -25,15 +36,81 @@ const ANIMATIONS = {
 					ease: "sine"
 				},
 				0
+			).fromTo(
+				Array.from(svgGearTeeth$.children()),
+				{
+					opacity: 0
+				},
+				{
+					opacity: 1,
+					ease: "sine",
+					duration: 1
+				},
+				0
+			).fromTo(
+				svgGearTeeth$,
+				{
+					scale: 0.8
+				},
+				{
+					scale: 1,
+					ease: "sine",
+					duration: 1
+				},
+				0
 			).to(
-				[navMainGear$, navLens$],
+				Array.from(svgNavSpikes$.children()),
+				{
+					// @ts-expect-error MorphSVG does indeed accept functions.
+					morphSVG(i) { return SVGDATA.Paths["gear-nav-spikes-hover"][i].d },
+					duration: 1,
+					ease: "sine"
+				},
+				0
+			).to(
+				svgBaseGear,
+				{
+					morphSVG: SVGDATA.Paths["gear-nav-hover"][0].d,
+					fill: C.Colors["GOLD -2"],
+					duration: 1,
+					ease: "sine"
+				},
+				0
+			).to(
+				svgInnerRing,
+				{
+					morphSVG: SVGDATA.Paths["gear-nav-inner-ring-hover"][0].d,
+					duration: 1,
+					opacity: 0,
+					ease: "sine"
+				},
+				0
+			).to(
+				svgOuterRing,
+				{
+					morphSVG: SVGDATA.Paths["gear-nav-outer-ring-hover"][0].d,
+					duration: 1,
+					opacity: 0,
+					ease: "sine"
+				},
+				0
+			).to(
+				[svgBaseGear, svgInnerRing, svgOuterRing, svgGearTeeth$[0], svgNavSpikes$[0]],
+				{
+					rotation: "+=50",
+					duration: 1,
+					ease: "sine"
+				},
+				0
+			).to(
+				navLens$,
 				{
 					rotation: "+=180",
 					duration: 1,
 					ease: "sine.inOut"
 				},
 				0
-			).fromTo(
+			)/* .fromTo(
 				buttonSpikes$,
 				{
 					rotation(i) { return -45 + (i * 25) },
@@ -49,7 +126,7 @@ const ANIMATIONS = {
 					ease: "sine"
 				},
 				0
-			).from(
+			) */.from(
 				[closeButton$, minimizeButton$],
 				{
 					opacity: 0,
@@ -57,14 +134,6 @@ const ANIMATIONS = {
 					filter: "blur(5px)",
 					ease: "sine",
 					duration: 0.5
-				},
-				0
-			).to(
-				animation$,
-				{
-					outlineWidth: 0,
-					duration: 1,
-					ease: "sine.inOut"
 				},
 				0
 			).to(
@@ -87,7 +156,7 @@ const ANIMATIONS = {
 			).to(
 				profileBg$,
 				{
-					opacity: 0.75,
+					opacity: 0.65,
 					duration: 1,
 					ease: "sine"
 				},
@@ -339,6 +408,8 @@ export default class K4PCSheet extends ActorSheet {
 		$(() => {
 			console.log("ACTOR SHEET HTML OBJECT", html);
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
+
+			// MorphSVGPlugin.convertToPath(".svg-def");
 
 			/* const [navPanel] = html.find(".nav-panel");
 			$(navPanel)
