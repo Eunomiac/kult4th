@@ -171,13 +171,33 @@ export const HandlebarHelpers = {
 
 		return str;
 	},
+	"getImgName": function(str: string) {
+		return str.toLowerCase().replace(/ /g, "-");
+	},
 	"getSVGPaths": function(str: string) {
 		if (str in SVGDATA.Paths) {
-			const pathData = SVGDATA.Paths[str as KeyOf<typeof SVGDATA["Paths"]>];
+			const pathData = SVGDATA.Paths[str as KeyOf<typeof SVGDATA.Paths>];
 			return pathData.map((pData) => ({
 				d: pData.d
 			}));
 		}
 		throw new Error(`No such SVG path: '${String(str)}'`);
+	},
+	"getIconPaths": function(typeRef: string, ref: string, {name, type}: {name?: string, type?: string} = {}): {d: string} {
+		if (type && typeof type === "string") {
+			typeRef = type;
+		}
+		if (name && typeof name === "string") {
+			ref = name;
+		}
+		const thesePaths = U.getKey(typeRef, SVGDATA.IconPaths);
+		if (U.isSimpleObj(thesePaths)) {
+			ref = ref.toLowerCase().replace(/ /g, "-");
+			const thisPath = U.getKey(ref, thesePaths);
+			if (typeof thisPath === "string") {
+				return {d: thisPath};
+			}
+		}
+		throw new Error(`No such '${String(typeRef)}' SVG path: '${String(ref)}'`);
 	}
 };

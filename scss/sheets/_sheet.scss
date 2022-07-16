@@ -22,44 +22,34 @@
 		overflow: visible;
 		border: none;
 		padding: 0;
-		width: calc(100% - 150px);
+		width: calc(100% - 140px);
 		margin-left: 100px;
+		flex-direction: row-reverse;
+		padding-top: 10px;
 
 		.window-title { display: none }
 
 		.header-button {
-			position: absolute;
-			right: -40px;
-			--k4-font-size: 0;
 
-			&:nth-of-type(1) { top: 75px }
-			&:nth-of-type(2) { top: 100px }
-			&:nth-of-type(3) { top: 125px }
-			&:nth-of-type(4) { top: 150px }
-			&:nth-of-type(5) { top: 175px }
-			&:nth-of-type(6) { top: 200px }
+			// i {
+			// 	--k4-font-size: #{$rem-16};
+			// 	text-shadow:
+			// 		0 0 3px #{$black},
+			// 		0 0 3px #{$black},
+			// 		0 0 3px #{$black},
+			// 		0 0 3px #{$black},
+			// 		0 0 3px #{$black},
+			// 		0 0 5px #{$gold-bright},
+			// 		0 0 5px #{$gold-bright};
+			// 	--k4-color: #{$gold};
+			// 	--k4-font-family: "Font Awesome 5 Free";
 
-			&:last-of-type { top: 50px }
-
-			i {
-				--k4-font-size: #{$rem-16};
-				text-shadow:
-					0 0 3px #{$black},
-					0 0 3px #{$black},
-					0 0 3px #{$black},
-					0 0 3px #{$black},
-					0 0 3px #{$black},
-					0 0 5px #{$gold-bright},
-					0 0 5px #{$gold-bright};
-				--k4-color: #{$gold};
-				--k4-font-family: "Font Awesome 5 Free";
-
-				// color: red;
-				// left: 900px;
-				// width: 200px;
-				white-space: nowrap;
-				overflow: visible;
-			}
+			// 	// color: red;
+			// 	// left: 900px;
+			// 	// width: 200px;
+			// 	white-space: nowrap;
+			// 	overflow: visible;
+			// }
 
 			&.close { display: none }
 		}
@@ -73,6 +63,13 @@
 		padding: 0;
 		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
 
+		.border-container,
+		.bg-container {
+			position: absolute;
+			pointer-events: none;
+			display: grid;
+		}
+
 		form {
 			--border-color: #{$gold};
 			height: 100%;
@@ -81,7 +78,7 @@
 
 			display: grid;
 			position: relative;
-			padding: 0 var(--sheet-horiz-padding) var(--sheet-bottom-padding);
+			padding: var(--sheet-top-padding) var(--sheet-horiz-padding) var(--sheet-bottom-padding);
 			grid-template-areas:
 				"header"
 				"main";
@@ -100,21 +97,6 @@
 			> * {
 				position: relative;
 				z-index: 2;
-			}
-
-			.edges-header, .hold-header {
-				animation: none;
-				--k4-font-weight: bold;
-				--k4-font-size: #{$rem-24};
-			}
-
-			.edges-header {
-				--k4-color: #{$blue};
-				--header-bg-color: #{$blue-bright};
-			}
-			.hold-header {
-				--k4-color: #{$red};
-				--header-bg-color: #{$red-bright};
 			}
 		}
 
@@ -220,22 +202,14 @@
 					height: 100%;
 					width: calc(100% - 0.5 * var(--icon-size));
 					margin-left: calc(0.5 * var(--icon-size));
-					// margin:
-					// 	var(--name-vert-padding)
-					// 	0
-					// 	var(--name-vert-padding)
-					// 	calc(0.5 * var(--icon-size));
 					background: var(--KKK-color-primary-contrast);
 					border-bottom: 1px solid var(--KKK-color-primary);
 				}
 
 				.item-text {
 					position: absolute;
-					// font-family: var(--font-primary);
-					// --k4-font-size: #{$rem-16};
-					// --k4-line-height: #{$rem-28};
-					// --k4-color: #{$gold};
-					font-weight: $font-weight-medium;
+					font-size: $rem-16;
+					font-weight: $font-weight-semi;
 					height: 24px;
 					top: calc((var(--icon-size) - 24px) / 2);
 					left: calc(var(--icon-size) + 5px);
@@ -254,8 +228,8 @@
 				text-align: center;
 				font-style: italic;
 				width: 100%;
-				--k4-text-align: left;
-				--k4-color: #{$white};
+				text-align: left;
+				color: $white;
 				opacity: 0;
 				bottom: 0;
 				left: 0;

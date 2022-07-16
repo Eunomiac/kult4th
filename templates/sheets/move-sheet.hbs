@@ -1,6 +1,9 @@
 {{log "{SHEET} move-sheet.hbs" this}}
 
+{{> "systems/kult4th/templates/components/bg-grid.hbs"}}
+
 <form class="kult4th-form {{cssClass}}" autocomplete="off">
+	{{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
 	<main class="kult-text-container tab-content">
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
@@ -22,7 +25,7 @@
 		{{/if}}
 
 		{{#if data.data.rules.holdText}}
-			<span class="hold-header">This {{case "title" data.type}} grants Hold</span>
+			<label class="k4-header hold-header">This {{case "title" data.type}} grants Hold</label>
 			<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
 		{{/if}}
 	</main>

@@ -17,6 +17,7 @@ const ANIMATIONS = {
         const [svgOuterRing] = $(target).find(".svg-gear-nav-outer-ring");
         const svgNavSpikes$ = $(target).find(".svg-gear-nav-spikes");
         const svgGearTeeth$ = $(target).find(".svg-gear-nav-gears-hover");
+        console.log({ navLens$, profileImg$, profileBg$, closeButton$, minimizeButton$, svgBaseGear, svgInnerRing, svgOuterRing, svgNavSpikes$, svgGearTeeth$ });
         // const gearSpikes$ = $(target).find(".svg-gear-nav-spikes-retracted").children();
         // console.log(gearSpikes$);
         // @ts-expect-error MorphSVG does indeed accept functions.
@@ -50,12 +51,12 @@ const ANIMATIONS = {
             duration: 1,
             ease: "sine"
         }, 0).to(svgInnerRing, {
-            morphSVG: SVGDATA.Paths["gear-nav-inner-ring-hover"][0].d,
+            // morphSVG: SVGDATA.Paths["gear-nav-inner-ring-hover"][0].d,
             duration: 1,
             opacity: 0,
             ease: "sine"
         }, 0).to(svgOuterRing, {
-            morphSVG: SVGDATA.Paths["gear-nav-outer-ring-hover"][0].d,
+            // morphSVG: SVGDATA.Paths["gear-nav-outer-ring-hover"][0].d,
             duration: 1,
             opacity: 0,
             ease: "sine"
@@ -252,7 +253,7 @@ export default class K4PCSheet extends ActorSheet {
     get $data() { return this.$root.data; }
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: [C.SYSTEM_ID, "actor", "sheet", "light-on-dark"],
+            classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "light-on-dark"],
             tabs: [
                 { navSelector: ".tabs", contentSelector: ".tab-content", initial: "front" }
             ]
@@ -289,89 +290,40 @@ export default class K4PCSheet extends ActorSheet {
             console.log("ACTOR SHEET HTML OBJECT", html);
             const hoverTimelines = [];
             // MorphSVGPlugin.convertToPath(".svg-def");
-            /* const [navPanel] = html.find(".nav-panel");
+            const [navPanel] = html.find(".nav-panel");
             $(navPanel)
                 .each(() => {
-                    gsap.set(navPanel, {
-                        xPercent: -50,
-                        yPercent: -50,
-                        transformPerspective: 1000,
-                        perspective: 600,
-                        transformStyle: "preserve-3d"
-                    });
-                    const hoverTimeline = ANIMATIONS.hoverNav(navPanel, html);
-
-                    $(navPanel).on("mouseenter", () => {
-                        if (!$(navPanel).data("isHovered")) {
-                            $(navPanel).data({isHovered: true});
-                            hoverTimeline.reversed(false);
-                        }
-                    });
-
-                    $(document).on("mousemove", (event) => {
-                        if ($(navPanel).data("isHovered")) {
-                            if (!document.elementsFromPoint(event.clientX, event.clientY)
-                                .find((elem) => $(elem).hasClass("nav-panel"))) {
-                                $(navPanel).data({isHovered: false});
-                                gsap.to(navPanel, {
-                                    rotationX: 0,
-                                    rotationY: 0,
-                                    duration: 2,
-                                    ease: "power3.out"
-                                });
-                                hoverTimeline.reversed(true);
-                            } else {
-                                const maxX = $(navPanel).width() ?? 0;
-                                const maxY = $(navPanel).height() ?? 0;
-
-                                updateDisplay("maxX", maxX);
-                                updateDisplay("maxY", maxY);
-
-                                if (!maxX || !maxY) { return }
-
-                                const posX = U.pInt(event.clientX) - (self.position.left ?? 0); // event.offsetX;
-                                const posY = U.pInt(event.clientY) - (self.position.top ?? 0); // event.offsetY;
-
-                                updateDisplay("posX", posX);
-                                updateDisplay("posY", posY);
-
-                                const percentX = (100 / (maxX / posX)) - 50;
-                                const percentY = (100 / (maxY / posY)) - 50;
-
-                                updateDisplay("percentX", percentX);
-                                updateDisplay("percentY", percentY);
-
-                                const maxRotX = 10;
-                                const maxRotY = 10;
-
-                                const rotX = (maxRotY / 100) * percentY;
-                                const rotY = (-maxRotX / 100) * percentX;
-
-                                updateDisplay("rotX", rotX);
-                                updateDisplay("rotY", rotY);
-
-                                gsap.to(navPanel, {
-                                    rotationX: rotX,
-                                    rotationY: rotY,
-                                    ease: "back.out",
-                                    duration: 0.5
-                                });
-                            }
-                        }
-                    });
+                gsap.set(navPanel, {
+                    xPercent: -50,
+                    yPercent: -50
                 });
-
-            html.find(".nav-tab")
-                .each(function initNavTab() {
-                    gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
-                    hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+                const hoverTimeline = ANIMATIONS.navFade(navPanel);
+                $(navPanel).on("mouseenter", () => {
+                    if (!$(navPanel).data("isHovered")) {
+                        $(navPanel).data({ isHovered: true });
+                        hoverTimeline.reversed(false);
+                    }
                 });
-            */
-            $(document).find(".gear-container.gear-nav")
-                .each(function initNavHover() {
-                console.log("Found Something", this);
-                hoverTimelines.push([this, ANIMATIONS.navFade(this)]);
+                $(document).on("mousemove", (event) => {
+                    if ($(navPanel).data("isHovered")) {
+                        if (!document.elementsFromPoint(event.clientX, event.clientY)
+                            .find((elem) => $(elem).hasClass("nav-panel"))) {
+                            $(navPanel).data({ isHovered: false });
+                            hoverTimeline.reversed(true);
+                        }
+                    }
+                });
             });
+            // html.find(".nav-tab")
+            // 	.each(function initNavTab() {
+            // 		gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
+            // 		hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+            // 	});
+            // $(document).find(".gear-container.gear-nav")
+            // 	.each(function initNavHover() {
+            // 		console.log("Found Something", this);
+            // 		hoverTimelines.push([this, ANIMATIONS.navFade(this)]);
+            // 	});
             function createOpenLinkFromName(elem, iName) {
                 if (iName) {
                     $(elem).on("click", () => self.actor.getItemByName(iName)?.sheet?.render(true));

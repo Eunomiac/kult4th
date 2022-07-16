@@ -10,19 +10,18 @@ $isDebuggingChat: false;
 
 	@import 'globals/root';
 	@import 'globals/text-styles';
+	@import 'globals/icon-styles';
 
 	.app.window-app {
 		@import 'globals/app';
 
-		&.sheet {
-			// @import 'sheets/sheet';
+		&.kult4th-sheet {
+			@import 'sheets/sheet';
 
 			&.actor {
-				@import 'sheets/sheet';
 				@import 'sheets/actor-sheet';
 			}
 			&.item {
-				@import 'sheets/sheet';
 				@import 'sheets/item-sheet';
 			}
 		}

@@ -45,8 +45,9 @@
 		height: $gear-size;
 		width: $gear-size;
 		pointer-events: all;
+		position: absolute;
 		z-index: 5;
-		transform: translate(-50%, -50%) scale(0.75);
+		transform: translate(-50%, -50%) scale(0.8);
 
 		.svg-def {
 			fill: $gold;
@@ -61,6 +62,7 @@
 			width: $full-size;
 			top: -1 * $nav-vert-shift;
 			left: -1 * $nav-horiz-shift;
+			pointer-events: none;
 
 			// path {
 			// 	height: $full-size;
@@ -234,13 +236,7 @@
 		}
 	}
 
-	.border-container,
 	.bg-container {
-		position: absolute;
-		pointer-events: none;
-		display: grid;
-
-		&.bg-container {
 			$bg-horiz-padding: 0.7 * $vert-width;
 			$bg-vert-padding: 0.25 * $bg-horiz-padding;
 			$bg-top-vert-padding: $vert-height;
@@ -340,108 +336,106 @@
 					background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/500px 500px;
 				}
 			}
-		}
+	}
 
-		&.border-container {
-			height: 100%;
-			width: 100%;
-			z-index: 3;
+	.border-container {
+		height: 100%;
+		width: 100%;
+		z-index: 3;
 
-			grid-template-areas:
-				"top-left top-left  .  top-right top-right"
-				"top-left top-left  .  top-right top-right"
-				"    left    .      .     .          right"
-				"bot-left bot-left  .  bot-right bot-right"
-				"bot-left bot-left bot bot-right bot-right";
-			grid-template-columns: #{$vert-grid-width} #{$corner-grid-width} 1fr #{$corner-grid-width} #{$vert-grid-width};
-			grid-template-rows: #{$horiz-grid-height + $vert-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
+		grid-template-areas:
+			"top-left top-left  .  top-right top-right"
+			"top-left top-left  .  top-right top-right"
+			"    left    .      .     .          right"
+			"bot-left bot-left  .  bot-right bot-right"
+			"bot-left bot-left bot bot-right bot-right";
+		grid-template-columns: #{$vert-grid-width} #{$corner-grid-width} 1fr #{$corner-grid-width} #{$vert-grid-width};
+		grid-template-rows: #{$horiz-grid-height + $vert-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
 
-			@include to-mask($mask-size, $mask-radius, (#{$nav-horiz-shift} #{$nav-vert-shift}), $isExclusion: true);
-			.sheet-border {
-				pointer-events: none;
-				position: relative;
-				background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/contain;
+		@include to-mask($mask-size, $mask-radius, (#{$nav-horiz-shift} #{$nav-vert-shift}), $isExclusion: true);
+		.sheet-border {
+			pointer-events: none;
+			position: relative;
+			background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/contain;
 
-				&.corner {
-					z-index: 5;
-					height: $corner-height;
-					width: $corner-width;
+			&.corner {
+				z-index: 5;
+				height: $corner-height;
+				width: $corner-width;
 
-					&.top-left {
-						grid-area: top-left;
-						--border-image: #{to-url("layout/simple-border-top-left.webp")};
-						--border-horiz-align: left;
-						--border-vert-align: top;
-						top: -1 * $corner-vert-shift;
-						left: -1 * $corner-horiz-shift;
-						background-size: 125px 87px;
-						height: 87px;
-					}
-
-					&.top-right {
-						grid-area: top-right;
-						--border-image: #{to-url("layout/simple-border-top-right.webp")};
-						--border-horiz-align: right;
-						--border-vert-align: top;
-						top: -1 * $corner-vert-shift;
-						right: 0;
-						background-size: 125px 87px;
-						height: 87px;
-					}
-
-					&.bot-left {
-						grid-area: bot-left;
-						--border-image: #{to-url("layout/simple-border-bot-left.webp")};
-						--border-horiz-align: left;
-						--border-vert-align: bottom;
-						bottom: -1 * $corner-vert-shift;
-						left: -1 * $corner-horiz-shift;
-					}
-
-					&.bot-right {
-						grid-area: bot-right;
-						--border-image: #{to-url("layout/simple-border-bot-right.webp")};
-						--border-horiz-align: right;
-						--border-vert-align: bottom;
-						bottom: -1 * $corner-vert-shift;
-						right: 0;
-					}
-				}
-
-				&.horiz-bar {
-					background: transparent #{to-url("layout/simple-border-horiz-bar.webp")} repeat no-repeat center center/#{$horiz-width} #{$horiz-height};
+				&.top-left {
+					grid-area: top-left;
+					--border-image: #{to-url("layout/simple-border-top-left.webp")};
+					--border-horiz-align: left;
+					--border-vert-align: top;
+					top: -1 * $corner-vert-shift;
 					left: -1 * $corner-horiz-shift;
-					width: calc(100% + 2 * #{$corner-horiz-shift});
-
-					&.top {
-						grid-area: top;
-						display: none;
-					}
-
-					&.bot {
-						grid-area: bot;
-					}
+					background-size: 125px 87px;
+					height: 87px;
 				}
 
-				&.vert-bar {
-					$vert-spacer: 0px;
-					z-index: 4;
-					height: calc(100% - 2 * #{$vert-spacer});
-					top: $vert-spacer;
-					width: $vert-width;
-					background: transparent #{to-url("layout/chain.svg")} no-repeat repeat center center/#{$vert-height} #{$vert-height};
+				&.top-right {
+					grid-area: top-right;
+					--border-image: #{to-url("layout/simple-border-top-right.webp")};
+					--border-horiz-align: right;
+					--border-vert-align: top;
+					top: -1 * $corner-vert-shift;
+					right: 0;
+					background-size: 125px 87px;
+					height: 87px;
+				}
 
-					&.left {
-						grid-area: left;
-					}
+				&.bot-left {
+					grid-area: bot-left;
+					--border-image: #{to-url("layout/simple-border-bot-left.webp")};
+					--border-horiz-align: left;
+					--border-vert-align: bottom;
+					bottom: -1 * $corner-vert-shift;
+					left: -1 * $corner-horiz-shift;
+				}
 
-					&.right {
-						grid-area: right;
-					}
+				&.bot-right {
+					grid-area: bot-right;
+					--border-image: #{to-url("layout/simple-border-bot-right.webp")};
+					--border-horiz-align: right;
+					--border-vert-align: bottom;
+					bottom: -1 * $corner-vert-shift;
+					right: 0;
+				}
+			}
+
+			&.horiz-bar {
+				background: transparent #{to-url("layout/simple-border-horiz-bar.webp")} repeat no-repeat center center/#{$horiz-width} #{$horiz-height};
+				left: -1 * $corner-horiz-shift;
+				width: calc(100% + 2 * #{$corner-horiz-shift});
+
+				&.top {
+					grid-area: top;
+					display: none;
+				}
+
+				&.bot {
+					grid-area: bot;
+				}
+			}
+
+			&.vert-bar {
+				$vert-spacer: 0px;
+				z-index: 4;
+				height: calc(100% - 2 * #{$vert-spacer});
+				top: $vert-spacer;
+				width: $vert-width;
+				background: transparent #{to-url("layout/chain.svg")} no-repeat repeat center center/#{$vert-height} #{$vert-height};
+
+				&.left {
+					grid-area: left;
+				}
+
+				&.right {
+					grid-area: right;
 				}
 			}
 		}
-
 	}
 
 	.window-content {
@@ -463,8 +457,8 @@
 				.actor-name-container {
 					position: relative;
 					top: -10px;
-					max-height: 55px;
-					max-width: calc(100% - (2 * #{$top-corner-width}));
+					max-height: var(--sheet-header-height);
+					max-width: calc(100% - (2 * #{$top-corner-width}) + (2 * var(--sheet-horiz-padding)));
 					margin: 0 auto;
 					overflow: visible;
 					background: linear-gradient(-45deg, transparent 10%, black 15%, black 85%, transparent 95%);
@@ -480,6 +474,19 @@
 						background: transparent; // #{to-url("layout/header-frame.webp")} no-repeat center 2px;
 						text-align: center;
 					}
+
+					.actor-name-border {
+						$svg-frame-height: 70px;
+						position: absolute;
+						height: 80px;
+						width: 100%;
+						top: calc((var(--sheet-header-height) - #{$svg-frame-height}) / 2);
+						left: 0px;
+						z-index: 4;
+					}
+				}
+
+				> svg {
 				}
 			}
 

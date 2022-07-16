@@ -1,8 +1,11 @@
 #chat-log {
 	--color-text-dark-primary: var(--color-body-text);
+	--chat-vert-padding: 15px;
+	--chat-horiz-padding: 10px;
+	overflow: visible;
 
 	.chat-message {
-		background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} repeat center;
+		background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat center;
 		margin: 3px 0;
 		padding: 0;
 		// border: 2px outset #{$gold-dark};
@@ -40,9 +43,10 @@
 			left: 0;
 			top: 0;
 			height: 42px;
-			width: 294px;
+			width: 299px;
 			background: transparent #{to-url("layout/border-chat-general-top.webp")} no-repeat center;
 			pointer-events: none;
+			overflow: visible;
 		}
 
 
@@ -53,38 +57,38 @@
 			left: 0;
 			bottom: 0;
 			height: 42px;
-			width: 294px;
+			width: 299px;
 			background: transparent #{to-url("layout/border-chat-general-bottom.webp")} no-repeat center;
 			pointer-events: none;
 		}
 
 		.message-content {
-			padding: 15px;
+			padding: var(--chat-vert-padding) var(--chat-horiz-padding);
 			min-height: 42px;
 
 			form, form.kult4th-chat {
 				// --k4-horiz-padding: 7px;
 				// --k4-vert-padding: 7px;
-				--k4-font-size: #{$rem-12};
-				--k4-line-height: #{$rem-16};
+				font-size: $rem-12;
+				line-height: $rem-16;
 
 				.text-posmod,
 				.text-keyword,
 				.text-attributename,
 				.text-movename,
 				.text-edgename {
-					--k4-color: #{$blue-brightest};
+					color: $blue-brightest;
 				}
 
 				.text-trigger {
-					--k4-color: #{$gold-brightest};
+					color: $gold-brightest;
 				}
 
 				.text-negmod,
 				.text-negmod+.text-keyword,
 				.text-negmod+.text-attributename,
 				.text-gmtext {
-					--k4-color: #{$red-glow};
+					color: $red-glow;
 				}
 
 				ul {
@@ -92,6 +96,7 @@
 
 					li {
 						text-indent: -15px;
+						font-size: inherit;
 					}
 
 					li:before {
@@ -103,20 +108,27 @@
 				.sheet-header {
 					.header-filler { display: none; }
 					.header-name {
-						--k4-font-size: #{$rem-16};
-						--k4-color: #{$black};
-						--k4-line-height: #{$rem-24};
-						--k4-font-weight: #{$font-weight-bold};
-						--k4-background: linear-gradient(to right,
+						font-size: $rem-16;
+						color: $black;
+						line-height: $rem-24;
+						font-weight: $font-weight-bold;
+						background: linear-gradient(to right,
 							#{$gold-darkest},
 							#{$gold-bright} 30px,
 							#{$gold-bright} calc(100% - 30px),
 							#{$gold-darkest}
 						);
-						--k4-text-shadow: 1px 1px 0px #{$gold};
-						width: 100%;
+						text-shadow: 1px 1px 0px #{$gold};
+						// width: 100%;
 						display: block;
-						text-indent: 8px;
+						// text-indent: 8px;
+						border-radius: 0;
+						text-transform: uppercase;
+						text-align: center;
+						margin-top: calc(-1 * var(--chat-vert-padding));
+						margin-left: calc(-1 * var(--chat-horiz-padding));
+						width: calc(100% + 2 * var(--chat-horiz-padding));
+						padding: 0;
 					}
 				}
 
@@ -125,6 +137,8 @@
 
 				.result-entry {
 					margin: 0;
+					font-size: inherit;
+					line-height: inherit;
 
 					> label {
 						width: 34px;
@@ -133,7 +147,7 @@
 					}
 
 					> span {
-						--k4-text-align: left;
+						text-align: left;
 						width: calc(100% - 34px - 3px);
 						vertical-align: top;
 					}
@@ -142,10 +156,12 @@
 
 				&.chat-roll-result {
 					.result-entry {
-						--k4-font-size: #{$rem-14};
-						--k4-line-height: #{$rem-18};
+						// font-size: $rem-14;
+						// line-height: $rem-18;
 						> span {
-							--k4-text-align: justify;
+							font-size: inherit;
+							line-height: inherit;
+							text-align: justify;
 							width: unset;
 							padding-bottom: 0;
 						}

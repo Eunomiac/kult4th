@@ -14,11 +14,10 @@ export default class K4Item extends Item {
 
 	override prepareData() {
 		super.prepareData();
-		// if (this.data.type === K4ItemType.advantage) {
-		// 	this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === K4ItemType.move) as K4ItemPropertiesData.move[];
-		// 	this.data.data.subAttackData = this.subItemData.filter((iData) => iData.type === K4ItemType.attack) as K4ItemPropertiesData.attack[];
-
-		// }
+		if (this.data.type === K4ItemType.advantage || this.data.type === K4ItemType.disadvantage || this.data.type === K4ItemType.weapon ) {
+			this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === K4ItemType.move) as K4ItemPropertiesData.move[];
+			this.data.data.subAttackData = this.subItemData.filter((iData) => iData.type === K4ItemType.attack) as K4ItemPropertiesData.attack[];
+		}
 	}
 
 	subItems?: K4Item[];

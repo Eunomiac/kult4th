@@ -99,12 +99,16 @@ Hooks.once("init", () => {
 			"gear-sheet"
 		]),
 		...U.getTemplatePath("components", [
+			"svg-defs",
+			"border-grid",
+			"bg-grid",
 			"form-header",
 			"item-list",
 			"rules-block",
 			"roll-result",
 			"attribute-box",
-			"svg-flat"
+			"svg-flat",
+			"svg-header-icon"
 		]),
 		...U.getTemplatePath("partials", [
 			"basic-move-card",

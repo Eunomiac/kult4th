@@ -235,6 +235,12 @@ const degToRad = (deg, isConstrained = true) => {
     deg *= Math.PI / 180;
     return deg;
 };
+const getKey = (key, obj) => {
+    if (key in obj) {
+        return obj[key];
+    }
+    return null;
+};
 const FILTERS = {
     IsInstance: ((classRef) => ((item) => typeof classRef === "function" && item instanceof classRef))
 };
@@ -1026,6 +1032,7 @@ export default {
     isUndefined, isDefined, isEmpty, hasItems, isInstance,
     areEqual,
     pFloat, pInt, radToDeg, degToRad,
+    getKey,
     FILTERS,
     // ████████ REGEXP: Regular Expressions, Replacing, Matching ████████
     testRegExp,

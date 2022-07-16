@@ -1,7 +1,40 @@
 {{log this}}
 {{log "DATA" data}}
+{{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 
-<nav class="nav-panel gear-container gear-nav">
+
+<div class="gear-container gear-top-left">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-a"}}
+</div>
+<div class="gear-container gear-top-right">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-e"}}
+</div>
+<div class="gear-container gear-bottom-left">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-c"}}
+</div>
+<div class="gear-container gear-bottom-right">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-g"}}
+</div>
+
+
+{{> "systems/kult4th/templates/components/border-grid.hbs" }}
+{{> "systems/kult4th/templates/components/bg-grid.hbs" }}
+
+
+<form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
+	<header class="sheet-header">
+		<div class="actor-name-container">
+			<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
+			<svg class="actor-name-border">
+				{{!-- <rect x="0" y="0" height="100%" width="100%" fill="rgba(255,255,0,0.5)" /> --}}>
+				<polyline points="0,30 30,4 500,4 530,30" fill="none" stroke="#958b68" stroke-dasharray="3 12" stroke-width="3" />
+				{{!-- <line x1="0" y1="25" x2="30" y2="4"  fill="none" stroke="#958b68" stroke-dashoffset="2" stroke-dasharray="3 8" stroke-width="3" /> --}}
+				{{!-- <line x1="30" y1="4" x2="calc(100% - 15px)" y2="4" fill="none" stroke="#958b68" stroke-dashoffset="1" stroke-dasharray="3 12" stroke-width="3" /> --}}
+				{{!-- <line x1="30" y1="66" x2="100%" y2="66" fill="none" stroke="#958b68" stroke-dasharray="3 12" stroke-width="3" /> --}}
+			</svg>
+		</div>
+	</header>
+	<nav class="nav-panel gear-container gear-nav">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav"}}
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-inner-ring"}}
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-outer-ring"}}
@@ -67,51 +100,11 @@
 				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
 				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
 			</svg>
-			{{!-- <img class="nav-tab-animation" src="../systems/kult4th/assets/animations/selection-nova.webp" /> --}}
 		</a>
 	</div>
 	<a class="header-button close"><i class="fas fa-times"></i></a>
 	<a class="header-button minimize"><i class="fas fa-minus"></i></a>
 </nav>
-<div class="gear-container gear-top-left">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-a"}}
-</div>
-<div class="gear-container gear-top-right">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-e"}}
-</div>
-<div class="gear-container gear-bottom-left">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-c"}}
-</div>
-<div class="gear-container gear-bottom-right">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-g"}}
-</div>
-<div class="border-container">
-	<div class="sheet-border corner top-left"></div>
-	<div class="sheet-border horiz-bar top"></div>
-	<div class="sheet-border corner top-right"></div>
-	<div class="sheet-border vert-bar left"></div>
-	<div class="sheet-border vert-bar right"></div>
-	<div class="sheet-border corner bot-left"></div>
-	<div class="sheet-border horiz-bar bot"></div>
-	<div class="sheet-border corner bot-right"></div>
-</div>
-<div class="bg-container">
-  <div class="sheet-bg corner top-left"></div>
-	<div class="sheet-bg horiz-edge top"></div>
-  <div class="sheet-bg corner top-right"></div>
-  <div class="sheet-bg vert-edge left"></div>
-	<div class="sheet-bg vert-edge right"></div>
-  <div class="sheet-bg corner bot-left"></div>
-	<div class="sheet-bg horiz-edge bot"></div>
-  <div class="sheet-bg corner bot-right"></div>
-	<div class="sheet-bg center"></div>
-</div>
-<form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
-	<header class="sheet-header">
-		<div class="actor-name-container">
-			<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
-		</div>
-	</header>
 	<main class="tab-content">
 
 		<section class="active tab front" data-group="primary" data-tab="front">
@@ -131,28 +124,32 @@
 				<div class="dice-modifiers"></div>
 			</section>
 			<section class="subsection attributes">
-				<h1 class="tight">{{case "upper" (loc "kult4th.trait.attributes")}}</h1>
+				<label class="k4-header section-header">{{case "upper" (loc "kult4th.trait.attributes")}}</label>
 				{{#each attributes}}
 				{{> "systems/kult4th/templates/components/attribute-box.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list basic-moves">
-				<h1 class="tight">{{case "upper" (loc "kult4th.item.type.basicPlayerMoves")}}</h1>
+				<label class="k4-header section-header">{{case "upper" (loc "kult4th.item.type.basicPlayerMoves")}}</label>
 				{{#each baseMoves}}
 				{{> "systems/kult4th/templates/partials/basic-move-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list special-moves">
-				<h1 class="tight">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</h1>
+				<label class="k4-header section-header">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</label>
 				{{#each derivedMoves}}
 				{{> "systems/kult4th/templates/partials/derived-move-card.hbs"}}
 				{{/each}}
+				<h1>Heading 1</h1>
+				<h2>Heading 2</h2>
+				<h3>Heading 3</h3>
+				<h4>Heading 4</h4>
 			</section>
 			<section class="subsection flex-item-list session-checks">
-				<h1 class="tight">{{case "upper" (loc "kult4th.sheet.sessionChecks")}}</h1>
+				<label class="k4-header section-header">{{case "upper" (loc "kult4th.sheet.sessionChecks")}}</label>
 			</section>
 			<section class="subsection flex-item-list attacks">
-				<h1 class="tight">{{case "upper" (loc "kult4th.item.type.attacks")}}</h1>
+				<label class="k4-header section-header">{{case "upper" (loc "kult4th.item.type.attacks")}}</label>
 				{{#each attacks}}
 				{{> "systems/kult4th/templates/partials/attack-card.hbs"}}
 				{{/each}}
@@ -161,29 +158,29 @@
 
 		<section class="tab bio" data-group="primary" data-tab="bio">
 			<section class="subsection description">
-				<h1>Description</h1>
+				<label class="k4-header section-header">Description</label>
 				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection flex-item-list advantages">
-				<h1>Advantages</h1>
+				<label class="k4-header section-header">Advantages</label>
 				{{#each advantages}}
 				{{> "systems/kult4th/templates/partials/advantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list disadvantages">
-				<h1>Disadvantages</h1>
+				<label class="k4-header section-header">Disadvantages</label>
 				{{#each disadvantages}}
 				{{> "systems/kult4th/templates/partials/disadvantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list darksecrets">
-				<h1>Dark Secrets</h1>
+				<label class="k4-header section-header">Dark Secrets</label>
 				{{#each darksecrets}}
 				{{> "systems/kult4th/templates/partials/dark-secret-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list relations">
-				<h1>Relations</h1>
+				<label class="k4-header section-header">Relations</label>
 				{{#each relations}}
 				{{> "systems/kult4th/templates/partials/relation-card.hbs"}}
 				{{/each}}

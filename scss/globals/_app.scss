@@ -4,7 +4,8 @@
 
 	.window-header {
 		.header-button {
-			font-size: 0;
+			// font-size: 0;
+
 			i[class^="fa"] {
 				font-size: $rem-16;
 				text-shadow:
@@ -20,7 +21,10 @@
 	}
 
 	.window-content {
-		color: var(--KKK-color-primary);
-		background: transparent #{to-url("backgrounds/bg-dgold-paper.webp")} repeat repeat center center/1000px 1000px;
+		// color: var(--KKK-color-primary);
+		background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/1000px 1000px;
+
+		text-align: justify;
+		hyphens: auto;
 	}
 }

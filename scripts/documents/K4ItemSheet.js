@@ -2,7 +2,7 @@ import C from "../scripts/constants.js";
 export default class K4ItemSheet extends ItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: [C.SYSTEM_ID, "item", "sheet", "dark-on-light"]
+            classes: [C.SYSTEM_ID, "item", "sheet", "kult4th-sheet", "dark-on-light"]
         });
     }
     get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs`; }

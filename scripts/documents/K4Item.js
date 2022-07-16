@@ -6,10 +6,10 @@ export default class K4Item extends Item {
     // }}
     prepareData() {
         super.prepareData();
-        // if (this.data.type === K4ItemType.advantage) {
-        // 	this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === K4ItemType.move) as K4ItemPropertiesData.move[];
-        // 	this.data.data.subAttackData = this.subItemData.filter((iData) => iData.type === K4ItemType.attack) as K4ItemPropertiesData.attack[];
-        // }
+        if (this.data.type === "advantage" /* K4ItemType.advantage */ || this.data.type === "disadvantage" /* K4ItemType.disadvantage */ || this.data.type === "weapon" /* K4ItemType.weapon */) {
+            this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === "move" /* K4ItemType.move */);
+            this.data.data.subAttackData = this.subItemData.filter((iData) => iData.type === "attack" /* K4ItemType.attack */);
+        }
     }
     subItems;
     hasSubItems() { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }

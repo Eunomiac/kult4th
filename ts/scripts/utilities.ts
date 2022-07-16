@@ -224,6 +224,12 @@ const degToRad = (deg: number, isConstrained = true): number => {
 	deg *= Math.PI / 180;
 	return deg;
 };
+const getKey = (key: string|number|symbol, obj: Record<string|number|symbol, unknown>): unknown => {
+	if (key in obj) {
+		return obj[key];
+	}
+	return null;
+};
 
 const FILTERS = {
 	IsInstance: ((classRef: unknown) => ((item: unknown) => typeof classRef === "function" && item instanceof classRef))
@@ -1003,6 +1009,7 @@ export default {
 	isUndefined, isDefined, isEmpty, hasItems, isInstance,
 	areEqual,
 	pFloat, pInt, radToDeg, degToRad,
+	getKey,
 
 	FILTERS,
 

@@ -4,11 +4,7 @@
   --sidebar-header-height: 0px; // 32px;
   --sidebar-item-height: 80px; // 48px;
 
-	background: none;
 	border: none;
 	box-shadow: none;
-
-	nav > a {
-		text-align: center;
-	}
+	overflow: visible;
 }

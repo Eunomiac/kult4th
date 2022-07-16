@@ -1,0 +1,54 @@
+.svg-icon-def {
+	&.svg-advantage {
+		.d-fg {
+			fill: url(#bg-gradient-advantage);
+			stroke: url(#stroke-gradient-advantage);
+		}
+	}
+	&.svg-attack {
+		.d-fg {
+			fill: url(#bg-gradient-attack);
+			stroke: url(#stroke-gradient-attack);
+		}
+	}
+	&.svg-darksecret {
+		.d-fg {
+			fill: url(#bg-gradient-darksecret);
+			stroke: url(#stroke-gradient-darksecret);
+		}
+	}
+	&.svg-disadvantage {
+		.d-fg {
+			fill: url(#bg-gradient-disadvantage);
+			stroke: url(#stroke-gradient-disadvantage);
+		}
+	}
+	&.svg-gear {
+		.d-fg {
+			fill: url(#bg-gradient-gear);
+			stroke: url(#stroke-gradient-gear);
+		}
+	}
+	&.svg-move {
+		.d-fg {
+			fill: url(#bg-gradient-move);
+			stroke: url(#stroke-gradient-move);
+		}
+	}
+	&.svg-relation {
+		.d-fg {
+			fill: url(#bg-gradient-relation);
+			stroke: url(#stroke-gradient-relation);
+		}
+	}
+	&.svg-weapon {
+		.d-bg {
+			fill: url(#bg-gradient-weapon);
+			stroke: url(#stroke-gradient-weapon);
+		}
+		.d-fg {
+			fill: $white;
+			stroke: none;
+		}
+	}
+}

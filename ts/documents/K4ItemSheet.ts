@@ -15,7 +15,7 @@ export default class K4ItemSheet extends ItemSheet {
 
 	static override get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			classes: [C.SYSTEM_ID, "item", "sheet", "dark-on-light"]
+			classes: [C.SYSTEM_ID, "item", "sheet", "kult4th-sheet", "dark-on-light"]
 		});
 	}
 	override get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs` }

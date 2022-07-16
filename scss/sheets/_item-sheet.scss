@@ -1,20 +1,20 @@
 & {
 	--sheet-min-height: 50px;
 	--sheet-min-width: 400px;
-	--sheet-top-padding: 0px;
 
-	--sheet-horiz-padding: 0px;
-	--sheet-bottom-padding: 0px;
+	--sheet-top-padding: 0px;
+	--sheet-horiz-padding: 20px;
+	--sheet-bottom-padding: 10px;
 
 	--sheet-header-height: 40px;
 
-	--k4-horiz-padding: 15px;
-	--k4-vert-padding: 10px;
+	// --k4-horiz-padding: 15px;
+	// --k4-vert-padding: 10px;
 
-	--color-body-text: #{$black};
-	--k4-font-size: #{$rem-16};
-	--k4-line-height: #{$rem-20};
-	--k4-font-weight: #{$font-weight-medium};
+	// --color-body-text: #{$black};
+	// --k4-font-size: #{$rem-16};
+	// --k4-line-height: #{$rem-20};
+	// --k4-font-weight: #{$font-weight-medium};
 
 	.kult4th-form,
 	.kult-text-container,
@@ -26,89 +26,203 @@
 
 
 		h2 {
-			--k4-color: #{$black};
+			// --k4-color: #{$black};
 		}
 	}
 
 	.window-header {
-		.header-button {
-			right: -25px;
-			width: 30px;
-			text-align: right;
+		// .header-button {
+		// 	right: -25px;
+		// 	width: 30px;
+		// 	text-align: right;
 
-			&:nth-of-type(1) {
-				top: 32px
-			}
+		// 	&:nth-of-type(1) {
+		// 		top: 32px
+		// 	}
 
-			&:nth-of-type(2) {
-				top: 57px
-			}
+		// 	&:nth-of-type(2) {
+		// 		top: 57px
+		// 	}
 
-			&:nth-of-type(3) {
-				top: 82px
-			}
+		// 	&:nth-of-type(3) {
+		// 		top: 82px
+		// 	}
 
-			&:nth-of-type(4) {
-				top: 107px
-			}
+		// 	&:nth-of-type(4) {
+		// 		top: 107px
+		// 	}
 
-			&:nth-of-type(5) {
-				top: 132px
-			}
+		// 	&:nth-of-type(5) {
+		// 		top: 132px
+		// 	}
 
-			&:nth-of-type(6) {
-				top: 157px
-			}
+		// 	&:nth-of-type(6) {
+		// 		top: 157px
+		// 	}
 
-			&:last-of-type {
-				display: initial;
-				top: 7px;
+		// 	&:last-of-type {
+		// 		display: initial;
+		// 		top: 7px;
 
-				i {
-					font-size: 24px;
-					--k4-color: #{$red-glow};
-				}
-			}
-		}
+		// 		i {
+		// 			font-size: 24px;
+		// 			// --k4-color: #{$red-glow};
+		// 		}
+		// 	}
+		// }
 	}
 
 	.window-content {
 		background: none;
+		// overflow-x: hidden;
+
+		.bg-container {
+			$bg-horiz-padding: 0px;
+			$bg-vert-padding: 0px;
+			$bg-top-vert-padding: 0px;
+
+			$bg-vert-height: 1000px;
+			$bg-vert-width: 44px;
+			$bg-vert-feather: 12px;
+
+			$bg-horiz-height: 44px;
+			$bg-horiz-width: 1000px;
+			$bg-horiz-feather: 12px;
+
+			$bg-corner-height: $bg-horiz-height - $bg-horiz-feather;
+			$bg-corner-width: $bg-vert-width - $bg-vert-feather;
+
+			height: calc(100% - (2 * #{$bg-vert-padding}) - #{$bg-top-vert-padding});
+			width: calc(100% - (2 * #{$bg-horiz-padding}));
+			top: $bg-vert-padding + $bg-top-vert-padding;
+			left: $bg-horiz-padding;
+			z-index: -1;
+
+			grid-template-areas:
+				"top-left  top top-right"
+				"left    center    right"
+				"bot-left  bot bot-right";
+			grid-template-columns: #{$bg-corner-width} 1fr #{$bg-corner-width};
+			grid-template-rows: #{$bg-corner-height} 1fr #{$bg-corner-height};
+
+			.sheet-bg {
+
+			position: relative;
+			height: 100%;
+			width: 100%;
+
+			&.vert-edge {
+				width: $bg-vert-width;
+
+				&.left {
+					grid-area: left;
+					background: transparent #{to-url("backgrounds/bg-white-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
+				}
+
+				&.right {
+					grid-area: right;
+					background: transparent #{to-url("backgrounds/bg-white-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
+					right: $bg-vert-width - $bg-corner-width;
+				}
+			}
+
+			&.horiz-edge {
+				height: $bg-horiz-height;
+
+				&.top {
+					grid-area: top;
+					background: transparent #{to-url("backgrounds/bg-white-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
+				}
+
+				&.bot {
+					grid-area: bot;
+					background: transparent #{to-url("backgrounds/bg-white-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
+					bottom: $bg-horiz-height - $bg-corner-height;
+				}
+			}
+
+			&.corner {
+				height: $bg-horiz-height;
+				width: $bg-vert-width;
+				z-index: -1;
+
+				&.top-left {
+					grid-area: top-left;
+					background: transparent #{to-url("backgrounds/bg-white-top-left.webp")} no-repeat no-repeat top left/#{$bg-vert-width} #{$bg-horiz-height};
+				}
+				&.top-right {
+					grid-area: top-right;
+					background: transparent #{to-url("backgrounds/bg-white-top-right.webp")} no-repeat no-repeat top right/#{$bg-vert-width} #{$bg-horiz-height};
+					left: -1 * $bg-horiz-feather;
+				}
+				&.bot-left {
+					grid-area: bot-left;
+					background: transparent #{to-url("backgrounds/bg-white-bot-left.webp")} no-repeat no-repeat bottom left/#{$bg-vert-width} #{$bg-horiz-height};
+					top: -1 * $bg-vert-feather;
+				}
+				&.bot-right {
+					grid-area: bot-right;
+					background: transparent #{to-url("backgrounds/bg-white-bot-right.webp")} no-repeat no-repeat bottom right/#{$bg-vert-width} #{$bg-horiz-height};
+					top: -1 * $bg-vert-feather;
+					left: -1 * $bg-horiz-feather;
+				}
+			}
+
+			&.center {
+				grid-area: center;
+				z-index: -2;
+				background: transparent #{to-url("backgrounds/bg-white.webp")} repeat repeat center center/500px 500px;
+			}
+		}
+	}
 
 		form {
-			background: to-url("backgrounds/bg-white-paper.webp");
+			font-size: $rem-16;
+			line-height: $rem-20;
+			margin-top: -15px;
+			margin-bottom: 15px;
+
+			.header-icon {
+				$icon-size: 80px;
+				$icon-padding: 5px;
+				$svg-size: $icon-size + $icon-padding;
+
+				transform: translate(-50%, -50%);
+				height: $icon-size;
+				width: $icon-size;
+				position: absolute;
+				border-radius: 0.5 * $icon-size;
+				left: 0.25 * $icon-size;
+				padding: $icon-padding;
+				top: 0.25 * $icon-size;
+				z-index: 4;
+				overflow: hidden;
+				outline: 3px solid black;
+				background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/500px 500px;
+
+				.svg-icon-def {
+					transform: translate(-50%, -50%);
+					left: 50%;
+					top: 50%;
+					position: absolute;
+					height: $svg-size;
+					width: $svg-size;
+				}
+
+				&.header-move {
+					background: $gold;
+					outline-color: $gold;
+				}
+			}
 
 			.sheet-header {
 				border-bottom: 3px solid black;
-				// margin-right: 10px;
 				flex-wrap: nowrap;
-				// --k4-color: #{$gold};
-				// --k4-font-size: #{$rem-24};
-				// --k4-font-weight: #{$font-weight-medium};
 
 				.header-bullet,
 				.header-name {
 					position: relative;
-				}
-
-				.header-bullet {
-					display: none;
-					// --k4-text-align: center;
-					// flex: 0;
-					// z-index: 4;
-					// flex-basis: 20px;
-					// margin-right: -20px;
-				}
-
-				.header-name {
-					--k4-background: #{$black};
-					--k4-text-align: left;
-					--k4-font-size: #{$rem-24};
-					--k4-font-weight: #{$font-weight-bold};
-
-					white-space: nowrap;
-					text-transform: none;
-					padding: 14px 20px 10px var(--k4-horiz-padding);
+					flex-grow: 1.5;
 				}
 
 				.header-filler {
@@ -117,16 +231,23 @@
 				}
 
 				&.move-header {
+					border-color: $gold;
+
+					.header-bullet,
 					.header-name {
-						--k4-color: #{$black};
-						--k4-background: #{$gold}
+						--KKK-color-primary: #{$gold};
+						--KKK-color-primary-contrast: #{$black};
 					}
+
 				}
 			}
 
 			.tab-content {
 				overflow-x: hidden;
 				overflow-y: auto;
+
+				padding-top: 15px;
+				padding-bottom: 0px;
 			}
 
 		}

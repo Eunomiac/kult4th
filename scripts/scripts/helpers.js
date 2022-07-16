@@ -175,6 +175,9 @@ export const HandlebarHelpers = {
         // 	.replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
         return str;
     },
+    "getImgName": function (str) {
+        return str.toLowerCase().replace(/ /g, "-");
+    },
     "getSVGPaths": function (str) {
         if (str in SVGDATA.Paths) {
             const pathData = SVGDATA.Paths[str];
@@ -183,5 +186,22 @@ export const HandlebarHelpers = {
             }));
         }
         throw new Error(`No such SVG path: '${String(str)}'`);
+    },
+    "getIconPaths": function (typeRef, ref, { name, type } = {}) {
+        if (type && typeof type === "string") {
+            typeRef = type;
+        }
+        if (name && typeof name === "string") {
+            ref = name;
+        }
+        const thesePaths = U.getKey(typeRef, SVGDATA.IconPaths);
+        if (U.isSimpleObj(thesePaths)) {
+            ref = ref.toLowerCase().replace(/ /g, "-");
+            const thisPath = U.getKey(ref, thesePaths);
+            if (typeof thisPath === "string") {
+                return { d: thisPath };
+            }
+        }
+        throw new Error(`No such '${String(typeRef)}' SVG path: '${String(ref)}'`);
     }
 };
