@@ -1,65 +1,5 @@
-.dark-on-light {
-	--KKK-color-primary: #{$black};
-	--KKK-color-primary-contrast: #{$gold};
-	--KKK-color-strong: #{$black};
-	--KKK-color-strongest: #{$black};
-
-	--KKK-color-trigger: #{$black};
-	--KKK-color-result-label: #{$red};
-	--KKK-color-keyword: #{$blue};
-	--KKK-color-attribute: #{$blue};
-	--KKK-color-roll-link: #{$blue-dark};
-	--KKK-color-edge: #{$blue};
-	--KKK-color-gm-text: #{$red};
-	--KKK-color-pos-mod: #{$blue-dark};
-	--KKK-color-neg-mod: #{$red-dark};
-}
-
-&, &>*, .light-on-dark {
-	--KKK-color-primary: #{$gold};
-	--KKK-color-primary-contrast: #{$black};
-	--KKK-color-strong: #{$gold-bright};
-	--KKK-color-strongest: #{$gold-brightest};
-
-	--KKK-color-trigger: #{$gold-brightest};
-	--KKK-color-result-label: #{$red-bright};
-	--KKK-color-keyword: #{$blue-bright};
-	--KKK-color-attribute: #{$blue-bright};
-	--KKK-color-roll-link: #{$blue-brightest};
-	--KKK-color-edge: #{$blue-bright};
-	--KKK-color-gm-text: #{$red-bright};
-	--KKK-color-pos-mod: #{$blue-bright};
-	--KKK-color-neg-mod: #{$red-brightest};
-}
-
 &,
-// .kult4th,
-// .kult4th-form,
-// .kult-text-container,
-// .kult-text-block,
-.mce-content-body
-// .kult4th.window-app .window-content {
-{
-	// --k4-color: var(--color-body-text);
-	// --k4-background: transparent;
-	// --k4-font-family: var(--font-primary);
-	// --k4-font-size: #{$rem-16};
-	// --k4-line-height: #{$rem-20};
-	// --k4-font-weight: #{$font-weight-medium};
-	// --k4-font-style: normal;
-	// --k4-text-shadow: none; // 0px 0px 0px var(--color-body-text);
-	// --k4-text-align: justify;
-	// --k4-hyphens: auto;
-
-	// &.kult-text-block {
-	// 	display: block;
-	// 	height: unset;
-	// }
-
-	// &.kult-text-container {
-	// 	margin: 0;
-	// 	padding: var(--k4-vert-padding) var(--k4-horiz-padding);
-	// }
+.mce-content-body {
 
 	&,
 	*,
@@ -71,7 +11,7 @@
 	img,
 	ul,
 	li {
-		color: var(--KKK-color-primary);
+		color: var(--KT-color-primary);
 
 		font: {
 			family: var(--font-primary);
@@ -79,12 +19,14 @@
 		}
 		border: none;
 
-		option { background: var(--KKK-color-primary-contrast) }
+		option { background: var(--KT-color-contrast) }
+
+		hyphens: auto;
 	}
 
 	i[class^="fa"] {
-		--KKK-color-primary-contrast: #{$gold};
-		--KKK-color-primary: #{$gold};
+		--KT-color-primary: #{$gold};
+		--KT-color-contrast: #{$black};
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
 	}
@@ -93,7 +35,7 @@
 		margin-left: 10px;
 
 		li {
-			--k4-text-align: left;
+			text-align: left;
 			list-style: none;
 			text-indent: -24px;
 		}
@@ -126,7 +68,7 @@
 
 	h1 {
 		font-family: var(--font-heading);
-		color: $red;
+		color: var(--KT-color-h1);
 		font-weight: $font-weight-semi;
 		white-space: normal;
 		font-size: $rem-32;
@@ -134,22 +76,22 @@
 
 	h2 {
 		font-family: var(--font-primary);
-		color: $red;
+		color: var(--KT-color-h2);
 		font-size: $rem-24;
 		font-weight: $font-weight-bold;
 	}
 
 	h3 {
 		font-family: var(--font-primary);
-		color: var(--KKK-color-primary);
+		color: var(--KT-color-h3);
 		font-weight: $font-weight-black;
 		text-transform: uppercase;
 		font-size: $rem-16;
 	}
 
 	label.k4-header {
-		color: var(--KKK-color-primary-contrast);
-		background: var(--KKK-color-primary);
+		color: var(--KT-color-contrast);
+		background: var(--KT-color-primary);
 		font-weight: $font-weight-semi;
 		font-size: $rem-24;
 		line-height: $rem-24;
@@ -161,7 +103,7 @@
 			font-size: $rem-22;
 			text-align: center;
 			text-transform: uppercase;
-			padding-top: 2px;
+			font-weight: $font-weight-black;
 		}
 
 		&.header-name {
@@ -179,15 +121,14 @@
 			font-weight: $font-weight-black;
 			text-align: center;
 			hyphens: none;
-			background: var(--header-bg-color);
 
 			text-transform: uppercase;
 			margin-bottom: 5px;
 			padding: 5px 0 4px 0;
 
 			&.hold-header {
-				color: $white; // $red-glow;
-				--header-bg-color: #{$red-dark};
+				color: $white;
+				background: $red-dark;
 
 				animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
@@ -217,8 +158,8 @@
 			}
 
 			&.edges-header {
-				color: $white; // $blue-glow;
-				--header-bg-color: #{$blue-dark};
+				color: $white;
+				background: $blue-dark;
 
 				animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
@@ -266,47 +207,47 @@
 	}
 
 	.text-keyword {
-		color: var(--KKK-color-keyword);
+		color: var(--KT-color-keyword);
 	}
 	.text-attributename {
-		color: var(--KKK-color-attribute);
+		color: var(--KT-color-keyword);
 	}
 	.text-movename {
-		color: var(--KKK-color-roll-link);
+		color: var(--KT-color-keyword-emphasis);
 		font-style: italic;
 	}
 	.text-edgename {
-		color: var(--KKK-color-edge);
+		color: var(--KT-color-pos);
 	}
 	.text-posmod,
 	.text-posmod+.text-keyword,
 	.text-posmod+.text-attributename {
-		color: var(--KKK-color-pos-mod);
+		color: var(--KT-color-pos);
 	}
 
 	.text-negmod,
 	.text-negmod+.text-keyword,
 	.text-negmod+.text-attributename {
-		color: var(--KKK-color-neg-mod);
+		color: var(--KT-color-neg);
 	}
 
 	.text-gmtext {
-		color: var(--KKK-color-gm-text);
+		color: var(--KT-color-neg);
 	}
 
 	.text-resultlabel {
-		color: var(--KKK-color-result-label);
+		color: var(--KT-color-h2);
 	}
 
 	.text-trigger {
-		color: var(--KKK-color-trigger);
+		color: var(--KT-color-highlight);
 		font-weight: $font-weight-semi;
 		font-style: italic;
 	}
 
 	.result-entry {
-		$label-width: 60px;
-		$label-gap: 10px;
+		--label-width: 60px;
+		--label-gap: 10px;
 		display: block;
 		margin: 0 20px;
 		font-size: $rem-16;
@@ -315,20 +256,20 @@
 		> label {
 			text-align: right;
 			display: block;
-			width: $label-width;
+			width: var(--label-width);
 			height: 100%;
 			float: left;
-			margin-right: $label-gap;
+			margin-right: var(--label-gap);
 		}
 
 		> span {
 			display: inline-block;
-			width: calc(100% - (#{$label-width} + #{$label-gap}));
+			width: calc(100% - (var(--label-width) + var(--label-gap)));
 			margin-bottom: 4px;
 			padding-bottom: 4px;
 			border-bottom-style: solid;
 			border-bottom-width: 3px;
-			border-image: linear-gradient(to right, #{$gold} 50%, transparent) 1;
+			border-image: linear-gradient(to right, var(--KT-color-primary) 50%, transparent) 1;
 		}
 
 		&:last-of-type>span {

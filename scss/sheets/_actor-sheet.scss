@@ -64,15 +64,6 @@
 			left: -1 * $nav-horiz-shift;
 			pointer-events: none;
 
-			// path {
-			// 	height: $full-size;
-			// 	width: $full-size;
-			// 	transform-origin: center center;
-			// 	// transform: translate(-50%, -50%);
-			// 	// top: 115px;
-			// 	// left: 115px;
-			// }
-
 			&.svg-gear-nav { fill: $gold-dark }
 			&.svg-gear-nav-inner-ring { fill: $gold-bright }
 			&.svg-gear-nav-outer-ring { fill: $gold }
@@ -130,7 +121,7 @@
 			position: absolute;
 			z-index: 2;
 			text-align: center;
-			text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
+			// text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
 			transform: translate(-50%, -50%);
 
 
@@ -277,12 +268,12 @@
 
 					&.left {
 						grid-area: left;
-						background: transparent #{to-url("backgrounds/bg-dgold-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
+						background: transparent #{to-url("backgrounds/dgold/bg-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
 					}
 
 					&.right {
 						grid-area: right;
-						background: transparent #{to-url("backgrounds/bg-dgold-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
+						background: transparent #{to-url("backgrounds/dgold/bg-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
 						right: $bg-vert-width - $bg-corner-width;
 					}
 				}
@@ -292,18 +283,18 @@
 
 					&.top {
 						grid-area: top;
-						background: transparent #{to-url("backgrounds/bg-dgold-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
+						background: transparent #{to-url("backgrounds/dgold/bg-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
 					}
 
 					&.bot {
 						grid-area: bot;
-						background: transparent #{to-url("backgrounds/bg-dgold-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
+						background: transparent #{to-url("backgrounds/dgold/bg-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
 						bottom: $bg-horiz-height - $bg-corner-height;
 					}
 				}
 
 				&.corner {
-					background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/#{$bg-corner-width} #{$bg-corner-height};
+					background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/#{$bg-corner-width} #{$bg-corner-height};
 					position: absolute;
 					-webkit-mask-composite: destination-out;
 					mask-composite: exclude;
@@ -333,7 +324,7 @@
 				&.center {
 					grid-area: center;
 					z-index: -2;
-					background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/500px 500px;
+					background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/500px 500px;
 				}
 			}
 	}
@@ -467,11 +458,11 @@
 						height: 100%;
 						width: 100%;
 						font-family: var(--font-heading);
-						color: #{$gold};
-						font-size: #{$rem-48};
+						color: var(--KT-color-primary);
+						font-size: $rem-48;
 						border: none;
 						outline: none;
-						background: transparent; // #{to-url("layout/header-frame.webp")} no-repeat center 2px;
+						background: transparent;
 						text-align: center;
 					}
 
@@ -492,9 +483,6 @@
 
 			.tab-content {
 				overflow-x: hidden;
-				// overflow-y: scroll;
-
-				// margin-bottom: -30px;
 
 				.tab {
 					$grid-gap: 5px;
@@ -511,7 +499,7 @@
 					.subsection {
 						--horiz-padding: 5px;
 						box-sizing: border-box;
-						border: 1px solid #{$gold};
+						border: 1px solid var(--KT-color-primary);
 						padding: 0 var(--horiz-padding) 5px;
 
 						&.flex-item-list {
@@ -553,7 +541,6 @@
 								margin: 0 0 0 10px;
 								font-size: $rem-40;
 								line-height: $rem-40;
-								// color: $gold-dark;
 								font-family: var(--font-decorative);
 								float: left;
 							}
@@ -584,14 +571,13 @@
 									border: none;
 									margin: 0;
 									padding: 0;
-									color: #{$gold-bright};
-									font-size: #{$rem-12};
+									color: var(--KT-color-highlight);
+									font-size: $rem-12;
 									height: 100%;
 									box-shadow: none;
-									font-weight: #{$font-weight-bold};
+									font-weight: $font-weight-bold;
 									font-style: italic;
 									transform-origin: left center;
-									// transform: scaleX(0.9);
 									vertical-align: top;
 								}
 							}
@@ -608,7 +594,6 @@
 
 							.attribute-box {
 								--panel-size: 200px;
-								--k4-background: none;
 								height: var(--panel-size);
 								width: var(--panel-size);
 								position: absolute;
@@ -616,8 +601,6 @@
 
 								img {
 									position: absolute;
-									// height: 100%;
-									// width: 100%;
 									filter: sepia(1);
 									opacity: 0;
 									top: -2px;
@@ -848,7 +831,7 @@
 							.attribute-box {
 								margin-top: -135px;
 								margin-left: -11px;
-								--k4-font-weight: #{$font-weight-black};
+								font-weight: $font-weight-bold;
 							}
 						}
 					}

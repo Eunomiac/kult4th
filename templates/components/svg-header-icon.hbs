@@ -1,4 +1,7 @@
-<svg class="svg-icon-def svg-{{type}} svg-{{getImgName name}}" viewBox="0 0 512 512">
+{{log "SVG HEADER ICON THIS >" this}}
+
+{{#with (getIconPaths type name sourceItem) as |path|}}
+<svg class="svg-icon-def svg-{{../type}} svg-{{getImgName ../name}}" viewbox="0 0 512 512" {{~#if path.style}} style="{{path.style}}"{{/if}}>
 	{{#if (test type "==" "weapon")}}
 	<defs>
 		<clipPath id="icon-bg">
@@ -10,7 +13,6 @@
 	{{/with}}
 	{{/if}}
 
-	{{#with (getIconPaths type name sourceItem) as |path|}}
 	<path class="d-fg" d="{{{path.d}}}" fill-opacity="1" stroke-opacity="1" stroke-width="16" />
-	{{/with}}
 </svg>
+{{/with}}

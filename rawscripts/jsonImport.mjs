@@ -9924,13 +9924,13 @@ function descriptionCheck(itemData) {
 	descBlockLines.push(
 		...itemData.hasEdges
 			? [
-					centerCheck(`<span class="item-keyword">This ${U.sCase(itemData.itemType)} grants Edges</span>.`),
+					centerCheck(`<span class="item-keyword">This ${U.sCase(itemData.itemType)} supplies Edges</span>.`),
 					"Spend <span class=\"item-keyword\">Edges</span> to:",
 					listCheck(itemData.lists.edges)
 				]
 			: [],
 		itemData.hasHolds
-			? centerCheck(`<span class="item-gm-phrase">This ${U.sCase(itemData.itemType)} generates Hold</span>.`)
+			? centerCheck(`<span class="item-gm-phrase">This ${U.sCase(itemData.itemType)} risks Hold</span>.`)
 			: "",
 		tagWrap("p", [
 			itemData.suffix.text,

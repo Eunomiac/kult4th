@@ -253,7 +253,7 @@ export default class K4PCSheet extends ActorSheet {
     get $data() { return this.$root.data; }
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "light-on-dark"],
+            classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "k4-theme-dgold"],
             tabs: [
                 { navSelector: ".tabs", contentSelector: ".tab-content", initial: "front" }
             ]

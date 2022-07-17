@@ -31,26 +31,6 @@
 
 		.header-button {
 
-			// i {
-			// 	--k4-font-size: #{$rem-16};
-			// 	text-shadow:
-			// 		0 0 3px #{$black},
-			// 		0 0 3px #{$black},
-			// 		0 0 3px #{$black},
-			// 		0 0 3px #{$black},
-			// 		0 0 3px #{$black},
-			// 		0 0 5px #{$gold-bright},
-			// 		0 0 5px #{$gold-bright};
-			// 	--k4-color: #{$gold};
-			// 	--k4-font-family: "Font Awesome 5 Free";
-
-			// 	// color: red;
-			// 	// left: 900px;
-			// 	// width: 200px;
-			// 	white-space: nowrap;
-			// 	overflow: visible;
-			// }
-
 			&.close { display: none }
 		}
 	}
@@ -130,10 +110,10 @@
 			--border-width: 1px;
 			--icon-size: 30px;
 			--icon-margin: calc((var(--card-height) - var(--icon-size)) / 2);
-			--icon-background: var(--KKK-color-primary-contrast);
+			--icon-background: var(--KT-color-contrast);
 			--icon-filter: none;
-			--popout-background: var(--KKK-color-primary)
-			--popout-spacer-color: var(--KKK-color-primary-contrast);
+			--popout-background: var(--KT-color-primary)
+			--popout-spacer-color: var(--KT-color-contrast);
 			position: relative;
 			height: var(--card-height);
 			white-space: nowrap;
@@ -148,7 +128,7 @@
 				margin: var(--icon-margin);
 				// transform-origin: center center;
 				// box-sizing: border-box;
-				border: var(--border-width) solid var(--KKK-color-primary);
+				border: var(--border-width) solid var(--KT-color-primary);
 				border-radius: calc(var(--icon-size) / 2);
 				overflow: hidden;
 				white-space: nowrap;
@@ -178,7 +158,7 @@
 						var(--popout-spacer-color) 85%
 					);
 
-					color: var(--KKK-color-primary-contrast);
+					color: var(--KT-color-contrast);
 					font-family: var(--font-primary-caps);
 					font-weight: $font-weight-bold;
 					line-height: var(--icon-size);
@@ -202,8 +182,8 @@
 					height: 100%;
 					width: calc(100% - 0.5 * var(--icon-size));
 					margin-left: calc(0.5 * var(--icon-size));
-					background: var(--KKK-color-primary-contrast);
-					border-bottom: 1px solid var(--KKK-color-primary);
+					background: var(--KT-color-contrast);
+					border-bottom: 1px solid var(--KT-color-primary);
 				}
 
 				.item-text {
@@ -224,12 +204,12 @@
 				display: block;
 				font-family: var(--font-primary);
 				font-size: 10px;
-				--k4-line-height: #{$rem-12};
+				line-height: $rem-12;
 				text-align: center;
 				font-style: italic;
 				width: 100%;
 				text-align: left;
-				color: $white;
+				color: var(--KT-color-highlight);
 				opacity: 0;
 				bottom: 0;
 				left: 0;
@@ -237,7 +217,7 @@
 				white-space: break-spaces;
 
 				padding: 4px;
-				background: #{$black};
+				background: var(--KT-color-contrast);
 				border-radius: 20px;
 			}
 

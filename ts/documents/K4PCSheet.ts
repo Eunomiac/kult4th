@@ -23,7 +23,7 @@ const ANIMATIONS = {
 		const svgNavSpikes$ = $(target).find(".svg-gear-nav-spikes");
 		const svgGearTeeth$ = $(target).find(".svg-gear-nav-gears-hover");
 
-		console.log({navLens$, profileImg$, profileBg$, closeButton$, minimizeButton$, svgBaseGear, svgInnerRing, svgOuterRing, svgNavSpikes$, svgGearTeeth$})
+		console.log({navLens$, profileImg$, profileBg$, closeButton$, minimizeButton$, svgBaseGear, svgInnerRing, svgOuterRing, svgNavSpikes$, svgGearTeeth$});
 		// const gearSpikes$ = $(target).find(".svg-gear-nav-spikes-retracted").children();
 		// console.log(gearSpikes$);
 		// @ts-expect-error MorphSVG does indeed accept functions.
@@ -369,7 +369,7 @@ export default class K4PCSheet extends ActorSheet {
 
 	static override get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "light-on-dark"],
+			classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "k4-theme-dgold"],
 			tabs: [
 				{navSelector: ".tabs", contentSelector: ".tab-content", initial: "front"}
 			]

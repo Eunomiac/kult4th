@@ -15,6 +15,7 @@
 		.d-fg {
 			fill: url(#bg-gradient-darksecret);
 			stroke: url(#stroke-gradient-darksecret);
+			filter: brightness(2);
 		}
 	}
 	&.svg-disadvantage {

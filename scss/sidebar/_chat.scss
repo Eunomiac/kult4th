@@ -2,10 +2,10 @@
 	--color-text-dark-primary: var(--color-body-text);
 	--chat-vert-padding: 15px;
 	--chat-horiz-padding: 10px;
-	overflow: visible;
+	// overflow: visible;
 
 	.chat-message {
-		background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat center;
+		background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat top left/var(--sidebar-internal-width);
 		margin: 3px 0;
 		padding: 0;
 		// border: 2px outset #{$gold-dark};
@@ -44,7 +44,7 @@
 			top: 0;
 			height: 42px;
 			width: 299px;
-			background: transparent #{to-url("layout/border-chat-general-top.webp")} no-repeat center;
+			background: transparent #{to-url("layout/border-chat-general-top.webp")} no-repeat top left/var(--sidebar-internal-width);
 			pointer-events: none;
 			overflow: visible;
 		}
@@ -58,7 +58,7 @@
 			bottom: 0;
 			height: 42px;
 			width: 299px;
-			background: transparent #{to-url("layout/border-chat-general-bottom.webp")} no-repeat center;
+			background: transparent #{to-url("layout/border-chat-general-bottom.webp")} no-repeat bottom left/var(--sidebar-internal-width);
 			pointer-events: none;
 		}
 
@@ -67,8 +67,6 @@
 			min-height: 42px;
 
 			form, form.kult4th-chat {
-				// --k4-horiz-padding: 7px;
-				// --k4-vert-padding: 7px;
 				font-size: $rem-12;
 				line-height: $rem-16;
 
@@ -77,18 +75,18 @@
 				.text-attributename,
 				.text-movename,
 				.text-edgename {
-					color: $blue-brightest;
+					// color: $blue-brightest;
 				}
 
 				.text-trigger {
-					color: $gold-brightest;
+					// color: $gold-brightest;
 				}
 
 				.text-negmod,
 				.text-negmod+.text-keyword,
 				.text-negmod+.text-attributename,
 				.text-gmtext {
-					color: $red-glow;
+					// color: $red-glow;
 				}
 
 				ul {
@@ -109,16 +107,16 @@
 					.header-filler { display: none; }
 					.header-name {
 						font-size: $rem-16;
-						color: $black;
+						// color: $black;
 						line-height: $rem-24;
 						font-weight: $font-weight-bold;
-						background: linear-gradient(to right,
-							#{$gold-darkest},
-							#{$gold-bright} 30px,
-							#{$gold-bright} calc(100% - 30px),
-							#{$gold-darkest}
-						);
-						text-shadow: 1px 1px 0px #{$gold};
+						// background: linear-gradient(to right,
+						// 	#{$gold-darkest},
+						// 	#{$gold-bright} 30px,
+						// 	#{$gold-bright} calc(100% - 30px),
+						// 	#{$gold-darkest}
+						// );
+						// text-shadow: 1px 1px 0px #{$gold};
 						// width: 100%;
 						display: block;
 						// text-indent: 8px;
@@ -130,6 +128,15 @@
 						width: calc(100% + 2 * var(--chat-horiz-padding));
 						padding: 0;
 					}
+				}
+
+				.edges-header, .hold-header {
+					background: none;
+					font-weight: $font-weight-semi;
+					transform: translate(-50%, 0%) scaleX(0.8);
+					width: 200%;
+					left: 50%;
+					position: relative;
 				}
 
 				// .kult-text-container {

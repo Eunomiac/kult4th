@@ -1,10 +1,10 @@
 {{log "{SHEET} disadvantage-sheet.hbs" this}}
 
-{{> "systems/kult4th/templates/components/bg-grid.hbs"}}
+{{> "systems/kult4th/templates/components/bg-grid.hbs" data.type}}
 
 <form class="kult4th-form {{cssClass}}" autocomplete="off">
 	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
-	<main class="kult-text-container tab-content">
+	<main class="kult-text-container tab-content kult-{{data.type}}-container">
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
 		{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
 		{{/unless}}
@@ -18,7 +18,7 @@
 		{{/if}}
 
 		{{#if data.data.rules.holdText}}
-			<label class="k4-header hold-header">This {{case "title" data.type}} grants Hold</label>
+			<label class="k4-header hold-header">This {{case "title" data.type}} risks Hold</label>
 			<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
 		{{/if}}
 	</main>

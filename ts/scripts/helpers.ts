@@ -171,33 +171,40 @@ export const HandlebarHelpers = {
 
 		return str;
 	},
-	"getImgName": function(str: string) {
-		return str.toLowerCase().replace(/ /g, "-");
-	},
-	"getSVGPaths": function(str: string) {
+	"getImgName": simplifyItemName,
+	"getSVGPaths": function(str: KeyOf<typeof SVGDATA.Paths>) {
 		if (str in SVGDATA.Paths) {
-			const pathData = SVGDATA.Paths[str as KeyOf<typeof SVGDATA.Paths>];
-			return pathData.map((pData) => ({
-				d: pData.d
-			}));
+			return SVGDATA.Paths[str];
 		}
 		throw new Error(`No such SVG path: '${String(str)}'`);
 	},
-	"getIconPaths": function(typeRef: string, ref: string, {name, type}: {name?: string, type?: string} = {}): {d: string} {
+	"getIconPaths": function(typeRef: string, ref: string, {name, type}: {name?: string, type?: string} = {}) {
 		if (type && typeof type === "string") {
 			typeRef = type;
 		}
 		if (name && typeof name === "string") {
 			ref = name;
 		}
-		const thesePaths = U.getKey(typeRef, SVGDATA.IconPaths);
-		if (U.isSimpleObj(thesePaths)) {
-			ref = ref.toLowerCase().replace(/ /g, "-");
-			const thisPath = U.getKey(ref, thesePaths);
-			if (typeof thisPath === "string") {
-				return {d: thisPath};
+		const pathsForTypeRef = U.getKey(typeRef, SVGDATA.IconPaths);
+		if (U.isSimpleObj(pathsForTypeRef)) {
+			const pathData = U.getKey(simplifyItemName(ref), pathsForTypeRef);
+			if (pathData) {
+				pathData.style = parsePathTransform(pathData);
+				return pathData;
 			}
 		}
 		throw new Error(`No such '${String(typeRef)}' SVG path: '${String(ref)}'`);
 	}
 };
+
+function parsePathTransform({d, scale = 1, xShift = 0, yShift = 0}: {d: string, scale?: number, xShift?: number, yShift?: number}): string {
+	return [
+		"transform: translate(-50%, -50%)",
+		`scale(${scale})`,
+		`translate(${xShift}px, ${yShift}px);`
+	].join(" ");
+}
+
+function simplifyItemName(itemName: string): string {
+	return (itemName ?? "").toLowerCase().replace(/ /g, "-");
+}

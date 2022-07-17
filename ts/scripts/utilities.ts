@@ -224,7 +224,7 @@ const degToRad = (deg: number, isConstrained = true): number => {
 	deg *= Math.PI / 180;
 	return deg;
 };
-const getKey = (key: string|number|symbol, obj: Record<string|number|symbol, unknown>): unknown => {
+const getKey = <T>(key: string|number|symbol, obj: Record<string|number|symbol, T>): T|null => {
 	if (key in obj) {
 		return obj[key];
 	}

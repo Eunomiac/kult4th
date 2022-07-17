@@ -7,6 +7,7 @@ $isDebuggingChat: false;
 @import 'debug';
 
 .vtt.game.system-kult4th {
+	--scrollbar-width: 6px;
 
 	@import 'globals/root';
 	@import 'globals/text-styles';
@@ -32,7 +33,19 @@ $isDebuggingChat: false;
 
 	#ui-right {
 		#sidebar {
-			@import 'sidebar/sidebar';
+
+			/* FOUNDRY OVERRIDES */
+			--sidebar-width: 300px;
+			--sidebar-internal-width: calc(var(--sidebar-width) - var(--scrollbar-width));
+			--sidebar-header-height: 0px; // 32px;
+			--sidebar-item-height: 80px; // 48px;
+
+			border: none;
+			box-shadow: none;
+			overflow: visible;
+
+			@include set-default-theme()
+
 			#chat { @import 'sidebar/chat' }
 		}
 	}

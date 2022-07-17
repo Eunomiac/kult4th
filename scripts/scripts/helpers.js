@@ -175,15 +175,10 @@ export const HandlebarHelpers = {
         // 	.replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
         return str;
     },
-    "getImgName": function (str) {
-        return str.toLowerCase().replace(/ /g, "-");
-    },
+    "getImgName": simplifyItemName,
     "getSVGPaths": function (str) {
         if (str in SVGDATA.Paths) {
-            const pathData = SVGDATA.Paths[str];
-            return pathData.map((pData) => ({
-                d: pData.d
-            }));
+            return SVGDATA.Paths[str];
         }
         throw new Error(`No such SVG path: '${String(str)}'`);
     },
@@ -194,14 +189,24 @@ export const HandlebarHelpers = {
         if (name && typeof name === "string") {
             ref = name;
         }
-        const thesePaths = U.getKey(typeRef, SVGDATA.IconPaths);
-        if (U.isSimpleObj(thesePaths)) {
-            ref = ref.toLowerCase().replace(/ /g, "-");
-            const thisPath = U.getKey(ref, thesePaths);
-            if (typeof thisPath === "string") {
-                return { d: thisPath };
+        const pathsForTypeRef = U.getKey(typeRef, SVGDATA.IconPaths);
+        if (U.isSimpleObj(pathsForTypeRef)) {
+            const pathData = U.getKey(simplifyItemName(ref), pathsForTypeRef);
+            if (pathData) {
+                pathData.style = parsePathTransform(pathData);
+                return pathData;
             }
         }
         throw new Error(`No such '${String(typeRef)}' SVG path: '${String(ref)}'`);
     }
 };
+function parsePathTransform({ d, scale = 1, xShift = 0, yShift = 0 }) {
+    return [
+        "transform: translate(-50%, -50%)",
+        `scale(${scale})`,
+        `translate(${xShift}px, ${yShift}px);`
+    ].join(" ");
+}
+function simplifyItemName(itemName) {
+    return (itemName ?? "").toLowerCase().replace(/ /g, "-");
+}

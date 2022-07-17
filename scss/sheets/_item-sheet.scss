@@ -8,73 +8,14 @@
 
 	--sheet-header-height: 40px;
 
-	// --k4-horiz-padding: 15px;
-	// --k4-vert-padding: 10px;
-
-	// --color-body-text: #{$black};
-	// --k4-font-size: #{$rem-16};
-	// --k4-line-height: #{$rem-20};
-	// --k4-font-weight: #{$font-weight-medium};
-
-	.kult4th-form,
-	.kult-text-container,
-	.kult-text-block,
-	.mce-content-body {
-		// --k4-font-size: #{$rem-16};
-		// --k4-line-height: #{$rem-20};
-		// --k4-font-weight: #{$font-weight-medium};
-
-
-		h2 {
-			// --k4-color: #{$black};
-		}
-	}
+	filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.3));
 
 	.window-header {
-		// .header-button {
-		// 	right: -25px;
-		// 	width: 30px;
-		// 	text-align: right;
 
-		// 	&:nth-of-type(1) {
-		// 		top: 32px
-		// 	}
-
-		// 	&:nth-of-type(2) {
-		// 		top: 57px
-		// 	}
-
-		// 	&:nth-of-type(3) {
-		// 		top: 82px
-		// 	}
-
-		// 	&:nth-of-type(4) {
-		// 		top: 107px
-		// 	}
-
-		// 	&:nth-of-type(5) {
-		// 		top: 132px
-		// 	}
-
-		// 	&:nth-of-type(6) {
-		// 		top: 157px
-		// 	}
-
-		// 	&:last-of-type {
-		// 		display: initial;
-		// 		top: 7px;
-
-		// 		i {
-		// 			font-size: 24px;
-		// 			// --k4-color: #{$red-glow};
-		// 		}
-		// 	}
-		// }
 	}
 
 	.window-content {
 		background: none;
-		// overflow-x: hidden;
 
 		.bg-container {
 			$bg-horiz-padding: 0px;
@@ -106,75 +47,74 @@
 			grid-template-rows: #{$bg-corner-height} 1fr #{$bg-corner-height};
 
 			.sheet-bg {
+				position: relative;
+				height: 100%;
+				width: 100%;
 
-			position: relative;
-			height: 100%;
-			width: 100%;
+				&.vert-edge {
+					width: $bg-vert-width;
 
-			&.vert-edge {
-				width: $bg-vert-width;
+					&.left {
+						grid-area: left;
+						background: var(--KT-bg-left);
+					}
 
-				&.left {
-					grid-area: left;
-					background: transparent #{to-url("backgrounds/bg-white-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
+					&.right {
+						grid-area: right;
+						background: var(--KT-bg-right);
+						right: $bg-vert-width - $bg-corner-width;
+					}
 				}
 
-				&.right {
-					grid-area: right;
-					background: transparent #{to-url("backgrounds/bg-white-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
-					right: $bg-vert-width - $bg-corner-width;
-				}
-			}
+				&.horiz-edge {
+					height: $bg-horiz-height;
 
-			&.horiz-edge {
-				height: $bg-horiz-height;
+					&.top {
+						grid-area: top;
+						background: var(--KT-bg-top);
+					}
 
-				&.top {
-					grid-area: top;
-					background: transparent #{to-url("backgrounds/bg-white-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
+					&.bot {
+						grid-area: bot;
+						background: var(--KT-bg-bot);
+						bottom: $bg-horiz-height - $bg-corner-height;
+					}
 				}
 
-				&.bot {
-					grid-area: bot;
-					background: transparent #{to-url("backgrounds/bg-white-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
-					bottom: $bg-horiz-height - $bg-corner-height;
-				}
-			}
+				&.corner {
+					height: $bg-horiz-height;
+					width: $bg-vert-width;
+					z-index: -1;
 
-			&.corner {
-				height: $bg-horiz-height;
-				width: $bg-vert-width;
-				z-index: -1;
+					&.top-left {
+						grid-area: top-left;
+						background: var(--KT-bg-top-left);
+					}
+					&.top-right {
+						grid-area: top-right;
+						background: var(--KT-bg-top-right);
+						left: -1 * $bg-horiz-feather;
+					}
+					&.bot-left {
+						grid-area: bot-left;
+						background: var(--KT-bg-bot-left);
+						top: -1 * $bg-vert-feather;
+					}
+					&.bot-right {
+						grid-area: bot-right;
+						background: var(--KT-bg-bot-right);
+						top: -1 * $bg-vert-feather;
+						left: -1 * $bg-horiz-feather;
+					}
+				}
 
-				&.top-left {
-					grid-area: top-left;
-					background: transparent #{to-url("backgrounds/bg-white-top-left.webp")} no-repeat no-repeat top left/#{$bg-vert-width} #{$bg-horiz-height};
+				&.center {
+					grid-area: center;
+					z-index: -2;
+					background: var(--KT-bg);
 				}
-				&.top-right {
-					grid-area: top-right;
-					background: transparent #{to-url("backgrounds/bg-white-top-right.webp")} no-repeat no-repeat top right/#{$bg-vert-width} #{$bg-horiz-height};
-					left: -1 * $bg-horiz-feather;
-				}
-				&.bot-left {
-					grid-area: bot-left;
-					background: transparent #{to-url("backgrounds/bg-white-bot-left.webp")} no-repeat no-repeat bottom left/#{$bg-vert-width} #{$bg-horiz-height};
-					top: -1 * $bg-vert-feather;
-				}
-				&.bot-right {
-					grid-area: bot-right;
-					background: transparent #{to-url("backgrounds/bg-white-bot-right.webp")} no-repeat no-repeat bottom right/#{$bg-vert-width} #{$bg-horiz-height};
-					top: -1 * $bg-vert-feather;
-					left: -1 * $bg-horiz-feather;
-				}
-			}
-
-			&.center {
-				grid-area: center;
-				z-index: -2;
-				background: transparent #{to-url("backgrounds/bg-white.webp")} repeat repeat center center/500px 500px;
 			}
 		}
-	}
 
 		form {
 			font-size: $rem-16;
@@ -197,8 +137,8 @@
 				top: 0.25 * $icon-size;
 				z-index: 4;
 				overflow: hidden;
-				outline: 3px solid black;
-				background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/500px 500px;
+				outline: 3px solid var(--KT-color-contrast);
+				background: var(--KT-bg);
 
 				.svg-icon-def {
 					transform: translate(-50%, -50%);
@@ -207,6 +147,9 @@
 					position: absolute;
 					height: $svg-size;
 					width: $svg-size;
+					border: none;
+					outline: none;
+					box-shadow: none;
 				}
 
 				&.header-move {
@@ -216,7 +159,7 @@
 			}
 
 			.sheet-header {
-				border-bottom: 3px solid black;
+				border-bottom: 3px solid var(--KT-color-primary);
 				flex-wrap: nowrap;
 
 				.header-bullet,
@@ -231,14 +174,8 @@
 				}
 
 				&.move-header {
-					border-color: $gold;
-
-					.header-bullet,
-					.header-name {
-						--KKK-color-primary: #{$gold};
-						--KKK-color-primary-contrast: #{$black};
-					}
-
+					--KT-color-primary: #{$gold};
+					--KT-color-contrast: #{$black};
 				}
 			}
 

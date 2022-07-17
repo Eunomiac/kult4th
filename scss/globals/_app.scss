@@ -1,4 +1,9 @@
 & {
+
+	&:not([class*='k4-theme']) {
+		@include set-default-theme()
+	}
+
   --form-field-height: 26px;
 	box-shadow: none;
 
@@ -21,8 +26,7 @@
 	}
 
 	.window-content {
-		// color: var(--KKK-color-primary);
-		background: transparent #{to-url("backgrounds/bg-dgold.webp")} repeat repeat center center/1000px 1000px;
+		background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/1000px 1000px;
 
 		text-align: justify;
 		hyphens: auto;
