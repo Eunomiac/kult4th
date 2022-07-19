@@ -1,38 +1,103 @@
+@function expand-color($color) {
+	@return (
+		scale-color($color, $lightness: +75%, $saturation: +0%),
+		scale-color($color, $lightness: +50%, $saturation: +0%),
+		scale-color($color, $lightness: +35%, $saturation: +0%),
+		$color,
+		scale-color($color, $lightness: -25%, $saturation: +0%),
+		scale-color($color, $lightness: -50%, $saturation: +0%),
+		scale-color($color, $lightness: -75%, $saturation: +0%)
+	)
+}
+
+$COLOR-SPREADS: (
+	"gold": expand-color(#958f6b),
+	"red": expand-color(#912228),
+	"white": expand-color(#d4d2d7),
+	"black": expand-color(#111111),
+	"blue": expand-color(#2661dc)
+);
+// @debug $COLOR-SPREADS;
+
 // GOLDS
-$gold: #958b68;
-$gold-brightest: #e4ddc3;
-$gold-bright: #b9af8f; // #c3bba1;
-$gold-dark: #685f43;
-$gold-darker: #42391a;
-$gold-darkest: #19160b;
+$gold-brightest: nth(map-get($COLOR-SPREADS, "gold"), 1);
+$gold-brighter: nth(map-get($COLOR-SPREADS, "gold"), 2);
+$gold-bright: nth(map-get($COLOR-SPREADS, "gold"), 3);
+$gold: nth(map-get($COLOR-SPREADS, "gold"), 4);
+$gold-dark: nth(map-get($COLOR-SPREADS, "gold"), 5);
+$gold-darker: nth(map-get($COLOR-SPREADS, "gold"), 6);
+$gold-darkest: nth(map-get($COLOR-SPREADS, "gold"), 7);
+
+// REDS
+$red-brightest: nth(map-get($COLOR-SPREADS, "red"), 1);
+$red-brighter: nth(map-get($COLOR-SPREADS, "red"), 2);
+$red-bright: nth(map-get($COLOR-SPREADS, "red"), 3);
+$red: nth(map-get($COLOR-SPREADS, "red"), 4);
+$red-dark: nth(map-get($COLOR-SPREADS, "red"), 5);
+$red-darker: nth(map-get($COLOR-SPREADS, "red"), 6);
+$red-darkest: nth(map-get($COLOR-SPREADS, "red"), 7);
+
+// BLUES
+$blue-brightest: nth(map-get($COLOR-SPREADS, "blue"), 1);
+$blue-brighter: nth(map-get($COLOR-SPREADS, "blue"), 2);
+$blue-bright: nth(map-get($COLOR-SPREADS, "blue"), 3);
+$blue: nth(map-get($COLOR-SPREADS, "blue"), 4);
+$blue-dark: nth(map-get($COLOR-SPREADS, "blue"), 5);
+$blue-darker: nth(map-get($COLOR-SPREADS, "blue"), 6);
+$blue-darkest: nth(map-get($COLOR-SPREADS, "blue"), 7);
+
+// WHITES
+$white-brightest: nth(map-get($COLOR-SPREADS, "white"), 1);
+$white-brighter: nth(map-get($COLOR-SPREADS, "white"), 2);
+$white-bright: nth(map-get($COLOR-SPREADS, "white"), 3);
+$white: nth(map-get($COLOR-SPREADS, "white"), 4);
+$white-dark: nth(map-get($COLOR-SPREADS, "white"), 5);
+$white-darker: nth(map-get($COLOR-SPREADS, "white"), 6);
+$white-darkest: nth(map-get($COLOR-SPREADS, "white"), 7);
+
+// BLACKS
+$black-brightest: nth(map-get($COLOR-SPREADS, "black"), 1);
+$black-brighter: nth(map-get($COLOR-SPREADS, "black"), 2);
+$black-bright: nth(map-get($COLOR-SPREADS, "black"), 3);
+$black: nth(map-get($COLOR-SPREADS, "black"), 4);
+$black-dark: nth(map-get($COLOR-SPREADS, "black"), 5);
+$black-darker: nth(map-get($COLOR-SPREADS, "black"), 6);
+$black-darkest: nth(map-get($COLOR-SPREADS, "black"), 7);
+
 $gold-glow: #ffd958;
-
-// Reds
-$red: #9a1f1f;
-$red-brightest: #e37070;
-$red-bright: #ba3e3e;
-$red-dark: #730606;
-$red-darkest: #490000;
 $red-glow: #ff0000;
-
-// Blues
-$blue: #2a548a;
-$blue-brightest: #688ab5;
-$blue-bright: #426899; // #4084dd;
-$blue-dark: #183f72;
-$blue-darkest: #082b58;
 $blue-glow: #3f93ff;
 
-// Contrasts
-$white-brightest: #ffffff;
-$white-bright: #d8d8d8;
-$white: #cccccc;
-$grey: #888888;
-$black: #111111;
-$black-darkest: #000000;
+@mixin set-default-theme() {
+	--KT-color-primary: #{$gold};
+	--KT-color-contrast: #{$black};
+	--KT-color-highlight: #{$gold-brightest};
+
+	--KT-color-h1: #{$red};
+	--KT-color-h2: #{$red};
+	--KT-color-h3: #{$red};
+	--KT-color-h4: #{$red};
+
+	--KT-color-header-fg: var(--KT-color-contrast);
+	--KT-color-header-bg: var(--KT-color-primary);
+
+	--KT-color-keyword: #{$blue};
+	--KT-color-pos: #{$blue-brightest};
+	--KT-color-neg: #{$red-glow};
+
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/12px;
+
+	@include set-bg-vars("dgold");
+
+	--KT-color-light-contrast: #{$gold-dark};
+	--KT-color-deep-contrast: #{$black-darkest};
+	--KT-color-emphasis: #{$gold-bright};
+	--KT-color-keyword-emphasis: #{$blue-bright};
+	--KT-color-keyword-contrast: #{$blue-dark};
+}
 
 /* DEFAULT FOUNDRY OVERRIDES */
-* {
+& {
   --color-text-light-primary: var(--KT-color-primary);
 	--color-text-light-highlight: magenta; // var(--KT-color-emphasis); // #f0f0e0;
   --color-text-light-heading: lime; // var(--KT-color-emphasis); // #c9c7b8;
@@ -90,46 +155,32 @@ $black-darkest: #000000;
 }
 
 /* THEMES */
-
-
-@mixin set-default-theme() {
-	--KT-color-primary: #{$gold};
-	--KT-color-contrast: #{$black};
-	--KT-color-highlight: #{$gold-brightest};
-
-	--KT-color-h1: #{$red};
-	--KT-color-h2: #{$red};
-	--KT-color-h3: var(--KT-color-primary);
-
-	--KT-color-keyword: #{$blue};
-	--KT-color-pos: #{$blue-brightest};
-	--KT-color-neg: #{$red-glow};
-
-	@include set-bg-vars("dgold");
-
-	--KT-color-light-contrast: #{$gold-dark};
-	--KT-color-deep-contrast: #{$black-darkest};
-	--KT-color-emphasis: #{$gold-bright};
-	--KT-color-keyword-emphasis: #{$blue-bright};
-	--KT-color-keyword-contrast: #{$blue-dark};
-}
-
-.k4-theme-dgold {
+& {
 	@include set-default-theme();
 }
 
+// .k4-theme-dgold, .k4-theme-dgold /* * */ {
+// 	@include set-default-theme();
+// }
+
 .k4-theme-dark {
-	--KT-color-primary: #{$white};
+	--KT-color-primary: #{$white-dark};
 	--KT-color-contrast: #{$gold-darkest};
 	--KT-color-highlight: #{$white-brightest};
 
 	--KT-color-h1: #{$red-bright};
 	--KT-color-h2: #{$red-bright};
-	--KT-color-h3: var(--KT-color-primary);
+	--KT-color-h3: #{$red-bright};
+	--KT-color-h4: #{$red-bright};
+
+	--KT-color-header-fg: #{$white-brightest};
+	--KT-color-header-bg: #{$black-darkest};
 
 	--KT-color-keyword: #{$blue};
 	--KT-color-pos: #{$blue-brightest};
 	--KT-color-neg: #{$red-glow};
+
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/12px;
 
 	@include set-bg-vars("dark");
 
@@ -147,11 +198,17 @@ $black-darkest: #000000;
 
 	--KT-color-h1: #{$red-dark};
 	--KT-color-h2: #{$red-dark};
-	--KT-color-h3: var(--KT-color-primary);
+	--KT-color-h3: #{$red-dark};
+	--KT-color-h4: #{$red-dark};
+
+	--KT-color-header-fg: #{$gold-brightest};
+	--KT-color-header-bg: #{$gold-dark};
 
 	--KT-color-keyword: #{$blue-dark};
 	--KT-color-pos: #{$blue};
 	--KT-color-neg: #{$red-glow};
+
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/12px;
 
 	@include set-bg-vars("white");
 
@@ -169,11 +226,17 @@ $black-darkest: #000000;
 
 	--KT-color-h1: #{$red-glow};
 	--KT-color-h2: #{$red-glow};
-	--KT-color-h3: var(--KT-color-primary);
+	--KT-color-h3: #{$red-glow};
+	--KT-color-h4: #{$red-glow};
+
+	--KT-color-header-fg: #{$red-glow};
+	--KT-color-header-bg: #{$red-darker};
 
 	--KT-color-keyword: #{$blue};
 	--KT-color-pos: #{$blue-brightest};
 	--KT-color-neg: #{$red-glow};
+
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/12px;
 
 	@include set-bg-vars("red");
 

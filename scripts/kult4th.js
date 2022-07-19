@@ -179,7 +179,7 @@ Hooks.once("ready", async () => {
         }
     ];
     CONFIG.TinyMCE.skin = "Kult4th";
-    CONFIG.TinyMCE.skin_url = "systems/kult4th/css/tinymce/ui/Kult4th";
+    CONFIG.TinyMCE.skin_url = "systems/kult4th/css/third-party/tinymce/ui/Kult4th";
     CONFIG.TinyMCE.style_formats_merge = false;
     // CONFIG.TinyMCE.template_selected_content_classes += " ws-contents";
     // CONFIG.TinyMCE.templates = CONFIG.TinyMCE.templates ?? [];

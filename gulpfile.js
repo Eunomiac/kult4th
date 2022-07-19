@@ -18,6 +18,7 @@ const terser = require("gulp-terser");
 
 const sasser = require("gulp-sass")(require("node-sass"));
 const bundler = require("gulp-postcss");
+const filler = require("cq-prolyfill/postcss-plugin");
 const prefixer = require("autoprefixer");
 const minifier = require("cssnano");
 
@@ -25,6 +26,36 @@ const packageJSON = require("./package");
 
 const {analyzeProject} = require("codehawk-cli");
 // #endregion ▮▮▮▮[IMPORTS]▮▮▮▮
+
+// /* REALLY GOTTA ADD ALL THE AWESOME POSTCSS PLUGINS!!!! */
+
+// /* eslint-disable sort-keys */
+// // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
+// const gulp = require("gulp");
+// const postcss = require("gulp-postcss");
+// const sass = require("gulp-sass")(require("node-sass"));
+
+// const autofont = require("postcss-font-magician");
+
+// const autoprefixer = require("autoprefixer");
+// const cssnano = require("cssnano");
+// // #endregion ▮▮▮▮[IMPORTS]▮▮▮▮
+
+// function css() {
+//   var processors = [
+// 		autofont({
+
+// 		}),
+// 		autoprefixer,
+// 		cssnano
+//   ];
+//   return gulp.src('./scss/**/*.scss')
+// 		.pipe(sass().on("error", sass.logError))
+//     .pipe(postcss(processors))
+//     .pipe(gulp.dest('./css/'));
+// }
+
+// exports.default = css;
 
 // #region ▮▮▮▮▮▮▮[UTILITY] Data References & Utility Functions for File Parsing ▮▮▮▮▮▮▮ ~
 const ANSICOLORS = {
@@ -217,13 +248,15 @@ const BUILDFILES = {
 	hbs: {
 		[`./dist/${SYSTEM}/templates/`]: ["templates/**/*.hbs"]
 	},
-	assets: {
-		[`./dist/${SYSTEM}/assets/`]: ["assets/**/*.*"],
+	quickAssets: {
 		[`./dist/${SYSTEM}/`]: ["system.json", "template.json", "LICENSE.txt", "package.json"],
 		["./scripts/"]: ["rawscripts/*.mjs"],
-		[`./dist/${SYSTEM}/packs/`]: ["packs/**/*.*"],
 		[`./dist/${SYSTEM}/css/`]: ["scss/**/*.css"],
 		"./css/": ["scss/**/*.css"]
+	},
+	slowAssets: {
+		[`./dist/${SYSTEM}/assets/`]: ["assets/**/*.*"],
+		[`./dist/${SYSTEM}/packs/`]: ["packs/**/*.*"]
 	}
 };
 const REGEXPPATTERNS = {
@@ -356,7 +389,7 @@ const PLUMBING = {
 	},
 	init: function initDist(done) {
 		try {
-			cleaner.sync(["./dist/", "./scripts/"]);
+			cleaner.sync(["./dist/", "./scripts/", "./css/"]);
 		} catch (err) {
 			return done();
 		}
@@ -404,14 +437,21 @@ const PLUMBING = {
 		return src(source)
 			.pipe(PIPES.openPipe("cssFull")())
 			.pipe(sasser({outputStyle: "nested"}))
-			.pipe(bundler([prefixer({cascade: false})]))
+			.pipe(bundler([
+				filler(),
+				prefixer({cascade: false})
+			]))
 			.pipe(PIPES.closePipe("cssFull", source, destination));
 	},
 	cssMin: (source, destination) => function pipeMinCSS() {
 		return src(source)
 			.pipe(PIPES.openPipe("cssMin")())
 			.pipe(sasser({outputStyle: "compressed"}))
-			.pipe(bundler([prefixer({cascade: false}), minifier()]))
+			.pipe(bundler([
+				filler(),
+				prefixer({cascade: false}),
+				minifier()
+			]))
 			.pipe(header(BANNERS.css.min, {"package": packageJSON}))
 			.pipe(PIPES.closePipe("cssMin", source, destination));
 	},
@@ -499,19 +539,20 @@ BUILDFUNCS.hbs = parallel(
 // #endregion ▄▄▄▄▄ HBS ▄▄▄▄▄
 
 // #region ████████ ASSETS: Copying Assets to Dist ████████ ~
-BUILDFUNCS.assets = parallel(
-	...((sourceDestGlobs) => {
-		const funcs = [];
-		for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
-			sourceGlobs.forEach((sourceGlob) => funcs.push(PLUMBING.toDest(sourceGlob, destGlob)));
-		}
-		return funcs;
-	})(BUILDFILES.assets)
-);
+const assetPipe = (sourceDestGlobs) => {
+	const funcs = [];
+	for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
+		sourceGlobs.forEach((sourceGlob) => funcs.push(PLUMBING.toDest(sourceGlob, destGlob)));
+	}
+	return funcs;
+};
+
+BUILDFUNCS.quickAssets = parallel(...assetPipe(BUILDFILES.quickAssets));
+BUILDFUNCS.slowAssets = parallel(...assetPipe(BUILDFILES.slowAssets));
 // #endregion ▄▄▄▄▄ ASSETS ▄▄▄▄▄
 
 // #region ▒░▒░▒░▒[EXPORTS]▒░▒░▒░▒ ~
-const {ts, js, assets, ...parallelBuildFuncs} = BUILDFUNCS;
+const {ts, js, quickAssets, ...parallelBuildFuncs} = BUILDFUNCS;
 
-exports.default = series(PLUMBING.init, parallel(series(ts, js, assets), ...Object.values(parallelBuildFuncs)), PLUMBING.watch);
+exports.default = series(PLUMBING.init, parallel(series(ts, js, quickAssets), ...Object.values(parallelBuildFuncs)), PLUMBING.watch);
 // #endregion ▒▒▒▒[EXPORTS]▒▒▒▒

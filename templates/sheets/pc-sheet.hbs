@@ -3,6 +3,7 @@
 {{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 
 
+
 <div class="gear-container gear-top-left">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-a"}}
 </div>
@@ -18,10 +19,11 @@
 
 
 {{> "systems/kult4th/templates/components/border-grid.hbs" }}
-{{> "systems/kult4th/templates/components/bg-grid.hbs" }}
+{{> "systems/kult4th/templates/components/bg-grid.hbs" data.type }}
 
 
 <form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
+<script src="systems/kult4th/node_modules/cq-prolyfill/cq-prolyfill.js" async></script>
 	<header class="sheet-header">
 		<div class="actor-name-container">
 			<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
@@ -124,32 +126,28 @@
 				<div class="dice-modifiers"></div>
 			</section>
 			<section class="subsection attributes">
-				<label class="k4-header section-header">{{case "upper" (loc "kult4th.trait.attributes")}}</label>
+				<label class="k4-title section-title">{{case "upper" (loc "kult4th.trait.attributes")}}</label>
 				{{#each attributes}}
 				{{> "systems/kult4th/templates/components/attribute-box.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list basic-moves">
-				<label class="k4-header section-header">{{case "upper" (loc "kult4th.item.type.basicPlayerMoves")}}</label>
+				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.basicPlayerMoves")}}</label>
 				{{#each baseMoves}}
 				{{> "systems/kult4th/templates/partials/basic-move-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list special-moves">
-				<label class="k4-header section-header">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</label>
+				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</label>
 				{{#each derivedMoves}}
 				{{> "systems/kult4th/templates/partials/derived-move-card.hbs"}}
 				{{/each}}
-				<h1>Heading 1</h1>
-				<h2>Heading 2</h2>
-				<h3>Heading 3</h3>
-				<h4>Heading 4</h4>
 			</section>
 			<section class="subsection flex-item-list session-checks">
-				<label class="k4-header section-header">{{case "upper" (loc "kult4th.sheet.sessionChecks")}}</label>
+				<label class="k4-title section-title">{{case "upper" (loc "kult4th.sheet.sessionChecks")}}</label>
 			</section>
 			<section class="subsection flex-item-list attacks">
-				<label class="k4-header section-header">{{case "upper" (loc "kult4th.item.type.attacks")}}</label>
+				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.attacks")}}</label>
 				{{#each attacks}}
 				{{> "systems/kult4th/templates/partials/attack-card.hbs"}}
 				{{/each}}
@@ -158,29 +156,29 @@
 
 		<section class="tab bio" data-group="primary" data-tab="bio">
 			<section class="subsection description">
-				<label class="k4-header section-header">Description</label>
+				<label class="k4-title section-title">Description</label>
 				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection flex-item-list advantages">
-				<label class="k4-header section-header">Advantages</label>
+				<label class="k4-title section-title">Advantages</label>
 				{{#each advantages}}
 				{{> "systems/kult4th/templates/partials/advantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list disadvantages">
-				<label class="k4-header section-header">Disadvantages</label>
+				<label class="k4-title section-title">Disadvantages</label>
 				{{#each disadvantages}}
 				{{> "systems/kult4th/templates/partials/disadvantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list darksecrets">
-				<label class="k4-header section-header">Dark Secrets</label>
+				<label class="k4-title section-title">Dark Secrets</label>
 				{{#each darksecrets}}
 				{{> "systems/kult4th/templates/partials/dark-secret-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list relations">
-				<label class="k4-header section-header">Relations</label>
+				<label class="k4-title section-title">Relations</label>
 				{{#each relations}}
 				{{> "systems/kult4th/templates/partials/relation-card.hbs"}}
 				{{/each}}

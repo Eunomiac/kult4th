@@ -282,12 +282,17 @@ export default class K4PCSheet extends ActorSheet {
         /*DEVCODE*/ console.log("Final Data", data); /*!DEVCODE*/
         return data;
     }
+    setPosition(posData) {
+        super.setPosition(posData);
+        // @ts-expect-error Yeah I know I gotta declare the cqApi global variable.
+        window.cqApi.reprocess();
+    }
     activateListeners(html) {
         const ISDEBUGGING = false;
         super.activateListeners(html);
         const self = this;
         $(() => {
-            console.log("ACTOR SHEET HTML OBJECT", html);
+            console.log("ACTOR SHEET HTML OBJECT", { html, fullElement: self.element[0] });
             const hoverTimelines = [];
             // MorphSVGPlugin.convertToPath(".svg-def");
             const [navPanel] = html.find(".nav-panel");

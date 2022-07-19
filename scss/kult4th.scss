@@ -1,12 +1,12 @@
 @import 'globals/functions';
-@import 'globals/colors';
 @import 'globals/typography';
 
-$isDebugging: false;
-$isDebuggingChat: false;
-@import 'debug';
-
 .vtt.game.system-kult4th {
+	@import 'globals/colors';
+
+	$isDebugging: false;
+	$isDebuggingChat: false;
+	@import 'debug';
 	--scrollbar-width: 6px;
 
 	@import 'globals/root';

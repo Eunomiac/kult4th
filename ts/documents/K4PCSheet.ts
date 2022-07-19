@@ -401,6 +401,11 @@ export default class K4PCSheet extends ActorSheet {
 		return data;
 	}
 
+	override setPosition(posData: Partial<Application.Position>) {
+		super.setPosition(posData);
+		cqApi.reprocess();
+	}
+
 	override activateListeners(html: JQuery) {
 		const ISDEBUGGING = false;
 
@@ -408,7 +413,7 @@ export default class K4PCSheet extends ActorSheet {
 		const self = this;
 
 		$(() => {
-			console.log("ACTOR SHEET HTML OBJECT", html);
+			console.log("ACTOR SHEET HTML OBJECT", {html, fullElement: self.element[0]});
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
 
 			// MorphSVGPlugin.convertToPath(".svg-def");

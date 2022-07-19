@@ -585,7 +585,12 @@
 
 						.status {
 							grid-area: status;
-							display: flex;
+							display: block;
+							width: 100%;
+
+							@include cq-prolyfill("width >= 1000px") {
+								outline: 3px solid lime !important;
+							}
 						}
 
 						.attributes {

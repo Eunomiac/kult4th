@@ -1,4 +1,15 @@
+
+
+// .element {
+// 	@include cq-prolyfill("width >= 100px") {
+// 		/* Styles for .element if its container is at least 100px wide */
+// 	}
+// }
+
 #chat-log {
+
+	@include set-default-theme();
+
 	--color-text-dark-primary: var(--color-body-text);
 	--chat-vert-padding: 15px;
 	--chat-horiz-padding: 10px;
@@ -63,70 +74,41 @@
 		}
 
 		.message-content {
-			padding: var(--chat-vert-padding) var(--chat-horiz-padding);
+			padding:
+				var(--chat-vert-padding)
+				calc(var(--scrollbar-width) + var(--chat-horiz-padding))
+				var(--chat-vert-padding)
+				var(--chat-horiz-padding);
 			min-height: 42px;
 
 			form, form.kult4th-chat {
 				font-size: $rem-12;
 				line-height: $rem-16;
 
-				.text-posmod,
-				.text-keyword,
-				.text-attributename,
-				.text-movename,
-				.text-edgename {
-					// color: $blue-brightest;
-				}
-
-				.text-trigger {
-					// color: $gold-brightest;
-				}
-
-				.text-negmod,
-				.text-negmod+.text-keyword,
-				.text-negmod+.text-attributename,
-				.text-gmtext {
-					// color: $red-glow;
-				}
-
-				ul {
-					margin-left: 0;
-
-					li {
-						text-indent: -15px;
-						font-size: inherit;
-					}
-
-					li:before {
-						margin-right: 0;
-						transform: scaleX(1.25) scale(0.6);
-					}
+				ul, ul.rules-list, ul.inline-list {
+					--list-indent: 15px;
 				}
 
 				.sheet-header {
 					.header-filler { display: none; }
-					.header-name {
-						font-size: $rem-16;
-						// color: $black;
-						line-height: $rem-24;
+					.item-title {
+						font-size: $rem-18;
+						line-height: $rem-20;
 						font-weight: $font-weight-bold;
-						// background: linear-gradient(to right,
-						// 	#{$gold-darkest},
-						// 	#{$gold-bright} 30px,
-						// 	#{$gold-bright} calc(100% - 30px),
-						// 	#{$gold-darkest}
-						// );
-						// text-shadow: 1px 1px 0px #{$gold};
-						// width: 100%;
-						display: block;
-						// text-indent: 8px;
-						border-radius: 0;
+						background: #{to-url("layout/border-chat-general-bottom.webp")} repeat bottom left/var(--sidebar-internal-width),
+							linear-gradient(to right,
+								var(--KT-color-contrast),
+								var(--KT-color-highlight) 30px,
+								var(--KT-color-highlight) calc(100% - 30px),
+								var(--KT-color-contrast)
+						);
+						text-shadow: -1px -1px 0px var(--KT-color-highlight), 1px 1px 0px var(--KT-color-primary);
 						text-transform: uppercase;
 						text-align: center;
 						margin-top: calc(-1 * var(--chat-vert-padding));
 						margin-left: calc(-1 * var(--chat-horiz-padding));
 						width: calc(100% + 2 * var(--chat-horiz-padding));
-						padding: 0;
+						padding: 3px 0 0;
 					}
 				}
 
@@ -143,20 +125,22 @@
 					// margin: 0;
 
 				.result-entry {
-					margin: 0;
+					--label-width: 38px;
+					--label-gap: 3px;
+					--result-entry-horiz-padding: 0px;
+					// margin: 0;
 					font-size: inherit;
 					line-height: inherit;
 
 					> label {
-						width: 34px;
-						white-space: nowrap;
-						margin-right: 3px;
+						// width: 34px;
+						// white-space: nowrap;
+						// margin-right: 3px;
 					}
 
 					> span {
 						text-align: left;
-						width: calc(100% - 34px - 3px);
-						vertical-align: top;
+						// width: calc(100% - 34px - 3px);
 					}
 
 				}

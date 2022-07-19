@@ -17,6 +17,14 @@ declare global {
 			showForRoll: (r: Roll) => Promise<void>
 		}
 	}
+
+	declare const cqApi: {
+		reprocess: () => void,
+		reparse: () => void,
+		reevaluate: () => void,
+		config: Record<string,any>
+	}
+
 	interface LenientGlobalVariableTypes {
     game: never;
   }

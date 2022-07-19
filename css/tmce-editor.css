@@ -1,7 +1,28 @@
 #tinymce {
   /* DEFAULT FOUNDRY OVERRIDES */
-  /* THEMES */ }
-  #tinymce * {
+  /* THEMES */
+  /* SUPPORTED OPENTYPE FEATURES for ALVERATA LIGHT/MED/BOLD/BLACK
+
+Automatically Enabled (Always)
+	"kern" - kerning
+	"liga" - standard ligatures
+	"locl" - localized forms
+
+Globally-Enabled
+	"salt" - stylistic alternates
+
+Small-Caps
+	"c2sc" - capitals to small-caps
+	"smcp" - non-capitals to small-caps
+
+Number Display
+	"frac" - show numbers separated by slash as fractions (ONLY use for fractions!)
+	"onum" - most deviation from baseline
+	"pnum" - (default) standard dev. from baseline
+	"lnum" - line up with baseline
+	"tnum" - monospace, line up with baseline
+*/ }
+  #tinymce {
     --color-text-light-primary: var(--KT-color-primary);
     --color-text-light-highlight: magenta;
     --color-text-light-heading: lime;
@@ -56,16 +77,20 @@
     --color-bg-btn-minor-inactive: var(--KT-color-emphasis);
     --color-bg-btn-minor-active: var(--KT-color-highlight);
     --color-bg-option: var(--KT-color-highlight); }
-  #tinymce .k4-theme-dgold {
-    --KT-color-primary: #958b68;
+  #tinymce {
+    --KT-color-primary: #958f6b;
     --KT-color-contrast: #111111;
-    --KT-color-highlight: #e4ddc3;
-    --KT-color-h1: #9a1f1f;
-    --KT-color-h2: #9a1f1f;
-    --KT-color-h3: var(--KT-color-primary);
-    --KT-color-keyword: #2a548a;
-    --KT-color-pos: #688ab5;
+    --KT-color-highlight: #e5e3da;
+    --KT-color-h1: #912228;
+    --KT-color-h2: #912228;
+    --KT-color-h3: #912228;
+    --KT-color-h4: #912228;
+    --KT-color-header-fg: var(--KT-color-contrast);
+    --KT-color-header-bg: var(--KT-color-primary);
+    --KT-color-keyword: #2661dc;
+    --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
+    --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
     --KT-bg: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-bg-top: transparent url("../assets/backgrounds/dgold/bg-top.webp") repeat no-repeat center top/1000px 44px;
     --KT-bg-top-right: transparent url("../assets/backgrounds/dgold/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
@@ -75,21 +100,25 @@
     --KT-bg-bot-left: transparent url("../assets/backgrounds/dgold/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
     --KT-bg-bot: transparent url("../assets/backgrounds/dgold/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
     --KT-bg-bot-right: transparent url("../assets/backgrounds/dgold/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
-    --KT-color-light-contrast: #685f43;
-    --KT-color-deep-contrast: #000000;
-    --KT-color-emphasis: #b9af8f;
-    --KT-color-keyword-emphasis: #426899;
-    --KT-color-keyword-contrast: #183f72; }
+    --KT-color-light-contrast: #706b50;
+    --KT-color-deep-contrast: #040404;
+    --KT-color-emphasis: #bab69f;
+    --KT-color-keyword-emphasis: #7298e8;
+    --KT-color-keyword-contrast: #1b48a7; }
   #tinymce .k4-theme-dark {
-    --KT-color-primary: #cccccc;
-    --KT-color-contrast: #19160b;
-    --KT-color-highlight: #ffffff;
-    --KT-color-h1: #ba3e3e;
-    --KT-color-h2: #ba3e3e;
-    --KT-color-h3: var(--KT-color-primary);
-    --KT-color-keyword: #2a548a;
-    --KT-color-pos: #688ab5;
+    --KT-color-primary: #9e9aa5;
+    --KT-color-contrast: #25241b;
+    --KT-color-highlight: #f4f4f5;
+    --KT-color-h1: #d65158;
+    --KT-color-h2: #d65158;
+    --KT-color-h3: #d65158;
+    --KT-color-h4: #d65158;
+    --KT-color-header-fg: #f4f4f5;
+    --KT-color-header-bg: #040404;
+    --KT-color-keyword: #2661dc;
+    --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
+    --KT-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/12px;
     --KT-bg: transparent url("../assets/backgrounds/dark/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-bg-top: transparent url("../assets/backgrounds/dark/bg-top.webp") repeat no-repeat center top/1000px 44px;
     --KT-bg-top-right: transparent url("../assets/backgrounds/dark/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
@@ -99,21 +128,25 @@
     --KT-bg-bot-left: transparent url("../assets/backgrounds/dark/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
     --KT-bg-bot: transparent url("../assets/backgrounds/dark/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
     --KT-bg-bot-right: transparent url("../assets/backgrounds/dark/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
-    --KT-color-light-contrast: #685f43;
-    --KT-color-deep-contrast: #000000;
-    --KT-color-emphasis: #d8d8d8;
-    --KT-color-keyword-emphasis: #426899;
-    --KT-color-keyword-contrast: #183f72; }
+    --KT-color-light-contrast: #706b50;
+    --KT-color-deep-contrast: #040404;
+    --KT-color-emphasis: #e3e2e5;
+    --KT-color-keyword-emphasis: #7298e8;
+    --KT-color-keyword-contrast: #1b48a7; }
   #tinymce .k4-theme-white {
     --KT-color-primary: #111111;
-    --KT-color-contrast: #958b68;
-    --KT-color-highlight: #000000;
-    --KT-color-h1: #730606;
-    --KT-color-h2: #730606;
-    --KT-color-h3: var(--KT-color-primary);
-    --KT-color-keyword: #183f72;
-    --KT-color-pos: #2a548a;
+    --KT-color-contrast: #958f6b;
+    --KT-color-highlight: #040404;
+    --KT-color-h1: #6d1a1e;
+    --KT-color-h2: #6d1a1e;
+    --KT-color-h3: #6d1a1e;
+    --KT-color-h4: #6d1a1e;
+    --KT-color-header-fg: #e5e3da;
+    --KT-color-header-bg: #706b50;
+    --KT-color-keyword: #1b48a7;
+    --KT-color-pos: #2661dc;
     --KT-color-neg: #ff0000;
+    --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold.svg") no-repeat center center/12px;
     --KT-bg: transparent url("../assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-bg-top: transparent url("../assets/backgrounds/white/bg-top.webp") repeat no-repeat center top/1000px 44px;
     --KT-bg-top-right: transparent url("../assets/backgrounds/white/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
@@ -123,21 +156,25 @@
     --KT-bg-bot-left: transparent url("../assets/backgrounds/white/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
     --KT-bg-bot: transparent url("../assets/backgrounds/white/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
     --KT-bg-bot-right: transparent url("../assets/backgrounds/white/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
-    --KT-color-light-contrast: #b9af8f;
-    --KT-color-deep-contrast: #e4ddc3;
-    --KT-color-emphasis: #000000;
-    --KT-color-keyword-emphasis: #082b58;
-    --KT-color-keyword-contrast: #426899; }
+    --KT-color-light-contrast: #bab69f;
+    --KT-color-deep-contrast: #e5e3da;
+    --KT-color-emphasis: #040404;
+    --KT-color-keyword-emphasis: #091838;
+    --KT-color-keyword-contrast: #7298e8; }
   #tinymce .k4-theme-red {
-    --KT-color-primary: #ba3e3e;
-    --KT-color-contrast: #490000;
+    --KT-color-primary: #d65158;
+    --KT-color-contrast: #24090a;
     --KT-color-highlight: #ff0000;
     --KT-color-h1: #ff0000;
     --KT-color-h2: #ff0000;
-    --KT-color-h3: var(--KT-color-primary);
-    --KT-color-keyword: #2a548a;
-    --KT-color-pos: #688ab5;
+    --KT-color-h3: #ff0000;
+    --KT-color-h4: #ff0000;
+    --KT-color-header-fg: #ff0000;
+    --KT-color-header-bg: #491114;
+    --KT-color-keyword: #2661dc;
+    --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
+    --KT-bullet: transparent url("../assets/icons/bullets/bullet-red.svg") no-repeat center center/12px;
     --KT-bg: transparent url("../assets/backgrounds/red/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-bg-top: transparent url("../assets/backgrounds/red/bg-top.webp") repeat no-repeat center top/1000px 44px;
     --KT-bg-top-right: transparent url("../assets/backgrounds/red/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
@@ -147,54 +184,32 @@
     --KT-bg-bot-left: transparent url("../assets/backgrounds/red/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
     --KT-bg-bot: transparent url("../assets/backgrounds/red/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
     --KT-bg-bot-right: transparent url("../assets/backgrounds/red/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
-    --KT-color-light-contrast: #730606;
-    --KT-color-deep-contrast: #000000;
+    --KT-color-light-contrast: #6d1a1e;
+    --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #ff0000;
-    --KT-color-keyword-emphasis: #426899;
-    --KT-color-keyword-contrast: #183f72; }
-
-@font-face {
-  #tinymce {
-    src: url("../assets/fonts/alverata/irreg/alverataIrreg-light.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-light.svg") format("svg"); }
-    #tinymce font {
-      family: Alverata;
-      weight: 0 350;
-      style: normal; } }
+    --KT-color-keyword-emphasis: #7298e8;
+    --KT-color-keyword-contrast: #1b48a7; }
 
 @font-face {
   #tinymce {
     font-family: Alverata;
-    font-weight: 351 450;
+    font-weight: 0 450;
     font-style: normal;
-    src: url("../assets/fonts/alverata/irreg/alverataIrreg.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: Alverata;
-    font-weight: 451 550;
+    font-weight: 451 650;
     font-style: normal;
-    src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-med.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: Alverata;
-    font-weight: 551 650;
+    font-weight: 651 1000;
     font-style: normal;
-    src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); } }
-
-@font-face {
-  #tinymce {
-    font-family: Alverata;
-    font-weight: 651 800;
-    font-style: normal;
-    src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-bold.svg") format("svg"); } }
-
-@font-face {
-  #tinymce {
-    font-family: Alverata;
-    font-weight: 801 1000;
-    font-style: normal;
-    src: url("../assets/fonts/alverata/irreg/alverataIrreg-black.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-black.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
@@ -285,7 +300,7 @@
   #tinymce {
     font-family: AlverataSemiBold;
     font-style: normal;
-    src: url("../assets/fonts/alverata/irreg/alverataIrreg-semi.ttf") format("truetype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.otf") format("opentype"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff") format("woff"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.woff2") format("woff2"), url("../assets/fonts/alverata/irreg/alverataIrreg-semi.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
@@ -346,6 +361,8 @@
     color: var(--KT-color-primary);
     font-family: var(--font-primary);
     font-weight: 400;
+    -webkit-font-feature-settings: "ss05", "lnum";
+    font-feature-settings: "ss05", "lnum";
     border: none;
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
@@ -371,117 +388,152 @@
     #tinymce .mce-content-body ul option,
     #tinymce .mce-content-body li option {
       background: var(--KT-color-contrast); }
+    #tinymce.kult-text-container,
+    #tinymce *.kult-text-container,
+    #tinymce input[type="text"].kult-text-container,
+    #tinymce input[type="number"].kult-text-container,
+    #tinymce textarea.kult-text-container,
+    #tinymce select.kult-text-container,
+    #tinymce option.kult-text-container,
+    #tinymce img.kult-text-container,
+    #tinymce ul.kult-text-container,
+    #tinymce li.kult-text-container,
+    #tinymce .mce-content-body.kult-text-container,
+    #tinymce .mce-content-body *.kult-text-container,
+    #tinymce .mce-content-body input[type="text"].kult-text-container,
+    #tinymce .mce-content-body input[type="number"].kult-text-container,
+    #tinymce .mce-content-body textarea.kult-text-container,
+    #tinymce .mce-content-body select.kult-text-container,
+    #tinymce .mce-content-body option.kult-text-container,
+    #tinymce .mce-content-body img.kult-text-container,
+    #tinymce .mce-content-body ul.kult-text-container,
+    #tinymce .mce-content-body li.kult-text-container {
+      text-align: justify; }
   #tinymce i[class^="fa"],
   #tinymce .mce-content-body i[class^="fa"] {
-    --KT-color-primary: #958b68;
+    --KT-color-primary: #958f6b;
     --KT-color-contrast: #111111;
     font-family: var(--font-icon);
     font-weight: 900; }
   #tinymce ul.rules-list, #tinymce ul.inline-list,
   #tinymce .mce-content-body ul.rules-list,
   #tinymce .mce-content-body ul.inline-list {
-    margin-left: 10px; }
+    --list-indent: 24px;
+    margin: 0px 0px 0px var(--list-indent);
+    padding: 0; }
     #tinymce ul.rules-list li, #tinymce ul.inline-list li,
     #tinymce .mce-content-body ul.rules-list li,
     #tinymce .mce-content-body ul.inline-list li {
       text-align: left;
       list-style: none;
-      text-indent: -24px; }
+      text-indent: calc(-1 * var(--list-indent)); }
     #tinymce ul.rules-list li:before, #tinymce ul.inline-list li:before,
     #tinymce .mce-content-body ul.rules-list li:before,
     #tinymce .mce-content-body ul.inline-list li:before {
       content: "";
       display: inline-block;
       height: 18px;
-      width: 17px;
-      background: transparent url("../assets/icons/bullet.svg") no-repeat center center/12px;
-      vertical-align: middle; }
+      width: var(--list-indent);
+      background: var(--KT-bullet);
+      vertical-align: text-top; }
+  #tinymce label.k4-title,
   #tinymce h1,
   #tinymce h2,
   #tinymce h3,
+  #tinymce label.k4-h4,
   #tinymce label.k4-header,
+  #tinymce .mce-content-body label.k4-title,
   #tinymce .mce-content-body h1,
   #tinymce .mce-content-body h2,
   #tinymce .mce-content-body h3,
+  #tinymce .mce-content-body label.k4-h4,
   #tinymce .mce-content-body label.k4-header {
     display: block;
     width: 100%;
-    font-family: var(--font-primary-caps);
-    font-weight: 700;
-    border: none; }
+    border: none;
+    white-space: normal; }
+    #tinymce label.k4-title.tight,
     #tinymce h1.tight,
     #tinymce h2.tight,
     #tinymce h3.tight,
+    #tinymce label.k4-h4.tight,
     #tinymce label.k4-header.tight,
+    #tinymce .mce-content-body label.k4-title.tight,
     #tinymce .mce-content-body h1.tight,
     #tinymce .mce-content-body h2.tight,
     #tinymce .mce-content-body h3.tight,
+    #tinymce .mce-content-body label.k4-h4.tight,
     #tinymce .mce-content-body label.k4-header.tight {
       margin-top: 0;
       margin-bottom: 0; }
-  #tinymce h1,
-  #tinymce .mce-content-body h1 {
-    font-family: var(--font-heading);
-    color: var(--KT-color-h1);
+  #tinymce label.k4-title,
+  #tinymce .mce-content-body label.k4-title {
+    color: var(--KT-color-header-fg);
+    background: var(--KT-color-header-bg);
     font-weight: 600;
-    white-space: normal;
-    font-size: 2rem; }
-  #tinymce h2,
-  #tinymce .mce-content-body h2 {
-    font-family: var(--font-primary);
-    color: var(--KT-color-h2);
-    font-size: 1.5rem;
-    font-weight: 700; }
-  #tinymce h3,
-  #tinymce .mce-content-body h3 {
-    font-family: var(--font-primary);
-    color: var(--KT-color-h3);
-    font-weight: 900;
-    text-transform: uppercase;
-    font-size: 1rem; }
-  #tinymce label.k4-header,
-  #tinymce .mce-content-body label.k4-header {
-    color: var(--KT-color-contrast);
-    background: var(--KT-color-primary);
-    font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.375rem;
     line-height: 1.5rem;
-    white-space: nowrap; }
-    #tinymce label.k4-header.section-header,
-    #tinymce .mce-content-body label.k4-header.section-header {
+    white-space: nowrap;
+    text-align: center; }
+    #tinymce label.k4-title.section-title,
+    #tinymce .mce-content-body label.k4-title.section-title {
       width: calc(100% + 2 * var(--horiz-padding));
       margin-left: calc(-1 * var(--horiz-padding));
-      font-size: 1.375rem;
-      text-align: center;
       text-transform: uppercase;
       font-weight: 900; }
-    #tinymce label.k4-header.header-name,
-    #tinymce .mce-content-body label.k4-header.header-name {
+    #tinymce label.k4-title.item-title,
+    #tinymce .mce-content-body label.k4-title.item-title {
       text-align: left;
       margin: 0 0 0 22px;
       line-height: 2rem;
       font-weight: 700;
       padding: 5px 10px 0px 20px; }
-    #tinymce label.k4-header.hold-header, #tinymce label.k4-header.edges-header,
-    #tinymce .mce-content-body label.k4-header.hold-header,
-    #tinymce .mce-content-body label.k4-header.edges-header {
-      display: block;
-      font-size: 1.5rem;
-      font-weight: 900;
-      text-align: center;
-      -webkit-hyphens: none;
-      -ms-hyphens: none;
-      hyphens: none;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-      padding: 5px 0 4px 0; }
-      #tinymce label.k4-header.hold-header.hold-header, #tinymce label.k4-header.edges-header.hold-header,
-      #tinymce .mce-content-body label.k4-header.hold-header.hold-header,
-      #tinymce .mce-content-body label.k4-header.edges-header.hold-header {
-        color: #cccccc;
-        background: #730606;
-        -webkit-animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-        animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+  #tinymce h1,
+  #tinymce .mce-content-body h1 {
+    color: var(--KT-color-h1);
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 600;
+    height: 2rem;
+    margin: 20px 0 10px; }
+  #tinymce h2,
+  #tinymce .mce-content-body h2 {
+    color: var(--KT-color-h2);
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    height: 1.5rem;
+    margin: 10px 0; }
+  #tinymce h3,
+  #tinymce .mce-content-body h3 {
+    color: var(--KT-color-h3);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant: all-small-caps;
+    height: 1rem;
+    margin: 10px 0 0 0; }
+  #tinymce label.k4-h4,
+  #tinymce .mce-content-body label.k4-h4 {
+    color: var(--KT-color-h4);
+    font-family: var(--font-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-style: italic;
+    height: 0.75rem;
+    margin: 5px 0 -5px; }
+  #tinymce label.k4-header,
+  #tinymce .mce-content-body label.k4-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    font-variant: all-small-caps; }
+    #tinymce label.k4-header.hold-header,
+    #tinymce .mce-content-body label.k4-header.hold-header {
+      color: #d4d2d7;
+      background: #6d1a1e;
+      -webkit-animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+      animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955); }
 
 @-webkit-keyframes neonGlowRed {
   0% {
@@ -494,13 +546,12 @@
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5); }
   100% {
     text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(220, 65, 65, 0.8), 0 0 6px rgba(220, 65, 65, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 10.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.8); } }
-      #tinymce label.k4-header.hold-header.edges-header, #tinymce label.k4-header.edges-header.edges-header,
-      #tinymce .mce-content-body label.k4-header.hold-header.edges-header,
-      #tinymce .mce-content-body label.k4-header.edges-header.edges-header {
-        color: #cccccc;
-        background: #183f72;
-        -webkit-animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-        animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+    #tinymce label.k4-header.edges-header,
+    #tinymce .mce-content-body label.k4-header.edges-header {
+      color: #d4d2d7;
+      background: #1b48a7;
+      -webkit-animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+      animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955); }
 
 @-webkit-keyframes neonGlowBlue {
   0% {
@@ -572,14 +623,16 @@
   #tinymce .mce-content-body .result-entry {
     --label-width: 60px;
     --label-gap: 10px;
+    --result-entry-horiz-padding: 20px;
     display: block;
-    margin: 0 20px;
+    margin: 0 var(--result-entry-horiz-padding);
     font-size: 1rem;
     clear: both; }
     #tinymce .result-entry > label,
     #tinymce .mce-content-body .result-entry > label {
       text-align: right;
       display: block;
+      white-space: nowrap;
       width: var(--label-width);
       height: 100%;
       float: left;
@@ -589,12 +642,13 @@
       display: inline-block;
       width: calc(100% - (var(--label-width) + var(--label-gap)));
       margin-bottom: 4px;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
       border-bottom-style: solid;
       border-bottom-width: 3px;
       -o-border-image: -o-linear-gradient(left, var(--KT-color-primary) 50%, transparent) 1;
       border-image: -webkit-gradient(linear, left top, right top, color-stop(50%, var(--KT-color-primary)), to(transparent)) 1;
-      border-image: linear-gradient(to right, var(--KT-color-primary) 50%, transparent) 1; }
+      border-image: linear-gradient(to right, var(--KT-color-primary) 50%, transparent) 1;
+      vertical-align: top; }
     #tinymce .result-entry:last-of-type > span,
     #tinymce .mce-content-body .result-entry:last-of-type > span {
       border-bottom: none; }

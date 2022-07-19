@@ -1,4 +1,5 @@
-@import '../helpers/sassmeister';
+@import '../third-party/sassmeister/sassmeister';
+@import '../third-party/cq-prolyfill/cq-prolyfill';
 
 @function to-url($path, $subFolder: false) {
 	@if ($subFolder) {
@@ -20,11 +21,10 @@
 }
 
 @mixin to-mask($size, $radius, $padding: (0px 0px), $filter: none, $isExclusion: false) {
-	$cx: 50; $cy: 50; $r: $radius;
-
+	$cx: 50; $cy: 50;
 	$padding-x: to-number(nth($padding, 1));
 	$padding-y: to-number(nth($padding, 2));
-	$sheet-mask: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="#{$cx}" cy="#{$cy}" r="#{$r}" fill="black" filter="#{$filter}" /></svg>';
+	$sheet-mask: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="#{$cx}" cy="#{$cy}" r="#{$radius}" fill="black" filter="#{$filter}" /></svg>';
 
 	@if ($isExclusion) {
 		mask-composite: exclude;

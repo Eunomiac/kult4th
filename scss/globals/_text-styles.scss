@@ -1,3 +1,7 @@
+* {
+	// @include set-default-theme();
+}
+
 &,
 .mce-content-body {
 
@@ -17,11 +21,16 @@
 			family: var(--font-primary);
 			weight: $font-weight-normal;
 		}
+		font-feature-settings: "ss05", "lnum";
 		border: none;
 
 		option { background: var(--KT-color-contrast) }
 
 		hyphens: auto;
+
+		&.kult-text-container {
+			text-align: justify;
+		}
 	}
 
 	i[class^="fa"] {
@@ -32,33 +41,36 @@
 	}
 
 	ul.rules-list, ul.inline-list {
-		margin-left: 10px;
+		--list-indent: 24px;
+		margin: 0px 0px 0px var(--list-indent);
+		padding: 0;
 
 		li {
 			text-align: left;
 			list-style: none;
-			text-indent: -24px;
+			text-indent: calc(-1 * var(--list-indent));
 		}
 
 		li:before {
 			content: "";
 			display: inline-block;
 			height: 18px;
-			width: 17px;
-			background: transparent #{to-url("icons/bullet.svg")} no-repeat center center/12px;
-			vertical-align: middle;
+			width: var(--list-indent);
+			background: var(--KT-bullet);
+			vertical-align: text-top;
 		}
 	}
 
+	label.k4-title,
 	h1,
 	h2,
 	h3,
+	label.k4-h4,
 	label.k4-header {
 		display: block;
 		width: 100%;
-		font-family: var(--font-primary-caps);
-		font-weight: $font-weight-bold;
 		border: none;
+		white-space: normal;
 
 		&.tight {
 			margin-top: 0;
@@ -66,133 +78,139 @@
 		}
 	}
 
-	h1 {
-		font-family: var(--font-heading);
-		color: var(--KT-color-h1);
+	label.k4-title {
+		color: var(--KT-color-header-fg);
+		background: var(--KT-color-header-bg);
 		font-weight: $font-weight-semi;
-		white-space: normal;
-		font-size: $rem-32;
-	}
-
-	h2 {
-		font-family: var(--font-primary);
-		color: var(--KT-color-h2);
-		font-size: $rem-24;
-		font-weight: $font-weight-bold;
-	}
-
-	h3 {
-		font-family: var(--font-primary);
-		color: var(--KT-color-h3);
-		font-weight: $font-weight-black;
-		text-transform: uppercase;
-		font-size: $rem-16;
-	}
-
-	label.k4-header {
-		color: var(--KT-color-contrast);
-		background: var(--KT-color-primary);
-		font-weight: $font-weight-semi;
-		font-size: $rem-24;
+		font-size: $rem-22;
 		line-height: $rem-24;
 		white-space: nowrap;
+		text-align: center;
 
-		&.section-header {
+		&.section-title {
 			width: calc(100% + 2 * var(--horiz-padding));
 			margin-left: calc(-1 * var(--horiz-padding));
-			font-size: $rem-22;
-			text-align: center;
 			text-transform: uppercase;
 			font-weight: $font-weight-black;
 		}
 
-		&.header-name {
+		&.item-title {
 			text-align: left;
 			margin: 0 0 0 22px;
 			line-height: $rem-32;
 			font-weight: $font-weight-bold;
 			padding: 5px 10px 0px 20px;
 		}
+	}
 
-		&.hold-header,
-		&.edges-header {
-			display: block;
-			font-size: $rem-24;
-			font-weight: $font-weight-black;
-			text-align: center;
-			hyphens: none;
+	h1 {
+		color: var(--KT-color-h1);
+		font-family: var(--font-heading);
+		font-size: $rem-32;
+		font-weight: $font-weight-semi;
+		height: $rem-32;
+		margin: 20px 0 10px;
+	}
 
-			text-transform: uppercase;
-			margin-bottom: 5px;
-			padding: 5px 0 4px 0;
+	h2 {
+		color: var(--KT-color-h2);
+		font-family: var(--font-primary);
+		font-size: $rem-24;
+		font-weight: $font-weight-bold;
+		height: $rem-24;
+		margin: 10px 0;
+	}
 
-			&.hold-header {
-				color: $white;
-				background: $red-dark;
+	h3 {
+		color: var(--KT-color-h3);
+		font-family: var(--font-primary);
+		font-size: $rem-16;
+		font-weight: $font-weight-bold;
+		font-variant: all-small-caps;
+		height: $rem-16;
+		margin: 10px 0 0 0;
+	}
 
-				animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
+	label.k4-h4 {
+		color: var(--KT-color-h4);
+		font-family: var(--font-primary);
+		font-size: $rem-12;
+		font-weight: $font-weight-bold;
+		font-style: italic;
+		height: $rem-12;
+		margin: 5px 0 -5px;
+	}
 
-				@keyframes neonGlowRed {
-					0% {
-						text-shadow: 0 0 2px rgba(255, 255, 255, 0.8),
-												0 0 4px rgba(255, 255, 255, 0.8),
-												0 0 4.5px  rgba(255, 255, 255, 0.8),
-												0 0 8px  rgba(220, 65, 65, 0.8),
-												0 0 12.5px  rgba(220, 65, 65, 0.8),
-												0 0 16.5px  rgba(220, 65, 65, 0.5),
-												0 0 21px rgba(220, 65, 65, 0.5),
-												0 0 29px rgba(220, 65, 65, 0.5),
-												0 0 41.5px rgba(220, 65, 65, 0.5);
-					}
-					100% {
-						text-shadow: 0 0 0.5px rgba(255,255,255,.8),
-												0 0 1.5px rgba(255,255,255,.8),
-												0 0 2px rgba(255,255,255,.8),
-												0 0 4px rgba(220, 65, 65, 0.8),
-												0 0 6px rgba(220, 65, 65, 0.8),
-												0 0 8px rgba(220, 65, 65, 0.8),
-												0 0 10.5px rgba(220, 65, 65, 0.8),
-												0 0 16.5px rgba(220, 65, 65, 0.8);
-					}
+	label.k4-header {
+		font-size: $rem-24;
+		font-weight: $font-weight-bold;
+		text-align: center;
+
+		font-variant: all-small-caps;
+		// margin-bottom: 5px;
+		// padding: 5px 0 4px 0;
+
+		&.hold-header {
+			color: $white;
+			background: $red-dark;
+
+			animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
+
+			@keyframes neonGlowRed {
+				0% {
+					text-shadow: 0 0 2px rgba(255, 255, 255, 0.8),
+											0 0 4px rgba(255, 255, 255, 0.8),
+											0 0 4.5px  rgba(255, 255, 255, 0.8),
+											0 0 8px  rgba(220, 65, 65, 0.8),
+											0 0 12.5px  rgba(220, 65, 65, 0.8),
+											0 0 16.5px  rgba(220, 65, 65, 0.5),
+											0 0 21px rgba(220, 65, 65, 0.5),
+											0 0 29px rgba(220, 65, 65, 0.5),
+											0 0 41.5px rgba(220, 65, 65, 0.5);
 				}
-			}
-
-			&.edges-header {
-				color: $white;
-				background: $blue-dark;
-
-				animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
-
-				@keyframes neonGlowBlue {
-					0% {
-						text-shadow: 0 0 2px rgba(255,255,255,.8),
-												0 0 4px rgba(255,255,255,.8),
-												0 0 4.5px  rgba(255,255,255,.8),
-												0 0 8px  rgba(65,132, 220, 0.8),
-												0 0 12.5px  rgba(65,132, 220,.8),
-												0 0 16.5px  rgba(65,132, 220,.5),
-												0 0 21px rgba(65,132, 220,.5),
-												0 0 29px rgba(65,132, 220,.5),
-												0 0 41.5px rgba(65,132, 220,.5);
-					}
-					100% {
-						text-shadow: 0 0 0.5px rgba(255,255,255,.8),
-												0 0 1.5px rgba(255,255,255,.8),
-												0 0 2px rgba(255,255,255,.8),
-												0 0 4px rgba(65,132, 220,.8),
-												0 0 6px rgba(65,132, 220,.8),
-												0 0 8px rgba(65,132, 220,.8),
-												0 0 10.5px rgba(65,132, 220,.8),
-												0 0 16.5px rgba(65,132, 220,.8);
-					}
+				100% {
+					text-shadow: 0 0 0.5px rgba(255,255,255,.8),
+											0 0 1.5px rgba(255,255,255,.8),
+											0 0 2px rgba(255,255,255,.8),
+											0 0 4px rgba(220, 65, 65, 0.8),
+											0 0 6px rgba(220, 65, 65, 0.8),
+											0 0 8px rgba(220, 65, 65, 0.8),
+											0 0 10.5px rgba(220, 65, 65, 0.8),
+											0 0 16.5px rgba(220, 65, 65, 0.8);
 				}
 			}
 		}
-	}
 
-	.text-tag {
-		// display: inline;
-		// border: none;
+		&.edges-header {
+			color: $white;
+			background: $blue-dark;
+
+			animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
+
+			@keyframes neonGlowBlue {
+				0% {
+					text-shadow: 0 0 2px rgba(255,255,255,.8),
+											0 0 4px rgba(255,255,255,.8),
+											0 0 4.5px  rgba(255,255,255,.8),
+											0 0 8px  rgba(65,132, 220, 0.8),
+											0 0 12.5px  rgba(65,132, 220,.8),
+											0 0 16.5px  rgba(65,132, 220,.5),
+											0 0 21px rgba(65,132, 220,.5),
+											0 0 29px rgba(65,132, 220,.5),
+											0 0 41.5px rgba(65,132, 220,.5);
+				}
+				100% {
+					text-shadow: 0 0 0.5px rgba(255,255,255,.8),
+											0 0 1.5px rgba(255,255,255,.8),
+											0 0 2px rgba(255,255,255,.8),
+											0 0 4px rgba(65,132, 220,.8),
+											0 0 6px rgba(65,132, 220,.8),
+											0 0 8px rgba(65,132, 220,.8),
+											0 0 10.5px rgba(65,132, 220,.8),
+											0 0 16.5px rgba(65,132, 220,.8);
+				}
+			}
+		}
 	}
 
 	.text-posmod,
@@ -248,14 +266,16 @@
 	.result-entry {
 		--label-width: 60px;
 		--label-gap: 10px;
+		--result-entry-horiz-padding: 20px;
 		display: block;
-		margin: 0 20px;
+		margin: 0 var(--result-entry-horiz-padding);
 		font-size: $rem-16;
 		clear: both;
 
 		> label {
 			text-align: right;
 			display: block;
+			white-space: nowrap;
 			width: var(--label-width);
 			height: 100%;
 			float: left;
@@ -266,10 +286,11 @@
 			display: inline-block;
 			width: calc(100% - (var(--label-width) + var(--label-gap)));
 			margin-bottom: 4px;
-			padding-bottom: 4px;
+			padding-bottom: 2px;
 			border-bottom-style: solid;
 			border-bottom-width: 3px;
 			border-image: linear-gradient(to right, var(--KT-color-primary) 50%, transparent) 1;
+			vertical-align: top;
 		}
 
 		&:last-of-type>span {
