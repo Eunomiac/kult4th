@@ -17,6 +17,7 @@
 
 	.window-header {
 		z-index: 6;
+		position: absolute;
 		font-size: 0;
 		max-height: 20px;
 		overflow: visible;
@@ -52,7 +53,8 @@
 		.bg-container {
 			position: absolute;
 			pointer-events: none;
-			display: grid;
+			// display: grid;
+			display: none;
 		}
 
 		form {
@@ -77,7 +79,12 @@
 				z-index: 3;
 
 			}
-			main { grid-area: main }
+			main {
+				grid-area: main;
+				border: 1px solid transparent;
+				border-image: var(--KT-border);
+				background: var(--KT-background);
+			}
 
 			> * {
 				position: relative;
@@ -245,16 +252,16 @@
 	}
 
 	.window-resizable-handle {
-		z-index: 4;
-		width: 50px;
-		height: 50px;
-		right: -25px;
-		position: relative;
-		align-self: flex-end;
-		flex-basis: 50px;
-		flex-shrink: 0;
-		flex-grow: 0;
-		opacity: 0;
+		// z-index: 4;
+		// width: 50px;
+		// height: 50px;
+		// right: -25px;
+		// position: relative;
+		// align-self: flex-end;
+		// flex-basis: 50px;
+		// flex-shrink: 0;
+		// flex-grow: 0;
+		// opacity: 0;
 		cursor: nwse-resize;
 	}
 }

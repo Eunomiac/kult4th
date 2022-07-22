@@ -7,6 +7,88 @@ import gsap, {GSDevTools, MorphSVGPlugin} from "gsap/all";
 gsap.registerPlugin(MorphSVGPlugin);
 
 const ANIMATIONS = {
+	glitchText(target: HTMLElement, startingGlitchScale = 1): gsapAnim {
+
+		const tl = gsap.timeline({
+			repeat: -1,
+			repeatDelay: 10,
+			reversed: true,
+			onRepeat() {
+				this.timeScale(this.glitchScale);
+			}
+		});
+		tl.glitchScale = startingGlitchScale;
+		tl.to(".glitch", {
+			skewX() { return 20 * this.glitchScale },
+			duration() { return 0.1 * this.glitchScale },
+			ease: "power4.inOut"
+		})
+			.to(".glitch", {duration() { return 0.01 * this.glitchScale },skewX: 0, ease: "power4.inOut"})
+			.to(".glitch", {duration() { return 0.01 * this.glitchScale },opacity:0})
+			.to(".glitch", {duration() { return 0.01 * this.glitchScale },opacity:1})
+			.to(".glitch", {duration() { return 0.01 * this.glitchScale },x() { return -10 * this.glitchScale }})
+			.to(".glitch", {duration() { return 0.01 * this.glitchScale },x:0})
+			.add("split", 0)
+			.to(".top", {duration() { return 0.5 },x() { return -10 * this.glitchScale} ,ease: "power4.inOut"},"split")
+			.to(".bottom", {duration() { return 0.5 },x() { return 10 * this.glitchScale}, ease: "power4.inOut"},"split")
+			.to(".glitch", {duration() { return 0.08 },className: "+=redShadow"},"split")
+
+			.to("#txt", {duration() { return 0 },scale() { return 1 + (0.05 * (this.glitchScale - 1)) }},"split")
+			.to("#txt", {duration() { return 0 },scale:1}, "+=0.02")
+
+			.to(".glitch", {duration() { return 0.08 },className: "-=redShadow"}, "+=0.09")
+			.to(".glitch", {className: "+=greenShadow", duration: 0.03},"split")
+			.to(".glitch", {className: "-=greenShadow", duration: 0.03},"+=0.01")
+
+			.to(".top", {duration() { return 0.2 },x:0,ease: "power4.inOut"})
+			.to(".bottom", {duration() { return 0.2 },x:0,ease: "power4.inOut"})
+
+			.to(".glitch", {duration() { return 0.02 },scaleY() { return 1 + (0.05 * (this.glitchScale - 1))}, ease: "power4.inOut"})
+			.to(".glitch", {duration() { return 0.04 },scaleY:1,ease: "power4.inOut"});
+
+		return tl;
+	},
+	gearGeburahRotate(target: HTMLElement): gsapAnim {
+		const centerSaw$ = $(target).find(".svg-gear-geburah-center-saw");
+		return gsap.timeline({delay: 0.2})
+			.to(
+				target,
+				{
+					rotation: "-=10",
+					duration: 0.4,
+					repeatRefresh: true,
+					repeatDelay: 0.8,
+					ease: "back",
+					repeat: -1
+				},
+				0
+			)
+			.to(
+				centerSaw$,
+				{
+					rotation: "-=30",
+					duration: 0.4,
+					repeatRefresh: true,
+					repeatDelay: 0,
+					ease: "none",
+					repeat: -1
+				},
+				0
+			);
+	},
+	gearBinahRotate(target: HTMLElement): gsapAnim {
+		return gsap.to(
+			target,
+			{
+				rotation: "+=10",
+				duration: 0.4,
+				repeatRefresh: true,
+				repeatDelay: 0.8,
+				ease: "back",
+				repeat: -1
+			}
+		);
+	},
 	navFade(target: HTMLElement): gsapAnim {
 		// const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
 		const navLens$ = $(target).find(".nav-lens");
@@ -352,20 +434,20 @@ const ANIMATIONS = {
 };
 
 export default class K4PCSheet extends ActorSheet {
-	_actor?: any;
-	get $entity(): K4Entity { return this.object ?? this }
-	get $sheet(): K4Sheet|false { return (this.$entity.sheet ?? false) as K4Sheet|false }
-	get $actor(): K4Actor|false {
-		return (this._actor = this._actor
-			?? this.actor
-			?? (this.$entity.documentName === "Actor" ? this.$entity : false));
-	}
+	// _actor?: any;
+	// get $entity(): K4Entity { return this.object ?? this }
+	// get $sheet(): K4Sheet|false { return (this.$entity.sheet ?? false) as K4Sheet|false }
+	// get $actor(): K4Actor|false {
+	// 	return (this._actor = this._actor
+	// 		?? this.actor
+	// 		?? (this.$entity.documentName === "Actor" ? this.$entity : false));
+	// }
 
-	get $id() { return this.$entity.id }
-	get $type() { return this.$entity.type }
+	// get $id() { return this.$entity.id }
+	// get $type() { return this.$entity.type }
 
-	get $root() { return this.$entity.data }
-	get $data() { return this.$root.data }
+	// get $root() { return this.$entity.data }
+	// get $data() { return this.$root.data }
 
 	static override get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
@@ -403,7 +485,7 @@ export default class K4PCSheet extends ActorSheet {
 
 	override setPosition(posData: Partial<Application.Position>) {
 		super.setPosition(posData);
-		cqApi.reprocess();
+		cqApi.reevaluate();
 	}
 
 	override activateListeners(html: JQuery) {
@@ -415,8 +497,6 @@ export default class K4PCSheet extends ActorSheet {
 		$(() => {
 			console.log("ACTOR SHEET HTML OBJECT", {html, fullElement: self.element[0]});
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
-
-			// MorphSVGPlugin.convertToPath(".svg-def");
 
 			const [navPanel] = html.find(".nav-panel");
 			$(navPanel)
@@ -445,6 +525,14 @@ export default class K4PCSheet extends ActorSheet {
 					});
 				});
 
+			$(document).find(".gear-container.gear-binah")
+				.each(function initGearRotation() {
+					ANIMATIONS.gearBinahRotate(this);
+				});
+			$(document).find(".gear-container.gear-geburah")
+				.each(function initGearRotation() {
+					ANIMATIONS.gearGeburahRotate(this);
+				});
 			// html.find(".nav-tab")
 			// 	.each(function initNavTab() {
 			// 		gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});

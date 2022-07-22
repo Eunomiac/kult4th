@@ -4,6 +4,71 @@ import SVGDATA from "../scripts/svgdata.js";
 import gsap, { GSDevTools, MorphSVGPlugin } from "/scripts/greensock/esm/all.js";
 gsap.registerPlugin(MorphSVGPlugin);
 const ANIMATIONS = {
+    glitchText(target, startingGlitchScale = 1) {
+        const tl = gsap.timeline({
+            repeat: -1,
+            repeatDelay: 10,
+            reversed: true,
+            onRepeat() {
+                this.timeScale(this.glitchScale);
+            }
+        });
+        tl.glitchScale = startingGlitchScale;
+        tl.to(".glitch", {
+            skewX() { return 20 * this.glitchScale; },
+            duration() { return 0.1 * this.glitchScale; },
+            ease: "power4.inOut"
+        })
+            .to(".glitch", { duration() { return 0.01 * this.glitchScale; }, skewX: 0, ease: "power4.inOut" })
+            .to(".glitch", { duration() { return 0.01 * this.glitchScale; }, opacity: 0 })
+            .to(".glitch", { duration() { return 0.01 * this.glitchScale; }, opacity: 1 })
+            .to(".glitch", { duration() { return 0.01 * this.glitchScale; }, x() { return -10 * this.glitchScale; } })
+            .to(".glitch", { duration() { return 0.01 * this.glitchScale; }, x: 0 })
+            .add("split", 0)
+            .to(".top", { duration() { return 0.5; }, x() { return -10 * this.glitchScale; }, ease: "power4.inOut" }, "split")
+            .to(".bottom", { duration() { return 0.5; }, x() { return 10 * this.glitchScale; }, ease: "power4.inOut" }, "split")
+            .to(".glitch", { duration() { return 0.08; }, className: "+=redShadow" }, "split")
+            .to("#txt", { duration() { return 0; }, scale() { return 1 + (0.05 * (this.glitchScale - 1)); } }, "split")
+            .to("#txt", { duration() { return 0; }, scale: 1 }, "+=0.02")
+            .to(".glitch", { duration() { return 0.08; }, className: "-=redShadow" }, "+=0.09")
+            .to(".glitch", { className: "+=greenShadow", duration: 0.03 }, "split")
+            .to(".glitch", { className: "-=greenShadow", duration: 0.03 }, "+=0.01")
+            .to(".top", { duration() { return 0.2; }, x: 0, ease: "power4.inOut" })
+            .to(".bottom", { duration() { return 0.2; }, x: 0, ease: "power4.inOut" })
+            .to(".glitch", { duration() { return 0.02; }, scaleY() { return 1 + (0.05 * (this.glitchScale - 1)); }, ease: "power4.inOut" })
+            .to(".glitch", { duration() { return 0.04; }, scaleY: 1, ease: "power4.inOut" });
+        return tl;
+    },
+    gearGeburahRotate(target) {
+        const centerSaw$ = $(target).find(".svg-gear-geburah-center-saw");
+        return gsap.timeline({ delay: 0.2 })
+            .to(target, {
+            rotation: "-=10",
+            duration: 0.4,
+            repeatRefresh: true,
+            repeatDelay: 0.8,
+            ease: "back",
+            repeat: -1
+        }, 0)
+            .to(centerSaw$, {
+            rotation: "-=30",
+            duration: 0.4,
+            repeatRefresh: true,
+            repeatDelay: 0,
+            ease: "none",
+            repeat: -1
+        }, 0);
+    },
+    gearBinahRotate(target) {
+        return gsap.to(target, {
+            rotation: "+=10",
+            duration: 0.4,
+            repeatRefresh: true,
+            repeatDelay: 0.8,
+            ease: "back",
+            repeat: -1
+        });
+    },
     navFade(target) {
         // const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
         const navLens$ = $(target).find(".nav-lens");
@@ -239,18 +304,18 @@ const ANIMATIONS = {
     }
 };
 export default class K4PCSheet extends ActorSheet {
-    _actor;
-    get $entity() { return this.object ?? this; }
-    get $sheet() { return (this.$entity.sheet ?? false); }
-    get $actor() {
-        return (this._actor = this._actor
-            ?? this.actor
-            ?? (this.$entity.documentName === "Actor" ? this.$entity : false));
-    }
-    get $id() { return this.$entity.id; }
-    get $type() { return this.$entity.type; }
-    get $root() { return this.$entity.data; }
-    get $data() { return this.$root.data; }
+    // _actor?: any;
+    // get $entity(): K4Entity { return this.object ?? this }
+    // get $sheet(): K4Sheet|false { return (this.$entity.sheet ?? false) as K4Sheet|false }
+    // get $actor(): K4Actor|false {
+    // 	return (this._actor = this._actor
+    // 		?? this.actor
+    // 		?? (this.$entity.documentName === "Actor" ? this.$entity : false));
+    // }
+    // get $id() { return this.$entity.id }
+    // get $type() { return this.$entity.type }
+    // get $root() { return this.$entity.data }
+    // get $data() { return this.$root.data }
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "k4-theme-dgold"],
@@ -284,8 +349,7 @@ export default class K4PCSheet extends ActorSheet {
     }
     setPosition(posData) {
         super.setPosition(posData);
-        // @ts-expect-error Yeah I know I gotta declare the cqApi global variable.
-        window.cqApi.reprocess();
+        cqApi.reevaluate();
     }
     activateListeners(html) {
         const ISDEBUGGING = false;
@@ -294,7 +358,6 @@ export default class K4PCSheet extends ActorSheet {
         $(() => {
             console.log("ACTOR SHEET HTML OBJECT", { html, fullElement: self.element[0] });
             const hoverTimelines = [];
-            // MorphSVGPlugin.convertToPath(".svg-def");
             const [navPanel] = html.find(".nav-panel");
             $(navPanel)
                 .each(() => {
@@ -318,6 +381,14 @@ export default class K4PCSheet extends ActorSheet {
                         }
                     }
                 });
+            });
+            $(document).find(".gear-container.gear-binah")
+                .each(function initGearRotation() {
+                ANIMATIONS.gearBinahRotate(this);
+            });
+            $(document).find(".gear-container.gear-geburah")
+                .each(function initGearRotation() {
+                ANIMATIONS.gearGeburahRotate(this);
             });
             // html.find(".nav-tab")
             // 	.each(function initNavTab() {

@@ -1,28 +1,12 @@
 & {
-	--sheet-min-height: 50px;
+	--sheet-min-height: 150px;
 	--sheet-min-width: 400px;
 
-	--sheet-top-padding: 0px;
+	--sheet-top-padding: 20px;
 	--sheet-horiz-padding: 20px;
 	--sheet-bottom-padding: 10px;
 
 	--sheet-header-height: 40px;
-
-	$mask-size: 100px;
-	$mask-radius: 50;
-
-	$bg-horiz-padding: 0px;
-	$bg-vert-padding: 0px;
-	$bg-top-vert-padding: 0px;
-
-	$bg-vert-height: 1000px;
-	$bg-vert-width: 44px;
-	$bg-vert-feather: 12px;
-
-
-	$bg-horiz-height: 44px;
-	$bg-horiz-width: 1000px;
-	$bg-horiz-feather: 12px;
 
 	filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.3));
 
@@ -33,105 +17,11 @@
 	.window-content {
 		background: none;
 
-		.bg-container {
-
-			$bg-corner-height: $bg-horiz-height - $bg-horiz-feather;
-			$bg-corner-width: $bg-vert-width - $bg-vert-feather;
-
-			height: calc(100% - (2 * #{$bg-vert-padding}) - #{$bg-top-vert-padding});
-			width: calc(100% - (2 * #{$bg-horiz-padding}));
-			top: $bg-vert-padding + $bg-top-vert-padding;
-			left: $bg-horiz-padding;
-			z-index: -1;
-
-			// @include to-mask(
-			// 	$mask-size,
-			// 	$mask-radius,
-			// 	(#{-1 * $bg-horiz-padding + 20px} #{-1 * $bg-vert-padding - $bg-top-vert-padding + 20px - 15px}),
-			// 	$isExclusion: true);
-
-			grid-template-areas:
-				"top-left  top top-right"
-				"left    center    right"
-				"bot-left  bot bot-right";
-			grid-template-columns: #{$bg-corner-width} 1fr #{$bg-corner-width};
-			grid-template-rows: #{$bg-corner-height} 1fr #{$bg-corner-height};
-
-			.sheet-bg {
-				position: relative;
-				height: 100%;
-				width: 100%;
-
-				&.vert-edge {
-					width: $bg-vert-width;
-
-					&.left {
-						grid-area: left;
-						background: var(--KT-bg-left);
-					}
-
-					&.right {
-						grid-area: right;
-						background: var(--KT-bg-right);
-						right: $bg-vert-width - $bg-corner-width;
-					}
-				}
-
-				&.horiz-edge {
-					height: $bg-horiz-height;
-
-					&.top {
-						grid-area: top;
-						background: var(--KT-bg-top);
-					}
-
-					&.bot {
-						grid-area: bot;
-						background: var(--KT-bg-bot);
-						bottom: $bg-horiz-height - $bg-corner-height;
-					}
-				}
-
-				&.corner {
-					height: $bg-horiz-height;
-					width: $bg-vert-width;
-					z-index: -1;
-
-					&.top-left {
-						grid-area: top-left;
-						background: var(--KT-bg-top-left);
-					}
-					&.top-right {
-						grid-area: top-right;
-						background: var(--KT-bg-top-right);
-						left: -1 * $bg-horiz-feather;
-					}
-					&.bot-left {
-						grid-area: bot-left;
-						background: var(--KT-bg-bot-left);
-						top: -1 * $bg-vert-feather;
-					}
-					&.bot-right {
-						grid-area: bot-right;
-						background: var(--KT-bg-bot-right);
-						top: -1 * $bg-vert-feather;
-						left: -1 * $bg-horiz-feather;
-					}
-				}
-
-				&.center {
-					grid-area: center;
-					z-index: -2;
-					background: var(--KT-bg);
-				}
-			}
-		}
-
 		form {
 			font-size: $rem-16;
 			line-height: $rem-20;
-			margin-top: -15px;
-			margin-bottom: 15px;
+			// margin-top: -15px;
+			// margin-bottom: 15px;
 
 			.header-icon {
 				$icon-size: 80px;
@@ -149,7 +39,7 @@
 				z-index: 4;
 				overflow: hidden;
 				outline: 3px solid var(--KT-color-contrast);
-				background: var(--KT-bg);
+				background: var(--KT-background);
 
 				.svg-icon-def {
 					transform: translate(-50%, -50%);
@@ -195,7 +85,7 @@
 				overflow-x: hidden;
 				overflow-y: auto;
 
-				padding-top: 15px;
+				padding-top: 0px;
 				padding-bottom: 0px;
 
 				&.kult-darksecret-container {
@@ -209,7 +99,9 @@
 	}
 
 	.window-resizable-handle {
-		top: -50px;
-		flex-basis: 10px;
+		// top: -50px;
+		// flex-basis: 10px;
 	}
 }
+
+

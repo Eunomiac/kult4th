@@ -172,15 +172,29 @@
 		position: absolute;
 		pointer-events: none;
 		transform: translate(-50%, -50%);
-		z-index: -2;
+		z-index: 4;
 
 		.svg-def {
 			position: absolute;
-			fill: $gold-dark;
-			fill-opacity: 0.3;
+			fill: $gold-darker;
+			// fill-opacity: 0.3;
 			stroke: none;
-			filter: blur(2px);
-			opacity: 0;
+			// filter: blur(2px);
+			// opacity: 0;
+		}
+
+		&.gear-binah {
+			.svg-def.svg-gear-binah-spike-tl,
+			.svg-def.svg-gear-binah-spike-r,
+			.svg-def.svg-gear-binah-spike-bl {
+				fill: $gold-dark;
+			}
+		}
+
+		&.gear-geburah {
+			.svg-def.svg-gear-geburah-center-saw {
+				fill: $gold-dark;
+			}
 		}
 
 		&.gear-top-left {
@@ -191,9 +205,9 @@
 			width: $size;
 		}
 		&.gear-top-right {
-			$size: 100px;
-			top: $horiz-horiz-sub-center;
-			right: -1 * $size + (0.5 * $vert-width);
+			$size: 150px;
+			top: 60px; // $horiz-horiz-sub-center;
+			right: -125px; // -1 * $size + (0.5 * $vert-width);
 			height: $size;
 			width: $size;
 		}
@@ -215,7 +229,7 @@
 			}
 		}
 		&.gear-bottom-right {
-			$size: 80px;
+			$size: 120px;
 			bottom: -1 * $size + $horiz-horiz-sub-center;
 			right: -1 * $size + (0.5 * $vert-width);
 			height: $size;

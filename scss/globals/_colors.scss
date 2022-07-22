@@ -85,9 +85,9 @@ $blue-glow: #3f93ff;
 	--KT-color-pos: #{$blue-brightest};
 	--KT-color-neg: #{$red-glow};
 
+	--KT-background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/1000px 1000px;
+	--KT-border: #{to-url("backgrounds/dgold/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/12px;
-
-	@include set-bg-vars("dgold");
 
 	--KT-color-light-contrast: #{$gold-dark};
 	--KT-color-deep-contrast: #{$black-darkest};
@@ -159,9 +159,61 @@ $blue-glow: #3f93ff;
 	@include set-default-theme();
 }
 
-// .k4-theme-dgold, .k4-theme-dgold /* * */ {
-// 	@include set-default-theme();
-// }
+.k4-theme-bright {
+	--KT-color-primary: #{$black};
+	--KT-color-contrast: #{$gold-brightest};
+	--KT-color-highlight: #{$black-darkest};
+
+	--KT-color-h1: #{$red-dark};
+	--KT-color-h2: #{$red-dark};
+	--KT-color-h3: #{$red-dark};
+	--KT-color-h4: #{$red-dark};
+
+	--KT-color-header-fg: #{$gold-brightest};
+	--KT-color-header-bg: #{$gold-darkest};
+
+	--KT-color-keyword: #{$blue-dark};
+	--KT-color-pos: #{$blue};
+	--KT-color-neg: #{$red-dark};
+
+	--KT-background: transparent #{to-url("backgrounds/bgold/bg.webp")} repeat repeat center center/1000px 1000px;
+	--KT-border: #{to-url("backgrounds/bgold/border.webp")} 30 / 30px / 15px round;
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-black.svg")} no-repeat center center/12px;
+
+	--KT-color-light-contrast: #{$gold-bright};
+	--KT-color-deep-contrast: #{$gold-brightest};
+	--KT-color-emphasis: #{$black-darkest};
+	--KT-color-keyword-emphasis: #{$blue-darkest};
+	--KT-color-keyword-contrast: #{$blue-bright};
+}
+
+.k4-theme-burnt {
+	--KT-color-primary: #{$white-dark};
+	--KT-color-contrast: #{$gold-darkest};
+	--KT-color-highlight: #{$white-brightest};
+
+	--KT-color-h1: #{$red-bright};
+	--KT-color-h2: #{$red-bright};
+	--KT-color-h3: #{$red-bright};
+	--KT-color-h4: #{$red-bright};
+
+	--KT-color-header-fg: #{$white-brightest};
+	--KT-color-header-bg: #{$black-darkest};
+
+	--KT-color-keyword: #{$blue};
+	--KT-color-pos: #{$blue-brightest};
+	--KT-color-neg: #{$red-glow};
+
+	--KT-background: transparent #{to-url("backgrounds/burnt/bg.webp")} repeat repeat center center/1000px 1000px;
+	--KT-border: #{to-url("backgrounds/burnt/border.webp")} 30 / 30px / 15px round;
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/12px;
+
+	--KT-color-light-contrast: #{$gold-dark};
+	--KT-color-deep-contrast: #{$black-darkest};
+	--KT-color-emphasis: #{$white-bright};
+	--KT-color-keyword-emphasis: #{$blue-bright};
+	--KT-color-keyword-contrast: #{$blue-dark};
+}
 
 .k4-theme-dark {
 	--KT-color-primary: #{$white-dark};
@@ -180,9 +232,9 @@ $blue-glow: #3f93ff;
 	--KT-color-pos: #{$blue-brightest};
 	--KT-color-neg: #{$red-glow};
 
+	--KT-background: transparent #{to-url("backgrounds/dark/bg.webp")} repeat repeat center center/1000px 1000px;
+	--KT-border: #{to-url("backgrounds/dark/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/12px;
-
-	@include set-bg-vars("dark");
 
 	--KT-color-light-contrast: #{$gold-dark};
 	--KT-color-deep-contrast: #{$black-darkest};
@@ -208,9 +260,9 @@ $blue-glow: #3f93ff;
 	--KT-color-pos: #{$blue};
 	--KT-color-neg: #{$red-glow};
 
+	--KT-background: transparent #{to-url("backgrounds/white/bg.webp")} repeat repeat center center/1000px 1000px;
+	--KT-border: #{to-url("backgrounds/white/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/12px;
-
-	@include set-bg-vars("white");
 
 	--KT-color-light-contrast: #{$gold-bright};
 	--KT-color-deep-contrast: #{$gold-brightest};
@@ -236,9 +288,9 @@ $blue-glow: #3f93ff;
 	--KT-color-pos: #{$blue-brightest};
 	--KT-color-neg: #{$red-glow};
 
+	--KT-background: transparent #{to-url("backgrounds/red/bg.webp")} repeat repeat center center/1000px 1000px;
+	--KT-border: #{to-url("backgrounds/red/border.webp")} 150 / 100px / 30px repeat;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/12px;
-
-	@include set-bg-vars("red");
 
 	--KT-color-light-contrast: #{$red-dark};
 	--KT-color-deep-contrast: #{$black-darkest};

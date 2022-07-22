@@ -32,23 +32,3 @@
 
 	mask: url('#{$sheet-mask}') #{$padding-x - 0.5 * $size} #{$padding-y - 0.5 * $size}/#{$size} #{$size} no-repeat, linear-gradient(#fff, #fff);
 }
-
-@mixin set-bg-vars($bgFolder) {
-	$path: str-insert(str-insert('url("../assets/backgrounds/', $bgFolder, 1000), "/", 1000);
-
-	$bgs: [
-		("bg", str-insert($path, 'bg.webp")', 1000) repeat repeat center center/1000px 1000px),
-		("bg-top", str-insert($path, 'bg-top.webp")', 1000) repeat no-repeat center top/1000px 44px),
-		("bg-top-right", str-insert($path, 'bg-top-right.webp")', 1000) no-repeat no-repeat right top/44px 44px),
-		("bg-left", str-insert($path, 'bg-left.webp")', 1000) no-repeat repeat left center/44px 1000px),
-		("bg-top-left", str-insert($path, 'bg-top-left.webp")', 1000) no-repeat no-repeat left top/44px 44px),
-		("bg-right", str-insert($path, 'bg-right.webp")', 1000) no-repeat repeat right center/44px 1000px),
-		("bg-bot-left", str-insert($path, 'bg-bot-left.webp")', 1000) no-repeat no-repeat left bottom/44px 44px),
-		("bg-bot", str-insert($path, 'bg-bot.webp")', 1000) repeat no-repeat center bottom/1000px 44px),
-		("bg-bot-right", str-insert($path, 'bg-bot-right.webp")', 1000) no-repeat no-repeat right bottom/44px 44px)
-	];
-
-	@each $bg in $bgs {
-		--KT-#{nth($bg, 1)}: transparent #{nth($bg, 2)};
-	}
-}

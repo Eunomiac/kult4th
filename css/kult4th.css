@@ -222,19 +222,54 @@ Number Display
     --KT-color-keyword: #2661dc;
     --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
+    --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
+    --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
-    --KT-bg: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
-    --KT-bg-top: transparent url("../assets/backgrounds/dgold/bg-top.webp") repeat no-repeat center top/1000px 44px;
-    --KT-bg-top-right: transparent url("../assets/backgrounds/dgold/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
-    --KT-bg-left: transparent url("../assets/backgrounds/dgold/bg-left.webp") no-repeat repeat left center/44px 1000px;
-    --KT-bg-top-left: transparent url("../assets/backgrounds/dgold/bg-top-left.webp") no-repeat no-repeat left top/44px 44px;
-    --KT-bg-right: transparent url("../assets/backgrounds/dgold/bg-right.webp") no-repeat repeat right center/44px 1000px;
-    --KT-bg-bot-left: transparent url("../assets/backgrounds/dgold/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
-    --KT-bg-bot: transparent url("../assets/backgrounds/dgold/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-    --KT-bg-bot-right: transparent url("../assets/backgrounds/dgold/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
     --KT-color-light-contrast: #706b50;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #bab69f;
+    --KT-color-keyword-emphasis: #7298e8;
+    --KT-color-keyword-contrast: #1b48a7; }
+  .vtt.game.system-kult4th .k4-theme-bright {
+    --KT-color-primary: #111111;
+    --KT-color-contrast: #e5e3da;
+    --KT-color-highlight: #040404;
+    --KT-color-h1: #6d1a1e;
+    --KT-color-h2: #6d1a1e;
+    --KT-color-h3: #6d1a1e;
+    --KT-color-h4: #6d1a1e;
+    --KT-color-header-fg: #e5e3da;
+    --KT-color-header-bg: #25241b;
+    --KT-color-keyword: #1b48a7;
+    --KT-color-pos: #2661dc;
+    --KT-color-neg: #6d1a1e;
+    --KT-background: transparent url("../assets/backgrounds/bgold/bg.webp") repeat repeat center center/1000px 1000px;
+    --KT-border: url("../assets/backgrounds/bgold/border.webp") 30 / 30px / 15px round;
+    --KT-bullet: transparent url("../assets/icons/bullets/bullet-black.svg") no-repeat center center/12px;
+    --KT-color-light-contrast: #bab69f;
+    --KT-color-deep-contrast: #e5e3da;
+    --KT-color-emphasis: #040404;
+    --KT-color-keyword-emphasis: #091838;
+    --KT-color-keyword-contrast: #7298e8; }
+  .vtt.game.system-kult4th .k4-theme-burnt {
+    --KT-color-primary: #9e9aa5;
+    --KT-color-contrast: #25241b;
+    --KT-color-highlight: #f4f4f5;
+    --KT-color-h1: #d65158;
+    --KT-color-h2: #d65158;
+    --KT-color-h3: #d65158;
+    --KT-color-h4: #d65158;
+    --KT-color-header-fg: #f4f4f5;
+    --KT-color-header-bg: #040404;
+    --KT-color-keyword: #2661dc;
+    --KT-color-pos: #c9d8f6;
+    --KT-color-neg: #ff0000;
+    --KT-background: transparent url("../assets/backgrounds/burnt/bg.webp") repeat repeat center center/1000px 1000px;
+    --KT-border: url("../assets/backgrounds/burnt/border.webp") 30 / 30px / 15px round;
+    --KT-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/12px;
+    --KT-color-light-contrast: #706b50;
+    --KT-color-deep-contrast: #040404;
+    --KT-color-emphasis: #e3e2e5;
     --KT-color-keyword-emphasis: #7298e8;
     --KT-color-keyword-contrast: #1b48a7; }
   .vtt.game.system-kult4th .k4-theme-dark {
@@ -250,16 +285,9 @@ Number Display
     --KT-color-keyword: #2661dc;
     --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
+    --KT-background: transparent url("../assets/backgrounds/dark/bg.webp") repeat repeat center center/1000px 1000px;
+    --KT-border: url("../assets/backgrounds/dark/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/12px;
-    --KT-bg: transparent url("../assets/backgrounds/dark/bg.webp") repeat repeat center center/1000px 1000px;
-    --KT-bg-top: transparent url("../assets/backgrounds/dark/bg-top.webp") repeat no-repeat center top/1000px 44px;
-    --KT-bg-top-right: transparent url("../assets/backgrounds/dark/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
-    --KT-bg-left: transparent url("../assets/backgrounds/dark/bg-left.webp") no-repeat repeat left center/44px 1000px;
-    --KT-bg-top-left: transparent url("../assets/backgrounds/dark/bg-top-left.webp") no-repeat no-repeat left top/44px 44px;
-    --KT-bg-right: transparent url("../assets/backgrounds/dark/bg-right.webp") no-repeat repeat right center/44px 1000px;
-    --KT-bg-bot-left: transparent url("../assets/backgrounds/dark/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
-    --KT-bg-bot: transparent url("../assets/backgrounds/dark/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-    --KT-bg-bot-right: transparent url("../assets/backgrounds/dark/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
     --KT-color-light-contrast: #706b50;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #e3e2e5;
@@ -278,16 +306,9 @@ Number Display
     --KT-color-keyword: #1b48a7;
     --KT-color-pos: #2661dc;
     --KT-color-neg: #ff0000;
+    --KT-background: transparent url("../assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
+    --KT-border: url("../assets/backgrounds/white/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold.svg") no-repeat center center/12px;
-    --KT-bg: transparent url("../assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
-    --KT-bg-top: transparent url("../assets/backgrounds/white/bg-top.webp") repeat no-repeat center top/1000px 44px;
-    --KT-bg-top-right: transparent url("../assets/backgrounds/white/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
-    --KT-bg-left: transparent url("../assets/backgrounds/white/bg-left.webp") no-repeat repeat left center/44px 1000px;
-    --KT-bg-top-left: transparent url("../assets/backgrounds/white/bg-top-left.webp") no-repeat no-repeat left top/44px 44px;
-    --KT-bg-right: transparent url("../assets/backgrounds/white/bg-right.webp") no-repeat repeat right center/44px 1000px;
-    --KT-bg-bot-left: transparent url("../assets/backgrounds/white/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
-    --KT-bg-bot: transparent url("../assets/backgrounds/white/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-    --KT-bg-bot-right: transparent url("../assets/backgrounds/white/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
     --KT-color-light-contrast: #bab69f;
     --KT-color-deep-contrast: #e5e3da;
     --KT-color-emphasis: #040404;
@@ -306,16 +327,9 @@ Number Display
     --KT-color-keyword: #2661dc;
     --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
+    --KT-background: transparent url("../assets/backgrounds/red/bg.webp") repeat repeat center center/1000px 1000px;
+    --KT-border: url("../assets/backgrounds/red/border.webp") 150 / 100px / 30px repeat;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-red.svg") no-repeat center center/12px;
-    --KT-bg: transparent url("../assets/backgrounds/red/bg.webp") repeat repeat center center/1000px 1000px;
-    --KT-bg-top: transparent url("../assets/backgrounds/red/bg-top.webp") repeat no-repeat center top/1000px 44px;
-    --KT-bg-top-right: transparent url("../assets/backgrounds/red/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
-    --KT-bg-left: transparent url("../assets/backgrounds/red/bg-left.webp") no-repeat repeat left center/44px 1000px;
-    --KT-bg-top-left: transparent url("../assets/backgrounds/red/bg-top-left.webp") no-repeat no-repeat left top/44px 44px;
-    --KT-bg-right: transparent url("../assets/backgrounds/red/bg-right.webp") no-repeat repeat right center/44px 1000px;
-    --KT-bg-bot-left: transparent url("../assets/backgrounds/red/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
-    --KT-bg-bot: transparent url("../assets/backgrounds/red/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-    --KT-bg-bot-right: transparent url("../assets/backgrounds/red/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
     --KT-color-light-contrast: #6d1a1e;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #ff0000;
@@ -692,16 +706,9 @@ Number Display
       --KT-color-keyword: #2661dc;
       --KT-color-pos: #c9d8f6;
       --KT-color-neg: #ff0000;
+      --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
+      --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
       --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
-      --KT-bg: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
-      --KT-bg-top: transparent url("../assets/backgrounds/dgold/bg-top.webp") repeat no-repeat center top/1000px 44px;
-      --KT-bg-top-right: transparent url("../assets/backgrounds/dgold/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
-      --KT-bg-left: transparent url("../assets/backgrounds/dgold/bg-left.webp") no-repeat repeat left center/44px 1000px;
-      --KT-bg-top-left: transparent url("../assets/backgrounds/dgold/bg-top-left.webp") no-repeat no-repeat left top/44px 44px;
-      --KT-bg-right: transparent url("../assets/backgrounds/dgold/bg-right.webp") no-repeat repeat right center/44px 1000px;
-      --KT-bg-bot-left: transparent url("../assets/backgrounds/dgold/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
-      --KT-bg-bot: transparent url("../assets/backgrounds/dgold/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-      --KT-bg-bot-right: transparent url("../assets/backgrounds/dgold/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
       --KT-color-light-contrast: #706b50;
       --KT-color-deep-contrast: #040404;
       --KT-color-emphasis: #bab69f;
@@ -732,6 +739,7 @@ Number Display
     background: none; }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-header {
       z-index: 6;
+      position: absolute;
       font-size: 0;
       max-height: 20px;
       overflow: visible;
@@ -765,7 +773,7 @@ Number Display
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .bg-container {
         position: absolute;
         pointer-events: none;
-        display: grid; }
+        display: none; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content form {
         --border-color: #958f6b;
         height: 100%;
@@ -783,7 +791,11 @@ Number Display
           overflow: hidden;
           z-index: 3; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content form main {
-          grid-area: main; }
+          grid-area: main;
+          border: 1px solid transparent;
+          -o-border-image: var(--KT-border);
+          border-image: var(--KT-border);
+          background: var(--KT-background); }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content form > * {
           position: relative;
           z-index: 2; }
@@ -1207,21 +1219,6 @@ Number Display
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .item-card.basic-move-item .item-icon.passive-item {
             --icon-filter: invert(1) brightness(0.5); }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-resizable-handle {
-      z-index: 4;
-      width: 50px;
-      height: 50px;
-      right: -25px;
-      position: relative;
-      -ms-flex-item-align: end;
-      align-self: flex-end;
-      -ms-flex-preferred-size: 50px;
-      flex-basis: 50px;
-      -ms-flex-negative: 0;
-      flex-shrink: 0;
-      -webkit-box-flex: 0;
-      -ms-flex-positive: 0;
-      flex-grow: 0;
-      opacity: 0;
       cursor: nwse-resize; }
   .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor {
     --sheet-min-height: 525px;
@@ -1347,25 +1344,27 @@ Number Display
       -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%);
-      z-index: -2; }
+      z-index: 4; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container .svg-def {
         position: absolute;
-        fill: #706b50;
-        fill-opacity: 0.3;
-        stroke: none;
-        -webkit-filter: blur(2px);
-        filter: blur(2px);
-        opacity: 0; }
+        fill: #4b4835;
+        stroke: none; }
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-binah .svg-def.svg-gear-binah-spike-tl,
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-binah .svg-def.svg-gear-binah-spike-r,
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-binah .svg-def.svg-gear-binah-spike-bl {
+        fill: #706b50; }
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-geburah .svg-def.svg-gear-geburah-center-saw {
+        fill: #706b50; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-top-left {
         top: 6.5px;
         left: 120px;
         height: 80px;
         width: 80px; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-top-right {
-        top: 6.5px;
-        right: -85px;
-        height: 100px;
-        width: 100px; }
+        top: 60px;
+        right: -125px;
+        height: 150px;
+        width: 150px; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-bottom-left {
         bottom: -93.5px;
         left: 15px;
@@ -1378,10 +1377,10 @@ Number Display
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-bottom-left .svg-def .d-1 {
             fill: #4b4835; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-bottom-right {
-        bottom: -73.5px;
-        right: -65px;
-        height: 80px;
-        width: 80px; }
+        bottom: -113.5px;
+        right: -105px;
+        height: 120px;
+        width: 120px; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container img {
         position: absolute; }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container {
@@ -1800,9 +1799,9 @@ Number Display
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr; }
   .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item {
-    --sheet-min-height: 50px;
+    --sheet-min-height: 150px;
     --sheet-min-width: 400px;
-    --sheet-top-padding: 0px;
+    --sheet-top-padding: 20px;
     --sheet-horiz-padding: 20px;
     --sheet-bottom-padding: 10px;
     --sheet-header-height: 40px;
@@ -1810,66 +1809,9 @@ Number Display
     filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.3)); }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content {
       background: none; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container {
-        height: calc(100% - (2 * 0px) - 0px);
-        width: calc(100% - (2 * 0px));
-        top: 0px;
-        left: 0px;
-        z-index: -1;
-        grid-template-areas: "top-left  top top-right" "left    center    right" "bot-left  bot bot-right";
-        grid-template-columns: 32px 1fr 32px;
-        grid-template-rows: 32px 1fr 32px; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg {
-          position: relative;
-          height: 100%;
-          width: 100%; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.vert-edge {
-            width: 44px; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.vert-edge.left {
-              grid-area: left;
-              background: var(--KT-bg-left); }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.vert-edge.right {
-              grid-area: right;
-              background: var(--KT-bg-right);
-              right: 12px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.horiz-edge {
-            height: 44px; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.horiz-edge.top {
-              grid-area: top;
-              background: var(--KT-bg-top); }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.horiz-edge.bot {
-              grid-area: bot;
-              background: var(--KT-bg-bot);
-              bottom: 12px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.corner {
-            height: 44px;
-            width: 44px;
-            z-index: -1; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.corner.top-left {
-              grid-area: top-left;
-              background: var(--KT-bg-top-left); }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.corner.top-right {
-              grid-area: top-right;
-              background: var(--KT-bg-top-right);
-              left: -12px; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.corner.bot-left {
-              grid-area: bot-left;
-              background: var(--KT-bg-bot-left);
-              top: -12px; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.corner.bot-right {
-              grid-area: bot-right;
-              background: var(--KT-bg-bot-right);
-              top: -12px;
-              left: -12px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content .bg-container .sheet-bg.center {
-            grid-area: center;
-            z-index: -2;
-            background: var(--KT-bg); }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form {
         font-size: 1rem;
-        line-height: 1.25rem;
-        margin-top: -15px;
-        margin-bottom: 15px; }
+        line-height: 1.25rem; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .header-icon {
           -webkit-transform: translate(-50%, -50%);
           -ms-transform: translate(-50%, -50%);
@@ -1884,7 +1826,7 @@ Number Display
           z-index: 4;
           overflow: hidden;
           outline: 3px solid var(--KT-color-contrast);
-          background: var(--KT-bg); }
+          background: var(--KT-background); }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .header-icon .svg-icon-def {
             -webkit-transform: translate(-50%, -50%);
             -ms-transform: translate(-50%, -50%);
@@ -1924,14 +1866,10 @@ Number Display
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content {
           overflow-x: hidden;
           overflow-y: auto;
-          padding-top: 15px;
+          padding-top: 0px;
           padding-bottom: 0px; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content.kult-darksecret-container p:first-child::first-line {
             font-variant: small-caps; }
-    .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-resizable-handle {
-      top: -50px;
-      -ms-flex-preferred-size: 10px;
-      flex-basis: 10px; }
   .vtt.game.system-kult4th #ui-right #sidebar {
     /* FOUNDRY OVERRIDES */
     --sidebar-width: 300px;
@@ -1954,16 +1892,9 @@ Number Display
     --KT-color-keyword: #2661dc;
     --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
+    --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
+    --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
-    --KT-bg: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
-    --KT-bg-top: transparent url("../assets/backgrounds/dgold/bg-top.webp") repeat no-repeat center top/1000px 44px;
-    --KT-bg-top-right: transparent url("../assets/backgrounds/dgold/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
-    --KT-bg-left: transparent url("../assets/backgrounds/dgold/bg-left.webp") no-repeat repeat left center/44px 1000px;
-    --KT-bg-top-left: transparent url("../assets/backgrounds/dgold/bg-top-left.webp") no-repeat no-repeat left top/44px 44px;
-    --KT-bg-right: transparent url("../assets/backgrounds/dgold/bg-right.webp") no-repeat repeat right center/44px 1000px;
-    --KT-bg-bot-left: transparent url("../assets/backgrounds/dgold/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
-    --KT-bg-bot: transparent url("../assets/backgrounds/dgold/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-    --KT-bg-bot-right: transparent url("../assets/backgrounds/dgold/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
     --KT-color-light-contrast: #706b50;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #bab69f;
@@ -1982,16 +1913,9 @@ Number Display
       --KT-color-keyword: #2661dc;
       --KT-color-pos: #c9d8f6;
       --KT-color-neg: #ff0000;
+      --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
+      --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
       --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
-      --KT-bg: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
-      --KT-bg-top: transparent url("../assets/backgrounds/dgold/bg-top.webp") repeat no-repeat center top/1000px 44px;
-      --KT-bg-top-right: transparent url("../assets/backgrounds/dgold/bg-top-right.webp") no-repeat no-repeat right top/44px 44px;
-      --KT-bg-left: transparent url("../assets/backgrounds/dgold/bg-left.webp") no-repeat repeat left center/44px 1000px;
-      --KT-bg-top-left: transparent url("../assets/backgrounds/dgold/bg-top-left.webp") no-repeat no-repeat left top/44px 44px;
-      --KT-bg-right: transparent url("../assets/backgrounds/dgold/bg-right.webp") no-repeat repeat right center/44px 1000px;
-      --KT-bg-bot-left: transparent url("../assets/backgrounds/dgold/bg-bot-left.webp") no-repeat no-repeat left bottom/44px 44px;
-      --KT-bg-bot: transparent url("../assets/backgrounds/dgold/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-      --KT-bg-bot-right: transparent url("../assets/backgrounds/dgold/bg-bot-right.webp") no-repeat no-repeat right bottom/44px 44px;
       --KT-color-light-contrast: #706b50;
       --KT-color-deep-contrast: #040404;
       --KT-color-emphasis: #bab69f;

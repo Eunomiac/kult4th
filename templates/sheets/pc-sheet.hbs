@@ -2,25 +2,22 @@
 {{log "DATA" data}}
 {{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 
-
-
 <div class="gear-container gear-top-left">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-a"}}
 </div>
-<div class="gear-container gear-top-right">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-e"}}
+<div class="gear-container gear-top-right gear-binah">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-bl"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-r"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-tl"}}
 </div>
 <div class="gear-container gear-bottom-left">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-c"}}
 </div>
-<div class="gear-container gear-bottom-right">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-g"}}
+<div class="gear-container gear-bottom-right gear-geburah">
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-geburah"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-geburah-center-saw"}}
 </div>
-
-
-{{> "systems/kult4th/templates/components/border-grid.hbs" }}
-{{> "systems/kult4th/templates/components/bg-grid.hbs" data.type }}
-
 
 <form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
 <script src="systems/kult4th/node_modules/cq-prolyfill/cq-prolyfill.js" async></script>
