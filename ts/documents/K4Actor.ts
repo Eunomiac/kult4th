@@ -1,6 +1,7 @@
 import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
+import {ActorDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData.js";
 
 export default class K4Actor extends Actor {
 
@@ -9,6 +10,33 @@ export default class K4Actor extends Actor {
 		if (this.data.type === K4ActorType.pc) {
 			this.preparePCData();
 		}
+	}
+
+	populateDebugPC() {
+		const updateData: Partial<ActorDataConstructorData> = {};
+
+		// Add wounds
+		updateData.data = {
+			wounds: [
+				{
+					description: "Scraped Knee",
+					isCritical: false,
+					isStabilized: true
+				},
+				{
+					description: "Broken Arm",
+					isCritical: false,
+					isStabilized: false
+				},
+				{
+					description: "Gunshot Wound",
+					isCritical: true,
+					isStabilized: true
+				}
+			]
+		};
+
+		this.update(updateData);
 	}
 
 	preparePCData() {
@@ -97,8 +125,8 @@ export default class K4Actor extends Actor {
 	get woundPenaltyData(): K4RollModData {
 		if (this.data.type === K4ActorType.pc) {
 			const [unstabSerious, unstabCritical] = [
-				this.data.data.wounds.filter((wound) => wound.type === K4WoundType.serious && !wound.isStabilized).length,
-				this.data.data.wounds.filter((wound) => wound.type === K4WoundType.critical && !wound.isStabilized).length
+				this.data.data.wounds.filter((wound) => !wound.isCritical && !wound.isStabilized).length,
+				this.data.data.wounds.filter((wound) => wound.isCritical && !wound.isStabilized).length
 			];
 			if (unstabSerious && unstabCritical) {
 				return this.data.data.modifiers.seriousAndCriticalWounds[Math.min(

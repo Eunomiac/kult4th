@@ -2,7 +2,7 @@
 	--sheet-min-height: 150px;
 	--sheet-min-width: 400px;
 
-	--sheet-top-padding: 20px;
+	--sheet-top-padding: 0px;
 	--sheet-horiz-padding: 20px;
 	--sheet-bottom-padding: 10px;
 
@@ -85,9 +85,6 @@
 				overflow-x: hidden;
 				overflow-y: auto;
 
-				padding-top: 0px;
-				padding-bottom: 0px;
-
 				&.kult-darksecret-container {
 					p:first-child::first-line {
 						font-variant: small-caps;
@@ -103,5 +100,3 @@
 		// flex-basis: 10px;
 	}
 }
-
-

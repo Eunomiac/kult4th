@@ -36,145 +36,7 @@
 	$horiz-grid-height: $horiz-height;
 	$corner-grid-height: $corner-height - $horiz-grid-height - $corner-vert-shift;
 
-	.nav-panel.gear-container {
-		$gear-size: 180px;
-		$full-size: 230px;
-		$frame-width: 10px;
-		top: $nav-vert-shift; // $horiz-horiz-sub-center;
-		left: $nav-horiz-shift; // (0.5 * $vert-width);
-		height: $gear-size;
-		width: $gear-size;
-		pointer-events: all;
-		position: absolute;
-		z-index: 5;
-		transform: translate(-50%, -50%) scale(0.8);
-
-		.svg-def {
-			fill: $gold;
-			fill-opacity: 1;
-			stroke: none; // $gold-darkest;
-			stroke-width: 2px;
-			stroke-opacity: 1;
-			filter: none;
-			opacity: 1;
-			z-index: 2;
-			height: $full-size;
-			width: $full-size;
-			top: -1 * $nav-vert-shift;
-			left: -1 * $nav-horiz-shift;
-			pointer-events: none;
-
-			&.svg-gear-nav { fill: $gold-dark }
-			&.svg-gear-nav-inner-ring { fill: $gold-bright }
-			&.svg-gear-nav-outer-ring { fill: $gold }
-			&.svg-gear-nav-spikes { fill: $gold-darker }
-			&.svg-gear-nav-gears-hover { fill: $gold-dark; opacity: 0 !important}
-		}
-
-		.nav-lens, .profile-image-bg, .profile-image-animation {
-			pointer-events: none;
-			top: $frame-width;
-			left: $frame-width;
-			height: $gear-size - 2 * $frame-width;
-			width: $gear-size - 2 * $frame-width;
-		}
-
-		.nav-lens {
-			z-index: 1;
-			top: 0;
-			left: 0;
-			height: $gear-size;
-			width: $gear-size;
-		}
-
-		.profile-image {
-			height: auto;
-			width: auto;
-			max-width: $gear-size - 2 * $frame-width;
-			top: $gear-size / 2;
-			left: $gear-size / 2;
-			transform: translate(-50%, -50%);
-			z-index: 0;
-			clip-path: circle(closest-side);
-		}
-
-		.profile-image-bg {
-			position: absolute;
-			border-radius: 50%;
-			background: $black;
-			z-index: -1;
-		}
-
-		.profile-image-animation {
-			position: absolute;
-			border-radius: 50%;
-			// background: transparent #{to-url("animations/gears-perspective.gif")} no-repeat no-repeat 90% center/266px auto;
-			background: transparent #{to-url("animations/gears-steampunk.gif")} no-repeat no-repeat center center/185px auto;
-			z-index: -2;
-		}
-
-		.header-button {
-			// opacity: 0;
-			display: block;
-			font-size: $rem-24;
-			width: 30px;
-			position: absolute;
-			z-index: 2;
-			text-align: center;
-			// text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
-			transform: translate(-50%, -50%);
-
-
-			&.close {
-				top: 35px;
-				left: 110px;
-			}
-
-			&.minimize {
-				left: 135px;
-				top: 60px;
-			}
-		}
-
-		.tabs {
-			$tab-spike-height: 40px;
-			$tab-spike-length: 150px;
-			height: 100%;
-			width: 100%;
-			position: relative;
-			z-index: -3;
-
-			.nav-tab {
-				transform-origin: right center;
-				transform: translate(-50%, -50%);
-				height: $tab-spike-height;
-				width: 5px;
-				top: 50%;
-
-				&, > * {
-					display: block;
-					position: absolute;
-				}
-
-				svg {
-					width: 100%;
-				}
-
-				.nav-tab-label {
-					opacity: 0;
-				}
-			}
-		}
-
-	}
-
-	.gear-container {
-		position: absolute;
-		pointer-events: none;
-		transform: translate(-50%, -50%);
-		z-index: 4;
-
-		.svg-def {
+	.svg-def {
 			position: absolute;
 			fill: $gold-darker;
 			// fill-opacity: 0.3;
@@ -182,6 +44,12 @@
 			// filter: blur(2px);
 			// opacity: 0;
 		}
+
+	.gear-container {
+		position: absolute;
+		pointer-events: none;
+		transform: translate(-50%, -50%);
+		z-index: 4;
 
 		&.gear-binah {
 			.svg-def.svg-gear-binah-spike-tl,
@@ -241,209 +109,8 @@
 		}
 	}
 
-	.bg-container {
-			$bg-horiz-padding: 0.7 * $vert-width;
-			$bg-vert-padding: 0.25 * $bg-horiz-padding;
-			$bg-top-vert-padding: $vert-height;
-
-			$bg-vert-height: 1000px;
-			$bg-vert-width: 44px;
-			$bg-vert-feather: 12px;
-
-			$bg-horiz-height: 44px;
-			$bg-horiz-width: 1000px;
-			$bg-horiz-feather: 12px;
-
-			$bg-corner-height: $bg-horiz-height - $bg-horiz-feather;
-			$bg-corner-width: $bg-vert-width - $bg-vert-feather;
-
-			height: calc(100% - (2 * #{$bg-vert-padding}) - #{$bg-top-vert-padding});
-			width: calc(100% - (2 * #{$bg-horiz-padding}));
-			top: $bg-vert-padding + $bg-top-vert-padding;
-			left: $bg-horiz-padding;
-			z-index: -1;
-
-			@include to-mask($mask-size, $mask-radius, (#{-1 * $bg-horiz-padding + $nav-horiz-shift} #{-1 * $bg-vert-padding - $bg-top-vert-padding + $nav-vert-shift}), $isExclusion: true)
-
-			grid-template-areas:
-				"top-left  top top-right"
-				"left    center    right"
-				"bot-left  bot bot-right";
-			grid-template-columns: #{$bg-corner-width} 1fr #{$bg-corner-width};
-			grid-template-rows: #{$bg-corner-height} 1fr #{$bg-corner-height};
-
-			.sheet-bg {
-				position: relative;
-				height: 100%;
-				width: 100%;
-
-				&.vert-edge {
-					width: $bg-vert-width;
-
-					&.left {
-						grid-area: left;
-						background: transparent #{to-url("backgrounds/dgold/bg-left.webp")} no-repeat repeat left center/#{$bg-vert-width} #{$bg-vert-height};
-					}
-
-					&.right {
-						grid-area: right;
-						background: transparent #{to-url("backgrounds/dgold/bg-right.webp")} no-repeat repeat right center/#{$bg-vert-width} #{$bg-vert-height};
-						right: $bg-vert-width - $bg-corner-width;
-					}
-				}
-
-				&.horiz-edge {
-					height: $bg-horiz-height;
-
-					&.top {
-						grid-area: top;
-						background: transparent #{to-url("backgrounds/dgold/bg-top.webp")} repeat no-repeat center top/#{$bg-horiz-width} #{$bg-horiz-height};
-					}
-
-					&.bot {
-						grid-area: bot;
-						background: transparent #{to-url("backgrounds/dgold/bg-bot.webp")} repeat no-repeat center bottom/#{$bg-horiz-width} #{$bg-horiz-height};
-						bottom: $bg-horiz-height - $bg-corner-height;
-					}
-				}
-
-				&.corner {
-					background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/#{$bg-corner-width} #{$bg-corner-height};
-					position: absolute;
-					-webkit-mask-composite: destination-out;
-					mask-composite: exclude;
-
-					&.top-left {
-						grid-area: top-left;
-						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-					}
-					&.top-right {
-						grid-area: top-right;
-						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-					}
-					&.bot-left {
-						grid-area: bot-left;
-						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-					}
-					&.bot-right {
-						grid-area: bot-right;
-						-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-						mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/#{$bg-corner-width} #{$bg-corner-height}, linear-gradient(#fff, #fff);
-					}
-				}
-
-				&.center {
-					grid-area: center;
-					z-index: -2;
-					background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/500px 500px;
-				}
-			}
-	}
-
-	.border-container {
-		height: 100%;
-		width: 100%;
-		z-index: 3;
-
-		grid-template-areas:
-			"top-left top-left  .  top-right top-right"
-			"top-left top-left  .  top-right top-right"
-			"    left    .      .     .          right"
-			"bot-left bot-left  .  bot-right bot-right"
-			"bot-left bot-left bot bot-right bot-right";
-		grid-template-columns: #{$vert-grid-width} #{$corner-grid-width} 1fr #{$corner-grid-width} #{$vert-grid-width};
-		grid-template-rows: #{$horiz-grid-height + $vert-height} #{$corner-grid-height} 1fr #{$corner-grid-height} #{$horiz-grid-height};
-
-		@include to-mask($mask-size, $mask-radius, (#{$nav-horiz-shift} #{$nav-vert-shift}), $isExclusion: true);
-		.sheet-border {
-			pointer-events: none;
-			position: relative;
-			background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/contain;
-
-			&.corner {
-				z-index: 5;
-				height: $corner-height;
-				width: $corner-width;
-
-				&.top-left {
-					grid-area: top-left;
-					--border-image: #{to-url("layout/simple-border-top-left.webp")};
-					--border-horiz-align: left;
-					--border-vert-align: top;
-					top: -1 * $corner-vert-shift;
-					left: -1 * $corner-horiz-shift;
-					background-size: 125px 87px;
-					height: 87px;
-				}
-
-				&.top-right {
-					grid-area: top-right;
-					--border-image: #{to-url("layout/simple-border-top-right.webp")};
-					--border-horiz-align: right;
-					--border-vert-align: top;
-					top: -1 * $corner-vert-shift;
-					right: 0;
-					background-size: 125px 87px;
-					height: 87px;
-				}
-
-				&.bot-left {
-					grid-area: bot-left;
-					--border-image: #{to-url("layout/simple-border-bot-left.webp")};
-					--border-horiz-align: left;
-					--border-vert-align: bottom;
-					bottom: -1 * $corner-vert-shift;
-					left: -1 * $corner-horiz-shift;
-				}
-
-				&.bot-right {
-					grid-area: bot-right;
-					--border-image: #{to-url("layout/simple-border-bot-right.webp")};
-					--border-horiz-align: right;
-					--border-vert-align: bottom;
-					bottom: -1 * $corner-vert-shift;
-					right: 0;
-				}
-			}
-
-			&.horiz-bar {
-				background: transparent #{to-url("layout/simple-border-horiz-bar.webp")} repeat no-repeat center center/#{$horiz-width} #{$horiz-height};
-				left: -1 * $corner-horiz-shift;
-				width: calc(100% + 2 * #{$corner-horiz-shift});
-
-				&.top {
-					grid-area: top;
-					display: none;
-				}
-
-				&.bot {
-					grid-area: bot;
-				}
-			}
-
-			&.vert-bar {
-				$vert-spacer: 0px;
-				z-index: 4;
-				height: calc(100% - 2 * #{$vert-spacer});
-				top: $vert-spacer;
-				width: $vert-width;
-				background: transparent #{to-url("layout/chain.svg")} no-repeat repeat center center/#{$vert-height} #{$vert-height};
-
-				&.left {
-					grid-area: left;
-				}
-
-				&.right {
-					grid-area: right;
-				}
-			}
-		}
-	}
-
 	.window-content {
+		display: block;
 		background: none;
 
 		form {
@@ -452,7 +119,6 @@
 				position: relative;
 				z-index: 3;
 			}
-
 
 			.sheet-header {
 				height: var(--sheet-header-height);
@@ -495,8 +161,234 @@
 				}
 			}
 
+			.nav-panel {
+				$gear-size: 180px;
+				$full-size: 230px;
+				$frame-width: 10px;
+				top: $nav-vert-shift; // $horiz-horiz-sub-center;
+				left: $nav-horiz-shift; // (0.5 * $vert-width);
+				height: $gear-size;
+				width: $gear-size;
+				pointer-events: all;
+				position: absolute;
+				z-index: 5;
+				transform: translate(-50%, -50%) scale(0.8);
+
+				* { pointer-events: none }
+
+				.nav-svg {
+					position: relative;
+					// z-index: 5;
+
+					.svg-def {
+						fill: $gold;
+						fill-opacity: 1;
+						stroke: none; // $gold-darkest;
+						stroke-width: 2px;
+						stroke-opacity: 1;
+						filter: none;
+						opacity: 1;
+						z-index: 2;
+						transform-origin: center center;
+						height: $full-size;
+						width: $full-size;
+						top: -1 * $nav-vert-shift;
+						left: -1 * $nav-horiz-shift;
+
+						&.outer-spikes {
+							fill: $gold-dark;
+							transform: scale(0.95);
+						}
+
+						&.inner-spikes {
+							fill: $gold-darkest;
+							transform: scale(3);
+							opacity: 0;
+						}
+
+						&.inner-mesh {
+							fill: $gold-darker;
+							transform: scale(2);
+							opacity: 0;
+						}
+
+						&.main-ring {
+							fill: $gold-dark;
+							stroke: $gold-darker;
+							stroke-width: 10px;
+							filter: drop-shadow(5px 5px 10px #{$black});
+						}
+					}
+				}
+
+				img {
+					position: absolute;
+				}
+
+				.nav-lens,
+				.profile-image-bg,
+				.profile-image-animation {
+					top: $frame-width;
+					left: $frame-width;
+					height: $gear-size - 2 * $frame-width;
+					width: $gear-size - 2 * $frame-width;
+				}
+
+				.nav-lens {
+					z-index: 1;
+					top: 0;
+					left: 0;
+					height: $gear-size;
+					width: $gear-size;
+				}
+
+				.profile-image {
+					height: auto;
+					width: auto;
+					max-width: $gear-size - 2 * $frame-width;
+					top: $gear-size / 2;
+					left: $gear-size / 2;
+					transform: translate(-50%, -50%);
+					pointer-events: all;
+					z-index: 0;
+					clip-path: circle(closest-side);
+				}
+
+				.profile-image-bg {
+					position: absolute;
+					border-radius: 50%;
+					background: $black;
+					z-index: -1;
+				}
+
+				.profile-image-animation {
+					position: absolute;
+					border-radius: 50%;
+					background: transparent #{to-url("animations/gears-perspective.gif")} no-repeat no-repeat 90% center/266px auto;
+					// background: transparent #{to-url("animations/gears-steampunk.gif")} no-repeat no-repeat center center/185px auto;
+					z-index: -2;
+					transform: scale(1.1);
+				}
+
+				.nav-flare {
+					position: absolute;
+					height: 100%;
+					width: 100%;
+					top: 13px;
+					transform: scale(0.5);
+					transform-origin: center center;
+					background: transparent #{to-url("animations/nav-flare.webp")} no-repeat no-repeat center center/100%;
+					z-index: -4;
+				}
+
+				.header-button {
+					opacity: 0;
+					display: block;
+					font-size: $rem-24;
+					width: 30px;
+					position: absolute;
+					z-index: 2;
+					text-align: center;
+					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
+					transform: translate(-50%, -50%);
+					pointer-events: all;
+
+
+					&.close {
+						top: 35px;
+						left: 110px;
+					}
+
+					&.minimize {
+						left: 135px;
+						top: 60px;
+					}
+				}
+
+				.tabs {
+					// $tab-spike-height: 40px;
+					$spoke-height: 130px;
+					$spoke-width: 40px;
+					$svg-size: 70px;
+					$link-size: 40px;
+
+					height: 100%;
+					width: 100%;
+					position: absolute;
+					display: block;
+					// opacity: 0;
+					transform-origin: center center;
+					transform: scale(0.5);
+					z-index: -3;
+
+					.nav-tab-container {
+						display: block;
+						position: absolute;
+						transform: translate(-50%, -50%) rotate(var(--tab-rotation));
+						height: $spoke-height;
+						width: $spoke-width;
+						top: calc(50% - (0.5 * #{$spoke-height}));
+						transform-origin: center bottom;
+						left: 50%;
+						pointer-events: all;
+						// filter: drop-shadow(0 0 15px #{$red-glow});
+						z-index: -2;
+						// opacity: 0;
+
+						&:nth-child(1) { --tab-rotation: 0deg; }
+
+						&:nth-child(2) { --tab-rotation: -60deg; }
+
+						&:nth-child(3) { --tab-rotation: -90deg; }
+
+						&:nth-child(4) { --tab-rotation: -120deg; }
+
+						&:nth-child(5) { --tab-rotation: -150deg; }
+
+						.nav-tab {
+							transform: translate(-50%, -50%);
+							height: $link-size;
+							width: $link-size;
+							pointer-events: all;
+							left: 50%;
+							position: absolute;
+
+							.svg-def {
+								display: block;
+								height: $svg-size;
+								transform: translate(-50%, -50%);
+								top: 100%;
+								left: 50%;
+							}
+
+							.nav-tab-label {
+								display: block;
+								opacity: 0;
+								color: $white-brightest;
+								font-size: $rem-14;
+								font-family: Infidel;
+								font-weight: $font-weight-black;
+								text-shadow: 0px 0px 5px #{$red}, 0px 0px 5px #{$red}, 0px 0px 5px #{$red};
+								position: absolute;
+								transform-origin: center center;
+								transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
+								top: 50%;
+								left: 50%;
+								z-index: 2;
+								text-align: center;
+							}
+						}
+					}
+
+				}
+
+			}
+
 			.tab-content {
 				overflow-x: hidden;
+				padding: 0;
+
+				border-image: #{to-url("layout/border-actor-sheet.svg")} 130 275/130px 275px/32px 40px repeat; // round;
 
 				.tab {
 					$grid-gap: 5px;
@@ -533,6 +425,9 @@
 						$attributes-width: 200px;
 						$attributes-height: $attributes-width * (494 / 261) + 30px + 20px;
 						$nav-buffer: 60px;
+						$header-height: 40px;
+						$status-height: 80px;
+						$footer-height: 40px;
 
 						--attributes-width: #{$attributes-width};
 						--attributes-height: #{$attributes-height};
@@ -543,7 +438,7 @@
 							"session-checks session-checks attacks special-moves"
 							"footer footer footer footer";
 						grid-template-columns: #{$nav-buffer} #{$attributes-width - $nav-buffer - $grid-gap} 1fr 1fr;
-						grid-template-rows: 40px 80px var(--attributes-height) auto 40px;
+						grid-template-rows: #{$header-height} #{$status-height} var(--attributes-height) auto #{$footer-height};
 
 						.dramatic-hooks {
 							grid-area: dramatic-hooks;
@@ -598,13 +493,128 @@
 						}
 
 						.status {
-							grid-area: status;
-							display: block;
-							width: 100%;
+							$button-size: 20px;
+							$button-margin: 10px;
 
-							@include cq-prolyfill("width >= 1000px") {
-								outline: 3px solid lime !important;
+							grid-area: status;
+							// width: 100%;
+							padding: 0px;
+
+							display: grid;
+							grid-template-columns: 100px 1fr 100px;
+
+							> div {
+								position: relative;
 							}
+
+							button {
+								--button-bg-color-light: #{$gold-brighter};
+								--button-bg-color-dark: #{$gold-darker};
+								--button-fg-color: #{$black};
+								display: inline-block;
+								height: $button-size;
+								width: $button-size;
+								padding: 0;
+
+								color: var(--button-fg-color);
+								background: linear-gradient(45deg, var(--button-bg-color-light), var(--button-bg-color-dark));
+								line-height: $button-size;
+								font-weight: $font-weight-black;
+								font-size: $rem-20;
+							}
+
+							/* STABILITY */
+							.stability {
+
+								button {
+									background: #2661dc;
+									position: absolute;
+
+									&.stability-add {
+										top: $button-margin;
+										left: $button-margin;
+									}
+									&.stability-remove {
+										bottom: $button-margin;
+										right: $button-margin;
+									}
+								}
+
+								.stability-count {
+									display: block;
+									height: $status-height - 2px;
+									padding-top: 4px;
+									color: $blue-bright;
+									font-family: var(--font-decorative);
+									font-size: $status-height - 2px;
+									line-height: $status-height - 2px;
+									text-align: center;
+								}
+							}
+
+							/* WOUNDS */
+							.wounds {
+								display: grid;
+								grid-template-columns: 1fr 1fr;
+								grid-column-gap: 10px;
+
+								button.wound-add {
+									position: absolute;
+								}
+
+								input {
+									margin: 0;
+									height: 100%;
+								}
+
+								.wound {
+									display: grid;
+									grid-template-columns: #{$button-size} 1fr #{$button-size} #{$button-size};
+									grid-gap: 5px;
+
+									button.wound-delete {
+										margin: auto;
+										background: red; // @@@ TEMP @@@
+									}
+
+									.wound-desc {
+										height: 75%;
+										margin-top: 5px;
+										width: calc(100% / 0.75);
+										color: red;
+										font-size: $rem-18;
+										font-weight: $font-weight-black;
+										font-variant: small-caps;
+
+										transform-origin: left;
+										transform: scaleX(0.75);
+									}
+								}
+							}
+
+							/* EDGES */
+							.edges {
+								background: rgba(0, 255, 255, 0.2);
+								flex-grow: 0;
+								flex-basis: 100px;
+							}
+
+							.edges button {}
+
+							.edges button.edges-add {}
+
+							.edges button.edges-remove {}
+
+							.edges button.edges-clear {}
+
+							.edges .edges-count {}
+
+							.edges .edges-source {}
+
+							.edges .edges-tooltip {}
+
+
+
 						}
 
 						.attributes {

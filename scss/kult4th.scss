@@ -4,6 +4,10 @@
 .vtt.game.system-kult4th {
 	@import 'globals/colors';
 
+	// @include cq-prolyfill("width >= 1000px") {
+	// 	outline: 3px solid lime !important;
+	// }
+
 	$isDebugging: false;
 	$isDebuggingChat: false;
 	@import 'debug';
@@ -37,8 +41,8 @@
 			/* FOUNDRY OVERRIDES */
 			--sidebar-width: 300px;
 			--sidebar-internal-width: calc(var(--sidebar-width) - var(--scrollbar-width));
-			--sidebar-header-height: 0px; // 32px;
-			--sidebar-item-height: 80px; // 48px;
+			--sidebar-header-height: 32px; // 0px; // 32px;
+			--sidebar-item-height: 48px; // 80px; // 48px;
 
 			border: none;
 			box-shadow: none;

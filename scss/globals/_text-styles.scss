@@ -33,11 +33,21 @@
 		}
 	}
 
-	i[class^="fa"] {
+	i {
 		--KT-color-primary: #{$gold};
 		--KT-color-contrast: #{$black};
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
+
+		&.notification-pip {
+			--KT-color-primary: #{$gold-glow};
+		}
+	}
+
+	.header-button.close {
+		i {
+			--KT-color-primary: #{$red-glow};
+		}
 	}
 
 	ul.rules-list, ul.inline-list {
@@ -57,7 +67,8 @@
 			height: 18px;
 			width: var(--list-indent);
 			background: var(--KT-bullet);
-			vertical-align: text-top;
+			vertical-align: bottom;
+			background-size: 50%;
 		}
 	}
 
@@ -74,6 +85,13 @@
 
 		&.tight {
 			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		&:first-child {
+			margin-top: 0;
+		}
+		&:last-child {
 			margin-bottom: 0;
 		}
 	}
@@ -127,7 +145,7 @@
 		font-size: $rem-16;
 		font-weight: $font-weight-bold;
 		font-variant: all-small-caps;
-		height: $rem-16;
+		// height: $rem-16;
 		margin: 10px 0 0 0;
 	}
 

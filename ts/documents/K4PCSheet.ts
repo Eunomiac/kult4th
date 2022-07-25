@@ -49,28 +49,41 @@ const ANIMATIONS = {
 		return tl;
 	},
 	gearGeburahRotate(target: HTMLElement): gsapAnim {
+		const outerGear$ = $(target).find(".svg-gear-geburah");
 		const centerSaw$ = $(target).find(".svg-gear-geburah-center-saw");
-		return gsap.timeline({delay: 0.2})
+		const centerSawRotate = gsap.timeline({timeScale: 0.5, repeat: -1})
 			.to(
-				target,
+				centerSaw$,
 				{
-					rotation: "-=10",
+					rotation: "-=360",
+					duration: 10,
+					ease: "none"
+				}
+			);
+		return gsap.timeline({delay: 0.2, repeat: -1, repeatDelay: 2})
+			.to(
+				outerGear$,
+				{
+					rotation: "-=20",
 					duration: 0.4,
 					repeatRefresh: true,
-					repeatDelay: 0.8,
+					repeatDelay: 1.6,
 					ease: "back",
 					repeat: -1
 				},
 				0
 			)
-			.to(
-				centerSaw$,
+			.fromTo(
+				centerSawRotate,
 				{
-					rotation: "-=30",
-					duration: 0.4,
-					repeatRefresh: true,
+					timeScale: 8
+				},
+				{
+					timeScale: 0.5,
+					duration: 2,
+					ease: "power2",
 					repeatDelay: 0,
-					ease: "none",
+					delay: 0.1,
 					repeat: -1
 				},
 				0
@@ -94,158 +107,132 @@ const ANIMATIONS = {
 		const navLens$ = $(target).find(".nav-lens");
 		const profileImg$ = $(target).find(".profile-image");
 		const profileBg$ = $(target).find(".profile-image-bg");
-		const buttonSpikes$ = $(target).find(".nav-tab");
+		const buttonContainer$ = $(target).find(".tabs");
+		const buttonSpikes$ = $(target).find(".nav-tab-container");
 		const closeButton$ = $(target).find(".header-button.close");
 		const minimizeButton$ = $(target).find(".header-button.minimize");
+		const animation$ = $(target).find(".profile-image-animation");
+		const flare$ = $(target).find(".nav-flare");
 
-		const [svgBaseGear] = $(target).find(".svg-gear-nav");
-		const [svgInnerRing] = $(target).find(".svg-gear-nav-inner-ring");
-		const [svgOuterRing] = $(target).find(".svg-gear-nav-outer-ring");
+		const svgs = {
+			container: $(target).find(".nav-svg"),
+			outerSpikeContainer: $(target).find(".outer-spikes"),
+			outerSpikes: Array.from($(target).find(".outer-spikes").children()),
+			outerSpikePaths: Array.from($(target).find(".outer-spikes-hover").children())
+				.map((spike) => spike.getAttribute("d")),
+			innerSpikes: $(target).find(".inner-spikes"),
+			innerMesh: $(target).find(".inner-mesh"),
+			mainRing: $(target).find(".main-ring")
+		};
 
-		const svgNavSpikes$ = $(target).find(".svg-gear-nav-spikes");
-		const svgGearTeeth$ = $(target).find(".svg-gear-nav-gears-hover");
-
-		console.log({navLens$, profileImg$, profileBg$, closeButton$, minimizeButton$, svgBaseGear, svgInnerRing, svgOuterRing, svgNavSpikes$, svgGearTeeth$});
-		// const gearSpikes$ = $(target).find(".svg-gear-nav-spikes-retracted").children();
-		// console.log(gearSpikes$);
+		console.log({navLens$, profileImg$, profileBg$, closeButton$, minimizeButton$, svgs});
 		// @ts-expect-error MorphSVG does indeed accept functions.
-		return gsap
-			.timeline({
-				reversed: true
-			}).to(
-				target,
+		return gsap.timeline({reversed: true})
+			.to(target, {
+				fill: "#000000",
+				scale: 1,
+				duration: 1,
+				ease: "power2"
+			}, 0)
+			.to($(target).find(".svg-def"), {
+				fill: "#000000",
+				duration: 1,
+				ease: "sine"
+			}, 0)
+			.to(U.getSiblings(target), {
+				opacity: 0.75,
+				filter: "blur(5px)",
+				duration: 0.5,
+				ease: "back"
+			}, 0)
+			.to(svgs.mainRing, {
+				scale: 1,
+				opacity: 1,
+				ease: "circ",
+				duration: 1,
+				strokeWidth: 0,
+				stroke: 0
+			}, 0)
+			.to(svgs.innerMesh, {
+				scale: 1,
+				ease: "circ",
+				duration: 0.75
+			}, 0).to(svgs.innerMesh, {
+				opacity: 1,
+				ease: "circ",
+				duration: 0.5
+			}, 0.25)
+			.to(svgs.outerSpikeContainer, {
+				scale: 1,
+				duration: 0.5,
+				ease: "power2"
+			}, 0)
+			.to(svgs.outerSpikes, {
+				// @ts-expect-error MorphSVG does indeed accept functions.
+				morphSVG(i) { return svgs.outerSpikePaths[i] },
+				scale: 1,
+				duration: 0.5,
+				ease: "power2"
+			}, 0)
+			.to(svgs.innerSpikes, {
+				scale: 1,
+				duration: 0.5,
+				ease: "power2"
+			}, 0.25).to(svgs.innerSpikes, {
+				opacity: 1,
+				duration: 0.25,
+				ease: "power2"
+			}, 0.35)
+			.to(navLens$, {
+				rotation: "+=180",
+				duration: 1,
+				ease: "sine.inOut"
+			}, 0).to(navLens$, {
+				opacity: 0,
+				duration: 0.5,
+				ease: "power2"
+			}, 0.5)
+			.to(buttonContainer$, {
+				scale: 1,
+				opacity: 1,
+				zIndex: 6,
+				ease: "power3",
+				duration: 0.5
+			}, 0.25)
+			.to(flare$, {
+				scale: 2,
+				duration: 0.75,
+				ease: "sine"
+			}, 0)
+			.from([closeButton$, minimizeButton$], {
+				opacity: 0,
+				zIndex: -2,
+				filter: "blur(5px)",
+				ease: "sine",
+				duration: 0.5
+			}, 0).to([closeButton$, minimizeButton$], {
+				opacity: 1,
+				duration: 0.5
+			}, 0)
+			.to(profileImg$, {
+				opacity: 0,
+				duration: 1,
+				ease: "power2.out"
+			}, 0)
+			.to(profileBg$, {
+				opacity: 0, // 0.65,
+				duration: 1,
+				ease: "sine"
+			}, 0)
+			/* .to(
+				svgs.container,
 				{
-					scale: 1,
-					duration: 1,
-					ease: "sine"
+					filter: "drop-shadow(0 0 15px #FF0000)",
+					duration: 0.95,
+					ease: "power3"
 				},
-				0
-			).fromTo(
-				Array.from(svgGearTeeth$.children()),
-				{
-					opacity: 0
-				},
-				{
-					opacity: 1,
-					ease: "sine",
-					duration: 1
-				},
-				0
-			).fromTo(
-				svgGearTeeth$,
-				{
-					scale: 0.8
-				},
-				{
-					scale: 1,
-					ease: "sine",
-					duration: 1
-				},
-				0
-			).to(
-				Array.from(svgNavSpikes$.children()),
-				{
-					// @ts-expect-error MorphSVG does indeed accept functions.
-					morphSVG(i) { return SVGDATA.Paths["gear-nav-spikes-hover"][i].d },
-					duration: 1,
-					ease: "sine"
-				},
-				0
-			).to(
-				svgBaseGear,
-				{
-					morphSVG: SVGDATA.Paths["gear-nav-hover"][0].d,
-					fill: C.Colors["GOLD -2"],
-					duration: 1,
-					ease: "sine"
-				},
-				0
-			).to(
-				svgInnerRing,
-				{
-					// morphSVG: SVGDATA.Paths["gear-nav-inner-ring-hover"][0].d,
-					duration: 1,
-					opacity: 0,
-					ease: "sine"
-				},
-				0
-			).to(
-				svgOuterRing,
-				{
-					// morphSVG: SVGDATA.Paths["gear-nav-outer-ring-hover"][0].d,
-					duration: 1,
-					opacity: 0,
-					ease: "sine"
-				},
-				0
-			).to(
-				[svgBaseGear, svgInnerRing, svgOuterRing, svgGearTeeth$[0], svgNavSpikes$[0]],
-				{
-					rotation: "+=50",
-					duration: 1,
-					ease: "sine"
-				},
-				0
-			).to(
-				navLens$,
-				{
-					rotation: "+=180",
-					duration: 1,
-					ease: "sine.inOut"
-				},
-				0
-			)/* .fromTo(
-				buttonSpikes$,
-				{
-					rotation(i) { return -45 + (i * 25) },
-					width: 50
-				},
-				{
-					// rotation: "+=150",
-					width: 125,
-					duration: 0.5,
-					stagger: {
-						amount: 0.5
-					},
-					ease: "sine"
-				},
-				0
-			) */.from(
-				[closeButton$, minimizeButton$],
-				{
-					opacity: 0,
-					zIndex: -2,
-					filter: "blur(5px)",
-					ease: "sine",
-					duration: 0.5
-				},
-				0
-			).to(
-				navLens$,
-				{
-					opacity: 0,
-					duration: 0.5,
-					ease: "power2"
-				},
-				0.5
-			).to(
-				profileImg$,
-				{
-					filter: "blur(5px)",
-					opacity: 0.5,
-					duration: 1,
-					ease: "power2.out"
-				},
-				0
-			).to(
-				profileBg$,
-				{
-					opacity: 0.65,
-					duration: 1,
-					ease: "sine"
-				},
-				0
-			);
+				0.05
+			) */;
 	},
 	hoverNav(target: HTMLElement, context: JQuery): gsapAnim {
 		const headerButtons = target.getElementsByClassName("header-button");
@@ -286,26 +273,24 @@ const ANIMATIONS = {
 	},
 	hoverTab(target: HTMLElement, context: JQuery): gsapAnim {
 		const tabLabel$ = $(target).find(".nav-tab-label");
-		const tabAnimation$ = $(target).find(".nav-tab-animation");
-		return gsap
-			.timeline({
-				reversed: true
-			}).fromTo(
-				tabLabel$,
-				{
-					scale: 3,
-					opacity: 0,
-					filter: "blur(10px)"
-				},
-				{
-					scale: 2,
-					opacity: 1,
-					filter: "none",
-					duration: 1,
-					ease: "back"
-				},
-				0
-			).fromTo(
+		// const tabAnimation$ = $(target).find(".nav-tab-animation");
+		const tl = gsap.timeline({reversed: true})
+			.to(tabLabel$, {
+				opacity: 1,
+				duration: 0.25,
+				ease: "sine"
+			}, 0)
+			.fromTo(tabLabel$, {
+				scaleY: 3,
+				scaleX: 1.5,
+				filter: "blur(10px)"
+			}, {
+				scaleY: 2,
+				scaleX: 1,
+				filter: "none",
+				duration: 1,
+				ease: "power3"
+			}, 0)/* .fromTo(
 				tabAnimation$,
 				{
 					scale: 1,
@@ -320,7 +305,8 @@ const ANIMATIONS = {
 					ease: "back"
 				},
 				0
-			);
+			) */;
+		return tl;
 	},
 	hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
 		const FULL_DURATION = 0.5;
@@ -384,7 +370,7 @@ const ANIMATIONS = {
 				},
 				0.01
 			).fromTo(
-				$(target).find(".trigger-tooltip"),
+				toolTip$,
 				{
 					opacity: 0,
 					bottom: 30,
@@ -434,26 +420,11 @@ const ANIMATIONS = {
 };
 
 export default class K4PCSheet extends ActorSheet {
-	// _actor?: any;
-	// get $entity(): K4Entity { return this.object ?? this }
-	// get $sheet(): K4Sheet|false { return (this.$entity.sheet ?? false) as K4Sheet|false }
-	// get $actor(): K4Actor|false {
-	// 	return (this._actor = this._actor
-	// 		?? this.actor
-	// 		?? (this.$entity.documentName === "Actor" ? this.$entity : false));
-	// }
-
-	// get $id() { return this.$entity.id }
-	// get $type() { return this.$entity.type }
-
-	// get $root() { return this.$entity.data }
-	// get $data() { return this.$root.data }
-
 	static override get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "k4-theme-dgold"],
 			tabs: [
-				{navSelector: ".tabs", contentSelector: ".tab-content", initial: "front"}
+				{navSelector: ".tabs", contentSelector: ".tab-content", initial: "bio"}
 			]
 		});
 	}
@@ -505,6 +476,8 @@ export default class K4PCSheet extends ActorSheet {
 						xPercent: -50,
 						yPercent: -50
 					});
+					hoverTimelines.push([navPanel, ANIMATIONS.navFade(navPanel)]);
+					return;
 					const hoverTimeline = ANIMATIONS.navFade(navPanel);
 
 					$(navPanel).on("mouseenter", () => {
@@ -533,11 +506,20 @@ export default class K4PCSheet extends ActorSheet {
 				.each(function initGearRotation() {
 					ANIMATIONS.gearGeburahRotate(this);
 				});
-			// html.find(".nav-tab")
-			// 	.each(function initNavTab() {
-			// 		gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
-			// 		hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
-			// 	});
+			html.find(".nav-tab")
+				.each(function initNavTab() {
+					// gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
+					hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+
+					$(this).on("click", function switchTab() {
+						const tabName = this.getAttribute("data-tab");
+						if (tabName) {
+							console.log(`Activating Tab ${tabName}`, {tabName, elem: this, tabSelector: `.tab.${tabName}`, foundElem: html.find(`.tab.${tabName}`), html});
+							$(html.find(".tab.active")).removeClass("active");
+							$(html.find(`.tab.${tabName}`)).addClass("active");
+						}
+					});
+				});
 
 			// $(document).find(".gear-container.gear-nav")
 			// 	.each(function initNavHover() {

@@ -317,8 +317,7 @@ const getDerivedItemData = (itemData: Array<Partial<ItemDataConstructorData>>) =
 
 const ISMUTATINGITEMS = false;
 
-
-// #region 🟩🟩🟩 DATA MUTATION & ITEM GENERATION 🟩🟩🟩
+// #region 🟩🟩🟩 DATA MUTATION & ITEM GENERATION 🟩🟩🟩 ~
 const mutateItemData = (itemData: Partial<ItemDataRecord>): Partial<ItemDataRecord> => {
 	itemData = U.objClone(itemData);
 	console.log("[mutateItemData] INITIAL DATA", itemData);
@@ -9668,7 +9667,7 @@ const ITEM_DATA: Partial<Record<
 					isCustom: false,
 					rules: {
 						intro: "You have been chosen by a god to become its advocate or sacrificial lamb.",
-						outro: "The god's disciples watch over you, waiting for the day of your ascension. You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
+						outro: "The god's disciples watch over you, waiting for the day of your ascension.%insert.break%You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
 						listRefs: [
 							"drives"
 						]
@@ -9696,7 +9695,7 @@ const ITEM_DATA: Partial<Record<
 					isCustom: false,
 					rules: {
 						intro: "You are afflicted by a curse, knowingly or not.",
-						outro: "The curse has started influencing your life and you must find a way to get rid of it. The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
+						outro: "The curse has started influencing your life and you must find a way to get rid of it.%insert.break%The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
 						listRefs: [
 							"drives"
 						]
@@ -9724,7 +9723,7 @@ const ITEM_DATA: Partial<Record<
 					isCustom: false,
 					rules: {
 						intro: "Your family has a well-kept secret, which has haunted you for your entire life.",
-						outro: "They may have been members of an obscure sect or exposed to some dreadful horror. You may have been initiated into this secret as a child, or only recently found out the truth as an adult. This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
+						outro: "They may have been members of an obscure sect or exposed to some dreadful horror.%insert.break%You may have been initiated into this secret as a child, or only recently found out the truth as an adult.%insert.break%This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
 						listRefs: [
 							"drives"
 						]
@@ -9752,7 +9751,7 @@ const ITEM_DATA: Partial<Record<
 					isCustom: false,
 					rules: {
 						intro: "You have uncovered some horrid truth, which brings reality's very nature into question.",
-						outro: "It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion. The Illusion's keepers are now after you and it is only a matter of time before they find you.",
+						outro: "%insert.break%It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion.%insert.break%The Illusion's keepers are now after you and it is only a matter of time before they find you.",
 						listRefs: [
 							"drives"
 						]
@@ -9779,7 +9778,7 @@ const ITEM_DATA: Partial<Record<
 					isCustom: false,
 					rules: {
 						intro: "You have been chosen to protect an important object, place, or person.",
-						outro: "This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request. What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
+						outro: "%insert.break%This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request.%insert.break%What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
 						listRefs: [
 							"drives"
 						]

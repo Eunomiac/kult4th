@@ -8,6 +8,30 @@ export default class K4Actor extends Actor {
             this.preparePCData();
         }
     }
+    populateDebugPC() {
+        const updateData = {};
+        // Add wounds
+        updateData.data = {
+            wounds: [
+                {
+                    description: "Scraped Knee",
+                    isCritical: false,
+                    isStabilized: true
+                },
+                {
+                    description: "Broken Arm",
+                    isCritical: false,
+                    isStabilized: false
+                },
+                {
+                    description: "Gunshot Wound",
+                    isCritical: true,
+                    isStabilized: true
+                }
+            ]
+        };
+        this.update(updateData);
+    }
     preparePCData() {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
             this.data.data.moves = this.moves;
@@ -83,8 +107,8 @@ export default class K4Actor extends Actor {
     get woundPenaltyData() {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
             const [unstabSerious, unstabCritical] = [
-                this.data.data.wounds.filter((wound) => wound.type === "serious" /* K4WoundType.serious */ && !wound.isStabilized).length,
-                this.data.data.wounds.filter((wound) => wound.type === "critical" /* K4WoundType.critical */ && !wound.isStabilized).length
+                this.data.data.wounds.filter((wound) => !wound.isCritical && !wound.isStabilized).length,
+                this.data.data.wounds.filter((wound) => wound.isCritical && !wound.isStabilized).length
             ];
             if (unstabSerious && unstabCritical) {
                 return this.data.data.modifiers.seriousAndCriticalWounds[Math.min(this.data.data.maxWounds.serious, this.data.data.maxWounds.critical, unstabSerious, unstabCritical)];

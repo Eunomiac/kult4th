@@ -68,6 +68,57 @@ $gold-glow: #ffd958;
 $red-glow: #ff0000;
 $blue-glow: #3f93ff;
 
+.COLORS, * {
+	// GOLDS
+		--gold-brightest: #{$gold-brightest};
+		--gold-brighter: #{$gold-brighter};
+		--gold-bright: #{$gold-bright};
+		--gold: #{$gold};
+		--gold-dark: #{$gold-dark};
+		--gold-darker: #{$gold-darker};
+		--gold-darkest: #{$gold-darkest};
+
+		// REDS
+		--red-brightest: #{$red-brightest};
+		--red-brighter: #{$red-brighter};
+		--red-bright: #{$red-bright};
+		--red: #{$red};
+		--red-dark: #{$red-dark};
+		--red-darker: #{$red-darker};
+		--red-darkest: #{$red-darkest};
+
+		// BLUES
+		--blue-brightest: #{$blue-brightest};
+		--blue-brighter: #{$blue-brighter};
+		--blue-bright: #{$blue-bright};
+		--blue: #{$blue};
+		--blue-dark: #{$blue-dark};
+		--blue-darker: #{$blue-darker};
+		--blue-darkest: #{$blue-darkest};
+
+		// WHITES
+		--white-brightest: #{$white-brightest};
+		--white-brighter: #{$white-brighter};
+		--white-bright: #{$white-bright};
+		--white: #{$white};
+		--white-dark: #{$white-dark};
+		--white-darker: #{$white-darker};
+		--white-darkest: #{$white-darkest};
+
+		// BLACKS
+		--black-brightest: #{$black-brightest};
+		--black-brighter: #{$black-brighter};
+		--black-bright: #{$black-bright};
+		--black: #{$black};
+		--black-dark: #{$black-dark};
+		--black-darker: #{$black-darker};
+		--black-darkest: #{$black-darkest};
+
+		--gold-glow: #{$gold-glow};
+		--red-glow: #{$red-glow};
+		--blue-glow: #{$blue-glow};
+}
+
 @mixin set-default-theme() {
 	--KT-color-primary: #{$gold};
 	--KT-color-contrast: #{$black};
@@ -88,6 +139,8 @@ $blue-glow: #3f93ff;
 	--KT-background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/dgold/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/12px;
+	--KT-content-padding: 10px;
+	--KT-resize-handle-translate: translate(15px, 15px);
 
 	--KT-color-light-contrast: #{$gold-dark};
 	--KT-color-deep-contrast: #{$black-darkest};
@@ -179,6 +232,8 @@ $blue-glow: #3f93ff;
 	--KT-background: transparent #{to-url("backgrounds/bgold/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/bgold/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-black.svg")} no-repeat center center/12px;
+	--KT-content-padding: 10px;
+	--KT-resize-handle-translate: translate(15px, 15px);
 
 	--KT-color-light-contrast: #{$gold-bright};
 	--KT-color-deep-contrast: #{$gold-brightest};
@@ -207,6 +262,8 @@ $blue-glow: #3f93ff;
 	--KT-background: transparent #{to-url("backgrounds/burnt/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/burnt/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/12px;
+	--KT-content-padding: 10px;
+	--KT-resize-handle-translate: translate(15px, 15px);
 
 	--KT-color-light-contrast: #{$gold-dark};
 	--KT-color-deep-contrast: #{$black-darkest};
@@ -235,6 +292,8 @@ $blue-glow: #3f93ff;
 	--KT-background: transparent #{to-url("backgrounds/dark/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/dark/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/12px;
+	--KT-content-padding: 10px;
+	--KT-resize-handle-translate: translate(15px, 15px);
 
 	--KT-color-light-contrast: #{$gold-dark};
 	--KT-color-deep-contrast: #{$black-darkest};
@@ -262,12 +321,14 @@ $blue-glow: #3f93ff;
 
 	--KT-background: transparent #{to-url("backgrounds/white/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/white/border.webp")} 30 / 30px / 15px round;
-	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/12px;
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/calc(0.5 * var(--list-indent));
+	--KT-content-padding: 10px;
+	--KT-resize-handle-translate: translate(15px, 15px);
 
 	--KT-color-light-contrast: #{$gold-bright};
 	--KT-color-deep-contrast: #{$gold-brightest};
 	--KT-color-emphasis: #{$black-darkest};
-	--KT-color-keyword-emphasis: #{$blue-darkest};
+	--KT-color-keyword-emphasis: #{$blue};
 	--KT-color-keyword-contrast: #{$blue-bright};
 }
 
@@ -289,8 +350,10 @@ $blue-glow: #3f93ff;
 	--KT-color-neg: #{$red-glow};
 
 	--KT-background: transparent #{to-url("backgrounds/red/bg.webp")} repeat repeat center center/1000px 1000px;
-	--KT-border: #{to-url("backgrounds/red/border.webp")} 150 / 100px / 30px repeat;
+	--KT-border: #{to-url("backgrounds/red/border.webp")} 150 / 100px / 20px repeat;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/12px;
+	--KT-content-padding: 10px 15px 20px;
+	--KT-resize-handle-translate: translate(10px, 10px);
 
 	--KT-color-light-contrast: #{$red-dark};
 	--KT-color-deep-contrast: #{$black-darkest};

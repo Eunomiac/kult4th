@@ -73,8 +73,8 @@ declare global {
 		critical = "critical"
 	}
 	interface K4Wound {
-		type: K4WoundType,
 		description: string,
+		isCritical: boolean,
 		isStabilized: boolean
 	}
 	namespace Archetype {
@@ -200,6 +200,20 @@ declare global {
 			maxWounds: {
 				serious: int,
 				critical: int
+			}
+
+			edges: {
+				sourceName: string,
+				value: posInt,
+				items: string[]
+			}
+
+			stability: {
+				min: int,
+				max: int,
+				value: int,
+				statusOptions: string[],
+				status: string
 			}
 		}
 		export interface npc extends K4ActorSourceSchema.npc {

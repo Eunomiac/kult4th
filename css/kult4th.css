@@ -154,6 +154,45 @@ Number Display
   /* DEFAULT FOUNDRY OVERRIDES */
   /* THEMES */
   --scrollbar-width: 6px; }
+  .vtt.game.system-kult4th .COLORS, .vtt.game.system-kult4th * {
+    --gold-brightest: #e5e3da;
+    --gold-brighter: #cac7b5;
+    --gold-bright: #bab69f;
+    --gold: #958f6b;
+    --gold-dark: #706b50;
+    --gold-darker: #4b4835;
+    --gold-darkest: #25241b;
+    --red-brightest: #efbcbf;
+    --red-brighter: #e0797e;
+    --red-bright: #d65158;
+    --red: #912228;
+    --red-dark: #6d1a1e;
+    --red-darker: #491114;
+    --red-darkest: #24090a;
+    --blue-brightest: #c9d8f6;
+    --blue-brighter: #93b0ee;
+    --blue-bright: #7298e8;
+    --blue: #2661dc;
+    --blue-dark: #1b48a7;
+    --blue-darker: #12306f;
+    --blue-darkest: #091838;
+    --white-brightest: #f4f4f5;
+    --white-brighter: #eae9eb;
+    --white-bright: #e3e2e5;
+    --white: #d4d2d7;
+    --white-dark: #9e9aa5;
+    --white-darker: #696471;
+    --white-darkest: #353238;
+    --black-brightest: #c4c4c4;
+    --black-brighter: #888888;
+    --black-bright: #646464;
+    --black: #111111;
+    --black-dark: #0d0d0d;
+    --black-darker: #090909;
+    --black-darkest: #040404;
+    --gold-glow: #ffd958;
+    --red-glow: #ff0000;
+    --blue-glow: #3f93ff; }
   .vtt.game.system-kult4th {
     --color-text-light-primary: var(--KT-color-primary);
     --color-text-light-highlight: magenta;
@@ -225,6 +264,8 @@ Number Display
     --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
+    --KT-content-padding: 10px;
+    --KT-resize-handle-translate: translate(15px, 15px);
     --KT-color-light-contrast: #706b50;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #bab69f;
@@ -246,6 +287,8 @@ Number Display
     --KT-background: transparent url("../assets/backgrounds/bgold/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-border: url("../assets/backgrounds/bgold/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-black.svg") no-repeat center center/12px;
+    --KT-content-padding: 10px;
+    --KT-resize-handle-translate: translate(15px, 15px);
     --KT-color-light-contrast: #bab69f;
     --KT-color-deep-contrast: #e5e3da;
     --KT-color-emphasis: #040404;
@@ -267,6 +310,8 @@ Number Display
     --KT-background: transparent url("../assets/backgrounds/burnt/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-border: url("../assets/backgrounds/burnt/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/12px;
+    --KT-content-padding: 10px;
+    --KT-resize-handle-translate: translate(15px, 15px);
     --KT-color-light-contrast: #706b50;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #e3e2e5;
@@ -288,6 +333,8 @@ Number Display
     --KT-background: transparent url("../assets/backgrounds/dark/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-border: url("../assets/backgrounds/dark/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/12px;
+    --KT-content-padding: 10px;
+    --KT-resize-handle-translate: translate(15px, 15px);
     --KT-color-light-contrast: #706b50;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #e3e2e5;
@@ -308,11 +355,13 @@ Number Display
     --KT-color-neg: #ff0000;
     --KT-background: transparent url("../assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-border: url("../assets/backgrounds/white/border.webp") 30 / 30px / 15px round;
-    --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold.svg") no-repeat center center/12px;
+    --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--list-indent));
+    --KT-content-padding: 10px;
+    --KT-resize-handle-translate: translate(15px, 15px);
     --KT-color-light-contrast: #bab69f;
     --KT-color-deep-contrast: #e5e3da;
     --KT-color-emphasis: #040404;
-    --KT-color-keyword-emphasis: #091838;
+    --KT-color-keyword-emphasis: #2661dc;
     --KT-color-keyword-contrast: #7298e8; }
   .vtt.game.system-kult4th .k4-theme-red {
     --KT-color-primary: #d65158;
@@ -328,8 +377,10 @@ Number Display
     --KT-color-pos: #c9d8f6;
     --KT-color-neg: #ff0000;
     --KT-background: transparent url("../assets/backgrounds/red/bg.webp") repeat repeat center center/1000px 1000px;
-    --KT-border: url("../assets/backgrounds/red/border.webp") 150 / 100px / 30px repeat;
+    --KT-border: url("../assets/backgrounds/red/border.webp") 150 / 100px / 20px repeat;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-red.svg") no-repeat center center/12px;
+    --KT-content-padding: 10px 15px 20px;
+    --KT-resize-handle-translate: translate(10px, 10px);
     --KT-color-light-contrast: #6d1a1e;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #ff0000;
@@ -417,12 +468,18 @@ Number Display
     .vtt.game.system-kult4th .mce-content-body ul.kult-text-container,
     .vtt.game.system-kult4th .mce-content-body li.kult-text-container {
       text-align: justify; }
-  .vtt.game.system-kult4th i[class^="fa"],
-  .vtt.game.system-kult4th .mce-content-body i[class^="fa"] {
+  .vtt.game.system-kult4th i,
+  .vtt.game.system-kult4th .mce-content-body i {
     --KT-color-primary: #958f6b;
     --KT-color-contrast: #111111;
     font-family: var(--font-icon);
     font-weight: 900; }
+    .vtt.game.system-kult4th i.notification-pip,
+    .vtt.game.system-kult4th .mce-content-body i.notification-pip {
+      --KT-color-primary: #ffd958; }
+  .vtt.game.system-kult4th .header-button.close i,
+  .vtt.game.system-kult4th .mce-content-body .header-button.close i {
+    --KT-color-primary: #ff0000; }
   .vtt.game.system-kult4th ul.rules-list, .vtt.game.system-kult4th ul.inline-list,
   .vtt.game.system-kult4th .mce-content-body ul.rules-list,
   .vtt.game.system-kult4th .mce-content-body ul.inline-list {
@@ -443,7 +500,8 @@ Number Display
       height: 18px;
       width: var(--list-indent);
       background: var(--KT-bullet);
-      vertical-align: text-top; }
+      vertical-align: bottom;
+      background-size: 50%; }
   .vtt.game.system-kult4th label.k4-title,
   .vtt.game.system-kult4th h1,
   .vtt.game.system-kult4th h2,
@@ -473,6 +531,32 @@ Number Display
     .vtt.game.system-kult4th .mce-content-body label.k4-h4.tight,
     .vtt.game.system-kult4th .mce-content-body label.k4-header.tight {
       margin-top: 0;
+      margin-bottom: 0; }
+    .vtt.game.system-kult4th label.k4-title:first-child,
+    .vtt.game.system-kult4th h1:first-child,
+    .vtt.game.system-kult4th h2:first-child,
+    .vtt.game.system-kult4th h3:first-child,
+    .vtt.game.system-kult4th label.k4-h4:first-child,
+    .vtt.game.system-kult4th label.k4-header:first-child,
+    .vtt.game.system-kult4th .mce-content-body label.k4-title:first-child,
+    .vtt.game.system-kult4th .mce-content-body h1:first-child,
+    .vtt.game.system-kult4th .mce-content-body h2:first-child,
+    .vtt.game.system-kult4th .mce-content-body h3:first-child,
+    .vtt.game.system-kult4th .mce-content-body label.k4-h4:first-child,
+    .vtt.game.system-kult4th .mce-content-body label.k4-header:first-child {
+      margin-top: 0; }
+    .vtt.game.system-kult4th label.k4-title:last-child,
+    .vtt.game.system-kult4th h1:last-child,
+    .vtt.game.system-kult4th h2:last-child,
+    .vtt.game.system-kult4th h3:last-child,
+    .vtt.game.system-kult4th label.k4-h4:last-child,
+    .vtt.game.system-kult4th label.k4-header:last-child,
+    .vtt.game.system-kult4th .mce-content-body label.k4-title:last-child,
+    .vtt.game.system-kult4th .mce-content-body h1:last-child,
+    .vtt.game.system-kult4th .mce-content-body h2:last-child,
+    .vtt.game.system-kult4th .mce-content-body h3:last-child,
+    .vtt.game.system-kult4th .mce-content-body label.k4-h4:last-child,
+    .vtt.game.system-kult4th .mce-content-body label.k4-header:last-child {
       margin-bottom: 0; }
   .vtt.game.system-kult4th label.k4-title,
   .vtt.game.system-kult4th .mce-content-body label.k4-title {
@@ -519,7 +603,6 @@ Number Display
     font-size: 1rem;
     font-weight: 700;
     font-variant: all-small-caps;
-    height: 1rem;
     margin: 10px 0 0 0; }
   .vtt.game.system-kult4th label.k4-h4,
   .vtt.game.system-kult4th .mce-content-body label.k4-h4 {
@@ -709,6 +792,8 @@ Number Display
       --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
       --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
       --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
+      --KT-content-padding: 10px;
+      --KT-resize-handle-translate: translate(15px, 15px);
       --KT-color-light-contrast: #706b50;
       --KT-color-deep-contrast: #040404;
       --KT-color-emphasis: #bab69f;
@@ -795,7 +880,8 @@ Number Display
           border: 1px solid transparent;
           -o-border-image: var(--KT-border);
           border-image: var(--KT-border);
-          background: var(--KT-background); }
+          background: var(--KT-background);
+          padding: var(--KT-content-padding); }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content form > * {
           position: relative;
           z-index: 2; }
@@ -881,12 +967,18 @@ Number Display
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body ul.kult-text-container,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body li.kult-text-container {
               text-align: justify; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content i[class^="fa"],
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body i[class^="fa"] {
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content i,
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body i {
             --KT-color-primary: #958f6b;
             --KT-color-contrast: #111111;
             font-family: var(--font-icon);
             font-weight: 900; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content i.notification-pip,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body i.notification-pip {
+              --KT-color-primary: #ffd958; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .header-button.close i,
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .header-button.close i {
+            --KT-color-primary: #ff0000; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content ul.rules-list, .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content ul.inline-list,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body ul.rules-list,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body ul.inline-list {
@@ -907,7 +999,8 @@ Number Display
               height: 18px;
               width: var(--list-indent);
               background: var(--KT-bullet);
-              vertical-align: text-top; }
+              vertical-align: bottom;
+              background-size: 50%; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-title,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h1,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h2,
@@ -937,6 +1030,32 @@ Number Display
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-h4.tight,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-header.tight {
               margin-top: 0;
+              margin-bottom: 0; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-title:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h1:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h2:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h3:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-h4:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-header:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-title:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body h1:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body h2:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body h3:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-h4:first-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-header:first-child {
+              margin-top: 0; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-title:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h1:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h2:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content h3:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-h4:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-header:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-title:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body h1:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body h2:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body h3:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-h4:last-child,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-header:last-child {
               margin-bottom: 0; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-title,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-title {
@@ -983,7 +1102,6 @@ Number Display
             font-size: 1rem;
             font-weight: 700;
             font-variant: all-small-caps;
-            height: 1rem;
             margin: 10px 0 0 0; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content label.k4-h4,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body label.k4-h4 {
@@ -1219,7 +1337,38 @@ Number Display
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .item-card.basic-move-item .item-icon.passive-item {
             --icon-filter: invert(1) brightness(0.5); }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-resizable-handle {
-      cursor: nwse-resize; }
+      z-index: 10;
+      background: none;
+      cursor: nwse-resize;
+      height: 50px;
+      width: 50px;
+      bottom: 0px;
+      right: 10px;
+      -webkit-transform-origin: center center;
+      -ms-transform-origin: center center;
+      transform-origin: center center;
+      -webkit-transition: 0.5s;
+      -o-transition: 0.5s;
+      transition: 0.5s;
+      -webkit-transform: var(--KT-resize-handle-translate) scale(2);
+      -ms-transform: var(--KT-resize-handle-translate) scale(2);
+      transform: var(--KT-resize-handle-translate) scale(2);
+      opacity: 0; }
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-resizable-handle i {
+        color: var(--KT-color-header-bg);
+        font-size: 3rem;
+        text-shadow: 0 0 4px var(--KT-color-highlight), 0 0 4px var(--KT-color-highlight), 0 0 4px var(--KT-color-highlight);
+        -webkit-transform: translate(-50%, -50%) rotate(45deg);
+        -ms-transform: translate(-50%, -50%) rotate(45deg);
+        transform: translate(-50%, -50%) rotate(45deg);
+        top: 50%;
+        left: 50%;
+        position: relative; }
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-resizable-handle:hover {
+        opacity: 1;
+        -webkit-transform: var(--KT-resize-handle-translate) scale(1);
+        -ms-transform: var(--KT-resize-handle-translate) scale(1);
+        transform: var(--KT-resize-handle-translate) scale(1); }
   .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor {
     --sheet-min-height: 525px;
     --sheet-min-width: 700px;
@@ -1229,115 +1378,10 @@ Number Display
     --sheet-header-height: 60px;
     -webkit-filter: none;
     filter: none; }
-    .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container {
-      top: 25px;
-      left: 25px;
-      height: 180px;
-      width: 180px;
-      pointer-events: all;
+    .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .svg-def {
       position: absolute;
-      z-index: 5;
-      -webkit-transform: translate(-50%, -50%) scale(0.8);
-      -ms-transform: translate(-50%, -50%) scale(0.8);
-      transform: translate(-50%, -50%) scale(0.8); }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .svg-def {
-        fill: #958f6b;
-        fill-opacity: 1;
-        stroke: none;
-        stroke-width: 2px;
-        stroke-opacity: 1;
-        -webkit-filter: none;
-        filter: none;
-        opacity: 1;
-        z-index: 2;
-        height: 230px;
-        width: 230px;
-        top: -25px;
-        left: -25px;
-        pointer-events: none; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav {
-          fill: #706b50; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-inner-ring {
-          fill: #bab69f; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-outer-ring {
-          fill: #958f6b; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-spikes {
-          fill: #4b4835; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .svg-def.svg-gear-nav-gears-hover {
-          fill: #706b50;
-          opacity: 0 !important; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .nav-lens, .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .profile-image-bg, .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .profile-image-animation {
-        pointer-events: none;
-        top: 10px;
-        left: 10px;
-        height: 160px;
-        width: 160px; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .nav-lens {
-        z-index: 1;
-        top: 0;
-        left: 0;
-        height: 180px;
-        width: 180px; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .profile-image {
-        height: auto;
-        width: auto;
-        max-width: 160px;
-        top: 90px;
-        left: 90px;
-        -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        z-index: 0;
-        -webkit-clip-path: circle(closest-side);
-        clip-path: circle(closest-side); }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .profile-image-bg {
-        position: absolute;
-        border-radius: 50%;
-        background: #111111;
-        z-index: -1; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .profile-image-animation {
-        position: absolute;
-        border-radius: 50%;
-        background: transparent url("../assets/animations/gears-steampunk.gif") no-repeat no-repeat center center/185px auto;
-        z-index: -2; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .header-button {
-        display: block;
-        font-size: 1.5rem;
-        width: 30px;
-        position: absolute;
-        z-index: 2;
-        text-align: center;
-        -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%); }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .header-button.close {
-          top: 35px;
-          left: 110px; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .header-button.minimize {
-          left: 135px;
-          top: 60px; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .tabs {
-        height: 100%;
-        width: 100%;
-        position: relative;
-        z-index: -3; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .tabs .nav-tab {
-          -webkit-transform-origin: right center;
-          -ms-transform-origin: right center;
-          transform-origin: right center;
-          -webkit-transform: translate(-50%, -50%);
-          -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-          height: 40px;
-          width: 5px;
-          top: 50%; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .tabs .nav-tab, .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .tabs .nav-tab > * {
-            display: block;
-            position: absolute; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .tabs .nav-tab svg {
-            width: 100%; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .nav-panel.gear-container .tabs .nav-tab .nav-tab-label {
-            opacity: 0; }
+      fill: #4b4835;
+      stroke: none; }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container {
       position: absolute;
       pointer-events: none;
@@ -1345,10 +1389,6 @@ Number Display
       -ms-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%);
       z-index: 4; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container .svg-def {
-        position: absolute;
-        fill: #4b4835;
-        stroke: none; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-binah .svg-def.svg-gear-binah-spike-tl,
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-binah .svg-def.svg-gear-binah-spike-r,
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container.gear-binah .svg-def.svg-gear-binah-spike-bl {
@@ -1383,149 +1423,8 @@ Number Display
         width: 120px; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .gear-container img {
         position: absolute; }
-    .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container {
-      height: calc(100% - (2 * 5.25px) - 12px);
-      width: calc(100% - (2 * 21px));
-      top: 17.25px;
-      left: 21px;
-      z-index: -1;
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, linear-gradient(#fff, #fff);
-      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -96px -92.25px/200px 200px no-repeat, linear-gradient(#fff, #fff);
-      grid-template-areas: "top-left  top top-right" "left    center    right" "bot-left  bot bot-right";
-      grid-template-columns: 32px 1fr 32px;
-      grid-template-rows: 32px 1fr 32px; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg {
-        position: relative;
-        height: 100%;
-        width: 100%; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.vert-edge {
-          width: 44px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.vert-edge.left {
-            grid-area: left;
-            background: transparent url("../assets/backgrounds/dgold/bg-left.webp") no-repeat repeat left center/44px 1000px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.vert-edge.right {
-            grid-area: right;
-            background: transparent url("../assets/backgrounds/dgold/bg-right.webp") no-repeat repeat right center/44px 1000px;
-            right: 12px; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.horiz-edge {
-          height: 44px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.horiz-edge.top {
-            grid-area: top;
-            background: transparent url("../assets/backgrounds/dgold/bg-top.webp") repeat no-repeat center top/1000px 44px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.horiz-edge.bot {
-            grid-area: bot;
-            background: transparent url("../assets/backgrounds/dgold/bg-bot.webp") repeat no-repeat center bottom/1000px 44px;
-            bottom: 12px; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.corner {
-          background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/32px 32px;
-          position: absolute;
-          -webkit-mask-composite: destination-out;
-          mask-composite: exclude; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.corner.top-left {
-            grid-area: top-left;
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff);
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff); }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.corner.top-right {
-            grid-area: top-right;
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff);
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="0" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff); }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.corner.bot-left {
-            grid-area: bot-left;
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff);
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="0" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff); }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.corner.bot-right {
-            grid-area: bot-right;
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff);
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="100" cy="100" r="100" fill="black" /></svg>') 0/32px 32px, linear-gradient(#fff, #fff); }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .bg-container .sheet-bg.center {
-          grid-area: center;
-          z-index: -2;
-          background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/500px 500px; }
-    .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container {
-      height: 100%;
-      width: 100%;
-      z-index: 3;
-      grid-template-areas: "top-left top-left  .  top-right top-right" "top-left top-left  .  top-right top-right" "    left    .      .     .          right" "bot-left bot-left  .  bot-right bot-right" "bot-left bot-left bot bot-right bot-right";
-      grid-template-columns: 30px 170px 1fr 170px 30px;
-      grid-template-rows: 32px 55px 1fr 55px 20px;
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -75px -75px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -75px -75px/200px 200px no-repeat, linear-gradient(#fff, #fff);
-      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -75px -75px/200px 200px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff));
-      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="37" fill="black" filter="none" /></svg>') -75px -75px/200px 200px no-repeat, linear-gradient(#fff, #fff); }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border {
-        pointer-events: none;
-        position: relative;
-        background: transparent var(--border-image) no-repeat var(--border-horiz-align) var(--border-vert-align)/contain; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.corner {
-          z-index: 5;
-          height: 75px;
-          width: 200px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.corner.top-left {
-            grid-area: top-left;
-            --border-image: url("../assets/layout/simple-border-top-left.webp");
-            --border-horiz-align: left;
-            --border-vert-align: top;
-            top: 0px;
-            left: 0px;
-            background-size: 125px 87px;
-            height: 87px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.corner.top-right {
-            grid-area: top-right;
-            --border-image: url("../assets/layout/simple-border-top-right.webp");
-            --border-horiz-align: right;
-            --border-vert-align: top;
-            top: 0px;
-            right: 0;
-            background-size: 125px 87px;
-            height: 87px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.corner.bot-left {
-            grid-area: bot-left;
-            --border-image: url("../assets/layout/simple-border-bot-left.webp");
-            --border-horiz-align: left;
-            --border-vert-align: bottom;
-            bottom: 0px;
-            left: 0px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.corner.bot-right {
-            grid-area: bot-right;
-            --border-image: url("../assets/layout/simple-border-bot-right.webp");
-            --border-horiz-align: right;
-            --border-vert-align: bottom;
-            bottom: 0px;
-            right: 0; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.horiz-bar {
-          background: transparent url("../assets/layout/simple-border-horiz-bar.webp") repeat no-repeat center center/600px 20px;
-          left: 0px;
-          width: calc(100% + 2 * 0px); }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.horiz-bar.top {
-            grid-area: top;
-            display: none; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.horiz-bar.bot {
-            grid-area: bot; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.vert-bar {
-          z-index: 4;
-          height: calc(100% - 2 * 0px);
-          top: 0px;
-          width: 30px;
-          background: transparent url("../assets/layout/chain.svg") no-repeat repeat center center/12px 12px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.vert-bar.left {
-            grid-area: left; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .border-container .sheet-border.vert-bar.right {
-            grid-area: right; }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content {
+      display: block;
       background: none; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form > * {
         position: relative;
@@ -1560,8 +1459,212 @@ Number Display
             top: calc((var(--sheet-header-height) - 70px) / 2);
             left: 0px;
             z-index: 4; }
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel {
+        top: 25px;
+        left: 25px;
+        height: 180px;
+        width: 180px;
+        pointer-events: all;
+        position: absolute;
+        z-index: 5;
+        -webkit-transform: translate(-50%, -50%) scale(0.8);
+        -ms-transform: translate(-50%, -50%) scale(0.8);
+        transform: translate(-50%, -50%) scale(0.8); }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel * {
+          pointer-events: none; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-svg {
+          position: relative; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-svg .svg-def {
+            fill: #958f6b;
+            fill-opacity: 1;
+            stroke: none;
+            stroke-width: 2px;
+            stroke-opacity: 1;
+            -webkit-filter: none;
+            filter: none;
+            opacity: 1;
+            z-index: 2;
+            -webkit-transform-origin: center center;
+            -ms-transform-origin: center center;
+            transform-origin: center center;
+            height: 230px;
+            width: 230px;
+            top: -25px;
+            left: -25px; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-svg .svg-def.outer-spikes {
+              fill: #706b50;
+              -webkit-transform: scale(0.95);
+              -ms-transform: scale(0.95);
+              transform: scale(0.95); }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-svg .svg-def.inner-spikes {
+              fill: #25241b;
+              -webkit-transform: scale(3);
+              -ms-transform: scale(3);
+              transform: scale(3);
+              opacity: 0; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-svg .svg-def.inner-mesh {
+              fill: #4b4835;
+              -webkit-transform: scale(2);
+              -ms-transform: scale(2);
+              transform: scale(2);
+              opacity: 0; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-svg .svg-def.main-ring {
+              fill: #706b50;
+              stroke: #4b4835;
+              stroke-width: 10px;
+              -webkit-filter: drop-shadow(5px 5px 10px #111111);
+              filter: drop-shadow(5px 5px 10px #111111); }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel img {
+          position: absolute; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-lens,
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .profile-image-bg,
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .profile-image-animation {
+          top: 10px;
+          left: 10px;
+          height: 160px;
+          width: 160px; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-lens {
+          z-index: 1;
+          top: 0;
+          left: 0;
+          height: 180px;
+          width: 180px; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .profile-image {
+          height: auto;
+          width: auto;
+          max-width: 160px;
+          top: 90px;
+          left: 90px;
+          -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          pointer-events: all;
+          z-index: 0;
+          -webkit-clip-path: circle(closest-side);
+          clip-path: circle(closest-side); }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .profile-image-bg {
+          position: absolute;
+          border-radius: 50%;
+          background: #111111;
+          z-index: -1; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .profile-image-animation {
+          position: absolute;
+          border-radius: 50%;
+          background: transparent url("../assets/animations/gears-perspective.gif") no-repeat no-repeat 90% center/266px auto;
+          z-index: -2;
+          -webkit-transform: scale(1.1);
+          -ms-transform: scale(1.1);
+          transform: scale(1.1); }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .nav-flare {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          top: 13px;
+          -webkit-transform: scale(0.5);
+          -ms-transform: scale(0.5);
+          transform: scale(0.5);
+          -webkit-transform-origin: center center;
+          -ms-transform-origin: center center;
+          transform-origin: center center;
+          background: transparent url("../assets/animations/nav-flare.webp") no-repeat no-repeat center center/100%;
+          z-index: -4; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .header-button {
+          opacity: 0;
+          display: block;
+          font-size: 1.5rem;
+          width: 30px;
+          position: absolute;
+          z-index: 2;
+          text-align: center;
+          text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
+          -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          pointer-events: all; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .header-button.close {
+            top: 35px;
+            left: 110px; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .header-button.minimize {
+            left: 135px;
+            top: 60px; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs {
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          display: block;
+          -webkit-transform-origin: center center;
+          -ms-transform-origin: center center;
+          transform-origin: center center;
+          -webkit-transform: scale(0.5);
+          -ms-transform: scale(0.5);
+          transform: scale(0.5);
+          z-index: -3; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container {
+            display: block;
+            position: absolute;
+            -webkit-transform: translate(-50%, -50%) rotate(var(--tab-rotation));
+            -ms-transform: translate(-50%, -50%) rotate(var(--tab-rotation));
+            transform: translate(-50%, -50%) rotate(var(--tab-rotation));
+            height: 130px;
+            width: 40px;
+            top: calc(50% - (0.5 * 130px));
+            -webkit-transform-origin: center bottom;
+            -ms-transform-origin: center bottom;
+            transform-origin: center bottom;
+            left: 50%;
+            pointer-events: all;
+            z-index: -2; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container:nth-child(1) {
+              --tab-rotation: 0deg; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container:nth-child(2) {
+              --tab-rotation: -60deg; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container:nth-child(3) {
+              --tab-rotation: -90deg; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container:nth-child(4) {
+              --tab-rotation: -120deg; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container:nth-child(5) {
+              --tab-rotation: -150deg; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container .nav-tab {
+              -webkit-transform: translate(-50%, -50%);
+              -ms-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+              height: 40px;
+              width: 40px;
+              pointer-events: all;
+              left: 50%;
+              position: absolute; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container .nav-tab .svg-def {
+                display: block;
+                height: 70px;
+                -webkit-transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                top: 100%;
+                left: 50%; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .tabs .nav-tab-container .nav-tab .nav-tab-label {
+                display: block;
+                opacity: 0;
+                color: #f4f4f5;
+                font-size: 0.875rem;
+                font-family: Infidel;
+                font-weight: 900;
+                text-shadow: 0px 0px 5px #912228, 0px 0px 5px #912228, 0px 0px 5px #912228;
+                position: absolute;
+                -webkit-transform-origin: center center;
+                -ms-transform-origin: center center;
+                transform-origin: center center;
+                -webkit-transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
+                -ms-transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
+                transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
+                top: 50%;
+                left: 50%;
+                z-index: 2;
+                text-align: center; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content {
-        overflow-x: hidden; }
+        overflow-x: hidden;
+        padding: 0;
+        -o-border-image: url("../assets/layout/border-actor-sheet.svg") 130 275/130px 275px/32px 40px repeat;
+        border-image: url("../assets/layout/border-actor-sheet.svg") 130 275/130px 275px/32px 40px repeat; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab {
           --horiz-padding: 10px;
           --top-padding: 5px;
@@ -1646,10 +1749,83 @@ Number Display
                   vertical-align: top; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status {
               grid-area: status;
-              display: block;
-              width: 100%; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status.\:container\(width\>\=1000px\) {
-                outline: 3px solid lime !important; }
+              padding: 0px;
+              display: grid;
+              grid-template-columns: 100px 1fr 100px;
+              /* STABILITY */
+              /* WOUNDS */
+              /* EDGES */ }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status > div {
+                position: relative; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status button {
+                --button-bg-color-light: #cac7b5;
+                --button-bg-color-dark: #4b4835;
+                --button-fg-color: #111111;
+                display: inline-block;
+                height: 20px;
+                width: 20px;
+                padding: 0;
+                color: var(--button-fg-color);
+                background: -o-linear-gradient(45deg, var(--button-bg-color-light), var(--button-bg-color-dark));
+                background: linear-gradient(45deg, var(--button-bg-color-light), var(--button-bg-color-dark));
+                line-height: 20px;
+                font-weight: 900;
+                font-size: 1.25rem; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .stability button {
+                background: #2661dc;
+                position: absolute; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .stability button.stability-add {
+                  top: 10px;
+                  left: 10px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .stability button.stability-remove {
+                  bottom: 10px;
+                  right: 10px; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .stability .stability-count {
+                display: block;
+                height: 78px;
+                padding-top: 4px;
+                color: #7298e8;
+                font-family: var(--font-decorative);
+                font-size: 78px;
+                line-height: 78px;
+                text-align: center; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .wounds {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-column-gap: 10px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .wounds button.wound-add {
+                  position: absolute; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .wounds input {
+                  margin: 0;
+                  height: 100%; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .wounds .wound {
+                  display: grid;
+                  grid-template-columns: 20px 1fr 20px 20px;
+                  grid-gap: 5px; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .wounds .wound button.wound-delete {
+                    margin: auto;
+                    background: red; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .wounds .wound .wound-desc {
+                    height: 75%;
+                    margin-top: 5px;
+                    width: calc(100% / 0.75);
+                    color: red;
+                    font-size: 1.125rem;
+                    font-weight: 900;
+                    font-variant: small-caps;
+                    -webkit-transform-origin: left;
+                    -ms-transform-origin: left;
+                    transform-origin: left;
+                    -webkit-transform: scaleX(0.75);
+                    -ms-transform: scaleX(0.75);
+                    transform: scaleX(0.75); }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .status .edges {
+                background: rgba(0, 255, 255, 0.2);
+                -webkit-box-flex: 0;
+                -ms-flex-positive: 0;
+                flex-grow: 0;
+                -ms-flex-preferred-size: 100px;
+                flex-basis: 100px; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .tab-content .tab.front .attributes {
               grid-area: attributes;
               background: transparent url("../assets/layout/attributes-spread.webp") no-repeat bottom center/100% auto; }
@@ -1801,7 +1977,7 @@ Number Display
   .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item {
     --sheet-min-height: 150px;
     --sheet-min-width: 400px;
-    --sheet-top-padding: 20px;
+    --sheet-top-padding: 0px;
     --sheet-horiz-padding: 20px;
     --sheet-bottom-padding: 10px;
     --sheet-header-height: 40px;
@@ -1865,17 +2041,15 @@ Number Display
             --KT-color-header-bg: #958f6b; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content {
           overflow-x: hidden;
-          overflow-y: auto;
-          padding-top: 0px;
-          padding-bottom: 0px; }
+          overflow-y: auto; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content.kult-darksecret-container p:first-child::first-line {
             font-variant: small-caps; }
   .vtt.game.system-kult4th #ui-right #sidebar {
     /* FOUNDRY OVERRIDES */
     --sidebar-width: 300px;
     --sidebar-internal-width: calc(var(--sidebar-width) - var(--scrollbar-width));
-    --sidebar-header-height: 0px;
-    --sidebar-item-height: 80px;
+    --sidebar-header-height: 32px;
+    --sidebar-item-height: 48px;
     border: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -1895,6 +2069,8 @@ Number Display
     --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
     --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
     --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
+    --KT-content-padding: 10px;
+    --KT-resize-handle-translate: translate(15px, 15px);
     --KT-color-light-contrast: #706b50;
     --KT-color-deep-contrast: #040404;
     --KT-color-emphasis: #bab69f;
@@ -1916,6 +2092,8 @@ Number Display
       --KT-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
       --KT-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
       --KT-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/12px;
+      --KT-content-padding: 10px;
+      --KT-resize-handle-translate: translate(15px, 15px);
       --KT-color-light-contrast: #706b50;
       --KT-color-deep-contrast: #040404;
       --KT-color-emphasis: #bab69f;

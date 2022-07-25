@@ -2,17 +2,11 @@
 {{log "DATA" data}}
 {{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 
-<div class="gear-container gear-top-left">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-a"}}
-</div>
 <div class="gear-container gear-top-right gear-binah">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah"}}
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-bl"}}
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-r"}}
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-tl"}}
-</div>
-<div class="gear-container gear-bottom-left">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-c"}}
 </div>
 <div class="gear-container gear-bottom-right gear-geburah">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-geburah"}}
@@ -20,90 +14,90 @@
 </div>
 
 <form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
-<script src="systems/kult4th/node_modules/cq-prolyfill/cq-prolyfill.js" async></script>
+	<script src="systems/kult4th/node_modules/cq-prolyfill/cq-prolyfill.js" async></script>
 	<header class="sheet-header">
 		<div class="actor-name-container">
 			<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
 			<svg class="actor-name-border">
-				{{!-- <rect x="0" y="0" height="100%" width="100%" fill="rgba(255,255,0,0.5)" /> --}}>
-				<polyline points="0,30 30,4 500,4 530,30" fill="none" stroke="#958b68" stroke-dasharray="3 12" stroke-width="3" />
-				{{!-- <line x1="0" y1="25" x2="30" y2="4"  fill="none" stroke="#958b68" stroke-dashoffset="2" stroke-dasharray="3 8" stroke-width="3" /> --}}
-				{{!-- <line x1="30" y1="4" x2="calc(100% - 15px)" y2="4" fill="none" stroke="#958b68" stroke-dashoffset="1" stroke-dasharray="3 12" stroke-width="3" /> --}}
-				{{!-- <line x1="30" y1="66" x2="100%" y2="66" fill="none" stroke="#958b68" stroke-dasharray="3 12" stroke-width="3" /> --}}
+				{{!--
+				<rect x="0" y="0" height="100%" width="100%" fill="rgba(255,255,0,0.5)" /> --}}>
+				<polyline points="0,30 30,4 500,4 530,30" fill="none" stroke="#958b68" stroke-dasharray="3 12"
+					stroke-width="3" />
+				{{!--
+				<line x1="0" y1="25" x2="30" y2="4" fill="none" stroke="#958b68" stroke-dashoffset="2" stroke-dasharray="3 8"
+					stroke-width="3" /> --}}
+				{{!--
+				<line x1="30" y1="4" x2="calc(100% - 15px)" y2="4" fill="none" stroke="#958b68" stroke-dashoffset="1"
+					stroke-dasharray="3 12" stroke-width="3" /> --}}
+				{{!--
+				<line x1="30" y1="66" x2="100%" y2="66" fill="none" stroke="#958b68" stroke-dasharray="3 12" stroke-width="3" />
+				--}}
 			</svg>
 		</div>
 	</header>
-	<nav class="nav-panel gear-container gear-nav">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-inner-ring"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-outer-ring"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-gears-hover"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-nav-spikes"}}
-	<img class="nav-lens" src="../systems/kult4th/assets/layout/nav-lens.webp" />
-	<img class="profile-image" src="{{actor.img}}" data-edit="img" />
-	<div class="profile-image-bg"></div>
-	<div class="profile-image-animation"></div>
-	<div class="tabs" data-group="primary">
-		<a class="nav-tab" data-tab="front">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
-		<a class="nav-tab" data-tab="bio">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
-		<a class="nav-tab" data-tab="assets">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
-		<a class="nav-tab" data-tab="notes">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.notes")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
-		<a class="nav-tab" data-tab="advancement">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
-		<a class="nav-tab" data-action="toggleLock">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.lock")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
-		<a class="nav-tab" data-action="selectImg">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.image")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
-		<a class="nav-tab" data-tab="settings">
-			<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.settings")}}</span>
-			<svg viewbox="0 0 100 20">
-				<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-				<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-			</svg>
-		</a>
+	<div class="nav-panel">
+		{{> "systems/kult4th/templates/components/nav-frame.hbs" }}
+		<img class="nav-lens" src="../systems/kult4th/assets/layout/nav-lens.webp" />
+		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
+		<div class="profile-image-bg"></div>
+		<div class="profile-image-animation"></div>
+		<div class="nav-flare"></div>
+		<nav class="tabs" data-group="primary">
+			<div class="nav-tab-container">
+				<a class="nav-tab" data-tab="front">
+					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
+					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
+				</a>
+			</div>
+			<div class="nav-tab-container">
+				<a class="nav-tab" data-tab="assets">
+					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
+					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-d"}}
+				</a>
+			</div>
+			<div class="nav-tab-container">
+				<a class="nav-tab" data-tab="bio">
+					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
+					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-c"}}
+				</a>
+			</div>
+			<div class="nav-tab-container">
+				<a class="nav-tab" data-tab="notes">
+					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.journal")}}</span>
+					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-b"}}
+				</a>
+			</div>
+			<div class="nav-tab-container">
+				<a class="nav-tab" data-tab="advancement">
+					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
+					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
+				</a>
+			</div>
+			{{!-- <a class="nav-tab" data-action="toggleLock">
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.lock")}}</span>
+				<svg viewbox="0 0 100 20">
+					<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+					<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+				</svg>
+			</a>
+			<a class="nav-tab" data-action="selectImg">
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.image")}}</span>
+				<svg viewbox="0 0 100 20">
+					<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+					<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+				</svg>
+			</a>
+			<a class="nav-tab" data-tab="settings">
+				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.settings")}}</span>
+				<svg viewbox="0 0 100 20">
+					<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
+					<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
+				</svg>
+			</a> --}}
+		</nav>
+		<a class="header-button close"><i class="fas fa-times"></i></a>
+		<a class="header-button minimize"><i class="fas fa-minus"></i></a>
 	</div>
-	<a class="header-button close"><i class="fas fa-times"></i></a>
-	<a class="header-button minimize"><i class="fas fa-minus"></i></a>
-</nav>
 	<main class="tab-content">
 
 		<section class="active tab front" data-group="primary" data-tab="front">
@@ -117,10 +111,38 @@
 				{{/each}}
 			</section>
 			<section class="subsection status">
-				<div class="stability"></div>
-				<div class="wounds"></div>
-				<div class="edges"></div>
-				<div class="dice-modifiers"></div>
+				<div class="stability">
+					<button class="stability-add">+</button>
+					<button class="stability-remove">&minus;</button>
+					<span class="stability-count">{{data.data.stability.value}}</span>
+				</div>
+				<div class="wounds">
+					<button class="wound-add">+</button>
+					{{#each data.data.wounds as |wound|}}
+					<div class="wound wound-{{#if wound.isCritical}}critical{{else}}serious{{/if}}" data-index="{{@index}}">
+						<input class="wound-type" type="checkbox" name="data.wounds.{{@index}}.isCritical" {{checked
+							wound.isCritical}} />
+						<input class="wound-desc" type="text" name="data.wounds.{{@index}}.description"
+							value="{{wound.description}}" />
+						<input class="wound-stable" type="checkbox" name="data.wounds.{{@index}}.isStabilized" {{checked
+							wound.isStabilized}} />
+						<button class="wound-delete" data-index="{{@index}}">&minus;</button>
+					</div>
+					{{/each}}
+				</div>
+				<div class="edges">
+					<button class="edges-add">+</button>
+					<button class="edges-remove">&minus;</button>
+					<button class="edges-clear">X</button>
+					<span class="edges-count">{{data.data.edges.value}}</span>
+					<span class="edges-source">{{data.data.edges.sourceName}}</span>
+					<span class="edges-tooltip">
+						{{#each data.data.edges.items}}
+						<button class="edge-use" data-edge="{{this}}">#</button>
+						<span class="edge-item">{{{formatForKult this}}}</span>
+						{{/each}}
+					</span>
+				</div>
 			</section>
 			<section class="subsection attributes">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.trait.attributes")}}</label>

@@ -108,7 +108,8 @@ Hooks.once("init", () => {
 			"roll-result",
 			"attribute-box",
 			"svg-flat",
-			"svg-header-icon"
+			"svg-header-icon",
+			"nav-frame"
 		]),
 		...U.getTemplatePath("partials", [
 			"basic-move-card",
@@ -145,6 +146,8 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", async () => {
+	// gsap.globalTimeline.timeScale(0);
+
 	const ACTOR = game.actors?.values().next().value as K4Actor;
 	const ITEM = game.items?.values().next().value as K4Item;
 	const EMBED = ACTOR.items?.values().next().value as K4Item;
