@@ -49,6 +49,7 @@ export default class K4Item extends Item {
             // no default
         }
     }
+    get isDerived() { return "sourceItem" in this.data.data && Boolean(this.data.data.sourceItem?.name); }
     async _onCreate(...args) {
         await super._onCreate(...args);
         if (this.isEmbedded && this.parent instanceof Actor) {

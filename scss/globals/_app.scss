@@ -31,4 +31,20 @@
 		text-align: justify;
 		hyphens: auto;
 	}
+
+	div.toggle-box-container {
+		position: relative;
+		user-select: none;
+		cursor: pointer;
+
+		input[type="checkbox"].toggle-box {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+		}
+
+		.toggle-box-mode { display: none }
+		input[type="checkbox"].toggle-box:checked ~ .toggle-box-checked { display: inline-block }
+		input[type="checkbox"].toggle-box:not(:checked) ~ .toggle-box-unchecked { display: inline-block }
+	}
 }

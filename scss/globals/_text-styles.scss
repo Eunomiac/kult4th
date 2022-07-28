@@ -33,6 +33,28 @@
 		}
 	}
 
+	textarea,
+	input[type='text'],
+	select,
+	.contentEditable {
+		height: unset;
+		margin: 0 4px;
+		box-sizing: content-box;
+
+		outline: none;
+		box-shadow: none;
+
+		overflow: hidden;
+
+		&:invalid {
+			color: $red-dark;
+		}
+
+		&.placeholder {
+			color: $red-dark;
+		}
+	}
+
 	i {
 		--KT-color-primary: #{$gold};
 		--KT-color-contrast: #{$black};
@@ -97,8 +119,8 @@
 	}
 
 	label.k4-title {
-		color: var(--KT-color-header-fg);
-		background: var(--KT-color-header-bg);
+		color: var(--KT-color-title);
+		background: var(--KT-color-title-contrast);
 		font-weight: $font-weight-semi;
 		font-size: $rem-22;
 		line-height: $rem-24;
@@ -122,7 +144,7 @@
 	}
 
 	h1 {
-		color: var(--KT-color-h1);
+		color: var(--KT-color-secondary);
 		font-family: var(--font-heading);
 		font-size: $rem-32;
 		font-weight: $font-weight-semi;
@@ -131,7 +153,7 @@
 	}
 
 	h2 {
-		color: var(--KT-color-h2);
+		color: var(--KT-color-secondary);
 		font-family: var(--font-primary);
 		font-size: $rem-24;
 		font-weight: $font-weight-bold;
@@ -140,7 +162,7 @@
 	}
 
 	h3 {
-		color: var(--KT-color-h3);
+		color: var(--KT-color-secondary);
 		font-family: var(--font-primary);
 		font-size: $rem-16;
 		font-weight: $font-weight-bold;
@@ -150,7 +172,7 @@
 	}
 
 	label.k4-h4 {
-		color: var(--KT-color-h4);
+		color: var(--KT-color-secondary);
 		font-family: var(--font-primary);
 		font-size: $rem-12;
 		font-weight: $font-weight-bold;
@@ -249,7 +271,7 @@
 		color: var(--KT-color-keyword);
 	}
 	.text-movename {
-		color: var(--KT-color-keyword-emphasis);
+		color: var(--KT-color-keyword-bright);
 		font-style: italic;
 	}
 	.text-edgename {
@@ -272,11 +294,11 @@
 	}
 
 	.text-resultlabel {
-		color: var(--KT-color-h2);
+		color: var(--KT-color-secondary);
 	}
 
 	.text-trigger {
-		color: var(--KT-color-highlight);
+		color: var(--KT-color-primary-brightest);
 		font-weight: $font-weight-semi;
 		font-style: italic;
 	}

@@ -2,17 +2,17 @@ import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 export default class K4Actor extends Actor {
+    get kData() { return this.data.data; }
     prepareData() {
         super.prepareData();
         if (this.data.type === "pc" /* K4ActorType.pc */) {
             this.preparePCData();
         }
     }
-    populateDebugPC() {
-        const updateData = {};
+    async populateDebugPC() {
         // Add wounds
-        updateData.data = {
-            wounds: [
+        this.update({
+            "data.wounds": [
                 {
                     description: "Scraped Knee",
                     isCritical: false,
@@ -29,8 +29,7 @@ export default class K4Actor extends Actor {
                     isStabilized: true
                 }
             ]
-        };
-        this.update(updateData);
+        });
     }
     preparePCData() {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
@@ -46,8 +45,11 @@ export default class K4Actor extends Actor {
             this.data.data.relations = this.relations;
             this.data.data.maxWounds = {
                 serious: this.data.data.modifiers.seriousWounds.length,
-                critical: this.data.data.modifiers.criticalWounds.length
+                critical: this.data.data.modifiers.criticalWounds.length,
+                total: this.data.data.modifiers.seriousWounds.length + this.data.data.modifiers.criticalWounds.length
             };
+            this.data.data.woundReport = this.parseModsToStrings(this.woundPenaltyData).join("; ");
+            // this.validateStability();
         }
     }
     getItemsOfType(type) {
@@ -56,19 +58,29 @@ export default class K4Actor extends Actor {
     getItemByName(iName) {
         return [...this.items].find((item) => item.name === iName);
     }
+    dropItemByName(iName) {
+        return false;
+    }
+    get moves() { return this.getItemsOfType("move" /* K4ItemType.move */); }
+    get basicMoves() { return this.moves.filter((move) => !move.isDerived); }
+    get derivedMoves() { return this.moves.filter((move) => move.isDerived); }
     get attacks() { return this.getItemsOfType("attack" /* K4ItemType.attack */); }
+    get basicAttacks() { return this.attacks.filter((attack) => !attack.isDerived); }
+    get derivedAttacks() { return this.attacks.filter((attack) => attack.isDerived); }
     get advantages() { return this.getItemsOfType("advantage" /* K4ItemType.advantage */); }
     get disadvantages() { return this.getItemsOfType("disadvantage" /* K4ItemType.disadvantage */); }
     get darkSecrets() { return this.getItemsOfType("darksecret" /* K4ItemType.darksecret */); }
     get weapons() { return this.getItemsOfType("weapon" /* K4ItemType.weapon */); }
     get gear() { return this.getItemsOfType("gear" /* K4ItemType.gear */); }
     get relations() { return this.getItemsOfType("relation" /* K4ItemType.relation */); }
-    get moves() { return this.getItemsOfType("move" /* K4ItemType.move */); }
-    get basicMoves() {
-        return this.moves.filter((move) => !move.data.data.sourceItem?.name);
-    }
-    get derivedMoves() {
-        return this.moves.filter((move) => move.data.data.sourceItem?.name);
+    get derivedItems() { return [...this.items].filter((item) => item.isDerived); }
+    get wounds() {
+        if (this.type === "pc" /* K4ActorType.pc */) {
+            return Object.values(this.data.data.wounds);
+        }
+        else {
+            return [];
+        }
     }
     get attributeData() {
         if (this.type === "pc" /* K4ActorType.pc */) {
@@ -104,11 +116,69 @@ export default class K4Actor extends Actor {
         });
         return userOutput.attribute;
     }
+    validateStability() {
+        const { value, min, max } = this.data.data.stability;
+        if (U.clampNum(value, [min, max]) !== value) {
+            this.update({ ["data.stability.value"]: U.clampNum(value, [min, max]) });
+        }
+    }
+    changeStability(delta) {
+        if (delta) {
+            const { value, min, max } = this.data.data.stability;
+            if (U.clampNum(value + delta, [min, max]) !== value) {
+                this.update({ ["data.stability.value"]: U.clampNum(value + delta, [min, max]) });
+            }
+        }
+    }
+    async addWound(type, description) {
+        if (this.data.type === "pc" /* K4ActorType.pc */) {
+            const woundData = {
+                description: description ?? "",
+                isCritical: type === "critical" /* K4WoundType.critical */,
+                isStabilized: false
+            };
+            const wounds = Object.values(this.data.data.wounds);
+            console.log("Starting Wounds", U.objClone(wounds));
+            wounds.push(woundData);
+            console.log("Added Wounds", U.objClone(wounds));
+            await this.update({ ["data.wounds"]: wounds });
+            console.log("Updated Wounds", this.data.data.wounds);
+        }
+    }
+    async removeWound(index) {
+        if (this.data.type === "pc" /* K4ActorType.pc */) {
+            let wounds = Object.values(this.data.data.wounds);
+            console.log("Starting Wounds", U.objClone(wounds));
+            wounds = [
+                ...wounds.slice(0, index),
+                ...wounds.slice(index + 1)
+            ];
+            console.log("Removed Wounds", U.objClone(wounds));
+            await this.update({ ["data.wounds"]: wounds });
+            console.log("Updated Wounds", this.data.data.wounds);
+        }
+    }
+    parseModsToStrings(modData) {
+        const returnStrings = [];
+        for (const [modKey, modVal] of Object.entries(modData)) {
+            switch (modKey) {
+                case "all": {
+                    returnStrings.push(`${U.signNum(modVal)} to all rolls`);
+                    break;
+                }
+                default: {
+                    returnStrings.push(`Unknown Roll Modifier: '${modKey}'`);
+                    break;
+                }
+            }
+        }
+        return returnStrings;
+    }
     get woundPenaltyData() {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
             const [unstabSerious, unstabCritical] = [
-                this.data.data.wounds.filter((wound) => !wound.isCritical && !wound.isStabilized).length,
-                this.data.data.wounds.filter((wound) => wound.isCritical && !wound.isStabilized).length
+                this.wounds.filter((wound) => !wound.isCritical && !wound.isStabilized).length,
+                this.wounds.filter((wound) => wound.isCritical && !wound.isStabilized).length
             ];
             if (unstabSerious && unstabCritical) {
                 return this.data.data.modifiers.seriousAndCriticalWounds[Math.min(this.data.data.maxWounds.serious, this.data.data.maxWounds.critical, unstabSerious, unstabCritical)];
@@ -240,6 +310,7 @@ export default class K4Actor extends Actor {
                     this.createEmbeddedDocuments("Item", newItems);
                 }
             }
+            this.setFlag("kult4th", "sheetTab", "front");
         }
     }
 }

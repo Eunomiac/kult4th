@@ -5,6 +5,8 @@ import {ActorDataConstructorData} from "@league-of-foundry-developers/foundry-vt
 
 export default class K4Actor extends Actor {
 
+	get kData() { return this.data.data }
+
 	override prepareData() {
 		super.prepareData();
 		if (this.data.type === K4ActorType.pc) {
@@ -12,12 +14,11 @@ export default class K4Actor extends Actor {
 		}
 	}
 
-	populateDebugPC() {
-		const updateData: Partial<ActorDataConstructorData> = {};
+	async populateDebugPC() {
 
 		// Add wounds
-		updateData.data = {
-			wounds: [
+		this.update({
+			"data.wounds": [
 				{
 					description: "Scraped Knee",
 					isCritical: false,
@@ -34,9 +35,7 @@ export default class K4Actor extends Actor {
 					isStabilized: true
 				}
 			]
-		};
-
-		this.update(updateData);
+		});
 	}
 
 	preparePCData() {
@@ -54,8 +53,12 @@ export default class K4Actor extends Actor {
 
 			this.data.data.maxWounds = {
 				serious: this.data.data.modifiers.seriousWounds.length,
-				critical: this.data.data.modifiers.criticalWounds.length
+				critical: this.data.data.modifiers.criticalWounds.length,
+				total: this.data.data.modifiers.seriousWounds.length + this.data.data.modifiers.criticalWounds.length
 			};
+			this.data.data.woundReport = this.parseModsToStrings(this.woundPenaltyData).join("; ");
+
+			// this.validateStability();
 		}
 	}
 
@@ -67,7 +70,19 @@ export default class K4Actor extends Actor {
 		return [...this.items].find((item: K4Item) => item.name === iName);
 	}
 
+	dropItemByName(iName: string): boolean {
+		return false;
+	}
+
+	get moves() { return this.getItemsOfType(K4ItemType.move) }
+	get basicMoves() { return this.moves.filter((move) => !move.isDerived) }
+	get derivedMoves() { return this.moves.filter((move) => move.isDerived) }
+
 	get attacks() { return this.getItemsOfType(K4ItemType.attack) }
+	get basicAttacks() { return this.attacks.filter((attack) => !attack.isDerived) }
+	get derivedAttacks() { return this.attacks.filter((attack) => attack.isDerived) }
+
+
 	get advantages() { return this.getItemsOfType(K4ItemType.advantage) }
 	get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage) }
 	get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret) }
@@ -75,12 +90,14 @@ export default class K4Actor extends Actor {
 	get gear() { return this.getItemsOfType(K4ItemType.gear) }
 	get relations() { return this.getItemsOfType(K4ItemType.relation) }
 
-	get moves() { return this.getItemsOfType(K4ItemType.move) }
-	get basicMoves() {
-		return this.moves.filter((move) => !move.data.data.sourceItem?.name);
-	}
-	get derivedMoves() {
-		return this.moves.filter((move) => move.data.data.sourceItem?.name);
+	get derivedItems() { return [...this.items].filter((item) => item.isDerived) }
+
+	get wounds(): K4Wound[] {
+		if (this.type === K4ActorType.pc) {
+			return Object.values(this.data.data.wounds);
+		} else {
+			return [];
+		}
 	}
 
 	get attributeData() {
@@ -122,11 +139,74 @@ export default class K4Actor extends Actor {
 		return userOutput.attribute;
 	}
 
+	validateStability() {
+		const {value, min, max} = this.data.data.stability;
+		if (U.clampNum(value, [min, max]) !== value) {
+			this.update({["data.stability.value"]: U.clampNum(value, [min, max])});
+		}
+	}
+
+	changeStability(delta: int) {
+		if (delta) {
+			const {value, min, max} = this.data.data.stability;
+			if (U.clampNum(value + delta, [min, max]) !== value) {
+				this.update({["data.stability.value"]: U.clampNum(value + delta, [min, max])});
+			}
+		}
+	}
+
+	async addWound(type?: K4WoundType, description?: string) {
+		if (this.data.type === K4ActorType.pc) {
+			const woundData: K4Wound = {
+				description: description ?? "",
+				isCritical: type === K4WoundType.critical,
+				isStabilized: false
+			};
+			const wounds = Object.values(this.data.data.wounds);
+			console.log("Starting Wounds", U.objClone(wounds));
+			wounds.push(woundData);
+			console.log("Added Wounds", U.objClone(wounds));
+			await this.update({["data.wounds"]: wounds});
+			console.log("Updated Wounds", this.data.data.wounds);
+		}
+	}
+
+	async removeWound(index: posInt) {
+		if (this.data.type === K4ActorType.pc) {
+			let wounds = Object.values(this.data.data.wounds);
+			console.log("Starting Wounds", U.objClone(wounds));
+			wounds = [
+				...wounds.slice(0, index),
+				...wounds.slice(index+1)
+			];
+			console.log("Removed Wounds", U.objClone(wounds));
+			await this.update({["data.wounds"]: wounds});
+			console.log("Updated Wounds", this.data.data.wounds);
+		}
+	}
+
+	parseModsToStrings(modData: K4RollModData): string[] {
+		const returnStrings = [];
+		for (const [modKey, modVal] of Object.entries(modData)) {
+			switch (modKey) {
+				case "all": {
+					returnStrings.push(`${U.signNum(modVal)} to all rolls`);
+					break;
+				}
+				default: {
+					returnStrings.push(`Unknown Roll Modifier: '${modKey}'`);
+					break;
+				}
+			}
+		}
+		return returnStrings;
+	}
+
 	get woundPenaltyData(): K4RollModData {
 		if (this.data.type === K4ActorType.pc) {
 			const [unstabSerious, unstabCritical] = [
-				this.data.data.wounds.filter((wound) => !wound.isCritical && !wound.isStabilized).length,
-				this.data.data.wounds.filter((wound) => wound.isCritical && !wound.isStabilized).length
+				this.wounds.filter((wound) => !wound.isCritical && !wound.isStabilized).length,
+				this.wounds.filter((wound) => wound.isCritical && !wound.isStabilized).length
 			];
 			if (unstabSerious && unstabCritical) {
 				return this.data.data.modifiers.seriousAndCriticalWounds[Math.min(
@@ -274,6 +354,7 @@ export default class K4Actor extends Actor {
 					this.createEmbeddedDocuments("Item", newItems);
 				}
 			}
+			this.setFlag("kult4th", "sheetTab", "front");
 		}
 	}
 }

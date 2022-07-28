@@ -30,4 +30,9 @@ declare global {
 	type KeyOf<T> = keyof T;
 
 	type gsapAnim = gsap.core.Tween | gsap.core.Timeline;
+
+	declare function $clamp(element: HTMLElement, options: Record<string,any>): {
+		original: string,
+		clamped: string
+	}
 }

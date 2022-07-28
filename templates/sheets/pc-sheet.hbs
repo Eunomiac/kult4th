@@ -1,12 +1,11 @@
-{{log this}}
-{{log "DATA" data}}
 {{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 
+<div class="gear-container gear-huge gear-kether-huge">
+	{{> "systems/kult4th/templates/components/svg-flat-1024.hbs" "gear-kether-huge"}}
+</div>
 <div class="gear-container gear-top-right gear-binah">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-bl"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-r"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-spike-tl"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-outer-teeth"}}
+	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-inner-full"}}
 </div>
 <div class="gear-container gear-bottom-right gear-geburah">
 	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-geburah"}}
@@ -17,90 +16,63 @@
 	<script src="systems/kult4th/node_modules/cq-prolyfill/cq-prolyfill.js" async></script>
 	<header class="sheet-header">
 		<div class="actor-name-container">
-			<input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" />
-			<svg class="actor-name-border">
-				{{!--
-				<rect x="0" y="0" height="100%" width="100%" fill="rgba(255,255,0,0.5)" /> --}}>
-				<polyline points="0,30 30,4 500,4 530,30" fill="none" stroke="#958b68" stroke-dasharray="3 12"
-					stroke-width="3" />
-				{{!--
-				<line x1="0" y1="25" x2="30" y2="4" fill="none" stroke="#958b68" stroke-dashoffset="2" stroke-dasharray="3 8"
-					stroke-width="3" /> --}}
-				{{!--
-				<line x1="30" y1="4" x2="calc(100% - 15px)" y2="4" fill="none" stroke="#958b68" stroke-dashoffset="1"
-					stroke-dasharray="3 12" stroke-width="3" /> --}}
-				{{!--
-				<line x1="30" y1="66" x2="100%" y2="66" fill="none" stroke="#958b68" stroke-dasharray="3 12" stroke-width="3" />
-				--}}
-			</svg>
+			<span class="actor-name-spacer"></span>
+			<span class="actor-name-border actor-name-border-left"></span>
+			<div class="actor-name-input-container">
+				<div class="actor-name-bg-anim actor-name-bg-anim-left"></div>
+				<div class="actor-name-bg-anim actor-name-bg-anim-right"></div>
+				<div class="actor-name contentEditable" data-field="name" data-placeholder="Who Are You?" data-clamplines="1"></div>
+				{{!-- <input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" /> --}}
+			</div>
+			<span class="actor-name-border actor-name-border-right"></span>
+			<span class="actor-name-spacer"></span>
 		</div>
 	</header>
 	<div class="nav-panel">
-		{{> "systems/kult4th/templates/components/nav-frame.hbs" }}
-		<img class="nav-lens" src="../systems/kult4th/assets/layout/nav-lens.webp" />
-		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
-		<div class="profile-image-bg"></div>
-		<div class="profile-image-animation"></div>
 		<div class="nav-flare"></div>
+		<div class="profile-image-animation"></div>
+		<div class="profile-image-bg"></div>
+		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
+		<img class="nav-lens" src="../systems/kult4th/assets/layout/nav-lens.webp" />
+		{{> "systems/kult4th/templates/components/nav-frame.hbs" }}
 		<nav class="tabs" data-group="primary">
 			<div class="nav-tab-container">
-				<a class="nav-tab" data-tab="front">
+				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
+				<a class="nav-tab item" data-tab="front">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
-					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				<a class="nav-tab" data-tab="assets">
+				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-d"}}
+				<a class="nav-tab item" data-tab="assets">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
-					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-d"}}
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				<a class="nav-tab" data-tab="bio">
+				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-c"}}
+				<a class="nav-tab item" data-tab="bio">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
-					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-c"}}
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				<a class="nav-tab" data-tab="notes">
+				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-b"}}
+				<a class="nav-tab item" data-tab="notes">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.journal")}}</span>
-					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-b"}}
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				<a class="nav-tab" data-tab="advancement">
+				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
+				<a class="nav-tab item" data-tab="advancement">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
-					{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
 				</a>
 			</div>
-			{{!-- <a class="nav-tab" data-action="toggleLock">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.lock")}}</span>
-				<svg viewbox="0 0 100 20">
-					<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-					<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-				</svg>
-			</a>
-			<a class="nav-tab" data-action="selectImg">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.image")}}</span>
-				<svg viewbox="0 0 100 20">
-					<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-					<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-				</svg>
-			</a>
-			<a class="nav-tab" data-tab="settings">
-				<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.settings")}}</span>
-				<svg viewbox="0 0 100 20">
-					<circle cx="10" cy="10" r="8" stroke-width="4" stroke="#685f43"></circle>
-					<rect x="18" y="7" height="6" width="80" fill="#685f43"></rect>
-				</svg>
-			</a> --}}
+			{{!-- Need UNLOCK (?) and SETTINGS --}}
 		</nav>
 		<a class="header-button close"><i class="fas fa-times"></i></a>
 		<a class="header-button minimize"><i class="fas fa-minus"></i></a>
 	</div>
 	<main class="tab-content">
-
-		<section class="active tab front" data-group="primary" data-tab="front">
+		<section class="tab front {{~#if (eq curTab "front")}} active{{/if}}" data-group="primary" data-tab="front">
 			<section class="subsection dramatic-hooks">
 				<label class="hook-label">{{case "title" (loc "kult4th.sheet.hooks")}}</label>
 				{{#each data.data.dramaticHooks}}
@@ -117,20 +89,31 @@
 					<span class="stability-count">{{data.data.stability.value}}</span>
 				</div>
 				<div class="wounds">
-					<button class="wound-add">+</button>
-					{{#each data.data.wounds as |wound|}}
-					<div class="wound wound-{{#if wound.isCritical}}critical{{else}}serious{{/if}}" data-index="{{@index}}">
-						<input class="wound-type" type="checkbox" name="data.wounds.{{@index}}.isCritical" {{checked
-							wound.isCritical}} />
-						<input class="wound-desc" type="text" name="data.wounds.{{@index}}.description"
-							value="{{wound.description}}" />
-						<input class="wound-stable" type="checkbox" name="data.wounds.{{@index}}.isStabilized" {{checked
-							wound.isStabilized}} />
-						<button class="wound-delete" data-index="{{@index}}">&minus;</button>
+					<label class="wounds-label">{{case "title" (loc "kult4th.trait.wounds")}}</label>
+					<div class="wounds-container">
+						{{#each data.data.wounds as |wound|}}
+						<div class="wound wound-{{#if wound.isCritical}}critical{{else}}serious{{/if}}" data-index="{{@index}}">
+							<div class="toggle-box-container wound-type">
+								<input class="toggle-box" type="checkbox" name="data.wounds.{{@index}}.isCritical" {{checked wound.isCritical}} />
+								<span class="toggle-box-mode toggle-box-checked">🟥</span>
+								<span class="toggle-box-mode toggle-box-unchecked">❌</span>
+							</div>
+							<div class="wound-desc contentEditable" data-field="data.wounds.{{@index}}.description" data-placeholder="Describe Wound" data-clamplines="1"></div>
+							<div class="toggle-box-container wound-stable">
+								<input class="toggle-box" type="checkbox" name="data.wounds.{{@index}}.isStabilized" {{checked wound.isStabilized}} />
+								<span class="toggle-box-mode toggle-box-checked">🟩</span>
+								<span class="toggle-box-mode toggle-box-unchecked">⭕</span>
+							</div>
+							<button class="wound-delete" data-index="{{@index}}">&minus;</button>
+						</div>
+						{{/each}}
+						<div class="wound wound-add">
+							<button class="wound-add">New Wound</button>
+						</div>
 					</div>
-					{{/each}}
+					<span class="wounds-report">{{data.data.woundReport}}</span>
 				</div>
-				<div class="edges">
+				<div class="edges" style="opacity: 0;">
 					<button class="edges-add">+</button>
 					<button class="edges-remove">&minus;</button>
 					<button class="edges-clear">X</button>
@@ -173,7 +156,7 @@
 			</section>
 		</section>
 
-		<section class="tab bio" data-group="primary" data-tab="bio">
+		<section class="tab bio {{~#if (eq curTab "bio")}} active{{/if}}" data-group="primary" data-tab="bio">
 			<section class="subsection description">
 				<label class="k4-title section-title">Description</label>
 				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
@@ -204,8 +187,8 @@
 			</section>
 		</section>
 
-		<section class="tab assets" data-group="primary" data-tab="assets"></section>
-		<section class="tab notes" data-group="primary" data-tab="notes"></section>
-		<section class="tab advancement" data-group="primary" data-tab="advancement"></section>
+		<section class="tab assets {{~#if (eq curTab "assets")}} active{{/if}}" data-group="primary" data-tab="assets"></section>
+		<section class="tab notes {{~#if (eq curTab "notes")}} active{{/if}}" data-group="primary" data-tab="notes"></section>
+		<section class="tab advancement {{~#if (eq curTab "advancement")}} active{{/if}}" data-group="primary" data-tab="advancement"></section>
 	</main>
 </form>

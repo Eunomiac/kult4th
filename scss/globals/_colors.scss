@@ -121,56 +121,56 @@ $blue-glow: #3f93ff;
 
 @mixin set-default-theme() {
 	--KT-color-primary: #{$gold};
+	--KT-color-primary-bright: #{$gold-bright};
+	--KT-color-primary-brightest: #{$gold-brightest};
+
 	--KT-color-contrast: #{$black};
-	--KT-color-highlight: #{$gold-brightest};
+	--KT-color-contrast-low: #{$gold-darker};
+	--KT-color-contrast-high: #{$black-darkest};
 
-	--KT-color-h1: #{$red};
-	--KT-color-h2: #{$red};
-	--KT-color-h3: #{$red};
-	--KT-color-h4: #{$red};
+	--KT-color-secondary: #{$red};
+	--KT-color-secondary-bright: #{$red-bright};
+	--KT-color-secondary-brightest: #{$red-glow};
 
-	--KT-color-header-fg: var(--KT-color-contrast);
-	--KT-color-header-bg: var(--KT-color-primary);
+	--KT-color-title: var(--KT-color-contrast);
+	--KT-color-title-contrast: var(--KT-color-primary);
 
-	--KT-color-keyword: #{$blue};
-	--KT-color-pos: #{$blue-brightest};
-	--KT-color-neg: #{$red-glow};
-
+	--list-indent: 12px;
 	--KT-background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/dgold/border.webp")} 30 / 30px / 15px round;
-	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/12px;
-	--KT-content-padding: 10px;
-	--KT-resize-handle-translate: translate(15px, 15px);
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/calc(0.5 * var(--list-indent));
 
-	--KT-color-light-contrast: #{$gold-dark};
-	--KT-color-deep-contrast: #{$black-darkest};
-	--KT-color-emphasis: #{$gold-bright};
-	--KT-color-keyword-emphasis: #{$blue-bright};
-	--KT-color-keyword-contrast: #{$blue-dark};
+	--KT-color-keyword: #{$blue};
+	--KT-color-keyword-bright: #{$blue-bright};
+	--KT-color-keyword-brightest: #{$blue-brightest};
+	--KT-color-keyword-contrast: #{$blue-darkest};
+
+	--KT-color-pos: #{$blue};
+	--KT-color-neg: #{$red};
 }
 
 /* DEFAULT FOUNDRY OVERRIDES */
 & {
   --color-text-light-primary: var(--KT-color-primary);
-	--color-text-light-highlight: magenta; // var(--KT-color-emphasis); // #f0f0e0;
-  --color-text-light-heading: lime; // var(--KT-color-emphasis); // #c9c7b8;
+	--color-text-light-highlight: magenta; // var(--KT-color-primary-bright); // #f0f0e0;
+  --color-text-light-heading: lime; // var(--KT-color-primary-bright); // #c9c7b8;
   --color-text-dark-primary: var(--KT-color-contrast); // #191813;
-  --color-text-dark-secondary: cyan; // var(--KT-color-light-contrast); // #4b4a44;
-  --color-text-dark-header: purple; // var(--KT-color-light-contrast); // #23221d;
+  --color-text-dark-secondary: cyan; // var(--KT-color-contrast-low); // #4b4a44;
+  --color-text-dark-header: purple; // var(--KT-color-contrast-low); // #23221d;
   --color-text-light-primary: var(--KT-color-primary);
-	--color-text-light-highlight: var(--KT-color-emphasis); // #f0f0e0;
-  --color-text-light-heading: var(--KT-color-emphasis); // #c9c7b8;
+	--color-text-light-highlight: var(--KT-color-primary-bright); // #f0f0e0;
+  --color-text-light-heading: var(--KT-color-primary-bright); // #c9c7b8;
   --color-text-dark-primary: var(--KT-color-contrast); // #191813;
-  --color-text-dark-secondary: var(--KT-color-light-contrast); // #4b4a44;
-  --color-text-dark-header: var(--KT-color-light-contrast); // #23221d;
+  --color-text-dark-secondary: var(--KT-color-contrast-low); // #4b4a44;
+  --color-text-dark-header: var(--KT-color-contrast-low); // #23221d;
   --color-text-dark-inactive: #7a7971;
   --color-text-hyperlink: var(--KT-color-keyword); // #ff6400;
   --color-text-light-0: #fff;
-  --color-text-light-1: var(--KT-color-highlight); // #eee;
-  --color-text-light-2: var(--KT-color-highlight); // #ddd;
-  --color-text-light-3: var(--KT-color-emphasis); // #ccc;
-  --color-text-light-4: var(--KT-color-emphasis); // #bbb;
-  --color-text-light-5: var(--KT-color-emphasis); // #aaa;
+  --color-text-light-1: var(--KT-color-primary-brightest); // #eee;
+  --color-text-light-2: var(--KT-color-primary-brightest); // #ddd;
+  --color-text-light-3: var(--KT-color-primary-bright); // #ccc;
+  --color-text-light-4: var(--KT-color-primary-bright); // #bbb;
+  --color-text-light-5: var(--KT-color-primary-bright); // #aaa;
   --color-text-light-6: var(--KT-color-primary); // #999;
   --color-text-light-7: var(--KT-color-primary); // #888;
   --color-text-dark-1: var(--KT-color-contrast); // #111;
@@ -179,32 +179,32 @@ $blue-glow: #3f93ff;
   --color-text-dark-4: #555;
   --color-text-dark-5: #666;
   --color-text-dark-6: #777;
-  --color-border-light-1: var(--KT-color-emphasis); // #ddd;
+  --color-border-light-1: var(--KT-color-primary-bright); // #ddd;
   --color-border-light-2: var(--KT-color-primary); // #999;
   --color-border-dark-1: var(--KT-color-contrast); // #111;
   --color-border-dark-2: var(--KT-color-contrast); // #222;
-  --color-border-dark-3: var(--KT-color-light-contrast); // #333;
-  --color-border-dark-4: var(--KT-color-light-contrast); // #444;
-  --color-border-dark-5: var(--KT-color-light-contrast); // #666;
+  --color-border-dark-3: var(--KT-color-contrast-low); // #333;
+  --color-border-dark-4: var(--KT-color-contrast-low); // #444;
+  --color-border-dark-5: var(--KT-color-contrast-low); // #666;
   --color-shadow-primary: var(--KT-color-primary); // #ff0000;
   --color-shadow-highlight: var(--KT-color-primary); // #ff6400;
   --color-shadow-dark: #000;
-  --color-underline-inactive: var(--KT-color-light-contrast); // #7a7971;
-  --color-underline-active: var(--KT-color-keyword-emphasis); // #426899;
+  --color-underline-inactive: var(--KT-color-contrast-low); // #7a7971;
+  --color-underline-active: var(--KT-color-keyword-bright); // #426899;
   --color-underline-header: var(--KT-color-primary); // #782e22;
-  --color-border-light-highlight: var(--KT-color-highlight);
-  --color-border-light-primary: var(--KT-color-highlight); // #e4ddc3;
-  --color-border-light-secondary: var(--KT-color-emphasis); // #c9c7b8;
+  --color-border-light-highlight: var(--KT-color-primary-brightest);
+  --color-border-light-primary: var(--KT-color-primary-brightest); // #e4ddc3;
+  --color-border-light-secondary: var(--KT-color-primary-bright); // #c9c7b8;
   --color-border-light-tertiary: var(--KT-color-primary); // #7a7971;
   --color-border-dark: #000;
   --color-border-dark-primary: var(--KT-color-contrast); // #191813;
-  --color-border-dark-secondary: var(--KT-color-light-contrast); // #23221d;
-  --color-border-dark-tertiary: var(--KT-color-light-contrast); // #4b4a44;
-  --color-border-highlight: var(--KT-color-emphasis); // #ff6400;
-  --color-border-highlight-alt: var(--KT-color-highlight); // #ff0000;
-  --color-bg-btn-minor-inactive: var(--KT-color-emphasis); // #c9c7b8;
-  --color-bg-btn-minor-active: var(--KT-color-highlight); // #c9c7b8;
-  --color-bg-option: var(--KT-color-highlight);
+  --color-border-dark-secondary: var(--KT-color-contrast-low); // #23221d;
+  --color-border-dark-tertiary: var(--KT-color-contrast-low); // #4b4a44;
+  --color-border-highlight: var(--KT-color-primary-bright); // #ff6400;
+  --color-border-highlight-alt: var(--KT-color-primary-brightest); // #ff0000;
+  --color-bg-btn-minor-inactive: var(--KT-color-primary-bright); // #c9c7b8;
+  --color-bg-btn-minor-active: var(--KT-color-primary-brightest); // #c9c7b8;
+  --color-bg-option: var(--KT-color-primary-brightest);
 }
 
 /* THEMES */
@@ -214,150 +214,116 @@ $blue-glow: #3f93ff;
 
 .k4-theme-bright {
 	--KT-color-primary: #{$black};
+	--KT-color-primary-bright: #{$black-dark};
+	--KT-color-primary-brightest: #{$black-darkest};
+
 	--KT-color-contrast: #{$gold-brightest};
-	--KT-color-highlight: #{$black-darkest};
+	--KT-color-contrast-low: #{$gold-bright};
+	--KT-color-contrast-high: #{$white-brightest};
 
-	--KT-color-h1: #{$red-dark};
-	--KT-color-h2: #{$red-dark};
-	--KT-color-h3: #{$red-dark};
-	--KT-color-h4: #{$red-dark};
+	--KT-color-secondary: #{$red-dark};
+	--KT-color-secondary-bright: #{$red};
+	--KT-color-secondary-brightest: #{$red-glow};
 
-	--KT-color-header-fg: #{$gold-brightest};
-	--KT-color-header-bg: #{$gold-darkest};
-
-	--KT-color-keyword: #{$blue-dark};
-	--KT-color-pos: #{$blue};
-	--KT-color-neg: #{$red-dark};
+	--KT-color-title: var(--KT-color-contrast);
+	--KT-color-title-contrast: #{$gold-darkest};
 
 	--KT-background: transparent #{to-url("backgrounds/bgold/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/bgold/border.webp")} 30 / 30px / 15px round;
-	--KT-bullet: transparent #{to-url("icons/bullets/bullet-black.svg")} no-repeat center center/12px;
-	--KT-content-padding: 10px;
-	--KT-resize-handle-translate: translate(15px, 15px);
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-black.svg")} no-repeat center center/calc(0.5 * var(--list-indent));
 
-	--KT-color-light-contrast: #{$gold-bright};
-	--KT-color-deep-contrast: #{$gold-brightest};
-	--KT-color-emphasis: #{$black-darkest};
-	--KT-color-keyword-emphasis: #{$blue-darkest};
-	--KT-color-keyword-contrast: #{$blue-bright};
-}
+	--KT-color-keyword: #{$blue-dark};
+	--KT-color-keyword-bright: #{$blue-darker};
+	--KT-color-keyword-brightest: #{$blue-darkest};
+	--KT-color-keyword-contrast: #{$blue-brightest};
 
-.k4-theme-burnt {
-	--KT-color-primary: #{$white-dark};
-	--KT-color-contrast: #{$gold-darkest};
-	--KT-color-highlight: #{$white-brightest};
-
-	--KT-color-h1: #{$red-bright};
-	--KT-color-h2: #{$red-bright};
-	--KT-color-h3: #{$red-bright};
-	--KT-color-h4: #{$red-bright};
-
-	--KT-color-header-fg: #{$white-brightest};
-	--KT-color-header-bg: #{$black-darkest};
-
-	--KT-color-keyword: #{$blue};
-	--KT-color-pos: #{$blue-brightest};
-	--KT-color-neg: #{$red-glow};
-
-	--KT-background: transparent #{to-url("backgrounds/burnt/bg.webp")} repeat repeat center center/1000px 1000px;
-	--KT-border: #{to-url("backgrounds/burnt/border.webp")} 30 / 30px / 15px round;
-	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/12px;
-	--KT-content-padding: 10px;
-	--KT-resize-handle-translate: translate(15px, 15px);
-
-	--KT-color-light-contrast: #{$gold-dark};
-	--KT-color-deep-contrast: #{$black-darkest};
-	--KT-color-emphasis: #{$white-bright};
-	--KT-color-keyword-emphasis: #{$blue-bright};
-	--KT-color-keyword-contrast: #{$blue-dark};
+	--KT-color-pos: #{$blue-dark};
+	--KT-color-neg: #{$red-dark};
 }
 
 .k4-theme-dark {
 	--KT-color-primary: #{$white-dark};
-	--KT-color-contrast: #{$gold-darkest};
-	--KT-color-highlight: #{$white-brightest};
+	--KT-color-primary-bright: #{$white-bright};
+	--KT-color-primary-brightest: #{$white-brightest};
 
-	--KT-color-h1: #{$red-bright};
-	--KT-color-h2: #{$red-bright};
-	--KT-color-h3: #{$red-bright};
-	--KT-color-h4: #{$red-bright};
+	--KT-color-contrast: #{$black};
+	--KT-color-contrast-low: #{$black-bright};
+	--KT-color-contrast-high: #{$black-darkest};
 
-	--KT-color-header-fg: #{$white-brightest};
-	--KT-color-header-bg: #{$black-darkest};
+	--KT-color-secondary: #{$red-bright};
+	--KT-color-secondary-bright: #{$red-bright};
+	--KT-color-secondary-brightest: #{$red-glow};
 
-	--KT-color-keyword: #{$blue};
-	--KT-color-pos: #{$blue-brightest};
-	--KT-color-neg: #{$red-glow};
+	--KT-color-title: var(--KT-color-contrast);
+	--KT-color-title-contrast: var(--KT-color-primary);
 
 	--KT-background: transparent #{to-url("backgrounds/dark/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/dark/border.webp")} 30 / 30px / 15px round;
-	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/12px;
-	--KT-content-padding: 10px;
-	--KT-resize-handle-translate: translate(15px, 15px);
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/calc(0.5 * var(--list-indent));
 
-	--KT-color-light-contrast: #{$gold-dark};
-	--KT-color-deep-contrast: #{$black-darkest};
-	--KT-color-emphasis: #{$white-bright};
-	--KT-color-keyword-emphasis: #{$blue-bright};
+	--KT-color-keyword: #{$blue};
+	--KT-color-keyword-bright: #{$blue-bright};
+	--KT-color-keyword-brightest: #{$blue-brightest};
 	--KT-color-keyword-contrast: #{$blue-dark};
+
+	--KT-color-pos: #{$blue};
+	--KT-color-neg: #{$red};
 }
 
 .k4-theme-white {
 	--KT-color-primary: #{$black};
+	--KT-color-primary-bright: #{$black-dark};
+	--KT-color-primary-brightest: #{$black-darkest};
+
 	--KT-color-contrast: #{$gold};
-	--KT-color-highlight: #{$black-darkest};
+	--KT-color-contrast-low: #{$gold-bright};
+	--KT-color-contrast-high: #{$gold-brightest};
 
-	--KT-color-h1: #{$red-dark};
-	--KT-color-h2: #{$red-dark};
-	--KT-color-h3: #{$red-dark};
-	--KT-color-h4: #{$red-dark};
+	--KT-color-secondary: #{$red-dark};
+	--KT-color-secondary-bright: #{$red};
+	--KT-color-secondary-brightest: #{$red-glow};
 
-	--KT-color-header-fg: #{$gold-brightest};
-	--KT-color-header-bg: #{$gold-dark};
-
-	--KT-color-keyword: #{$blue-dark};
-	--KT-color-pos: #{$blue};
-	--KT-color-neg: #{$red-glow};
+	--KT-color-title: #{$gold-bright};
+	--KT-color-title-contrast: #{$gold-darkest};
 
 	--KT-background: transparent #{to-url("backgrounds/white/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/white/border.webp")} 30 / 30px / 15px round;
 	--KT-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/calc(0.5 * var(--list-indent));
-	--KT-content-padding: 10px;
-	--KT-resize-handle-translate: translate(15px, 15px);
 
-	--KT-color-light-contrast: #{$gold-bright};
-	--KT-color-deep-contrast: #{$gold-brightest};
-	--KT-color-emphasis: #{$black-darkest};
-	--KT-color-keyword-emphasis: #{$blue};
-	--KT-color-keyword-contrast: #{$blue-bright};
+	--KT-color-keyword: #{$blue-dark};
+	--KT-color-keyword-bright: #{$blue-darker};
+	--KT-color-keyword-brightest: #{$blue-darkest};
+	--KT-color-keyword-contrast: #{$blue-brightest};
+
+	--KT-color-pos: #{$blue-dark};
+	--KT-color-neg: #{$red-dark};
 }
 
 .k4-theme-red {
 	--KT-color-primary: #{$red-bright};
+	--KT-color-primary-bright: #{$red-brightest};
+	--KT-color-primary-brightest: #{$red-glow};
+
 	--KT-color-contrast: #{$red-darkest};
-	--KT-color-highlight: #{$red-glow};
+	--KT-color-contrast-low: #{$red};
+	--KT-color-contrast-high: #{$black-darkest};
 
-	--KT-color-h1: #{$red-glow};
-	--KT-color-h2: #{$red-glow};
-	--KT-color-h3: #{$red-glow};
-	--KT-color-h4: #{$red-glow};
+	--KT-color-secondary: #{$red-glow};
+	--KT-color-secondary-bright: #{$red-glow};
+	--KT-color-secondary-brightest: #{$red-glow};
 
-	--KT-color-header-fg: #{$red-glow};
-	--KT-color-header-bg: #{$red-darker};
+	--KT-color-title: var(--KT-color-primary-brightest);
+	--KT-color-title-contrast: var(--KT-color-contrast);
 
-	--KT-color-keyword: #{$blue};
 	--KT-color-pos: #{$blue-brightest};
 	--KT-color-neg: #{$red-glow};
 
 	--KT-background: transparent #{to-url("backgrounds/red/bg.webp")} repeat repeat center center/1000px 1000px;
 	--KT-border: #{to-url("backgrounds/red/border.webp")} 150 / 100px / 20px repeat;
-	--KT-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/12px;
-	--KT-content-padding: 10px 15px 20px;
-	--KT-resize-handle-translate: translate(10px, 10px);
+	--KT-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/calc(0.5 * var(--list-indent));
 
-	--KT-color-light-contrast: #{$red-dark};
-	--KT-color-deep-contrast: #{$black-darkest};
-	--KT-color-emphasis: #{$red-glow};
-	--KT-color-keyword-emphasis: #{$blue-bright};
-	--KT-color-keyword-contrast: #{$blue-dark};
+	--KT-color-keyword: #{$blue};
+	--KT-color-keyword-bright: #{$blue-bright};
+	--KT-color-keyword-bright: #{$blue-glow};
+	--KT-color-keyword-contrast: #{$blue-darker};
 }

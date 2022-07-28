@@ -199,8 +199,11 @@ declare global {
 
 			maxWounds: {
 				serious: int,
-				critical: int
+				critical: int,
+				total: int
 			}
+
+			woundReport: string,
 
 			edges: {
 				sourceName: string,
@@ -212,8 +215,7 @@ declare global {
 				min: int,
 				max: int,
 				value: int,
-				statusOptions: string[],
-				status: string
+				statusOptions: string[]
 			}
 		}
 		export interface npc extends K4ActorSourceSchema.npc {

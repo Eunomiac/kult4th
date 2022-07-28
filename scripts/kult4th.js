@@ -97,8 +97,10 @@ Hooks.once("init", () => {
             "roll-result",
             "attribute-box",
             "svg-flat",
+            "svg-flat-1024",
             "svg-header-icon",
-            "nav-frame"
+            "nav-frame",
+            "toggle-box"
         ]),
         ...U.getTemplatePath("partials", [
             "basic-move-card",

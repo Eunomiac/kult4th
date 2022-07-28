@@ -250,7 +250,7 @@ const BUILDFILES = {
 	},
 	quickAssets: {
 		[`./dist/${SYSTEM}/`]: ["system.json", "template.json", "LICENSE.txt", "package.json"],
-		["./scripts/"]: ["rawscripts/*.mjs"],
+		["./scripts/"]: ["rawscripts/*.mjs", "rawscripts/*.js"],
 		[`./dist/${SYSTEM}/css/`]: ["scss/**/*.css"],
 		"./css/": ["scss/**/*.css"]
 	},

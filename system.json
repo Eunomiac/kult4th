@@ -7,7 +7,8 @@
   "compatibleCoreVersion": "0.9",
   "author": "Ryan West",
 	"scripts": [
-		"./node_modules/cq-prolyfill/cq-prolyfill.js"
+		"./node_modules/cq-prolyfill/cq-prolyfill.js",
+		"scripts/clamp.min.js"
 	],
   "esmodules": [
 		"scripts/kult4th.js",

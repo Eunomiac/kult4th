@@ -61,7 +61,7 @@
 
 			.sheet-header {
 				margin-left: 15px;
-				border-bottom: 3px solid var(--KT-color-header-bg);
+				border-bottom: 3px solid var(--KT-color-title-contrast);
 				flex-wrap: nowrap;
 
 				.header-bullet,
@@ -76,8 +76,8 @@
 				}
 
 				&.move-header {
-					--KT-color-header-fg: #{$black};
-					--KT-color-header-bg: #{$gold};
+					--KT-color-title: #{$black};
+					--KT-color-title-contrast: #{$gold};
 				}
 			}
 

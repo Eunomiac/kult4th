@@ -577,6 +577,7 @@ const randNum = (min, max, snap = 0) => gsap.utils.random(min, max, snap);
 const randInt = (min, max) => randNum(min, max, 1);
 const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num, [min = 0, max = Infinity] = []) => gsap.utils.wrap(min, max, num);
+const clampNum = (num, [min = 0, max = Infinity] = []) => gsap.utils.clamp(min, max, num);
 const cycleAngle = (angle, range = [0, 360]) => cycleNum(angle, range);
 const roundNum = (num, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
 const sum = (...nums) => Object.values(nums.flat()).reduce((num, tot) => tot + num, 0);
@@ -1053,7 +1054,7 @@ export default {
     // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████
     randNum, randInt,
     coinFlip,
-    cycleNum, cycleAngle, roundNum,
+    cycleNum, cycleAngle, roundNum, clampNum,
     sum, average,
     // ░░░░░░░ Positioning ░░░░░░░
     getDistance,
