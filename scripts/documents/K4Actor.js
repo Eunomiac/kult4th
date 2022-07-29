@@ -133,28 +133,20 @@ export default class K4Actor extends Actor {
     async addWound(type, description) {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
             const woundData = {
+                id: U.getUID("wound"),
                 description: description ?? "",
                 isCritical: type === "critical" /* K4WoundType.critical */,
                 isStabilized: false
             };
-            const wounds = Object.values(this.data.data.wounds);
-            console.log("Starting Wounds", U.objClone(wounds));
-            wounds.push(woundData);
-            console.log("Added Wounds", U.objClone(wounds));
-            await this.update({ ["data.wounds"]: wounds });
-            console.log("Updated Wounds", this.data.data.wounds);
+            console.log("Starting Wounds", U.objClone(this.data.data.wounds));
+            await this.update({ [`data.wounds.${woundData.id}`]: woundData });
+            console.log("Updated Wounds", U.objClone(this.data.data.wounds));
         }
     }
-    async removeWound(index) {
+    async removeWound(id) {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
-            let wounds = Object.values(this.data.data.wounds);
-            console.log("Starting Wounds", U.objClone(wounds));
-            wounds = [
-                ...wounds.slice(0, index),
-                ...wounds.slice(index + 1)
-            ];
-            console.log("Removed Wounds", U.objClone(wounds));
-            await this.update({ ["data.wounds"]: wounds });
+            console.log("Starting Wounds", U.objClone(this.data.data.wounds));
+            await this.update({ [`data.wounds.-=${id}`]: null });
             console.log("Updated Wounds", this.data.data.wounds);
         }
     }

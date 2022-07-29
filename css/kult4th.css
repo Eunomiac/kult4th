@@ -439,11 +439,11 @@ Number Display
   .vtt.game.system-kult4th textarea,
   .vtt.game.system-kult4th input[type='text'],
   .vtt.game.system-kult4th select,
-  .vtt.game.system-kult4th .contentEditable,
+  .vtt.game.system-kult4th .content-editable,
   .vtt.game.system-kult4th .mce-content-body textarea,
   .vtt.game.system-kult4th .mce-content-body input[type='text'],
   .vtt.game.system-kult4th .mce-content-body select,
-  .vtt.game.system-kult4th .mce-content-body .contentEditable {
+  .vtt.game.system-kult4th .mce-content-body .content-editable {
     height: unset;
     margin: 0 4px;
     -webkit-box-sizing: content-box;
@@ -455,20 +455,20 @@ Number Display
     .vtt.game.system-kult4th textarea:invalid,
     .vtt.game.system-kult4th input[type='text']:invalid,
     .vtt.game.system-kult4th select:invalid,
-    .vtt.game.system-kult4th .contentEditable:invalid,
+    .vtt.game.system-kult4th .content-editable:invalid,
     .vtt.game.system-kult4th .mce-content-body textarea:invalid,
     .vtt.game.system-kult4th .mce-content-body input[type='text']:invalid,
     .vtt.game.system-kult4th .mce-content-body select:invalid,
-    .vtt.game.system-kult4th .mce-content-body .contentEditable:invalid {
+    .vtt.game.system-kult4th .mce-content-body .content-editable:invalid {
       color: #6d1a1e; }
     .vtt.game.system-kult4th textarea.placeholder,
     .vtt.game.system-kult4th input[type='text'].placeholder,
     .vtt.game.system-kult4th select.placeholder,
-    .vtt.game.system-kult4th .contentEditable.placeholder,
+    .vtt.game.system-kult4th .content-editable.placeholder,
     .vtt.game.system-kult4th .mce-content-body textarea.placeholder,
     .vtt.game.system-kult4th .mce-content-body input[type='text'].placeholder,
     .vtt.game.system-kult4th .mce-content-body select.placeholder,
-    .vtt.game.system-kult4th .mce-content-body .contentEditable.placeholder {
+    .vtt.game.system-kult4th .mce-content-body .content-editable.placeholder {
       color: #6d1a1e; }
   .vtt.game.system-kult4th i,
   .vtt.game.system-kult4th .mce-content-body i {
@@ -988,11 +988,11 @@ Number Display
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content textarea,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content input[type='text'],
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content select,
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .contentEditable,
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .content-editable,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body textarea,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body input[type='text'],
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body select,
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .contentEditable {
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .content-editable {
             height: unset;
             margin: 0 4px;
             -webkit-box-sizing: content-box;
@@ -1004,20 +1004,20 @@ Number Display
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content textarea:invalid,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content input[type='text']:invalid,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content select:invalid,
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .contentEditable:invalid,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .content-editable:invalid,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body textarea:invalid,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body input[type='text']:invalid,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body select:invalid,
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .contentEditable:invalid {
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .content-editable:invalid {
               color: #6d1a1e; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content textarea.placeholder,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content input[type='text'].placeholder,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content select.placeholder,
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .contentEditable.placeholder,
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .content-editable.placeholder,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body textarea.placeholder,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body input[type='text'].placeholder,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body select.placeholder,
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .contentEditable.placeholder {
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .content-editable.placeholder {
               color: #6d1a1e; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content i,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body i {
@@ -1535,20 +1535,20 @@ Number Display
                 --actor-name-shadow-dim: #333333;
                 color: #666666;
                 font-weight: 300;
-                opacity: 0.5; }
+                font-family: var(--font-primary);
+                font-style: italic;
+                text-shadow: none; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .sheet-header .actor-name-container .actor-name-input-container .actor-name-bg-anim {
               position: absolute;
               height: 150%;
               width: 50%;
-              background: transparent url("../assets/animations/actor-name-bg-animation.webp") no-repeat no-repeat right center/150%;
+              background: transparent url("../assets/animations/actor-name-bg-animation-gold.webp") no-repeat no-repeat right center/150%;
               -webkit-clip-path: polygon(0px 32px, 32px 0px, 100% 0px, 100% 100%, 32px 100%, 0px calc(100% - 32px));
               clip-path: polygon(0px 32px, 32px 0px, 100% 0px, 100% 100%, 32px 100%, 0px calc(100% - 32px));
               -webkit-clip-path: polygon(7px 27px, 27px 7px, 102% 7px, 102% calc(100% - 7px), 27px calc(100% - 7px), 7px calc(100% - 27px));
               clip-path: polygon(7px 27px, 27px 7px, 102% 7px, 102% calc(100% - 7px), 27px calc(100% - 7px), 7px calc(100% - 27px));
               z-index: -1;
-              top: -25%;
-              -webkit-filter: sepia(1);
-              filter: sepia(1); }
+              top: -25%; }
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .sheet-header .actor-name-container .actor-name-input-container .actor-name-bg-anim.actor-name-bg-anim-right {
                 left: 50%;
                 -webkit-transform: scale(-1);
@@ -1655,7 +1655,7 @@ Number Display
           -webkit-transform-origin: center center;
           -ms-transform-origin: center center;
           transform-origin: center center;
-          background: transparent url("../assets/animations/nav-flare.webp") no-repeat no-repeat center center/100%; }
+          background: transparent url("../assets/animations/nav-flare-3.webp") no-repeat no-repeat center center/100%; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content form .nav-panel .header-button {
           opacity: 0;
           display: block;

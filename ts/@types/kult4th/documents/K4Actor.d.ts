@@ -73,6 +73,7 @@ declare global {
 		critical = "critical"
 	}
 	interface K4Wound {
+		id: string,
 		description: string,
 		isCritical: boolean,
 		isStabilized: boolean
@@ -151,7 +152,7 @@ declare global {
 					value: int
 				}
 			},
-			wounds: K4Wound[],
+			wounds: Record<string, K4Wound>,
 			modifiers: {
 				seriousWounds: K4RollModData[],
 				criticalWounds: K4RollModData[],

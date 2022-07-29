@@ -21,7 +21,7 @@
 			<div class="actor-name-input-container">
 				<div class="actor-name-bg-anim actor-name-bg-anim-left"></div>
 				<div class="actor-name-bg-anim actor-name-bg-anim-right"></div>
-				<div class="actor-name contentEditable" data-field="name" data-placeholder="Who Are You?" data-clamplines="1"></div>
+				<div class="actor-name content-editable" data-field="name" data-placeholder="Who Are You?" data-clamplines="1">{{actor.name}}</div>
 				{{!-- <input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" /> --}}
 			</div>
 			<span class="actor-name-border actor-name-border-right"></span>
@@ -92,19 +92,19 @@
 					<label class="wounds-label">{{case "title" (loc "kult4th.trait.wounds")}}</label>
 					<div class="wounds-container">
 						{{#each data.data.wounds as |wound|}}
-						<div class="wound wound-{{#if wound.isCritical}}critical{{else}}serious{{/if}}" data-index="{{@index}}">
+						<div class="wound wound-{{#if wound.isCritical}}critical{{else}}serious{{/if}}" data-wound-id="{{wound.id}}">
 							<div class="toggle-box-container wound-type">
-								<input class="toggle-box" type="checkbox" name="data.wounds.{{@index}}.isCritical" {{checked wound.isCritical}} />
+								<input class="toggle-box" type="checkbox" name="data.wounds.{{wound.id}}.isCritical" {{checked wound.isCritical}} />
 								<span class="toggle-box-mode toggle-box-checked">🟥</span>
 								<span class="toggle-box-mode toggle-box-unchecked">❌</span>
 							</div>
-							<div class="wound-desc contentEditable" data-field="data.wounds.{{@index}}.description" data-placeholder="Describe Wound" data-clamplines="1"></div>
+							<div class="wound-desc content-editable" data-field="data.wounds.{{wound.id}}.description" data-placeholder="Describe Wound" data-clamplines="1">{{wound.description}}</div>
 							<div class="toggle-box-container wound-stable">
-								<input class="toggle-box" type="checkbox" name="data.wounds.{{@index}}.isStabilized" {{checked wound.isStabilized}} />
+								<input class="toggle-box" type="checkbox" name="data.wounds.{{wound.id}}.isStabilized" {{checked wound.isStabilized}} />
 								<span class="toggle-box-mode toggle-box-checked">🟩</span>
 								<span class="toggle-box-mode toggle-box-unchecked">⭕</span>
 							</div>
-							<button class="wound-delete" data-index="{{@index}}">&minus;</button>
+							<button class="wound-delete" data-wound-id="{{wound.id}}">&minus;</button>
 						</div>
 						{{/each}}
 						<div class="wound wound-add">

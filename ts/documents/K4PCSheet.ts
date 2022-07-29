@@ -504,130 +504,22 @@ export default class K4PCSheet extends ActorSheet {
 		$(() => {
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
 
-			const [navPanel] = html.find(".nav-panel");
-			$(navPanel)
-				.each(() => {
-					gsap.set(navPanel, {
-						xPercent: -50,
-						yPercent: -50
-					});
-					hoverTimelines.push([navPanel, ANIMATIONS.navFade(navPanel)]);
-					return;
-					const hoverTimeline = ANIMATIONS.navFade(navPanel);
+			html.find(".nav-panel").each(function initNavPanel() {
+				hoverTimelines.push([this, ANIMATIONS.navFade(this)]);
+			});
+			html.find(".nav-tab")
+				.each(function initNavTab() {
+					// gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
+					hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
 
-					$(navPanel).on("mouseenter", () => {
-						if (!$(navPanel).data("isHovered")) {
-							$(navPanel).data({isHovered: true});
-							hoverTimeline.reversed(false);
-						}
-					});
-
-					$(document).on("mousemove", (event) => {
-						if ($(navPanel).data("isHovered")) {
-							if (!document.elementsFromPoint(event.clientX, event.clientY)
-								.find((elem) => $(elem).hasClass("nav-panel"))) {
-								$(navPanel).data({isHovered: false});
-								hoverTimeline.reversed(true);
-							}
-						}
+					$(this).on("click", function switchTab() {
+						self.activateTab(this.getAttribute("data-tab"));
 					});
 				});
 
-			html.find(".clampText").each((i, element) => { this.clamp(element) });
-
-			if (this.options.editable) {
-				const setContent = (element: HTMLElement, content: unknown) => {
-					if (!["number", "string"].includes(typeof content)) {
-						content = "";
-					} else {
-						content = `${content}`.trim();
-					}
-					if (content) {
-						element.classList.remove("placeholder");
-						if (element.classList.contains("quote")) {
-							content = `"${content}"`;
-						}
-					} else {
-						if ("placeholder" in element.dataset) {
-							element.classList.add("placeholder");
-							content = element.dataset.placeholder;
-						} else {
-							content = " ";
-						}
-					}
-					element.innerText = String(content);
-				};
-				// #region ON-EVENT FUNCTIONS
-				const _onEditKeyDown = (event: KeyboardEvent) => {
-					if (event.key === "Enter") {
-						event.preventDefault();
-						(event.currentTarget as HTMLElement).blur();
-					}
-				};
-				const _onEditClickOn = (event: MouseEvent) => {
-					event.preventDefault();
-					const element = event.currentTarget as HTMLElement;
-					if (element) {
-						element.setAttribute("contenteditable", "true");
-						if (element.classList.contains("placeholder")) {
-							element.innerHTML = "&nbsp;";
-							element.classList.remove("placeholder");
-							this.unClamp(element);
-						}
-						if (element.classList.contains("quote")) {
-							element.innerHTML = element.innerText.replace(/^\s*"?|"?\s*$/gu, "").trim();
-						}
-						// Add an event listener for when the player hits the 'Enter' key.
-						element.addEventListener("keydown", _onEditKeyDown.bind(this));
-						// Focus the element, which will fire the _onEditFocus event to select all text.
-						element.focus();
-					}
-				};
-				const _onEditFocus = () => { document.execCommand("selectAll") };
-				const _onEditClickOff = async (event: FocusEvent) => {
-					event.preventDefault();
-					const element = event.currentTarget as HTMLElement;
-					const {dataset} = element;
-					const elementText = element.innerText.replace(/^\s*"?|"?\s*$/gu, "").trim();
-					this.clamp(element);
-					setContent(element, elementText);
-					element.setAttribute("contenteditable", "false");
-					element.removeEventListener("keydown", _onEditKeyDown);
-
-					if ("field" in dataset && dataset.field !== undefined) {
-						if ("fieldindex" in dataset) {
-							const fieldVal = getProperty(this.actor, dataset.field.replace(/^(data\.)+/gu, "data.data."));
-							fieldVal[U.pInt(dataset.fieldindex)] = elementText;
-							await this.actor.update({[dataset.field]: fieldVal});
-						} else {
-							await this.actor.update({[dataset.field]: elementText});
-						}
-					}
-				};
-				// #endregion
-
-				// #region INITIALIZATION
-				html.find(".contentEditable").each(function enableContentEnditable() {
-					const {dataset} = this;
-					this.setAttribute("contenteditable", "false");
-					this.addEventListener("click", _onEditClickOn.bind(self));
-					this.addEventListener("focus", _onEditFocus.bind(self));
-					this.addEventListener("blur", _onEditClickOff.bind(self));
-					// self.clamp(this);
-					let elementText;
-
-					// If dataset includes a field, fill the element with the current data:
-					if ("field" in dataset && dataset.field !== undefined) {
-						elementText = getProperty(self.actor.data, dataset.field);
-						if (dataset.fieldindex !== undefined && Array.isArray(elementText)) {
-							elementText = elementText[U.pInt(dataset.fieldindex)];
-						}
-					}
-					setContent(this, elementText);
-				});
-				// #endregion
-			}
-
+			html.find(".clampText").each(function clampTextElems() {
+				self.clamp(this);
+			});
 
 			$(document).find(".gear-container.gear-huge")
 				.each(function initGearRotation() {
@@ -640,15 +532,6 @@ export default class K4PCSheet extends ActorSheet {
 			$(document).find(".gear-container.gear-binah")
 				.each(function initGearRotation() {
 					ANIMATIONS.gearBinahRotate(this);
-				});
-			html.find(".nav-tab")
-				.each(function initNavTab() {
-					// gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
-					hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
-
-					$(this).on("click", function switchTab() {
-						self.activateTab(this.getAttribute("data-tab"));
-					});
 				});
 
 			html.find("*[data-action=\"open\"]")
@@ -672,36 +555,18 @@ export default class K4PCSheet extends ActorSheet {
 						$(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
 					}
 				});
-			html.find("*[data-action=\"drop\"]")
-				.each(function addItemOpenEvents() {
-					const itemName = $(this).attr("data-item-name");
-					if (itemName) {
-						$(this).on("click", () => self.actor.dropItemByName(itemName));
-					}
-				});
 
-			html.find("button.stability-add")
-				.each(function addStabilityButton() {
-					$(this).on("click", () => self.actor.changeStability(1));
-				});
-			html.find("button.stability-remove")
-				.each(function removeStabilityButton() {
-					$(this).on("click", () => self.actor.changeStability(-1));
-				});
-			html.find("button.wound-add")
-				.each(function addWoundButton() {
-					$(this).on("click", () => {
-						console.log("Adding Wound. Button:", this);
-						self.actor.addWound();
-					});
-				});
-			html.find("button.wound-delete")
-				.each(function deleteWoundButton() {
-					const woundNum = U.pInt(this.dataset.index!);
-					$(this).on("click", () => {
-						console.log(`Deleting Wound ${woundNum}. Button:`, this);
-						self.actor.removeWound(woundNum);
-					});
+			html.find(".content-editable")
+				.each(function initEditableStyles() {
+					$(this).attr("contenteditable", "false");
+					const innerText = $(this).text().trim();
+
+					if ((!innerText && $(this).data("placeholder"))
+						|| (innerText === $(this).data("placeholder"))) {
+						$(this)
+							.addClass("placeholder")
+							.text($(this).data("placeholder"));
+					}
 				});
 
 			html.find(".item-card")
@@ -719,6 +584,94 @@ export default class K4PCSheet extends ActorSheet {
 					.on("mouseenter", () => anim.reversed(false))
 					.on("mouseleave", () => anim.reversed(true));
 			});
+
+			if (!this.options.editable) { return }
+
+			html.find("*[data-action=\"drop\"]")
+				.each(function addItemOpenEvents() {
+					const itemName = $(this).attr("data-item-name");
+					if (itemName) {
+						$(this).on("click", () => self.actor.dropItemByName(itemName));
+					}
+				});
+			html.find("button.stability-add")
+				.each(function addStabilityButton() {
+					$(this).on("click", () => self.actor.changeStability(1));
+				});
+			html.find("button.stability-remove")
+				.each(function removeStabilityButton() {
+					$(this).on("click", () => self.actor.changeStability(-1));
+				});
+			html.find("button.wound-add")
+				.each(function addWoundButton() {
+					$(this).on("click", () => {
+						console.log("Adding Wound. Button:", this);
+						self.actor.addWound();
+					});
+				});
+			html.find("button.wound-delete")
+				.each(function deleteWoundButton() {
+					const woundID: string = $(this).data("woundId");
+					$(this).on("click", () => {
+						console.log(`Deleting Wound ${woundID}. Button:`, this);
+						self.actor.removeWound(woundID);
+					});
+				});
+			html.find(".content-editable").each(function enableContentEditable() {
+				$(this)
+					.on("click", (clickEvent) => {
+						clickEvent.preventDefault();
+						const {currentTarget} = clickEvent;
+						let elemText = $(currentTarget).text().trim();
+						if ($(currentTarget).hasClass("placeholder")) {
+							elemText = "";
+						}
+						$(currentTarget)
+							.text(elemText || " ")
+							.removeClass("placeholder")
+							.attr({contenteditable: "true"})
+							.data({selectAllOnFocus: String(!elemText)})
+							.on("keydown", (keyboardEvent) => {
+								if (keyboardEvent.key === "Enter") {
+									keyboardEvent.preventDefault();
+									$(currentTarget).trigger("blur");
+								}
+							})
+							.trigger("focus");
+					})
+					.on("focus", (focusEvent) => {
+						self.unClamp(focusEvent.currentTarget);
+						if ($(focusEvent.currentTarget).data("selectAllOnFocus") === "true") {
+							document.execCommand("selectAll");
+						}
+					})
+					.on("blur", (blurEvent) => {
+						blurEvent.preventDefault();
+						const {currentTarget} = blurEvent;
+						const elemText = $(currentTarget).text().trim();
+
+						// Set placeholder text where text content is blank
+						if (!elemText && $(currentTarget).data("placeholder")) {
+							$(currentTarget)
+								.addClass("placeholder")
+								.text($(currentTarget).data("placeholder"));
+						} else {
+							$(currentTarget).removeClass("placeholder");
+						}
+
+						$(currentTarget)
+							.attr({contenteditable: "false"})
+							.off("keydown");
+						self.clamp(currentTarget);
+
+						// Sync with actor data
+						const dataField: string = $(currentTarget).data("field");
+						const curData = getProperty(self.actor, dataField.replace(/^(data\.)+/g, "data.data."));
+						if (curData !== elemText) {
+							self.actor.update({[dataField]: elemText});
+						}
+					});
+			});
 		});
 	}
 
@@ -730,5 +683,4 @@ export default class K4PCSheet extends ActorSheet {
 			this.actor.setFlag("kult4th", "sheetTab", tabName);
 		}
 	}
-
 }

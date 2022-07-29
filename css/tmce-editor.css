@@ -445,11 +445,11 @@ Number Display
   #tinymce textarea,
   #tinymce input[type='text'],
   #tinymce select,
-  #tinymce .contentEditable,
+  #tinymce .content-editable,
   #tinymce .mce-content-body textarea,
   #tinymce .mce-content-body input[type='text'],
   #tinymce .mce-content-body select,
-  #tinymce .mce-content-body .contentEditable {
+  #tinymce .mce-content-body .content-editable {
     height: unset;
     margin: 0 4px;
     -webkit-box-sizing: content-box;
@@ -461,20 +461,20 @@ Number Display
     #tinymce textarea:invalid,
     #tinymce input[type='text']:invalid,
     #tinymce select:invalid,
-    #tinymce .contentEditable:invalid,
+    #tinymce .content-editable:invalid,
     #tinymce .mce-content-body textarea:invalid,
     #tinymce .mce-content-body input[type='text']:invalid,
     #tinymce .mce-content-body select:invalid,
-    #tinymce .mce-content-body .contentEditable:invalid {
+    #tinymce .mce-content-body .content-editable:invalid {
       color: #6d1a1e; }
     #tinymce textarea.placeholder,
     #tinymce input[type='text'].placeholder,
     #tinymce select.placeholder,
-    #tinymce .contentEditable.placeholder,
+    #tinymce .content-editable.placeholder,
     #tinymce .mce-content-body textarea.placeholder,
     #tinymce .mce-content-body input[type='text'].placeholder,
     #tinymce .mce-content-body select.placeholder,
-    #tinymce .mce-content-body .contentEditable.placeholder {
+    #tinymce .mce-content-body .content-editable.placeholder {
       color: #6d1a1e; }
   #tinymce i,
   #tinymce .mce-content-body i {

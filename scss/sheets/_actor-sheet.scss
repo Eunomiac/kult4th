@@ -162,7 +162,9 @@
 								--actor-name-shadow-dim: #333333;
 								color: #666666;
 								font-weight: $font-weight-light;
-								opacity: 0.5;
+								font-family: var(--font-primary);
+								font-style: italic;
+								text-shadow: none;
 							}
 
 
@@ -172,12 +174,12 @@
 							position: absolute;
 							height: 150%;
 							width: 50%;
-							background: transparent #{to-url("animations/actor-name-bg-animation.webp")} no-repeat no-repeat right center/150%;
+							background: transparent #{to-url("animations/actor-name-bg-animation-gold.webp")} no-repeat no-repeat right center/150%;
 							clip-path: polygon(0px 32px, 32px 0px, 100% 0px, 100% 100%, 32px 100%, 0px calc(100% - 32px));
 							clip-path: polygon(7px 27px, 27px 7px, 102% 7px, 102% calc(100% - 7px), 27px calc(100% - 7px), 7px calc(100% - 27px));
 							z-index: -1;
 							top: -25%;
-							filter: sepia(1);
+							// filter: sepia(1);
 
 							&.actor-name-bg-anim-right {
 								left: 50%;
@@ -307,7 +309,7 @@
 					top: 13px;
 					transform: scale(0.5);
 					transform-origin: center center;
-					background: transparent #{to-url("animations/nav-flare.webp")} no-repeat no-repeat center center/100%;
+					background: transparent #{to-url("animations/nav-flare-3.webp")} no-repeat no-repeat center center/100%;
 					// z-index: -4;
 
 
