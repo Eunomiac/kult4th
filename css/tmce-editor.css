@@ -475,7 +475,13 @@ Number Display
     #tinymce .mce-content-body input[type='text'].placeholder,
     #tinymce .mce-content-body select.placeholder,
     #tinymce .mce-content-body .content-editable.placeholder {
-      color: #6d1a1e; }
+      color: #666666 !important;
+      font-weight: 300 !important;
+      font-family: var(--font-primary) !important;
+      font-style: italic !important;
+      text-shadow: none !important;
+      text-transform: none !important;
+      font-variant: normal !important; }
   #tinymce i,
   #tinymce .mce-content-body i {
     --KT-color-primary: #958f6b;
@@ -484,10 +490,10 @@ Number Display
     font-weight: 900; }
     #tinymce i.notification-pip,
     #tinymce .mce-content-body i.notification-pip {
-      --KT-color-primary: #ffd958; }
+      --KT-color-primary: #ffd958 ; }
   #tinymce .header-button.close i,
   #tinymce .mce-content-body .header-button.close i {
-    --KT-color-primary: #ff0000; }
+    --KT-color-primary: #ff0000 ; }
   #tinymce ul.rules-list, #tinymce ul.inline-list,
   #tinymce .mce-content-body ul.rules-list,
   #tinymce .mce-content-body ul.inline-list {
@@ -573,14 +579,17 @@ Number Display
     font-weight: 600;
     font-size: 1.375rem;
     line-height: 1.5rem;
+    height: 1.5rem;
     white-space: nowrap;
     text-align: center; }
     #tinymce label.k4-title.section-title,
     #tinymce .mce-content-body label.k4-title.section-title {
-      width: calc(100% + 2 * var(--horiz-padding));
-      margin-left: calc(-1 * var(--horiz-padding));
+      width: calc(100% + var(--subsection-padding-left) + var(--subsection-padding-right));
       text-transform: uppercase;
-      font-weight: 900; }
+      font-weight: 700;
+      font-family: var(--font-primary-caps);
+      margin: calc(-1 * (var(--subsection-padding-top))) 0 var(--subsection-padding-top) calc(-1 * var(--subsection-padding-left));
+      padding-top: 1px; }
     #tinymce label.k4-title.item-title,
     #tinymce .mce-content-body label.k4-title.item-title {
       text-align: left;
@@ -718,6 +727,197 @@ Number Display
     color: var(--KT-color-primary-brightest);
     font-weight: 600;
     font-style: italic; }
+  #tinymce div.hover-strip,
+  #tinymce .mce-content-body div.hover-strip {
+    --icon-size: 30px;
+    --strip-height: calc(var(--icon-size) + 2px);
+    --strip-padding-vert: 5px;
+    --strip-underline-width: 1px;
+    --strip-color-fg: var(--KT-color-primary);
+    --strip-color-bg: var(--KT-color-contrast);
+    --strip-font-size: 1rem;
+    --strip-font-weight: 600;
+    --icon-color-bg: var(--KT-color-contrast);
+    --icon-color-fg: var(--KT-color-primary);
+    --icon-color-outline: transparent;
+    --icon-clip-path: circle(closest-side);
+    --icon-scale: 1;
+    --button-color-bg: var(--KT-color-primary);
+    --button-color-fg: var(--KT-color-contrast);
+    --tooltip-color-fg: var(--KT-color-primary-brightest);
+    --tooltip-color-bg: var(--KT-color-contrast);
+    position: relative;
+    height: var(--strip-height);
+    white-space: nowrap; }
+    #tinymce div.hover-strip .icon-container, #tinymce div.hover-strip .icon-container .svg-container,
+    #tinymce .mce-content-body div.hover-strip .icon-container,
+    #tinymce .mce-content-body div.hover-strip .icon-container .svg-container {
+      position: relative;
+      display: inline-block;
+      --KT-svg-bg: var(--icon-color-bg);
+      --KT-svg-fill: var(--icon-color-fg);
+      --KT-svg-clip-path: var(--icon-clip-path);
+      --KT-svg-scale: var(--icon-scale);
+      height: var(--icon-size);
+      width: var(--icon-size);
+      white-space: nowrap;
+      font-size: 0;
+      left: 0; }
+    #tinymce div.hover-strip .icon-container,
+    #tinymce .mce-content-body div.hover-strip .icon-container {
+      -webkit-filter: drop-shadow(0 0 0.5px var(--icon-color-outline)) drop-shadow(0 0 0.5px var(--icon-color-outline)) drop-shadow(0 0 0.5px var(--icon-color-outline));
+      filter: drop-shadow(0 0 0.5px var(--icon-color-outline)) drop-shadow(0 0 0.5px var(--icon-color-outline)) drop-shadow(0 0 0.5px var(--icon-color-outline)); }
+    #tinymce div.hover-strip .button-strip,
+    #tinymce .mce-content-body div.hover-strip .button-strip {
+      position: absolute;
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      height: var(--icon-size);
+      top: calc(0.5 * (var(--strip-height) - var(--icon-size)));
+      width: calc(100% - 0.5 * var(--icon-size));
+      left: calc(0.5 * var(--icon-size));
+      background: var(--strip-color-bg);
+      padding: calc(0.5 * var(--strip-padding-vert)) 0;
+      outline: 0px solid var(--button-color-bg);
+      -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+      justify-content: space-evenly;
+      overflow: hidden; }
+      #tinymce div.hover-strip .button-strip .button-spacer,
+      #tinymce .mce-content-body div.hover-strip .button-strip .button-spacer {
+        display: inline-block;
+        width: calc(0.5 * var(--icon-size));
+        -webkit-box-flex: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        position: relative; }
+      #tinymce div.hover-strip .button-strip .strip-button,
+      #tinymce .mce-content-body div.hover-strip .button-strip .strip-button {
+        -webkit-box-flex: 0.2;
+        -ms-flex-positive: 0.2;
+        flex-grow: 0.2;
+        --KT-svg-fill: var(--button-color-fg);
+        background: var(--button-color-bg);
+        font-size: 0;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        width: unset;
+        position: relative;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; }
+        #tinymce div.hover-strip .button-strip .strip-button .svg-container,
+        #tinymce .mce-content-body div.hover-strip .button-strip .strip-button .svg-container {
+          top: 0;
+          left: 0; }
+        #tinymce div.hover-strip .button-strip .strip-button .button-tooltip,
+        #tinymce .mce-content-body div.hover-strip .button-strip .strip-button .button-tooltip {
+          opacity: 0;
+          color: var(--button-color-fg);
+          text-align: center;
+          line-height: var(--icon-size);
+          font-size: 0.625rem;
+          text-transform: uppercase;
+          font-family: var(--font-primary-caps);
+          -webkit-transform-origin: center center;
+          -ms-transform-origin: center center;
+          transform-origin: center center;
+          -webkit-transform: translate(-50%, -50%) scaleX(0.75);
+          -ms-transform: translate(-50%, -50%) scaleX(0.75);
+          transform: translate(-50%, -50%) scaleX(0.75);
+          position: relative;
+          left: 50%;
+          top: 50%; }
+    #tinymce div.hover-strip .strip-name,
+    #tinymce .mce-content-body div.hover-strip .strip-name {
+      position: absolute;
+      width: calc(100% - var(--icon-size) - 5px);
+      height: 100%;
+      color: var(--strip-color-fg);
+      font-size: var(--strip-font-size);
+      font-weight: var(--strip-font-weight);
+      line-height: var(--icon-size);
+      top: 0;
+      left: calc(var(--icon-size) + 5px);
+      white-space: nowrap; }
+    #tinymce div.hover-strip .strip-bg,
+    #tinymce .mce-content-body div.hover-strip .strip-bg {
+      position: absolute;
+      display: block;
+      height: calc(100% - 2 * var(--strip-padding-vert));
+      width: calc(100% - 0.5 * var(--icon-size));
+      top: var(--strip-padding-vert);
+      left: calc(0.5 * var(--icon-size));
+      background: var(--strip-color-bg);
+      border-bottom: 1px solid var(--button-color-bg); }
+    #tinymce div.hover-strip .strip-tooltip,
+    #tinymce .mce-content-body div.hover-strip .strip-tooltip {
+      pointer-events: none;
+      position: absolute;
+      display: block;
+      font-family: var(--font-primary);
+      font-size: 10px;
+      line-height: 0.75rem;
+      text-align: center;
+      font-style: italic;
+      width: 100%;
+      text-align: left;
+      color: var(--tooltip-color-fg);
+      background: var(--tooltip-color-bg);
+      opacity: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 20;
+      white-space: break-spaces;
+      padding: 4px;
+      border-radius: 20px; }
+    #tinymce div.hover-strip.move-strip:not(.derived-move),
+    #tinymce .mce-content-body div.hover-strip.move-strip:not(.derived-move) {
+      --icon-color-bg: var(--KT-color-primary);
+      --icon-color-fg: var(--KT-color-contrast);
+      --icon-color-outline: var(--KT-color-primary); }
+    #tinymce div.hover-strip.wound-strip,
+    #tinymce .mce-content-body div.hover-strip.wound-strip {
+      --icon-size: 20px;
+      --strip-padding-vert: 2px;
+      --strip-color-bg: #24090a;
+      --strip-color-fg: #ff0000;
+      --strip-font-size: 0.75rem;
+      --icon-color-bg: var(--KT-color-contrast);
+      --icon-color-fg: var(--KT-color-primary);
+      --icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+      --icon-scale: 1.3;
+      --icon-color-outline: #ff0000;
+      --button-color-bg: var(--KT-color-primary);
+      --button-color-fg: var(--KT-color-contrast);
+      --tooltip-color-bg: var(--KT-color-contrast);
+      --tooltip-color-fg: var(--KT-color-primary-brightest); }
+      #tinymce div.hover-strip.wound-strip.wound-critical,
+      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical {
+        --strip-color-bg: #491114;
+        --strip-color-fg: #eae9eb;
+        --icon-color-bg: #ff0000;
+        --icon-color-fg: #f4f4f5;
+        --icon-color-outline: #f4f4f5;
+        --button-color-bg: #ff0000;
+        --button-color-fg: #040404; }
+      #tinymce div.hover-strip.wound-strip.wound-stabilized,
+      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized {
+        --icon-clip-path: circle(closest-side);
+        --icon-scale: 1;
+        --strip-color-bg: transparent;
+        --strip-color-fg: #706b50;
+        --icon-color-outline: transparent; }
+        #tinymce div.hover-strip.wound-strip.wound-stabilized .strip-name,
+        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name {
+          font-style: italic; }
   #tinymce .result-entry,
   #tinymce .mce-content-body .result-entry {
     --label-width: 60px;

@@ -74,6 +74,51 @@ export default class K4Item extends Item {
 		}
 	}
 
+	toHoverStrip(): HoverStripData {
+	/* interface StripButtonData {
+		icon: KeyOf<typeof SVGDATA>,
+		dataset: Record<string, string>,
+		classes?: string[],
+		tooltip?: string
+	}
+	interface HoverStripData {
+		icon: KeyOf<typeof SVGDATA>,
+		classes: string[],
+		buttons: StripButtonData[],
+		dataset?: Record<string,string>,
+		tooltip?: string
+	}	*/
+		const stripData: HoverStripData = {
+			display: this.name ?? "(unknown)",
+			...this.isDerived
+				? {
+						icon: U.toKey((this as K4ItemSpec<K4ItemType.attack | K4ItemType.move>).data.data.sourceItem!.name),
+						stripClasses: [
+							U.toKey(`${(this as K4ItemSpec<K4ItemType.attack | K4ItemType.move>).data.data.sourceItem!.type}-strip`),
+							`derived-${this.type}`
+						]
+					}
+				: {
+						icon: U.toKey(this.name ?? `DEFAULT-${this.data.type}`),
+						stripClasses: [`${this.data.type}-strip`]
+					},
+			dataset: {
+				"hover-target": ".attribute-box[data-attribute='perception'] img"
+			},
+			buttons: [
+				{
+					icon: "observe-a-situation",
+					dataset: {
+						"item-name": this.name ?? "",
+						"action": "roll"
+					}
+				}
+			],
+			tooltip: "This is a test of your tooltip operating system."
+		};
+		return stripData;
+	}
+
 	async displayItemSummary(speaker?: string) {
 		const template = await getTemplate(this.sheet?.template ?? "");
 

@@ -82,6 +82,74 @@ export default class K4Actor extends Actor {
             return [];
         }
     }
+    get woundStrips() {
+        return this.wounds.map((wound) => {
+            const stripData = {
+                display: wound.description ?? "",
+                stripClasses: [
+                    "wound-strip",
+                    ...wound.isStabilized
+                        ? ["k4-theme-dgold"]
+                        : ["k4-theme-red"],
+                    ...wound.isCritical
+                        ? ["wound-critical"]
+                        : [],
+                    ...wound.isStabilized
+                        ? ["wound-stabilized"]
+                        : []
+                ],
+                buttons: [
+                    {
+                        icon: wound.isCritical ? "wound-critical" : "wound-serious",
+                        dataset: {
+                            target: wound.id,
+                            action: "type"
+                        },
+                        tooltip: wound.isCritical ? "CRITICAL" : "SERIOUS"
+                    },
+                    {
+                        icon: "data-retrieval",
+                        dataset: {
+                            target: wound.id,
+                            action: "edit"
+                        },
+                        tooltip: "EDIT"
+                    },
+                    {
+                        icon: "wound-serious-stabilized",
+                        dataset: {
+                            target: wound.id,
+                            action: "stabilize"
+                        },
+                        tooltip: wound.isStabilized ? "STABLE" : "STABILIZE"
+                    },
+                    {
+                        icon: "hinder-other",
+                        dataset: {
+                            target: wound.id,
+                            action: "drop"
+                        },
+                        tooltip: "DROP"
+                    }
+                ]
+            };
+            if (wound.isCritical) {
+                stripData.icon = "wound-critical";
+                stripData.stripClasses?.push("wound-critical");
+            }
+            else {
+                stripData.icon = "wound-serious";
+            }
+            if (wound.isStabilized) {
+                stripData.icon = `${stripData.icon}-stabilized`;
+                stripData.stripClasses?.push("k4-theme-dgold", "wound-stabilized");
+            }
+            else {
+                stripData.stripClasses?.push("k4-theme-red");
+            }
+            return stripData;
+        });
+    }
     get attributeData() {
         if (this.type === "pc" /* K4ActorType.pc */) {
             const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)];
@@ -133,7 +201,7 @@ export default class K4Actor extends Actor {
     async addWound(type, description) {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
             const woundData = {
-                id: U.getUID("wound"),
+                id: `wound_${U.randString(10)}`,
                 description: description ?? "",
                 isCritical: type === "critical" /* K4WoundType.critical */,
                 isStabilized: false

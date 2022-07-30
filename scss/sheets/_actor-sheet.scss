@@ -1,42 +1,19 @@
 & {
-	--sheet-min-height: 800px; // 525px;
-	--sheet-min-width: 700px;
-	--sheet-top-padding: 0px;
+	--KT-border: #{to-url("layout/border-actor-sheet.svg")} 130 275/130px 275px/32px 40px repeat;
 
-	--sheet-horiz-padding: 30px;
-	--sheet-bottom-padding: 1.5%;
+	--section-padding-top: 40px;
+	--section-padding-horiz: 10px;
+	--section-padding-bottom: 20px;
 
-	--sheet-header-height: 60px;
+	--subsection-padding-vert: 5px;
+	--subsection-padding-horiz: 5px;
 
-	filter: none;
+	--KT-resize-handle-translate: translate(48px, 32px);
 
 	$nav-horiz-shift: 25px;
 	$nav-vert-shift: 25px;
 
-	$mask-size: 200px;
-	$mask-radius: 37;
-
-	$corner-height: 75px;
-	$corner-width: 200px;
-	$top-corner-width: 125px;
-
-	$vert-width: 30px;
-	$vert-height: 12px;
-	$vert-vert-center: 15px;
-	$corner-horiz-shift: $vert-vert-center - 0.5 * $vert-width;
-	$vert-grid-width: $vert-width;
-	$corner-grid-width: $corner-width - $vert-grid-width - $corner-horiz-shift;
-
-	$horiz-width: 600px;
-	$horiz-height: 20px;
-	$horiz-sub-height: 13px;
-	$horiz-horiz-center: 10px;
-	$horiz-horiz-sub-center: 6.5px;
-	$corner-vert-shift: $horiz-horiz-center - 0.5 * $horiz-height;
-	$horiz-grid-height: $horiz-height;
-	$corner-grid-height: $corner-height - $horiz-grid-height - $corner-vert-shift;
-
-	.svg-def, img { position: absolute }
+	img { position: absolute }
 
 	.gear-container {
 		position: absolute;
@@ -48,19 +25,19 @@
 
 		&.gear-huge {
 			top: 55%;
-			left: 300px;
+			left: 260px;
 			height: 700px;
 			width: 700px;
 		}
 		&.gear-top-right {
-			top: 94px;
-			right: -80px;
+			top: 56px;
+			right: -132px;
 			height: 120px;
 			width: 120px;
 		}
 		&.gear-bottom-right {
-			bottom: -150px;
-			right: -118px;
+			bottom: -168px;
+			right: -174px;
 			height: 160px;
 			width: 160px;
 		}
@@ -70,17 +47,12 @@
 		display: block;
 		background: none;
 
-		form {
-
-			> * {
-				position: relative;
-				// z-index: 3;
-			}
+		.kult4th-form {
 
 			.sheet-header {
 				height: var(--sheet-header-height);
 				overflow: visible;
-				// z-index: 4;
+				z-index: 1;
 				top: 22px;
 
 				.actor-name-container {
@@ -134,19 +106,21 @@
 							drop-shadow(0 0 var(--drop-shadow-blur) var(--KT-color-contrast));
 
 						.actor-name {
+							--actor-name-shadow-bright: var(--KT-color-primary-brightest);
+							--actor-name-shadow-dim: var(--KT-color-primary-bright);
+							--actor-name-vert-buffer: 20px;
 							position: absolute;
-							height: 60px;
+							height: calc(var(--sheet-header-height) + var(--actor-name-vert-buffer));
+							top: calc(-0.5 * var(--actor-name-vert-buffer));
+							line-height: calc(var(--sheet-header-height) + var(--actor-name-vert-buffer) + 12px);
 							width: 100%;
 							font-family: var(--font-heading);
 							text-align: center;
 							background: none;
 							cursor: text;
-							overflow: visible !important;
 
 							color: var(--KT-color-contrast-high);
 							font-size: $rem-48;
-							--actor-name-shadow-bright: var(--KT-color-primary-brightest);
-							--actor-name-shadow-dim: var(--KT-color-primary-bright);
 							text-shadow:
 								0 0 0.5px var(--KT-color-primary-brightest),
 								0 0 1.5px var(--KT-color-primary-brightest),
@@ -160,14 +134,9 @@
 							&.placeholder {
 								--actor-name-shadow-bright: #999999;
 								--actor-name-shadow-dim: #333333;
-								color: #666666;
-								font-weight: $font-weight-light;
-								font-family: var(--font-primary);
-								font-style: italic;
-								text-shadow: none;
+								font-size: $rem-14;
+								line-height: calc(var(--sheet-header-height) + var(--actor-name-vert-buffer));
 							}
-
-
 						}
 
 						.actor-name-bg-anim {
@@ -179,7 +148,6 @@
 							clip-path: polygon(7px 27px, 27px 7px, 102% 7px, 102% calc(100% - 7px), 27px calc(100% - 7px), 7px calc(100% - 27px));
 							z-index: -1;
 							top: -25%;
-							// filter: sepia(1);
 
 							&.actor-name-bg-anim-right {
 								left: 50%;
@@ -187,10 +155,6 @@
 							}
 						}
 					}
-
-
-
-
 				}
 			}
 
@@ -207,45 +171,36 @@
 				z-index: 5;
 				transform: translate(-50%, -50%) scale(0.8);
 
-				// * { pointer-events: none; }
-
-				.svg-def { pointer-events: none; }
-
 				.nav-svg {
 					position: relative;
 
 					.svg-def {
-						fill-opacity: 1;
-						stroke-opacity: 1;
-						filter: none;
-						opacity: 1;
-						transform-origin: center center;
 						height: $full-size;
 						width: $full-size;
 						top: -1 * $nav-vert-shift;
 						left: -1 * $nav-horiz-shift;
 
 						&.outer-spikes {
-							fill: var(--KT-color-contrast-low);
+							--KT-svg-fill: var(--KT-color-contrast-low);
 							transform: scale(0.95);
 						}
 
 						&.inner-spikes {
-							fill: var(--KT-color-contrast-low);
+							--KT-svg-fill: var(--KT-color-contrast-low);
 							transform: scale(3);
 							opacity: 0;
 						}
 
 						&.inner-mesh {
-							fill: var(--KT-color-contrast-low);
+							--KT-svg-fill: var(--KT-color-contrast-low);
 							transform: scale(2);
 							opacity: 0;
 						}
 
 						&.main-ring {
-							fill: url("#nav-main-ring-bg-start-gradient");
-							stroke: url("#nav-main-ring-stroke-gradient");
-							stroke-width: 10px;
+							--KT-svg-fill: url("#nav-main-ring-bg-start-gradient");
+							--KT-svg-stroke: url("#nav-main-ring-stroke-gradient");
+							--KT-svg-stroke-width: 10px;
 						}
 					}
 				}
@@ -345,6 +300,7 @@
 					$spoke-height: 130px;
 					$spoke-width: 40px;
 					$svg-size: 70px;
+					$svg-height: 40px;
 					$link-size: 40px;
 
 					// outline: 3px solid red;
@@ -378,15 +334,20 @@
 
 						&:nth-child(5) { --tab-rotation: -150deg; }
 
-						.svg-def {
-							display: block;
-							height: $svg-size;
-							transform: translate(-50%, -50%) scaleY(0);
-							transform-origin: bottom;
-							// top: 16px;
-							bottom: 33%;
+						.svg-container[class*='nav-spoke'] {
+							// height: $svg-size;
+							transform: translate(-50%, -50%) scale(2);
+							transform-origin: center bottom;
+
+							bottom: 0.5 * $svg-height + 6px;
 							left: 50%;
-							// outline: 3px solid lime;
+							overflow: hidden;
+
+							--KT-svg-fill: #{$black};
+
+							.svg-def {
+								top: calc(100% + #{0.5 * $svg-height});
+							}
 						}
 
 						.nav-tab {
@@ -418,34 +379,28 @@
 							}
 						}
 					}
-
 				}
-
 			}
 
 			.tab-content {
-				overflow-x: hidden;
-				padding: 30px 0px 0px;
-
-				border-image: #{to-url("layout/border-actor-sheet.svg")} 130 275/130px 275px/32px 40px repeat; // round;
 
 				.tab {
 					$grid-gap: 5px;
-					--horiz-padding: 10px;
-					--top-padding: 5px;
-					--bottom-padding: 10px;
-					padding: var(--top-padding) var(--horiz-padding) var(--bottom-padding);
-					height: calc(100% - (var(--top-padding) + var(--bottom-padding)));
+					// --horiz-padding: 10px;
+					// --top-padding: 5px;
+					// --bottom-padding: 10px;
+					// padding: var(--top-padding) var(--horiz-padding) var(--bottom-padding);
+					// height: calc(100% - (var(--top-padding) + var(--bottom-padding)));
 					display: grid;
 					grid-gap: $grid-gap;
 					grid-template-columns: 1fr 1fr 1fr;
 					grid-template-rows: 40px 80px auto auto;
 
 					.subsection {
-						--horiz-padding: 5px;
+						// --horiz-padding: 5px;
 						box-sizing: border-box;
 						border: 1px solid var(--KT-color-primary);
-						padding: 0 var(--horiz-padding) 5px;
+						// padding: 0 var(--horiz-padding) 5px;
 
 						&.flex-item-list {
 							display: flex;
@@ -463,7 +418,7 @@
 					&.front {
 						$attributes-width: 200px;
 						$attributes-height: $attributes-width * (494 / 261) + 30px + 20px;
-						$nav-buffer: 60px;
+						$nav-buffer: 100px;
 						$header-height: 40px;
 						$status-height: 80px;
 						$footer-height: 40px;
@@ -595,101 +550,31 @@
 							.wounds {
 								--button-gradient-light: #{$red-bright};
 								--button-gradient-dark: #{$red-darker};
-								display: block;
+								display: grid;
+								padding: 5px;
+								// height: $button-size + $button-size + 5px;
+								// max-height: $button-size + $button-size + 5px;
+								grid-template-columns: 1fr 1fr 1fr;
+								grid-template-rows: 20px 20px 20px;
+								grid-row-gap: 5px;
+								grid-column-gap: 15px;
+								grid-auto-flow: column;
+								border-radius: 5px;
+								padding: 5px;
+								overflow: hidden;
 
-								.wounds-label {
-									display: block;
-									width: 100%;
-									height: 20%;
-									text-align: center;
-									font-weight: $font-weight-black;
-									color: var(--KT-color-secondary);
-									font-family: var(--font-heading);
+								.wound-add {
+									position: relative;
+									button.wound-add { width: 100% }
 								}
 
-								.wounds-container {
-									display: grid;
-									height: $button-size + $button-size + 5px;
-									max-height: $button-size + $button-size + 5px;
-									grid-template-columns: 1fr 1fr;
-									grid-template-rows: 1fr 1fr;
-									grid-gap: 5px;
-									grid-auto-flow: column;
-									overflow: hidden;
+								> *:nth-child(3n-1) { left: 20px }
+								> *:nth-child(3n) { left: 40px }
 
-									.wound {
-										position: relative;
-										display: grid;
-										height: $button-size;
-										max-height: $button-size;
-										line-height: $button-size;
-										grid-template-columns: #{$button-size} 1fr #{$button-size} #{$button-size};
-										grid-gap: 5px;
-
-										.toggle-box-container {
-											height: $button-size;
-											max-height: $button-size;
-											line-height: $button-size;
-											margin: 0;
-											padding: 0;
-
-											.toggle-box {
-												opacity: 0;
-												cursor: pointer;
-												height: $button-size;
-												width: $button-size;
-												max-height: $button-size;
-												line-height: $button-size;
-											}
-
-											.toggle-box-mode {
-												pointer-events: none;
-												height: $button-size;
-												width: $button-size;
-												max-height: $button-size;
-												line-height: $button-size;
-												// margin-left: -1 * $button-size;
-											}
-										}
-
-										.wound-desc {
-											// height: 75%;
-											// margin-top: 5px;
-											width: calc(100% / 0.75);
-											color: var(--KT-color-secondary);
-											font-size: $rem-18;
-											max-height: $button-size;
-											line-height: $button-size;
-											font-weight: $font-weight-black;
-											font-variant: small-caps;
-
-											transform-origin: left;
-											transform: scaleX(0.75);
-										}
-									}
-								}
-
-								.wounds-report {
-									display: block;
-									width: 100%;
-									text-align: center;
-									font-weight: $font-weight-bold;
-									color: var(--KT-color-secondary);
-									font-style: italic;
-									font-size: $rem-12;
-								}
-
-								button.wound-add {
-									position: absolute;
-								}
-
-
-								input {
-									margin: 0;
-									height: 100%;
-								}
-
-
+								// input {
+								// 	margin: 0;
+								// 	height: 100%;
+								// }
 							}
 
 							/* EDGES */
@@ -713,7 +598,18 @@
 
 							.edges .edges-tooltip {}
 
-
+							.modifiers-report {
+								position: absolute;
+								bottom: 100%;
+								display: block;
+								width: 100%;
+								text-align: center;
+								font-weight: $font-weight-bold;
+								--KT-color-primary: var(--KT-color-secondary);
+								color: var(--KT-color-secondary);
+								font-style: italic;
+								font-size: $rem-12;
+							}
 
 						}
 

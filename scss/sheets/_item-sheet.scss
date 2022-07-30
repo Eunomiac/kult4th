@@ -25,8 +25,6 @@
 
 			.header-icon {
 				$icon-size: 80px;
-				$icon-padding: 5px;
-				$svg-size: $icon-size + $icon-padding;
 
 				transform: translate(-50%, -50%);
 				height: $icon-size;
@@ -34,24 +32,13 @@
 				position: absolute;
 				border-radius: 0.5 * $icon-size;
 				left: 0.25 * $icon-size;
-				padding: $icon-padding;
 				top: 0.25 * $icon-size;
 				z-index: 4;
 				overflow: hidden;
 				outline: 3px solid var(--KT-color-contrast);
 				background: var(--KT-background);
 
-				.svg-icon-def {
-					transform: translate(-50%, -50%);
-					left: 50%;
-					top: 50%;
-					position: absolute;
-					height: $svg-size;
-					width: $svg-size;
-					border: none;
-					outline: none;
-					box-shadow: none;
-				}
+				--KT-svg-stroke-width: 15px;
 
 				&.header-move {
 					background: $gold;

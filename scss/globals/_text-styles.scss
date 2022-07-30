@@ -51,7 +51,13 @@
 		}
 
 		&.placeholder {
-			color: $red-dark;
+			color: #666666 !important;
+			font-weight: $font-weight-light !important;
+			font-family: var(--font-primary) !important;
+			font-style: italic !important;
+			text-shadow: none !important;
+			text-transform: none !important;
+			font-variant: normal !important;
 		}
 	}
 
@@ -61,16 +67,10 @@
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
 
-		&.notification-pip {
-			--KT-color-primary: #{$gold-glow};
-		}
+		&.notification-pip { --KT-color-primary: #{$gold-glow} }
 	}
 
-	.header-button.close {
-		i {
-			--KT-color-primary: #{$red-glow};
-		}
-	}
+	.header-button.close i { --KT-color-primary: #{$red-glow} }
 
 	ul.rules-list, ul.inline-list {
 		--list-indent: 24px;
@@ -124,14 +124,21 @@
 		font-weight: $font-weight-semi;
 		font-size: $rem-22;
 		line-height: $rem-24;
+		height: $rem-24;
 		white-space: nowrap;
 		text-align: center;
 
 		&.section-title {
-			width: calc(100% + 2 * var(--horiz-padding));
-			margin-left: calc(-1 * var(--horiz-padding));
+			width: calc(100% + var(--subsection-padding-left) + var(--subsection-padding-right));
 			text-transform: uppercase;
-			font-weight: $font-weight-black;
+			font-weight: $font-weight-bold;
+			font-family: var(--font-primary-caps);
+			margin:
+				calc(-1 * (var(--subsection-padding-top)))
+				0
+				var(--subsection-padding-top)
+				calc(-1 * var(--subsection-padding-left));
+			padding-top: 1px;
 		}
 
 		&.item-title {
@@ -253,6 +260,7 @@
 		}
 	}
 
+
 	.text-posmod,
 	.text-negmod,
 	.text-keyword,
@@ -301,6 +309,207 @@
 		color: var(--KT-color-primary-brightest);
 		font-weight: $font-weight-semi;
 		font-style: italic;
+	}
+
+	div.hover-strip {
+		--icon-size: 30px;
+		--strip-height: calc(var(--icon-size) + 2px);
+		--strip-padding-vert: 5px;
+		--strip-underline-width: 1px;
+
+		--strip-color-fg: var(--KT-color-primary);
+		--strip-color-bg: var(--KT-color-contrast);
+		--strip-font-size: #{$rem-16};
+		--strip-font-weight: #{$font-weight-semi};
+		--icon-color-bg: var(--KT-color-contrast);
+		--icon-color-fg: var(--KT-color-primary);
+		--icon-color-outline: transparent;
+		--icon-clip-path: circle(closest-side);
+		--icon-scale: 1;
+		--button-color-bg: var(--KT-color-primary);
+		--button-color-fg: var(--KT-color-contrast);
+		--tooltip-color-fg: var(--KT-color-primary-brightest);
+		--tooltip-color-bg: var(--KT-color-contrast);
+
+		position: relative;
+		height: var(--strip-height);
+		white-space: nowrap;
+
+		.icon-container, .icon-container .svg-container {
+			position: relative;
+			display: inline-block;
+			--KT-svg-bg: var(--icon-color-bg);
+			--KT-svg-fill: var(--icon-color-fg);
+			--KT-svg-clip-path: var(--icon-clip-path);
+			--KT-svg-scale: var(--icon-scale);
+			height: var(--icon-size);
+			width: var(--icon-size);
+			// margin: var(--icon-margin);
+			// border: var(--border-width) solid var(--icon-background);
+			// border-radius: calc(var(--icon-size) / 2);
+			// overflow: hidden;
+			white-space: nowrap;
+			// z-index: 1;
+			font-size: 0;
+			left: 0;
+		}
+
+		.icon-container {
+			filter:
+				drop-shadow(0 0 0.5px var(--icon-color-outline))
+				drop-shadow(0 0 0.5px var(--icon-color-outline))
+				drop-shadow(0 0 0.5px var(--icon-color-outline));
+		}
+
+		.button-strip {
+			position: absolute;
+			display: inline-flex;
+			flex-direction: row;
+			height: var(--icon-size);
+			top: calc(0.5 * (var(--strip-height) - var(--icon-size)));
+			width: calc(100% - 0.5 * var(--icon-size));
+			left: calc(0.5 * var(--icon-size));
+			background: var(--strip-color-bg);
+			padding:
+				calc(0.5 * var(--strip-padding-vert))
+				0;
+			outline: 0px solid var(--button-color-bg);
+			justify-content: space-evenly;
+			overflow: hidden;
+
+			.button-spacer {
+				display: inline-block;
+				width: calc(0.5 * var(--icon-size));
+				flex-grow: 0;
+				flex-shrink: 0;
+				position: relative;
+			}
+
+			.strip-button {
+				flex-grow: 0.2;
+				--KT-svg-fill: var(--button-color-fg);
+				background: var(--button-color-bg);
+				font-size: 0;
+				flex-basis: auto;
+				width: unset;
+				position: relative;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+
+				.svg-container {
+					top: 0;
+					left: 0;
+				}
+
+				.button-tooltip {
+					opacity: 0;
+					color: var(--button-color-fg);
+					text-align: center;
+					line-height: var(--icon-size);
+					font-size: $rem-10;
+					text-transform: uppercase;
+					font-family: var(--font-primary-caps);
+					transform-origin: center center;
+					transform: translate(-50%, -50%) scaleX(0.75);
+					position: relative;
+					left: 50%;
+					top: 50%;
+				}
+			}
+		}
+
+		.strip-name {
+			position: absolute;
+			width: calc(100% - var(--icon-size) - 5px);
+			height: 100%;
+			color: var(--strip-color-fg);
+			font-size: var(--strip-font-size);
+			font-weight: var(--strip-font-weight);
+			line-height: var(--icon-size);
+			top: 0;
+			left: calc(var(--icon-size) + 5px);
+			white-space: nowrap;
+		}
+
+		.strip-bg {
+			position: absolute;
+			display: block;
+			height: calc(100% - 2 * var(--strip-padding-vert));
+			width: calc(100% - 0.5 * var(--icon-size));
+			top: var(--strip-padding-vert);
+			left: calc(0.5 * var(--icon-size));
+			background: var(--strip-color-bg);
+			border-bottom: 1px solid var(--button-color-bg);
+		}
+
+		.strip-tooltip {
+			pointer-events: none;
+			position: absolute;
+			display: block;
+			font-family: var(--font-primary);
+			font-size: 10px;
+			line-height: $rem-12;
+			text-align: center;
+			font-style: italic;
+			width: 100%;
+			text-align: left;
+			color: var(--tooltip-color-fg);
+			background: var(--tooltip-color-bg);
+			opacity: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 20;
+			white-space: break-spaces;
+
+			padding: 4px;
+			border-radius: 20px;
+		}
+
+		&.move-strip:not(.derived-move) {
+			--icon-color-bg: var(--KT-color-primary);
+			--icon-color-fg: var(--KT-color-contrast);
+			--icon-color-outline: var(--KT-color-primary);
+		}
+
+		&.wound-strip {
+			--icon-size: 20px;
+			--strip-padding-vert: 2px;
+			--strip-color-bg: #{$red-darkest};
+			--strip-color-fg: #{$red-glow};
+			--strip-font-size: #{$rem-12};
+			--icon-color-bg: var(--KT-color-contrast);
+			--icon-color-fg: var(--KT-color-primary);
+			--icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+			--icon-scale: 1.3;
+			--icon-color-outline: #{$red-glow};
+			--button-color-bg: var(--KT-color-primary);
+			--button-color-fg: var(--KT-color-contrast);
+			--tooltip-color-bg: var(--KT-color-contrast);
+			--tooltip-color-fg: var(--KT-color-primary-brightest);
+
+			&.wound-critical {
+				--strip-color-bg: #{$red-darker};
+				--strip-color-fg: #{$white-brighter};
+				--icon-color-bg: #{$red-glow};
+				--icon-color-fg: #{$white-brightest};
+				--icon-color-outline: #{$white-brightest};
+				--button-color-bg: #{$red-glow};
+				--button-color-fg: #{$black-darkest};
+			}
+
+			&.wound-stabilized {
+				--icon-clip-path: circle(closest-side);
+				--icon-scale: 1;
+				--strip-color-bg: transparent;
+				--strip-color-fg: #{$gold-dark};
+				--icon-color-outline: transparent;
+				.strip-name {
+					font-style: italic;
+				}
+
+			}
+		}
 	}
 
 	.result-entry {

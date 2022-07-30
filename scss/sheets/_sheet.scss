@@ -1,17 +1,39 @@
 & {
-	--sheet-min-height: 0px;
-	--sheet-min-width: 0px;
+	--sheet-min-height: 500px;
+	--sheet-min-width: 500px;
+	--sheet-padding-horiz: 0px;
+	--sheet-padding-vert: 0px;
+	--sheet-padding-top: var(--sheet-padding-vert);
+	--sheet-padding-left: var(--sheet-padding-horiz);
+	--sheet-padding-right: var(--sheet-padding-horiz);
+	--sheet-padding-bottom: var(--sheet-padding-vert);
 
-	--sheet-top-padding: 0px;
-	--sheet-horiz-padding: 0px;
-	--sheet-bottom-padding: 0px;
+	--sheet-dragbar-height: 20px;
+	--sheet-dragbar-width: 100%;
+	--sheet-dragbar-shift-horiz: 0px;
+	--sheet-dragbar-shift-vert: 0px;
 
 	--sheet-header-height: 60px;
+
+	--section-drop-shadow: 2px 4px 2px #{$black-darkest};
+	--section-padding-horiz: 0px;
+	--section-padding-vert: 0px;
+	--section-padding-top: var(--section-padding-vert);
+	--section-padding-left: var(--section-padding-horiz);
+	--section-padding-right: var(--section-padding-horiz);
+	--section-padding-bottom: var(--section-padding-vert);
+
+	--subsection-padding-vert: 0px;
+	--subsection-padding-horiz: 0px;
+	--subsection-padding-top: var(--subsection-padding-vert);
+	--subsection-padding-left: var(--subsection-padding-horiz);
+	--subsection-padding-right: var(--subsection-padding-horiz);
+	--subsection-padding-bottom: var(--subsection-padding-vert);
 
 	min-width: var(--sheet-min-width);
 	min-height: var(--sheet-min-height);
 	overflow: visible;
-	filter: drop-shadow(25px 25px 15px rgba(0, 0, 0, 0.8));
+	filter: none;
 	margin: 0;
 	background: none;
 
@@ -19,14 +41,15 @@
 		z-index: 6;
 		position: absolute;
 		font-size: 0;
-		max-height: 20px;
+		height: var(--sheet-dragbar-height);
+		width: calc(var(--sheet-dragbar-width) - var(--sheet-dragbar-shift-horiz));
+		left: var(--sheet-dragbar-shift-horiz);
+		top: var(--sheet-dragbar-shift-vert);
 		overflow: visible;
 		border: none;
 		padding: 0;
-		width: calc(100% - 140px);
-		margin-left: 100px;
+		margin: 0;
 		flex-direction: row-reverse;
-		padding-top: 10px;
 
 		.window-title { display: none }
 
@@ -43,53 +66,59 @@
 
 	.window-content {
 		position: relative;
+		overflow: visible;
 		height: 100%;
 		width: 100%;
-		overflow: visible;
-		padding: 0;
-		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
+		padding:
+			var(--sheet-padding-top)
+			var(--sheet-padding-right)
+			var(--sheet-padding-bottom)
+			var(--sheet-padding-left);
 
-		.border-container,
-		.bg-container {
-			position: absolute;
-			pointer-events: none;
-			// display: grid;
-			display: none;
-		}
 
-		form {
-			--border-color: #{$gold};
-			height: 100%;
-			width: 100%;
-			overflow: visible;
-
+		.kult4th-form {
 			display: grid;
 			position: relative;
-			padding: var(--sheet-top-padding) var(--sheet-horiz-padding) var(--sheet-bottom-padding);
+			height: calc(100% - var(--sheet-padding-top) - var(--sheet-padding-bottom));
+			width: calc(100% - var(--sheet-padding-left) - var(--sheet-padding-right));
 			grid-template-areas:
 				"header"
 				"main";
 			grid-template-rows: var(--sheet-header-height) 1fr;
 			grid-template-columns: 1fr;
 
-			header {
-				grid-area: header;
-				height: 100%;
-				overflow: hidden;
-				z-index: 3;
-
+			> * {
+				position: relative;
 			}
-			main {
+
+			.sheet-header {
+				grid-area: header;
+				overflow: hidden;
+			}
+
+			.tab-content {
 				grid-area: main;
 				border: 1px solid transparent;
 				border-image: var(--KT-border);
 				background: var(--KT-background);
-				padding: 5px;
-			}
+				filter: drop-shadow(var(--section-drop-shadow));
+				overflow: hidden;
 
-			> * {
-				position: relative;
-				z-index: 2;
+				.tab {
+					padding:
+						var(--section-padding-top)
+						var(--section-padding-right)
+						var(--section-padding-bottom)
+						var(--section-padding-left);
+
+					.subsection {
+						padding:
+							var(--subsection-padding-top)
+							var(--subsection-padding-right)
+							var(--subsection-padding-bottom)
+							var(--subsection-padding-left);
+					}
+				}
 			}
 		}
 
@@ -103,10 +132,10 @@
 
 			.editor-content {
 				position: relative;
-				width: calc(100% + (2 * var(--horiz-padding)));
-				left: calc(-1 * var(--horiz-padding));
+				width: calc(100% + (2 * var(--subsection-padding-horiz)));
+				left: calc(-1 * var(--subsection-padding-horiz));
 				overflow-x: hidden;
-				padding: 0 var(--horiz-padding);
+				padding: 0 var(--subsection-padding-horiz);
 				@import '../globals/text-styles';
 			}
 			.tox.tox-tinymce .tox-editor-container .tox-editor-header {
@@ -125,7 +154,7 @@
 			--icon-margin: calc((var(--card-height) - var(--icon-size)) / 2);
 			--icon-background: var(--KT-color-contrast);
 			--icon-filter: none;
-			--popout-background: var(--KT-color-primary)
+			--popout-background: var(--KT-color-primary);
 			--popout-spacer-color: var(--KT-color-contrast);
 			position: relative;
 			height: var(--card-height);

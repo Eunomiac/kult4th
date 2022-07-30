@@ -1,55 +1,83 @@
-.svg-icon-def {
+& > * {
+	--KT-svg-fill: #{$white};
+	--KT-svg-stroke: none;
+	--KT-svg-stroke-width: 0px;
+	--KT-svg-bg: transparent;
+	--KT-svg-clip-path: none;
+	--KT-svg-outline: none;
+	--KT-svg-scale: 1;
+}
+
+.svg-definitions {
+	height: 0px;
+	width: 0px;
+	position: absolute;
+}
+
+.svg-def {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	fill: var(--KT-svg-fill);
+	fill-opacity: 1;
+	stroke: var(--KT-svg-stroke);
+	stroke-width: var(--KT-svg-stroke-width);
+	stroke-opacity: 1;
+	pointer-events: none;
+	filter: none;
+	opacity: 1;
+	transform-origin: center center;
+	display: block;
+}
+
+.svg-container {
+	height: 100%;
+	width: 100%;
+	display: block;
+	position: absolute;
+	background: var(--KT-svg-bg);
+	clip-path: var(--KT-svg-clip-path);
+	outline: var(--KT-svg-outline);
+	transform-origin: center center;
+	transform: scale(var(--KT-svg-scale));
+
 	&.svg-advantage {
-		.d-fg {
-			fill: url(#bg-gradient-advantage);
-			stroke: url(#stroke-gradient-advantage);
-		}
+		--KT-svg-fill: url(#bg-gradient-advantage);
+		--KT-svg-stroke: url(#stroke-gradient-advantage);
 	}
 	&.svg-attack {
-		.d-fg {
-			fill: url(#bg-gradient-attack);
-			stroke: url(#stroke-gradient-attack);
-		}
+		--KT-svg-fill: url(#bg-gradient-attack);
+		--KT-svg-stroke: url(#stroke-gradient-attack);
 	}
 	&.svg-darksecret {
-		.d-fg {
-			fill: url(#bg-gradient-darksecret);
-			stroke: url(#stroke-gradient-darksecret);
-			filter: brightness(2);
-		}
+		--KT-svg-fill: url(#bg-gradient-darksecret);
+		--KT-svg-stroke: url(#stroke-gradient-darksecret);
+		// filter: brightness(2);
 	}
 	&.svg-disadvantage {
-		.d-fg {
-			fill: url(#bg-gradient-disadvantage);
-			stroke: url(#stroke-gradient-disadvantage);
-		}
+		--KT-svg-fill: url(#bg-gradient-disadvantage);
+		--KT-svg-stroke: url(#stroke-gradient-disadvantage);
 	}
 	&.svg-gear {
-		.d-fg {
-			fill: url(#bg-gradient-gear);
-			stroke: url(#stroke-gradient-gear);
-		}
+		--KT-svg-fill: url(#bg-gradient-gear);
+		--KT-svg-stroke: url(#stroke-gradient-gear);
 	}
 	&.svg-move {
-		.d-fg {
-			fill: url(#bg-gradient-move);
-			stroke: url(#stroke-gradient-move);
-		}
+		--KT-svg-fill: url(#bg-gradient-move);
+		--KT-svg-stroke: url(#stroke-gradient-move);
 	}
 	&.svg-relation {
-		.d-fg {
-			fill: url(#bg-gradient-relation);
-			stroke: url(#stroke-gradient-relation);
-		}
+		--KT-svg-fill: url(#bg-gradient-relation);
+		--KT-svg-stroke: url(#stroke-gradient-relation);
 	}
 	&.svg-weapon {
-		.d-bg {
-			fill: url(#bg-gradient-weapon);
-			stroke: url(#stroke-gradient-weapon);
-		}
-		.d-fg {
-			fill: $white;
-			stroke: none;
+		--KT-svg-fill: $white;
+		--KT-svg-stroke: none;
+		.svg-bg {
+			--KT-svg-fill: url(#bg-gradient-weapon);
+			--KT-svg-stroke: url(#stroke-gradient-weapon);
 		}
 	}
 }

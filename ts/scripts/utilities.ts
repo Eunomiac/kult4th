@@ -306,6 +306,7 @@ const pad = (text: unknown, minLength: posInt, delim = " ", decimalPos?: posInt)
 	}
 	return str;
 };
+const toKey = (text: string): string => (text ?? "").toLowerCase().replace(/ /g, "-");
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
 const signNum = (num: int, delim = "", zeroSign = "+") => `${pFloat(num) < 0 ? "-" : (pFloat(num) > 0 ? "+" : zeroSign)}${delim}${Math.abs(pFloat(num))}`;
 const padNum = (num: number, numDecDigits: int, includePlus = false, decimalPos?: posInt) => {
@@ -1023,6 +1024,7 @@ export default {
 	uCase, lCase, sCase, tCase,
 	// ░░░░░░░ Formatting ░░░░░░░
 	/* hyphenate, */ unhyphenate, pluralize, oxfordize, ellipsize, pad,
+	toKey,
 	parseArticles,
 	signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
 	// ░░░░░░░ Content ░░░░░░░

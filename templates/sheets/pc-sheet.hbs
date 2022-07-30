@@ -1,15 +1,15 @@
 {{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 
 <div class="gear-container gear-huge gear-kether-huge">
-	{{> "systems/kult4th/templates/components/svg-flat-1024.hbs" "gear-kether-huge"}}
+	{{> "systems/kult4th/templates/components/svg.hbs" key="gear-kether-huge"}}
 </div>
 <div class="gear-container gear-top-right gear-binah">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-outer-teeth"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-binah-inner-full"}}
+	{{> "systems/kult4th/templates/components/svg.hbs" key="gear-binah-outer-teeth"}}
+	{{> "systems/kult4th/templates/components/svg.hbs" key="gear-binah-inner-full"}}
 </div>
 <div class="gear-container gear-bottom-right gear-geburah">
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-geburah"}}
-	{{> "systems/kult4th/templates/components/svg-flat.hbs" "gear-geburah-center-saw"}}
+	{{> "systems/kult4th/templates/components/svg.hbs" key="gear-geburah"}}
+	{{> "systems/kult4th/templates/components/svg.hbs" key="gear-geburah-center-saw"}}
 </div>
 
 <form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
@@ -21,8 +21,7 @@
 			<div class="actor-name-input-container">
 				<div class="actor-name-bg-anim actor-name-bg-anim-left"></div>
 				<div class="actor-name-bg-anim actor-name-bg-anim-right"></div>
-				<div class="actor-name content-editable" data-field="name" data-placeholder="Who Are You?" data-clamplines="1">{{actor.name}}</div>
-				{{!-- <input type="text" class="actor-name" name="name" value="{{actor.name}}" placeholder="" /> --}}
+				<div class="actor-name content-editable clamp-text" data-field="name" data-placeholder="Who Are You?" data-clamplines="1">{{actor.name}}</div>
 			</div>
 			<span class="actor-name-border actor-name-border-right"></span>
 			<span class="actor-name-spacer"></span>
@@ -37,31 +36,31 @@
 		{{> "systems/kult4th/templates/components/nav-frame.hbs" }}
 		<nav class="tabs" data-group="primary">
 			<div class="nav-tab-container">
-				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
+				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-a"}}
 				<a class="nav-tab item" data-tab="front">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-d"}}
+				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-d"}}
 				<a class="nav-tab item" data-tab="assets">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-c"}}
+				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-c"}}
 				<a class="nav-tab item" data-tab="bio">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-b"}}
+				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-b"}}
 				<a class="nav-tab item" data-tab="notes">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.journal")}}</span>
 				</a>
 			</div>
 			<div class="nav-tab-container">
-				{{> "systems/kult4th/templates/components/svg-flat.hbs" "nav-spoke-a"}}
+				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-a"}}
 				<a class="nav-tab item" data-tab="advancement">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
 				</a>
@@ -84,36 +83,22 @@
 			</section>
 			<section class="subsection status">
 				<div class="stability">
+					{{> "systems/kult4th/templates/components/svg.hbs" key="stability"}}
 					<button class="stability-add">+</button>
 					<button class="stability-remove">&minus;</button>
 					<span class="stability-count">{{data.data.stability.value}}</span>
 				</div>
 				<div class="wounds">
-					<label class="wounds-label">{{case "title" (loc "kult4th.trait.wounds")}}</label>
-					<div class="wounds-container">
-						{{#each data.data.wounds as |wound|}}
-						<div class="wound wound-{{#if wound.isCritical}}critical{{else}}serious{{/if}}" data-wound-id="{{wound.id}}">
-							<div class="toggle-box-container wound-type">
-								<input class="toggle-box" type="checkbox" name="data.wounds.{{wound.id}}.isCritical" {{checked wound.isCritical}} />
-								<span class="toggle-box-mode toggle-box-checked">🟥</span>
-								<span class="toggle-box-mode toggle-box-unchecked">❌</span>
-							</div>
-							<div class="wound-desc content-editable" data-field="data.wounds.{{wound.id}}.description" data-placeholder="Describe Wound" data-clamplines="1">{{wound.description}}</div>
-							<div class="toggle-box-container wound-stable">
-								<input class="toggle-box" type="checkbox" name="data.wounds.{{wound.id}}.isStabilized" {{checked wound.isStabilized}} />
-								<span class="toggle-box-mode toggle-box-checked">🟩</span>
-								<span class="toggle-box-mode toggle-box-unchecked">⭕</span>
-							</div>
-							<button class="wound-delete" data-wound-id="{{wound.id}}">&minus;</button>
-						</div>
-						{{/each}}
-						<div class="wound wound-add">
-							<button class="wound-add">New Wound</button>
-						</div>
+					{{#each wounds}}
+					{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+					{{/each}}
+					{{#unless (test (count data.data.wounds) ">=" 6)}}
+					<div class="wound wound-add">
+						<button class="wound-add">New Wound</button>
 					</div>
-					<span class="wounds-report">{{data.data.woundReport}}</span>
+					{{/unless}}
 				</div>
-				<div class="edges" style="opacity: 0;">
+				<div class="edges">
 					<button class="edges-add">+</button>
 					<button class="edges-remove">&minus;</button>
 					<button class="edges-clear">X</button>
@@ -126,6 +111,7 @@
 						{{/each}}
 					</span>
 				</div>
+				<span class="modifiers-report">{{data.data.woundReport}}</span>
 			</section>
 			<section class="subsection attributes">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.trait.attributes")}}</label>
@@ -142,7 +128,7 @@
 			<section class="subsection flex-item-list special-moves">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</label>
 				{{#each derivedMoves}}
-				{{> "systems/kult4th/templates/partials/derived-move-card.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list session-checks">

@@ -14,6 +14,18 @@ export const HandlebarHelpers = {
             case "===": {
                 return param1 === param2;
             }
+            case ">": {
+                return param1 > param2;
+            }
+            case "<": {
+                return param1 < param2;
+            }
+            case ">=": {
+                return param1 >= param2;
+            }
+            case "<=": {
+                return param1 <= param2;
+            }
             case "includes": {
                 return Array.isArray(param1) && param1.includes(param2);
             }
@@ -31,6 +43,12 @@ export const HandlebarHelpers = {
             case "title": return U.tCase(str);
             default: return str;
         }
+    },
+    "count": function (param) {
+        if (Array.isArray(param) || U.isList(param)) {
+            return Object.values(param).length;
+        }
+        return 0;
     },
     "areEmpty": function (...args) {
         return !Object.values(args).flat().join("");
@@ -175,29 +193,72 @@ export const HandlebarHelpers = {
         // 	.replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
         return str;
     },
-    "getImgName": simplifyItemName,
+    "getImgName": U.toKey,
     "getSVGPaths": function (str) {
-        if (str in SVGDATA.Paths) {
-            return SVGDATA.Paths[str];
+        if (str in SVGDATA) {
+            return SVGDATA[str];
         }
         throw new Error(`No such SVG path: '${String(str)}'`);
     },
-    "getIconPaths": function (typeRef, ref, { name, type } = {}) {
-        if (type && typeof type === "string") {
-            typeRef = type;
-        }
+    "getIconPaths": function (ref, { name } = {}) {
         if (name && typeof name === "string") {
             ref = name;
         }
-        const pathsForTypeRef = U.getKey(typeRef, SVGDATA.IconPaths);
-        if (U.isSimpleObj(pathsForTypeRef)) {
-            const pathData = U.getKey(simplifyItemName(ref), pathsForTypeRef);
-            if (pathData) {
-                pathData.style = parsePathTransform(pathData);
-                return pathData;
+        const pathData = U.getKey(U.toKey(ref), SVGDATA)
+            ?.map((pData) => ({ ...pData, style: parsePathTransform(pData) }));
+        throw new Error(`No such SVG path: '${String(ref)}'`);
+    },
+    "getSVGKey": function (item) {
+        let svgKey;
+        switch (item.data.type) {
+            case "attack":
+            case "move": {
+                if (item.data.data.sourceItem?.name) {
+                    svgKey = item.data.data.sourceItem.name;
+                    break;
+                }
+                else if (typeof item.data.name === "string") {
+                    svgKey = item.data.name;
+                    break;
+                }
+                throw new Error("Item name is NULL!");
+            }
+            default: {
+                if (typeof item.data.name === "string") {
+                    svgKey = item.data.name;
+                    break;
+                }
+                throw new Error("Item name is NULL!");
             }
         }
-        throw new Error(`No such '${String(typeRef)}' SVG path: '${String(ref)}'`);
+        svgKey = U.toKey(svgKey);
+        if (svgKey in SVGDATA) {
+            return svgKey;
+        }
+        throw new Error(`No such SVG: '${String(svgKey)}'`);
+    },
+    "getSVGs": function (ref) {
+        const pathData = U.getKey(U.toKey(ref), SVGDATA)
+            ?.map((pData) => {
+            pData = {
+                ...pData,
+                style: `${pData.style ?? ""} ${parsePathTransform(pData)}`
+            };
+            if (typeof pData.viewBox === "number") {
+                pData.viewBox = `0 0 ${pData.viewBox} ${pData.viewBox}`;
+            }
+            else if (Array.isArray(pData.viewBox)) {
+                pData.viewBox = `0 0 ${pData.viewBox.join(" ")}`;
+            }
+            else if (typeof pData.viewBox !== "string") {
+                pData.viewBox = "0 0 512 512";
+            }
+            return pData;
+        });
+        if (pathData) {
+            return pathData;
+        }
+        throw new Error(`No such SVG path: '${String(ref)}'`);
     }
 };
 function parsePathTransform({ d, scale = 1, xShift = 0, yShift = 0 }) {
@@ -206,7 +267,4 @@ function parsePathTransform({ d, scale = 1, xShift = 0, yShift = 0 }) {
         `scale(${scale})`,
         `translate(${xShift}px, ${yShift}px);`
     ].join(" ");
-}
-function simplifyItemName(itemName) {
-    return (itemName ?? "").toLowerCase().replace(/ /g, "-");
 }

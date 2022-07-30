@@ -1,3 +1,4 @@
+import U from "../scripts/utilities.js";
 export default class K4Item extends Item {
     // override get data() { return this.data as K4ItemData<T> }
     // declare override data: K4ItemData<T> & {
@@ -60,6 +61,50 @@ export default class K4Item extends Item {
                 this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
             }
         }
+    }
+    toHoverStrip() {
+        /* interface StripButtonData {
+            icon: KeyOf<typeof SVGDATA>,
+            dataset: Record<string, string>,
+            classes?: string[],
+            tooltip?: string
+        }
+        interface HoverStripData {
+            icon: KeyOf<typeof SVGDATA>,
+            classes: string[],
+            buttons: StripButtonData[],
+            dataset?: Record<string,string>,
+            tooltip?: string
+        }	*/
+        const stripData = {
+            display: this.name ?? "(unknown)",
+            ...this.isDerived
+                ? {
+                    icon: U.toKey(this.data.data.sourceItem.name),
+                    stripClasses: [
+                        U.toKey(`${this.data.data.sourceItem.type}-strip`),
+                        `derived-${this.type}`
+                    ]
+                }
+                : {
+                    icon: U.toKey(this.name ?? `DEFAULT-${this.data.type}`),
+                    stripClasses: [`${this.data.type}-strip`]
+                },
+            dataset: {
+                "hover-target": ".attribute-box[data-attribute='perception'] img"
+            },
+            buttons: [
+                {
+                    icon: "observe-a-situation",
+                    dataset: {
+                        "item-name": this.name ?? "",
+                        "action": "roll"
+                    }
+                }
+            ],
+            tooltip: "This is a test of your tooltip operating system."
+        };
+        return stripData;
     }
     async displayItemSummary(speaker) {
         const template = await getTemplate(this.sheet?.template ?? "");

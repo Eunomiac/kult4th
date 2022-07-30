@@ -80,7 +80,7 @@ const ANIMATIONS = {
 	gearBinahRotate(target: HTMLElement): gsapAnim {
 		const binahTeeth$ = $(target).find(".svg-gear-binah-outer-teeth");
 		const binahInner$ = $(target).find(".svg-gear-binah-inner-full");
-		gsap.set(binahTeeth$, {scale: 0.98});
+		gsap.set(binahTeeth$, {scale: 0.97});
 		return gsap.timeline({repeat: -1})
 			.to(binahTeeth$, {
 				rotation: "-=360",
@@ -100,7 +100,7 @@ const ANIMATIONS = {
 	gearHugeRotate(target: HTMLElement): gsapAnim {
 		return gsap.to(target, {
 			rotation: "+=360",
-			duration: 15,
+			duration: 50,
 			ease: "none",
 			repeat: -1
 		});
@@ -126,33 +126,41 @@ const ANIMATIONS = {
 			innerSpikes: $(target).find(".inner-spikes"),
 			innerMesh: $(target).find(".inner-mesh"),
 			mainRing: $(target).find(".main-ring"),
-			buttonSpikes: $(target).find(".tabs .nav-tab-container .svg-def")
+			buttonSpikes: $(target).find(".tabs .nav-tab-container .svg-container[class*='nav-spoke'] .svg-def")
 		};
+
 
 		// @ts-expect-error MorphSVG does indeed accept functions.
 		return gsap.timeline({reversed: true/* , onComplete() { gsap.globalTimeline.timeScale(0) } */})
 			.to(target, {
-				fill: "#000000",
-				scale: 1,
+				// fill: C.Colors.BLACK,
+				scale: 1.2,
 				duration: 0.6,
 				ease: "power2"
 			}, 0)
-			.to($(target).find(".svg-def:not(.main-ring)"), {
-				fill: "#000000",
-				duration: 0.6,
-				ease: "sine"
-			}, 0)
-			.to($(target).find(".svg-def.main-ring"), {
-				fill: "url('#nav-main-ring-bg-end-gradient')",
-				duration: 0.1,
-				ease: "none"
-			}, 0.3)
-			.to(U.getSiblings(target), {
-				// opacity: 0.75,
-				filter: "blur(5px)",
+			.to(target, {
+				x: "+=20",
 				duration: 0.5,
-				ease: "back"
+				ease: "sine.inOut"
 			}, 0)
+			.to(target, {
+				y: "+=50",
+				duration: 0.5,
+				ease: "sine.out"
+			}, 0)
+			.to($(target).find(".svg-def:not(.main-ring)"), {
+				"--KT-svg-fill": C.Colors.BLACK,
+				"duration": 0.6,
+				"ease": "sine"
+			}, 0)
+			.set($(target).find(".svg-def.main-ring"), {
+				fill: "url('#nav-main-ring-bg-end-gradient')"
+			}, 0.3)
+			// .to(U.getSiblings(target), {
+			// 	filter: "blur(5px)",
+			// 	duration: 0.5,
+			// 	ease: "back"
+			// }, 0)
 			.to(svgs.mainRing, {
 				scale: 1,
 				opacity: 1,
@@ -208,7 +216,7 @@ const ANIMATIONS = {
 			// 	duration: 0.3
 			// }, 0.15)
 			.to(svgs.buttonSpikes, {
-				scaleY: 1,
+				y: "-=30",
 				ease: "power3",
 				duration: 0.3,
 				stagger: {
@@ -217,7 +225,7 @@ const ANIMATIONS = {
 				}
 			}, 0.05)
 			.to(flare$, {
-				scale: 2,
+				scale: 2.5,
 				duration: 0.45,
 				ease: "sine"
 			}, 0)
@@ -323,6 +331,101 @@ const ANIMATIONS = {
 				},
 				0
 			) */;
+		return tl;
+	},
+	hoverStrip(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
+		const FULL_DURATION = 0.5;
+
+		const hoverTarget$ = $(context).find($(target).data("hover-target"));
+
+		const attribute = $(target).data("attribute");
+		const itemText$ = $(target).find(".item-text");
+		const itemIcon$ = $(target).find(".item-icon");
+		const toolTip$ = $(target).find(".trigger-tooltip");
+		const tl = gsap
+			.timeline({reversed: true})
+			.fromTo(
+				itemIcon$,
+				{
+					borderRadius: 25,
+					overflow: "hidden"
+				},
+				{
+					width: "100%",
+					borderRadius: 0,
+					duration: FULL_DURATION,
+					backgroundColor: C.Colors["GOLD +1"],
+					ease: "sine"
+				},
+				0
+			).fromTo(
+				itemText$,
+				{
+					x: 0,
+					width: "auto",
+					opacity: 1,
+					color: C.Colors.GOLD,
+					textShadow: 0
+				},
+				{
+					x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`)) - 40,
+					width: 0,
+					color: C.Colors.BLACK,
+					textShadow: [
+						...new Array(4).fill(`0 0 15px ${C.Colors["GOLD +1"]}`),
+						...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
+						...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
+					].join(", "),
+					duration: FULL_DURATION,
+					ease: "back"
+				},
+				0
+			).set(
+				itemText$,
+				{
+					opacity: 0
+				},
+				0.01
+			)
+			.to(
+				itemText$,
+				{
+					opacity: 1,
+					duration: FULL_DURATION - 0.01,
+					ease: "sine"
+				},
+				0.01
+			).fromTo(
+				toolTip$,
+				{
+					opacity: 0,
+					bottom: 30,
+					scale: 1.5
+				},
+				{
+					opacity: 1,
+					bottom: 30,
+					scale: 1,
+					duration: 0.75 * FULL_DURATION,
+					ease: "power2.in"
+				},
+				0
+			);
+
+
+		if (hoverTarget$) {
+			tl
+				.to(
+					hoverTarget$,
+					{
+						opacity: 1,
+						duration: FULL_DURATION,
+						ease: "sine"
+					},
+					0
+				);
+		}
+
 		return tl;
 	},
 	hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
@@ -457,7 +560,7 @@ export default class K4PCSheet extends ActorSheet {
 			...baseData,
 			actorData: this.actor.data.data,
 			baseMoves: this.actor.basicMoves,
-			derivedMoves: this.actor.derivedMoves,
+			derivedMoves: this.actor.derivedMoves.map((move) => move.toHoverStrip()),
 			advantages: this.actor.advantages,
 			disadvantages: this.actor.disadvantages,
 			darksecrets: this.actor.darkSecrets,
@@ -466,7 +569,8 @@ export default class K4PCSheet extends ActorSheet {
 			gear: this.actor.gear,
 			attacks: this.actor.attacks,
 			attributes: this.actor.attributeData,
-			curTab: this.actor.getFlag("kult4th", "sheetTab")
+			curTab: this.actor.getFlag("kult4th", "sheetTab"),
+			wounds: this.actor.woundStrips
 		};
 		/*DEVCODE*/
 		console.log("Final Actor Data", data);
@@ -517,7 +621,7 @@ export default class K4PCSheet extends ActorSheet {
 					});
 				});
 
-			html.find(".clampText").each(function clampTextElems() {
+			html.find(".clamp-text").each(function clampTextElems() {
 				self.clamp(this);
 			});
 
@@ -569,6 +673,11 @@ export default class K4PCSheet extends ActorSheet {
 					}
 				});
 
+			html.find(".hover-strip")
+				.each(function addHoverStripEvents() {
+					hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html, false)]);
+
+				});
 			html.find(".item-card")
 				.each(function addMoveHoverEvents() {
 					if (!self.hoverTimeline) {
@@ -620,6 +729,9 @@ export default class K4PCSheet extends ActorSheet {
 			html.find(".content-editable").each(function enableContentEditable() {
 				$(this)
 					.on("click", (clickEvent) => {
+						if ($(clickEvent.currentTarget).attr("contenteditable") === "true") {
+							return;
+						}
 						clickEvent.preventDefault();
 						const {currentTarget} = clickEvent;
 						let elemText = $(currentTarget).text().trim();
@@ -630,7 +742,6 @@ export default class K4PCSheet extends ActorSheet {
 							.text(elemText || " ")
 							.removeClass("placeholder")
 							.attr({contenteditable: "true"})
-							.data({selectAllOnFocus: String(!elemText)})
 							.on("keydown", (keyboardEvent) => {
 								if (keyboardEvent.key === "Enter") {
 									keyboardEvent.preventDefault();
@@ -641,9 +752,7 @@ export default class K4PCSheet extends ActorSheet {
 					})
 					.on("focus", (focusEvent) => {
 						self.unClamp(focusEvent.currentTarget);
-						if ($(focusEvent.currentTarget).data("selectAllOnFocus") === "true") {
-							document.execCommand("selectAll");
-						}
+						document.execCommand("selectAll");
 					})
 					.on("blur", (blurEvent) => {
 						blurEvent.preventDefault();
@@ -679,7 +788,6 @@ export default class K4PCSheet extends ActorSheet {
 		tabName ??= "front";
 		const curTab = (this.actor.getFlag("kult4th", "sheetTab") ?? "front") as string;
 		if (tabName && tabName !== curTab) {
-			console.log(`Activating Tab ${tabName}`);
 			this.actor.setFlag("kult4th", "sheetTab", tabName);
 		}
 	}
