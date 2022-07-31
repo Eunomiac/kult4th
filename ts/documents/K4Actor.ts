@@ -92,36 +92,32 @@ export default class K4Actor extends Actor {
 
 	get derivedItems() { return [...this.items].filter((item) => item.isDerived) }
 
-	get wounds(): K4Wound[] {
-		if (this.type === K4ActorType.pc) {
-			return Object.values(this.data.data.wounds);
-		} else {
-			return [];
-		}
+	get wounds(): Record<KeyOf<typeof this["data"]["data"]["wounds"]>,K4Wound> {
+		// if (this.type === K4ActorType.pc) {
+		return this.data.data.wounds;
+		// } else {
+		// return ;
+		// }
 	}
 
 	get woundStrips(): HoverStripData[] {
-		return this.wounds.map((wound) => {
+		return Object.values(this.wounds).map((wound) => {
 			const stripData: Partial<HoverStripData> = {
+				id: wound.id,
 				display: wound.description ?? "",
-				stripClasses: [
-					"wound-strip",
-					...wound.isStabilized
-						? ["k4-theme-dgold"]
-						: ["k4-theme-red"],
-					...wound.isCritical
-						? ["wound-critical"]
-						: [],
-					...wound.isStabilized
-						? ["wound-stabilized"]
-						: []
-				],
+				stripClasses: ["wound-strip"],
+				dataTarget: `data.wounds.${wound.id}.description`,
+				placeholder: "(description)",
+				dataset: {
+					"color-fg": C.Colors["RED GLOW"],
+					"color-bg": C.Colors["RED -2"]
+				},
 				buttons: [
 					{
 						icon: wound.isCritical ? "wound-critical" : "wound-serious",
 						dataset: {
 							target: wound.id,
-							action: "type"
+							action: "toggle-wound-type"
 						},
 						tooltip: wound.isCritical ? "CRITICAL" : "SERIOUS"
 					},
@@ -129,7 +125,7 @@ export default class K4Actor extends Actor {
 						icon: "data-retrieval",
 						dataset: {
 							target: wound.id,
-							action: "edit"
+							action: "reset-wound-name"
 						},
 						tooltip: "EDIT"
 					},
@@ -137,7 +133,7 @@ export default class K4Actor extends Actor {
 						icon: "wound-serious-stabilized",
 						dataset: {
 							target: wound.id,
-							action: "stabilize"
+							action: "toggle-wound-stabilize"
 						},
 						tooltip: wound.isStabilized ? "STABLE" : "STABILIZE"
 					},
@@ -145,7 +141,7 @@ export default class K4Actor extends Actor {
 						icon: "hinder-other",
 						dataset: {
 							target: wound.id,
-							action: "drop"
+							action: "drop-wound"
 						},
 						tooltip: "DROP"
 					}
@@ -154,12 +150,16 @@ export default class K4Actor extends Actor {
 			if (wound.isCritical) {
 				stripData.icon = "wound-critical";
 				stripData.stripClasses?.push("wound-critical");
+				stripData.dataset!["color-fg"] = C.Colors.WHITE;
+				stripData.dataset!["color-bg"] = C.Colors["RED GLOW"];
 			} else {
 				stripData.icon = "wound-serious";
 			}
 			if (wound.isStabilized) {
 				stripData.icon = `${stripData.icon}-stabilized`;
 				stripData.stripClasses?.push("k4-theme-dgold", "wound-stabilized");
+				stripData.dataset!["color-fg"] = C.Colors.GOLD;
+				stripData.dataset!["color-bg"] = C.Colors.BLACK;
 			} else {
 				stripData.stripClasses?.push("k4-theme-red");
 			}
@@ -236,6 +236,31 @@ export default class K4Actor extends Actor {
 		}
 	}
 
+	async toggleWound(id: string, toggleSwitch: "type"|"stabilized") {
+		const woundData = this.wounds[id];
+		if (woundData) {
+			switch (toggleSwitch) {
+				case "type": {
+					await this.update({[`data.wounds.${id}.isCritical`]: !this.wounds[id].isCritical});
+					return;
+				}
+				case "stabilized": {
+					await this.update({[`data.wounds.${id}.isStabilized`]: !this.wounds[id].isStabilized});
+					return;
+				}
+				// no default
+			}
+		}
+	}
+
+	async resetWoundName(id: string) {
+		const woundData = this.wounds[id];
+		if (woundData) {
+			await this.update({[`data.wounds.${id}.description`]: ""});
+			return;
+		}
+	}
+
 	async removeWound(id: string) {
 		if (this.data.type === K4ActorType.pc) {
 			console.log("Starting Wounds", U.objClone(this.data.data.wounds));
@@ -246,7 +271,7 @@ export default class K4Actor extends Actor {
 
 	parseModsToStrings(modData: K4RollModData): string[] {
 		const returnStrings = [];
-		for (const [modKey, modVal] of Object.entries(modData)) {
+		for (const [modKey, modVal] of Object.entries(modData ?? {})) {
 			switch (modKey) {
 				case "all": {
 					returnStrings.push(`${U.signNum(modVal)} to all rolls`);
@@ -264,8 +289,8 @@ export default class K4Actor extends Actor {
 	get woundPenaltyData(): K4RollModData {
 		if (this.data.type === K4ActorType.pc) {
 			const [unstabSerious, unstabCritical] = [
-				this.wounds.filter((wound) => !wound.isCritical && !wound.isStabilized).length,
-				this.wounds.filter((wound) => wound.isCritical && !wound.isStabilized).length
+				Object.values(this.wounds).filter((wound) => !wound.isCritical && !wound.isStabilized).length,
+				Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
 			];
 			if (unstabSerious && unstabCritical) {
 				return this.data.data.modifiers.seriousAndCriticalWounds[Math.min(

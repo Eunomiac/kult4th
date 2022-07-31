@@ -500,7 +500,7 @@
 								position: relative;
 							}
 
-							button {
+							button:not(.strip-button) {
 								--button-gradient-light: var(--KT-color-primary-bright);
 								--button-gradient-dark: var(--KT-color-contrast);
 								display: inline-block;
@@ -561,7 +561,6 @@
 								grid-auto-flow: column;
 								border-radius: 5px;
 								padding: 5px;
-								overflow: hidden;
 
 								.wound-add {
 									position: relative;

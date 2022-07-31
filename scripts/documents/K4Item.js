@@ -1,4 +1,5 @@
 import U from "../scripts/utilities.js";
+import C from "../scripts/constants.js";
 export default class K4Item extends Item {
     // override get data() { return this.data as K4ItemData<T> }
     // declare override data: K4ItemData<T> & {
@@ -77,13 +78,14 @@ export default class K4Item extends Item {
             tooltip?: string
         }	*/
         const stripData = {
+            id: this.id ?? `${this.data.type}-${U.randString(10)}`,
             display: this.name ?? "(unknown)",
             ...this.isDerived
                 ? {
                     icon: U.toKey(this.data.data.sourceItem.name),
                     stripClasses: [
                         U.toKey(`${this.data.data.sourceItem.type}-strip`),
-                        `derived-${this.type}`
+                        `derived-${this.data.type}`
                     ]
                 }
                 : {
@@ -91,7 +93,9 @@ export default class K4Item extends Item {
                     stripClasses: [`${this.data.type}-strip`]
                 },
             dataset: {
-                "hover-target": ".attribute-box[data-attribute='perception'] img"
+                "hover-target": ".attribute-box[data-attribute='perception'] img",
+                "color-fg": C.Colors.GOLD,
+                "color-bg": C.Colors.BLACK
             },
             buttons: [
                 {
@@ -101,9 +105,11 @@ export default class K4Item extends Item {
                         "action": "roll"
                     }
                 }
-            ],
-            tooltip: "This is a test of your tooltip operating system."
+            ]
         };
+        if (this.data.type !== "relation" /* K4ItemType.relation */) {
+            stripData.tooltip = this.data.data.rules.trigger;
+        }
         return stripData;
     }
     async displayItemSummary(speaker) {

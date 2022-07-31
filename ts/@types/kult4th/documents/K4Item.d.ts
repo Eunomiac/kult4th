@@ -69,9 +69,9 @@ declare global {
 	: T extends K4WeaponClass.firearm ? ("rifle" | "pistol" | "sniper-rifle" | "")
 	: T extends K4WeaponClass.bomb ? ("")
 	: "";
-	namespace K4ItemSourceSchema {
 
-		interface Base {
+	namespace K4ItemComps {
+		export interface Base {
 			description: string,
 			lists: Record<string, {
 				name: string,
@@ -84,30 +84,42 @@ declare global {
 			subType: K4ItemSubType
 		}
 
-		interface HasSubItems {
+		export interface HasSubItems {
 			subItems: ItemDataSource[]
 		}
 
-		interface CanSubItem {
+		export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon>;
+
+		export interface CanSubItem {
 			sourceItem?: {
 				name: string,
 				id?: string | null,
 				type: K4ItemType
 			}
 		}
+		export type CanSlave = K4ItemSpec<K4ItemType.attack | K4ItemType.move>;
 
-		interface RulesData {
+		export interface RulesData {
 			rules: {
-					intro?: string,
-					trigger?: string,
-					outro?: string,
-					listRefs?: string[],
-					effectFunctions?: string[],
-					holdText?: string
-				}
+				intro?: string,
+				trigger?: string,
+				outro?: string,
+				listRefs?: string[],
+				effectFunctions?: string[],
+				holdText?: string
+			}
 		}
+		export type HasRules = K4ItemSpec<Exclude<K4ItemType, K4ItemType.relation>>;
+	}
 
-		export interface move extends Base, CanSubItem, RulesData, ResultsData {
+
+
+
+	namespace K4ItemSourceSchema {
+
+
+
+		export interface move extends K4ItemComps.Base, K4ItemComps.CanSubItem, K4ItemComps.RulesData, ResultsData {
 			attribute: K4Attribute
 		}
 		export interface attack extends move {
@@ -115,24 +127,24 @@ declare global {
 			harm: posInt,
 			ammo: posInt
 		}
-		export interface advantage extends Base, HasSubItems, RulesData {
+		export interface advantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
 			attribute: K4Attribute,
 			currentHold: posInt,
 			currentEdges: posInt
 		}
-		export interface disadvantage extends Base, HasSubItems, RulesData {
+		export interface disadvantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
 			attribute: K4Attribute,
 			currentHold: posInt
 		}
 
-		export interface darksecret extends Base, RulesData {
+		export interface darksecret extends K4ItemComps.Base, K4ItemComps.RulesData {
 			drive: string,
 			currentHold: posInt,
 			playerNotes: string,
 			gmNotes: string
 		}
 
-		export interface relation extends Base {
+		export interface relation extends K4ItemComps.Base {
 			target: string,
 			strength: {
 				min: number,
@@ -141,7 +153,7 @@ declare global {
 			}
 		}
 
-		export interface weapon extends Base, HasSubItems, RulesData {
+		export interface weapon extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
 			class: C,
 			subClass: SC,
 			ammo: {
@@ -151,7 +163,7 @@ declare global {
 			}
 		}
 
-		export interface gear extends Base, RulesData {
+		export interface gear extends K4ItemComps.Base, K4ItemComps.RulesData {
 			armor: number
 		}
 	}

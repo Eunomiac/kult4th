@@ -1,7 +1,6 @@
 import U from "../scripts/utilities.js";
-import {ItemDataConstructorData, ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
-import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
-import K4Actor from "./K4Actor.js";
+import C from "../scripts/constants.js";
+import type {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 
 export default class K4Item extends Item {
 
@@ -89,13 +88,14 @@ export default class K4Item extends Item {
 		tooltip?: string
 	}	*/
 		const stripData: HoverStripData = {
+			id: this.id ?? `${this.data.type}-${U.randString(10)}`,
 			display: this.name ?? "(unknown)",
 			...this.isDerived
 				? {
 						icon: U.toKey((this as K4ItemSpec<K4ItemType.attack | K4ItemType.move>).data.data.sourceItem!.name),
 						stripClasses: [
 							U.toKey(`${(this as K4ItemSpec<K4ItemType.attack | K4ItemType.move>).data.data.sourceItem!.type}-strip`),
-							`derived-${this.type}`
+							`derived-${this.data.type}`
 						]
 					}
 				: {
@@ -103,7 +103,9 @@ export default class K4Item extends Item {
 						stripClasses: [`${this.data.type}-strip`]
 					},
 			dataset: {
-				"hover-target": ".attribute-box[data-attribute='perception'] img"
+				"hover-target": ".attribute-box[data-attribute='perception'] img",
+				"color-fg": C.Colors.GOLD,
+				"color-bg": C.Colors.BLACK
 			},
 			buttons: [
 				{
@@ -113,9 +115,11 @@ export default class K4Item extends Item {
 						"action": "roll"
 					}
 				}
-			],
-			tooltip: "This is a test of your tooltip operating system."
+			]
 		};
+		if (this.data.type !== K4ItemType.relation) {
+			stripData.tooltip = this.data.data.rules.trigger;
+		}
 		return stripData;
 	}
 

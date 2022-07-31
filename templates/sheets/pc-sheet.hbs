@@ -90,9 +90,13 @@
 				</div>
 				<div class="wounds">
 					{{#each wounds}}
+					{{#if display}}
 					{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+					{{else}}
+					{{> "systems/kult4th/templates/components/hover-strip-editable.hbs"}}
+					{{/if}}
 					{{/each}}
-					{{#unless (test (count data.data.wounds) ">=" 6)}}
+					{{#unless (test (count data.data.wounds) ">=" 5)}}
 					<div class="wound wound-add">
 						<button class="wound-add">New Wound</button>
 					</div>

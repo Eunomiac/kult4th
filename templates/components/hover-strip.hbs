@@ -3,7 +3,7 @@
 <div class="hover-strip {{~#each stripClasses}} {{this}}{{/each}}" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}>
 	<span class="strip-bg"></span>
 	<div class="strip-name" data-clamplines="1" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}>{{display}}</div>
-	<span class="button-strip" style="width: 0px;">
+	<span class="button-strip">
 		<span class="button-spacer"></span>
 		{{#each buttons as |bdata|}}
 		<button class="strip-button {{~#if bdata.buttonClasses}}{{#each bdata.buttonClasses}} {{this}}{{/each}}{{/if}}" {{~#each bdata.dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}>

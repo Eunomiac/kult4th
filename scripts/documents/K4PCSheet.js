@@ -299,67 +299,116 @@ const ANIMATIONS = {
         ) */;
         return tl;
     },
-    hoverStrip(target, context, isDerivedMove = true) {
+    hoverStrip(target, context) {
         const FULL_DURATION = 0.5;
         const hoverTarget$ = $(context).find($(target).data("hover-target"));
-        const attribute = $(target).data("attribute");
-        const itemText$ = $(target).find(".item-text");
-        const itemIcon$ = $(target).find(".item-icon");
-        const toolTip$ = $(target).find(".trigger-tooltip");
+        const targetSiblings$ = U.getSiblings(target);
+        const stripIcon$ = $(target).find(".icon-container .svg-container");
+        const stripName$ = $(target).find(".strip-name");
+        const buttonStrip$ = $(target).find(".button-strip");
+        if (!buttonStrip$[0]) {
+            return gsap.timeline({ reversed: true });
+        }
+        const stripToolTip$ = $(target).find(".strip-tooltip");
+        const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
+        const colorBG = $(target).data("color-bg");
+        const nameShift = U.get(target, "height", "px");
+        console.log(`HOVER STRIP: ${$(target).attr("class")}`, { target, colorFG, colorBG, nameShift });
         const tl = gsap
             .timeline({ reversed: true })
-            .fromTo(itemIcon$, {
-            borderRadius: 25,
-            overflow: "hidden"
+            .to(stripIcon$, {
+            scale: "+=1",
+            duration: FULL_DURATION,
+            ease: "sine"
+        }, 0)
+            .to(target, {
+            scale: 1.2,
+            duration: FULL_DURATION,
+            zIndex: 5000,
+            ease: "back"
+        }, 0)
+            .to(buttonStrip$, {
+            opacity: 1,
+            duration: FULL_DURATION / 4,
+            ease: "none"
+        }, 0)
+            .fromTo(buttonStrip$, {
+            width: 0
         }, {
             width: "100%",
-            borderRadius: 0,
             duration: FULL_DURATION,
-            backgroundColor: C.Colors["GOLD +1"],
             ease: "sine"
-        }, 0).fromTo(itemText$, {
-            x: 0,
-            width: "auto",
-            opacity: 1,
-            color: C.Colors.GOLD,
-            textShadow: 0
-        }, {
-            x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`)) - 40,
-            width: 0,
-            color: C.Colors.BLACK,
+        }, 0)
+            .to(stripName$, {
+            xPercent: -100,
+            x: `-=${2 * nameShift}`,
+            fontWeight: 900,
+            fontStyle: "normal",
+            zIndex: 20,
+            // scale: 1.3,
+            duration: FULL_DURATION,
+            color: colorBG,
             textShadow: [
-                ...new Array(4).fill(`0 0 15px ${C.Colors["GOLD +1"]}`),
-                ...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
-                ...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
+                ...new Array(4).fill(`0 0 15px ${colorFG}`),
+                ...new Array(6).fill(`0 0 5px ${colorFG}`),
+                ...new Array(4).fill(`0 0 2px ${colorFG}`)
             ].join(", "),
-            duration: FULL_DURATION,
             ease: "back"
-        }, 0).set(itemText$, {
-            opacity: 0
-        }, 0.01)
-            .to(itemText$, {
-            opacity: 1,
-            duration: FULL_DURATION - 0.01,
-            ease: "sine"
-        }, 0.01).fromTo(toolTip$, {
-            opacity: 0,
-            bottom: 30,
-            scale: 1.5
-        }, {
-            opacity: 1,
-            bottom: 30,
-            scale: 1,
-            duration: 0.75 * FULL_DURATION,
-            ease: "power2.in"
         }, 0);
-        if (hoverTarget$) {
-            tl
-                .to(hoverTarget$, {
+        if (stripToolTip$[0]) {
+            tl.fromTo(stripToolTip$, {
+                opacity: 0,
+                scale: 1.5
+            }, {
+                opacity: 1,
+                scale: 1,
+                y: "-=10",
+                duration: 0.75 * FULL_DURATION,
+                ease: "power2.in"
+            }, 0);
+        }
+        if (hoverTarget$[0]) {
+            tl.to(hoverTarget$, {
                 opacity: 1,
                 duration: FULL_DURATION,
                 ease: "sine"
             }, 0);
         }
+        return tl;
+    },
+    hoverStripButton(target, context) {
+        const FULL_DURATION = 0.5;
+        const buttonStrip$ = $(target).parent();
+        const svg$ = $(target).find(".svg-container");
+        const tooltip$ = $(target).find(".button-tooltip");
+        const tl = gsap.timeline({ reversed: true })
+            .set(target, { zIndex: 30 }, 0.1)
+            .to(svg$, {
+            filter: "blur(5px)",
+            scale: 5,
+            duration: 0.4 * FULL_DURATION,
+            ease: "power2"
+        }, 0)
+            .to(svg$, {
+            opacity: 0,
+            duration: 0.2 * FULL_DURATION,
+            ease: "power2"
+        }, 0.3 * FULL_DURATION)
+            .to(tooltip$, {
+            opacity: 1,
+            duration: 0.2 * FULL_DURATION,
+            ease: "power2"
+        }, 0.3 * FULL_DURATION)
+            .fromTo(tooltip$, {
+            filter: "blur(5px)"
+        }, {
+            filter: "none",
+            // scale: 1.5,
+            // textShadow: "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white",
+            fontWeight: 900,
+            duration: 0.6 * FULL_DURATION,
+            ease: "power2"
+        }, 0.4 * FULL_DURATION);
         return tl;
     },
     hoverMove(target, context, isDerivedMove = true) {
@@ -564,16 +613,20 @@ export default class K4PCSheet extends ActorSheet {
             });
             html.find(".hover-strip")
                 .each(function addHoverStripEvents() {
-                hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html, false)]);
+                hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html)]);
+            });
+            html.find(".hover-strip .strip-button")
+                .each(function addHoverStripButtonEvents() {
+                hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this, html)]);
             });
             html.find(".item-card")
                 .each(function addMoveHoverEvents() {
                 if (!self.hoverTimeline) {
-                    self.hoverTimeline = ANIMATIONS.hoverMove(this, html, false);
+                    self.hoverTimeline = ANIMATIONS.hoverMove(this, html);
                     self.hoverTimeline.vars.id = "hoverTimeline";
                     self.hoverTimelineTarget = this;
                 }
-                hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html, false)]);
+                hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html)]);
             });
             hoverTimelines.forEach(([target, anim]) => {
                 $(target)
@@ -612,6 +665,34 @@ export default class K4PCSheet extends ActorSheet {
                     console.log(`Deleting Wound ${woundID}. Button:`, this);
                     self.actor.removeWound(woundID);
                 });
+            });
+            html.find("*[data-action=\"toggle-wound-type\"]")
+                .each(function toggleWoundTypeEvent() {
+                const woundID = $(this).data("target");
+                if (woundID) {
+                    $(this).on("click", () => self.actor.toggleWound(woundID, "type"));
+                }
+            });
+            html.find("*[data-action=\"reset-wound-name\"]")
+                .each(function addItemDropEvents() {
+                const woundID = $(this).data("target");
+                if (woundID) {
+                    $(this).on("click", () => self.actor.resetWoundName(woundID));
+                }
+            });
+            html.find("*[data-action=\"toggle-wound-stabilize\"]")
+                .each(function toggleWoundStabilizeEvent() {
+                const woundID = $(this).data("target");
+                if (woundID) {
+                    $(this).on("click", () => self.actor.toggleWound(woundID, "stabilized"));
+                }
+            });
+            html.find("*[data-action=\"drop-wound\"]")
+                .each(function dropWoundEvent() {
+                const woundID = $(this).data("target");
+                if (woundID) {
+                    $(this).on("click", () => self.actor.removeWound(woundID));
+                }
             });
             html.find(".content-editable").each(function enableContentEditable() {
                 $(this)

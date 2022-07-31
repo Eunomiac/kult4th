@@ -776,16 +776,17 @@ Number Display
       width: calc(100% - 0.5 * var(--icon-size));
       left: calc(0.5 * var(--icon-size));
       background: var(--strip-color-bg);
+      opacity: 0;
       padding: calc(0.5 * var(--strip-padding-vert)) 0;
       outline: 0px solid var(--button-color-bg);
-      -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-      justify-content: space-evenly;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
       overflow: hidden; }
       .vtt.game.system-kult4th div.hover-strip .button-strip .button-spacer,
       .vtt.game.system-kult4th .mce-content-body div.hover-strip .button-strip .button-spacer {
         display: inline-block;
-        width: calc(0.5 * var(--icon-size));
+        width: var(--icon-size);
         -webkit-box-flex: 0;
         -ms-flex-positive: 0;
         flex-grow: 0;
@@ -806,11 +807,14 @@ Number Display
         position: relative;
         margin: 0;
         padding: 0;
-        overflow: hidden; }
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 0; }
         .vtt.game.system-kult4th div.hover-strip .button-strip .strip-button .svg-container,
         .vtt.game.system-kult4th .mce-content-body div.hover-strip .button-strip .strip-button .svg-container {
           top: 0;
-          left: 0; }
+          left: 0;
+          pointer-events: none; }
         .vtt.game.system-kult4th div.hover-strip .button-strip .strip-button .button-tooltip,
         .vtt.game.system-kult4th .mce-content-body div.hover-strip .button-strip .strip-button .button-tooltip {
           opacity: 0;
@@ -820,19 +824,20 @@ Number Display
           font-size: 0.625rem;
           text-transform: uppercase;
           font-family: var(--font-primary-caps);
+          font-weight: 900;
           -webkit-transform-origin: center center;
           -ms-transform-origin: center center;
           transform-origin: center center;
           -webkit-transform: translate(-50%, -50%) scaleX(0.75);
           -ms-transform: translate(-50%, -50%) scaleX(0.75);
           transform: translate(-50%, -50%) scaleX(0.75);
-          position: relative;
+          position: absolute;
+          pointer-events: none;
           left: 50%;
           top: 50%; }
     .vtt.game.system-kult4th div.hover-strip .strip-name,
     .vtt.game.system-kult4th .mce-content-body div.hover-strip .strip-name {
       position: absolute;
-      width: calc(100% - var(--icon-size) - 5px);
       height: 100%;
       color: var(--strip-color-fg);
       font-size: var(--strip-font-size);
@@ -840,7 +845,11 @@ Number Display
       line-height: var(--icon-size);
       top: 0;
       left: calc(var(--icon-size) + 5px);
-      white-space: nowrap; }
+      white-space: nowrap;
+      z-index: 10; }
+      .vtt.game.system-kult4th div.hover-strip .strip-name:not(.content-editable),
+      .vtt.game.system-kult4th .mce-content-body div.hover-strip .strip-name:not(.content-editable) {
+        pointer-events: none; }
     .vtt.game.system-kult4th div.hover-strip .strip-bg,
     .vtt.game.system-kult4th .mce-content-body div.hover-strip .strip-bg {
       position: absolute;
@@ -854,7 +863,7 @@ Number Display
     .vtt.game.system-kult4th div.hover-strip .strip-tooltip,
     .vtt.game.system-kult4th .mce-content-body div.hover-strip .strip-tooltip {
       pointer-events: none;
-      position: absolute;
+      position: relative;
       display: block;
       font-family: var(--font-primary);
       font-size: 10px;
@@ -866,7 +875,7 @@ Number Display
       color: var(--tooltip-color-fg);
       background: var(--tooltip-color-bg);
       opacity: 0;
-      bottom: 0;
+      bottom: calc(2 * var(--strip-height));
       left: 0;
       z-index: 20;
       white-space: break-spaces;
@@ -886,7 +895,6 @@ Number Display
       --strip-font-size: 0.75rem;
       --icon-color-bg: var(--KT-color-contrast);
       --icon-color-fg: var(--KT-color-primary);
-      --icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
       --icon-scale: 1.3;
       --icon-color-outline: #ff0000;
       --button-color-bg: var(--KT-color-primary);
@@ -899,9 +907,13 @@ Number Display
         --strip-color-fg: #eae9eb;
         --icon-color-bg: #ff0000;
         --icon-color-fg: #f4f4f5;
+        --icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
         --icon-color-outline: #f4f4f5;
         --button-color-bg: #ff0000;
         --button-color-fg: #040404; }
+        .vtt.game.system-kult4th div.hover-strip.wound-strip.wound-critical .strip-name,
+        .vtt.game.system-kult4th .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name {
+          text-transform: uppercase; }
       .vtt.game.system-kult4th div.hover-strip.wound-strip.wound-stabilized,
       .vtt.game.system-kult4th .mce-content-body div.hover-strip.wound-strip.wound-stabilized {
         --icon-clip-path: circle(closest-side);
@@ -912,6 +924,9 @@ Number Display
         .vtt.game.system-kult4th div.hover-strip.wound-strip.wound-stabilized .strip-name,
         .vtt.game.system-kult4th .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name {
           font-style: italic; }
+        .vtt.game.system-kult4th div.hover-strip.wound-strip.wound-stabilized .strip-bg,
+        .vtt.game.system-kult4th .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-bg {
+          border-color: transparent; }
   .vtt.game.system-kult4th .result-entry,
   .vtt.game.system-kult4th .mce-content-body .result-entry {
     --label-width: 60px;
@@ -1572,16 +1587,17 @@ Number Display
               width: calc(100% - 0.5 * var(--icon-size));
               left: calc(0.5 * var(--icon-size));
               background: var(--strip-color-bg);
+              opacity: 0;
               padding: calc(0.5 * var(--strip-padding-vert)) 0;
               outline: 0px solid var(--button-color-bg);
-              -webkit-box-pack: space-evenly;
-              -ms-flex-pack: space-evenly;
-              justify-content: space-evenly;
+              -webkit-box-pack: justify;
+              -ms-flex-pack: justify;
+              justify-content: space-between;
               overflow: hidden; }
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .button-strip .button-spacer,
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .button-strip .button-spacer {
                 display: inline-block;
-                width: calc(0.5 * var(--icon-size));
+                width: var(--icon-size);
                 -webkit-box-flex: 0;
                 -ms-flex-positive: 0;
                 flex-grow: 0;
@@ -1602,11 +1618,14 @@ Number Display
                 position: relative;
                 margin: 0;
                 padding: 0;
-                overflow: hidden; }
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                border-radius: 0; }
                 .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .button-strip .strip-button .svg-container,
                 .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .button-strip .strip-button .svg-container {
                   top: 0;
-                  left: 0; }
+                  left: 0;
+                  pointer-events: none; }
                 .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .button-strip .strip-button .button-tooltip,
                 .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .button-strip .strip-button .button-tooltip {
                   opacity: 0;
@@ -1616,19 +1635,20 @@ Number Display
                   font-size: 0.625rem;
                   text-transform: uppercase;
                   font-family: var(--font-primary-caps);
+                  font-weight: 900;
                   -webkit-transform-origin: center center;
                   -ms-transform-origin: center center;
                   transform-origin: center center;
                   -webkit-transform: translate(-50%, -50%) scaleX(0.75);
                   -ms-transform: translate(-50%, -50%) scaleX(0.75);
                   transform: translate(-50%, -50%) scaleX(0.75);
-                  position: relative;
+                  position: absolute;
+                  pointer-events: none;
                   left: 50%;
                   top: 50%; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .strip-name,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .strip-name {
               position: absolute;
-              width: calc(100% - var(--icon-size) - 5px);
               height: 100%;
               color: var(--strip-color-fg);
               font-size: var(--strip-font-size);
@@ -1636,7 +1656,11 @@ Number Display
               line-height: var(--icon-size);
               top: 0;
               left: calc(var(--icon-size) + 5px);
-              white-space: nowrap; }
+              white-space: nowrap;
+              z-index: 10; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .strip-name:not(.content-editable),
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .strip-name:not(.content-editable) {
+                pointer-events: none; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .strip-bg,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .strip-bg {
               position: absolute;
@@ -1650,7 +1674,7 @@ Number Display
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .strip-tooltip,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .strip-tooltip {
               pointer-events: none;
-              position: absolute;
+              position: relative;
               display: block;
               font-family: var(--font-primary);
               font-size: 10px;
@@ -1662,7 +1686,7 @@ Number Display
               color: var(--tooltip-color-fg);
               background: var(--tooltip-color-bg);
               opacity: 0;
-              bottom: 0;
+              bottom: calc(2 * var(--strip-height));
               left: 0;
               z-index: 20;
               white-space: break-spaces;
@@ -1682,7 +1706,6 @@ Number Display
               --strip-font-size: 0.75rem;
               --icon-color-bg: var(--KT-color-contrast);
               --icon-color-fg: var(--KT-color-primary);
-              --icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
               --icon-scale: 1.3;
               --icon-color-outline: #ff0000;
               --button-color-bg: var(--KT-color-primary);
@@ -1695,9 +1718,13 @@ Number Display
                 --strip-color-fg: #eae9eb;
                 --icon-color-bg: #ff0000;
                 --icon-color-fg: #f4f4f5;
+                --icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
                 --icon-color-outline: #f4f4f5;
                 --button-color-bg: #ff0000;
                 --button-color-fg: #040404; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip.wound-strip.wound-critical .strip-name,
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name {
+                  text-transform: uppercase; }
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip.wound-strip.wound-stabilized,
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip.wound-strip.wound-stabilized {
                 --icon-clip-path: circle(closest-side);
@@ -1708,6 +1735,9 @@ Number Display
                 .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip.wound-strip.wound-stabilized .strip-name,
                 .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name {
                   font-style: italic; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip.wound-strip.wound-stabilized .strip-bg,
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-bg {
+                  border-color: transparent; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .result-entry,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .result-entry {
             --label-width: 60px;
@@ -2275,7 +2305,7 @@ Number Display
             /* EDGES */ }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status > div {
               position: relative; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status button {
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status button:not(.strip-button) {
               --button-gradient-light: var(--KT-color-primary-bright);
               --button-gradient-dark: var(--KT-color-contrast);
               display: inline-block;
@@ -2320,8 +2350,7 @@ Number Display
               grid-column-gap: 15px;
               grid-auto-flow: column;
               border-radius: 5px;
-              padding: 5px;
-              overflow: hidden; }
+              padding: 5px; }
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds .wound-add {
                 position: relative; }
                 .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds .wound-add button.wound-add {

@@ -23,11 +23,14 @@ declare global {
 		tooltip?: string
 	}
 	interface HoverStripData {
+		id: string,
 		display: string,
 		icon: KeyOf<typeof SVGDATA>,
 		stripClasses: string[],
 		buttons: StripButtonData[],
 		dataset?: Record<string,string>,
+		dataTarget?: string,
+		placeholder?: string,
 		tooltip?: string
 	}
 	declare interface Game {

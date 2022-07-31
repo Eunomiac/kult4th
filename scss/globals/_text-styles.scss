@@ -370,16 +370,17 @@
 			width: calc(100% - 0.5 * var(--icon-size));
 			left: calc(0.5 * var(--icon-size));
 			background: var(--strip-color-bg);
+			opacity: 0;
 			padding:
 				calc(0.5 * var(--strip-padding-vert))
 				0;
 			outline: 0px solid var(--button-color-bg);
-			justify-content: space-evenly;
+			justify-content: space-between;
 			overflow: hidden;
 
 			.button-spacer {
 				display: inline-block;
-				width: calc(0.5 * var(--icon-size));
+				width: var(--icon-size);
 				flex-grow: 0;
 				flex-shrink: 0;
 				position: relative;
@@ -395,11 +396,13 @@
 				position: relative;
 				margin: 0;
 				padding: 0;
-				overflow: hidden;
+				box-shadow: none;
+				border-radius: 0;
 
 				.svg-container {
 					top: 0;
 					left: 0;
+					pointer-events: none;
 				}
 
 				.button-tooltip {
@@ -410,9 +413,11 @@
 					font-size: $rem-10;
 					text-transform: uppercase;
 					font-family: var(--font-primary-caps);
+					font-weight: $font-weight-black;
 					transform-origin: center center;
 					transform: translate(-50%, -50%) scaleX(0.75);
-					position: relative;
+					position: absolute;
+					pointer-events: none;
 					left: 50%;
 					top: 50%;
 				}
@@ -421,7 +426,7 @@
 
 		.strip-name {
 			position: absolute;
-			width: calc(100% - var(--icon-size) - 5px);
+			// width: calc(100% - var(--icon-size) - 5px);
 			height: 100%;
 			color: var(--strip-color-fg);
 			font-size: var(--strip-font-size);
@@ -430,6 +435,11 @@
 			top: 0;
 			left: calc(var(--icon-size) + 5px);
 			white-space: nowrap;
+			z-index: 10;
+
+			&:not(.content-editable) {
+				pointer-events: none;
+			}
 		}
 
 		.strip-bg {
@@ -445,7 +455,7 @@
 
 		.strip-tooltip {
 			pointer-events: none;
-			position: absolute;
+			position: relative;
 			display: block;
 			font-family: var(--font-primary);
 			font-size: 10px;
@@ -457,7 +467,7 @@
 			color: var(--tooltip-color-fg);
 			background: var(--tooltip-color-bg);
 			opacity: 0;
-			bottom: 0;
+			bottom: calc(2 * var(--strip-height));
 			left: 0;
 			z-index: 20;
 			white-space: break-spaces;
@@ -480,7 +490,6 @@
 			--strip-font-size: #{$rem-12};
 			--icon-color-bg: var(--KT-color-contrast);
 			--icon-color-fg: var(--KT-color-primary);
-			--icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
 			--icon-scale: 1.3;
 			--icon-color-outline: #{$red-glow};
 			--button-color-bg: var(--KT-color-primary);
@@ -493,9 +502,14 @@
 				--strip-color-fg: #{$white-brighter};
 				--icon-color-bg: #{$red-glow};
 				--icon-color-fg: #{$white-brightest};
+				--icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
 				--icon-color-outline: #{$white-brightest};
 				--button-color-bg: #{$red-glow};
 				--button-color-fg: #{$black-darkest};
+
+				.strip-name {
+					text-transform: uppercase;
+				}
 			}
 
 			&.wound-stabilized {
@@ -506,6 +520,9 @@
 				--icon-color-outline: transparent;
 				.strip-name {
 					font-style: italic;
+				}
+				.strip-bg {
+					border-color: transparent;
 				}
 
 			}

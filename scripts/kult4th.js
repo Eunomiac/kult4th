@@ -93,6 +93,7 @@ Hooks.once("init", () => {
             "bg-grid",
             "form-header",
             "hover-strip",
+            "hover-strip-editable",
             "item-list",
             "rules-block",
             "roll-result",
