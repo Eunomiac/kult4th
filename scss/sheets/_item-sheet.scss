@@ -1,14 +1,15 @@
 & {
-	--sheet-min-height: 150px;
-	--sheet-min-width: 400px;
+	--K4-sheet-min-height: 150px;
+	--K4-sheet-min-width: 400px;
 
-	--sheet-top-padding: 0px;
-	--sheet-horiz-padding: 20px;
-	--sheet-bottom-padding: 10px;
+	--K4-section-padding-top: 20px;
+	--K4-section-padding-bottom: 0px;
+	--K4-section-padding-left: 10px;
+	--K4-section-padding-right: 10px;
 
-	--sheet-header-height: 40px;
+	--K4-sheet-header-height: 40px;
 
-	filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.3));
+	--K4-resize-handle-translate: translate(43px, 27px);
 
 	.window-header {
 
@@ -20,8 +21,6 @@
 		form {
 			font-size: $rem-16;
 			line-height: $rem-20;
-			// margin-top: -15px;
-			// margin-bottom: 15px;
 
 			.header-icon {
 				$icon-size: 80px;
@@ -35,20 +34,20 @@
 				top: 0.25 * $icon-size;
 				z-index: 4;
 				overflow: hidden;
-				outline: 3px solid var(--KT-color-contrast);
-				background: var(--KT-background);
+				outline: 3px solid var(--K4-color-contrast);
+				background: var(--K4-background);
 
-				--KT-svg-stroke-width: 15px;
+				--K4-svg-stroke-width: 15px;
 
 				&.header-move {
-					background: $gold;
-					outline-color: $gold;
+					background: var(--K4-gold);
+					outline-color: var(--K4-gold);
 				}
 			}
 
 			.sheet-header {
 				margin-left: 15px;
-				border-bottom: 3px solid var(--KT-color-title-contrast);
+				border-bottom: 3px solid var(--K4-color-title-bg);
 				flex-wrap: nowrap;
 
 				.header-bullet,
@@ -63,8 +62,8 @@
 				}
 
 				&.move-header {
-					--KT-color-title: #{$black};
-					--KT-color-title-contrast: #{$gold};
+					--K4-color-title-fg: var(--K4-black);
+					--K4-color-title-bg: var(--K4-gold);
 				}
 			}
 

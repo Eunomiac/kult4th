@@ -3,13 +3,13 @@
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: 0 0 1px #{$gold} inset;
+  box-shadow: 0 0 1px var(--K4-gold) inset;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
   outline: none;
   border-radius: 2px;
-	background: #{$red-dark};
-  border: 1px outset #{$gold-dark};
+	background: var(--K4-red-dark);
+  border: 1px outset var(--K4-gold-dark);
 }

@@ -103,17 +103,42 @@ export default class K4Item extends Item {
 						stripClasses: [`${this.data.type}-strip`]
 					},
 			dataset: {
-				"hover-target": ".attribute-box[data-attribute='perception'] img",
-				"color-fg": C.Colors.GOLD,
-				"color-bg": C.Colors.BLACK
+				"hover-target": ".attribute-box[data-attribute='perception'] img"
+				// "color-fg": C.Colors.GOLD,
+				// "color-bg": C.Colors.BLACK
 			},
 			buttons: [
 				{
-					icon: "observe-a-situation",
+					icon: "at-any-cost",
 					dataset: {
 						"item-name": this.name ?? "",
 						"action": "roll"
-					}
+					},
+					tooltip: "ROLL"
+				},
+				{
+					icon: "network-of-contacts",
+					dataset: {
+						"item-name": this.name ?? "",
+						"action": "chat"
+					},
+					tooltip: "CHAT"
+				},
+				{
+					icon: "investigate",
+					dataset: {
+						"item-name": this.name ?? "",
+						"action": "open"
+					},
+					tooltip: "OPEN"
+				},
+				{
+					icon: "data-retrieval",
+					dataset: {
+						"item-name": this.name ?? "",
+						"action": "drop"
+					},
+					tooltip: "DROP"
 				}
 			]
 		};

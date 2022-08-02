@@ -107,10 +107,10 @@ export default class K4Actor extends Actor {
 				display: wound.description ?? "",
 				stripClasses: ["wound-strip"],
 				dataTarget: `data.wounds.${wound.id}.description`,
-				placeholder: "(description)",
+				placeholder: "(description)  ",
 				dataset: {
 					"color-fg": C.Colors["RED GLOW"],
-					"color-bg": C.Colors["RED -2"]
+					"color-bg": C.Colors.BLACK
 				},
 				buttons: [
 					{

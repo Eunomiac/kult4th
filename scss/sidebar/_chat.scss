@@ -19,7 +19,7 @@
 		background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat top left/var(--sidebar-internal-width);
 		margin: 3px 0;
 		padding: 0;
-		// border: 2px outset #{$gold-dark};
+		// border: 2px outset var(--K4-gold-dark);
 		border: none;
 		position: relative;
 
@@ -27,16 +27,16 @@
 			opacity: 0;
 			transition: 0.25s;
 			position: absolute;
-			// color: #{$gold-brightest};
+			// color: var(--K4-gold-brightest);
 			padding: 0 5px;
 			height: 20px;
 			top: 0px;
 			left: -2px;
-			border: 2px outset #{$gold-dark};
+			border: 2px outset var(--K4-gold-dark);
 			border-bottom: none;
 			border-top-left-radius: 10px;
 			border-top-right-radius: 10px;
-			background: linear-gradient(#{$gold-dark}, #{$gold-darkest} 22px, transparent 24px);
+			background: linear-gradient(var(--K4-gold-dark), var(--K4-gold-darkest) 22px, transparent 24px);
 			width: calc(100% + 4px);
 			z-index: 2;
 
@@ -86,7 +86,7 @@
 				line-height: $rem-16;
 
 				ul, ul.rules-list, ul.inline-list {
-					--list-indent: 15px;
+					--K4-list-indent: 15px;
 				}
 
 				.sheet-header {
@@ -97,12 +97,12 @@
 						font-weight: $font-weight-bold;
 						background: #{to-url("layout/border-chat-general-bottom.webp")} repeat bottom left/var(--sidebar-internal-width),
 							linear-gradient(to right,
-								var(--KT-color-contrast),
-								var(--KT-color-primary-brightest) 30px,
-								var(--KT-color-primary-brightest) calc(100% - 30px),
-								var(--KT-color-contrast)
+								var(--K4-color-contrast),
+								var(--K4-color-primary-brightest) 30px,
+								var(--K4-color-primary-brightest) calc(100% - 30px),
+								var(--K4-color-contrast)
 						);
-						text-shadow: -1px -1px 0px var(--KT-color-primary-brightest), 1px 1px 0px var(--KT-color-primary);
+						text-shadow: -1px -1px 0px var(--K4-color-primary-brightest), 1px 1px 0px var(--K4-color-primary);
 						text-transform: uppercase;
 						text-align: center;
 						margin-top: calc(-1 * var(--chat-vert-padding));
@@ -183,7 +183,7 @@
 #chat-form {
 	#chat-message {
 		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
-		border-color: $gold;
+		border-color: var(--K4-gold);
 		// color: var(--color-body-text);
 		font-family: AlverataSemiBold;
 	}

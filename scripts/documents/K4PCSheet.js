@@ -3,7 +3,7 @@ import U from "../scripts/utilities.js";
 import gsap, { GSDevTools, MorphSVGPlugin } from "/scripts/greensock/esm/all.js";
 gsap.registerPlugin(MorphSVGPlugin);
 const ANIMATIONS = {
-    glitchText(target, startingGlitchScale = 1) {
+    _glitchText(target, startingGlitchScale = 1) {
         const tl = gsap.timeline({
             repeat: -1,
             repeatDelay: 10,
@@ -95,7 +95,7 @@ const ANIMATIONS = {
             repeat: -1
         });
     },
-    navFade(target) {
+    hoverNav(target) {
         // const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
         const navLens$ = $(target).find(".nav-lens");
         const profileImg$ = $(target).find(".profile-image");
@@ -136,7 +136,7 @@ const ANIMATIONS = {
             ease: "sine.out"
         }, 0)
             .to($(target).find(".svg-def:not(.main-ring)"), {
-            "--KT-svg-fill": C.Colors.BLACK,
+            "--K4-svg-fill": C.Colors.BLACK,
             "duration": 0.6,
             "ease": "sine"
         }, 0)
@@ -237,32 +237,7 @@ const ANIMATIONS = {
             ease: "sine"
         }, 0);
     },
-    hoverNav(target, context) {
-        const headerButtons = target.getElementsByClassName("header-button");
-        return gsap
-            .timeline({
-            reversed: true
-        }).to(target, {
-            scale: 1.25,
-            x: 10,
-            y: 20,
-            duration: 0.5,
-            ease: "back"
-        }, 0).to(U.getSiblings(target), {
-            opacity: 0.75,
-            filter: "blur(5px)",
-            duration: 0.5,
-            ease: "back"
-        }, 0).to(headerButtons, {
-            scale: 0.75,
-            y: -100,
-            duration: 0.5,
-            stagger: 0.1,
-            ease: "back.out(3)"
-            // opacity: 1
-        }, 0);
-    },
-    hoverTab(target, context) {
+    hoverNavTab(target, context) {
         const tabLabel$ = $(target).find(".nav-tab-label");
         // const tabAnimation$ = $(target).find(".nav-tab-animation");
         const tl = gsap.timeline({ reversed: true })
@@ -322,10 +297,9 @@ const ANIMATIONS = {
             ease: "sine"
         }, 0)
             .to(target, {
-            scale: 1.2,
-            duration: FULL_DURATION,
+            duration: 0.1,
             zIndex: 5000,
-            ease: "back"
+            ease: "none"
         }, 0)
             .to(buttonStrip$, {
             opacity: 1,
@@ -554,12 +528,12 @@ export default class K4PCSheet extends ActorSheet {
         $(() => {
             const hoverTimelines = [];
             html.find(".nav-panel").each(function initNavPanel() {
-                hoverTimelines.push([this, ANIMATIONS.navFade(this)]);
+                hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
             });
             html.find(".nav-tab")
                 .each(function initNavTab() {
                 // gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
-                hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+                hoverTimelines.push([this, ANIMATIONS.hoverNavTab(this, html)]);
                 $(this).on("click", function switchTab() {
                     self.activateTab(this.getAttribute("data-tab"));
                 });

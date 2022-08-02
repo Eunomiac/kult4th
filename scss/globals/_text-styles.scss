@@ -15,7 +15,7 @@
 	img,
 	ul,
 	li {
-		color: var(--KT-color-primary);
+		color: var(--K4-color-primary);
 
 		font: {
 			family: var(--font-primary);
@@ -24,7 +24,7 @@
 		font-feature-settings: "ss05", "lnum";
 		border: none;
 
-		option { background: var(--KT-color-contrast) }
+		option { background: var(--K4-color-contrast) }
 
 		hyphens: auto;
 
@@ -47,11 +47,11 @@
 		overflow: hidden;
 
 		&:invalid {
-			color: $red-dark;
+			color: var(--K4-red-dark);
 		}
 
 		&.placeholder {
-			color: #666666 !important;
+			color: var(--K4-grey) !important;
 			font-weight: $font-weight-light !important;
 			font-family: var(--font-primary) !important;
 			font-style: italic !important;
@@ -62,33 +62,33 @@
 	}
 
 	i {
-		--KT-color-primary: #{$gold};
-		--KT-color-contrast: #{$black};
+		--K4-color-primary: var(--K4-gold);
+		--K4-color-contrast: var(--K4-black);
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
 
-		&.notification-pip { --KT-color-primary: #{$gold-glow} }
+		&.notification-pip { --K4-color-primary: var(--K4-gold-brightest) }
 	}
 
-	.header-button.close i { --KT-color-primary: #{$red-glow} }
+	.header-button.close i { --K4-color-primary: var(--K4-red-brightest) }
 
 	ul.rules-list, ul.inline-list {
-		--list-indent: 24px;
-		margin: 0px 0px 0px var(--list-indent);
+		--K4-list-indent: 24px;
+		margin: 0px 0px 0px var(--K4-list-indent);
 		padding: 0;
 
 		li {
 			text-align: left;
 			list-style: none;
-			text-indent: calc(-1 * var(--list-indent));
+			text-indent: calc(-1 * var(--K4-list-indent));
 		}
 
 		li:before {
 			content: "";
 			display: inline-block;
 			height: 18px;
-			width: var(--list-indent);
-			background: var(--KT-bullet);
+			width: var(--K4-list-indent);
+			background: var(--K4-bullet);
 			vertical-align: bottom;
 			background-size: 50%;
 		}
@@ -119,8 +119,8 @@
 	}
 
 	label.k4-title {
-		color: var(--KT-color-title);
-		background: var(--KT-color-title-contrast);
+		color: var(--K4-color-title-fg);
+		background: var(--K4-color-title-bg);
 		font-weight: $font-weight-semi;
 		font-size: $rem-22;
 		line-height: $rem-24;
@@ -129,29 +129,30 @@
 		text-align: center;
 
 		&.section-title {
-			width: calc(100% + var(--subsection-padding-left) + var(--subsection-padding-right));
+			width: calc(100% + var(--K4-subsection-padding-left) + var(--K4-subsection-padding-right));
 			text-transform: uppercase;
 			font-weight: $font-weight-bold;
 			font-family: var(--font-primary-caps);
 			margin:
-				calc(-1 * (var(--subsection-padding-top)))
+				calc(-1 * (var(--K4-subsection-padding-top)))
 				0
-				var(--subsection-padding-top)
-				calc(-1 * var(--subsection-padding-left));
+				var(--K4-subsection-padding-top)
+				calc(-1 * var(--K4-subsection-padding-left));
 			padding-top: 1px;
 		}
 
 		&.item-title {
+			height: calc(#{$rem-32} + 5px);
+			line-height: $rem-32;
 			text-align: left;
 			margin: 0 0 0 22px;
-			line-height: $rem-32;
 			font-weight: $font-weight-bold;
 			padding: 5px 10px 0px 20px;
 		}
 	}
 
 	h1 {
-		color: var(--KT-color-secondary);
+		color: var(--K4-color-header);
 		font-family: var(--font-heading);
 		font-size: $rem-32;
 		font-weight: $font-weight-semi;
@@ -160,7 +161,7 @@
 	}
 
 	h2 {
-		color: var(--KT-color-secondary);
+		color: var(--K4-color-header);
 		font-family: var(--font-primary);
 		font-size: $rem-24;
 		font-weight: $font-weight-bold;
@@ -169,7 +170,7 @@
 	}
 
 	h3 {
-		color: var(--KT-color-secondary);
+		color: var(--K4-color-header);
 		font-family: var(--font-primary);
 		font-size: $rem-16;
 		font-weight: $font-weight-bold;
@@ -179,7 +180,7 @@
 	}
 
 	label.k4-h4 {
-		color: var(--KT-color-secondary);
+		color: var(--K4-color-header);
 		font-family: var(--font-primary);
 		font-size: $rem-12;
 		font-weight: $font-weight-bold;
@@ -189,17 +190,20 @@
 	}
 
 	label.k4-header {
+		display: block;
 		font-size: $rem-24;
 		font-weight: $font-weight-bold;
 		text-align: center;
+		height: $rem-24;
+		line-height: $rem-24;
 
 		font-variant: all-small-caps;
 		// margin-bottom: 5px;
 		// padding: 5px 0 4px 0;
 
 		&.hold-header {
-			color: $white;
-			background: $red-dark;
+			color: var(--K4-white);
+			background: var(--K4-red-dark);
 
 			animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
@@ -229,8 +233,8 @@
 		}
 
 		&.edges-header {
-			color: $white;
-			background: $blue-dark;
+			color: var(--K4-white);
+			background: var(--K4-blue-dark);
 
 			animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
@@ -273,40 +277,40 @@
 	}
 
 	.text-keyword {
-		color: var(--KT-color-keyword);
+		color: var(--K4-color-keyword);
 	}
 	.text-attributename {
-		color: var(--KT-color-keyword);
+		color: var(--K4-color-keyword);
 	}
 	.text-movename {
-		color: var(--KT-color-keyword-bright);
+		color: var(--K4-color-keyword-bright);
 		font-style: italic;
 	}
 	.text-edgename {
-		color: var(--KT-color-pos);
+		color: var(--K4-color-pos);
 	}
 	.text-posmod,
 	.text-posmod+.text-keyword,
 	.text-posmod+.text-attributename {
-		color: var(--KT-color-pos);
+		color: var(--K4-color-pos);
 	}
 
 	.text-negmod,
 	.text-negmod+.text-keyword,
 	.text-negmod+.text-attributename {
-		color: var(--KT-color-neg);
+		color: var(--K4-color-neg);
 	}
 
 	.text-gmtext {
-		color: var(--KT-color-neg);
+		color: var(--K4-color-neg);
 	}
 
 	.text-resultlabel {
-		color: var(--KT-color-secondary);
+		color: var(--K4-color-header);
 	}
 
 	.text-trigger {
-		color: var(--KT-color-primary-brightest);
+		color: var(--K4-color-primary-brightest);
 		font-weight: $font-weight-semi;
 		font-style: italic;
 	}
@@ -317,19 +321,21 @@
 		--strip-padding-vert: 5px;
 		--strip-underline-width: 1px;
 
-		--strip-color-fg: var(--KT-color-primary);
-		--strip-color-bg: var(--KT-color-contrast);
-		--strip-font-size: #{$rem-16};
-		--strip-font-weight: #{$font-weight-semi};
-		--icon-color-bg: var(--KT-color-contrast);
-		--icon-color-fg: var(--KT-color-primary);
+		--strip-color-fg: var(--K4-color-primary);
+		--strip-color-bg: var(--K4-color-contrast);
+
+		--icon-color-fg: var(--strip-color-fg);
+		--icon-color-bg: var(--strip-color-bg);
 		--icon-color-outline: transparent;
 		--icon-clip-path: circle(closest-side);
+
+		--strip-font-size: #{$rem-16};
+		--strip-font-weight: #{$font-weight-semi};
 		--icon-scale: 1;
-		--button-color-bg: var(--KT-color-primary);
-		--button-color-fg: var(--KT-color-contrast);
-		--tooltip-color-fg: var(--KT-color-primary-brightest);
-		--tooltip-color-bg: var(--KT-color-contrast);
+		--button-color-bg: var(--K4-color-primary);
+		--button-color-fg: var(--K4-color-contrast);
+		--tooltip-color-fg: var(--K4-color-primary-brightest);
+		--tooltip-color-bg: var(--K4-color-contrast);
 
 		position: relative;
 		height: var(--strip-height);
@@ -338,27 +344,15 @@
 		.icon-container, .icon-container .svg-container {
 			position: relative;
 			display: inline-block;
-			--KT-svg-bg: var(--icon-color-bg);
-			--KT-svg-fill: var(--icon-color-fg);
-			--KT-svg-clip-path: var(--icon-clip-path);
-			--KT-svg-scale: var(--icon-scale);
+			--K4-svg-bg: var(--icon-color-bg);
+			--K4-svg-fill: var(--icon-color-fg);
+			--K4-svg-clip-path: var(--icon-clip-path);
+			--K4-svg-scale: var(--icon-scale);
 			height: var(--icon-size);
 			width: var(--icon-size);
-			// margin: var(--icon-margin);
-			// border: var(--border-width) solid var(--icon-background);
-			// border-radius: calc(var(--icon-size) / 2);
-			// overflow: hidden;
 			white-space: nowrap;
-			// z-index: 1;
 			font-size: 0;
 			left: 0;
-		}
-
-		.icon-container {
-			filter:
-				drop-shadow(0 0 0.5px var(--icon-color-outline))
-				drop-shadow(0 0 0.5px var(--icon-color-outline))
-				drop-shadow(0 0 0.5px var(--icon-color-outline));
 		}
 
 		.button-strip {
@@ -388,7 +382,9 @@
 
 			.strip-button {
 				flex-grow: 0.2;
-				--KT-svg-fill: var(--button-color-fg);
+				--K4-svg-fill: var(--button-color-fg);
+				--K4-svg-bg: transparent;
+				--K4-svg-clip-path: none;
 				background: var(--button-color-bg);
 				font-size: 0;
 				flex-basis: auto;
@@ -403,6 +399,8 @@
 					top: 0;
 					left: 0;
 					pointer-events: none;
+
+					.svg-def.svg-bg { opacity: 0 }
 				}
 
 				.button-tooltip {
@@ -426,7 +424,6 @@
 
 		.strip-name {
 			position: absolute;
-			// width: calc(100% - var(--icon-size) - 5px);
 			height: 100%;
 			color: var(--strip-color-fg);
 			font-size: var(--strip-font-size);
@@ -435,7 +432,7 @@
 			top: 0;
 			left: calc(var(--icon-size) + 5px);
 			white-space: nowrap;
-			z-index: 10;
+			z-index: 30;
 
 			&:not(.content-editable) {
 				pointer-events: none;
@@ -450,7 +447,7 @@
 			top: var(--strip-padding-vert);
 			left: calc(0.5 * var(--icon-size));
 			background: var(--strip-color-bg);
-			border-bottom: 1px solid var(--button-color-bg);
+			border-bottom: var(--strip-underline-width) solid var(--button-color-bg);
 		}
 
 		.strip-tooltip {
@@ -469,7 +466,7 @@
 			opacity: 0;
 			bottom: calc(2 * var(--strip-height));
 			left: 0;
-			z-index: 20;
+			z-index: 40;
 			white-space: break-spaces;
 
 			padding: 4px;
@@ -477,53 +474,63 @@
 		}
 
 		&.move-strip:not(.derived-move) {
-			--icon-color-bg: var(--KT-color-primary);
-			--icon-color-fg: var(--KT-color-contrast);
-			--icon-color-outline: var(--KT-color-primary);
+			--icon-color-bg: var(--K4-color-primary);
+			--icon-color-fg: var(--K4-color-contrast);
+			--icon-color-outline: var(--K4-color-primary);
 		}
 
 		&.wound-strip {
 			--icon-size: 20px;
 			--strip-padding-vert: 2px;
-			--strip-color-bg: #{$red-darkest};
-			--strip-color-fg: #{$red-glow};
+			--strip-color-bg: transparent;
+			// --strip-color-fg: var(--K4-red-brightest);
 			--strip-font-size: #{$rem-12};
-			--icon-color-bg: var(--KT-color-contrast);
-			--icon-color-fg: var(--KT-color-primary);
-			--icon-scale: 1.3;
-			--icon-color-outline: #{$red-glow};
-			--button-color-bg: var(--KT-color-primary);
-			--button-color-fg: var(--KT-color-contrast);
-			--tooltip-color-bg: var(--KT-color-contrast);
-			--tooltip-color-fg: var(--KT-color-primary-brightest);
+			--strip-underline-width: 0px;
+			--icon-color-bg: var(--K4-red-dark);
+			// --icon-color-fg: var(--K4-color-primary);
+			// --icon-color-outline: var(--K4-red-brightest);
+			--icon-clip-path: circle(closest-side);
+			// --button-color-bg: var(--K4-color-primary);
+			// --button-color-fg: var(--K4-color-contrast);
+			// --tooltip-color-bg: var(--K4-color-contrast);
+			// --tooltip-color-fg: var(--K4-color-primary-brightest);
 
 			&.wound-critical {
-				--strip-color-bg: #{$red-darker};
-				--strip-color-fg: #{$white-brighter};
-				--icon-color-bg: #{$red-glow};
-				--icon-color-fg: #{$white-brightest};
+				// --strip-color-bg: var(--K4-red-darkest);
+				--strip-color-fg: var(--K4-red-brightest);
+				--icon-color-bg: var(--K4-red-brightest);
+				--icon-color-fg: var(--K4-white);
+				--icon-scale: 1.5;
 				--icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
-				--icon-color-outline: #{$white-brightest};
-				--button-color-bg: #{$red-glow};
-				--button-color-fg: #{$black-darkest};
+				// --icon-color-outline: var(--K4-white);
+				// --button-color-bg: var(--K4-red-brightest);
+				// --button-color-fg: var(--K4-black-darkest);
 
 				.strip-name {
 					text-transform: uppercase;
+					font-family: var(--font-primary-caps);
 				}
 			}
 
-			&.wound-stabilized {
-				--icon-clip-path: circle(closest-side);
+			&.wound-stabilized, &.wound-critical.wound-stabilized {
+				--icon-clip-path: none;
 				--icon-scale: 1;
 				--strip-color-bg: transparent;
-				--strip-color-fg: #{$gold-dark};
+				--strip-color-fg: var(--K4-gold-dark);
 				--icon-color-outline: transparent;
+				.icon-container, .icon-container .svg-container {
+					--K4-svg-bg: transparent;
+					--K4-svg-fill: var(--K4-gold);
+					--K4-svg-clip-path: none;
+					--K4-svg-scale: 1;
+				}
 				.strip-name {
 					font-style: italic;
 				}
 				.strip-bg {
 					border-color: transparent;
 				}
+
 
 			}
 		}
@@ -555,7 +562,7 @@
 			padding-bottom: 2px;
 			border-bottom-style: solid;
 			border-bottom-width: 3px;
-			border-image: linear-gradient(to right, var(--KT-color-primary) 50%, transparent) 1;
+			border-image: linear-gradient(to right, var(--K4-color-primary) 50%, transparent) 1;
 			vertical-align: top;
 		}
 

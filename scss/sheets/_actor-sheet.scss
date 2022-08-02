@@ -1,17 +1,14 @@
 & {
-	--KT-border: #{to-url("layout/border-actor-sheet.svg")} 130 275/130px 275px/32px 40px repeat;
+	--K4-border: #{to-url("layout/border-actor-sheet.svg")} 130 275/130px 275px/32px 40px repeat;
 
-	--section-padding-top: 40px;
-	--section-padding-horiz: 10px;
-	--section-padding-bottom: 20px;
+	--K4-section-padding-top: 40px;
+	--K4-section-padding-horiz: 10px;
+	--K4-section-padding-bottom: 20px;
 
-	--subsection-padding-vert: 5px;
-	--subsection-padding-horiz: 5px;
+	--K4-subsection-padding-vert: 5px;
+	--K4-subsection-padding-horiz: 5px;
 
-	--KT-resize-handle-translate: translate(48px, 32px);
-
-	$nav-horiz-shift: 25px;
-	$nav-vert-shift: 25px;
+	--K4-resize-handle-translate: translate(48px, 32px);
 
 	img { position: absolute }
 
@@ -21,7 +18,7 @@
 		transform: translate(-50%, -50%);
 		z-index: -4;
 
-		svg { fill: var(--KT-color-contrast) }
+		svg { fill: var(--K4-black) }
 
 		&.gear-huge {
 			top: 55%;
@@ -50,7 +47,7 @@
 		.kult4th-form {
 
 			.sheet-header {
-				height: var(--sheet-header-height);
+				height: var(--K4-sheet-header-height);
 				overflow: visible;
 				z-index: 1;
 				top: 22px;
@@ -63,7 +60,7 @@
 					display: flex;
 					flex-direction: row;
 					position: relative;
-					max-height: var(--sheet-header-height);
+					max-height: var(--K4-sheet-header-height);
 					overflow: visible;
 
 					> * { display: inline-block }
@@ -100,42 +97,42 @@
 						background: transparent;
 						--drop-shadow-blur: 3px;
 						filter:
-							drop-shadow(0 0 var(--drop-shadow-blur) var(--KT-color-contrast))
-							drop-shadow(0 0 var(--drop-shadow-blur) var(--KT-color-contrast))
-							drop-shadow(0 0 var(--drop-shadow-blur) var(--KT-color-contrast))
-							drop-shadow(0 0 var(--drop-shadow-blur) var(--KT-color-contrast));
+							drop-shadow(0 0 var(--drop-shadow-blur) var(--K4-color-contrast))
+							drop-shadow(0 0 var(--drop-shadow-blur) var(--K4-color-contrast))
+							drop-shadow(0 0 var(--drop-shadow-blur) var(--K4-color-contrast))
+							drop-shadow(0 0 var(--drop-shadow-blur) var(--K4-color-contrast));
 
 						.actor-name {
-							--actor-name-shadow-bright: var(--KT-color-primary-brightest);
-							--actor-name-shadow-dim: var(--KT-color-primary-bright);
+							--actor-name-shadow-bright: var(--K4-color-primary-brightest);
+							--actor-name-shadow-dim: var(--K4-color-primary-bright);
 							--actor-name-vert-buffer: 20px;
 							position: absolute;
-							height: calc(var(--sheet-header-height) + var(--actor-name-vert-buffer));
+							height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer));
 							top: calc(-0.5 * var(--actor-name-vert-buffer));
-							line-height: calc(var(--sheet-header-height) + var(--actor-name-vert-buffer) + 12px);
+							line-height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer) + 12px);
 							width: 100%;
 							font-family: var(--font-heading);
 							text-align: center;
 							background: none;
 							cursor: text;
 
-							color: var(--KT-color-contrast-high);
+							color: var(--K4-color-contrast-high);
 							font-size: $rem-48;
 							text-shadow:
-								0 0 0.5px var(--KT-color-primary-brightest),
-								0 0 1.5px var(--KT-color-primary-brightest),
-								0 0 2px var(--KT-color-primary-brightest),
-								0 0 4px var(--KT-color-primary-bright),
-								0 0 6px var(--KT-color-primary-bright),
-								0 0 8px var(--KT-color-primary-bright),
-								0 0 10.5px var(--KT-color-primary-bright),
-								0 0 16.5px var(--KT-color-primary-bright);
+								0 0 0.5px var(--K4-color-primary-brightest),
+								0 0 1.5px var(--K4-color-primary-brightest),
+								0 0 2px var(--K4-color-primary-brightest),
+								0 0 4px var(--K4-color-primary-bright),
+								0 0 6px var(--K4-color-primary-bright),
+								0 0 8px var(--K4-color-primary-bright),
+								0 0 10.5px var(--K4-color-primary-bright),
+								0 0 16.5px var(--K4-color-primary-bright);
 
 							&.placeholder {
-								--actor-name-shadow-bright: #999999;
-								--actor-name-shadow-dim: #333333;
+								--actor-name-shadow-bright: var(--K4-grey-bright);
+								--actor-name-shadow-dim: var(--K4-grey-dark);
 								font-size: $rem-14;
-								line-height: calc(var(--sheet-header-height) + var(--actor-name-vert-buffer));
+								line-height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer));
 							}
 						}
 
@@ -162,8 +159,10 @@
 				$gear-size: 180px;
 				$full-size: 230px;
 				$frame-width: 10px;
-				top: 55px; // $nav-vert-shift; // $horiz-horiz-sub-center;
-				left: 35px; // $nav-horiz-shift; // (0.5 * $vert-width);
+				$nav-vert-shift: 55px;
+				$nav-horiz-shift: 35px;
+				top: $nav-vert-shift; // $horiz-horiz-sub-center;
+				left: $nav-horiz-shift; // (0.5 * $vert-width);
 				height: $gear-size;
 				width: $gear-size;
 				pointer-events: all;
@@ -172,35 +171,37 @@
 				transform: translate(-50%, -50%) scale(0.8);
 
 				.nav-svg {
-					position: relative;
+					height: 100%;
+					width: 100%;
+					position: absolute;
 
 					.svg-def {
 						height: $full-size;
 						width: $full-size;
-						top: -1 * $nav-vert-shift;
-						left: -1 * $nav-horiz-shift;
+						transform: translate(-50%, -50%);
 
 						&.outer-spikes {
-							--KT-svg-fill: var(--KT-color-contrast-low);
-							transform: scale(0.95);
+							--K4-svg-fill: var(--K4-color-contrast-low);
+							transform: translate(-50%, -50%) scale(0.95);
 						}
 
 						&.inner-spikes {
-							--KT-svg-fill: var(--KT-color-contrast-low);
-							transform: scale(3);
+							--K4-svg-fill: var(--K4-color-contrast-low);
+							transform: translate(-50%, -50%) scale(3);
 							opacity: 0;
 						}
 
 						&.inner-mesh {
-							--KT-svg-fill: var(--KT-color-contrast-low);
-							transform: scale(2);
+							--K4-svg-fill: var(--K4-color-contrast-low);
+							transform: translate(-50%, -50%) scale(2);
 							opacity: 0;
 						}
 
 						&.main-ring {
-							--KT-svg-fill: url("#nav-main-ring-bg-start-gradient");
-							--KT-svg-stroke: url("#nav-main-ring-stroke-gradient");
-							--KT-svg-stroke-width: 10px;
+							--K4-svg-fill: url("#nav-main-ring-bg-start-gradient");
+							--K4-svg-stroke: url("#nav-main-ring-stroke-gradient");
+							--K4-svg-stroke-width: 10px;
+							transform: translate(-50%, -50%);
 						}
 					}
 				}
@@ -242,9 +243,9 @@
 				.profile-image-bg {
 					position: absolute;
 					border-radius: 50%;
-					background: var(--KT-color-contrast);
+					background: var(--K4-color-contrast);
 					// z-index: -1;
-					filter: drop-shadow(25px 25px 5px var(--KT-color-contrast));
+					filter: drop-shadow(25px 25px 5px var(--K4-color-contrast));
 				}
 
 				.profile-image-animation {
@@ -343,7 +344,7 @@
 							left: 50%;
 							overflow: hidden;
 
-							--KT-svg-fill: #{$black};
+							--K4-svg-fill: var(--K4-black);
 
 							.svg-def {
 								top: calc(100% + #{0.5 * $svg-height});
@@ -362,14 +363,14 @@
 							.nav-tab-label {
 								display: block;
 								opacity: 0;
-								color: var(--KT-color-primary-brightest);
+								color: var(--K4-color-primary-brightest);
 								font-size: $rem-14;
 								font-family: Infidel;
 								font-weight: $font-weight-black;
 								text-shadow:
-									0px 0px 5px var(--KT-color-contrast-low),
-									0px 0px 10px var(--KT-color-contrast-low),
-									0px 0px 15px var(--KT-color-contrast-low);
+									0px 0px 5px var(--K4-color-contrast-low),
+									0px 0px 10px var(--K4-color-contrast-low),
+									0px 0px 15px var(--K4-color-contrast-low);
 								position: absolute;
 								transform-origin: center center;
 								transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
@@ -399,7 +400,7 @@
 					.subsection {
 						// --horiz-padding: 5px;
 						box-sizing: border-box;
-						border: 1px solid var(--KT-color-primary);
+						border: 1px solid var(--K4-color-primary);
 						// padding: 0 var(--horiz-padding) 5px;
 
 						&.flex-item-list {
@@ -421,6 +422,7 @@
 						$nav-buffer: 100px;
 						$header-height: 40px;
 						$status-height: 80px;
+						$modifiers-height: 20px;
 						$footer-height: 40px;
 
 						--attributes-width: #{$attributes-width};
@@ -428,11 +430,12 @@
 						grid-template-areas:
 							". dramatic-hooks dramatic-hooks dramatic-hooks"
 							"status status status status"
+							"modifiers modifiers modifiers modifiers"
 							"attributes attributes basic-moves special-moves"
 							"session-checks session-checks attacks special-moves"
 							"footer footer footer footer";
 						grid-template-columns: #{$nav-buffer} #{$attributes-width - $nav-buffer - $grid-gap} 1fr 1fr;
-						grid-template-rows: #{$header-height} #{$status-height} var(--attributes-height) auto #{$footer-height};
+						grid-template-rows: #{$header-height} #{$status-height} #{$modifiers-height} var(--attributes-height) auto #{$footer-height};
 
 						.dramatic-hooks {
 							grid-area: dramatic-hooks;
@@ -473,7 +476,7 @@
 									border: none;
 									margin: 0;
 									padding: 0;
-									color: var(--KT-color-primary-brightest);
+									color: var(--K4-color-primary-brightest);
 									font-size: $rem-12;
 									height: 100%;
 									box-shadow: none;
@@ -487,28 +490,30 @@
 
 						.status {
 							$button-size: 20px;
-							$button-margin: 10px;
+							$button-margin-vert: 10px;
+							$button-margin-horiz: 10px;
+							$unslanted-space: 80px;
 
 							grid-area: status;
 							// width: 100%;
 							padding: 0px;
 
 							display: grid;
-							grid-template-columns: 100px 1fr 100px;
+							grid-template-columns: 150px 1fr 150px;
 
 							> div {
 								position: relative;
 							}
 
 							button:not(.strip-button) {
-								--button-gradient-light: var(--KT-color-primary-bright);
-								--button-gradient-dark: var(--KT-color-contrast);
+								--button-gradient-light: var(--K4-color-primary-bright);
+								--button-gradient-dark: var(--K4-color-contrast);
 								display: inline-block;
 								height: $button-size;
 								width: $button-size;
 								padding: 0;
 
-								color: var(--KT-color-contrast);
+								color: var(--K4-color-contrast);
 								background: linear-gradient(-45deg, var(--button-gradient-light), var(--button-gradient-dark));
 								line-height: $button-size;
 								font-weight: $font-weight-black;
@@ -517,39 +522,47 @@
 
 							/* STABILITY */
 							.stability {
-								--button-gradient-light: #{$blue-bright};
-								--button-gradient-dark: #{$blue-darker};
+
+								background: var(--K4-color-primary);
+								clip-path: polygon(0% 0%, #{$unslanted-space} 0%, 100% 100%, 100% 100%, 0% 100%);
+								padding-left: 0px;
+
 
 								button {
-									background: var(--KT-color-keyword);
+									background: linear-gradient(-45deg, var(--button-gradient-light), var(--button-gradient-dark));
 									position: absolute;
+									box-shadow: 0 0 4px black, 0 0 4px black;
 
 									&.stability-add {
-										top: $button-margin;
-										left: $button-margin;
+										top: $button-margin-vert;
+										left: $button-margin-horiz;
 									}
 									&.stability-remove {
-										bottom: $button-margin;
-										right: $button-margin;
+										bottom: $button-margin-vert;
+										left: $unslanted-space - $button-margin-horiz;
 									}
 								}
 
 								.stability-count {
+									position: relative;
+									pointer-events: none;
 									display: block;
 									height: $status-height - 2px;
+									width: 100px;
 									padding-top: 4px;
-									color: var(--KT-color-keyword-bright);
+									color: var(--K4-color-keyword-bright);
 									font-family: var(--font-decorative);
 									font-size: $status-height - 2px;
 									line-height: $status-height - 2px;
 									text-align: center;
+									text-shadow: 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black;
 								}
 							}
 
 							/* WOUNDS */
 							.wounds {
-								--button-gradient-light: #{$red-bright};
-								--button-gradient-dark: #{$red-darker};
+								--button-gradient-light: var(--K4-red-bright);
+								--button-gradient-dark: var(--K4-red-dark);
 								display: grid;
 								padding: 5px;
 								// height: $button-size + $button-size + 5px;
@@ -567,8 +580,9 @@
 									button.wound-add { width: 100% }
 								}
 
-								> *:nth-child(3n-1) { left: 20px }
-								> *:nth-child(3n) { left: 40px }
+								> * { left: -40px }
+								> *:nth-child(3n-1) { left: -20px }
+								> *:nth-child(3n) { left: 0px }
 
 								// input {
 								// 	margin: 0;
@@ -578,9 +592,11 @@
 
 							/* EDGES */
 							.edges {
-								background: rgba(0, 255, 255, 0.2);
-								flex-grow: 0;
-								flex-basis: 100px;
+								// opacity: 0;
+								background: var(--K4-color-primary);
+								clip-path: polygon(0% 0%, 100% 0%, 100% 100%, #{$unslanted-space} 100%);
+
+								* { opacity: 0}
 							}
 
 							.edges button {}
@@ -597,19 +613,23 @@
 
 							.edges .edges-tooltip {}
 
-							.modifiers-report {
-								position: absolute;
-								bottom: 100%;
-								display: block;
-								width: 100%;
-								text-align: center;
-								font-weight: $font-weight-bold;
-								--KT-color-primary: var(--KT-color-secondary);
-								color: var(--KT-color-secondary);
-								font-style: italic;
-								font-size: $rem-12;
-							}
+						}
 
+						.modifiers {
+							grid-area: modifiers;
+							padding: 0;
+							border: none;
+
+							.modifiers-report {
+									display: block;
+									width: 100%;
+									text-align: center;
+									font-weight: $font-weight-black;
+									--K4-color-primary: var(--K4-color-header);
+									color: var(--K4-color-header);
+									font-size: $rem-16;
+									line-height: $modifiers-height;
+								}
 						}
 
 						.attributes {
@@ -660,67 +680,68 @@
 
 									&[value="7"],
 									option[value="7"] {
-										color: $white;
+										color: var(--K4-white);
 									}
 
 									&[value="6"],
 									option[value="6"] {
-										color: $white;
+										color: var(--K4-white);
 									}
 
 									&[value="5"],
 									option[value="5"] {
-										color: $gold-brightest;
+										color: var(--K4-gold-brightest);
 									}
 
 									&[value="4"],
 									option[value="4"] {
-										color: $gold-brightest;
+										color: var(--K4-gold-brightest);
 									}
 
 									&[value="3"],
 									option[value="3"] {
-										color: $gold-bright;
+										color: var(--K4-gold-bright);
 									}
 
 									&[value="2"],
 									option[value="2"] {
-										color: $gold;
+										color: var(--K4-gold);
 									}
 
 									&[value="1"],
 									option[value="1"] {
-										color: $gold-dark;
+										color: var(--K4-gold-dark);
 									}
 
 									&[value="0"],
 									option[value="0"] {
-										color: $gold-darker;
+										color: var(--K4-gold-dark);
 									}
 
 									&[value="-1"],
 									option[value="-1"] {
-										color: $red-brightest;
+										color: var(--K4-red-bright);
 									}
 
 									&[value="-2"],
 									option[value="-2"] {
-										color: $red-bright;
+										color: var(--K4-red-bright);
 									}
 
 									&[value="-3"],
 									option[value="-3"] {
-										color: $red;
+										color: var(--K4-red-brightest);
 									}
 
 									&[value="-4"],
 									option[value="-4"] {
-										color: $red-dark;
+										color: var(--K4-red-brightest);
 									}
 
 									&[value="-5"],
 									option[value="-5"] {
-										color: $red-darker;
+										color: var(--K4-red-brightest);
+										font-weight: $font-weight-black;
 									}
 								}
 

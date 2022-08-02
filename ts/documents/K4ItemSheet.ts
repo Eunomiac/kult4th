@@ -42,7 +42,7 @@ export default class K4ItemSheet extends ItemSheet {
 		];
 		switch (item.data.type) {
 			case K4ItemType.advantage: {
-				options.classes.push("k4-theme-white");
+				options.classes.push("k4-theme-dgold");
 				break;
 			}
 			case K4ItemType.darksecret: {
@@ -50,7 +50,7 @@ export default class K4ItemSheet extends ItemSheet {
 				break;
 			}
 			case K4ItemType.disadvantage: {
-				options.classes.push("k4-theme-burnt");
+				options.classes.push("k4-theme-dark");
 				break;
 			}
 			default: {
