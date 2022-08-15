@@ -1,4 +1,3 @@
-{{> "systems/kult4th/templates/components/svg-defs.hbs" }}
 
 <div class="gear-container gear-huge gear-kether-huge">
 	{{> "systems/kult4th/templates/components/svg.hbs" key="gear-kether-huge"}}
@@ -128,7 +127,7 @@
 			<section class="subsection flex-item-list basic-moves">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.basicPlayerMoves")}}</label>
 				{{#each baseMoves}}
-				{{> "systems/kult4th/templates/partials/basic-move-card.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list special-moves">
@@ -143,7 +142,7 @@
 			<section class="subsection flex-item-list attacks">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.attacks")}}</label>
 				{{#each attacks}}
-				{{> "systems/kult4th/templates/partials/attack-card.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 		</section>

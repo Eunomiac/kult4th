@@ -59,7 +59,7 @@
 			&.close {
 				order: -1;
 				transform: translateY(2px) scale(1.25);
-				color: var(--K4-red-brightest);
+				color: var(--K4-red-bright);
 			}
 		}
 	}
@@ -249,7 +249,7 @@
 				font-style: italic;
 				width: 100%;
 				text-align: left;
-				color: var(--K4-color-primary-brightest);
+				color: var(--K4-color-primary-bright);
 				opacity: 0;
 				bottom: 0;
 				left: 0;
@@ -295,7 +295,7 @@
 		i {
 				color: var(--K4-color-title-bg);
 				font-size: $rem-48;
-				text-shadow: 0 0 4px var(--K4-color-primary-brightest), 0 0 4px var(--K4-color-primary-brightest), 0 0 4px var(--K4-color-primary-brightest);
+				text-shadow: 0 0 4px var(--K4-color-primary-bright), 0 0 4px var(--K4-color-primary-bright), 0 0 4px var(--K4-color-primary-bright);
 				transform: translate(-50%, -50%) rotate(45deg);
 				top: 50%;
 				left: 50%;

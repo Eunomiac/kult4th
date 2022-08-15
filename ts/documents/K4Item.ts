@@ -65,7 +65,7 @@ export default class K4Item extends Item {
 		await super._onCreate(...args);
 		if (this.isEmbedded && this.parent instanceof Actor) {
 			if (this.hasSubItems()) {
-				this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData as Array<Record<string,any>>) as K4Item[];
+				this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData as Array<Record<string, any>>) as K4Item[];
 			}
 			if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
 				this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
@@ -145,6 +145,7 @@ export default class K4Item extends Item {
 		if (this.data.type !== K4ItemType.relation) {
 			stripData.tooltip = this.data.data.rules.trigger;
 		}
+		console.log("Hover Strip Data", stripData);
 		return stripData;
 	}
 

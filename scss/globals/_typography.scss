@@ -20,13 +20,13 @@ Number Display
 	"tnum" - monospace, line up with baseline
 */
 // @font-face {
-// 	font {
+// 	font: {
 // 		family: AlverataLight;
 // 	}
 // 	src: url("../assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype");
 // }
 // @font-face {
-// 	font {
+// 	font: {
 // 		family: AlverataMedium;
 // 	}
 // 	src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype");
@@ -130,7 +130,7 @@ Number Display
 }
 
 @font-face {
-	font {
+	font: {
 		family: AlverataCaps;
 		weight: 0 350;
 		style: normal;

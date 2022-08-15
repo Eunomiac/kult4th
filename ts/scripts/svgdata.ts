@@ -1532,4 +1532,9 @@ const SVGDATA: Record<string, SVGPathData[]> = {
 	]
 };
 
+export const SVGKEYMAP: Record<string, KeyOf<typeof SVGDATA>> = {
+	"influence-other-pc": "influence-other-npc",
+	"influence-other-npc": "influence-other-npc"
+};
+
 export default SVGDATA;

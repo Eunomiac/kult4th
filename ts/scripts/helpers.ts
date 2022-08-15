@@ -1,6 +1,6 @@
 import C from "./constants.js";
 import U from "./utilities.js";
-import SVGDATA from "./svgdata.js";
+import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
 import K4Item from "../documents/K4Item.js";
 
 export function formatStringForKult(str: string) {
@@ -8,7 +8,7 @@ export function formatStringForKult(str: string) {
 	return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
 }
 
-export const HandlebarHelpers = {
+export const HandlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 	"test": function(param1: string, operator: string, param2: string) {
 		switch (operator) {
 			case "==": { return param1 == param2 } // eslint-disable-line eqeqeq
@@ -37,10 +37,11 @@ export const HandlebarHelpers = {
 		}
 		return 0;
 	},
-	"areEmpty": function(...args: [...Array<string|string[]>, never]) {
+	"areEmpty": function(...args) {
+		args.pop();
 		return !Object.values(args).flat().join("");
 	},
-	"loc": function(...args: [...string[], never]) {
+	"loc": function(...args) {
 		args.pop();
 		const locString = args.shift();
 		if (typeof locString === "string") {
@@ -226,7 +227,11 @@ export const HandlebarHelpers = {
 		throw new Error(`No such SVG: '${String(svgKey)}'`);
 	},
 	"getSVGs": function(ref: string) {
-		const pathData = U.getKey(U.toKey(ref), SVGDATA)
+		ref = U.toKey(ref) ;
+		if (!(ref in SVGDATA) && ref in SVGKEYMAP) {
+			ref = SVGKEYMAP[ref];
+		}
+		const pathData = U.getKey(ref, SVGDATA)
 			?.map((pData) => {
 				pData = {
 					...pData,

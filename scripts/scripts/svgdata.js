@@ -1518,4 +1518,8 @@ const SVGDATA = {
         }
     ]
 };
+export const SVGKEYMAP = {
+    "influence-other-pc": "influence-other-npc",
+    "influence-other-npc": "influence-other-npc"
+};
 export default SVGDATA;

@@ -1,5 +1,5 @@
 import U from "./utilities.js";
-import SVGDATA from "./svgdata.js";
+import SVGDATA, { SVGKEYMAP } from "./svgdata.js";
 import K4Item from "../documents/K4Item.js";
 export function formatStringForKult(str) {
     // Apply spans around all hash-tag indicators
@@ -51,6 +51,7 @@ export const HandlebarHelpers = {
         return 0;
     },
     "areEmpty": function (...args) {
+        args.pop();
         return !Object.values(args).flat().join("");
     },
     "loc": function (...args) {
@@ -238,7 +239,11 @@ export const HandlebarHelpers = {
         throw new Error(`No such SVG: '${String(svgKey)}'`);
     },
     "getSVGs": function (ref) {
-        const pathData = U.getKey(U.toKey(ref), SVGDATA)
+        ref = U.toKey(ref);
+        if (!(ref in SVGDATA) && ref in SVGKEYMAP) {
+            ref = SVGKEYMAP[ref];
+        }
+        const pathData = U.getKey(ref, SVGDATA)
             ?.map((pData) => {
             pData = {
                 ...pData,

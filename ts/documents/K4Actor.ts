@@ -150,16 +150,16 @@ export default class K4Actor extends Actor {
 			if (wound.isCritical) {
 				stripData.icon = "wound-critical";
 				stripData.stripClasses?.push("wound-critical");
-				stripData.dataset!["color-fg"] = C.Colors.WHITE;
-				stripData.dataset!["color-bg"] = C.Colors["RED GLOW"];
+				// stripData.dataset!["color-fg"] = C.Colors.WHITE;
+				// stripData.dataset!["color-bg"] = C.Colors["RED GLOW"];
 			} else {
 				stripData.icon = "wound-serious";
 			}
 			if (wound.isStabilized) {
 				stripData.icon = `${stripData.icon}-stabilized`;
 				stripData.stripClasses?.push("k4-theme-dgold", "wound-stabilized");
-				stripData.dataset!["color-fg"] = C.Colors.GOLD;
-				stripData.dataset!["color-bg"] = C.Colors.BLACK;
+				// stripData.dataset!["color-fg"] = C.Colors.GOLD;
+				// stripData.dataset!["color-bg"] = C.Colors.BLACK;
 			} else {
 				stripData.stripClasses?.push("k4-theme-red");
 			}

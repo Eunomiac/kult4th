@@ -2,7 +2,7 @@
 	--K4-sheet-min-height: 150px;
 	--K4-sheet-min-width: 400px;
 
-	--K4-section-padding-top: 20px;
+	--K4-section-padding-top: 0px;
 	--K4-section-padding-bottom: 0px;
 	--K4-section-padding-left: 10px;
 	--K4-section-padding-right: 10px;
@@ -25,23 +25,32 @@
 			.header-icon {
 				$icon-size: 80px;
 
+				--K4-svg-bg: var(--K4-color-contrast);
+				--K4-svg-clip-path: circle(closest-side);
+				--K4-svg-scale: 0.95;
+
 				transform: translate(-50%, -50%);
 				height: $icon-size;
 				width: $icon-size;
 				position: absolute;
-				border-radius: 0.5 * $icon-size;
-				left: 0.25 * $icon-size;
+				left: 10px;
 				top: 0.25 * $icon-size;
-				z-index: 4;
+				z-index: 2;
 				overflow: hidden;
-				outline: 3px solid var(--K4-color-contrast);
-				background: var(--K4-background);
-
-				--K4-svg-stroke-width: 15px;
+				background: var(--K4-color-primary);
+				clip-path: var(--K4-svg-clip-path);
 
 				&.header-move {
-					background: var(--K4-gold);
-					outline-color: var(--K4-gold);
+					--K4-color-primary: var(--K4-gold);
+					--K4-svg-scale: 1;
+
+					.svg-container {
+						--K4-svg-bg: var(--K4-color-primary);
+						--K4-svg-fill: var(--K4-black);
+						--K4-svg-stroke: none;
+					}
+					// background: var(--K4-gold);
+					// outline-color: var(--K4-gold);
 				}
 			}
 
@@ -71,6 +80,10 @@
 				overflow-x: hidden;
 				overflow-y: auto;
 
+				p:first-child {
+					text-indent: 25px;
+				}
+
 				&.kult-darksecret-container {
 					p:first-child::first-line {
 						font-variant: small-caps;
@@ -79,10 +92,5 @@
 			}
 
 		}
-	}
-
-	.window-resizable-handle {
-		// top: -50px;
-		// flex-basis: 10px;
 	}
 }

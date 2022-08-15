@@ -103,8 +103,8 @@
 							drop-shadow(0 0 var(--drop-shadow-blur) var(--K4-color-contrast));
 
 						.actor-name {
-							--actor-name-shadow-bright: var(--K4-color-primary-brightest);
-							--actor-name-shadow-dim: var(--K4-color-primary-bright);
+							--actor-name-shadow-bright: var(--K4-color-primary-bright);
+							--actor-name-shadow-dim: var(--K4-color-primary-dark);
 							--actor-name-vert-buffer: 20px;
 							position: absolute;
 							height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer));
@@ -119,9 +119,9 @@
 							color: var(--K4-color-contrast-high);
 							font-size: $rem-48;
 							text-shadow:
-								0 0 0.5px var(--K4-color-primary-brightest),
-								0 0 1.5px var(--K4-color-primary-brightest),
-								0 0 2px var(--K4-color-primary-brightest),
+								0 0 0.5px var(--K4-color-primary-bright),
+								0 0 1.5px var(--K4-color-primary-bright),
+								0 0 2px var(--K4-color-primary-bright),
 								0 0 4px var(--K4-color-primary-bright),
 								0 0 6px var(--K4-color-primary-bright),
 								0 0 8px var(--K4-color-primary-bright),
@@ -363,7 +363,7 @@
 							.nav-tab-label {
 								display: block;
 								opacity: 0;
-								color: var(--K4-color-primary-brightest);
+								color: var(--K4-color-primary-bright);
 								font-size: $rem-14;
 								font-family: Infidel;
 								font-weight: $font-weight-black;
@@ -476,7 +476,7 @@
 									border: none;
 									margin: 0;
 									padding: 0;
-									color: var(--K4-color-primary-brightest);
+									color: var(--K4-color-primary-bright);
 									font-size: $rem-12;
 									height: 100%;
 									box-shadow: none;
@@ -690,12 +690,12 @@
 
 									&[value="5"],
 									option[value="5"] {
-										color: var(--K4-gold-brightest);
+										color: var(--K4-gold-bright);
 									}
 
 									&[value="4"],
 									option[value="4"] {
-										color: var(--K4-gold-brightest);
+										color: var(--K4-gold-bright);
 									}
 
 									&[value="3"],
@@ -730,17 +730,17 @@
 
 									&[value="-3"],
 									option[value="-3"] {
-										color: var(--K4-red-brightest);
+										color: var(--K4-red-bright);
 									}
 
 									&[value="-4"],
 									option[value="-4"] {
-										color: var(--K4-red-brightest);
+										color: var(--K4-red-bright);
 									}
 
 									&[value="-5"],
 									option[value="-5"] {
-										color: var(--K4-red-brightest);
+										color: var(--K4-red-bright);
 										font-weight: $font-weight-black;
 									}
 								}

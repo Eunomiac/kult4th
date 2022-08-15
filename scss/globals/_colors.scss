@@ -53,11 +53,13 @@ Kult White:  #FFFFFF */
 @mixin set-default-theme() {
 	--K4-color-primary: var(--K4-gold);
 	--K4-color-primary-bright: var(--K4-gold-bright);
-	--K4-color-primary-brightest: var(--K4-gold-brightest);
 
 	--K4-color-contrast: var(--K4-black);
 	--K4-color-contrast-low: var(--K4-gold-dark);
 	--K4-color-contrast-high: var(--K4-black-dark);
+
+	--K4-font-primary: var(--font-primary);
+	--K4-font-weight-primary: #{$font-weight-normal};
 
 	--K4-color-title-fg: var(--K4-color-contrast);
 	--K4-color-title-bg: var(--K4-color-primary);
@@ -69,8 +71,8 @@ Kult White:  #FFFFFF */
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
 	--K4-color-keyword: var(--K4-gold-bright);
-	--K4-color-keyword-bright: var(--K4-gold-brightest);
-	--K4-color-pos: var(--K4-gold-brightest);
+	--K4-color-keyword-bright: var(--K4-gold-bright);
+	--K4-color-pos: var(--K4-gold-bright);
 	--K4-color-neg: var(--K4-red);
 
 	--K4-svg-fill: var(--K4-color-primary);
@@ -83,24 +85,21 @@ Kult White:  #FFFFFF */
 /* COLOR PALETTE & DEFAULT FOUNDRY OVERRIDES */
 & {
 	--K4-gold: #968C6A;
-	--K4-gold-bright: #BCB5A0;
-	--K4-gold-brightest: #D4D0C2;
-	--K4-gold-dark: #605A44;
-	--K4-gold-darkest: #3E3A2B;
+	--K4-gold-bright: #ebdba6;
+	--K4-gold-dark: #413d2e;
+	--K4-gold-darkest: #0b0903;
 
 	--K4-red: #9B2020;
-	--K4-red-bright: #AF4D4D;
-	--K4-red-brightest: #FF0000;
-	--K4-red-dark: #631515;
-	--K4-red-darkest: #3F0E0E;
+	--K4-red-bright: #F03232;
+	--K4-red-dark: #460e0e;
+	--K4-red-darkest: #0b0000;
 
 	--K4-blue: #2B558B;
-	--K4-blue-bright: #5577A2;
-	--K4-blue-brightest: #92A8C4;
-	--K4-blue-dark: #22446F;
-	--K4-blue-darkest: #162B47;
+	--K4-blue-bright: #4589e0;
+	--K4-blue-dark: #112136;
+	--K4-blue-darkest: #02070c;
 
-	--K4-white: #E3E3E1;
+	--K4-white: #D4D4D4;
 	--K4-white-bright: #FFFFFF;
 	--K4-black: #1E1E1C;
 	--K4-black-dark: #000000;
@@ -125,8 +124,8 @@ Kult White:  #FFFFFF */
   --color-text-dark-inactive: var(--K4-color-contrast-low);
   --color-text-hyperlink: var(--K4-color-keyword); // #ff6400;
   --color-text-light-0: var(--K4-color-white);
-  --color-text-light-1: var(--K4-color-primary-brightest); // #eee;
-  --color-text-light-2: var(--K4-color-primary-brightest); // #ddd;
+  --color-text-light-1: var(--K4-color-primary-bright); // #eee;
+  --color-text-light-2: var(--K4-color-primary-bright); // #ddd;
   --color-text-light-3: var(--K4-color-primary-bright); // #ccc;
   --color-text-light-4: var(--K4-color-primary-bright); // #bbb;
   --color-text-light-5: var(--K4-color-primary-bright); // #aaa;
@@ -151,8 +150,8 @@ Kult White:  #FFFFFF */
   --color-underline-inactive: var(--K4-color-contrast-low); // #7a7971;
   --color-underline-active: var(--K4-color-keyword-bright); // #426899;
   --color-underline-header: var(--K4-color-primary); // #782e22;
-  --color-border-light-highlight: var(--K4-color-primary-brightest);
-  --color-border-light-primary: var(--K4-color-primary-brightest); // #e4ddc3;
+  --color-border-light-highlight: var(--K4-color-primary-bright);
+  --color-border-light-primary: var(--K4-color-primary-bright); // #e4ddc3;
   --color-border-light-secondary: var(--K4-color-primary-bright); // #c9c7b8;
   --color-border-light-tertiary: var(--K4-color-primary); // #7a7971;
   --color-border-dark: #000;
@@ -160,20 +159,22 @@ Kult White:  #FFFFFF */
   --color-border-dark-secondary: var(--K4-color-contrast-low); // #23221d;
   --color-border-dark-tertiary: var(--K4-color-contrast-low); // #4b4a44;
   --color-border-highlight: var(--K4-color-primary-bright); // #ff6400;
-  --color-border-highlight-alt: var(--K4-color-primary-brightest); // #ff0000;
+  --color-border-highlight-alt: var(--K4-color-primary-bright); // #ff0000;
   --color-bg-btn-minor-inactive: var(--K4-color-primary-bright); // #c9c7b8;
-  --color-bg-btn-minor-active: var(--K4-color-primary-brightest); // #c9c7b8;
-  --color-bg-option: var(--K4-color-primary-brightest);
+  --color-bg-btn-minor-active: var(--K4-color-primary-bright); // #c9c7b8;
+  --color-bg-option: var(--K4-color-primary-bright);
 }
 
 .k4-theme-white {
 	--K4-color-primary: var(--K4-black);
 	--K4-color-primary-bright: var(--K4-black-dark);
-	--K4-color-primary-brightest: var(--K4-black-dark);
 
 	--K4-color-contrast: var(--K4-white);
 	--K4-color-contrast-low: var(--K4-gold-bright);
 	--K4-color-contrast-high: var(--K4-white-bright);
+
+	--K4-font-primary: var(--font-primary);
+	--K4-font-weight-primary: #{$font-weight-normal};
 
 	--K4-color-title-fg: var(--K4-gold);
 	--K4-color-title-bg: var(--K4-color-primary);
@@ -199,11 +200,13 @@ Kult White:  #FFFFFF */
 .k4-theme-dark {
 	--K4-color-primary: var(--K4-white);
 	--K4-color-primary-bright: var(--K4-white-bright);
-	--K4-color-primary-brightest: var(--K4-white-bright);
 
 	--K4-color-contrast: var(--K4-black);
 	--K4-color-contrast-low: var(--K4-gold-dark);
 	--K4-color-contrast-high: var(--K4-black-dark);
+
+	--K4-font-primary: var(--font-primary);
+	--K4-font-weight-primary: #{$font-weight-normal};
 
 	--K4-color-title-fg: var(--K4-color-contrast);
 	--K4-color-title-bg: var(--K4-color-primary);
@@ -227,13 +230,15 @@ Kult White:  #FFFFFF */
 }
 
 .k4-theme-red {
-	--K4-color-primary: var(--K4-red-bright);
-	--K4-color-primary-bright: var(--K4-red-brightest);
-	--K4-color-primary-brightest: var(--K4-red-brightest);
+	--K4-color-primary: var(--K4-red);
+	--K4-color-primary-bright: var(--K4-red-bright);
 
 	--K4-color-contrast: var(--K4-red-darkest);
 	--K4-color-contrast-low: var(--K4-red);
 	--K4-color-contrast-high: var(--K4-black);
+
+	--K4-font-primary: var(--font-primary);
+	--K4-font-weight-primary: #{$font-weight-medium};
 
 	--K4-color-title-fg: var(--K4-color-contrast);
 	--K4-color-title-bg: var(--K4-color-primary);
@@ -244,8 +249,8 @@ Kult White:  #FFFFFF */
 	--K4-border: #{to-url("backgrounds/red/border.webp")} 150 / 100px / 20px repeat;
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
-	--K4-color-keyword: var(--K4-red-brightest);
-	--K4-color-keyword-bright: var(--K4-red-brightest);
+	--K4-color-keyword: var(--K4-red-bright);
+	--K4-color-keyword-bright: var(--K4-red-bright);
 	--K4-color-pos: var(--K4-red);
 	--K4-color-neg: var(--K4-red);
 
@@ -259,11 +264,13 @@ Kult White:  #FFFFFF */
 .k4-theme-bright {
 	--K4-color-primary: var(--K4-black);
 	--K4-color-primary-bright: var(--K4-black-dark);
-	--K4-color-primary-brightest: var(--K4-black-dark);
 
 	--K4-color-contrast: var(--K4-gold-bright);
 	--K4-color-contrast-low: var(--K4-gold);
-	--K4-color-contrast-high: var(--K4-gold-brightest);
+	--K4-color-contrast-high: var(--K4-gold-bright);
+
+	--K4-font-primary: var(--font-primary);
+	--K4-font-weight-primary: #{$font-weight-semi};
 
 	--K4-color-title-fg: var(--K4-color-contrast);
 	--K4-color-title-bg: var(--K4-color-primary);

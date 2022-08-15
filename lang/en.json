@@ -14,6 +14,21 @@
 		"TypeGear": "Gear"
 	},
 	"kult4th": {
+		"system": {
+			"trigger": "trigger",
+			"keyword": "keyword",
+			"prompts": {
+				"systemInit": "Initializing Kult 4E"
+			},
+			"tinymce": {
+				"headings": "headings",
+				"heading": "heading",
+				"headingNum": "heading {headingNum}",
+				"bold": "bold",
+				"extraBold": "extra bold",
+				"italics": "italics"
+			}
+		},
 		"archetype": {
 			"archetype": "Archetype",
 			"archetypes": "Archetypes",
@@ -135,6 +150,10 @@
 				"weapons": "Weapons",
 				"gear": "Gear",
 				"gears": "Gear"
+			},
+			"headings": {
+				"suppliesEdges": "This {itemType} supplies Edges",
+				"risksHold": "This {itemType} risks Hold"
 			}
 		}
 	}

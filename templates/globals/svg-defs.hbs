@@ -1,0 +1,100 @@
+<svg id="svg-definitions" width="0" height="0" style="display: block; position: absolute; height: 0px; width: 0px;">
+	<defs>
+		<style>
+			* {
+					--K4-gold: #968C6A;
+					--K4-gold-bright: #ebdba6;
+					--K4-gold-dark: #413d2e;
+					--K4-gold-darkest: #0b0903;
+
+					--K4-red: #9B2020;
+					--K4-red-bright: #F03232;
+					--K4-red-dark: #460e0e;
+					--K4-red-darkest: #0b0000;
+
+					--K4-blue: #2B558B;
+					--K4-blue-bright: #4589e0;
+					--K4-blue-dark: #112136;
+					--K4-blue-darkest: #02070c;
+
+					--K4-white: #E3E3E1;
+					--K4-white-bright: #FFFFFF;
+					--K4-black: #1E1E1C;
+					--K4-black-dark: #000000;
+					--K4-grey: #81817E;
+					--K4-grey-bright: #BEBEBD;
+					--K4-grey-dark: #424241;
+			}
+		</style>
+
+		{{!-- ### LINEAR GRADIENT DEFINITIONS ### --}}
+		{{#each linearGradients}}
+		<linearGradient id="{{id}}" x1="{{x.[0]}}" x2="{{x.[1]}}" y1="{{y.[0]}}" y2="{{y.[1]}}">
+			{{#each stops}}
+			<stop offset="{{offset}}%" stop-color="{{color}}" stop-opacity="{{opacity}}"></stop>
+			{{/each}}
+		</linearGradient>
+		{{/each}}
+
+
+		<linearGradient id="bg-gradient-advantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-gold-bright)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-gold-dark)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-gradient-advantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-gold)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-gold-darkest)" stop-opacity="1"></stop>
+		</linearGradient>
+
+		<linearGradient id="bg-gradient-attack" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-red-bright)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-red-dark)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-gradient-attack" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-red)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-red-darkest)" stop-opacity="1"></stop>
+		</linearGradient>
+
+		<linearGradient id="bg-gradient-darksecret" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-red-dark)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-red-darkest)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-gradient-darksecret" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-red-bright)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-red)" stop-opacity="1"></stop>
+		</linearGradient>
+
+		<linearGradient id="bg-gradient-disadvantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-grey)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-black)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-gradient-disadvantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-white)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-grey-bright)" stop-opacity="1"></stop>
+		</linearGradient>
+
+		<linearGradient id="bg-gradient-gear" x1="0" x2="1" y1="0" y2="1"></linearGradient>
+		<linearGradient id="stroke-gradient-gear" x1="0" x2="1" y1="0" y2="1"></linearGradient>
+
+		<linearGradient id="bg-gradient-move" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-gold)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-gold-dark)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-gradient-move" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-gold-bright)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-gold-bright)" stop-opacity="1"></stop>
+		</linearGradient>
+
+		<linearGradient id="bg-gradient-relation" x1="0" x2="1" y1="0" y2="1"></linearGradient>
+		<linearGradient id="stroke-gradient-relation" x1="0" x2="1" y1="0" y2="1"></linearGradient>
+
+		<linearGradient id="bg-gradient-weapon" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-red-bright)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-red-dark)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-gradient-weapon" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="var(--K4-red)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="var(--K4-red-darkest)" stop-opacity="1"></stop>
+		</linearGradient>
+	</defs>
+</svg>

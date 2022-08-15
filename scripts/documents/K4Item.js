@@ -134,6 +134,7 @@ export default class K4Item extends Item {
         if (this.data.type !== "relation" /* K4ItemType.relation */) {
             stripData.tooltip = this.data.data.rules.trigger;
         }
+        console.log("Hover Strip Data", stripData);
         return stripData;
     }
     async displayItemSummary(speaker) {

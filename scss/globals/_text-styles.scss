@@ -18,8 +18,8 @@
 		color: var(--K4-color-primary);
 
 		font: {
-			family: var(--font-primary);
-			weight: $font-weight-normal;
+			family: var(--K4-font-primary);
+			weight: var(--K4-font-weight-primary);
 		}
 		font-feature-settings: "ss05", "lnum";
 		border: none;
@@ -67,10 +67,10 @@
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
 
-		&.notification-pip { --K4-color-primary: var(--K4-gold-brightest) }
+		&.notification-pip { --K4-color-primary: var(--K4-gold-bright) }
 	}
 
-	.header-button.close i { --K4-color-primary: var(--K4-red-brightest) }
+	.header-button.close i { --K4-color-primary: var(--K4-red-bright) }
 
 	ul.rules-list, ul.inline-list {
 		--K4-list-indent: 24px;
@@ -194,8 +194,8 @@
 		font-size: $rem-24;
 		font-weight: $font-weight-bold;
 		text-align: center;
-		height: $rem-24;
-		line-height: $rem-24;
+		height: $rem-32;
+		line-height: $rem-28;
 
 		font-variant: all-small-caps;
 		// margin-bottom: 5px;
@@ -310,7 +310,7 @@
 	}
 
 	.text-trigger {
-		color: var(--K4-color-primary-brightest);
+		color: var(--K4-color-primary-bright);
 		font-weight: $font-weight-semi;
 		font-style: italic;
 	}
@@ -334,7 +334,7 @@
 		--icon-scale: 1;
 		--button-color-bg: var(--K4-color-primary);
 		--button-color-fg: var(--K4-color-contrast);
-		--tooltip-color-fg: var(--K4-color-primary-brightest);
+		--tooltip-color-fg: var(--K4-color-primary-bright);
 		--tooltip-color-bg: var(--K4-color-contrast);
 
 		position: relative;
@@ -481,42 +481,27 @@
 
 		&.wound-strip {
 			--icon-size: 20px;
-			--strip-padding-vert: 2px;
 			--strip-color-bg: transparent;
-			// --strip-color-fg: var(--K4-red-brightest);
 			--strip-font-size: #{$rem-12};
 			--strip-underline-width: 0px;
-			--icon-color-bg: var(--K4-red-dark);
-			// --icon-color-fg: var(--K4-color-primary);
-			// --icon-color-outline: var(--K4-red-brightest);
-			--icon-clip-path: circle(closest-side);
-			// --button-color-bg: var(--K4-color-primary);
-			// --button-color-fg: var(--K4-color-contrast);
-			// --tooltip-color-bg: var(--K4-color-contrast);
-			// --tooltip-color-fg: var(--K4-color-primary-brightest);
+			--icon-color-bg: transparent; // var(--K4-red-dark);
+			--icon-clip-path: none;
 
 			&.wound-critical {
-				// --strip-color-bg: var(--K4-red-darkest);
-				--strip-color-fg: var(--K4-red-brightest);
-				--icon-color-bg: var(--K4-red-brightest);
-				--icon-color-fg: var(--K4-white);
-				--icon-scale: 1.5;
-				--icon-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
-				// --icon-color-outline: var(--K4-white);
-				// --button-color-bg: var(--K4-red-brightest);
-				// --button-color-fg: var(--K4-black-darkest);
+				--strip-color-fg: var(--K4-red-bright);
+				--icon-color-fg: var(--K4-red-bright);
+				--icon-scale: 1.2;
 
 				.strip-name {
 					text-transform: uppercase;
+					font-weight: 900;
 					font-family: var(--font-primary-caps);
 				}
 			}
 
 			&.wound-stabilized, &.wound-critical.wound-stabilized {
-				--icon-clip-path: none;
 				--icon-scale: 1;
-				--strip-color-bg: transparent;
-				--strip-color-fg: var(--K4-gold-dark);
+				--strip-color-fg: var(--K4-gold);
 				--icon-color-outline: transparent;
 				.icon-container, .icon-container .svg-container {
 					--K4-svg-bg: transparent;
