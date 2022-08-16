@@ -874,7 +874,7 @@ Kult White:  #FFFFFF */
           color: var(--button-color-fg);
           text-align: center;
           line-height: var(--icon-size);
-          font-size: 0.625rem;
+          font-size: 0.875rem;
           text-transform: uppercase;
           font-family: var(--font-primary-caps);
           font-weight: 900;

@@ -91,14 +91,14 @@ export default class K4Item extends Item {
                     icon: U.toKey(this.name ?? `DEFAULT-${this.data.type}`),
                     stripClasses: [`${this.data.type}-strip`]
                 },
-            dataset: {
-                "hover-target": ".attribute-box[data-attribute='perception'] img"
-                // "color-fg": C.Colors.GOLD,
-                // "color-bg": C.Colors.BLACK
-            },
+            dataset: "attribute" in this.data.data
+                ? {
+                    "hover-target": `.attribute-box[data-attribute='${this.data.data.attribute}'] img`
+                }
+                : {},
             buttons: [
                 {
-                    icon: "at-any-cost",
+                    icon: "hover-strip-button-roll",
                     dataset: {
                         "item-name": this.name ?? "",
                         "action": "roll"
@@ -106,7 +106,7 @@ export default class K4Item extends Item {
                     tooltip: "ROLL"
                 },
                 {
-                    icon: "network-of-contacts",
+                    icon: "hover-strip-button-chat",
                     dataset: {
                         "item-name": this.name ?? "",
                         "action": "chat"
@@ -114,7 +114,7 @@ export default class K4Item extends Item {
                     tooltip: "CHAT"
                 },
                 {
-                    icon: "investigate",
+                    icon: "hover-strip-button-open",
                     dataset: {
                         "item-name": this.name ?? "",
                         "action": "open"
@@ -122,7 +122,7 @@ export default class K4Item extends Item {
                     tooltip: "OPEN"
                 },
                 {
-                    icon: "data-retrieval",
+                    icon: "hover-strip-button-drop",
                     dataset: {
                         "item-name": this.name ?? "",
                         "action": "drop"

@@ -154,8 +154,8 @@
 				"gears": "Gear"
 			},
 			"headings": {
-				"suppliesEdges": "This {itemType} supplies Edges",
-				"risksHold": "This {itemType} risks Hold"
+				"suppliesEdges": "This {itemType} rewards Edges",
+				"risksHold": "This {itemType} threatens Hold"
 			}
 		}
 	}

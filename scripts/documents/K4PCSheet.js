@@ -309,7 +309,7 @@ const ANIMATIONS = {
             .fromTo(buttonStrip$, {
             width: 0
         }, {
-            width: "100%",
+            width: "90%",
             duration: FULL_DURATION,
             ease: "sine"
         }, 0)
@@ -351,103 +351,133 @@ const ANIMATIONS = {
         return tl;
     },
     hoverStripButton(target, context) {
-        const FULL_DURATION = 0.5;
+        const FULL_DURATION = 0.25;
         const buttonStrip$ = $(target).parent();
         const svg$ = $(target).find(".svg-container");
         const tooltip$ = $(target).find(".button-tooltip");
         const tl = gsap.timeline({ reversed: true })
             .set(target, { zIndex: 30 }, 0.1)
-            .to(svg$, {
-            filter: "blur(5px)",
-            scale: 5,
-            duration: 0.4 * FULL_DURATION,
+            .fromTo(target, {
+            opacity: 0.7,
+            scale: 0.8
+        }, {
+            boxShadow: "0px 0px 5px var(--K4-blue-bright)",
+            opacity: 1,
+            scale: 1,
+            duration: FULL_DURATION,
             ease: "power2"
         }, 0)
             .to(svg$, {
+            filter: "blur(2px)",
+            scale: 5,
             opacity: 0,
-            duration: 0.2 * FULL_DURATION,
+            duration: 0.5 * FULL_DURATION,
             ease: "power2"
-        }, 0.3 * FULL_DURATION)
-            .to(tooltip$, {
-            opacity: 1,
-            duration: 0.2 * FULL_DURATION,
-            ease: "power2"
-        }, 0.3 * FULL_DURATION)
+        }, 0)
             .fromTo(tooltip$, {
-            filter: "blur(5px)"
+            filter: "blur(2px)"
         }, {
+            opacity: 1,
             filter: "none",
-            // scale: 1.5,
-            // textShadow: "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white",
             fontWeight: 900,
-            duration: 0.6 * FULL_DURATION,
+            duration: FULL_DURATION,
             ease: "power2"
-        }, 0.4 * FULL_DURATION);
+        }, 0);
         return tl;
-    },
-    hoverMove(target, context, isDerivedMove = true) {
+    } /* ,
+    hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
         const FULL_DURATION = 0.5;
+
         const attribute = $(target).data("attribute");
         const itemText$ = $(target).find(".item-text");
         const itemIcon$ = $(target).find(".item-icon");
         const toolTip$ = $(target).find(".trigger-tooltip");
         const tl = gsap
             .timeline({
-            reversed: true
-        }).fromTo(itemIcon$, {
-            borderRadius: 25,
-            overflow: "hidden"
-        }, {
-            width: "100%",
-            borderRadius: 0,
-            duration: FULL_DURATION,
-            backgroundColor: C.Colors["GOLD +1"],
-            ease: "sine"
-        }, 0).fromTo(itemText$, {
-            x: 0,
-            width: "auto",
-            opacity: 1,
-            color: C.Colors.GOLD,
-            textShadow: 0
-        }, {
-            x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`)) - 40,
-            width: 0,
-            color: C.Colors.BLACK,
-            textShadow: [
-                ...new Array(4).fill(`0 0 15px ${C.Colors["GOLD +1"]}`),
-                ...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
-                ...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
-            ].join(", "),
-            duration: FULL_DURATION,
-            ease: "back"
-        }, 0).set(itemText$, {
-            opacity: 0
-        }, 0.01)
-            .to(itemText$, {
-            opacity: 1,
-            duration: FULL_DURATION - 0.01,
-            ease: "sine"
-        }, 0.01).fromTo(toolTip$, {
-            opacity: 0,
-            bottom: 30,
-            scale: 1.5
-        }, {
-            opacity: 1,
-            bottom: 30,
-            scale: 1,
-            duration: 0.75 * FULL_DURATION,
-            ease: "power2.in"
-        }, 0);
+                reversed: true
+            }).fromTo(
+                itemIcon$,
+                {
+                    borderRadius: 25,
+                    overflow: "hidden"
+                },
+                {
+                    width: "100%",
+                    borderRadius: 0,
+                    duration: FULL_DURATION,
+                    backgroundColor: C.Colors["GOLD +1"],
+                    ease: "sine"
+                },
+                0
+            ).fromTo(
+                itemText$,
+                {
+                    x: 0,
+                    width: "auto",
+                    opacity: 1,
+                    color: C.Colors.GOLD,
+                    textShadow: 0
+                },
+                {
+                    x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`)) - 40,
+                    width: 0,
+                    color: C.Colors.BLACK,
+                    textShadow: [
+                        ...new Array(4).fill(`0 0 15px ${C.Colors["GOLD +1"]}`),
+                        ...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
+                        ...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
+                    ].join(", "),
+                    duration: FULL_DURATION,
+                    ease: "back"
+                },
+                0
+            ).set(
+                itemText$,
+                {
+                    opacity: 0
+                },
+                0.01
+            )
+            .to(
+                itemText$,
+                {
+                    opacity: 1,
+                    duration: FULL_DURATION - 0.01,
+                    ease: "sine"
+                },
+                0.01
+            ).fromTo(
+                toolTip$,
+                {
+                    opacity: 0,
+                    bottom: 30,
+                    scale: 1.5
+                },
+                {
+                    opacity: 1,
+                    bottom: 30,
+                    scale: 1,
+                    duration: 0.75 * FULL_DURATION,
+                    ease: "power2.in"
+                },
+                0
+            );
+
         if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
             const animation$ = context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`);
             tl
-                .fromTo(animation$, {
-                opacity: 0
-            }, {
-                opacity: 1,
-                duration: FULL_DURATION,
-                ease: "sine"
-            }, 0);
+                .fromTo(
+                    animation$,
+                    {
+                        opacity: 0
+                    },
+                    {
+                        opacity: 1,
+                        duration: FULL_DURATION,
+                        ease: "sine"
+                    },
+                    0
+                );
             // .fromTo(
             // 	animation$,
             // 	{
@@ -461,8 +491,9 @@ const ANIMATIONS = {
             // 	0
             // );
         }
+
         return tl;
-    }
+    } */
 };
 export default class K4PCSheet extends ActorSheet {
     static get defaultOptions() {
@@ -595,15 +626,15 @@ export default class K4PCSheet extends ActorSheet {
                 .each(function addHoverStripButtonEvents() {
                 hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this, html)]);
             });
-            html.find(".item-card")
-                .each(function addMoveHoverEvents() {
-                if (!self.hoverTimeline) {
-                    self.hoverTimeline = ANIMATIONS.hoverMove(this, html);
-                    self.hoverTimeline.vars.id = "hoverTimeline";
-                    self.hoverTimelineTarget = this;
-                }
-                hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html)]);
-            });
+            // html.find(".item-card")
+            // 	.each(function addMoveHoverEvents() {
+            // 		if (!self.hoverTimeline) {
+            // 			self.hoverTimeline = ANIMATIONS.hoverMove(this, html);
+            // 			self.hoverTimeline.vars.id = "hoverTimeline";
+            // 			self.hoverTimelineTarget = this;
+            // 		}
+            // 		hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html)]);
+            // 	});
             hoverTimelines.forEach(([target, anim]) => {
                 $(target)
                     .on("mouseenter", () => anim.reversed(false))

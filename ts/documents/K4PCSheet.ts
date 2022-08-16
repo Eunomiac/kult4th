@@ -336,7 +336,7 @@ const ANIMATIONS = {
 			.fromTo(buttonStrip$, {
 				width: 0
 			}, {
-				width: "100%",
+				width: "90%",
 				duration: FULL_DURATION,
 				ease: "sine"
 			}, 0)
@@ -383,7 +383,7 @@ const ANIMATIONS = {
 		return tl;
 	},
 	hoverStripButton(target: HTMLElement, context: JQuery): gsapAnim {
-		const FULL_DURATION = 0.5;
+		const FULL_DURATION = 0.25;
 
 		const buttonStrip$ = $(target).parent();
 		const svg$ = $(target).find(".svg-container");
@@ -391,35 +391,35 @@ const ANIMATIONS = {
 
 		const tl = gsap.timeline({reversed: true})
 			.set(target, {zIndex: 30}, 0.1)
-			.to(svg$, {
-				filter: "blur(5px)",
-				scale: 5,
-				duration: 0.4 * FULL_DURATION,
+			.fromTo(target, {
+				opacity: 0.7,
+				scale: 0.8
+			}, {
+				boxShadow: "0px 0px 5px var(--K4-blue-bright)",
+				opacity: 1,
+				scale: 1,
+				duration: FULL_DURATION,
 				ease: "power2"
 			}, 0)
 			.to(svg$, {
+				filter: "blur(2px)",
+				scale: 5,
 				opacity: 0,
-				duration: 0.2 * FULL_DURATION,
+				duration: 0.5 * FULL_DURATION,
 				ease: "power2"
-			}, 0.3 * FULL_DURATION)
-			.to(tooltip$, {
-				opacity: 1,
-				duration: 0.2 * FULL_DURATION,
-				ease: "power2"
-			}, 0.3 * FULL_DURATION)
+			}, 0)
 			.fromTo(tooltip$, {
-				filter: "blur(5px)"
+				filter: "blur(2px)"
 			}, {
+				opacity: 1,
 				filter: "none",
-				// scale: 1.5,
-				// textShadow: "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white",
 				fontWeight: 900,
-				duration: 0.6 * FULL_DURATION,
+				duration: FULL_DURATION,
 				ease: "power2"
-			}, 0.4 * FULL_DURATION);
+			}, 0);
 
 		return tl;
-	},
+	}/* ,
 	hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
 		const FULL_DURATION = 0.5;
 
@@ -528,7 +528,7 @@ const ANIMATIONS = {
 		}
 
 		return tl;
-	}
+	} */
 };
 
 export default class K4PCSheet extends ActorSheet {
@@ -675,15 +675,15 @@ export default class K4PCSheet extends ActorSheet {
 				.each(function addHoverStripButtonEvents() {
 					hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this, html)]);
 				});
-			html.find(".item-card")
-				.each(function addMoveHoverEvents() {
-					if (!self.hoverTimeline) {
-						self.hoverTimeline = ANIMATIONS.hoverMove(this, html);
-						self.hoverTimeline.vars.id = "hoverTimeline";
-						self.hoverTimelineTarget = this;
-					}
-					hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html)]);
-				});
+			// html.find(".item-card")
+			// 	.each(function addMoveHoverEvents() {
+			// 		if (!self.hoverTimeline) {
+			// 			self.hoverTimeline = ANIMATIONS.hoverMove(this, html);
+			// 			self.hoverTimeline.vars.id = "hoverTimeline";
+			// 			self.hoverTimelineTarget = this;
+			// 		}
+			// 		hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html)]);
+			// 	});
 
 			hoverTimelines.forEach(([target, anim]) => {
 				$(target)

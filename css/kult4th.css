@@ -868,7 +868,7 @@ Kult White:  #FFFFFF */
           color: var(--button-color-fg);
           text-align: center;
           line-height: var(--icon-size);
-          font-size: 0.625rem;
+          font-size: 0.875rem;
           text-transform: uppercase;
           font-family: var(--font-primary-caps);
           font-weight: 900;
@@ -1686,7 +1686,7 @@ Kult White:  #FFFFFF */
                   color: var(--button-color-fg);
                   text-align: center;
                   line-height: var(--icon-size);
-                  font-size: 0.625rem;
+                  font-size: 0.875rem;
                   text-transform: uppercase;
                   font-family: var(--font-primary-caps);
                   font-weight: 900;
@@ -2173,7 +2173,7 @@ Kult White:  #FFFFFF */
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .profile-image-animation {
           position: absolute;
           border-radius: 50%;
-          background: transparent url("../assets/animations/gears-steampunk.gif") no-repeat no-repeat center center/185px auto;
+          background: transparent url("../assets/animations/gears-steampunk.webp") no-repeat no-repeat center center/185px auto;
           -webkit-transform: scale(1.1);
           -ms-transform: scale(1.1);
           transform: scale(1.1); }

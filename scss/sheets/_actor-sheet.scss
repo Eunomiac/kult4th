@@ -250,8 +250,8 @@
 				.profile-image-animation {
 					position: absolute;
 					border-radius: 50%;
-					// background: transparent #{to-url("animations/gears-perspective.gif")} no-repeat no-repeat 90% center/266px auto;
-					background: transparent #{to-url("animations/gears-steampunk.gif")} no-repeat no-repeat center center/185px auto;
+					// background: transparent #{to-url("animations/gears-perspective.webp")} no-repeat no-repeat 90% center/266px auto;
+					background: transparent #{to-url("animations/gears-steampunk.webp")} no-repeat no-repeat center center/185px auto;
 					// z-index: -2;
 					transform: scale(1.1);
 				}
