@@ -32,7 +32,8 @@ Hooks.once("init", async () => {
     CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
     loadTemplates([
         ...U.getTemplatePath("globals", [
-            "svg-defs"
+            "svg-defs",
+            "color-defs"
         ]),
         ...U.getTemplatePath("sheets", [
             "pc-sheet",
@@ -75,9 +76,117 @@ Hooks.once("init", async () => {
             "ask-for-attribute"
         ])
     ]);
-    // #region ████████ SVG DEFS: Create Style Definitions for SVG Files ████████ ~
+    // #region ████████ STYLING: Create Style Definitions for SVG Files & Color Palette ████████ ~
     const svgDefTemplate = await getTemplate(U.getTemplatePath("globals", "svg-defs"));
-    const svgDefs = {};
+    const svgDefs = {
+        linearGradients: Object.values(U.objMap({
+            ["advantage" /* K4ItemType.advantage */]: {
+                fill: {
+                    stops: [C.Colors["GOLD +1"], C.Colors["GOLD -1"]]
+                },
+                stroke: {
+                    stops: [C.Colors.GOLD, C.Colors["GOLD -2"]]
+                }
+            },
+            ["attack" /* K4ItemType.attack */]: {
+                fill: {
+                    stops: [C.Colors["RED +1"], C.Colors["RED -1"]]
+                },
+                stroke: {
+                    stops: [C.Colors.RED, C.Colors["RED -2"]]
+                }
+            },
+            ["darksecret" /* K4ItemType.darksecret */]: {
+                fill: {
+                    stops: [C.Colors["RED -1"], C.Colors["RED -2"]]
+                },
+                stroke: {
+                    stops: [C.Colors["RED +1"], C.Colors.RED]
+                }
+            },
+            ["disadvantage" /* K4ItemType.disadvantage */]: {
+                fill: {
+                    stops: [C.Colors.GREY, C.Colors.BLACK]
+                },
+                stroke: {
+                    stops: [C.Colors.WHITE, C.Colors["GREY +1"]]
+                }
+            },
+            // [K4ItemType.gear]: {
+            // 	fill: {
+            // 		stops: [C.Colors["GOLD +1"], C.Colors["GOLD -1"]]
+            // 	},
+            // 	stroke: {
+            // 		stops: [C.Colors.GOLD, C.Colors["GOLD -2"]]
+            // 	}
+            // },
+            ["move" /* K4ItemType.move */]: {
+                fill: {
+                    stops: [C.Colors.GOLD, C.Colors["GOLD -1"]]
+                },
+                stroke: {
+                    stops: [C.Colors["GOLD +1"], C.Colors["GOLD +1"]]
+                }
+            },
+            // [K4ItemType.relation]: {
+            // 	fill: {
+            // 		stops: [C.Colors["GOLD +1"], C.Colors["GOLD -1"]]
+            // 	},
+            // 	stroke: {
+            // 		stops: [C.Colors.GOLD, C.Colors["GOLD -2"]]
+            // 	}
+            // },
+            ["weapon" /* K4ItemType.weapon */]: {
+                fill: {
+                    stops: [C.Colors["RED +1"], C.Colors["RED -1"]]
+                },
+                stroke: {
+                    stops: [C.Colors.RED, C.Colors["RED -2"]]
+                }
+            }
+        }, 
+        // @ts-expect-error Damn map function needs to be resolved!
+        ({ fill, stroke }, iType) => {
+            const data = {
+                fill: {
+                    id: `fill-${iType}`,
+                    x: [0, 1],
+                    y: [0, 1],
+                    ...fill ?? {},
+                    stops: (fill.stops ?? []).map((stop, i, stops) => ({
+                        offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                        color: typeof stop === "string" ? stop : stop.color,
+                        opacity: 1,
+                        ...(U.isList(stop) ? stop : {})
+                    })),
+                    ...(typeof fill.stops === "string"
+                        ? {}
+                        : fill.stops)
+                },
+                stroke: {
+                    id: `stroke-${iType}`,
+                    x: [0, 1],
+                    y: [0, 1],
+                    ...stroke ?? {},
+                    stops: (stroke.stops ?? []).map((stop, i, stops) => {
+                        console.log(`Stroke-${iType}`, { stop, i, stops });
+                        return {
+                            offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                            color: typeof stop === "string" ? stop : stop.color,
+                            opacity: 1,
+                            ...(U.isList(stop) ? stop : {})
+                        };
+                    }),
+                    ...(typeof stroke.stops === "string"
+                        ? {}
+                        : stroke.stops)
+                }
+            };
+            console.log(`fill-${iType} DATA`, data);
+            return data;
+        })).map((defs) => Object.values(defs)).flat()
+    };
+    console.log("SVG DEFS", svgDefs);
     $(".vtt.game.system-kult4th").append(svgDefTemplate(svgDefs));
     // #endregion ▄▄▄▄▄ SVG DEFS ▄▄▄▄▄
     Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func));

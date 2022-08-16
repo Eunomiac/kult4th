@@ -117,12 +117,14 @@
 			"dramaticHooks": "dramatic hooks",
 			"hook": "hook",
 			"hooks": "hooks",
-			"sessionCheck": "session check",
-			"sessionChecks": "session checks",
 			"experience": "Experience",
 			"experiences": "Experience",
 			"advancement": "advancement",
-			"advancements": "advancements"
+			"advancements": "advancements",
+			"description": "description",
+			"prompts": {
+				"whoAreYou": "Who Are You?"
+			}
 		},
 		"item": {
 			"type": {

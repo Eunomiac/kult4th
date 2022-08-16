@@ -1030,32 +1030,32 @@ Kult White:  #FFFFFF */
     background: var(--K4-svg-bg);
     overflow: hidden; }
     .vtt.game.system-kult4th .svg-container.svg-advantage {
-      --K4-svg-fill: url(#bg-gradient-advantage);
-      --K4-svg-stroke: url(#stroke-gradient-advantage); }
+      --K4-svg-fill: url(#fill-advantage);
+      --K4-svg-stroke: url(#stroke-advantage); }
     .vtt.game.system-kult4th .svg-container.svg-attack {
-      --K4-svg-fill: url(#bg-gradient-attack);
-      --K4-svg-stroke: url(#stroke-gradient-attack); }
+      --K4-svg-fill: url(#fill-attack);
+      --K4-svg-stroke: url(#stroke-attack); }
     .vtt.game.system-kult4th .svg-container.svg-darksecret {
-      --K4-svg-fill: url(#bg-gradient-darksecret);
-      --K4-svg-stroke: url(#stroke-gradient-darksecret); }
+      --K4-svg-fill: url(#fill-darksecret);
+      --K4-svg-stroke: url(#stroke-darksecret); }
     .vtt.game.system-kult4th .svg-container.svg-disadvantage {
-      --K4-svg-fill: url(#bg-gradient-disadvantage);
-      --K4-svg-stroke: url(#stroke-gradient-disadvantage); }
+      --K4-svg-fill: url(#fill-disadvantage);
+      --K4-svg-stroke: url(#stroke-disadvantage); }
     .vtt.game.system-kult4th .svg-container.svg-gear {
-      --K4-svg-fill: url(#bg-gradient-gear);
-      --K4-svg-stroke: url(#stroke-gradient-gear); }
+      --K4-svg-fill: url(#fill-gear);
+      --K4-svg-stroke: url(#stroke-gear); }
     .vtt.game.system-kult4th .svg-container.svg-move {
-      --K4-svg-fill: url(#bg-gradient-move);
-      --K4-svg-stroke: url(#stroke-gradient-move); }
+      --K4-svg-fill: url(#fill-move);
+      --K4-svg-stroke: url(#stroke-move); }
     .vtt.game.system-kult4th .svg-container.svg-relation {
-      --K4-svg-fill: url(#bg-gradient-relation);
-      --K4-svg-stroke: url(#stroke-gradient-relation); }
+      --K4-svg-fill: url(#fill-relation);
+      --K4-svg-stroke: url(#stroke-relation); }
     .vtt.game.system-kult4th .svg-container.svg-weapon {
       --K4-svg-fill: var(--K4-white);
       --K4-svg-stroke: none; }
       .vtt.game.system-kult4th .svg-container.svg-weapon .svg-bg {
-        --K4-svg-fill: url(#bg-gradient-weapon);
-        --K4-svg-stroke: url(#stroke-gradient-weapon); }
+        --K4-svg-fill: url(#fill-weapon);
+        --K4-svg-stroke: url(#stroke-weapon); }
   .vtt.game.system-kult4th .svg-def {
     position: absolute;
     height: 100%;
@@ -2082,9 +2082,7 @@ Kult White:  #FFFFFF */
               position: absolute;
               height: 150%;
               width: 50%;
-              background: transparent url("../assets/animations/actor-name-bg-animation-gold.webp") no-repeat no-repeat right center/150%;
-              -webkit-clip-path: polygon(0px 32px, 32px 0px, 100% 0px, 100% 100%, 32px 100%, 0px calc(100% - 32px));
-              clip-path: polygon(0px 32px, 32px 0px, 100% 0px, 100% 100%, 32px 100%, 0px calc(100% - 32px));
+              background: transparent url("../assets/animations/actor-name-bg-animation.webp") no-repeat no-repeat right center/150%;
               -webkit-clip-path: polygon(7px 27px, 27px 7px, 102% 7px, 102% calc(100% - 7px), 27px calc(100% - 7px), 7px calc(100% - 27px));
               clip-path: polygon(7px 27px, 27px 7px, 102% 7px, 102% calc(100% - 7px), 27px calc(100% - 7px), 7px calc(100% - 27px));
               z-index: -1;
@@ -2191,7 +2189,7 @@ Kult White:  #FFFFFF */
           -webkit-transform-origin: center center;
           -ms-transform-origin: center center;
           transform-origin: center center;
-          background: transparent url("../assets/animations/nav-flare-3.webp") no-repeat no-repeat center center/100%; }
+          background: transparent url("../assets/animations/nav-flare.webp") no-repeat no-repeat center center/100%; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .header-button {
           opacity: 0;
           display: block;

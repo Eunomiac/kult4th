@@ -20,7 +20,7 @@
 			<div class="actor-name-input-container">
 				<div class="actor-name-bg-anim actor-name-bg-anim-left"></div>
 				<div class="actor-name-bg-anim actor-name-bg-anim-right"></div>
-				<div class="actor-name content-editable clamp-text" data-field="name" data-placeholder="Who Are You?" data-clamplines="1">{{actor.name}}</div>
+				<div class="actor-name content-editable clamp-text" data-field="name" data-placeholder="{{loc "kult4th.sheet.prompts.whoAreYou"}}" data-clamplines="1">{{actor.name}}</div>
 			</div>
 			<span class="actor-name-border actor-name-border-right"></span>
 			<span class="actor-name-spacer"></span>
@@ -95,11 +95,6 @@
 					{{> "systems/kult4th/templates/components/hover-strip-editable.hbs"}}
 					{{/if}}
 					{{/each}}
-					{{#unless (test (count data.data.wounds) ">=" 5)}}
-					<div class="wound wound-add">
-						<button class="wound-add">New Wound</button>
-					</div>
-					{{/unless}}
 				</div>
 				<div class="edges">
 					<button class="edges-add">+</button>
@@ -149,29 +144,29 @@
 
 		<section class="tab bio {{~#if (eq curTab "bio")}} active{{/if}}" data-group="primary" data-tab="bio">
 			<section class="subsection description">
-				<label class="k4-title section-title">Description</label>
+				<label class="k4-title section-title">{{case "title" (loc "kult4th.sheet.description")}}</label>
 				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection flex-item-list advantages">
-				<label class="k4-title section-title">Advantages</label>
+				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.advantages")}}</label>
 				{{#each advantages}}
 				{{> "systems/kult4th/templates/partials/advantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list disadvantages">
-				<label class="k4-title section-title">Disadvantages</label>
+				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.disadvantages")}}</label>
 				{{#each disadvantages}}
 				{{> "systems/kult4th/templates/partials/disadvantage-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list darksecrets">
-				<label class="k4-title section-title">Dark Secrets</label>
+				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.darksecrets")}}</label>
 				{{#each darksecrets}}
 				{{> "systems/kult4th/templates/partials/dark-secret-card.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list relations">
-				<label class="k4-title section-title">Relations</label>
+				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.relations")}}</label>
 				{{#each relations}}
 				{{> "systems/kult4th/templates/partials/relation-card.hbs"}}
 				{{/each}}

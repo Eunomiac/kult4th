@@ -19,38 +19,38 @@
 	overflow: hidden;
 
 	&.svg-advantage {
-		--K4-svg-fill: url(#bg-gradient-advantage);
-		--K4-svg-stroke: url(#stroke-gradient-advantage);
+		--K4-svg-fill: url(#fill-advantage);
+		--K4-svg-stroke: url(#stroke-advantage);
 	}
 
 	&.svg-attack {
-		--K4-svg-fill: url(#bg-gradient-attack);
-		--K4-svg-stroke: url(#stroke-gradient-attack);
+		--K4-svg-fill: url(#fill-attack);
+		--K4-svg-stroke: url(#stroke-attack);
 	}
 
 	&.svg-darksecret {
-		--K4-svg-fill: url(#bg-gradient-darksecret);
-		--K4-svg-stroke: url(#stroke-gradient-darksecret);
+		--K4-svg-fill: url(#fill-darksecret);
+		--K4-svg-stroke: url(#stroke-darksecret);
 	}
 
 	&.svg-disadvantage {
-		--K4-svg-fill: url(#bg-gradient-disadvantage);
-		--K4-svg-stroke: url(#stroke-gradient-disadvantage);
+		--K4-svg-fill: url(#fill-disadvantage);
+		--K4-svg-stroke: url(#stroke-disadvantage);
 	}
 
 	&.svg-gear {
-		--K4-svg-fill: url(#bg-gradient-gear);
-		--K4-svg-stroke: url(#stroke-gradient-gear);
+		--K4-svg-fill: url(#fill-gear);
+		--K4-svg-stroke: url(#stroke-gear);
 	}
 
 	&.svg-move {
-		--K4-svg-fill: url(#bg-gradient-move);
-		--K4-svg-stroke: url(#stroke-gradient-move);
+		--K4-svg-fill: url(#fill-move);
+		--K4-svg-stroke: url(#stroke-move);
 	}
 
 	&.svg-relation {
-		--K4-svg-fill: url(#bg-gradient-relation);
-		--K4-svg-stroke: url(#stroke-gradient-relation);
+		--K4-svg-fill: url(#fill-relation);
+		--K4-svg-stroke: url(#stroke-relation);
 	}
 
 	&.svg-weapon {
@@ -58,8 +58,8 @@
 		--K4-svg-stroke: none;
 
 		.svg-bg {
-			--K4-svg-fill: url(#bg-gradient-weapon);
-			--K4-svg-stroke: url(#stroke-gradient-weapon);
+			--K4-svg-fill: url(#fill-weapon);
+			--K4-svg-stroke: url(#stroke-weapon);
 		}
 	}
 }
