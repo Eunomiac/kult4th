@@ -71,7 +71,7 @@ const ANIMATIONS = {
             width: "100%",
             borderRadius: 0,
             duration: FULL_DURATION,
-            backgroundColor: C.Colors["GOLD +1"],
+            backgroundColor: C.Colors["bGOLD"],
             ease: "sine"
         }, 0).fromTo(itemText$, {
             x: 0,
@@ -84,9 +84,9 @@ const ANIMATIONS = {
             width: 0,
             color: C.Colors.BLACK,
             textShadow: [
-                ...new Array(4).fill(`0 0 15px ${C.Colors["GOLD +1"]}`),
-                ...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
-                ...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
+                ...new Array(4).fill(`0 0 15px ${C.Colors["bGOLD"]}`),
+                ...new Array(6).fill(`0 0 5px ${C.Colors["bGOLD"]}`),
+                ...new Array(4).fill(`0 0 2px ${C.Colors["bGOLD"]}`)
             ].join(", "),
             duration: FULL_DURATION,
             ease: "back"

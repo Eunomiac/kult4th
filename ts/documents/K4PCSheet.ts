@@ -1,4 +1,4 @@
-import C from "../scripts/constants.js";
+import C, {getContrastingColor} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import SVGDATA from "../scripts/svgdata.js";
 import K4Actor from "./K4Actor.js";
@@ -310,8 +310,9 @@ const ANIMATIONS = {
 
 		const stripToolTip$ = $(target).find(".strip-tooltip");
 
-		const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
-		const colorBG = $(target).data("color-bg");
+		// const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
+		const colorFG = $(target).css("--strip-color-fg").trim();
+		const colorBG = String(getContrastingColor(colorFG, 4) || $(target).css("--strip-color-bg").trim());
 		const nameShift = U.get(target, "height", "px");
 
 		console.log(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
@@ -340,14 +341,14 @@ const ANIMATIONS = {
 				duration: FULL_DURATION,
 				ease: "sine"
 			}, 0)
-			.to(stripName$, {
+			.fromTo(stripName$, {
+				color: colorFG
+			}, {
 				xPercent: -100,
 				x: `-=${2 * nameShift}`,
 				fontWeight: 900,
 				fontStyle: "normal",
 				zIndex: 20,
-				// scale: 1.3,
-
 				duration: FULL_DURATION,
 				color: colorBG,
 				textShadow: [
@@ -373,7 +374,9 @@ const ANIMATIONS = {
 		}
 
 		if (hoverTarget$[0]) {
-			tl.to(hoverTarget$, {
+			tl.fromTo(hoverTarget$, {
+				opacity: 0
+			},{
 				opacity: 1,
 				duration: FULL_DURATION,
 				ease: "sine"
@@ -395,7 +398,7 @@ const ANIMATIONS = {
 				opacity: 0.7,
 				scale: 0.8
 			}, {
-				boxShadow: "0px 0px 5px var(--K4-blue-bright)",
+				boxShadow: "0px 0px 5px var(--K4-bBLUE)",
 				opacity: 1,
 				scale: 1,
 				duration: FULL_DURATION,
@@ -440,7 +443,7 @@ const ANIMATIONS = {
 					width: "100%",
 					borderRadius: 0,
 					duration: FULL_DURATION,
-					backgroundColor: C.Colors["GOLD +1"],
+					backgroundColor: C.Colors["bGOLD"],
 					ease: "sine"
 				},
 				0
@@ -458,9 +461,9 @@ const ANIMATIONS = {
 					width: 0,
 					color: C.Colors.BLACK,
 					textShadow: [
-						...new Array(4).fill(`0 0 15px ${C.Colors["GOLD +1"]}`),
-						...new Array(6).fill(`0 0 5px ${C.Colors["GOLD +1"]}`),
-						...new Array(4).fill(`0 0 2px ${C.Colors["GOLD +1"]}`)
+						...new Array(4).fill(`0 0 15px ${C.Colors["bGOLD"]}`),
+						...new Array(6).fill(`0 0 5px ${C.Colors["bGOLD"]}`),
+						...new Array(4).fill(`0 0 2px ${C.Colors["bGOLD"]}`)
 					].join(", "),
 					duration: FULL_DURATION,
 					ease: "back"

@@ -90,7 +90,7 @@ export default class K4Actor extends Actor {
                 dataTarget: `data.wounds.${wound.id}.description`,
                 placeholder: "(description)  ",
                 dataset: {
-                    "color-fg": C.Colors["RED GLOW"],
+                    "color-fg": C.Colors.gRED,
                     "color-bg": C.Colors.BLACK
                 },
                 buttons: [
@@ -132,7 +132,7 @@ export default class K4Actor extends Actor {
                 stripData.icon = "wound-critical";
                 stripData.stripClasses?.push("wound-critical");
                 // stripData.dataset!["color-fg"] = C.Colors.WHITE;
-                // stripData.dataset!["color-bg"] = C.Colors["RED GLOW"];
+                // stripData.dataset!["color-bg"] = C.Colors["gRED"];
             }
             else {
                 stripData.icon = "wound-serious";

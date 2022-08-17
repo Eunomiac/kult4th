@@ -19,7 +19,7 @@
 		background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat top left/var(--sidebar-internal-width);
 		margin: 3px 0;
 		padding: 0;
-		// border: 2px outset var(--K4-gold-dark);
+		// border: 2px outset var(--K4-dGOLD);
 		border: none;
 		position: relative;
 
@@ -27,16 +27,16 @@
 			opacity: 0;
 			transition: 0.25s;
 			position: absolute;
-			// color: var(--K4-gold-bright);
+			// color: var(--K4-bGOLD);
 			padding: 0 5px;
 			height: 20px;
 			top: 0px;
 			left: -2px;
-			border: 2px outset var(--K4-gold-dark);
+			border: 2px outset var(--K4-dGOLD);
 			border-bottom: none;
 			border-top-left-radius: 10px;
 			border-top-right-radius: 10px;
-			background: linear-gradient(var(--K4-gold-dark), var(--K4-gold-darkest) 22px, transparent 24px);
+			background: linear-gradient(var(--K4-dGOLD), var(--K4-dGOLD) 22px, transparent 24px);
 			width: calc(100% + 4px);
 			z-index: 2;
 
@@ -185,7 +185,7 @@
 #chat-form {
 	#chat-message {
 		background: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat center/500px 500px;
-		border-color: var(--K4-gold);
+		border-color: var(--K4-GOLD);
 		// color: var(--color-body-text);
 		font-family: AlverataSemiBold;
 	}

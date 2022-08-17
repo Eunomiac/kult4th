@@ -47,11 +47,11 @@
 		overflow: hidden;
 
 		&:invalid {
-			color: var(--K4-red-dark);
+			color: var(--K4-dRED);
 		}
 
 		&.placeholder {
-			color: var(--K4-grey) !important;
+			color: var(--K4-GREY) !important;
 			font-weight: $font-weight-light !important;
 			font-family: var(--font-primary) !important;
 			font-style: italic !important;
@@ -62,15 +62,15 @@
 	}
 
 	i {
-		--K4-color-primary: var(--K4-gold);
-		--K4-color-contrast: var(--K4-black);
+		--K4-color-primary: var(--K4-GOLD);
+		--K4-color-contrast: var(--K4-BLACK);
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
 
-		&.notification-pip { --K4-color-primary: var(--K4-gold-bright) }
+		&.notification-pip { --K4-color-primary: var(--K4-bGOLD) }
 	}
 
-	.header-button.close i { --K4-color-primary: var(--K4-red-bright) }
+	.header-button.close i { --K4-color-primary: var(--K4-bRED) }
 
 	ul.rules-list, ul.inline-list {
 		--K4-list-indent: 24px;
@@ -202,8 +202,8 @@
 		// padding: 5px 0 4px 0;
 
 		&.hold-header {
-			color: var(--K4-white);
-			background: var(--K4-red-dark);
+			color: var(--K4-WHITE);
+			background: var(--K4-dRED);
 
 			animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
@@ -233,8 +233,8 @@
 		}
 
 		&.edges-header {
-			color: var(--K4-white);
-			background: var(--K4-blue-dark);
+			color: var(--K4-WHITE);
+			background: var(--K4-dBLUE);
 
 			animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
@@ -484,12 +484,12 @@
 			--strip-color-bg: transparent;
 			--strip-font-size: #{$rem-12};
 			--strip-underline-width: 0px;
-			--icon-color-bg: transparent; // var(--K4-red-dark);
+			--icon-color-bg: transparent; // var(--K4-dRED);
 			--icon-clip-path: none;
 
 			&.wound-critical {
-				--strip-color-fg: var(--K4-red-bright);
-				--icon-color-fg: var(--K4-red-bright);
+				--strip-color-fg: var(--K4-bRED);
+				--icon-color-fg: var(--K4-bRED);
 				--icon-scale: 1.2;
 
 				.strip-name {
@@ -501,11 +501,11 @@
 
 			&.wound-stabilized, &.wound-critical.wound-stabilized {
 				--icon-scale: 1;
-				--strip-color-fg: var(--K4-gold);
+				--strip-color-fg: var(--K4-GOLD);
 				--icon-color-outline: transparent;
 				.icon-container, .icon-container .svg-container {
 					--K4-svg-bg: transparent;
-					--K4-svg-fill: var(--K4-gold);
+					--K4-svg-fill: var(--K4-GOLD);
 					--K4-svg-clip-path: none;
 					--K4-svg-scale: 1;
 				}

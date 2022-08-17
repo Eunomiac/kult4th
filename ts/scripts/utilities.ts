@@ -148,7 +148,7 @@ const GMID = (): string | false => game?.user?.find((user) => user.isGM)?.id ?? 
 const isNumber = (ref: unknown): ref is number => typeof ref === "number" && !isNaN(ref);
 const isArray = (ref: unknown): ref is unknown[] => Array.isArray(ref);
 const isSimpleObj = (ref: unknown): ref is Record<string | number | symbol, unknown> => ref === Object(ref) && !isArray(ref);
-const isList = (ref: unknown): ref is List<unknown> => ref === Object(ref) && !isArray(ref); // Boolean(ref) && Object.getPrototypeOf(ref) === Object.prototype;
+const isList = <T>(ref: T): ref is T & Record<string | number | symbol, unknown> => ref === Object(ref) && !isArray(ref); // Boolean(ref) && Object.getPrototypeOf(ref) === Object.prototype;
 const isFunc = (ref: unknown): ref is typeof Function => typeof ref === "function";
 const isInt = (ref: unknown): ref is int => isNumber(ref) && Math.round(ref) === ref;
 const isFloat = (ref: unknown): ref is float => isNumber(ref) && /\./.test(`${ref}`);
@@ -771,6 +771,25 @@ function objMap(obj: Index<unknown>, keyFunc: mapFunc<keyFunc> | mapFunc<valFunc
 	if (isArray(obj)) { return obj.map(valFunc) }
 	return Object.fromEntries(Object.entries(obj).map(([key, val]) => [(<mapFunc<keyFunc>>keyFunc)(key, val), (<mapFunc<valFunc>>valFunc)(val, key)]));
 }
+const objFindKey = <Type extends Index<unknown>>(obj: Type, keyFunc: testFunc<keyFunc> | testFunc<valFunc> | false, valFunc?: testFunc<valFunc>): KeyOf<Type>|false => {
+	// An object-equivalent Array.findIndex() function, which accepts check functions for both keys and/or values.
+	// If only one function is provided, it's assumed to be searching via values and will receive (v, k) args.
+	if (!valFunc) {
+		valFunc = keyFunc as testFunc<valFunc>;
+		keyFunc = false;
+	}
+	if (!keyFunc) {
+		keyFunc = <testFunc<keyFunc>>((k: unknown) => k);
+	}
+	if (isArray(obj)) { return obj.findIndex(valFunc) }
+	const kFunc = keyFunc || (() => true);
+	const vFunc = valFunc || (() => true);
+	const validEntry = Object.entries(obj).find(([k, v]) => kFunc(k, v) && vFunc(v, k));
+	if (validEntry) {
+		return validEntry[0] as KeyOf<Type>;
+	}
+	return false;
+};
 const objFilter = <Type extends Index<unknown>>(obj: Type, keyFunc: testFunc<keyFunc> | testFunc<valFunc> | false, valFunc?: testFunc<valFunc>): Type => {
 	// An object-equivalent Array.filter() function, which accepts filter functions for both keys and/or values.
 	// If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
@@ -784,7 +803,7 @@ const objFilter = <Type extends Index<unknown>>(obj: Type, keyFunc: testFunc<key
 	if (isArray(obj)) { return obj.filter(valFunc) as Type }
 	const kFunc = keyFunc || (() => true);
 	const vFunc = valFunc || (() => true);
-	return Object.fromEntries(Object.entries(obj).filter(([key, val]: [string, unknown]) => kFunc(key) && vFunc(val))) as Type;
+	return Object.fromEntries(Object.entries(obj).filter(([key, val]: [string, unknown]) => kFunc(key, val) && vFunc(val, key))) as Type;
 };
 const objForEach = (obj: Index<unknown>, func: valFunc): void => {
 	// An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
@@ -1055,7 +1074,7 @@ export default {
 
 	// ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
 	remove, replace, partition,
-	objClean, objMap, objFilter, objForEach, objCompact,
+	objClean, objMap, objFindKey, objFilter, objForEach, objCompact,
 	objClone, objMerge, objExpand, objFlatten,
 
 	// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████

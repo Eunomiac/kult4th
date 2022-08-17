@@ -31,7 +31,7 @@ export function initTinyMCEStyles() {
             ]
         },
         {
-            title: U.tCase(U.loc("kult4th.system.tinymce.headings")),
+            title: U.tCase(U.loc("kult4th.system.tinymce.inline")),
             items: [
                 { title: U.tCase(U.loc("kult4th.system.tinymce.bold")), inline: "strong", wrapper: false },
                 { title: U.tCase(U.loc("kult4th.system.tinymce.extraBold")), inline: "strong", classes: "text-extra-bold", wrapper: false },
@@ -42,8 +42,8 @@ export function initTinyMCEStyles() {
             title: "Rules",
             items: [
                 { title: U.tCase(U.loc("kult4th.system.trigger")), inline: "em", classes: "text-trigger", wrapper: false },
-                { title: U.tCase(U.loc("kult4th.system.trigger")), inline: "strong", classes: "text-keyword", wrapper: false },
-                { title: U.tCase(U.loc("kult4th.system.trigger")), inline: "em", classes: "text-keyword text-movename", wrapper: false }
+                { title: U.tCase(U.loc("kult4th.system.keyword")), inline: "strong", classes: "text-keyword", wrapper: false },
+                { title: U.tCase(U.loc("kult4th.item.type.move")), inline: "em", classes: "text-keyword text-movename", wrapper: false }
             ]
         }
     ];
@@ -81,7 +81,7 @@ export function initCanvasStyles() {
         dropShadowColor: C.Colors.BLACK,
         dropShadowDistance: 4,
         fill: [
-            C.Colors["GOLD +2"],
+            C.Colors.bGOLD,
             C.Colors.GOLD
         ],
         fillGradientType: 1,
@@ -95,7 +95,7 @@ export function initCanvasStyles() {
         lineHeight: 32,
         lineJoin: "round",
         padding: 4,
-        stroke: C.Colors["GOLD -2"],
+        stroke: C.Colors.dGOLD,
         strokeThickness: 3,
         trim: true,
         whiteSpace: "normal",

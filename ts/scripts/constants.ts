@@ -1,6 +1,8 @@
 // export {SORTED_DATA} from "./migration/sortedData.js";
 // export {UNMIGRATED_DATA, ORIGINAL_MIGRATED_DATA} from "./migration/migrationData.js";
 
+import U from "./utilities.js";
+
 export const ActorTypes = {
 	pc: "Player Character",
 	npc: "Non-Player Character"
@@ -87,33 +89,67 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Attribute}) => v
 	return attrButtons;
 };
 export const Colors = {
-	"GOLD": "#968C6A",
-	"GOLD +2": "#ebdba6",
-	"GOLD +1": "#ebdba6",
-	"GOLD -1": "#413d2e",
-	"GOLD -2": "#413d2e",
-	"GOLD -3": "#0b0903",
-	"GOLD GLOW": "#ebdba6",
-	"RED": "#9B2020",
-	"RED +2": "#F03232",
-	"RED +1": "#F03232",
-	"RED -1": "#460e0e",
-	"RED -2": "#0b0000",
-	"RED GLOW": "#F03232",
-	"WHITE": "#D4D4D4",
-	"GREY +2": "#BEBEBD",
-	"GREY +1": "#BEBEBD",
-	"GREY": "#81817E",
-	"GREY -1": "#424241",
-	"GREY -2": "#424241",
-	"BLACK": "#1E1E1C",
-	"BLUE": "#2B558B",
-	"BLUE +2": "#4589e0",
-	"BLUE +1": "#4589e0",
-	"BLUE -1": "#112136",
-	"BLUE -2": "#02070c",
-	"BLUE GLOW": "#4589e0"
-} as const;
+	GOLD: "rgb(150, 140, 106)",
+	bGOLD: "rgb(235, 219, 166)",
+	dGOLD: "rgb(65, 61, 46)",
+	gGOLD: "rgb(255, 254, 200)",
+	RED: "rgb(155, 32, 32)",
+	bRED: "rgb(240, 50, 50)",
+	dRED: "rgb(70, 14, 14)",
+	gRED: "rgb(255, 0, 0)",
+	bWHITE: "rgb(255, 255, 255)",
+	WHITE: "rgb(212, 212, 212)",
+	bGREY: "rgb(190, 190, 190)",
+	GREY: "rgb(128, 128, 128)",
+	dGREY: "rgb(66, 66, 66)",
+	BLACK: "rgb(29, 29, 29)",
+	dBLACK: "rgb(0, 0, 0)",
+	BLUE: "rgb(43, 85, 139)",
+	bBLUE: "rgb(69, 137, 224)",
+	dBLUE: "rgb(17, 33, 54)",
+	gBLUE: "rgb(17, 33, 54)"
+};
+export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
+	if (colorVal in Colors) {
+		return colorVal as KeyOf<typeof Colors>;
+	}
+	colorVal = U.getRGBString(colorVal) ?? "";
+	if (colorVal && Object.values(Colors).includes(colorVal)) {
+		return U.objFindKey(Colors, (v: string) => v === colorVal);
+	}
+	return false;
+}
+export function getContrastingColor(colorVal: string, contrastLevel: 1|2|3|4 = 1, bgShade: "light"|"dark" = "dark") {
+	let colorName = getColorName(colorVal);
+	if (!colorName) {
+		console.error(`Unable to find official contrast for ${colorVal}: Generating one instead.`);
+		return U.getContrastingColor(colorVal);
+	}
+	const masterColor = colorName.replace(/[a-z]/g, "");
+	if (colorName && /GOLD|BLUE|RED/.test(colorName)) { // it's a color
+		if (!/^[bgd]/.test(colorName)) { // it's a neutral color; refer to bgShade to nudge it brighter/darker
+			if (bgShade === "light") {
+				colorName = `d${masterColor}` as KeyOf<typeof Colors>;
+			} else {
+				colorName = `b${masterColor}` as KeyOf<typeof Colors>;
+			}
+		}
+		// now any color value will be a bright/glow/dark shade
+		if (/^[bg]/.test(colorName)) { // it's a bright shade
+			return [false, Colors[`d${masterColor}` as KeyOf<typeof Colors>], Colors.BLACK, Colors.dBLACK, Colors.dBLACK][contrastLevel];
+		} else { // it's a dark shade
+			return [false, Colors[`b${masterColor}` as KeyOf<typeof Colors>], Colors[`g${masterColor}` as KeyOf<typeof Colors>], Colors.WHITE, Colors.bWHITE][contrastLevel];
+		}
+	} else { // it's a grey
+		const brightness = U.pInt(colorVal.replace(/^.*?(\d+),.*$/, "$1"));
+		if (brightness >= 128) { // it's bright
+			return [false, Colors.BLACK, Colors.BLACK, Colors.dBLACK, Colors.dBLACK][contrastLevel];
+		} else { // it's dark
+			return [false, Colors.WHITE, Colors.WHITE, Colors.bWHITE, Colors.bWHITE][contrastLevel];
+		}
+	}
+}
+
 export const Ranges = {
 	arm: "When you engage an able opponent within arm's reach in close combat,",
 	arm_room: "When you engage an able opponent within several steps of you in ranged combat,",

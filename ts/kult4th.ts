@@ -4,7 +4,7 @@ import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
-import C from "./scripts/constants.js";
+import C, {getContrastingColor} from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
 import {formatStringForKult, HandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
@@ -12,7 +12,7 @@ import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/s
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
 // import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "../kult4eoverrides/migratorts";
-import {resetItems} from "./scripts/migratedData.js";
+import {resetItems, extractPackData, analyzePackData} from "./scripts/migratedData.js";
 import gsap, {MorphSVGPlugin} from "gsap/all";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 
@@ -22,8 +22,6 @@ Hooks.once("init", async () => {
 	console.log(U.loc("kult4th.system.prompts.systemInit"));
 
 	registerSettings();
-	initCanvasStyles();
-	initTinyMCEStyles();
 
 	CONFIG.Actor.documentClass = K4Actor;
 	Actors.unregisterSheet("core", ActorSheet);
@@ -104,26 +102,26 @@ Hooks.once("init", async () => {
 			{
 				[K4ItemType.advantage]: {
 					fill: {
-						stops: [C.Colors["GOLD +1"], C.Colors["GOLD -1"]]
+						stops: [C.Colors.bGOLD, C.Colors.dGOLD]
 					},
 					stroke: {
-						stops: [C.Colors.GOLD, C.Colors["GOLD -2"]]
+						stops: [C.Colors.GOLD, C.Colors.dGOLD]
 					}
 				},
 				[K4ItemType.attack]: {
 					fill: {
-						stops: [C.Colors["RED +1"], C.Colors["RED -1"]]
+						stops: [C.Colors.bRED, C.Colors.dRED]
 					},
 					stroke: {
-						stops: [C.Colors.RED, C.Colors["RED -2"]]
+						stops: [C.Colors.RED, C.Colors.dRED]
 					}
 				},
 				[K4ItemType.darksecret]: {
 					fill: {
-						stops: [C.Colors["RED -1"], C.Colors["RED -2"]]
+						stops: [C.Colors.dRED, C.Colors.dRED]
 					},
 					stroke: {
-						stops: [C.Colors["RED +1"], C.Colors.RED]
+						stops: [C.Colors.bRED, C.Colors.RED]
 					}
 				},
 				[K4ItemType.disadvantage]: {
@@ -131,39 +129,39 @@ Hooks.once("init", async () => {
 						stops: [C.Colors.GREY, C.Colors.BLACK]
 					},
 					stroke: {
-						stops: [C.Colors.WHITE, C.Colors["GREY +1"]]
+						stops: [C.Colors.WHITE, C.Colors.bGREY]
 					}
 				},
 				// [K4ItemType.gear]: {
 				// 	fill: {
-				// 		stops: [C.Colors["GOLD +1"], C.Colors["GOLD -1"]]
+				// 		stops: [C.Colors["bGOLD"], C.Colors["dGOLD"]]
 				// 	},
 				// 	stroke: {
-				// 		stops: [C.Colors.GOLD, C.Colors["GOLD -2"]]
+				// 		stops: [C.Colors.GOLD, C.Colors["dGOLD"]]
 				// 	}
 				// },
 				[K4ItemType.move]: {
 					fill: {
-						stops: [C.Colors.GOLD, C.Colors["GOLD -1"]]
+						stops: [C.Colors.GOLD, C.Colors.dGOLD]
 					},
 					stroke: {
-						stops: [C.Colors["GOLD +1"], C.Colors["GOLD +1"]]
+						stops: [C.Colors.bGOLD, C.Colors.bGOLD]
 					}
 				},
 				// [K4ItemType.relation]: {
 				// 	fill: {
-				// 		stops: [C.Colors["GOLD +1"], C.Colors["GOLD -1"]]
+				// 		stops: [C.Colors["bGOLD"], C.Colors["dGOLD"]]
 				// 	},
 				// 	stroke: {
-				// 		stops: [C.Colors.GOLD, C.Colors["GOLD -2"]]
+				// 		stops: [C.Colors.GOLD, C.Colors["dGOLD"]]
 				// 	}
 				// },
 				[K4ItemType.weapon]: {
 					fill: {
-						stops: [C.Colors["RED +1"], C.Colors["RED -1"]]
+						stops: [C.Colors.bRED, C.Colors.dRED]
 					},
 					stroke: {
-						stops: [C.Colors.RED, C.Colors["RED -2"]]
+						stops: [C.Colors.RED, C.Colors.dRED]
 					}
 				}
 			},
@@ -179,6 +177,7 @@ Hooks.once("init", async () => {
 							offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
 							color: typeof stop === "string" ? stop : stop.color,
 							opacity: 1,
+							// @ts-expect-error Damn map function needs to be resolved!
 							...(U.isList(stop) ? stop : {})
 						})),
 						...(typeof fill.stops === "string"
@@ -196,6 +195,7 @@ Hooks.once("init", async () => {
 								offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
 								color: typeof stop === "string" ? stop : stop.color,
 								opacity: 1,
+								// @ts-expect-error Damn map function needs to be resolved!
 								...(U.isList(stop) ? stop : {})
 							};
 						}),
@@ -215,18 +215,22 @@ Hooks.once("init", async () => {
 		}
 		>).map((defs) => Object.values(defs)).flat()
 	};
+	// console.log("SVG DEFS", svgDefs);
+	$(".vtt.game.system-kult4th").prepend(svgDefTemplate(svgDefs));
 
-	console.log("SVG DEFS", svgDefs);
-
-	$(".vtt.game.system-kult4th").append(svgDefTemplate(svgDefs));
-
-	// #endregion ▄▄▄▄▄ SVG DEFS ▄▄▄▄▄
+	const colorDefTemplate = await getTemplate(U.getTemplatePath("globals", "color-defs"));
+	$(".vtt.game.system-kult4th").prepend(colorDefTemplate({colors: C.Colors}));
+	// #endregion ▄▄▄▄▄ STYLING ▄▄▄▄▄
 
 	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func as Handlebars.HelperDelegate));
 });
 
-/*DEVCODE*/
+
 Hooks.once("ready", async () => {
+	initCanvasStyles();
+	initTinyMCEStyles();
+
+	/*DEVCODE*/
 	const ACTOR = game.actors?.values().next().value as K4Actor;
 	const ITEM = game.items?.values().next().value as K4Item;
 	const EMBED = ACTOR.items?.values().next().value as K4Item;
@@ -240,6 +244,9 @@ Hooks.once("ready", async () => {
 		U,
 		C,
 		resetItems,
+		extractPackData,
+		analyzePackData,
+		getContrastingColor,
 		formatStringForKult,
 		formatForKult: HandlebarHelpers.formatForKult,
 		ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
@@ -247,5 +254,5 @@ Hooks.once("ready", async () => {
 		SHEETS: [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
 		DOCS: [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
 	});
+	/*!DEVCODE*/
 });
-/*!DEVCODE*/

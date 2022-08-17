@@ -1,7 +1,9 @@
+{{log this}}
+
 <style>
 	* {
-		{{#each colors}}
-			--K4-{{{name}}}: {{{color}}}
+		{{#each colors as |color name|}}
+			--K4-{{{name}}}: {{{color}}};
 		{{/each}}
 	}
 </style>

@@ -21,6 +21,10 @@
 				"systemInit": "Initializing Kult 4E"
 			},
 			"tinymce": {
+				"block": "block",
+				"paragraph": "paragraph",
+				"list": "list",
+				"inline": "inline",
 				"headings": "headings",
 				"heading": "heading",
 				"headingNum": "heading {headingNum}",

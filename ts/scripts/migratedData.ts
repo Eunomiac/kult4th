@@ -81,18 +81,18 @@ const sortIntoFolders = async (itemData: Partial<ItemDataRecord>) => {
 		}/*!DEVCODE*/
 	};
 	const itemFolders = {
-		"Advantages": C.Colors["GOLD -1"],
-		"Disadvantages": C.Colors["GOLD -2"],
-		"Basic Player Moves": C.Colors["GOLD -1"],
-		"Dark Secrets": C.Colors["GOLD -2"],
-		"Weapons": C.Colors["GOLD -1"]/*DEVCODE*/,
-		"Derived Moves": C.Colors["GOLD -2"],
-		"Derived Attacks": C.Colors["GOLD -1"]/*!DEVCODE*/
+		"Advantages": C.Colors.dGOLD,
+		"Disadvantages": C.Colors.dGOLD,
+		"Basic Player Moves": C.Colors.dGOLD,
+		"Dark Secrets": C.Colors.dGOLD,
+		"Weapons": C.Colors.dGOLD/*DEVCODE*/,
+		"Derived Moves": C.Colors.dGOLD,
+		"Derived Attacks": C.Colors.dGOLD/*!DEVCODE*/
 	};
 	const subItemFolders = {
-		"Active Rolled": C.Colors["RED -1"],
-		"Active Static": C.Colors["RED -2"],
-		"Passive": C.Colors["RED -1"]
+		"Active Rolled": C.Colors.dRED,
+		"Active Static": C.Colors.dRED,
+		"Passive": C.Colors.dRED
 	};
 	const FOLDERDATA = Object.entries(itemFolders).map(([folderName, folderColor]) => ({
 		name: folderName,
@@ -408,7 +408,7 @@ const ITEM_DATA: Partial<Record<
 		K4ItemSubType,
 		Record<
 			string,
-			Partial<ItemDataConstructorData>
+			ItemDataConstructorData
 		>
 	>>
 >> = {
@@ -10128,5 +10128,57 @@ const ITEM_DATA: Partial<Record<
 	}
 };
 
+function extractPackData(itemData: Record<any,any> = ITEM_DATA): Array<Partial<ItemDataConstructorData>> {
+	// given a nested list of categorized item data entries, returns only the entries
+	const returnData = [];
+	if (U.isList(itemData)) {
+		for (const [key, val] of Object.entries(itemData)) {
+			if (U.isList(val)) {
+				if ("name" in val && val.name === key) {
+					returnData.push(val as Partial<ItemDataConstructorData>);
+				} else {
+					returnData.push(...extractPackData(val));
+				}
+			}
+		}
+	}
+	return returnData;
+}
+
+function analyzePackData(itemData = ITEM_DATA) {
+	const ITEMS = extractPackData(itemData);
+	/* How many Advantages and Disadvantages have no moves, 1 move or 2 moves?
+			- only derived MOVES count (derived ATTACKS are generally passive, as they're added to the player's sheet, rather than being rolls on their own)
+		ANSWER:
+			- all PASSIVE items have zero moves, all ACTIVE items have one or more moves
+			- four Advantages have TWO moves: "Explosives Expert", "Shadow", "Divine Champion" and "Sealed Fate"
+			- all OTHER ACTIVE Advantages/Disadvantages have ONE move
+	- */
+
+
+	const dMoveData: Record<string,number> = {};
+	const dMoveBins: Record<number,string[]> = {};
+	ITEMS.filter((item) => [K4ItemType.advantage, K4ItemType.disadvantage].includes(item.type!))
+		.forEach((item) => {
+			const iName = item.name as string;
+			if (item.type && (item.type === K4ItemType.advantage || item.type === K4ItemType.disadvantage)) {
+				const numSubItems = (item as {data: {subItems?: any[]}}).data.subItems?.filter((subData) => subData.type === K4ItemType.move).length ?? 0 as int;
+				dMoveData[iName] = numSubItems;
+				dMoveBins[numSubItems] ??= [];
+				dMoveBins[numSubItems].push(iName);
+			}
+		});
+	console.log({
+		"By Item Name": dMoveData,
+		"By Num SubItems": dMoveBins
+	});
+
+
+	/* MUTATION CHECKLIST
+			- convert attacks into a simple data interface: They should not be items on their own, but should instead be referenced by moves for their effects
+			- ALL items should have an 'svgKey' set, referring to entry in SVGDATA
+	*/
+}
+
 export default ITEM_DATA;
-export {resetItems};
+export {resetItems, extractPackData, analyzePackData};

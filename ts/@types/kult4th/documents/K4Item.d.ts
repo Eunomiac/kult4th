@@ -70,6 +70,20 @@ declare global {
 	: T extends K4WeaponClass.bomb ? ("")
 	: "";
 
+	interface K4Attack {
+		name: string,
+		range: RangeType[],
+		harm: posInt,
+		ammoCost?: posInt,
+		sourceItem?: {
+			name: string,
+			id?: string,
+			type: K4ItemType
+		},
+		costsEdge?: boolean,
+		effectDesc?: string,
+		effectFunc?: () => void
+	}
 	namespace K4ItemComps {
 		export interface Base {
 			description: string,
@@ -88,7 +102,7 @@ declare global {
 			subItems: ItemDataSource[]
 		}
 
-		export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon>;
+		export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear>;
 
 		export interface CanSubItem {
 			sourceItem?: {
@@ -111,18 +125,12 @@ declare global {
 		}
 		export type HasRules = K4ItemSpec<Exclude<K4ItemType, K4ItemType.relation>>;
 	}
-
-
-
-
 	namespace K4ItemSourceSchema {
-
-
-
 		export interface move extends K4ItemComps.Base, K4ItemComps.CanSubItem, K4ItemComps.RulesData, ResultsData {
 			attribute: K4Attribute
 		}
-		export interface attack extends move {
+		export interface attack extends K4ItemComps.Base, K4ItemComps.CanSubItem, K4ItemComps.RulesData, ResultsData {
+			attribute: K4Attribute
 			range: RangeType[],
 			harm: posInt,
 			ammo: posInt
@@ -163,12 +171,11 @@ declare global {
 			}
 		}
 
-		export interface gear extends K4ItemComps.Base, K4ItemComps.RulesData {
+		export interface gear extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
 			armor: number
 		}
 	}
-
-	namespace K4ItemSourceData {
+		namespace K4ItemSourceData {
 		export interface move {
 			type: K4ItemType.move,
 			data: K4ItemSourceSchema.move
@@ -204,6 +211,7 @@ declare global {
 
 		export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
 	}
+
 	namespace K4ItemPropertiesSchema {
 
 		interface Base {
@@ -272,4 +280,6 @@ declare global {
 
 	type K4ItemSpec<Type extends K4ItemType> = K4Item & {data: {type: Type, _source: {type: Type}}}
 	type K4HasSubItems<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {data: {data: {subItems: ItemDataSource[]}}}
+
+
 }

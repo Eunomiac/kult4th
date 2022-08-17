@@ -793,6 +793,27 @@ function objMap(obj, keyFunc, valFunc) {
     }
     return Object.fromEntries(Object.entries(obj).map(([key, val]) => [keyFunc(key, val), valFunc(val, key)]));
 }
+const objFindKey = (obj, keyFunc, valFunc) => {
+    // An object-equivalent Array.findIndex() function, which accepts check functions for both keys and/or values.
+    // If only one function is provided, it's assumed to be searching via values and will receive (v, k) args.
+    if (!valFunc) {
+        valFunc = keyFunc;
+        keyFunc = false;
+    }
+    if (!keyFunc) {
+        keyFunc = ((k) => k);
+    }
+    if (isArray(obj)) {
+        return obj.findIndex(valFunc);
+    }
+    const kFunc = keyFunc || (() => true);
+    const vFunc = valFunc || (() => true);
+    const validEntry = Object.entries(obj).find(([k, v]) => kFunc(k, v) && vFunc(v, k));
+    if (validEntry) {
+        return validEntry[0];
+    }
+    return false;
+};
 const objFilter = (obj, keyFunc, valFunc) => {
     // An object-equivalent Array.filter() function, which accepts filter functions for both keys and/or values.
     // If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
@@ -808,7 +829,7 @@ const objFilter = (obj, keyFunc, valFunc) => {
     }
     const kFunc = keyFunc || (() => true);
     const vFunc = valFunc || (() => true);
-    return Object.fromEntries(Object.entries(obj).filter(([key, val]) => kFunc(key) && vFunc(val)));
+    return Object.fromEntries(Object.entries(obj).filter(([key, val]) => kFunc(key, val) && vFunc(val, key)));
 };
 const objForEach = (obj, func) => {
     // An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
@@ -1070,7 +1091,7 @@ export default {
     subGroup,
     // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
     remove, replace, partition,
-    objClean, objMap, objFilter, objForEach, objCompact,
+    objClean, objMap, objFindKey, objFilter, objForEach, objCompact,
     objClone, objMerge, objExpand, objFlatten,
     // ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
     getDynamicFunc,

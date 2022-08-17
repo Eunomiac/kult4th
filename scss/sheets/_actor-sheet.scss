@@ -18,7 +18,7 @@
 		transform: translate(-50%, -50%);
 		z-index: -4;
 
-		svg { fill: var(--K4-black) }
+		svg { fill: var(--K4-BLACK) }
 
 		&.gear-huge {
 			top: 55%;
@@ -129,8 +129,8 @@
 								0 0 16.5px var(--K4-color-primary-bright);
 
 							&.placeholder {
-								--actor-name-shadow-bright: var(--K4-grey-bright);
-								--actor-name-shadow-dim: var(--K4-grey-dark);
+								--actor-name-shadow-bright: var(--K4-bGREY);
+								--actor-name-shadow-dim: var(--K4-dGREY);
 								font-size: $rem-14;
 								line-height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer));
 							}
@@ -343,7 +343,7 @@
 							left: 50%;
 							overflow: hidden;
 
-							--K4-svg-fill: var(--K4-black);
+							--K4-svg-fill: var(--K4-BLACK);
 
 							.svg-def {
 								top: calc(100% + #{0.5 * $svg-height});
@@ -560,8 +560,8 @@
 
 							/* WOUNDS */
 							.wounds {
-								--button-gradient-light: var(--K4-red-bright);
-								--button-gradient-dark: var(--K4-red-dark);
+								--button-gradient-light: var(--K4-bRED);
+								--button-gradient-dark: var(--K4-dRED);
 								display: grid;
 								padding: 5px;
 								// height: $button-size + $button-size + 5px;
@@ -679,67 +679,67 @@
 
 									&[value="7"],
 									option[value="7"] {
-										color: var(--K4-white);
+										color: var(--K4-WHITE);
 									}
 
 									&[value="6"],
 									option[value="6"] {
-										color: var(--K4-white);
+										color: var(--K4-WHITE);
 									}
 
 									&[value="5"],
 									option[value="5"] {
-										color: var(--K4-gold-bright);
+										color: var(--K4-bGOLD);
 									}
 
 									&[value="4"],
 									option[value="4"] {
-										color: var(--K4-gold-bright);
+										color: var(--K4-bGOLD);
 									}
 
 									&[value="3"],
 									option[value="3"] {
-										color: var(--K4-gold-bright);
+										color: var(--K4-bGOLD);
 									}
 
 									&[value="2"],
 									option[value="2"] {
-										color: var(--K4-gold);
+										color: var(--K4-GOLD);
 									}
 
 									&[value="1"],
 									option[value="1"] {
-										color: var(--K4-gold-dark);
+										color: var(--K4-dGOLD);
 									}
 
 									&[value="0"],
 									option[value="0"] {
-										color: var(--K4-gold-dark);
+										color: var(--K4-dGOLD);
 									}
 
 									&[value="-1"],
 									option[value="-1"] {
-										color: var(--K4-red-bright);
+										color: var(--K4-bRED);
 									}
 
 									&[value="-2"],
 									option[value="-2"] {
-										color: var(--K4-red-bright);
+										color: var(--K4-bRED);
 									}
 
 									&[value="-3"],
 									option[value="-3"] {
-										color: var(--K4-red-bright);
+										color: var(--K4-bRED);
 									}
 
 									&[value="-4"],
 									option[value="-4"] {
-										color: var(--K4-red-bright);
+										color: var(--K4-bRED);
 									}
 
 									&[value="-5"],
 									option[value="-5"] {
-										color: var(--K4-red-bright);
+										color: var(--K4-bRED);
 										font-weight: $font-weight-black;
 									}
 								}
