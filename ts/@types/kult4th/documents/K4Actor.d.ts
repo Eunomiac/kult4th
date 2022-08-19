@@ -70,7 +70,9 @@ declare global {
 	}
 	declare const enum K4WoundType {
 		serious = "serious",
-		critical = "critical"
+		critical = "critical",
+		stableserious = "stableserious",
+		stablecritical = "stablecritical"
 	}
 	interface K4Wound {
 		id: string,

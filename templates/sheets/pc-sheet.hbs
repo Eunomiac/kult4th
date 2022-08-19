@@ -35,34 +35,44 @@
 		{{> "systems/kult4th/templates/components/nav-frame.hbs" }}
 		<nav class="tabs" data-group="primary">
 			<div class="nav-tab-container">
+				<div class="nav-tab-slider">
 				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-a"}}
 				<a class="nav-tab item" data-tab="front">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
 				</a>
+				</div>
 			</div>
 			<div class="nav-tab-container">
+				<div class="nav-tab-slider">
 				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-d"}}
 				<a class="nav-tab item" data-tab="assets">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
 				</a>
+				</div>
 			</div>
 			<div class="nav-tab-container">
-				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-c"}}
-				<a class="nav-tab item" data-tab="bio">
-					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
-				</a>
+				<div class="nav-tab-slider">
+					{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-c"}}
+					<a class="nav-tab item" data-tab="bio">
+						<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
+					</a>
+				</div>
 			</div>
 			<div class="nav-tab-container">
+				<div class="nav-tab-slider">
 				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-b"}}
 				<a class="nav-tab item" data-tab="notes">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.journal")}}</span>
 				</a>
+				</div>
 			</div>
 			<div class="nav-tab-container">
+				<div class="nav-tab-slider">
 				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-a"}}
 				<a class="nav-tab item" data-tab="advancement">
 					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
 				</a>
+				</div>
 			</div>
 			{{!-- Need UNLOCK (?) and SETTINGS --}}
 		</nav>
@@ -90,9 +100,9 @@
 				<div class="wounds">
 					{{#each wounds}}
 					{{#if display}}
-					{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+					{{> "systems/kult4th/templates/components/hover-strip.hbs" }}
 					{{else}}
-					{{> "systems/kult4th/templates/components/hover-strip-editable.hbs"}}
+					{{> "systems/kult4th/templates/components/hover-strip-editable.hbs" }}
 					{{/if}}
 					{{/each}}
 				</div>
@@ -125,16 +135,13 @@
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
-			<section class="subsection flex-item-list special-moves">
+			<section class="subsection flex-item-list special-moves k4-theme-bright">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</label>
 				{{#each derivedMoves}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
-			<section class="subsection flex-item-list session-checks">
-				<label class="k4-title section-title">{{case "upper" (loc "kult4th.sheet.sessionChecks")}}</label>
-			</section>
-			<section class="subsection flex-item-list attacks">
+			<section class="subsection flex-item-list attacks k4-theme-red">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.attacks")}}</label>
 				{{#each attacks}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
@@ -150,25 +157,25 @@
 			<section class="subsection flex-item-list advantages">
 				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.advantages")}}</label>
 				{{#each advantages}}
-				{{> "systems/kult4th/templates/partials/advantage-card.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
-			<section class="subsection flex-item-list disadvantages">
+			<section class="subsection flex-item-list disadvantages k4-theme-dark">
 				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.disadvantages")}}</label>
 				{{#each disadvantages}}
-				{{> "systems/kult4th/templates/partials/disadvantage-card.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
-			<section class="subsection flex-item-list darksecrets">
+			<section class="subsection flex-item-list darksecrets k4-theme-red">
 				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.darksecrets")}}</label>
 				{{#each darksecrets}}
-				{{> "systems/kult4th/templates/partials/dark-secret-card.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list relations">
 				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.relations")}}</label>
 				{{#each relations}}
-				{{> "systems/kult4th/templates/partials/relation-card.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 		</section>

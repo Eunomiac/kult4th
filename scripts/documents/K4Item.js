@@ -63,33 +63,42 @@ export default class K4Item extends Item {
         }
     }
     toHoverStrip() {
+        const themeMap = {
+            "advantage": "k4-theme-dgold",
+            "default": "k4-theme-dgold",
+            "disadvantage": "k4-theme-dark",
+            "darksecret": "k4-theme-red"
+        };
+        const theme = themeMap[this.data.type] ?? themeMap.default;
         /* interface StripButtonData {
-            icon: KeyOf<typeof SVGDATA>,
-            dataset: Record<string, string>,
-            classes?: string[],
-            tooltip?: string
-        }
-        interface HoverStripData {
-            icon: KeyOf<typeof SVGDATA>,
-            classes: string[],
-            buttons: StripButtonData[],
-            dataset?: Record<string,string>,
-            tooltip?: string
-        }	*/
+        icon: KeyOf<typeof SVGDATA>,
+        dataset: Record<string, string>,
+        classes?: string[],
+        tooltip?: string
+    }
+    interface HoverStripData {
+        icon: KeyOf<typeof SVGDATA>,
+        classes: string[],
+        buttons: StripButtonData[],
+        dataset?: Record<string,string>,
+        tooltip?: string
+    }	*/
         const stripData = {
             id: this.id ?? `${this.data.type}-${U.randString(10)}`,
+            type: this.data.type,
             display: this.name ?? "(unknown)",
             ...this.isDerived
                 ? {
                     icon: U.toKey(this.data.data.sourceItem.name),
                     stripClasses: [
                         U.toKey(`${this.data.data.sourceItem.type}-strip`),
-                        `derived-${this.data.type}`
+                        `derived-${this.data.type}`,
+                        "k4-theme-bright"
                     ]
                 }
                 : {
                     icon: U.toKey(this.name ?? `DEFAULT-${this.data.type}`),
-                    stripClasses: [`${this.data.type}-strip`]
+                    stripClasses: [`${this.data.type}-strip`, theme]
                 },
             dataset: "attribute" in this.data.data
                 ? {
@@ -134,7 +143,7 @@ export default class K4Item extends Item {
         if (this.data.type !== "relation" /* K4ItemType.relation */) {
             stripData.tooltip = this.data.data.rules.trigger;
         }
-        console.log("Hover Strip Data", stripData);
+        // console.log("Hover Strip Data", stripData);
         return stripData;
     }
     async displayItemSummary(speaker) {

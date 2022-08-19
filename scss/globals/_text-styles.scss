@@ -37,12 +37,12 @@
 	input[type='text'],
 	select,
 	.content-editable {
-		height: unset;
-		margin: 0 4px;
-		box-sizing: content-box;
+		// height: unset;
+		// margin: 0 4px;
+		// box-sizing: content-box;
 
-		outline: none;
-		box-shadow: none;
+		// outline: none;
+		// box-shadow: none;
 
 		overflow: hidden;
 
@@ -60,6 +60,8 @@
 			font-variant: normal !important;
 		}
 	}
+
+	button { outline: none; box-shadow: none; }
 
 	i {
 		--K4-color-primary: var(--K4-GOLD);
@@ -321,7 +323,7 @@
 		--strip-padding-vert: 5px;
 		--strip-underline-width: 1px;
 
-		--strip-color-fg: var(--K4-color-primary);
+		--strip-color-fg: var(--K4-color-primary-bright);
 		--strip-color-bg: var(--K4-color-contrast);
 
 		--icon-color-fg: var(--strip-color-fg);
@@ -334,8 +336,8 @@
 		--icon-scale: 1;
 		--button-color-bg: var(--K4-color-primary);
 		--button-color-fg: var(--K4-color-contrast);
-		--tooltip-color-fg: var(--K4-color-primary-bright);
-		--tooltip-color-bg: var(--K4-color-contrast);
+		--tooltip-color-fg: var(--K4-bWHITE);
+		--tooltip-color-bg: var(--K4-dBLACK);
 
 		position: relative;
 		height: var(--strip-height);
@@ -408,7 +410,7 @@
 					color: var(--button-color-fg);
 					text-align: center;
 					line-height: var(--icon-size);
-					font-size: $rem-14;
+					font-size: $rem-16;
 					text-transform: uppercase;
 					font-family: var(--font-primary-caps);
 					font-weight: $font-weight-black;
@@ -452,11 +454,11 @@
 
 		.strip-tooltip {
 			pointer-events: none;
-			position: relative;
+			position: absolute;
 			display: block;
 			font-family: var(--font-primary);
-			font-size: 10px;
-			line-height: $rem-12;
+			font-size: $rem-12;
+			line-height: $rem-14;
 			text-align: center;
 			font-style: italic;
 			width: 100%;
@@ -464,7 +466,7 @@
 			color: var(--tooltip-color-fg);
 			background: var(--tooltip-color-bg);
 			opacity: 0;
-			bottom: calc(2 * var(--strip-height));
+			bottom: calc(0.75 * var(--strip-height));
 			left: 0;
 			z-index: 40;
 			white-space: break-spaces;

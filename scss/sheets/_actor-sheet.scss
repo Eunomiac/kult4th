@@ -4,6 +4,7 @@
 	--K4-section-padding-top: 40px;
 	--K4-section-padding-horiz: 10px;
 	--K4-section-padding-bottom: 20px;
+	--K4-section-drop-shadow: 2px 4px 2px var(--K4-dBLACK);
 
 	--K4-subsection-padding-vert: 5px;
 	--K4-subsection-padding-horiz: 5px;
@@ -38,6 +39,12 @@
 			height: 160px;
 			width: 160px;
 		}
+	}
+
+	.window-header .header-button {
+		top: 44px;
+		left: 24px;
+		display: none;
 	}
 
 	.window-content {
@@ -169,6 +176,8 @@
 				z-index: 5;
 				transform: translate(-50%, -50%) scale(0.8);
 
+				* { pointer-events: none }
+
 				.nav-svg {
 					height: 100%;
 					width: 100%;
@@ -201,6 +210,7 @@
 							--K4-svg-stroke: url("#nav-main-ring-stroke-gradient");
 							--K4-svg-stroke-width: 10px;
 							transform: translate(-50%, -50%);
+							filter: drop-shadow(2px 2px 1px var(--K4-BLACK));
 						}
 					}
 				}
@@ -231,8 +241,8 @@
 					height: auto;
 					width: auto;
 					max-width: $gear-size - 2 * $frame-width;
-					top: $gear-size / 2;
-					left: $gear-size / 2;
+					top: 55%; // $gear-size / 2;
+					left: 50%; // $gear-size / 2;
 					transform: translate(-50%, -50%);
 					pointer-events: all;
 					// z-index: 0;
@@ -244,7 +254,7 @@
 					border-radius: 50%;
 					background: var(--K4-color-contrast);
 					// z-index: -1;
-					filter: drop-shadow(25px 25px 5px var(--K4-color-contrast));
+					filter: drop-shadow(25px 25px 15px var(--K4-dBLACK));
 				}
 
 				.profile-image-animation {
@@ -265,7 +275,7 @@
 					transform: scale(0.5);
 					transform-origin: center center;
 					background: transparent #{to-url("animations/nav-flare.webp")} no-repeat no-repeat center center/100%;
-					// z-index: -4;
+					z-index: -2;
 
 
 
@@ -277,7 +287,7 @@
 					font-size: $rem-24;
 					width: 30px;
 					position: absolute;
-					// z-index: 2;
+					// z-index: -2;
 					text-align: center;
 					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
 					transform: translate(-50%, -50%);
@@ -297,8 +307,8 @@
 
 				.tabs {
 					// $tab-spike-height: 40px;
-					$spoke-height: 130px;
-					$spoke-width: 40px;
+					$spoke-height: 140px;
+					$spoke-width: 80px;
 					$svg-size: 70px;
 					$svg-height: 40px;
 					$link-size: 40px;
@@ -312,7 +322,7 @@
 					// opacity: 0;
 					transform-origin: center center;
 					// transform: scale(0.5);
-					// z-index: -1;
+					z-index: -1;
 
 					.nav-tab-container {
 						display: block;
@@ -323,6 +333,8 @@
 						top: calc(50% - (0.5 * #{$spoke-height}));
 						transform-origin: center bottom;
 						left: 50%;
+						// pointer-events: all;
+						// outline: 2px dashed darkgreen;
 
 						&:nth-child(1) { --tab-rotation: 0deg; }
 
@@ -334,19 +346,34 @@
 
 						&:nth-child(5) { --tab-rotation: -150deg; }
 
+						.nav-tab-slider {
+							display: block;
+							position: absolute;
+							height: $svg-size;
+							width: $spoke-width;
+							transform: translate(-50%, -50%);
+							top: $spoke-height - $svg-height;
+							left: 50%;
+							// background: rgba(255, 0, 255, 0.2);
+						}
+
 						.svg-container[class*='nav-spoke'] {
 							// height: $svg-size;
+							width: $link-size;
 							transform: translate(-50%, -50%) scale(2);
 							transform-origin: center bottom;
 
-							bottom: 0.5 * $svg-height + 6px;
+							// outline: 2px dashed red;
+
+							top: 50%;
 							left: 50%;
 							overflow: hidden;
 
 							--K4-svg-fill: var(--K4-BLACK);
 
 							.svg-def {
-								top: calc(100% + #{0.5 * $svg-height});
+								top: calc(50% + #{0.5 * $svg-height});
+								left: 50%;
 							}
 						}
 
@@ -356,23 +383,30 @@
 							width: $link-size;
 							pointer-events: all;
 							left: 50%;
+							top: 0.5 * $link-size;
 							position: absolute;
+
+							// background: rgba(255, 255, 0, 0.2);
 							// outline: 3px solid yellow;
 
 							.nav-tab-label {
 								display: block;
 								opacity: 0;
-								color: var(--K4-color-primary-bright);
-								font-size: $rem-14;
-								font-family: Infidel;
+								color: var(--K4-bWHITE);
+								font-size: $rem-24;
+								font-family: var(--K4-font-primary-caps);
 								font-weight: $font-weight-black;
 								text-shadow:
-									0px 0px 5px var(--K4-color-contrast-low),
-									0px 0px 10px var(--K4-color-contrast-low),
-									0px 0px 15px var(--K4-color-contrast-low);
+									0px 0px 5px var(--K4-RED),
+									0px 0px 5px var(--K4-RED),
+									0px 0px 12px var(--K4-RED),
+									0px 0px 10px var(--K4-RED),
+									0px 0px 15px var(--K4-RED),
+									0px 0px 20px var(--K4-RED);
 								position: absolute;
 								transform-origin: center center;
 								transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
+								text-transform: uppercase;
 								top: 50%;
 								left: 50%;
 								text-align: center;
@@ -383,6 +417,7 @@
 			}
 
 			.tab-content {
+				filter: drop-shadow(rgb(0, 0, 0) 2px 4px 2px) drop-shadow(rgb(0, 0, 0) 20px 20px 20px);
 
 				.tab {
 					$grid-gap: 5px;
@@ -418,23 +453,26 @@
 					&.front {
 						$attributes-width: 200px;
 						$attributes-height: $attributes-width * (494 / 261) + 30px + 20px;
+						$main-panel-height: 450px;
+						$attack-height: 150px;
+						// $attributes-padding-bottom: $main-panel-height - $attributes-height;
 						$nav-buffer: 100px;
 						$header-height: 40px;
 						$status-height: 80px;
 						$modifiers-height: 20px;
 						$footer-height: 40px;
 
-						--attributes-width: #{$attributes-width};
-						--attributes-height: #{$attributes-height};
+						// --attributes-width: #{$attributes-width};
+						// --attributes-height: #{$attributes-height};
 						grid-template-areas:
 							". dramatic-hooks dramatic-hooks dramatic-hooks"
 							"status status status status"
 							"modifiers modifiers modifiers modifiers"
 							"attributes attributes basic-moves special-moves"
-							"session-checks session-checks attacks special-moves"
+							"attributes attributes basic-moves attacks"
 							"footer footer footer footer";
 						grid-template-columns: #{$nav-buffer} #{$attributes-width - $nav-buffer - $grid-gap} 1fr 1fr;
-						grid-template-rows: #{$header-height} #{$status-height} #{$modifiers-height} var(--attributes-height) auto #{$footer-height};
+						grid-template-rows: #{$header-height} #{$status-height} #{$modifiers-height} #{$main-panel-height - $attack-height} auto #{$footer-height};
 
 						.dramatic-hooks {
 							grid-area: dramatic-hooks;
@@ -634,7 +672,7 @@
 						.attributes {
 							position: relative;
 							grid-area: attributes;
-							background: transparent #{to-url("layout/attributes-spread.webp")} no-repeat bottom center/100% auto;
+							background: transparent url("../assets/layout/attributes-spread.webp") no-repeat center 30px/100% auto;
 
 							.attribute-box {
 								--panel-size: 200px;
@@ -741,6 +779,37 @@
 									option[value="-5"] {
 										color: var(--K4-bRED);
 										font-weight: $font-weight-black;
+									}
+
+
+									&[value="3"],
+									option[value="3"] {
+										color: var(--K4-bWHITE);
+									}
+
+									&[value="2"],
+									option[value="2"] {
+										color: var(--K4-gGOLD);
+									}
+
+									&[value="1"],
+									option[value="1"] {
+										color: var(--K4-bGOLD);
+									}
+
+									&[value="0"],
+									option[value="0"] {
+										color: var(--K4-GOLD);
+									}
+
+									&[value="-1"],
+									option[value="-1"] {
+										color: var(--K4-bRED);
+									}
+
+									&[value="-2"],
+									option[value="-2"] {
+										color: var(--K4-gRED);
 									}
 								}
 

@@ -88,24 +88,24 @@ export const AttributeButtons = (resolve) => {
 };
 export const Colors = {
     GOLD: "rgb(150, 140, 106)",
-    bGOLD: "rgb(235, 219, 166)",
     dGOLD: "rgb(65, 61, 46)",
+    bGOLD: "rgb(235, 219, 166)",
     gGOLD: "rgb(255, 254, 200)",
     RED: "rgb(155, 32, 32)",
-    bRED: "rgb(240, 50, 50)",
     dRED: "rgb(70, 14, 14)",
-    gRED: "rgb(255, 0, 0)",
-    bWHITE: "rgb(255, 255, 255)",
-    WHITE: "rgb(212, 212, 212)",
-    bGREY: "rgb(190, 190, 190)",
-    GREY: "rgb(128, 128, 128)",
-    dGREY: "rgb(66, 66, 66)",
-    BLACK: "rgb(29, 29, 29)",
-    dBLACK: "rgb(0, 0, 0)",
+    bRED: "rgb(240, 50, 50)",
+    gRED: "rgb(255, 99, 62)",
     BLUE: "rgb(43, 85, 139)",
-    bBLUE: "rgb(69, 137, 224)",
     dBLUE: "rgb(17, 33, 54)",
-    gBLUE: "rgb(17, 33, 54)"
+    bBLUE: "rgb(69, 137, 224)",
+    gBLUE: "rgb(128, 185, 255)",
+    bWHITE: "rgb(255, 255, 255)",
+    WHITE: "rgb(226, 226, 226)",
+    bGREY: "rgb(177, 177, 177)",
+    GREY: "rgb(128, 128, 128)",
+    dGREY: "rgb(78, 78, 78)",
+    BLACK: "rgb(29, 29, 29)",
+    dBLACK: "rgb(0, 0, 0)"
 };
 export function getColorName(colorVal) {
     if (colorVal in Colors) {

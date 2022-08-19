@@ -1,6 +1,5 @@
-{{log "{comp} HOVER STRIP" this}}
 
-<div class="hover-strip {{~#each stripClasses}} {{this}}{{/each}}" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}>
+<div class="hover-strip {{~#each stripClasses}} {{this}}{{/each}}" data-type={{type}} {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}>
 	<span class="strip-bg"></span>
 	<div class="strip-name" data-clamplines="1" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}>{{display}}</div>
 	<span class="button-strip">

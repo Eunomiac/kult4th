@@ -24,6 +24,7 @@ declare global {
 	}
 	interface HoverStripData {
 		id: string,
+		type: K4ItemType | K4WoundType,
 		display: string,
 		icon: KeyOf<typeof SVGDATA>,
 		stripClasses: string[],

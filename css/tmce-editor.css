@@ -99,84 +99,84 @@ Kult White:  #FFFFFF */
     font-family: Alverata, AlverataCaps;
     font-weight: 0 350;
     font-style: italic;
-    src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light-italic.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: Alverata, AlverataCaps;
     font-weight: 351 450;
     font-style: italic;
-    src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-italic.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: Alverata, AlverataCaps;
     font-weight: 451 550;
     font-style: italic;
-    src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med-italic.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: Alverata, AlverataCaps;
     font-weight: 551 650;
     font-style: italic;
-    src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: Alverata, AlverataCaps;
     font-weight: 651 800;
     font-style: italic;
-    src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold-italic.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: Alverata, AlverataCaps;
     font-weight: 801 1000;
     font-style: italic;
-    src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black-italic.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: AlverataCaps;
     font-weight: 0 350;
     font-style: normal;
-    src: url("../assets/fonts/alverata/reg/alverata-light.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-light.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: AlverataCaps;
     font-weight: 351 450;
     font-style: normal;
-    src: url("../assets/fonts/alverata/reg/alverata.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: AlverataCaps;
     font-weight: 451 550;
     font-style: normal;
-    src: url("../assets/fonts/alverata/reg/alverata-med.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-med.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: AlverataCaps;
     font-weight: 551 650;
     font-style: normal;
-    src: url("../assets/fonts/alverata/reg/alverata-semi.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-semi.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: AlverataCaps;
     font-weight: 651 800;
     font-style: normal;
-    src: url("../assets/fonts/alverata/reg/alverata-bold.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-bold.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
     font-family: AlverataCaps;
     font-weight: 801 1000;
     font-style: normal;
-    src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
@@ -188,7 +188,7 @@ Kult White:  #FFFFFF */
   #tinymce {
     font-family: AlverataSemiBold;
     font-style: italic;
-    src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); } }
+    src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"); } }
 
 @font-face {
   #tinymce {
@@ -199,6 +199,11 @@ Kult White:  #FFFFFF */
   #tinymce {
     font-family: Sokol;
     src: url("../assets/fonts/sokol.ttf"); } }
+
+@font-face {
+  #tinymce {
+    font-family: GrandpaScript;
+    src: url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.ttf") format("truetype"), url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.otf") format("opentype"); } }
   #tinymce * {
     /* FOUNDRY OVERRIDES */
     --font-primary: Alverata, serif;
@@ -219,10 +224,12 @@ Kult White:  #FFFFFF */
     --font-primary-caps: AlverataCaps, serif;
     --font-icon: "Font Awesome 5 Free";
     --font-heading: Infidel, sans-serif;
-    --font-decorative: Sokol, serif; }
+    --font-decorative: Sokol, serif;
+    --font-handwritten: GrandpaScript, serif; }
   #tinymce {
     --K4-color-primary: var(--K4-GOLD);
     --K4-color-primary-bright: var(--K4-bGOLD);
+    --K4-color-primary-glow: var(--K4-gGOLD);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-dGOLD);
     --K4-color-contrast-high: var(--K4-dBLACK);
@@ -301,6 +308,7 @@ Kult White:  #FFFFFF */
   #tinymce .k4-theme-white {
     --K4-color-primary: var(--K4-BLACK);
     --K4-color-primary-bright: var(--K4-dBLACK);
+    --K4-color-primary-glow: var(--K4-dBLACK);
     --K4-color-contrast: var(--K4-WHITE);
     --K4-color-contrast-low: var(--K4-bGOLD);
     --K4-color-contrast-high: var(--K4-bWHITE);
@@ -325,6 +333,7 @@ Kult White:  #FFFFFF */
   #tinymce .k4-theme-dark {
     --K4-color-primary: var(--K4-WHITE);
     --K4-color-primary-bright: var(--K4-bWHITE);
+    --K4-color-primary-glow: var(--K4-bWHITE);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-dGOLD);
     --K4-color-contrast-high: var(--K4-dBLACK);
@@ -349,6 +358,7 @@ Kult White:  #FFFFFF */
   #tinymce .k4-theme-red {
     --K4-color-primary: var(--K4-RED);
     --K4-color-primary-bright: var(--K4-bRED);
+    --K4-color-primary-glow: var(--K4-gRED);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-RED);
     --K4-color-contrast-high: var(--K4-dBLACK);
@@ -373,6 +383,7 @@ Kult White:  #FFFFFF */
   #tinymce .k4-theme-bright {
     --K4-color-primary: var(--K4-BLACK);
     --K4-color-primary-bright: var(--K4-dBLACK);
+    --K4-color-primary-glow: var(--K4-dBLACK);
     --K4-color-contrast: var(--K4-bGOLD);
     --K4-color-contrast-low: var(--K4-GOLD);
     --K4-color-contrast-high: var(--K4-bGOLD);
@@ -473,13 +484,6 @@ Kult White:  #FFFFFF */
   #tinymce .mce-content-body input[type='text'],
   #tinymce .mce-content-body select,
   #tinymce .mce-content-body .content-editable {
-    height: unset;
-    margin: 0 4px;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
-    outline: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
     overflow: hidden; }
     #tinymce textarea:invalid,
     #tinymce input[type='text']:invalid,
@@ -505,6 +509,11 @@ Kult White:  #FFFFFF */
       text-shadow: none !important;
       text-transform: none !important;
       font-variant: normal !important; }
+  #tinymce button,
+  #tinymce .mce-content-body button {
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none; }
   #tinymce i,
   #tinymce .mce-content-body i {
     --K4-color-primary: var(--K4-GOLD);
@@ -760,7 +769,7 @@ Kult White:  #FFFFFF */
     --strip-height: calc(var(--icon-size) + 2px);
     --strip-padding-vert: 5px;
     --strip-underline-width: 1px;
-    --strip-color-fg: var(--K4-color-primary);
+    --strip-color-fg: var(--K4-color-primary-bright);
     --strip-color-bg: var(--K4-color-contrast);
     --icon-color-fg: var(--strip-color-fg);
     --icon-color-bg: var(--strip-color-bg);
@@ -771,8 +780,8 @@ Kult White:  #FFFFFF */
     --icon-scale: 1;
     --button-color-bg: var(--K4-color-primary);
     --button-color-fg: var(--K4-color-contrast);
-    --tooltip-color-fg: var(--K4-color-primary-bright);
-    --tooltip-color-bg: var(--K4-color-contrast);
+    --tooltip-color-fg: var(--K4-bWHITE);
+    --tooltip-color-bg: var(--K4-dBLACK);
     position: relative;
     height: var(--strip-height);
     white-space: nowrap; }
@@ -855,7 +864,7 @@ Kult White:  #FFFFFF */
           color: var(--button-color-fg);
           text-align: center;
           line-height: var(--icon-size);
-          font-size: 0.875rem;
+          font-size: 1rem;
           text-transform: uppercase;
           font-family: var(--font-primary-caps);
           font-weight: 900;
@@ -897,11 +906,11 @@ Kult White:  #FFFFFF */
     #tinymce div.hover-strip .strip-tooltip,
     #tinymce .mce-content-body div.hover-strip .strip-tooltip {
       pointer-events: none;
-      position: relative;
+      position: absolute;
       display: block;
       font-family: var(--font-primary);
-      font-size: 10px;
-      line-height: 0.75rem;
+      font-size: 0.75rem;
+      line-height: 0.875rem;
       text-align: center;
       font-style: italic;
       width: 100%;
@@ -909,7 +918,7 @@ Kult White:  #FFFFFF */
       color: var(--tooltip-color-fg);
       background: var(--tooltip-color-bg);
       opacity: 0;
-      bottom: calc(2 * var(--strip-height));
+      bottom: calc(0.75 * var(--strip-height));
       left: 0;
       z-index: 40;
       white-space: break-spaces;

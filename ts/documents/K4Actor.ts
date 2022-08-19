@@ -104,14 +104,14 @@ export default class K4Actor extends Actor {
 		return Object.values(this.wounds).map((wound) => {
 			const stripData: Partial<HoverStripData> = {
 				id: wound.id,
+				type: [
+					wound.isStabilized ? "stable" : "",
+					wound.isCritical ? "critical" : "serious"
+				].join("") as K4WoundType,
 				display: wound.description ?? "",
 				stripClasses: ["wound-strip"],
 				dataTarget: `data.wounds.${wound.id}.description`,
 				placeholder: "(description)  ",
-				dataset: {
-					"color-fg": C.Colors.gRED,
-					"color-bg": C.Colors.BLACK
-				},
 				buttons: [
 					{
 						icon: wound.isCritical ? "wound-critical" : "wound-serious",
@@ -423,7 +423,7 @@ export default class K4Actor extends Actor {
 	}
 
 	override async _onCreate(...[actorData, ...args]: Parameters<Actor["_onCreate"]>) {
-		console.log("ACTOR ON CREATE", actorData, args);
+		// console.log("ACTOR ON CREATE", actorData, args);
 
 		if (this.type === K4ActorType.pc){
 			const pack = await game.packs.get("kult4th.k4-basic-player-moves");

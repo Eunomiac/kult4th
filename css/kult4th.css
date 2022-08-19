@@ -41,73 +41,73 @@ Number Display
   font-family: Alverata, AlverataCaps;
   font-weight: 0 350;
   font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light-italic.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype"); }
 
 @font-face {
   font-family: Alverata, AlverataCaps;
   font-weight: 351 450;
   font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-italic.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype"); }
 
 @font-face {
   font-family: Alverata, AlverataCaps;
   font-weight: 451 550;
   font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med-italic.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype"); }
 
 @font-face {
   font-family: Alverata, AlverataCaps;
   font-weight: 551 650;
   font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"); }
 
 @font-face {
   font-family: Alverata, AlverataCaps;
   font-weight: 651 800;
   font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold-italic.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype"); }
 
 @font-face {
   font-family: Alverata, AlverataCaps;
   font-weight: 801 1000;
   font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black-italic.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype"); }
 
 @font-face {
   font-family: AlverataCaps;
   font-weight: 0 350;
   font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-light.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-light.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-light.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-light.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-light.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-light.otf") format("opentype"); }
 
 @font-face {
   font-family: AlverataCaps;
   font-weight: 351 450;
   font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata.otf") format("opentype"); }
 
 @font-face {
   font-family: AlverataCaps;
   font-weight: 451 550;
   font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-med.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-med.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-med.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-med.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-med.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-med.otf") format("opentype"); }
 
 @font-face {
   font-family: AlverataCaps;
   font-weight: 551 650;
   font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-semi.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-semi.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi.otf") format("opentype"); }
 
 @font-face {
   font-family: AlverataCaps;
   font-weight: 651 800;
   font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-bold.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-bold.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-bold.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-bold.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-bold.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-bold.otf") format("opentype"); }
 
 @font-face {
   font-family: AlverataCaps;
   font-weight: 801 1000;
   font-style: normal;
-  src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-black.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-black.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-black.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype"); }
 
 @font-face {
   font-family: AlverataSemiBold;
@@ -117,7 +117,7 @@ Number Display
 @font-face {
   font-family: AlverataSemiBold;
   font-style: italic;
-  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff") format("woff"), url("../assets/fonts/alverata/reg/alverata-semi-italic.woff2") format("woff2"), url("../assets/fonts/alverata/reg/alverata-semi-italic.svg") format("svg"); }
+  src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"), url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype"); }
 
 @font-face {
   font-family: Infidel;
@@ -126,6 +126,10 @@ Number Display
 @font-face {
   font-family: Sokol;
   src: url("../assets/fonts/sokol.ttf"); }
+
+@font-face {
+  font-family: GrandpaScript;
+  src: url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.ttf") format("truetype"), url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.otf") format("opentype"); }
 
 * {
   /* FOUNDRY OVERRIDES */
@@ -147,7 +151,8 @@ Number Display
   --font-primary-caps: AlverataCaps, serif;
   --font-icon: "Font Awesome 5 Free";
   --font-heading: Infidel, sans-serif;
-  --font-decorative: Sokol, serif; }
+  --font-decorative: Sokol, serif;
+  --font-handwritten: GrandpaScript, serif; }
 
 .vtt.game.system-kult4th {
   /* OFFICIAL KULT COLORS
@@ -206,6 +211,7 @@ Kult White:  #FFFFFF */
   .vtt.game.system-kult4th {
     --K4-color-primary: var(--K4-GOLD);
     --K4-color-primary-bright: var(--K4-bGOLD);
+    --K4-color-primary-glow: var(--K4-gGOLD);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-dGOLD);
     --K4-color-contrast-high: var(--K4-dBLACK);
@@ -284,6 +290,7 @@ Kult White:  #FFFFFF */
   .vtt.game.system-kult4th .k4-theme-white {
     --K4-color-primary: var(--K4-BLACK);
     --K4-color-primary-bright: var(--K4-dBLACK);
+    --K4-color-primary-glow: var(--K4-dBLACK);
     --K4-color-contrast: var(--K4-WHITE);
     --K4-color-contrast-low: var(--K4-bGOLD);
     --K4-color-contrast-high: var(--K4-bWHITE);
@@ -308,6 +315,7 @@ Kult White:  #FFFFFF */
   .vtt.game.system-kult4th .k4-theme-dark {
     --K4-color-primary: var(--K4-WHITE);
     --K4-color-primary-bright: var(--K4-bWHITE);
+    --K4-color-primary-glow: var(--K4-bWHITE);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-dGOLD);
     --K4-color-contrast-high: var(--K4-dBLACK);
@@ -332,6 +340,7 @@ Kult White:  #FFFFFF */
   .vtt.game.system-kult4th .k4-theme-red {
     --K4-color-primary: var(--K4-RED);
     --K4-color-primary-bright: var(--K4-bRED);
+    --K4-color-primary-glow: var(--K4-gRED);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-RED);
     --K4-color-contrast-high: var(--K4-dBLACK);
@@ -356,6 +365,7 @@ Kult White:  #FFFFFF */
   .vtt.game.system-kult4th .k4-theme-bright {
     --K4-color-primary: var(--K4-BLACK);
     --K4-color-primary-bright: var(--K4-dBLACK);
+    --K4-color-primary-glow: var(--K4-dBLACK);
     --K4-color-contrast: var(--K4-bGOLD);
     --K4-color-contrast-low: var(--K4-GOLD);
     --K4-color-contrast-high: var(--K4-bGOLD);
@@ -467,13 +477,6 @@ Kult White:  #FFFFFF */
   .vtt.game.system-kult4th .mce-content-body input[type='text'],
   .vtt.game.system-kult4th .mce-content-body select,
   .vtt.game.system-kult4th .mce-content-body .content-editable {
-    height: unset;
-    margin: 0 4px;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
-    outline: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
     overflow: hidden; }
     .vtt.game.system-kult4th textarea:invalid,
     .vtt.game.system-kult4th input[type='text']:invalid,
@@ -499,6 +502,11 @@ Kult White:  #FFFFFF */
       text-shadow: none !important;
       text-transform: none !important;
       font-variant: normal !important; }
+  .vtt.game.system-kult4th button,
+  .vtt.game.system-kult4th .mce-content-body button {
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none; }
   .vtt.game.system-kult4th i,
   .vtt.game.system-kult4th .mce-content-body i {
     --K4-color-primary: var(--K4-GOLD);
@@ -754,7 +762,7 @@ Kult White:  #FFFFFF */
     --strip-height: calc(var(--icon-size) + 2px);
     --strip-padding-vert: 5px;
     --strip-underline-width: 1px;
-    --strip-color-fg: var(--K4-color-primary);
+    --strip-color-fg: var(--K4-color-primary-bright);
     --strip-color-bg: var(--K4-color-contrast);
     --icon-color-fg: var(--strip-color-fg);
     --icon-color-bg: var(--strip-color-bg);
@@ -765,8 +773,8 @@ Kult White:  #FFFFFF */
     --icon-scale: 1;
     --button-color-bg: var(--K4-color-primary);
     --button-color-fg: var(--K4-color-contrast);
-    --tooltip-color-fg: var(--K4-color-primary-bright);
-    --tooltip-color-bg: var(--K4-color-contrast);
+    --tooltip-color-fg: var(--K4-bWHITE);
+    --tooltip-color-bg: var(--K4-dBLACK);
     position: relative;
     height: var(--strip-height);
     white-space: nowrap; }
@@ -849,7 +857,7 @@ Kult White:  #FFFFFF */
           color: var(--button-color-fg);
           text-align: center;
           line-height: var(--icon-size);
-          font-size: 0.875rem;
+          font-size: 1rem;
           text-transform: uppercase;
           font-family: var(--font-primary-caps);
           font-weight: 900;
@@ -891,11 +899,11 @@ Kult White:  #FFFFFF */
     .vtt.game.system-kult4th div.hover-strip .strip-tooltip,
     .vtt.game.system-kult4th .mce-content-body div.hover-strip .strip-tooltip {
       pointer-events: none;
-      position: relative;
+      position: absolute;
       display: block;
       font-family: var(--font-primary);
-      font-size: 10px;
-      line-height: 0.75rem;
+      font-size: 0.75rem;
+      line-height: 0.875rem;
       text-align: center;
       font-style: italic;
       width: 100%;
@@ -903,7 +911,7 @@ Kult White:  #FFFFFF */
       color: var(--tooltip-color-fg);
       background: var(--tooltip-color-bg);
       opacity: 0;
-      bottom: calc(2 * var(--strip-height));
+      bottom: calc(0.75 * var(--strip-height));
       left: 0;
       z-index: 40;
       white-space: break-spaces;
@@ -1068,6 +1076,7 @@ Kult White:  #FFFFFF */
     .vtt.game.system-kult4th .app.window-app:not([class*='k4-theme']) {
       --K4-color-primary: var(--K4-GOLD);
       --K4-color-primary-bright: var(--K4-bGOLD);
+      --K4-color-primary-glow: var(--K4-gGOLD);
       --K4-color-contrast: var(--K4-BLACK);
       --K4-color-contrast-low: var(--K4-dGOLD);
       --K4-color-contrast-high: var(--K4-dBLACK);
@@ -1089,9 +1098,11 @@ Kult White:  #FFFFFF */
       --K4-svg-clip-path: none;
       --K4-svg-outline-color: transparent;
       --K4-svg-scale: 1; }
-    .vtt.game.system-kult4th .app.window-app .window-header .header-button i[class^="fa"] {
-      font-size: 1rem;
-      text-shadow: 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 5px var(--K4-bGOLD), 0 0 5px var(--K4-bGOLD); }
+    .vtt.game.system-kult4th .app.window-app .window-header .header-button {
+      position: relative; }
+      .vtt.game.system-kult4th .app.window-app .window-header .header-button i[class^="fa"] {
+        font-size: 1rem;
+        text-shadow: 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 3px var(--K4-BLACK), 0 0 5px var(--K4-bGOLD), 0 0 5px var(--K4-bGOLD); }
     .vtt.game.system-kult4th .app.window-app .window-content {
       background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
       text-align: justify;
@@ -1129,7 +1140,7 @@ Kult White:  #FFFFFF */
     --K4-sheet-dragbar-shift-horiz: 0px;
     --K4-sheet-dragbar-shift-vert: 0px;
     --K4-sheet-header-height: 60px;
-    --K4-section-drop-shadow: 2px 4px 2px var(--K4-dBLACK);
+    --K4-section-drop-shadow: 20px 20px 20px var(--K4-dBLACK);
     --K4-section-padding-horiz: 0px;
     --K4-section-padding-vert: 0px;
     --K4-section-padding-top: var(--K4-section-padding-vert);
@@ -1167,14 +1178,16 @@ Kult White:  #FFFFFF */
       flex-direction: row-reverse; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-header .window-title {
         display: none; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-header .header-button.close {
-        -webkit-box-ordinal-group: 0;
-        -ms-flex-order: -1;
-        order: -1;
-        -webkit-transform: translateY(2px) scale(1.25);
-        -ms-transform: translateY(2px) scale(1.25);
-        transform: translateY(2px) scale(1.25);
-        color: var(--K4-bRED); }
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-header .header-button {
+        top: 10px; }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-header .header-button.close {
+          -webkit-box-ordinal-group: 0;
+          -ms-flex-order: -1;
+          order: -1;
+          -webkit-transform: translateY(2px) scale(1.25);
+          -ms-transform: translateY(2px) scale(1.25);
+          transform: translateY(2px) scale(1.25);
+          color: var(--K4-bRED); }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content {
       position: relative;
       overflow: visible;
@@ -1297,13 +1310,6 @@ Kult White:  #FFFFFF */
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body input[type='text'],
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body select,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body .content-editable {
-            height: unset;
-            margin: 0 4px;
-            -webkit-box-sizing: content-box;
-            box-sizing: content-box;
-            outline: none;
-            -webkit-box-shadow: none;
-            box-shadow: none;
             overflow: hidden; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content textarea:invalid,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content input[type='text']:invalid,
@@ -1329,6 +1335,11 @@ Kult White:  #FFFFFF */
               text-shadow: none !important;
               text-transform: none !important;
               font-variant: normal !important; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content button,
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body button {
+            outline: none;
+            -webkit-box-shadow: none;
+            box-shadow: none; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content i,
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body i {
             --K4-color-primary: var(--K4-GOLD);
@@ -1572,7 +1583,7 @@ Kult White:  #FFFFFF */
             --strip-height: calc(var(--icon-size) + 2px);
             --strip-padding-vert: 5px;
             --strip-underline-width: 1px;
-            --strip-color-fg: var(--K4-color-primary);
+            --strip-color-fg: var(--K4-color-primary-bright);
             --strip-color-bg: var(--K4-color-contrast);
             --icon-color-fg: var(--strip-color-fg);
             --icon-color-bg: var(--strip-color-bg);
@@ -1583,8 +1594,8 @@ Kult White:  #FFFFFF */
             --icon-scale: 1;
             --button-color-bg: var(--K4-color-primary);
             --button-color-fg: var(--K4-color-contrast);
-            --tooltip-color-fg: var(--K4-color-primary-bright);
-            --tooltip-color-bg: var(--K4-color-contrast);
+            --tooltip-color-fg: var(--K4-bWHITE);
+            --tooltip-color-bg: var(--K4-dBLACK);
             position: relative;
             height: var(--strip-height);
             white-space: nowrap; }
@@ -1667,7 +1678,7 @@ Kult White:  #FFFFFF */
                   color: var(--button-color-fg);
                   text-align: center;
                   line-height: var(--icon-size);
-                  font-size: 0.875rem;
+                  font-size: 1rem;
                   text-transform: uppercase;
                   font-family: var(--font-primary-caps);
                   font-weight: 900;
@@ -1709,11 +1720,11 @@ Kult White:  #FFFFFF */
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content div.hover-strip .strip-tooltip,
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet .window-content .editor .editor-content .mce-content-body div.hover-strip .strip-tooltip {
               pointer-events: none;
-              position: relative;
+              position: absolute;
               display: block;
               font-family: var(--font-primary);
-              font-size: 10px;
-              line-height: 0.75rem;
+              font-size: 0.75rem;
+              line-height: 0.875rem;
               text-align: center;
               font-style: italic;
               width: 100%;
@@ -1721,7 +1732,7 @@ Kult White:  #FFFFFF */
               color: var(--tooltip-color-fg);
               background: var(--tooltip-color-bg);
               opacity: 0;
-              bottom: calc(2 * var(--strip-height));
+              bottom: calc(0.75 * var(--strip-height));
               left: 0;
               z-index: 40;
               white-space: break-spaces;
@@ -1950,6 +1961,7 @@ Kult White:  #FFFFFF */
     --K4-section-padding-top: 40px;
     --K4-section-padding-horiz: 10px;
     --K4-section-padding-bottom: 20px;
+    --K4-section-drop-shadow: 2px 4px 2px var(--K4-dBLACK);
     --K4-subsection-padding-vert: 5px;
     --K4-subsection-padding-horiz: 5px;
     --K4-resize-handle-translate: translate(48px, 32px); }
@@ -1979,6 +1991,10 @@ Kult White:  #FFFFFF */
         right: -174px;
         height: 160px;
         width: 160px; }
+    .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-header .header-button {
+      top: 44px;
+      left: 24px;
+      display: none; }
     .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content {
       display: block;
       background: none; }
@@ -2084,6 +2100,8 @@ Kult White:  #FFFFFF */
         -webkit-transform: translate(-50%, -50%) scale(0.8);
         -ms-transform: translate(-50%, -50%) scale(0.8);
         transform: translate(-50%, -50%) scale(0.8); }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel * {
+          pointer-events: none; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .nav-svg {
           height: 100%;
           width: 100%;
@@ -2117,7 +2135,9 @@ Kult White:  #FFFFFF */
               --K4-svg-stroke-width: 10px;
               -webkit-transform: translate(-50%, -50%);
               -ms-transform: translate(-50%, -50%);
-              transform: translate(-50%, -50%); }
+              transform: translate(-50%, -50%);
+              -webkit-filter: drop-shadow(2px 2px 1px var(--K4-BLACK));
+              filter: drop-shadow(2px 2px 1px var(--K4-BLACK)); }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel img {
           position: absolute; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .nav-lens,
@@ -2137,8 +2157,8 @@ Kult White:  #FFFFFF */
           height: auto;
           width: auto;
           max-width: 160px;
-          top: 90px;
-          left: 90px;
+          top: 55%;
+          left: 50%;
           -webkit-transform: translate(-50%, -50%);
           -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
@@ -2149,8 +2169,8 @@ Kult White:  #FFFFFF */
           position: absolute;
           border-radius: 50%;
           background: var(--K4-color-contrast);
-          -webkit-filter: drop-shadow(25px 25px 5px var(--K4-color-contrast));
-          filter: drop-shadow(25px 25px 5px var(--K4-color-contrast)); }
+          -webkit-filter: drop-shadow(25px 25px 15px var(--K4-dBLACK));
+          filter: drop-shadow(25px 25px 15px var(--K4-dBLACK)); }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .profile-image-animation {
           position: absolute;
           border-radius: 50%;
@@ -2170,7 +2190,8 @@ Kult White:  #FFFFFF */
           -webkit-transform-origin: center center;
           -ms-transform-origin: center center;
           transform-origin: center center;
-          background: transparent url("../assets/animations/nav-flare.webp") no-repeat no-repeat center center/100%; }
+          background: transparent url("../assets/animations/nav-flare.webp") no-repeat no-repeat center center/100%;
+          z-index: -2; }
         .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .header-button {
           opacity: 0;
           display: block;
@@ -2196,16 +2217,17 @@ Kult White:  #FFFFFF */
           display: block;
           -webkit-transform-origin: center center;
           -ms-transform-origin: center center;
-          transform-origin: center center; }
+          transform-origin: center center;
+          z-index: -1; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .tabs .nav-tab-container {
             display: block;
             position: absolute;
             -webkit-transform: translate(-50%, -50%) rotate(var(--tab-rotation));
             -ms-transform: translate(-50%, -50%) rotate(var(--tab-rotation));
             transform: translate(-50%, -50%) rotate(var(--tab-rotation));
-            height: 130px;
-            width: 40px;
-            top: calc(50% - (0.5 * 130px));
+            height: 140px;
+            width: 80px;
+            top: calc(50% - (0.5 * 140px));
             -webkit-transform-origin: center bottom;
             -ms-transform-origin: center bottom;
             transform-origin: center bottom;
@@ -2220,19 +2242,31 @@ Kult White:  #FFFFFF */
               --tab-rotation: -120deg; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .tabs .nav-tab-container:nth-child(5) {
               --tab-rotation: -150deg; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .tabs .nav-tab-container .nav-tab-slider {
+              display: block;
+              position: absolute;
+              height: 70px;
+              width: 80px;
+              -webkit-transform: translate(-50%, -50%);
+              -ms-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+              top: 100px;
+              left: 50%; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .tabs .nav-tab-container .svg-container[class*='nav-spoke'] {
+              width: 40px;
               -webkit-transform: translate(-50%, -50%) scale(2);
               -ms-transform: translate(-50%, -50%) scale(2);
               transform: translate(-50%, -50%) scale(2);
               -webkit-transform-origin: center bottom;
               -ms-transform-origin: center bottom;
               transform-origin: center bottom;
-              bottom: 26px;
+              top: 50%;
               left: 50%;
               overflow: hidden;
               --K4-svg-fill: var(--K4-BLACK); }
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .tabs .nav-tab-container .svg-container[class*='nav-spoke'] .svg-def {
-                top: calc(100% + 20px); }
+                top: calc(50% + 20px);
+                left: 50%; }
             .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .tabs .nav-tab-container .nav-tab {
               -webkit-transform: translate(-50%, -50%);
               -ms-transform: translate(-50%, -50%);
@@ -2241,15 +2275,16 @@ Kult White:  #FFFFFF */
               width: 40px;
               pointer-events: all;
               left: 50%;
+              top: 20px;
               position: absolute; }
               .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .nav-panel .tabs .nav-tab-container .nav-tab .nav-tab-label {
                 display: block;
                 opacity: 0;
-                color: var(--K4-color-primary-bright);
-                font-size: 0.875rem;
-                font-family: Infidel;
+                color: var(--K4-bWHITE);
+                font-size: 1.5rem;
+                font-family: var(--K4-font-primary-caps);
                 font-weight: 900;
-                text-shadow: 0px 0px 5px var(--K4-color-contrast-low), 0px 0px 10px var(--K4-color-contrast-low), 0px 0px 15px var(--K4-color-contrast-low);
+                text-shadow: 0px 0px 5px var(--K4-RED), 0px 0px 5px var(--K4-RED), 0px 0px 12px var(--K4-RED), 0px 0px 10px var(--K4-RED), 0px 0px 15px var(--K4-RED), 0px 0px 20px var(--K4-RED);
                 position: absolute;
                 -webkit-transform-origin: center center;
                 -ms-transform-origin: center center;
@@ -2257,306 +2292,326 @@ Kult White:  #FFFFFF */
                 -webkit-transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
                 -ms-transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
                 transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
+                text-transform: uppercase;
                 top: 50%;
                 left: 50%;
                 text-align: center; }
-      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab {
-        display: grid;
-        grid-gap: 5px;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 40px 80px auto auto; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab .subsection {
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-          border: 1px solid var(--K4-color-primary); }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab .subsection.flex-item-list {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            -ms-flex-wrap: nowrap;
-            flex-wrap: nowrap;
-            -webkit-box-pack: stretch;
-            -ms-flex-pack: stretch;
-            justify-content: stretch; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab .subsection.flex-item-list .subsection-header {
-              -ms-flex-item-align: start;
-              align-self: start;
-              -webkit-box-flex: 0;
-              -ms-flex: 0;
-              flex: 0; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front {
-          --attributes-width: 200px;
-          --attributes-height: 428.54406px;
-          grid-template-areas: ". dramatic-hooks dramatic-hooks dramatic-hooks" "status status status status" "modifiers modifiers modifiers modifiers" "attributes attributes basic-moves special-moves" "session-checks session-checks attacks special-moves" "footer footer footer footer";
-          grid-template-columns: 100px 95px 1fr 1fr;
-          grid-template-rows: 40px 80px 20px var(--attributes-height) auto 40px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks {
-            grid-area: dramatic-hooks;
-            padding: 0; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .hook-label {
-              display: inline-block;
-              margin: 0 0 0 10px;
-              font-size: 2.5rem;
-              line-height: 2.5rem;
-              font-family: var(--font-decorative);
-              float: left; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook {
-              height: 16px;
-              margin: 4px 0;
-              white-space: nowrap; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook:nth-of-type(1) {
-                margin-bottom: 0; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook:nth-of-type(2) {
-                margin-top: 0; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook input[type="checkbox"] {
+      .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content {
+        -webkit-filter: drop-shadow(black 2px 4px 2px) drop-shadow(black 20px 20px 20px);
+        filter: drop-shadow(black 2px 4px 2px) drop-shadow(black 20px 20px 20px); }
+        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab {
+          display: grid;
+          grid-gap: 5px;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: 40px 80px auto auto; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab .subsection {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px solid var(--K4-color-primary); }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab .subsection.flex-item-list {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              -webkit-box-orient: vertical;
+              -webkit-box-direction: normal;
+              -ms-flex-direction: column;
+              flex-direction: column;
+              -ms-flex-wrap: nowrap;
+              flex-wrap: nowrap;
+              -webkit-box-pack: stretch;
+              -ms-flex-pack: stretch;
+              justify-content: stretch; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab .subsection.flex-item-list .subsection-header {
+                -ms-flex-item-align: start;
+                align-self: start;
+                -webkit-box-flex: 0;
+                -ms-flex: 0;
+                flex: 0; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front {
+            grid-template-areas: ". dramatic-hooks dramatic-hooks dramatic-hooks" "status status status status" "modifiers modifiers modifiers modifiers" "attributes attributes basic-moves special-moves" "attributes attributes basic-moves attacks" "footer footer footer footer";
+            grid-template-columns: 100px 95px 1fr 1fr;
+            grid-template-rows: 40px 80px 20px 300px auto 40px; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks {
+              grid-area: dramatic-hooks;
+              padding: 0; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .hook-label {
                 display: inline-block;
-                float: left;
-                margin: 3px 0 0;
-                padding: 0;
-                height: calc(50%); }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook input[type="text"] {
+                margin: 0 0 0 10px;
+                font-size: 2.5rem;
+                line-height: 2.5rem;
+                font-family: var(--font-decorative);
+                float: left; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook {
+                height: 16px;
+                margin: 4px 0;
+                white-space: nowrap; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook:nth-of-type(1) {
+                  margin-bottom: 0; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook:nth-of-type(2) {
+                  margin-top: 0; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook input[type="checkbox"] {
+                  display: inline-block;
+                  float: left;
+                  margin: 3px 0 0;
+                  padding: 0;
+                  height: calc(50%); }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .dramatic-hooks .dramatic-hook input[type="text"] {
+                  display: inline-block;
+                  border: none;
+                  margin: 0;
+                  padding: 0;
+                  color: var(--K4-color-primary-bright);
+                  font-size: 0.75rem;
+                  height: 100%;
+                  -webkit-box-shadow: none;
+                  box-shadow: none;
+                  font-weight: 700;
+                  font-style: italic;
+                  -webkit-transform-origin: left center;
+                  -ms-transform-origin: left center;
+                  transform-origin: left center;
+                  vertical-align: top; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status {
+              grid-area: status;
+              padding: 0px;
+              display: grid;
+              grid-template-columns: 150px 1fr 150px;
+              /* STABILITY */
+              /* WOUNDS */
+              /* EDGES */ }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status > div {
+                position: relative; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status button:not(.strip-button) {
+                --button-gradient-light: var(--K4-color-primary-bright);
+                --button-gradient-dark: var(--K4-color-contrast);
                 display: inline-block;
-                border: none;
-                margin: 0;
+                height: 20px;
+                width: 20px;
                 padding: 0;
-                color: var(--K4-color-primary-bright);
-                font-size: 0.75rem;
-                height: 100%;
-                -webkit-box-shadow: none;
-                box-shadow: none;
-                font-weight: 700;
-                font-style: italic;
-                -webkit-transform-origin: left center;
-                -ms-transform-origin: left center;
-                transform-origin: left center;
-                vertical-align: top; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status {
-            grid-area: status;
-            padding: 0px;
-            display: grid;
-            grid-template-columns: 150px 1fr 150px;
-            /* STABILITY */
-            /* WOUNDS */
-            /* EDGES */ }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status > div {
-              position: relative; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status button:not(.strip-button) {
-              --button-gradient-light: var(--K4-color-primary-bright);
-              --button-gradient-dark: var(--K4-color-contrast);
-              display: inline-block;
-              height: 20px;
-              width: 20px;
-              padding: 0;
-              color: var(--K4-color-contrast);
-              background: -o-linear-gradient(135deg, var(--button-gradient-light), var(--button-gradient-dark));
-              background: linear-gradient(-45deg, var(--button-gradient-light), var(--button-gradient-dark));
-              line-height: 20px;
-              font-weight: 900;
-              font-size: 1.25rem; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability {
-              background: var(--K4-color-primary);
-              -webkit-clip-path: polygon(0% 0%, 80px 0%, 100% 100%, 100% 100%, 0% 100%);
-              clip-path: polygon(0% 0%, 80px 0%, 100% 100%, 100% 100%, 0% 100%);
-              padding-left: 0px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability button {
+                color: var(--K4-color-contrast);
                 background: -o-linear-gradient(135deg, var(--button-gradient-light), var(--button-gradient-dark));
                 background: linear-gradient(-45deg, var(--button-gradient-light), var(--button-gradient-dark));
-                position: absolute;
-                -webkit-box-shadow: 0 0 4px black, 0 0 4px black;
-                box-shadow: 0 0 4px black, 0 0 4px black; }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability button.stability-add {
-                  top: 10px;
-                  left: 10px; }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability button.stability-remove {
-                  bottom: 10px;
-                  left: 70px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability .stability-count {
-                position: relative;
-                pointer-events: none;
+                line-height: 20px;
+                font-weight: 900;
+                font-size: 1.25rem; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability {
+                background: var(--K4-color-primary);
+                -webkit-clip-path: polygon(0% 0%, 80px 0%, 100% 100%, 100% 100%, 0% 100%);
+                clip-path: polygon(0% 0%, 80px 0%, 100% 100%, 100% 100%, 0% 100%);
+                padding-left: 0px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability button {
+                  background: -o-linear-gradient(135deg, var(--button-gradient-light), var(--button-gradient-dark));
+                  background: linear-gradient(-45deg, var(--button-gradient-light), var(--button-gradient-dark));
+                  position: absolute;
+                  -webkit-box-shadow: 0 0 4px black, 0 0 4px black;
+                  box-shadow: 0 0 4px black, 0 0 4px black; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability button.stability-add {
+                    top: 10px;
+                    left: 10px; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability button.stability-remove {
+                    bottom: 10px;
+                    left: 70px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .stability .stability-count {
+                  position: relative;
+                  pointer-events: none;
+                  display: block;
+                  height: 78px;
+                  width: 100px;
+                  padding-top: 4px;
+                  color: var(--K4-color-keyword-bright);
+                  font-family: var(--font-decorative);
+                  font-size: 78px;
+                  line-height: 78px;
+                  text-align: center;
+                  text-shadow: 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds {
+                --button-gradient-light: var(--K4-bRED);
+                --button-gradient-dark: var(--K4-dRED);
+                display: grid;
+                padding: 5px;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: 20px 20px 20px;
+                grid-row-gap: 5px;
+                grid-column-gap: 15px;
+                grid-auto-flow: column;
+                border-radius: 5px;
+                padding: 5px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds .wound-add {
+                  position: relative; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds .wound-add button.wound-add {
+                    width: 100%; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds > * {
+                  left: -40px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds > *:nth-child(3n-1) {
+                  left: -20px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds > *:nth-child(3n) {
+                  left: 0px; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .edges {
+                background: var(--K4-color-primary);
+                -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 80px 100%);
+                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 80px 100%); }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .edges * {
+                  opacity: 0; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .modifiers {
+              grid-area: modifiers;
+              padding: 0;
+              border: none; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .modifiers .modifiers-report {
                 display: block;
-                height: 78px;
-                width: 100px;
-                padding-top: 4px;
-                color: var(--K4-color-keyword-bright);
-                font-family: var(--font-decorative);
-                font-size: 78px;
-                line-height: 78px;
-                text-align: center;
-                text-shadow: 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds {
-              --button-gradient-light: var(--K4-bRED);
-              --button-gradient-dark: var(--K4-dRED);
-              display: grid;
-              padding: 5px;
-              grid-template-columns: 1fr 1fr 1fr;
-              grid-template-rows: 20px 20px 20px;
-              grid-row-gap: 5px;
-              grid-column-gap: 15px;
-              grid-auto-flow: column;
-              border-radius: 5px;
-              padding: 5px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds .wound-add {
-                position: relative; }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds .wound-add button.wound-add {
-                  width: 100%; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds > * {
-                left: -40px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds > *:nth-child(3n-1) {
-                left: -20px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .wounds > *:nth-child(3n) {
-                left: 0px; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .edges {
-              background: var(--K4-color-primary);
-              -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 80px 100%);
-              clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 80px 100%); }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .status .edges * {
-                opacity: 0; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .modifiers {
-            grid-area: modifiers;
-            padding: 0;
-            border: none; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .modifiers .modifiers-report {
-              display: block;
-              width: 100%;
-              text-align: center;
-              font-weight: 900;
-              --K4-color-primary: var(--K4-color-header);
-              color: var(--K4-color-header);
-              font-size: 1rem;
-              line-height: 20px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes {
-            position: relative;
-            grid-area: attributes;
-            background: transparent url("../assets/layout/attributes-spread.webp") no-repeat bottom center/100% auto; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box {
-              --panel-size: 200px;
-              height: var(--panel-size);
-              width: var(--panel-size);
-              position: absolute;
-              pointer-events: none; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box img {
-                position: absolute;
-                -webkit-filter: sepia(1);
-                filter: sepia(1);
-                opacity: 0;
-                top: -2px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-title {
-                display: block;
-                position: relative;
                 width: 100%;
-                top: 125px;
-                font-size: 0.625rem;
-                text-align: center;
-                font-weight: 700; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value {
-                position: absolute;
-                height: 40px;
-                width: 40px;
-                padding: 0;
-                margin: 0;
-                border: none;
-                left: calc(50% - (40px / 2));
-                top: 78px;
-                pointer-events: all;
-                font-size: 1.25rem;
                 text-align: center;
                 font-weight: 900;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none; }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option {
-                  text-align: center; }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="7"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="7"] {
-                  color: var(--K4-WHITE); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="6"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="6"] {
-                  color: var(--K4-WHITE); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="5"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="5"] {
-                  color: var(--K4-bGOLD); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="4"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="4"] {
-                  color: var(--K4-bGOLD); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="3"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="3"] {
-                  color: var(--K4-bGOLD); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="2"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="2"] {
-                  color: var(--K4-GOLD); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="1"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="1"] {
-                  color: var(--K4-dGOLD); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="0"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="0"] {
-                  color: var(--K4-dGOLD); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-1"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-1"] {
-                  color: var(--K4-bRED); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-2"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-2"] {
-                  color: var(--K4-bRED); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-3"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-3"] {
-                  color: var(--K4-bRED); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-4"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-4"] {
-                  color: var(--K4-bRED); }
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-5"],
-                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-5"] {
-                  color: var(--K4-bRED);
-                  font-weight: 900; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="fortitude"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reason"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="coolness"] {
-                left: -72px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="willpower"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="perception"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="charisma"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="soul"] {
-                left: 0px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reflexes"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="intuition"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="violence"] {
-                left: 72px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="willpower"] {
-                top: -40px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="fortitude"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reflexes"] {
-                top: 3px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reason"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="intuition"] {
-                top: 87px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="perception"] {
-                top: 127px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="coolness"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="violence"] {
-                top: 167px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="charisma"] {
-                top: 207px; }
-              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="soul"] {
-                top: 287px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .basic-moves {
-            grid-area: basic-moves;
-            padding-bottom: 0;
-            -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-            justify-content: space-between;
-            min-width: 232px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .special-moves {
-            grid-area: special-moves; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .session-checks {
-            grid-area: session-checks; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attacks {
-            grid-area: attacks; }
-        .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio {
-          grid-template-areas: "description description relations" "advantages disadvantages darksecrets";
-          grid-template-rows: 200px auto; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .description {
-            grid-area: description; }
-            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .description .editor {
-              margin-left: 50px;
-              width: calc(100% - 50px); }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .relations {
-            grid-area: relations; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .advantages {
-            grid-area: advantages; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .darksecrets {
-            grid-area: darksecrets; }
+                --K4-color-primary: var(--K4-color-header);
+                color: var(--K4-color-header);
+                font-size: 1rem;
+                line-height: 20px; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes {
+              position: relative;
+              grid-area: attributes;
+              background: transparent url("../assets/layout/attributes-spread.webp") no-repeat center 30px/100% auto; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box {
+                --panel-size: 200px;
+                height: var(--panel-size);
+                width: var(--panel-size);
+                position: absolute;
+                pointer-events: none; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box img {
+                  position: absolute;
+                  -webkit-filter: sepia(1);
+                  filter: sepia(1);
+                  opacity: 0;
+                  top: -2px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-title {
+                  display: block;
+                  position: relative;
+                  width: 100%;
+                  top: 125px;
+                  font-size: 0.625rem;
+                  text-align: center;
+                  font-weight: 700; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value {
+                  position: absolute;
+                  height: 40px;
+                  width: 40px;
+                  padding: 0;
+                  margin: 0;
+                  border: none;
+                  left: calc(50% - (40px / 2));
+                  top: 78px;
+                  pointer-events: all;
+                  font-size: 1.25rem;
+                  text-align: center;
+                  font-weight: 900;
+                  -webkit-appearance: none;
+                  -moz-appearance: none;
+                  appearance: none; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option {
+                    text-align: center; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="7"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="7"] {
+                    color: var(--K4-WHITE); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="6"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="6"] {
+                    color: var(--K4-WHITE); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="5"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="5"] {
+                    color: var(--K4-bGOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="4"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="4"] {
+                    color: var(--K4-bGOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="3"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="3"] {
+                    color: var(--K4-bGOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="2"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="2"] {
+                    color: var(--K4-GOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="1"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="1"] {
+                    color: var(--K4-dGOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="0"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="0"] {
+                    color: var(--K4-dGOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-1"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-1"] {
+                    color: var(--K4-bRED); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-2"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-2"] {
+                    color: var(--K4-bRED); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-3"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-3"] {
+                    color: var(--K4-bRED); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-4"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-4"] {
+                    color: var(--K4-bRED); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-5"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-5"] {
+                    color: var(--K4-bRED);
+                    font-weight: 900; }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="3"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="3"] {
+                    color: var(--K4-bWHITE); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="2"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="2"] {
+                    color: var(--K4-gGOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="1"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="1"] {
+                    color: var(--K4-bGOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="0"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="0"] {
+                    color: var(--K4-GOLD); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-1"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-1"] {
+                    color: var(--K4-bRED); }
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value[value="-2"],
+                  .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box .attribute-value option[value="-2"] {
+                    color: var(--K4-gRED); }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="fortitude"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reason"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="coolness"] {
+                  left: -72px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="willpower"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="perception"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="charisma"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="soul"] {
+                  left: 0px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reflexes"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="intuition"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="violence"] {
+                  left: 72px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="willpower"] {
+                  top: -40px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="fortitude"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reflexes"] {
+                  top: 3px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="reason"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="intuition"] {
+                  top: 87px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="perception"] {
+                  top: 127px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="coolness"], .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="violence"] {
+                  top: 167px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="charisma"] {
+                  top: 207px; }
+                .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attributes .attribute-box[data-attribute="soul"] {
+                  top: 287px; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .basic-moves {
+              grid-area: basic-moves;
+              padding-bottom: 0;
+              -webkit-box-pack: justify;
+              -ms-flex-pack: justify;
+              justify-content: space-between;
+              min-width: 232px; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .special-moves {
+              grid-area: special-moves; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .session-checks {
+              grid-area: session-checks; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.front .attacks {
+              grid-area: attacks; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio {
+            grid-template-areas: "description description relations" "advantages disadvantages darksecrets";
+            grid-template-rows: 200px auto; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .description {
+              grid-area: description; }
+              .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .description .editor {
+                margin-left: 50px;
+                width: calc(100% - 50px); }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .relations {
+              grid-area: relations; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .advantages {
+              grid-area: advantages; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form .tab-content .tab.bio .darksecrets {
+              grid-area: darksecrets; }
       .vtt.game.system-kult4th .app.window-app.kult4th-sheet.actor .window-content .kult4th-form.actor-npc .nav-panel {
         left: -90px !important;
         top: 20px !important; }
@@ -2643,8 +2698,12 @@ Kult White:  #FFFFFF */
           overflow-y: auto; }
           .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content p:first-child {
             text-indent: 25px; }
-          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content.kult-darksecret-container p:first-child::first-line {
-            font-variant: small-caps; }
+          .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content.kult-darksecret-container {
+            --K4-section-padding-left: 20px;
+            --K4-section-padding-right: 20px;
+            --K4-section-padding-bottom: 20px; }
+            .vtt.game.system-kult4th .app.window-app.kult4th-sheet.item .window-content form .tab-content.kult-darksecret-container p:first-child::first-line {
+              font-variant: small-caps; }
   .vtt.game.system-kult4th #ui-right #sidebar {
     /* FOUNDRY OVERRIDES */
     --sidebar-width: 300px;
@@ -2657,6 +2716,7 @@ Kult White:  #FFFFFF */
     overflow: visible;
     --K4-color-primary: var(--K4-GOLD);
     --K4-color-primary-bright: var(--K4-bGOLD);
+    --K4-color-primary-glow: var(--K4-gGOLD);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-dGOLD);
     --K4-color-contrast-high: var(--K4-dBLACK);
@@ -2681,6 +2741,7 @@ Kult White:  #FFFFFF */
     .vtt.game.system-kult4th #ui-right #sidebar #chat #chat-log {
       --K4-color-primary: var(--K4-GOLD);
       --K4-color-primary-bright: var(--K4-bGOLD);
+      --K4-color-primary-glow: var(--K4-gGOLD);
       --K4-color-contrast: var(--K4-BLACK);
       --K4-color-contrast-low: var(--K4-dGOLD);
       --K4-color-contrast-high: var(--K4-dBLACK);

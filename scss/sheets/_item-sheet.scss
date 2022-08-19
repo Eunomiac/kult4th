@@ -85,6 +85,9 @@
 				}
 
 				&.kult-darksecret-container {
+					--K4-section-padding-left: 20px;
+					--K4-section-padding-right: 20px;
+					--K4-section-padding-bottom: 20px;
 					p:first-child::first-line {
 						font-variant: small-caps;
 					}

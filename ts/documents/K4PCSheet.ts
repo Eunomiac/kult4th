@@ -113,6 +113,7 @@ const ANIMATIONS = {
 		const profileBg$ = $(target).find(".profile-image-bg");
 		const buttonContainer$ = $(target).find(".tabs");
 		const buttonSpikes$ = $(target).find(".nav-tab-container");
+		const buttonSliders$ = $(target).find(".nav-tab-slider");
 		const closeButton$ = $(target).find(".header-button.close");
 		const minimizeButton$ = $(target).find(".header-button.minimize");
 		const animation$ = $(target).find(".profile-image-animation");
@@ -134,7 +135,6 @@ const ANIMATIONS = {
 		// @ts-expect-error MorphSVG does indeed accept functions.
 		return gsap.timeline({reversed: true/* , onComplete() { gsap.globalTimeline.timeScale(0) } */})
 			.to(target, {
-				// fill: C.Colors.BLACK,
 				scale: 1.2,
 				duration: 0.6,
 				ease: "power2"
@@ -157,11 +157,11 @@ const ANIMATIONS = {
 			.set($(target).find(".svg-def.main-ring"), {
 				fill: "url('#nav-main-ring-bg-end-gradient')"
 			}, 0.3)
-			// .to(U.getSiblings(target), {
-			// 	filter: "blur(5px)",
-			// 	duration: 0.5,
-			// 	ease: "back"
-			// }, 0)
+			.to(U.getSiblings(target), {
+				filter: "blur(5px)",
+				duration: 0.5,
+				ease: "back"
+			}, 0)
 			.to(svgs.mainRing, {
 				scale: 1,
 				opacity: 1,
@@ -209,16 +209,10 @@ const ANIMATIONS = {
 				duration: 0.3,
 				ease: "power2"
 			}, 0.3)
-			// .to(buttonContainer$, {
-			// 	scale: 1,
-			// 	opacity: 1,
-			// 	zIndex: 6,
-			// 	ease: "power3",
-			// 	duration: 0.3
-			// }, 0.15)
-			.to(svgs.buttonSpikes, {
-				y: "-=30",
-				ease: "power3",
+			.to(buttonSliders$, {
+				y: "-=85",
+				ease: "sine",
+				pointerEvents: "all",
 				duration: 0.3,
 				stagger: {
 					amount: 0.25,
@@ -226,19 +220,20 @@ const ANIMATIONS = {
 				}
 			}, 0.05)
 			.to(flare$, {
-				scale: 2.5,
+				scale: 2.3,
 				duration: 0.45,
 				ease: "sine"
 			}, 0)
 			.from([closeButton$, minimizeButton$], {
-				opacity: 0,
-				zIndex: -2,
+				// zIndex: -2,
+				pointerEvents: "none",
 				filter: "blur(5px)",
 				ease: "sine",
 				duration: 0.6
 			}, 0).to([closeButton$, minimizeButton$], {
 				opacity: 1,
-				duration: 0.3
+				duration: 0.3,
+				pointerEvents: "all"
 			}, 0)
 			.to(profileImg$, {
 				opacity: 0,
@@ -250,6 +245,13 @@ const ANIMATIONS = {
 				duration: 0.6,
 				ease: "sine"
 			}, 0)
+			.to(buttonContainer$, {
+			// 	scale: 1,
+			// 	opacity: 1,
+				zIndex: 1,
+				ease: "power3",
+				duration: 0.01
+			})
 			/* .to(
 				svgs.container,
 				{
@@ -270,14 +272,14 @@ const ANIMATIONS = {
 				ease: "sine"
 			}, 0)
 			.fromTo(tabLabel$, {
-				scaleY: 3,
-				scaleX: 1.5,
+				scale: 3,
+				// scaleX: 1.5,
 				filter: "blur(10px)"
 			}, {
-				scaleY: 2,
-				scaleX: 1,
+				// scaleY: 2,
+				scale: 1,
 				filter: "none",
-				duration: 1,
+				duration: 0.35,
 				ease: "power3"
 			}, 0)/* .fromTo(
 				tabAnimation$,
@@ -311,11 +313,13 @@ const ANIMATIONS = {
 		const stripToolTip$ = $(target).find(".strip-tooltip");
 
 		// const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
-		const colorFG = $(target).css("--strip-color-fg").trim();
-		const colorBG = String(getContrastingColor(colorFG, 4) || $(target).css("--strip-color-bg").trim());
+		// const colorFG = $(target).css("--strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
+		// const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--strip-color-bg")?.trim()) ?? C.Colors.BLACK);
+		const colorFG = gsap.getProperty(stripName$[0], "color");
+		const colorBG = (String(getContrastingColor(String(colorFG), 4) || $(target).css("--strip-color-bg")?.trim()) ?? C.Colors.BLACK);
 		const nameShift = U.get(target, "height", "px");
 
-		console.log(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
+		// console.log(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
 
 		const tl = gsap
 			.timeline({reversed: true})
@@ -604,8 +608,33 @@ export default class K4PCSheet extends ActorSheet {
 
 		$(() => {
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
+			// function softMouseLeave(hoverAnim: gsapAnim) {
+			// 	if (!hoverAnim.data.isLeaving) { return }
+			// 	if (hoverAnim.isActive()) {
+			// 		setTimeout(() => softMouseLeave(hoverAnim), 500);
+			// 	} else {
+			// 		hoverAnim.data.isLeaving = false;
+			// 		hoverAnim.reversed(true);
+			// 	}
+			// }
 
 			html.find(".nav-panel").each(function initNavPanel() {
+
+				// hoverTimelines.forEach(([target, anim]) => {
+				// const hoverAnim = ANIMATIONS.hoverNav(this);
+				// hoverAnim.data = {};
+				// $(this)
+				// 	.on("mouseenter", () => {
+				// 		hoverAnim.data.isLeaving = false;
+				// 		// console.log("Entering Nav Panel");
+				// 		hoverAnim.reversed(false);
+				// 	})
+				// 	.on("mouseleave", () => {
+				// 		hoverAnim.data.isLeaving = true;
+				// 		softMouseLeave(hoverAnim);
+				// 	});
+				// });
+
 				hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
 			});
 			html.find(".nav-tab")
@@ -714,7 +743,7 @@ export default class K4PCSheet extends ActorSheet {
 			html.find("button.wound-add")
 				.each(function addWoundButton() {
 					$(this).on("click", () => {
-						console.log("Adding Wound. Button:", this);
+						// console.log("Adding Wound. Button:", this);
 						self.actor.addWound();
 					});
 				});
@@ -722,7 +751,7 @@ export default class K4PCSheet extends ActorSheet {
 				.each(function deleteWoundButton() {
 					const woundID: string = $(this).data("woundId");
 					$(this).on("click", () => {
-						console.log(`Deleting Wound ${woundID}. Button:`, this);
+						// console.log(`Deleting Wound ${woundID}. Button:`, this);
 						self.actor.removeWound(woundID);
 					});
 				});

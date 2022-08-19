@@ -15,7 +15,7 @@
 
 	--K4-sheet-header-height: 60px;
 
-	--K4-section-drop-shadow: 2px 4px 2px var(--K4-dBLACK);
+	--K4-section-drop-shadow: 20px 20px 20px var(--K4-dBLACK);
 	--K4-section-padding-horiz: 0px;
 	--K4-section-padding-vert: 0px;
 	--K4-section-padding-top: var(--K4-section-padding-vert);
@@ -54,6 +54,7 @@
 		.window-title { display: none }
 
 		.header-button {
+			top: 10px;
 
 			// &.close { display: none }
 			&.close {

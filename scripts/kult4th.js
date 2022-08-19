@@ -155,7 +155,6 @@ Hooks.once("init", async () => {
                         offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
                         color: typeof stop === "string" ? stop : stop.color,
                         opacity: 1,
-                        // @ts-expect-error Damn map function needs to be resolved!
                         ...(U.isList(stop) ? stop : {})
                     })),
                     ...(typeof fill.stops === "string"
@@ -168,12 +167,11 @@ Hooks.once("init", async () => {
                     y: [0, 1],
                     ...stroke ?? {},
                     stops: (stroke.stops ?? []).map((stop, i, stops) => {
-                        console.log(`Stroke-${iType}`, { stop, i, stops });
+                        // console.log(`Stroke-${iType}`, {stop, i, stops});
                         return {
                             offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
                             color: typeof stop === "string" ? stop : stop.color,
                             opacity: 1,
-                            // @ts-expect-error Damn map function needs to be resolved!
                             ...(U.isList(stop) ? stop : {})
                         };
                     }),
@@ -182,7 +180,7 @@ Hooks.once("init", async () => {
                         : stroke.stops)
                 }
             };
-            console.log(`fill-${iType} DATA`, data);
+            // console.log(`fill-${iType} DATA`, data);
             return data;
         })).map((defs) => Object.values(defs)).flat()
     };

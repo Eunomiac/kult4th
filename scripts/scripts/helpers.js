@@ -74,7 +74,7 @@ export const HandlebarHelpers = {
         const iData = context instanceof K4Item
             ? context.data
             : context.data.root.data;
-        console.log("[FormatForKult]", { str, iData, "this": this });
+        // console.log("[FormatForKult]", {str, iData, "this": this});
         const self = this;
         // Step One: Replace any data object references.
         str = str.replace(/%([^%\.]+)\.([^%\.]+)%/g, (_, sourceRef, dataKey) => {
