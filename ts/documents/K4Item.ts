@@ -4,18 +4,13 @@ import type {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-typ
 
 export default class K4Item extends Item {
 
-	// override get data() { return this.data as K4ItemData<T> }
-
-	// declare override data: K4ItemData<T> & {
-	// 	data: K4ItemSchema<T>,
-	// 	type: T
-	// }}
-
 	override prepareData() {
 		super.prepareData();
-		if (this.data.type === K4ItemType.advantage || this.data.type === K4ItemType.disadvantage || this.data.type === K4ItemType.weapon ) {
+		if (this.hasSubItems() && (this.data.type === K4ItemType.advantage || this.data.type === K4ItemType.disadvantage )) {
 			this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === K4ItemType.move) as K4ItemPropertiesData.move[];
 			this.data.data.subAttackData = this.subItemData.filter((iData) => iData.type === K4ItemType.attack) as K4ItemPropertiesData.attack[];
+			const defaultMove = this.subItemData[0] as K4ItemPropertiesData.move;
+			this.data.data.results = defaultMove.data.results;
 		}
 	}
 

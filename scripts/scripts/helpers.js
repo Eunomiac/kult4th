@@ -74,7 +74,7 @@ export const HandlebarHelpers = {
         const iData = context instanceof K4Item
             ? context.data
             : context.data.root.data;
-        // console.log("[FormatForKult]", {str, iData, "this": this});
+        console.log("[FormatForKult]", { str, iData, "this": this });
         const self = this;
         // Step One: Replace any data object references.
         str = str.replace(/%([^%\.]+)\.([^%\.]+)%/g, (_, sourceRef, dataKey) => {
@@ -91,14 +91,21 @@ export const HandlebarHelpers = {
                             return "<span style='color: red;'>Inline PARENT Attacks TBD...</span>";
                         }
                         default: {
+                            const listItems = [];
                             if (dataKey && (dataKey in iData.data.lists)) {
-                                return [
-                                    `<ul class='inline-list list-${dataKey}'>`,
-                                    ...iData.data.lists[dataKey].items.map((item) => `<li>${item}</li>`),
-                                    "</ul>"
-                                ].join("");
+                                listItems.push(...iData.data.lists[dataKey].items);
                             }
-                            return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
+                            else if (dataKey && (dataKey in iData.lists)) {
+                                listItems.push(...iData.lists[dataKey].items);
+                            }
+                            else {
+                                return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
+                            }
+                            return [
+                                `<ul class='inline-list list-${dataKey}'>`,
+                                ...iData.data.lists[dataKey].items.map((item) => `<li>${item}</li>`),
+                                "</ul>"
+                            ].join("");
                         }
                     }
                 }
@@ -108,18 +115,18 @@ export const HandlebarHelpers = {
                             return "<br /><br />"; // <p></p>";
                         }
                         case "rollPrompt": {
-                            if (["attack" /* K4ItemType.attack */, "move" /* K4ItemType.move */].includes(iData.type)) {
-                                return [
-                                    "#>",
-                                    "item-button text-attributename",
-                                    `:data-item-name='${iData.name}'`,
-                                    ":data-action='roll'",
-                                    ">",
-                                    "roll ",
-                                    `+${U.tCase(iData.data.attribute)}`,
-                                    "<#"
-                                ].join("");
-                            }
+                            // if ([K4ItemType.attack, K4ItemType.move].includes(iData.type)) {
+                            return [
+                                "#>",
+                                "item-button text-attributename",
+                                `:data-item-name='${iData.name}'`,
+                                ":data-action='roll'",
+                                ">",
+                                "roll ",
+                                `+${U.tCase(iData.data.attribute)}`,
+                                "<#"
+                            ].join("");
+                            // }
                             return [
                                 "roll to ",
                                 ...[
@@ -211,32 +218,38 @@ export const HandlebarHelpers = {
     },
     "getSVGKey": function (item) {
         let svgKey;
-        switch (item.data.type) {
-            case "attack":
-            case "move": {
-                if (item.data.data.sourceItem?.name) {
-                    svgKey = item.data.data.sourceItem.name;
-                    break;
+        if (item.data) {
+            switch (item.data.type) {
+                case "attack":
+                case "move": {
+                    if (item.data.data.sourceItem?.name) {
+                        svgKey = item.data.data.sourceItem.name;
+                        break;
+                    }
+                    else if (typeof item.data.name === "string") {
+                        svgKey = item.data.name;
+                        break;
+                    }
+                    throw new Error("Item name is NULL!");
                 }
-                else if (typeof item.data.name === "string") {
-                    svgKey = item.data.name;
-                    break;
+                default: {
+                    if (typeof item.data.name === "string") {
+                        svgKey = item.data.name;
+                        break;
+                    }
+                    throw new Error("Item name is NULL!");
                 }
-                throw new Error("Item name is NULL!");
             }
-            default: {
-                if (typeof item.data.name === "string") {
-                    svgKey = item.data.name;
-                    break;
-                }
-                throw new Error("Item name is NULL!");
+            svgKey = U.toKey(svgKey);
+            if (svgKey in SVGDATA) {
+                return svgKey;
             }
+            throw new Error(`No such SVG: '${String(svgKey)}'`);
         }
-        svgKey = U.toKey(svgKey);
-        if (svgKey in SVGDATA) {
-            return svgKey;
+        else {
+            console.error("Item missing data field:", item);
+            return "DEFAULT-advantage";
         }
-        throw new Error(`No such SVG: '${String(svgKey)}'`);
     },
     "getSVGs": function (ref) {
         ref = U.toKey(ref);

@@ -22,7 +22,7 @@
 		{{/if}}
 
 		{{#if data.data.rules.holdText}}
-			<label class="k4-header hold-header">This {{case "title" data.type}} risks Hold</label>
+			<label class="k4-header hold-header">{{localize "kult4th.item.headings.risksHold" itemType=(case "title" data.type)}}</label>
 			<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
 		{{/if}}
 	</main>

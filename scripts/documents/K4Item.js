@@ -1,15 +1,12 @@
 import U from "../scripts/utilities.js";
 export default class K4Item extends Item {
-    // override get data() { return this.data as K4ItemData<T> }
-    // declare override data: K4ItemData<T> & {
-    // 	data: K4ItemSchema<T>,
-    // 	type: T
-    // }}
     prepareData() {
         super.prepareData();
-        if (this.data.type === "advantage" /* K4ItemType.advantage */ || this.data.type === "disadvantage" /* K4ItemType.disadvantage */ || this.data.type === "weapon" /* K4ItemType.weapon */) {
+        if (this.hasSubItems() && (this.data.type === "advantage" /* K4ItemType.advantage */ || this.data.type === "disadvantage" /* K4ItemType.disadvantage */)) {
             this.data.data.subMoveData = this.subItemData.filter((iData) => iData.type === "move" /* K4ItemType.move */);
             this.data.data.subAttackData = this.subItemData.filter((iData) => iData.type === "attack" /* K4ItemType.attack */);
+            const defaultMove = this.subItemData[0];
+            this.data.data.results = defaultMove.data.results;
         }
     }
     subItems;

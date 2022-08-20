@@ -59,6 +59,7 @@ Hooks.once("init", async () => {
         ...U.getTemplatePath("partials", [
             "basic-move-card",
             "derived-move-card",
+            "derived-move",
             "attack-card",
             "advantage-card",
             "disadvantage-card",

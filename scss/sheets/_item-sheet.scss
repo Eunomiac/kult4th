@@ -9,7 +9,7 @@
 
 	--K4-sheet-header-height: 40px;
 
-	--K4-resize-handle-translate: translate(43px, 27px);
+	--K4-resize-handle-translate: translate(0px, 0px);
 
 	.window-header {
 
@@ -20,7 +20,7 @@
 
 		form {
 			font-size: $rem-16;
-			line-height: $rem-20;
+			line-height: $rem-22;
 
 			.header-icon {
 				$icon-size: 80px;
@@ -80,7 +80,7 @@
 				overflow-x: hidden;
 				overflow-y: auto;
 
-				p:first-child {
+				> p:first-child {
 					text-indent: 25px;
 				}
 

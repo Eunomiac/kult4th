@@ -83,6 +83,7 @@
 			text-align: left;
 			list-style: none;
 			text-indent: calc(-1 * var(--K4-list-indent));
+			margin: 5px 0;
 		}
 
 		li:before {
@@ -200,7 +201,7 @@
 		line-height: $rem-28;
 
 		font-variant: all-small-caps;
-		// margin-bottom: 5px;
+		margin: 10px 0;
 		// padding: 5px 0 4px 0;
 
 		&.hold-header {

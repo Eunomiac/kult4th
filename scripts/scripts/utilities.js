@@ -316,7 +316,7 @@ const pad = (text, minLength, delim = " ", decimalPos) => {
     }
     return str;
 };
-const toKey = (text) => (text ?? "").toLowerCase().replace(/ /g, "-");
+const toKey = (text) => (text ?? "").toLowerCase().replace(/ /g, "-").replace(/default/, "DEFAULT");
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
 const signNum = (num, delim = "", zeroSign = "+") => `${pFloat(num) < 0 ? "-" : (pFloat(num) > 0 ? "+" : zeroSign)}${delim}${Math.abs(pFloat(num))}`;
 const padNum = (num, numDecDigits, includePlus = false, decimalPos) => {

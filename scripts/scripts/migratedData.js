@@ -23,7 +23,7 @@ const cleanItemData = (itemData) => {
     delete itemData._id;
     return itemData;
 };
-const sortIntoFolders = async (itemData) => {
+const sortIntoFolders = async (itemData, sortIntoSubFolders = false) => {
     const folderNames = {
         "advantage": "Advantages",
         "move": "Basic Player Moves",
@@ -78,9 +78,7 @@ const sortIntoFolders = async (itemData) => {
         "Disadvantages": C.Colors.dGOLD,
         "Basic Player Moves": C.Colors.dGOLD,
         "Dark Secrets": C.Colors.dGOLD,
-        "Weapons": C.Colors.dGOLD /*DEVCODE*/,
-        "Derived Moves": C.Colors.dGOLD,
-        "Derived Attacks": C.Colors.dGOLD /*!DEVCODE*/
+        "Weapons": C.Colors.dGOLD
     };
     const subItemFolders = {
         "Active Rolled": C.Colors.dRED,
@@ -94,24 +92,35 @@ const sortIntoFolders = async (itemData) => {
         color: folderColor
     }));
     const folders = await Folder.createDocuments(FOLDERDATA);
-    const SUBFOLDERDATA = [];
-    folders.forEach((fData) => {
-        const folderId = fData.id;
-        SUBFOLDERDATA.push(...Object.entries(subItemFolders).map(([subFolderName, subFolderColor]) => ({
-            name: subFolderName,
-            type: "Item",
-            sorting: "a",
-            color: subFolderColor,
-            parent: folderId
-        })));
-    });
-    const subFolders = await Folder.createDocuments(SUBFOLDERDATA);
-    subFolders.forEach((subFolder) => {
-        const parentFolder = C.game.folders.get(subFolder.data.parent);
-        const folderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName) => fName === parentFolder.data.name)];
-        const subFolderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName) => fName === subFolder.data.name)];
-        folderMap[folderType][subFolderType] = subFolder.id;
-    });
+    if (sortIntoSubFolders) {
+        const SUBFOLDERDATA = [];
+        folders.forEach((fData) => {
+            const folderId = fData.id;
+            SUBFOLDERDATA.push(...Object.entries(subItemFolders).map(([subFolderName, subFolderColor]) => ({
+                name: subFolderName,
+                type: "Item",
+                sorting: "a",
+                color: subFolderColor,
+                parent: folderId
+            })));
+        });
+        const subFolders = await Folder.createDocuments(SUBFOLDERDATA);
+        subFolders.forEach((subFolder) => {
+            const parentFolder = C.game.folders.get(subFolder.data.parent);
+            const folderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName) => fName === parentFolder.data.name)];
+            const subFolderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName) => fName === subFolder.data.name)];
+            folderMap[folderType][subFolderType] = subFolder.id;
+        });
+    }
+    else {
+        folders.forEach((fData) => {
+            const folderId = fData.id;
+            const folderType = Object.keys(folderNames)[Object.values(folderNames).findIndex((fName) => fName === fData.name)];
+            folderMap[folderType]["active-rolled"] = folderId;
+            folderMap[folderType]["active-static"] = folderId;
+            folderMap[folderType].passive = folderId;
+        });
+    }
     const folderIDRecord = [];
     const sortedItemData = (Object.values(itemData)
         .map((subTypeDict) => Object.values(subTypeDict))
@@ -128,21 +137,21 @@ const sortIntoFolders = async (itemData) => {
                 folderIDRecord.push(folderName);
             }
         }
-        if (iData.data && "subItems" in iData.data && iData.data.subItems && iData.data.subItems.length) {
-            iData.data.subItems = iData.data.subItems.map((subItemData) => {
-                subItemData ??= {};
-                const derivedFolderName = folderNames[`derived_${subItemData.type}`];
-                const subFolder = C.game.folders.get(folderMap[`derived_${subItemData.type}`][subItemData.data.subType]);
-                if (!folderIDRecord.includes(subFolder.id)) {
-                    folderIDRecord.push(subFolder.id);
-                    if (!folderIDRecord.includes(derivedFolderName)) {
-                        folderIDRecord.push(derivedFolderName);
-                    }
-                }
-                Object.assign(subItemData, { folder: subFolder.id });
-                return subItemData;
-            });
-        }
+        // if (iData.data && "subItems" in iData.data && iData.data.subItems && iData.data.subItems.length) {
+        // 	iData.data.subItems = iData.data.subItems!.map((subItemData?: DeepPartial<ItemDataSource>) => {
+        // 		subItemData ??= {};
+        // 		const derivedFolderName = folderNames[`derived_${subItemData.type}` as KeyOf<typeof folderNames>];
+        // 		const subFolder = C.game.folders!.get(folderMap[`derived_${subItemData.type}` as KeyOf<typeof folderMap>][subItemData.data!.subType as "active-rolled" | "active-static" | "passive"])!;
+        // 		if (!folderIDRecord.includes(subFolder.id)) {
+        // 			folderIDRecord.push(subFolder.id);
+        // 			if (!folderIDRecord.includes(derivedFolderName)) {
+        // 				folderIDRecord.push(derivedFolderName);
+        // 			}
+        // 		}
+        // 		Object.assign(subItemData, {folder: subFolder.id});
+        // 		return subItemData;
+        // 	});
+        // }
         return iData;
     });
     console.log("FOLDER IDS", { record: folderIDRecord, folders: C.game.folders.map((folder) => [folder.name, folder.id]) });
@@ -336,13 +345,10 @@ const resetItems = async () => {
     const NEW_ITEM_DICT = mutateItemData(ITEM_DATA);
     Object.assign(globalThis, { ITEM_DATA: NEW_ITEM_DICT });
     parseItemData(NEW_ITEM_DICT);
-    console.log("DERIVED ITEMS", getDerivedItemData(getItemDataObjs(NEW_ITEM_DICT)));
+    // console.log("DERIVED ITEMS", getDerivedItemData(getItemDataObjs(NEW_ITEM_DICT)));
     const NEW_ITEM_DATA = await sortIntoFolders(NEW_ITEM_DICT);
-    const DERIVED_ITEM_DATA = getDerivedItemData(NEW_ITEM_DATA);
-    await Item.createDocuments([
-        ...NEW_ITEM_DATA,
-        ...DERIVED_ITEM_DATA
-    ]);
+    // const DERIVED_ITEM_DATA = getDerivedItemData(NEW_ITEM_DATA) as ItemDataConstructorData[];
+    await Item.createDocuments(NEW_ITEM_DATA);
 };
 // #endregion 🟩🟩🟩 DATA MUTATION & ITEM GENERATION
 /* REGEXP PATTERNS TO MANUALLY FIX migratedData.ts
@@ -489,10 +495,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever someone's got you up against the wall or in a tight spot,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -924,30 +927,30 @@ const ITEM_DATA = {
                 type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
                 data: {
+                    lists: {
+                        options: {
+                            name: "Options",
+                            items: [
+                                "Improvisation: You stabilize one #>text-keyword>Wound<# without access to medical equipment.",
+                                "Effective: You stabilize two #>text-keyword>Wounds<# instead of one.",
+                                "Careful: The wound stabilizes and will heal much faster than normal."
+                            ]
+                        },
+                        complications: {
+                            name: "Complications",
+                            items: [
+                                "You leave cosmetic scars or defects (the patient loses #>text-negmod>−2<# #>text-keyword>Stability<#.",
+                                "There are lingering side effects (#>text-negmod>−1<# to all rolls the wound could feasibly affect until it's fully healed).",
+                                "The patient remains knocked out until the GM determines that they awaken."
+                            ]
+                        }
+                    },
                     subItems: [
                         {
                             name: "Stabilize Injury",
                             type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
                             data: {
-                                lists: {
-                                    options: {
-                                        name: "Options",
-                                        items: [
-                                            "Improvisation: You stabilize one #>text-keyword>Wound<# without access to medical equipment.",
-                                            "Effective: You stabilize two #>text-keyword>Wounds<# instead of one.",
-                                            "Careful: The wound stabilizes and will heal much faster than normal."
-                                        ]
-                                    },
-                                    complications: {
-                                        name: "Complications",
-                                        items: [
-                                            "You leave cosmetic scars or defects (the patient loses #>text-negmod>−2<# #>text-keyword>Stability<#.",
-                                            "There are lingering side effects (#>text-negmod>−1<# to all rolls the wound could feasibly affect until it's fully healed).",
-                                            "The patient remains knocked out until the GM determines that they awaken."
-                                        ]
-                                    }
-                                },
                                 sourceItem: {
                                     name: "Battlefield Medicine",
                                     type: "advantage" /* K4ItemType.advantage */
@@ -1243,21 +1246,21 @@ const ITEM_DATA = {
                 type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/chameleon.svg",
                 data: {
+                    lists: {
+                        complications: {
+                            name: "Complications",
+                            items: [
+                                "You can't keep this deception up for very long. You must act fast, if you don't want to risk getting exposed.",
+                                "You leave traces and clues behind, which can be connected to you later on."
+                            ]
+                        }
+                    },
                     subItems: [
                         {
                             name: "Alter Appearance",
                             type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/chameleon.svg",
                             data: {
-                                lists: {
-                                    complications: {
-                                        name: "Complications",
-                                        items: [
-                                            "You can't keep this deception up for very long. You must act fast, if you don't want to risk getting exposed.",
-                                            "You leave traces and clues behind, which can be connected to you later on."
-                                        ]
-                                    }
-                                },
                                 sourceItem: {
                                     name: "Chameleon",
                                     type: "advantage" /* K4ItemType.advantage */
@@ -1801,10 +1804,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're entering a dangerous situation,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -1990,10 +1990,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you fight with no regard for your personal safety,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2182,10 +2179,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you drive your vehicle under pressure and in dangerous situations,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -2977,10 +2971,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you enter combat,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3089,30 +3080,30 @@ const ITEM_DATA = {
                 type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
                 data: {
+                    lists: {
+                        options: {
+                            name: "Options",
+                            items: [
+                                "They trust you (PC takes #>text-posmod>+1<# #>text-keyword>Relation<# with you).",
+                                "They're spellbound by you (take #>text-keyword>+1 ongoing<# against them during this scene).",
+                                "They reveal a weakness, which you can exploit later."
+                            ]
+                        },
+                        complications: {
+                            name: "Complications",
+                            items: [
+                                "They see you as a friend they can turn to when in need.",
+                                "They fall in love with you.",
+                                "They will feel betrayed, spurned, humiliated, or manipulated whenever you abuse their trust in you."
+                            ]
+                        }
+                    },
                     subItems: [
                         {
                             name: "Manipulate Other",
                             type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
                             data: {
-                                lists: {
-                                    options: {
-                                        name: "Options",
-                                        items: [
-                                            "They trust you (PC takes #>text-posmod>+1<# #>text-keyword>Relation<# with you).",
-                                            "They're spellbound by you (take #>text-keyword>+1 ongoing<# against them during this scene).",
-                                            "They reveal a weakness, which you can exploit later."
-                                        ]
-                                    },
-                                    complications: {
-                                        name: "Complications",
-                                        items: [
-                                            "They see you as a friend they can turn to when in need.",
-                                            "They fall in love with you.",
-                                            "They will feel betrayed, spurned, humiliated, or manipulated whenever you abuse their trust in you."
-                                        ]
-                                    }
-                                },
                                 sourceItem: {
                                     name: "Forked Tongue",
                                     type: "advantage" /* K4ItemType.advantage */
@@ -3163,15 +3154,6 @@ const ITEM_DATA = {
                             type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/gang-leader.svg",
                             data: {
-                                lists: {
-                                    complications: {
-                                        name: "Complications",
-                                        items: [
-                                            "One of them defies you in front of the others.",
-                                            "They will all be disgruntled for some time."
-                                        ]
-                                    }
-                                },
                                 sourceItem: {
                                     name: "Gang Leader",
                                     type: "advantage" /* K4ItemType.advantage */
@@ -3200,6 +3182,15 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "#>text-center>You're the boss of a small gang of criminals.<#"
+                    },
+                    lists: {
+                        complications: {
+                            name: "Complications",
+                            items: [
+                                "One of them defies you in front of the others.",
+                                "They will all be disgruntled for some time."
+                            ]
+                        }
                     },
                     subType: "active-rolled" /* K4ItemSubType.activeRolled */,
                     attribute: "violence" /* K4Attribute.violence */
@@ -3243,10 +3234,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you find yourself in a life-threatening situation,",
-                                    outro: "%insert.rollPrompt% to see if you can discover a way out.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt% to see if you can discover a way out."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3291,21 +3279,21 @@ const ITEM_DATA = {
                 type: "advantage" /* K4ItemType.advantage */,
                 img: "systems/kult4th/assets/icons/advantage/hacker.svg",
                 data: {
+                    lists: {
+                        complications: {
+                            name: "Complications",
+                            items: [
+                                "Someone discovers the intrusion. You must take risks or compromise on how much you're able to accomplish.",
+                                "You leave traces of your intrusion."
+                            ]
+                        }
+                    },
                     subItems: [
                         {
                             name: "Hack",
                             type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/hacker.svg",
                             data: {
-                                lists: {
-                                    complications: {
-                                        name: "Complications",
-                                        items: [
-                                            "Someone discovers the intrusion. You must take risks or compromise on how much you're able to accomplish.",
-                                            "You leave traces of your intrusion."
-                                        ]
-                                    }
-                                },
                                 sourceItem: {
                                     name: "Hacker",
                                     type: "advantage" /* K4ItemType.advantage */
@@ -3439,10 +3427,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are in a violent conflict,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -3907,10 +3892,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you move unexpectedly fast in combat,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4184,10 +4166,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you're fighting in close quarters,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -4569,10 +4548,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you are in combat with at least one ally by your side,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5008,10 +4984,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you sacrifice another to save your own skin,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5512,6 +5485,13 @@ const ITEM_DATA = {
                                 "#>text-edgename>Flurry of Blows<# &mdash; Take #>text-posmod>+2<# on your roll to attack an opponent.",
                                 "#>text-edgename>Dirty Strike<# &mdash; Momentarily stun an opponent by striking them where it hurts."
                             ]
+                        },
+                        complications: {
+                            name: "Complications",
+                            items: [
+                                "You risk losing control during the fight (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to prevent it).",
+                                "You earn an enemy, who will try to get back at you later."
+                            ]
                         }
                     },
                     subItems: [
@@ -5520,23 +5500,6 @@ const ITEM_DATA = {
                             type: "move" /* K4ItemType.move */,
                             img: "systems/kult4th/assets/icons/advantage/streetfighter.svg",
                             data: {
-                                lists: {
-                                    edges: {
-                                        name: "Edges",
-                                        items: [
-                                            "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
-                                            "#>text-edgename>Flurry of Blows<# &mdash; Take #>text-posmod>+2<# on your roll to attack an opponent.",
-                                            "#>text-edgename>Dirty Strike<# &mdash; Momentarily stun an opponent by striking them where it hurts."
-                                        ]
-                                    },
-                                    complications: {
-                                        name: "Complications",
-                                        items: [
-                                            "You risk losing control during the fight (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to prevent it).",
-                                            "You earn an enemy, who will try to get back at you later."
-                                        ]
-                                    }
-                                },
                                 sourceItem: {
                                     name: "Streetfighter",
                                     type: "advantage" /* K4ItemType.advantage */
@@ -5544,10 +5507,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you fight in close combat,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -5673,10 +5633,7 @@ const ITEM_DATA = {
                                 isCustom: false,
                                 rules: {
                                     trigger: "Whenever you push yourself to the limit to overcome a threat,",
-                                    outro: "%insert.rollPrompt%.",
-                                    listRefs: [
-                                        "edges"
-                                    ]
+                                    outro: "%insert.rollPrompt%."
                                 },
                                 results: {
                                     completeSuccess: {
@@ -6697,10 +6654,7 @@ const ITEM_DATA = {
                     isCustom: false,
                     rules: {
                         intro: "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
-                        holdText: "The GM can spend Hold on the Watchers' behalf to let them make a Move against you.",
-                        listRefs: [
-                            "watchers"
-                        ]
+                        holdText: "The GM can spend Hold on the Watchers' behalf to let them make a Move against you."
                     },
                     subType: "active-static" /* K4ItemSubType.activeStatic */,
                     attribute: "zero" /* K4Attribute.zero */

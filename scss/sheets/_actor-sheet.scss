@@ -44,7 +44,7 @@
 	.window-header .header-button {
 		top: 44px;
 		left: 24px;
-		display: none;
+		display: none !important;
 	}
 
 	.window-content {
@@ -959,5 +959,9 @@
 				}
 			}
 		}
+	}
+
+	&.minimized {
+		.gear-container, .sheet-header, .tab-content { display: none }
 	}
 }

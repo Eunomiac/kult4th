@@ -67,6 +67,7 @@
 
 	.window-content {
 		position: relative;
+		display: block !important;
 		overflow: visible;
 		height: 100%;
 		width: 100%;
@@ -281,23 +282,23 @@
 	}
 
 	.window-resizable-handle {
+		$resizable-handle-size: 20px;
 		z-index: 10;
 		background: none;
 		cursor: nwse-resize;
-		height: 50px;
-		width: 50px;
-		bottom: 0px;
-		right: 10px;
-		transform-origin: center center;
+		right: -1 * $resizable-handle-size;
+		bottom: -1 * $resizable-handle-size;
 		transition: 0.5s;
-		transform: var(--K4-resize-handle-translate) scale(2);
+		transform: translate(-50%, -50%) var(--K4-resize-handle-translate);
 		opacity: 0;
 
 		i {
 				color: var(--K4-color-title-bg);
 				font-size: $rem-48;
 				text-shadow: 0 0 4px var(--K4-color-primary-bright), 0 0 4px var(--K4-color-primary-bright), 0 0 4px var(--K4-color-primary-bright);
-				transform: translate(-50%, -50%) rotate(45deg);
+				transform-origin: center center;
+				transition: 0.5s;
+				transform: translate(-50%, -50%) rotate(45deg) scale(2);
 				top: 50%;
 				left: 50%;
 				position: relative;
@@ -305,7 +306,24 @@
 
 		&:hover {
 			opacity: 1;
-			transform: var(--K4-resize-handle-translate) scale(1);
+			i {
+				transform: translate(-50%, -50%) rotate(45deg) scale(1);
+			}
+		}
+	}
+
+	&.minimized {
+
+		.window-header {
+			transform: translate(-50%, -50%);
+			left: 35px;
+			top: 0px;
+			height: 50px;
+			width: 170px;
+		}
+
+		.window-content {
+			display: initial !important;
 		}
 	}
 }

@@ -46,7 +46,7 @@ declare global {
 		failure = "failure"
 	}
 
-	type ResultsData = {
+	interface ResultsData {
 		results: Record<
 				K4ItemResultType,
 				{
@@ -227,9 +227,9 @@ declare global {
 		}
 		export interface attack extends K4ItemSourceSchema.attack, Base {
 		}
-		export interface advantage extends K4ItemSourceSchema.advantage, Base, HasSubItems {
+		export interface advantage extends K4ItemSourceSchema.advantage, Base, HasSubItems, ResultsData {
 		}
-		export interface disadvantage extends K4ItemSourceSchema.disadvantage, Base, HasSubItems {
+		export interface disadvantage extends K4ItemSourceSchema.disadvantage, Base, HasSubItems, ResultsData {
 		}
 		export interface darksecret extends K4ItemSourceSchema.darksecret, Base {
 		}
@@ -280,6 +280,7 @@ declare global {
 
 	type K4ItemSpec<Type extends K4ItemType> = K4Item & {data: {type: Type, _source: {type: Type}}}
 	type K4HasSubItems<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {data: {data: {subItems: ItemDataSource[]}}}
+	type K4RollableItem = K4ItemSpec<K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage>
 
 
 }

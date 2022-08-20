@@ -1,0 +1,19 @@
+		{{log "{DERIVED MOVE}" this}}
+
+		{{#unless (areEmpty data.rules.intro data.rules.trigger data.rules.outro)}}
+			{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.rules}}
+		{{/unless}}
+
+		{{~#if (test data.subType "==" "active-rolled")}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=data.results.completeSuccess.result}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=data.results.partialSuccess.result}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.results.failure.result}}
+
+			{{~#if data.results.listRefs}}
+				{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.lists listRefs=data.results.listRefs itemData=data isDisplayingName=true}}
+			{{/if}}
+		{{/if}}
+
+		{{~#if data.rules.listRefs}}
+			{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.lists listRefs=data.rules.listRefs itemData=data isDisplayingName=true}}
+		{{/if}}

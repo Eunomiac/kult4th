@@ -202,8 +202,10 @@ Kult White:  #FFFFFF */
 
 @font-face {
   #tinymce {
-    font-family: GrandpaScript;
-    src: url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.ttf") format("truetype"), url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.otf") format("opentype"); } }
+    font-family: GrandpasScript;
+    src: url("../assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format("woff2"), url("../assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format("woff");
+    font-weight: normal;
+    font-style: normal; } }
   #tinymce * {
     /* FOUNDRY OVERRIDES */
     --font-primary: Alverata, serif;
@@ -341,15 +343,15 @@ Kult White:  #FFFFFF */
     --K4-font-weight-primary: 400;
     --K4-color-title-fg: var(--K4-color-contrast);
     --K4-color-title-bg: var(--K4-color-primary);
-    --K4-color-header: var(--K4-RED);
+    --K4-color-header: var(--K4-bRED);
     --K4-list-indent: 12px;
     --K4-background: transparent url("../assets/backgrounds/dark/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/dark/border.webp") 30 / 30px / 15px round;
-    --K4-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+    --K4-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
     --K4-color-keyword: var(--K4-bWHITE);
     --K4-color-keyword-bright: var(--K4-bWHITE);
     --K4-color-pos: var(--K4-bWHITE);
-    --K4-color-neg: var(--K4-RED);
+    --K4-color-neg: var(--K4-bRED);
     --K4-svg-fill: var(--K4-color-primary);
     --K4-svg-bg: var(--K4-color-contrast);
     --K4-svg-clip-path: circle(closest-side);
@@ -537,7 +539,8 @@ Kult White:  #FFFFFF */
     #tinymce .mce-content-body ul.inline-list li {
       text-align: left;
       list-style: none;
-      text-indent: calc(-1 * var(--K4-list-indent)); }
+      text-indent: calc(-1 * var(--K4-list-indent));
+      margin: 5px 0; }
     #tinymce ul.rules-list li:before, #tinymce ul.inline-list li:before,
     #tinymce .mce-content-body ul.rules-list li:before,
     #tinymce .mce-content-body ul.inline-list li:before {
@@ -671,7 +674,8 @@ Kult White:  #FFFFFF */
     text-align: center;
     height: 2rem;
     line-height: 1.75rem;
-    font-variant: all-small-caps; }
+    font-variant: all-small-caps;
+    margin: 10px 0; }
     #tinymce label.k4-header.hold-header,
     #tinymce .mce-content-body label.k4-header.hold-header {
       color: var(--K4-WHITE);

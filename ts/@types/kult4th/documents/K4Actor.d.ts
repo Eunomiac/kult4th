@@ -47,12 +47,14 @@ declare global {
 		zero = "zero",
 		attribute = "attribute",
 		move = "move",
-		attack = "attack"
+		attack = "attack",
+		advantage = "advantage",
+		disadvantage = "disadvantage"
 	}
 
 	type K4RollModData = Record<string,number>;
 
-	type K4RollSource = K4ItemSpec<K4ItemType.move|K4ItemType.attack>|K4CharAttribute|K4Attribute.zero;
+	type K4RollSource = K4RollableItem|K4CharAttribute|K4Attribute.zero;
 
 	type K4RollAttribute = Exclude<K4Attribute,K4Attribute.ask>;
 	interface K4RollOptions {

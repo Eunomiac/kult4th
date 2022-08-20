@@ -330,9 +330,29 @@ export default class K4Actor extends Actor {
 			rollSource = this.getItemByName(rollSource) ?? rollSource;
 		}
 
-		if (rollSource instanceof K4Item && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack)) {
-			rollData.type = rollSource.data.type === K4ItemType.move ? K4RollType.move : K4RollType.attack;
-			rollData.source = rollSource as K4ItemSpec<K4ItemType.move|K4ItemType.attack>;
+		if (rollSource instanceof K4Item/*  && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack) */) {
+			switch (rollSource.data.type) {
+				case K4ItemType.move: {
+					rollData.type = K4RollType.move;
+					break;
+				}
+				case K4ItemType.attack: {
+					rollData.type = K4RollType.attack;
+					break;
+				}
+				case K4ItemType.advantage: {
+					rollData.type = K4RollType.advantage;
+					break;
+				}
+				case K4ItemType.disadvantage: {
+					rollData.type = K4RollType.disadvantage;
+					break;
+				}
+				default: {
+					throw new Error(`Can't roll items of type '${rollSource.data.type}'`);
+				}
+			}
+			rollData.source = rollSource as K4RollableItem; // as K4ItemSpec<K4ItemType.move|K4ItemType.attack>;
 			rollSource = rollSource.data.data.attribute;
 		}
 		if (rollSource === K4Attribute.ask) {
@@ -357,7 +377,9 @@ export default class K4Actor extends Actor {
 	async displayRollResult(roll: Roll, rollSource: K4RollSource, options: K4RollOptions) {
 		console.log("DISPLAYING ROLL RESULT", {roll, rollSource, options});
 		if (U.isUndefined(roll.total)) { return }
-		if (!(rollSource instanceof K4Item && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack))) { return }
+		if (!(rollSource instanceof K4Item && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack || rollSource.data.type === K4ItemType.advantage || rollSource.data.type === K4ItemType.disadvantage))) { return }
+		let results;
+
 		const template = await getTemplate(U.getTemplatePath("sidebar", "roll-result"));
 		const templateData: {result?: ValueOf<ResultsData["results"]>, cssClass: string, context: K4Item} = {
 			cssClass: "kult4th-chat chat-roll-result",
@@ -378,14 +400,14 @@ export default class K4Actor extends Actor {
 		});
 
 
-		const sourceItem: {name?: string, type?: K4ItemType} = {};
-		// Is source of roll an item?
-		if (rollSource instanceof K4Item && [K4ItemType.move, K4ItemType.attack].includes(rollSource.data.type)) {
-			if (rollSource.data.data.sourceItem?.name) {
-				sourceItem.name = rollSource.data.data.sourceItem.name;
-				sourceItem.type = rollSource.data.data.sourceItem?.type;
-			}
-		}
+		// const sourceItem: {name?: string, type?: K4ItemType} = {};
+		// // Is source of roll an item?
+		// if (rollSource instanceof K4Item && [K4ItemType.move, K4ItemType.attack].includes(rollSource.data.type)) {
+		// 	if (rollSource.data.data.sourceItem?.name) {
+		// 		sourceItem.name = rollSource.data.data.sourceItem.name;
+		// 		sourceItem.type = rollSource.data.data.sourceItem?.type;
+		// 	}
+		// }
 
 		// const template = await getTemplate(C.getTemplatePath("dialog", "ask-for-attribute"));
 		// const content = template({
@@ -435,7 +457,8 @@ export default class K4Actor extends Actor {
 					return moveData?.data ?? {};
 				}));
 				if (newItems) {
-					this.createEmbeddedDocuments("Item", newItems);
+					const brandNewItems = await this.createEmbeddedDocuments("Item", newItems) as K4Item[];
+					brandNewItems[0].sheet?.render(true );
 				}
 			}
 			this.setFlag("kult4th", "sheetTab", "front");

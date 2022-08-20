@@ -787,6 +787,22 @@ export default class K4PCSheet extends ActorSheet {
 						$(this).on("click", () => self.actor.removeWound(woundID));
 					}
 				});
+			html.find(".header-button.close")
+				.each(function closeSheetEvent() {
+					$(this).on("click", () => self.actor.sheet?.close());
+				});
+
+			html.find(".header-button.minimize")
+				.each(function minimizeSheetEvent() {
+					$(this).on("click", () => {
+						if (self._minimized) {
+							self.maximize();
+						} else {
+							self.minimize();
+						}
+					});
+				});
+
 			html.find(".content-editable").each(function enableContentEditable() {
 				$(this)
 					.on("click", (clickEvent) => {

@@ -7,8 +7,8 @@
 		{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
 		{{/unless}}
 
-		{{#each data.data.subMoveData as |subMove|}}
-		{{> "systems/kult4th/templates/partials/derived-item-summary.hbs" subMove}}
+		{{#each data.data.subItems as |subMove|}}
+		{{> "systems/kult4th/templates/partials/derived-move.hbs" subMove}}
 		{{/each}}
 
 		{{~#if data.data.rules.listRefs}}

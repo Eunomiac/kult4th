@@ -199,9 +199,11 @@ Number Display
 }
 
 @font-face {
-	font-family: GrandpaScript;
-	src: url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.ttf") format("truetype"),
-		   url("../assets/fonts/ft-grandpas-script/ft-grandpas/script.otf") format("opentype"),
+	font-family: GrandpasScript;
+	src: url("../assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format('woff2'),
+			 url("../assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 
 $rem-8: 0.5rem;
