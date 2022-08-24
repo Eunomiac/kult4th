@@ -1,6 +1,7 @@
 import "./K4Actor";
 import "./K4Item";
 import "./K4ActiveEffect";
+import "./K4Roll";
 import K4Actor from "../../../documents/K4Actor";
 import K4Item from "../../../documents/K4Item";
 import K4PCSheet from "../../../documents/K4PCSheet";

@@ -41,6 +41,261 @@
 		}
 	}
 
+	.nav-panel {
+		$gear-size: 180px;
+		$full-size: 230px;
+		$frame-width: 10px;
+		$nav-vert-shift: 55px;
+		$nav-horiz-shift: 35px;
+		top: $nav-vert-shift; // $horiz-horiz-sub-center;
+		left: $nav-horiz-shift; // (0.5 * $vert-width);
+		height: $gear-size;
+		width: $gear-size;
+		pointer-events: all;
+		position: absolute;
+		z-index: 5;
+		transform: translate(-50%, -50%) scale(0.8);
+
+		* { pointer-events: none }
+
+		.nav-svg {
+			height: 100%;
+			width: 100%;
+			position: absolute;
+
+			.svg-def {
+				height: $full-size;
+				width: $full-size;
+				transform: translate(-50%, -50%);
+
+				&.outer-spikes {
+					--K4-svg-fill: var(--K4-color-contrast-low);
+					transform: translate(-50%, -50%) scale(0.95);
+				}
+
+				&.inner-spikes {
+					--K4-svg-fill: var(--K4-color-contrast-low);
+					transform: translate(-50%, -50%) scale(3);
+					opacity: 0;
+				}
+
+				&.inner-mesh {
+					--K4-svg-fill: var(--K4-color-contrast-low);
+					transform: translate(-50%, -50%) scale(2);
+					opacity: 0;
+				}
+
+				&.main-ring {
+					--K4-svg-fill: url("#nav-main-ring-bg-start-gradient");
+					--K4-svg-stroke: url("#nav-main-ring-stroke-gradient");
+					--K4-svg-stroke-width: 10px;
+					transform: translate(-50%, -50%);
+					filter: drop-shadow(2px 2px 1px var(--K4-BLACK));
+				}
+			}
+		}
+
+		img {
+			position: absolute;
+		}
+
+		.nav-lens,
+		.profile-image-bg,
+		.profile-image-animation {
+			pointer-events: none;
+			top: $frame-width;
+			left: $frame-width;
+			height: $gear-size - 2 * $frame-width;
+			width: $gear-size - 2 * $frame-width;
+		}
+
+		.nav-lens {
+			// z-index: 1;
+			top: 0;
+			left: 0;
+			height: $gear-size;
+			width: $gear-size;
+		}
+
+		.profile-image {
+			height: auto;
+			width: auto;
+			max-width: $gear-size - 2 * $frame-width;
+			top: 55%; // $gear-size / 2;
+			left: 50%; // $gear-size / 2;
+			transform: translate(-50%, -50%);
+			pointer-events: all;
+			// z-index: 0;
+			clip-path: circle(closest-side);
+		}
+
+		.profile-image-bg {
+			position: absolute;
+			border-radius: 50%;
+			background: var(--K4-color-contrast);
+			// z-index: -1;
+			filter: drop-shadow(25px 25px 15px var(--K4-dBLACK));
+		}
+
+		.profile-image-animation {
+			position: absolute;
+			border-radius: 50%;
+			// background: transparent #{to-url("animations/gears-perspective.webp")} no-repeat no-repeat 90% center/266px auto;
+			background: transparent #{to-url("animations/gears-steampunk.webp")} no-repeat no-repeat center center/185px auto;
+			// z-index: -2;
+			transform: scale(1.1);
+		}
+
+		.nav-flare {
+			pointer-events: none;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			top: 13px;
+			transform: scale(0.5);
+			transform-origin: center center;
+			background: transparent #{to-url("animations/nav-flare.webp")} no-repeat no-repeat center center/100%;
+			z-index: -2;
+
+
+
+		}
+
+		.header-button {
+			opacity: 0;
+			display: block;
+			font-size: $rem-24;
+			width: 30px;
+			position: absolute;
+			// z-index: -2;
+			text-align: center;
+			text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
+			transform: translate(-50%, -50%);
+			pointer-events: all;
+
+
+			&.close {
+				top: 35px;
+				left: 110px;
+			}
+
+			&.minimize {
+				left: 135px;
+				top: 60px;
+			}
+		}
+
+		.tabs {
+			// $tab-spike-height: 40px;
+			$spoke-height: 140px;
+			$spoke-width: 80px;
+			$svg-size: 70px;
+			$svg-height: 40px;
+			$link-size: 40px;
+
+			// outline: 3px solid red;
+
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			display: block;
+			// opacity: 0;
+			transform-origin: center center;
+			// transform: scale(0.5);
+			z-index: -1;
+
+			.nav-tab-container {
+				display: block;
+				position: absolute;
+				transform: translate(-50%, -50%) rotate(var(--tab-rotation));
+				height: $spoke-height;
+				width: $spoke-width;
+				top: calc(50% - (0.5 * #{$spoke-height}));
+				transform-origin: center bottom;
+				left: 50%;
+				// pointer-events: all;
+				// outline: 2px dashed darkgreen;
+
+				&:nth-child(1) { --tab-rotation: 0deg; }
+
+				&:nth-child(2) { --tab-rotation: -60deg; }
+
+				&:nth-child(3) { --tab-rotation: -90deg; }
+
+				&:nth-child(4) { --tab-rotation: -120deg; }
+
+				&:nth-child(5) { --tab-rotation: -150deg; }
+
+				.nav-tab-slider {
+					display: block;
+					position: absolute;
+					height: $svg-size;
+					width: $spoke-width;
+					transform: translate(-50%, -50%);
+					top: $spoke-height - $svg-height;
+					left: 50%;
+					// background: rgba(255, 0, 255, 0.2);
+				}
+
+				.svg-container[class*='nav-spoke'] {
+					// height: $svg-size;
+					width: $link-size;
+					transform: translate(-50%, -50%) scale(2);
+					transform-origin: center bottom;
+
+					// outline: 2px dashed red;
+
+					top: 50%;
+					left: 50%;
+					overflow: hidden;
+
+					--K4-svg-fill: var(--K4-BLACK);
+
+					.svg-def {
+						top: calc(50% + #{0.5 * $svg-height});
+						left: 50%;
+					}
+				}
+
+				.nav-tab {
+					transform: translate(-50%, -50%);
+					height: $link-size;
+					width: $link-size;
+					pointer-events: all;
+					left: 50%;
+					top: 0.5 * $link-size;
+					position: absolute;
+
+					// background: rgba(255, 255, 0, 0.2);
+					// outline: 3px solid yellow;
+
+					.nav-tab-label {
+						display: block;
+						opacity: 0;
+						color: var(--K4-bWHITE);
+						font-size: $rem-24;
+						font-family: var(--K4-font-primary-caps);
+						font-weight: $font-weight-black;
+						text-shadow:
+							0px 0px 5px var(--K4-RED),
+							0px 0px 5px var(--K4-RED),
+							0px 0px 12px var(--K4-RED),
+							0px 0px 10px var(--K4-RED),
+							0px 0px 15px var(--K4-RED),
+							0px 0px 20px var(--K4-RED);
+						position: absolute;
+						transform-origin: center center;
+						transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
+						text-transform: uppercase;
+						top: 50%;
+						left: 50%;
+						text-align: center;
+					}
+				}
+			}
+		}
+	}
+
 	.window-header .header-button {
 		top: 44px;
 		left: 24px;
@@ -161,260 +416,7 @@
 				}
 			}
 
-			.nav-panel {
-				$gear-size: 180px;
-				$full-size: 230px;
-				$frame-width: 10px;
-				$nav-vert-shift: 55px;
-				$nav-horiz-shift: 35px;
-				top: $nav-vert-shift; // $horiz-horiz-sub-center;
-				left: $nav-horiz-shift; // (0.5 * $vert-width);
-				height: $gear-size;
-				width: $gear-size;
-				pointer-events: all;
-				position: absolute;
-				z-index: 5;
-				transform: translate(-50%, -50%) scale(0.8);
 
-				* { pointer-events: none }
-
-				.nav-svg {
-					height: 100%;
-					width: 100%;
-					position: absolute;
-
-					.svg-def {
-						height: $full-size;
-						width: $full-size;
-						transform: translate(-50%, -50%);
-
-						&.outer-spikes {
-							--K4-svg-fill: var(--K4-color-contrast-low);
-							transform: translate(-50%, -50%) scale(0.95);
-						}
-
-						&.inner-spikes {
-							--K4-svg-fill: var(--K4-color-contrast-low);
-							transform: translate(-50%, -50%) scale(3);
-							opacity: 0;
-						}
-
-						&.inner-mesh {
-							--K4-svg-fill: var(--K4-color-contrast-low);
-							transform: translate(-50%, -50%) scale(2);
-							opacity: 0;
-						}
-
-						&.main-ring {
-							--K4-svg-fill: url("#nav-main-ring-bg-start-gradient");
-							--K4-svg-stroke: url("#nav-main-ring-stroke-gradient");
-							--K4-svg-stroke-width: 10px;
-							transform: translate(-50%, -50%);
-							filter: drop-shadow(2px 2px 1px var(--K4-BLACK));
-						}
-					}
-				}
-
-				img {
-					position: absolute;
-				}
-
-				.nav-lens,
-				.profile-image-bg,
-				.profile-image-animation {
-					pointer-events: none;
-					top: $frame-width;
-					left: $frame-width;
-					height: $gear-size - 2 * $frame-width;
-					width: $gear-size - 2 * $frame-width;
-				}
-
-				.nav-lens {
-					// z-index: 1;
-					top: 0;
-					left: 0;
-					height: $gear-size;
-					width: $gear-size;
-				}
-
-				.profile-image {
-					height: auto;
-					width: auto;
-					max-width: $gear-size - 2 * $frame-width;
-					top: 55%; // $gear-size / 2;
-					left: 50%; // $gear-size / 2;
-					transform: translate(-50%, -50%);
-					pointer-events: all;
-					// z-index: 0;
-					clip-path: circle(closest-side);
-				}
-
-				.profile-image-bg {
-					position: absolute;
-					border-radius: 50%;
-					background: var(--K4-color-contrast);
-					// z-index: -1;
-					filter: drop-shadow(25px 25px 15px var(--K4-dBLACK));
-				}
-
-				.profile-image-animation {
-					position: absolute;
-					border-radius: 50%;
-					// background: transparent #{to-url("animations/gears-perspective.webp")} no-repeat no-repeat 90% center/266px auto;
-					background: transparent #{to-url("animations/gears-steampunk.webp")} no-repeat no-repeat center center/185px auto;
-					// z-index: -2;
-					transform: scale(1.1);
-				}
-
-				.nav-flare {
-					pointer-events: none;
-					position: absolute;
-					height: 100%;
-					width: 100%;
-					top: 13px;
-					transform: scale(0.5);
-					transform-origin: center center;
-					background: transparent #{to-url("animations/nav-flare.webp")} no-repeat no-repeat center center/100%;
-					z-index: -2;
-
-
-
-				}
-
-				.header-button {
-					opacity: 0;
-					display: block;
-					font-size: $rem-24;
-					width: 30px;
-					position: absolute;
-					// z-index: -2;
-					text-align: center;
-					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
-					transform: translate(-50%, -50%);
-					pointer-events: all;
-
-
-					&.close {
-						top: 35px;
-						left: 110px;
-					}
-
-					&.minimize {
-						left: 135px;
-						top: 60px;
-					}
-				}
-
-				.tabs {
-					// $tab-spike-height: 40px;
-					$spoke-height: 140px;
-					$spoke-width: 80px;
-					$svg-size: 70px;
-					$svg-height: 40px;
-					$link-size: 40px;
-
-					// outline: 3px solid red;
-
-					height: 100%;
-					width: 100%;
-					position: absolute;
-					display: block;
-					// opacity: 0;
-					transform-origin: center center;
-					// transform: scale(0.5);
-					z-index: -1;
-
-					.nav-tab-container {
-						display: block;
-						position: absolute;
-						transform: translate(-50%, -50%) rotate(var(--tab-rotation));
-						height: $spoke-height;
-						width: $spoke-width;
-						top: calc(50% - (0.5 * #{$spoke-height}));
-						transform-origin: center bottom;
-						left: 50%;
-						// pointer-events: all;
-						// outline: 2px dashed darkgreen;
-
-						&:nth-child(1) { --tab-rotation: 0deg; }
-
-						&:nth-child(2) { --tab-rotation: -60deg; }
-
-						&:nth-child(3) { --tab-rotation: -90deg; }
-
-						&:nth-child(4) { --tab-rotation: -120deg; }
-
-						&:nth-child(5) { --tab-rotation: -150deg; }
-
-						.nav-tab-slider {
-							display: block;
-							position: absolute;
-							height: $svg-size;
-							width: $spoke-width;
-							transform: translate(-50%, -50%);
-							top: $spoke-height - $svg-height;
-							left: 50%;
-							// background: rgba(255, 0, 255, 0.2);
-						}
-
-						.svg-container[class*='nav-spoke'] {
-							// height: $svg-size;
-							width: $link-size;
-							transform: translate(-50%, -50%) scale(2);
-							transform-origin: center bottom;
-
-							// outline: 2px dashed red;
-
-							top: 50%;
-							left: 50%;
-							overflow: hidden;
-
-							--K4-svg-fill: var(--K4-BLACK);
-
-							.svg-def {
-								top: calc(50% + #{0.5 * $svg-height});
-								left: 50%;
-							}
-						}
-
-						.nav-tab {
-							transform: translate(-50%, -50%);
-							height: $link-size;
-							width: $link-size;
-							pointer-events: all;
-							left: 50%;
-							top: 0.5 * $link-size;
-							position: absolute;
-
-							// background: rgba(255, 255, 0, 0.2);
-							// outline: 3px solid yellow;
-
-							.nav-tab-label {
-								display: block;
-								opacity: 0;
-								color: var(--K4-bWHITE);
-								font-size: $rem-24;
-								font-family: var(--K4-font-primary-caps);
-								font-weight: $font-weight-black;
-								text-shadow:
-									0px 0px 5px var(--K4-RED),
-									0px 0px 5px var(--K4-RED),
-									0px 0px 12px var(--K4-RED),
-									0px 0px 10px var(--K4-RED),
-									0px 0px 15px var(--K4-RED),
-									0px 0px 20px var(--K4-RED);
-								position: absolute;
-								transform-origin: center center;
-								transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
-								text-transform: uppercase;
-								top: 50%;
-								left: 50%;
-								text-align: center;
-							}
-						}
-					}
-				}
-			}
 
 			.tab-content {
 				filter: drop-shadow(rgb(0, 0, 0) 2px 4px 2px) drop-shadow(rgb(0, 0, 0) 20px 20px 20px);
@@ -488,6 +490,9 @@
 							}
 
 							.dramatic-hook {
+								position: relative;
+								left: 80px;
+								width: calc(100% - 80px);
 								height: 16px;
 								margin: 4px 0;
 								white-space: nowrap;
@@ -517,8 +522,8 @@
 									font-size: $rem-12;
 									height: 100%;
 									box-shadow: none;
-									font-weight: $font-weight-bold;
-									font-style: italic;
+									font-weight: $font-weight-semi;
+									// font-style: italic;
 									transform-origin: left center;
 									vertical-align: top;
 								}

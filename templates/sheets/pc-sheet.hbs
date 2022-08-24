@@ -11,78 +11,16 @@
 	{{> "systems/kult4th/templates/components/svg.hbs" key="gear-geburah-center-saw"}}
 </div>
 
+{{> "systems/kult4th/templates/components/pc-nav-menu.hbs" }}
+
 <form class="kult4th-form {{cssClass}} actor-pc" autocomplete="off">
-	<script src="systems/kult4th/node_modules/cq-prolyfill/cq-prolyfill.js" async></script>
-	<header class="sheet-header">
-		<div class="actor-name-container">
-			<span class="actor-name-spacer"></span>
-			<span class="actor-name-border actor-name-border-left"></span>
-			<div class="actor-name-input-container">
-				<div class="actor-name-bg-anim actor-name-bg-anim-left"></div>
-				<div class="actor-name-bg-anim actor-name-bg-anim-right"></div>
-				<div class="actor-name content-editable clamp-text" data-field="name" data-placeholder="{{loc "kult4th.sheet.prompts.whoAreYou"}}" data-clamplines="1">{{actor.name}}</div>
-			</div>
-			<span class="actor-name-border actor-name-border-right"></span>
-			<span class="actor-name-spacer"></span>
-		</div>
-	</header>
-	<div class="nav-panel">
-		<div class="nav-flare"></div>
-		<div class="profile-image-animation"></div>
-		<div class="profile-image-bg"></div>
-		<img class="profile-image" src="{{actor.img}}" data-edit="img" />
-		<img class="nav-lens" src="../systems/kult4th/assets/layout/nav-lens.webp" />
-		{{> "systems/kult4th/templates/components/nav-frame.hbs" }}
-		<nav class="tabs" data-group="primary">
-			<div class="nav-tab-container">
-				<div class="nav-tab-slider">
-				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-a"}}
-				<a class="nav-tab item" data-tab="front">
-					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.front")}}</span>
-				</a>
-				</div>
-			</div>
-			<div class="nav-tab-container">
-				<div class="nav-tab-slider">
-				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-d"}}
-				<a class="nav-tab item" data-tab="assets">
-					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.assets")}}</span>
-				</a>
-				</div>
-			</div>
-			<div class="nav-tab-container">
-				<div class="nav-tab-slider">
-					{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-c"}}
-					<a class="nav-tab item" data-tab="bio">
-						<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.bio")}}</span>
-					</a>
-				</div>
-			</div>
-			<div class="nav-tab-container">
-				<div class="nav-tab-slider">
-				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-b"}}
-				<a class="nav-tab item" data-tab="notes">
-					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.journal")}}</span>
-				</a>
-				</div>
-			</div>
-			<div class="nav-tab-container">
-				<div class="nav-tab-slider">
-				{{> "systems/kult4th/templates/components/svg.hbs" key="nav-spoke-a"}}
-				<a class="nav-tab item" data-tab="advancement">
-					<span class="nav-tab-label">{{case "title" (loc "kult4th.sheet.advancement")}}</span>
-				</a>
-				</div>
-			</div>
-			{{!-- Need UNLOCK (?) and SETTINGS --}}
-		</nav>
-		<a class="header-button close"><i class="fas fa-times"></i></a>
-		<a class="header-button minimize"><i class="fas fa-minus"></i></a>
-	</div>
+
+	{{> "systems/kult4th/templates/components/pc-header.hbs" }}
+
 	<main class="tab-content">
 		<section class="tab front {{~#if (eq curTab "front")}} active{{/if}}" data-group="primary" data-tab="front">
 			<section class="subsection dramatic-hooks">
-				<label class="hook-label">{{case "title" (loc "kult4th.sheet.hooks")}}</label>
+				<label class="hook-label">{{case "title" (loc "kult4th.sheet.hooks")}}:</label>
 				{{#each data.data.dramaticHooks}}
 				<div class="dramatic-hook">
 					<input type="checkbox" name="data.dramaticHooks.{{@index}}.isChecked" {{checked isChecked}} />
@@ -121,7 +59,7 @@
 				</div>
 			</section>
 			<section class="subsection modifiers">
-				<span class="modifiers-report">{{data.data.woundReport}}</span>
+				<span class="modifiers-report">{{data.data.modifiersReport}}</span>
 			</section>
 			<section class="subsection attributes">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.trait.attributes")}}</label>
@@ -135,7 +73,7 @@
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
-			<section class="subsection flex-item-list special-moves k4-theme-bright">
+			<section class="subsection flex-item-list special-moves">
 				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</label>
 				{{#each derivedMoves}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
@@ -160,13 +98,13 @@
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
-			<section class="subsection flex-item-list disadvantages k4-theme-dark">
+			<section class="subsection flex-item-list disadvantages">
 				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.disadvantages")}}</label>
 				{{#each disadvantages}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
-			<section class="subsection flex-item-list darksecrets k4-theme-red">
+			<section class="subsection flex-item-list darksecrets">
 				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.darksecrets")}}</label>
 				{{#each darksecrets}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}

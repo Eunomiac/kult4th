@@ -61,7 +61,17 @@
 		}
 	}
 
-	button { outline: none; box-shadow: none; }
+	button {
+		color: var(--K4-color-contrast);
+		font-weight: $font-weight-bold;
+		border: 1px solid var(--K4-color-contrast-low);
+		background: linear-gradient(to bottom, var(--K4-color-primary) 0%, 15%, var(--K4-color-primary-bright) 50%, var(--K4-color-primary-bright) 51%, 85%, var(--K4-color-primary) 100%);
+		border-radius: 3px;
+
+		i, label {
+			color: var(--K4-color-contrast);
+		}
+	}
 
 	i {
 		--K4-color-primary: var(--K4-GOLD);
@@ -324,56 +334,68 @@
 		--strip-padding-vert: 5px;
 		--strip-underline-width: 1px;
 
-		--strip-color-fg: var(--K4-color-primary-bright);
-		--strip-color-bg: var(--K4-color-contrast);
-
-		--icon-color-fg: var(--strip-color-fg);
-		--icon-color-bg: var(--strip-color-bg);
-		--icon-color-outline: transparent;
+		--icon-outline-color: var(--K4-strip-button-color-bg);
+		--icon-outline-width: 1px;
 		--icon-clip-path: circle(closest-side);
 
 		--strip-font-size: #{$rem-16};
 		--strip-font-weight: #{$font-weight-semi};
 		--icon-scale: 1;
-		--button-color-bg: var(--K4-color-primary);
-		--button-color-fg: var(--K4-color-contrast);
-		--tooltip-color-fg: var(--K4-bWHITE);
-		--tooltip-color-bg: var(--K4-dBLACK);
+		--strip-scale: 1;
 
 		position: relative;
 		height: var(--strip-height);
 		white-space: nowrap;
+		transform-origin: left center;
+		transform: scale(var(--strip-scale));
+		padding: var(--strip-padding-vert) 0;
 
-		.icon-container, .icon-container .svg-container {
-			position: relative;
+		.icon-container {
+			position: absolute;
 			display: inline-block;
-			--K4-svg-bg: var(--icon-color-bg);
-			--K4-svg-fill: var(--icon-color-fg);
+			background: var(--icon-outline-color);
+			clip-path: var(--icon-clip-path);
+			--K4-svg-bg: var(--K4-strip-icon-color-bg);
+			--K4-svg-fill: var(--K4-strip-icon-color-fg);
 			--K4-svg-clip-path: var(--icon-clip-path);
 			--K4-svg-scale: var(--icon-scale);
 			height: var(--icon-size);
 			width: var(--icon-size);
 			white-space: nowrap;
 			font-size: 0;
+			top: 0;
 			left: 0;
+
+			.svg-container {
+				position: absolute;
+				height: calc(var(--icon-size) - 2 * var(--icon-outline-width));
+				width: calc(var(--icon-size) - 2 * var(--icon-outline-width));
+				top: var(--icon-outline-width);
+				left: var(--icon-outline-width);
+			}
+		}
+
+		.strip-bg, .button-strip {
+			position: absolute;
+			display: block;
+			height: calc(100% - 2 * var(--strip-padding-vert));
+			width: calc(100% - 0.5 * var(--icon-size));
+			top: var(--strip-padding-vert);
+			left: calc(0.5 * var(--icon-size));
+			background: var(--K4-strip-main-color-bg);
+			border-bottom: var(--strip-underline-width) solid var(--K4-strip-button-color-bg);
 		}
 
 		.button-strip {
 			position: absolute;
 			display: inline-flex;
 			flex-direction: row;
-			height: var(--icon-size);
-			top: calc(0.5 * (var(--strip-height) - var(--icon-size)));
 			width: calc(100% - 0.5 * var(--icon-size));
 			left: calc(0.5 * var(--icon-size));
-			background: var(--strip-color-bg);
 			opacity: 0;
-			padding:
-				calc(0.5 * var(--strip-padding-vert))
-				0;
-			outline: 0px solid var(--button-color-bg);
+			outline: 0px solid var(--K4-strip-button-color-bg);
 			justify-content: space-between;
-			overflow: hidden;
+			// overflow: hidden;
 
 			.button-spacer {
 				display: inline-block;
@@ -385,10 +407,10 @@
 
 			.strip-button {
 				flex-grow: 0.2;
-				--K4-svg-fill: var(--button-color-fg);
+				--K4-svg-fill: var(--K4-strip-button-color-fg);
 				--K4-svg-bg: transparent;
 				--K4-svg-clip-path: none;
-				background: var(--button-color-bg);
+				background: var(--K4-strip-button-color-bg);
 				font-size: 0;
 				flex-basis: auto;
 				width: unset;
@@ -397,6 +419,7 @@
 				padding: 0;
 				box-shadow: none;
 				border-radius: 0;
+				transition: 0.25s;
 
 				.svg-container {
 					top: 0;
@@ -408,7 +431,7 @@
 
 				.button-tooltip {
 					opacity: 0;
-					color: var(--button-color-fg);
+					color: var(--K4-strip-button-color-fg);
 					text-align: center;
 					line-height: var(--icon-size);
 					font-size: $rem-16;
@@ -421,6 +444,17 @@
 					pointer-events: none;
 					left: 50%;
 					top: 50%;
+
+					&.button-tooltip-flare {
+						color: var(--K4-strip-button-hover-color-fg);
+						visibility: hidden;
+						transform: translate(-50%, -50%) scaleX(5) scaleY(3);
+					}
+				}
+
+				&:hover {
+					--K4-svg-fill: var(--K4-strip-button-hover-color-fg);
+					background: var(--K4-strip-button-hover-color-bg);
 				}
 			}
 		}
@@ -428,7 +462,7 @@
 		.strip-name {
 			position: absolute;
 			height: 100%;
-			color: var(--strip-color-fg);
+			color: var(--K4-strip-main-color-fg);
 			font-size: var(--strip-font-size);
 			font-weight: var(--strip-font-weight);
 			line-height: var(--icon-size);
@@ -442,17 +476,6 @@
 			}
 		}
 
-		.strip-bg {
-			position: absolute;
-			display: block;
-			height: calc(100% - 2 * var(--strip-padding-vert));
-			width: calc(100% - 0.5 * var(--icon-size));
-			top: var(--strip-padding-vert);
-			left: calc(0.5 * var(--icon-size));
-			background: var(--strip-color-bg);
-			border-bottom: var(--strip-underline-width) solid var(--button-color-bg);
-		}
-
 		.strip-tooltip {
 			pointer-events: none;
 			position: absolute;
@@ -464,8 +487,8 @@
 			font-style: italic;
 			width: 100%;
 			text-align: left;
-			color: var(--tooltip-color-fg);
-			background: var(--tooltip-color-bg);
+			color: var(--K4-strip-tooltip-color-fg);
+			background: var(--K4-strip-tooltip-color-bg);
 			opacity: 0;
 			bottom: calc(0.75 * var(--strip-height));
 			left: 0;
@@ -476,36 +499,42 @@
 			border-radius: 20px;
 		}
 
-		&.move-strip:not(.derived-move) {
-			--icon-color-bg: var(--K4-color-primary);
-			--icon-color-fg: var(--K4-color-contrast);
-			--icon-color-outline: var(--K4-color-primary);
+		&.move-strip {
+			--K4-strip-icon-color-bg: var(--K4-color-primary);
+			--K4-strip-icon-color-fg: var(--K4-color-contrast);
+			--icon-outline-color: var(--K4-color-primary);
 		}
 
 		&.wound-strip {
-			--icon-size: 20px;
-			--strip-color-bg: transparent;
-			--strip-font-size: #{$rem-12};
+			// --icon-size: 20px;
+			--K4-strip-main-color-bg: transparent;
+			// --strip-font-size: #{$rem-12};
 			--strip-underline-width: 0px;
-			--icon-color-bg: transparent; // var(--K4-dRED);
+			--K4-strip-icon-color-bg: transparent; // var(--K4-dRED);
+			--icon-outline-color: transparent;
+			--icon-outline-width: 0px;
 			--icon-clip-path: none;
+			--strip-scale: 0.666;
 
 			&.wound-critical {
-				--strip-color-fg: var(--K4-bRED);
-				--icon-color-fg: var(--K4-bRED);
-				--icon-scale: 1.2;
-
 				.strip-name {
 					text-transform: uppercase;
 					font-weight: 900;
 					font-family: var(--font-primary-caps);
 				}
+
+				&:not(.wound-stabilized) {
+					--K4-strip-main-color-fg: var(--K4-gRED);
+					--K4-strip-icon-color-fg: var(--K4-gRED);
+					--icon-scale: 1.2;
+					--strip-scale: 0.75;
+				}
 			}
 
-			&.wound-stabilized, &.wound-critical.wound-stabilized {
-				--icon-scale: 1;
-				--strip-color-fg: var(--K4-GOLD);
-				--icon-color-outline: transparent;
+			&.wound-stabilized {
+				// --icon-scale: 1;
+				--K4-strip-main-color-fg: var(--K4-GOLD);
+				--icon-outline-color: transparent;
 				.icon-container, .icon-container .svg-container {
 					--K4-svg-bg: transparent;
 					--K4-svg-fill: var(--K4-GOLD);

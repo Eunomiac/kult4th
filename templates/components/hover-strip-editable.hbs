@@ -1,4 +1,4 @@
-{{log "{comp} HOVER STRIP EDITABLE" this}}
+{{dbLog "{comp} HOVER STRIP EDITABLE" this}}
 
 <div class="hover-strip {{~#each stripClasses}} {{this}}{{/each}}" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}>
 	<span class="strip-bg"></span>

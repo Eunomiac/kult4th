@@ -27,7 +27,7 @@
 	}
 
 	.window-content {
-		background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/1000px 1000px;
+		background: var(--K4-background); // transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/1000px 1000px;
 
 		text-align: justify;
 		hyphens: auto;

@@ -94,7 +94,7 @@ export const Colors = {
     RED: "rgb(155, 32, 32)",
     dRED: "rgb(70, 14, 14)",
     bRED: "rgb(240, 50, 50)",
-    gRED: "rgb(255, 99, 62)",
+    gRED: "rgb(255, 0, 0)",
     BLUE: "rgb(43, 85, 139)",
     dBLUE: "rgb(17, 33, 54)",
     bBLUE: "rgb(69, 137, 224)",

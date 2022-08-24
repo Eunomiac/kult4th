@@ -66,9 +66,7 @@ declare global {
 		type: K4RollType,
 		source: K4RollSource,
 		attrVal: number,
-		stabMod: number,
-		woundMod: number,
-		miscMod: number
+		modifiers: Record<string,number>
 	}
 	declare const enum K4WoundType {
 		serious = "serious",
@@ -158,9 +156,9 @@ declare global {
 			},
 			wounds: Record<string, K4Wound>,
 			modifiers: {
-				seriousWounds: K4RollModData[],
-				criticalWounds: K4RollModData[],
-				seriousAndCriticalWounds: K4RollModData[],
+				wounds_serious: K4RollModData[],
+				wounds_critical: K4RollModData[],
+				wounds_seriouscritical: K4RollModData[],
 				stability: K4RollModData[]
 			},
 			stability: {
@@ -208,7 +206,7 @@ declare global {
 				total: int
 			}
 
-			woundReport: string,
+			modifiersReport: string,
 
 			edges: {
 				sourceName: string,

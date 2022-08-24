@@ -11,6 +11,51 @@ export default function registerSettings() {
 		"type": Boolean,
 		"onChange": () => window.location.reload()
 	});
+	game.settings.register("kult4th", "gears", {
+		"name": "Toggle Ambient Gear Animations",
+		"hint": "Toggle the appearance of decorative rotating gears.",
+		"scope": "world",
+		"config": true,
+		"default": true,
+		"type": Boolean,
+		"onChange": () => window.location.reload()
+	});
+	game.settings.register("kult4th", "shadows", {
+		"name": "Toggle Sheet Drop Shadows",
+		"hint": "Controls whether item and actor sheets cast shadows onto the canvas.",
+		"scope": "world",
+		"config": true,
+		"default": true,
+		"type": Boolean,
+		"onChange": () => window.location.reload()
+	});
+	game.settings.register("kult4th", "blur", {
+		"name": "Toggle Sheet Blur",
+		"hint": "Controls the blur effect applied to the character sheet when hovering over its navigation radial menu.",
+		"scope": "world",
+		"config": true,
+		"default": true,
+		"type": Boolean,
+		"onChange": () => window.location.reload()
+	});
+	game.settings.register("kult4th", "flare", {
+		"name": "Toggle Navigation Menu Flare Effect",
+		"hint": "Toggle the rendering of the animated flare effect when hovering over navigation radial menus.",
+		"scope": "world",
+		"config": true,
+		"default": true,
+		"type": Boolean,
+		"onChange": () => window.location.reload()
+	});
+	game.settings.register("kult4th", "animations", {
+		"name": "Toggle HQ Animations",
+		"hint": "Toggle the rendering of performance-intensive animated backgrounds.",
+		"scope": "world",
+		"config": true,
+		"default": true,
+		"type": Boolean,
+		"onChange": () => window.location.reload()
+	});
 }
 
 export function initTinyMCEStyles() {

@@ -9,7 +9,6 @@ export default class K4Item extends Item {
             this.data.data.results = defaultMove.data.results;
         }
     }
-    subItems;
     hasSubItems() { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }
     get subItemData() {
         if (this.hasSubItems()) {
@@ -31,7 +30,7 @@ export default class K4Item extends Item {
             case "AppendList": {
                 const [targetItemName, targetList, sourceList] = params;
                 const targetMove = this.parent?.items.find((item) => item.name === targetItemName);
-                console.log("Found Target Move", targetMove);
+                U.dbLog("Found Target Move", targetMove);
                 if (targetMove && targetMove.data.data.lists[targetList]) {
                     const sourceListItems = this.data.data.lists[sourceList].items
                         .map((listItem) => `${listItem} #>text-list-note:data-item-name='${this.name}':data-action='open'>(from ${this.name})<#`);
@@ -47,15 +46,51 @@ export default class K4Item extends Item {
             // no default
         }
     }
-    get isDerived() { return "sourceItem" in this.data.data && Boolean(this.data.data.sourceItem?.name); }
+    unapplyEffectFunction(functionStr) {
+        const [funcName, ...params] = functionStr.split(/,/);
+        switch (funcName) {
+            case "AppendList": {
+                const [targetItemName, targetList, sourceList] = params;
+                const targetMove = this.parent?.items.find((item) => item.name === targetItemName);
+                U.dbLog("Found Target Move", targetMove);
+                if (targetMove && targetMove.data.data.lists[targetList]) {
+                    const prunedListItems = this.data.data.lists[sourceList].items
+                        .filter((listItem) => !(new RegExp(`data-item-name=.?${this.name}.?`)).test(listItem));
+                    const updateData = [
+                        { _id: targetMove.id, [`data.lists.${targetList}.items`]: [
+                                ...prunedListItems
+                            ] }
+                    ];
+                    this.parent?.updateEmbeddedDocuments("Item", updateData);
+                }
+            }
+            // no default
+        }
+    }
+    isDerived() { return "sourceItem" in this.data.data && Boolean(this.data.data.sourceItem?.name); }
+    get sourceID() { return this.isDerived() ? this.data.data.sourceItem.id ?? false : false; }
+    get sourceName() { return this.isDerived() ? this.data.data.sourceItem.name : false; }
+    get sourceType() { return this.isDerived() ? this.data.data.sourceItem.type : false; }
     async _onCreate(...args) {
         await super._onCreate(...args);
         if (this.isEmbedded && this.parent instanceof Actor) {
             if (this.hasSubItems()) {
-                this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData);
+                const subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData);
+                this.update({ "data.embeddedSubItems": subItems });
             }
             if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
                 this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
+            }
+        }
+    }
+    async _onDelete(...args) {
+        await super._onDelete(...args);
+        if (this.isEmbedded && this.parent instanceof Actor) {
+            if (this.hasSubItems()) {
+                this.data.data.embeddedSubItems.forEach((item) => item.delete());
+            }
+            if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
+                this.data.data.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
             }
         }
     }
@@ -83,17 +118,17 @@ export default class K4Item extends Item {
         const stripData = {
             id: this.id ?? `${this.data.type}-${U.randString(10)}`,
             type: this.data.type,
-            display: this.name ?? "(unknown)",
-            ...this.isDerived
+            ...this.isDerived()
                 ? {
+                    display: this.data.data.sourceItem?.name ?? "(unknown)",
                     icon: U.toKey(this.data.data.sourceItem.name),
                     stripClasses: [
                         U.toKey(`${this.data.data.sourceItem.type}-strip`),
-                        `derived-${this.data.type}`,
-                        "k4-theme-bright"
+                        `derived-${this.data.type}`
                     ]
                 }
                 : {
+                    display: this.name ?? "(unknown)",
                     icon: U.toKey(this.name ?? `DEFAULT-${this.data.type}`),
                     stripClasses: [`${this.data.type}-strip`, theme]
                 },
@@ -140,7 +175,7 @@ export default class K4Item extends Item {
         if (this.data.type !== "relation" /* K4ItemType.relation */) {
             stripData.tooltip = this.data.data.rules.trigger;
         }
-        // console.log("Hover Strip Data", stripData);
+        // U.dbLog("Hover Strip Data", stripData);
         return stripData;
     }
     async displayItemSummary(speaker) {

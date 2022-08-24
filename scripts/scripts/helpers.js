@@ -54,6 +54,9 @@ export const HandlebarHelpers = {
         args.pop();
         return !Object.values(args).flat().join("");
     },
+    "dbLog": function (...args) {
+        U.dbLog(...args);
+    },
     "loc": function (...args) {
         args.pop();
         const locString = args.shift();
@@ -74,7 +77,7 @@ export const HandlebarHelpers = {
         const iData = context instanceof K4Item
             ? context.data
             : context.data.root.data;
-        console.log("[FormatForKult]", { str, iData, "this": this });
+        U.dbLog("[FormatForKult]", { str, iData, "this": this });
         const self = this;
         // Step One: Replace any data object references.
         str = str.replace(/%([^%\.]+)\.([^%\.]+)%/g, (_, sourceRef, dataKey) => {
@@ -170,7 +173,7 @@ export const HandlebarHelpers = {
 
         strings.forEach((str) => {
             // Insert function to test
-            console.log(str);
+            U.dbLog(str);
         } */
         str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
         let prevStr;

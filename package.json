@@ -49,8 +49,5 @@
 	},
 	"repository": {
 		"url": "https://github.com/Eunomiac/kult4th"
-	},
-	"dependencies": {
-		"cq-prolyfill": "^0.4.0"
 	}
 }

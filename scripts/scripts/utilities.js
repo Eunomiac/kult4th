@@ -490,7 +490,7 @@ const getUID = (id) => {
     const indexNum = Math.max(0, ...UUIDLOG.filter(([genericID]) => genericID.startsWith(id)).map(([, , num]) => num)) + 1;
     const uuid = indexNum === 1 ? id : `${id}_${indexNum}`;
     UUIDLOG.push([id, uuid, indexNum]);
-    console.log(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
+    dbLog(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
     Object.assign(globalThis, { UUIDLOG });
     return uuid;
 };
@@ -513,6 +513,15 @@ function getTemplatePath(subFolder, fileName) {
     return fileName.map((fName) => getTemplatePath(subFolder, fName));
 }
 // #endregion ░░░░[Localization]░░░░
+const dbLog = (...content) => {
+    if (game.settings.get(C.SYSTEM_ID, "debug")) {
+        console.log(...content);
+    }
+};
+const toggleDebug = (isDebugging) => {
+    isDebugging ??= !game.settings.get(C.SYSTEM_ID, "debug");
+    game.settings.set(C.SYSTEM_ID, "debug", isDebugging);
+};
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 // #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
 const isIn = (needle, haystack = [], fuzziness = 0) => {
@@ -1071,7 +1080,7 @@ export default {
     // ░░░░░░░ Content ░░░░░░░
     loremIpsum, randString, randWord,
     // ░░░░░░░ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) ░░░░░░░
-    loc, getSetting, getTemplatePath,
+    loc, getSetting, getTemplatePath, dbLog, toggleDebug,
     // ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
     isIn, isInExact,
     // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████

@@ -474,7 +474,7 @@ const getUID = (id: string): string => {
 	const indexNum = Math.max(0, ...UUIDLOG.filter(([genericID]) => genericID.startsWith(id)).map(([,,num]) => num)) + 1;
 	const uuid = indexNum === 1 ? id : `${id}_${indexNum}`;
 	UUIDLOG.push([id, uuid, indexNum]);
-	console.log(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
+	dbLog(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
 	Object.assign(globalThis, {UUIDLOG});
 	return uuid;
 };
@@ -499,6 +499,15 @@ function getTemplatePath(subFolder: string, fileName: string|string[]) {
 	return fileName.map((fName) => getTemplatePath(subFolder, fName));
 }
 // #endregion ░░░░[Localization]░░░░
+const dbLog = (...content: any[]) => {
+	if (game.settings.get(C.SYSTEM_ID, "debug")) {
+		console.log(...content);
+	}
+};
+const toggleDebug = (isDebugging?: boolean) => {
+	isDebugging ??= !game.settings.get(C.SYSTEM_ID, "debug") as boolean;
+	game.settings.set(C.SYSTEM_ID, "debug", isDebugging);
+};
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
 // #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
@@ -1050,7 +1059,7 @@ export default {
 	loremIpsum, randString, randWord,
 
 	// ░░░░░░░ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) ░░░░░░░
-	loc, getSetting, getTemplatePath,
+	loc, getSetting, getTemplatePath, dbLog, toggleDebug,
 
 	// ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
 	isIn, isInExact,

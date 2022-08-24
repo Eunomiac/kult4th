@@ -51,6 +51,30 @@ Kult Grey
 Kult White:  #FFFFFF */
 
 @mixin set-default-theme() {
+
+	--GOLD: #968c6a;
+	--dGOLD: #413d2e;
+	--bGOLD: #ebdba6;
+	--gGOLD: #fffec8;
+
+	--RED: #9b2020;
+	--dRED: #460e0e;
+	--bRED: #f03232;
+	--gRED: #ff633e; // #ff633e, #9b2020, #460e0e
+
+	--BLUE: rgb(43, 85, 139);
+	--dBLUE: rgb(17, 33, 54);
+	--bBLUE: rgb(69, 137, 224);
+	--gBLUE: rgb(128, 185, 255);
+
+	--bWHITE: rgb(255, 255, 255);
+	--WHITE: #e2e2e2;
+	--bGREY: rgb(177, 177, 177);
+	--GREY: rgb(128, 128, 128);
+	--dGREY: rgb(78, 78, 78);
+	--BLACK: #1d1d1d;
+	--dBLACK: rgb(0, 0, 0);
+
 	--K4-color-primary: var(--K4-GOLD);
 	--K4-color-primary-bright: var(--K4-bGOLD);
 	--K4-color-primary-glow: var(--K4-gGOLD);
@@ -59,22 +83,33 @@ Kult White:  #FFFFFF */
 	--K4-color-contrast-low: var(--K4-dGOLD);
 	--K4-color-contrast-high: var(--K4-dBLACK);
 
-	--K4-font-primary: var(--font-primary);
-	--K4-font-weight-primary: #{$font-weight-normal};
-
 	--K4-color-title-fg: var(--K4-color-contrast);
 	--K4-color-title-bg: var(--K4-color-primary);
 	--K4-color-header: var(--K4-RED);
+
+	--K4-color-keyword: var(--K4-bGOLD);
+	--K4-color-keyword-bright: var(--K4-bGOLD);
+	--K4-color-pos: var(--K4-bGOLD);
+	--K4-color-neg: var(--K4-RED);
+
+	--K4-font-primary: var(--font-primary);
+	--K4-font-weight-primary: #{$font-weight-normal};
 
 	--K4-list-indent: 12px;
 	--K4-background: transparent #{to-url("backgrounds/dgold/bg.webp")} repeat repeat center center/1000px 1000px;
 	--K4-border: #{to-url("backgrounds/dgold/border.webp")} 30 / 30px / 15px round;
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
-	--K4-color-keyword: var(--K4-bGOLD);
-	--K4-color-keyword-bright: var(--K4-bGOLD);
-	--K4-color-pos: var(--K4-bGOLD);
-	--K4-color-neg: var(--K4-RED);
+	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-strip-main-color-bg: var(--K4-color-contrast);
+	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+	--K4-strip-button-color-fg: var(--K4-color-contrast);
+	--K4-strip-button-color-bg: var(--K4-color-primary);
+	--K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
 
 	--K4-svg-fill: var(--K4-color-primary);
 	--K4-svg-bg: none;
@@ -83,53 +118,59 @@ Kult White:  #FFFFFF */
 	--K4-svg-scale: 1;
 }
 
+/* GRADIENTS */
+@mixin gradient-gloss-primary() {
+	background-color: var(--K4-color-primary);
+	@include filter-gradient(var(--K4-color-primary),var(--K4-color-primary), vertical);
+	@include background-image(linear-gradient(top,  var(--K4-color-primary) 0%,var(--K4-color-primary-bright) 50%,var(--K4-color-primary-bright) 51%,var(--K4-color-primary) 100%));
+}
+
 /* COLOR PALETTE & DEFAULT FOUNDRY OVERRIDES */
 & {
 
 	@include set-default-theme();
 
   --color-text-light-primary: var(--K4-color-primary);
-	--color-text-light-highlight: magenta; // var(--K4-color-primary-bright); // #f0f0e0;
-  --color-text-light-heading: lime; // var(--K4-color-primary-bright); // #c9c7b8;
-  --color-text-dark-primary: var(--K4-color-contrast); // #191813;
-  --color-text-dark-secondary: cyan; // var(--K4-color-contrast-low); // #4b4a44;
-  --color-text-dark-header: purple; // var(--K4-color-contrast-low); // #23221d;
-  --color-text-light-primary: var(--K4-color-primary);
-	--color-text-light-highlight: var(--K4-color-primary-bright); // #f0f0e0;
+	--color-text-light-highlight: var(--K4-color-primary-glow); // var(--K4-color-primary-bright); // #f0f0e0;
   --color-text-light-heading: var(--K4-color-primary-bright); // #c9c7b8;
-  --color-text-dark-primary: var(--K4-color-contrast); // #191813;
+
+  --color-text-dark-primary: var(--K4-color-contrast-high); // #191813;
   --color-text-dark-secondary: var(--K4-color-contrast-low); // #4b4a44;
-  --color-text-dark-header: var(--K4-color-contrast-low); // #23221d;
-  --color-text-dark-inactive: var(--K4-color-contrast-low);
+  --color-text-dark-header: var(--K4-color-contrast); // #23221d;
+  --color-text-dark-inactive: var(--K4-GREY);
+
   --color-text-hyperlink: var(--K4-color-keyword); // #ff6400;
-  --color-text-light-0: var(--K4-color-white);
-  --color-text-light-1: var(--K4-color-primary-bright); // #eee;
-  --color-text-light-2: var(--K4-color-primary-bright); // #ddd;
-  --color-text-light-3: var(--K4-color-primary-bright); // #ccc;
+
+  --color-text-light-0: var(--K4-bWHITE);
+  --color-text-light-1: var(--K4-WHITEt); // #eee;
+  --color-text-light-2: var(--K4-color-primary-glow); // #ddd;
+  --color-text-light-3: var(--K4-color-primary-glow); // #ccc;
   --color-text-light-4: var(--K4-color-primary-bright); // #bbb;
   --color-text-light-5: var(--K4-color-primary-bright); // #aaa;
   --color-text-light-6: var(--K4-color-primary); // #999;
   --color-text-light-7: var(--K4-color-primary); // #888;
+
   --color-text-dark-1: var(--K4-color-contrast); // #111;
   --color-text-dark-2: var(--K4-color-contrast); // #222;
-  --color-text-dark-3: #444;
-  --color-text-dark-4: #555;
-  --color-text-dark-5: #666;
-  --color-text-dark-6: #777;
+  --color-text-dark-3: var(--K4-color-contrast-low); // #444;
+  --color-text-dark-4: var(--K4-color-contrast-low); //  #555;
+  --color-text-dark-5: var(--K4-color-contrast-low); //  #666;
+  --color-text-dark-6: var(--K4-color-contrast-low); //  #777;
+
   --color-border-light-1: var(--K4-color-primary-bright); // #ddd;
   --color-border-light-2: var(--K4-color-primary); // #999;
-  --color-border-dark-1: var(--K4-color-contrast); // #111;
-  --color-border-dark-2: var(--K4-color-contrast); // #222;
-  --color-border-dark-3: var(--K4-color-contrast-low); // #333;
-  --color-border-dark-4: var(--K4-color-contrast-low); // #444;
-  --color-border-dark-5: var(--K4-color-contrast-low); // #666;
+  --color-border-dark-1: var(--K4-color-primary); // #111;
+  --color-border-dark-2: var(--K4-color-primary); // #222;
+  --color-border-dark-3: var(--K4-color-primary-dark); // #333;
+  --color-border-dark-4: var(--K4-color-primary-dark); // #444;
+  --color-border-dark-5: var(--K4-color-primary-dark); // #666;
   --color-shadow-primary: var(--K4-color-primary); // #ff0000;
-  --color-shadow-highlight: var(--K4-color-primary); // #ff6400;
-  --color-shadow-dark: #000;
-  --color-underline-inactive: var(--K4-color-contrast-low); // #7a7971;
+  --color-shadow-highlight: var(--K4-color-primary-bright); // #ff6400;
+  --color-shadow-dark: var(--K4-color-contrast-high); // #000;
+  --color-underline-inactive: var(--K4-color-primary-dark); // #7a7971;
   --color-underline-active: var(--K4-color-keyword-bright); // #426899;
   --color-underline-header: var(--K4-color-primary); // #782e22;
-  --color-border-light-highlight: var(--K4-color-primary-bright);
+  --color-border-light-highlight: var(--K4-color-primary-glow);
   --color-border-light-primary: var(--K4-color-primary-bright); // #e4ddc3;
   --color-border-light-secondary: var(--K4-color-primary-bright); // #c9c7b8;
   --color-border-light-tertiary: var(--K4-color-primary); // #7a7971;
@@ -165,6 +206,17 @@ Kult White:  #FFFFFF */
 	--K4-border: #{to-url("backgrounds/white/border.webp")} 30 / 30px / 15px round;
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
+	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-strip-main-color-bg: var(--K4-color-contrast);
+	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+	--K4-strip-button-color-fg: var(--K4-color-contrast);
+	--K4-strip-button-color-bg: var(--K4-color-primary);
+	--K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
+
 	--K4-color-keyword: var(--K4-BLUE);
 	--K4-color-keyword-bright: var(--K4-dBLUE);
 	--K4-color-pos: var(--K4-BLUE);
@@ -197,6 +249,17 @@ Kult White:  #FFFFFF */
 	--K4-background: transparent #{to-url("backgrounds/dark/bg.webp")} repeat repeat center center/1000px 1000px;
 	--K4-border: #{to-url("backgrounds/dark/border.webp")} 30 / 30px / 15px round;
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
+
+	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-strip-main-color-bg: var(--K4-color-contrast);
+	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+	--K4-strip-button-color-fg: var(--K4-color-contrast);
+	--K4-strip-button-color-bg: var(--K4-color-primary);
+	--K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
 
 	--K4-color-keyword: var(--K4-bWHITE);
 	--K4-color-keyword-bright: var(--K4-bWHITE);
@@ -231,6 +294,17 @@ Kult White:  #FFFFFF */
 	--K4-border: #{to-url("backgrounds/red/border.webp")} 150 / 100px / 20px repeat;
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
+	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-strip-main-color-bg: var(--K4-color-contrast);
+	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+	--K4-strip-button-color-fg: var(--K4-color-contrast);
+	--K4-strip-button-color-bg: var(--K4-color-primary);
+	--K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
+
 	--K4-color-keyword: var(--K4-bRED);
 	--K4-color-keyword-bright: var(--K4-bRED);
 	--K4-color-pos: var(--K4-RED);
@@ -263,6 +337,17 @@ Kult White:  #FFFFFF */
 	--K4-background: transparent #{to-url("backgrounds/bgold/bg.webp")} repeat repeat center center/1000px 1000px;
 	--K4-border: #{to-url("backgrounds/bgold/border.webp")} 30 / 30px / 15px round;
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-black.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
+
+	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-strip-main-color-bg: var(--K4-color-contrast);
+	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+	--K4-strip-button-color-fg: var(--K4-color-contrast);
+	--K4-strip-button-color-bg: var(--K4-color-primary);
+	--K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
 
 	--K4-color-keyword: var(--K4-dBLACK);
 	--K4-color-keyword-bright: var(--K4-dBLACK);

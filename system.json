@@ -7,7 +7,7 @@
   "compatibleCoreVersion": "0.9",
   "author": "Ryan West",
 	"scripts": [
-		"./node_modules/cq-prolyfill/cq-prolyfill.js",
+		"scripts/cq-prolyfill.min.js",
 		"scripts/clamp.min.js"
 	],
   "esmodules": [
@@ -72,8 +72,8 @@
   "url": "https://github.com/Eunomiac/kult4th",
   "manifest": "https://raw.githubusercontent.com/Eunomiac/kult4th/master/system.json",
   "download": "",
-  "readme": "https://raw.githubusercontent.com/Eunomiac/kult4th/master/README.md",
-  "license": "LICENSE.txt",
+  "readme": "",
+  "license": "",
   "media": [
     {
       "type": "cover",

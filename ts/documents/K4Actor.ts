@@ -52,11 +52,11 @@ export default class K4Actor extends Actor {
 			this.data.data.relations = this.relations;
 
 			this.data.data.maxWounds = {
-				serious: this.data.data.modifiers.seriousWounds.length,
-				critical: this.data.data.modifiers.criticalWounds.length,
-				total: this.data.data.modifiers.seriousWounds.length + this.data.data.modifiers.criticalWounds.length
+				serious: this.data.data.modifiers.wounds_serious.length,
+				critical: this.data.data.modifiers.wounds_critical.length,
+				total: this.data.data.modifiers.wounds_serious.length + this.data.data.modifiers.wounds_critical.length
 			};
-			this.data.data.woundReport = this.parseModsToStrings(this.woundPenaltyData).join("; ");
+			this.data.data.modifiersReport = this.parseModsToStrings(this.flatModifiersData).join("; ");
 
 			// this.validateStability();
 		}
@@ -70,17 +70,17 @@ export default class K4Actor extends Actor {
 		return [...this.items].find((item: K4Item) => item.name === iName);
 	}
 
-	dropItemByName(iName: string): boolean {
-		return false;
+	async dropItemByName(iName: string) {
+		return [...this.items].find((item: K4Item) => item.name === iName)?.delete();
 	}
 
 	get moves() { return this.getItemsOfType(K4ItemType.move) }
-	get basicMoves() { return this.moves.filter((move) => !move.isDerived) }
-	get derivedMoves() { return this.moves.filter((move) => move.isDerived) }
+	get basicMoves() { return this.moves.filter((move) => !move.isDerived()) }
+	get derivedMoves() { return this.moves.filter((move) => move.isDerived()) }
 
 	get attacks() { return this.getItemsOfType(K4ItemType.attack) }
-	get basicAttacks() { return this.attacks.filter((attack) => !attack.isDerived) }
-	get derivedAttacks() { return this.attacks.filter((attack) => attack.isDerived) }
+	get basicAttacks() { return this.attacks.filter((attack) => !attack.isDerived()) }
+	get derivedAttacks() { return this.attacks.filter((attack) => attack.isDerived()) }
 
 
 	get advantages() { return this.getItemsOfType(K4ItemType.advantage) }
@@ -90,7 +90,7 @@ export default class K4Actor extends Actor {
 	get gear() { return this.getItemsOfType(K4ItemType.gear) }
 	get relations() { return this.getItemsOfType(K4ItemType.relation) }
 
-	get derivedItems() { return [...this.items].filter((item) => item.isDerived) }
+	get derivedItems() { return [...this.items].filter((item) => item.isDerived()) }
 
 	get wounds(): Record<KeyOf<typeof this["data"]["data"]["wounds"]>,K4Wound> {
 		// if (this.type === K4ActorType.pc) {
@@ -230,9 +230,9 @@ export default class K4Actor extends Actor {
 				isCritical: type === K4WoundType.critical,
 				isStabilized: false
 			};
-			console.log("Starting Wounds", U.objClone(this.data.data.wounds));
+			U.dbLog("Starting Wounds", U.objClone(this.data.data.wounds));
 			await this.update({[`data.wounds.${woundData.id}`]: woundData});
-			console.log("Updated Wounds", U.objClone(this.data.data.wounds));
+			U.dbLog("Updated Wounds", U.objClone(this.data.data.wounds));
 		}
 	}
 
@@ -263,25 +263,16 @@ export default class K4Actor extends Actor {
 
 	async removeWound(id: string) {
 		if (this.data.type === K4ActorType.pc) {
-			console.log("Starting Wounds", U.objClone(this.data.data.wounds));
+			U.dbLog("Starting Wounds", U.objClone(this.data.data.wounds));
 			await this.update({[`data.wounds.-=${id}`]: null});
-			console.log("Updated Wounds", this.data.data.wounds);
+			U.dbLog("Updated Wounds", this.data.data.wounds);
 		}
 	}
 
-	parseModsToStrings(modData: K4RollModData): string[] {
+	parseModsToStrings(modData: K4RollModData = this.flatModifiersData): string[] {
 		const returnStrings = [];
-		for (const [modKey, modVal] of Object.entries(modData ?? {})) {
-			switch (modKey) {
-				case "all": {
-					returnStrings.push(`${U.signNum(modVal)} to all rolls`);
-					break;
-				}
-				default: {
-					returnStrings.push(`Unknown Roll Modifier: '${modKey}'`);
-					break;
-				}
-			}
+		for (const [modKey, modVal] of Object.entries(modData)) {
+			returnStrings.push(`${U.signNum(modVal)} to ${modKey === "all" ? "all" : U.tCase(modKey)} rolls`);
 		}
 		return returnStrings;
 	}
@@ -293,24 +284,16 @@ export default class K4Actor extends Actor {
 				Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
 			];
 			if (unstabSerious && unstabCritical) {
-				return this.data.data.modifiers.seriousAndCriticalWounds[Math.min(
-					this.data.data.maxWounds.serious,
-					this.data.data.maxWounds.critical,
+				return this.data.data.modifiers.wounds_seriouscritical[Math.min(
 					unstabSerious,
 					unstabCritical
 				)];
 			}
 			if (unstabCritical) {
-				return this.data.data.modifiers.criticalWounds[Math.min(
-					this.data.data.maxWounds.critical,
-					unstabCritical
-				)];
+				return this.data.data.modifiers.wounds_critical[unstabCritical];
 			}
 			if (unstabSerious) {
-				return this.data.data.modifiers.seriousWounds[Math.min(
-					this.data.data.maxWounds.serious,
-					unstabSerious
-				)];
+				return this.data.data.modifiers.wounds_serious[unstabSerious];
 			}
 			return {};
 		}
@@ -322,16 +305,85 @@ export default class K4Actor extends Actor {
 		}
 		return {};
 	}
+	get conditionPenaltyData(): K4RollModData {
 
-	async getRoll(rollSource: string|K4Item, options: Partial<K4RollOptions>) {
+		return {};
+	}
+	get effectPenaltyData(): K4RollModData {
+
+		return {};
+	}
+
+	get modifierData(): Record<string,K4RollModData> {
+		return {
+			wounds: this.woundPenaltyData,
+			stability: this.stabilityPenaltyData
+			/* Add other categories here for _specific_ conditions and effects _by name_ (as key
+
+
+				*/
+		};
+	}
+	get flatModifiersData(): K4RollModData {
+		const returnData: K4RollModData = {};
+		Object.values(this.modifierData).forEach((modData) => {
+			for (const [modSource, modNum] of Object.entries(modData)) {
+				returnData[modSource] ??= 0;
+				returnData[modSource] += modNum;
+			}
+		});
+		return returnData;
+	}
+
+	/*
+
+INCOMINGDATA = {
+  wounds:
+}
+
+for each possible source of modifier:
+  find the values matching actor's current status
+    (via the 'getWoundPenalties' stuff).
+ THEN,
+    for each possible modifier
+      (= {"if key matches": apply this mod})
+      check if the key matches the roll.
+    IF IT DOES,
+      assign to the object of modifers you'll be returning
+      {"source of modifier": modifier number}
+
+*/
+	getRollModifiers(rollData: Partial<K4RollData>): Record<string,number> {
+		function checkModTarget(target: string) {
+			return ["all", rollData.type, rollData.source].includes(target);
+		}
+		const modifiers: Record<string, number> = {};
+		Object.entries(this.modifierData).forEach(([modSource, modData]) => {
+			let modFromSource = 0;
+			Object.entries(modData).forEach(([modTarget, modNum]) => {
+				if (checkModTarget(modTarget)) {
+					modFromSource += modNum;
+				}
+			});
+			if (modFromSource !== 0) {
+				modifiers[modSource] = modFromSource;
+			}
+		});
+		return modifiers;
+	}
+
+	async getRoll(rollSource: string|K4RollableItem, options: Partial<K4RollOptions>) {
 		const rollData: Partial<K4RollData> = {};
 
 		if (typeof rollSource === "string" && ![...C.AttrList, K4Attribute.zero, K4Attribute.ask].includes(rollSource)) {
-			rollSource = this.getItemByName(rollSource) ?? rollSource;
+			rollSource = this.getItemByName(rollSource) as K4RollableItem ?? rollSource;
 		}
 
 		if (rollSource instanceof K4Item/*  && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack) */) {
-			switch (rollSource.data.type) {
+			const rollSourceType: K4ItemType = rollSource.isDerived()
+				? rollSource.sourceType
+				: rollSource.data.type;
+			switch (rollSourceType) {
 				case K4ItemType.move: {
 					rollData.type = K4RollType.move;
 					break;
@@ -367,15 +419,22 @@ export default class K4Actor extends Actor {
 			rollData.source ??= rollSource as K4CharAttribute;
 			rollData.attrVal = this.attributes[rollSource as Exclude<K4RollAttribute,K4Attribute.zero>];
 		}
-		console.log("RETRIEVED ROLL DATA", rollData);
+		rollData.modifiers = this.getRollModifiers(rollData);
+		U.dbLog("RETRIEVED ROLL DATA", rollData);
 		return {
-			roll: new Roll(`2d10 + ${rollData.attrVal ?? 0}`),
+			roll: new Roll([
+				"2d10",
+				U.signNum(rollData.attrVal ?? 0, " "),
+				...Object.values(rollData.modifiers)
+					.map((modifier) => (modifier > 0 ? U.signNum(modifier, " ") : ""))
+					.filter((elem) => elem !== "")
+			].join(" ")),
 			rollData
 		};
 	}
 
 	async displayRollResult(roll: Roll, rollSource: K4RollSource, options: K4RollOptions) {
-		console.log("DISPLAYING ROLL RESULT", {roll, rollSource, options});
+		U.dbLog("DISPLAYING ROLL RESULT", {roll, rollSource, options});
 		if (U.isUndefined(roll.total)) { return }
 		if (!(rollSource instanceof K4Item && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack || rollSource.data.type === K4ItemType.advantage || rollSource.data.type === K4ItemType.disadvantage))) { return }
 		let results;
@@ -385,6 +444,7 @@ export default class K4Actor extends Actor {
 			cssClass: "kult4th-chat chat-roll-result",
 			context: rollSource
 		};
+		// templateData.dice =
 		if (roll.total >= 15) {
 			templateData.result = rollSource.data.data.results.completeSuccess;
 		} else if (roll.total >= 9) {
@@ -437,15 +497,15 @@ export default class K4Actor extends Actor {
 		}
 
 		if (roll.total) {
-			console.log("Roll Successful");
+			U.dbLog("Roll Successful");
 			// this.update({"data.sitmod": 0});
-			// console.log(`Sitmod is ` + this.data.data.sitmod);
+			// U.dbLog(`Sitmod is ` + this.data.data.sitmod);
 			this.displayRollResult(roll, rollData.source!, options as K4RollOptions);
 		}
 	}
 
 	override async _onCreate(...[actorData, ...args]: Parameters<Actor["_onCreate"]>) {
-		// console.log("ACTOR ON CREATE", actorData, args);
+		// U.dbLog("ACTOR ON CREATE", actorData, args);
 
 		if (this.type === K4ActorType.pc){
 			const pack = await game.packs.get("kult4th.k4-basic-player-moves");
@@ -457,8 +517,8 @@ export default class K4Actor extends Actor {
 					return moveData?.data ?? {};
 				}));
 				if (newItems) {
-					const brandNewItems = await this.createEmbeddedDocuments("Item", newItems) as K4Item[];
-					brandNewItems[0].sheet?.render(true );
+					await this.createEmbeddedDocuments("Item", newItems) as K4Item[];
+					// brandNewItems[0].sheet?.render(true );
 				}
 			}
 			this.setFlag("kult4th", "sheetTab", "front");

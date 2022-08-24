@@ -44,11 +44,11 @@ export default class K4Actor extends Actor {
             this.data.data.gear = this.gear;
             this.data.data.relations = this.relations;
             this.data.data.maxWounds = {
-                serious: this.data.data.modifiers.seriousWounds.length,
-                critical: this.data.data.modifiers.criticalWounds.length,
-                total: this.data.data.modifiers.seriousWounds.length + this.data.data.modifiers.criticalWounds.length
+                serious: this.data.data.modifiers.wounds_serious.length,
+                critical: this.data.data.modifiers.wounds_critical.length,
+                total: this.data.data.modifiers.wounds_serious.length + this.data.data.modifiers.wounds_critical.length
             };
-            this.data.data.woundReport = this.parseModsToStrings(this.woundPenaltyData).join("; ");
+            this.data.data.modifiersReport = this.parseModsToStrings(this.flatModifiersData).join("; ");
             // this.validateStability();
         }
     }
@@ -58,22 +58,22 @@ export default class K4Actor extends Actor {
     getItemByName(iName) {
         return [...this.items].find((item) => item.name === iName);
     }
-    dropItemByName(iName) {
-        return false;
+    async dropItemByName(iName) {
+        return [...this.items].find((item) => item.name === iName)?.delete();
     }
     get moves() { return this.getItemsOfType("move" /* K4ItemType.move */); }
-    get basicMoves() { return this.moves.filter((move) => !move.isDerived); }
-    get derivedMoves() { return this.moves.filter((move) => move.isDerived); }
+    get basicMoves() { return this.moves.filter((move) => !move.isDerived()); }
+    get derivedMoves() { return this.moves.filter((move) => move.isDerived()); }
     get attacks() { return this.getItemsOfType("attack" /* K4ItemType.attack */); }
-    get basicAttacks() { return this.attacks.filter((attack) => !attack.isDerived); }
-    get derivedAttacks() { return this.attacks.filter((attack) => attack.isDerived); }
+    get basicAttacks() { return this.attacks.filter((attack) => !attack.isDerived()); }
+    get derivedAttacks() { return this.attacks.filter((attack) => attack.isDerived()); }
     get advantages() { return this.getItemsOfType("advantage" /* K4ItemType.advantage */); }
     get disadvantages() { return this.getItemsOfType("disadvantage" /* K4ItemType.disadvantage */); }
     get darkSecrets() { return this.getItemsOfType("darksecret" /* K4ItemType.darksecret */); }
     get weapons() { return this.getItemsOfType("weapon" /* K4ItemType.weapon */); }
     get gear() { return this.getItemsOfType("gear" /* K4ItemType.gear */); }
     get relations() { return this.getItemsOfType("relation" /* K4ItemType.relation */); }
-    get derivedItems() { return [...this.items].filter((item) => item.isDerived); }
+    get derivedItems() { return [...this.items].filter((item) => item.isDerived()); }
     get wounds() {
         // if (this.type === K4ActorType.pc) {
         return this.data.data.wounds;
@@ -205,9 +205,9 @@ export default class K4Actor extends Actor {
                 isCritical: type === "critical" /* K4WoundType.critical */,
                 isStabilized: false
             };
-            console.log("Starting Wounds", U.objClone(this.data.data.wounds));
+            U.dbLog("Starting Wounds", U.objClone(this.data.data.wounds));
             await this.update({ [`data.wounds.${woundData.id}`]: woundData });
-            console.log("Updated Wounds", U.objClone(this.data.data.wounds));
+            U.dbLog("Updated Wounds", U.objClone(this.data.data.wounds));
         }
     }
     async toggleWound(id, toggleSwitch) {
@@ -235,24 +235,15 @@ export default class K4Actor extends Actor {
     }
     async removeWound(id) {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
-            console.log("Starting Wounds", U.objClone(this.data.data.wounds));
+            U.dbLog("Starting Wounds", U.objClone(this.data.data.wounds));
             await this.update({ [`data.wounds.-=${id}`]: null });
-            console.log("Updated Wounds", this.data.data.wounds);
+            U.dbLog("Updated Wounds", this.data.data.wounds);
         }
     }
-    parseModsToStrings(modData) {
+    parseModsToStrings(modData = this.flatModifiersData) {
         const returnStrings = [];
-        for (const [modKey, modVal] of Object.entries(modData ?? {})) {
-            switch (modKey) {
-                case "all": {
-                    returnStrings.push(`${U.signNum(modVal)} to all rolls`);
-                    break;
-                }
-                default: {
-                    returnStrings.push(`Unknown Roll Modifier: '${modKey}'`);
-                    break;
-                }
-            }
+        for (const [modKey, modVal] of Object.entries(modData)) {
+            returnStrings.push(`${U.signNum(modVal)} to ${modKey === "all" ? "all" : U.tCase(modKey)} rolls`);
         }
         return returnStrings;
     }
@@ -263,13 +254,13 @@ export default class K4Actor extends Actor {
                 Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
             ];
             if (unstabSerious && unstabCritical) {
-                return this.data.data.modifiers.seriousAndCriticalWounds[Math.min(this.data.data.maxWounds.serious, this.data.data.maxWounds.critical, unstabSerious, unstabCritical)];
+                return this.data.data.modifiers.wounds_seriouscritical[Math.min(unstabSerious, unstabCritical)];
             }
             if (unstabCritical) {
-                return this.data.data.modifiers.criticalWounds[Math.min(this.data.data.maxWounds.critical, unstabCritical)];
+                return this.data.data.modifiers.wounds_critical[unstabCritical];
             }
             if (unstabSerious) {
-                return this.data.data.modifiers.seriousWounds[Math.min(this.data.data.maxWounds.serious, unstabSerious)];
+                return this.data.data.modifiers.wounds_serious[unstabSerious];
             }
             return {};
         }
@@ -281,13 +272,78 @@ export default class K4Actor extends Actor {
         }
         return {};
     }
+    get conditionPenaltyData() {
+        return {};
+    }
+    get effectPenaltyData() {
+        return {};
+    }
+    get modifierData() {
+        return {
+            wounds: this.woundPenaltyData,
+            stability: this.stabilityPenaltyData
+            /* Add other categories here for _specific_ conditions and effects _by name_ (as key
+
+
+                */
+        };
+    }
+    get flatModifiersData() {
+        const returnData = {};
+        Object.values(this.modifierData).forEach((modData) => {
+            for (const [modSource, modNum] of Object.entries(modData)) {
+                returnData[modSource] ??= 0;
+                returnData[modSource] += modNum;
+            }
+        });
+        return returnData;
+    }
+    /*
+
+INCOMINGDATA = {
+  wounds:
+}
+
+for each possible source of modifier:
+  find the values matching actor's current status
+    (via the 'getWoundPenalties' stuff).
+ THEN,
+    for each possible modifier
+      (= {"if key matches": apply this mod})
+      check if the key matches the roll.
+    IF IT DOES,
+      assign to the object of modifers you'll be returning
+      {"source of modifier": modifier number}
+
+*/
+    getRollModifiers(rollData) {
+        function checkModTarget(target) {
+            return ["all", rollData.type, rollData.source].includes(target);
+        }
+        const modifiers = {};
+        Object.entries(this.modifierData).forEach(([modSource, modData]) => {
+            let modFromSource = 0;
+            Object.entries(modData).forEach(([modTarget, modNum]) => {
+                if (checkModTarget(modTarget)) {
+                    modFromSource += modNum;
+                }
+            });
+            if (modFromSource !== 0) {
+                modifiers[modSource] = modFromSource;
+            }
+        });
+        return modifiers;
+    }
     async getRoll(rollSource, options) {
         const rollData = {};
         if (typeof rollSource === "string" && ![...C.AttrList, "zero" /* K4Attribute.zero */, "ask" /* K4Attribute.ask */].includes(rollSource)) {
             rollSource = this.getItemByName(rollSource) ?? rollSource;
         }
         if (rollSource instanceof K4Item /*  && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack) */) {
-            switch (rollSource.data.type) {
+            const rollSourceType = rollSource.isDerived()
+                ? rollSource.sourceType
+                : rollSource.data.type;
+            switch (rollSourceType) {
                 case "move" /* K4ItemType.move */: {
                     rollData.type = "move" /* K4RollType.move */;
                     break;
@@ -324,14 +380,21 @@ export default class K4Actor extends Actor {
             rollData.source ??= rollSource;
             rollData.attrVal = this.attributes[rollSource];
         }
-        console.log("RETRIEVED ROLL DATA", rollData);
+        rollData.modifiers = this.getRollModifiers(rollData);
+        U.dbLog("RETRIEVED ROLL DATA", rollData);
         return {
-            roll: new Roll(`2d10 + ${rollData.attrVal ?? 0}`),
+            roll: new Roll([
+                "2d10",
+                U.signNum(rollData.attrVal ?? 0, " "),
+                ...Object.values(rollData.modifiers)
+                    .map((modifier) => (modifier > 0 ? U.signNum(modifier, " ") : ""))
+                    .filter((elem) => elem !== "")
+            ].join(" ")),
             rollData
         };
     }
     async displayRollResult(roll, rollSource, options) {
-        console.log("DISPLAYING ROLL RESULT", { roll, rollSource, options });
+        U.dbLog("DISPLAYING ROLL RESULT", { roll, rollSource, options });
         if (U.isUndefined(roll.total)) {
             return;
         }
@@ -344,6 +407,7 @@ export default class K4Actor extends Actor {
             cssClass: "kult4th-chat chat-roll-result",
             context: rollSource
         };
+        // templateData.dice =
         if (roll.total >= 15) {
             templateData.result = rollSource.data.data.results.completeSuccess;
         }
@@ -392,14 +456,14 @@ export default class K4Actor extends Actor {
             await game.dice3d.showForRoll(roll);
         }
         if (roll.total) {
-            console.log("Roll Successful");
+            U.dbLog("Roll Successful");
             // this.update({"data.sitmod": 0});
-            // console.log(`Sitmod is ` + this.data.data.sitmod);
+            // U.dbLog(`Sitmod is ` + this.data.data.sitmod);
             this.displayRollResult(roll, rollData.source, options);
         }
     }
     async _onCreate(...[actorData, ...args]) {
-        // console.log("ACTOR ON CREATE", actorData, args);
+        // U.dbLog("ACTOR ON CREATE", actorData, args);
         if (this.type === "pc" /* K4ActorType.pc */) {
             const pack = await game.packs.get("kult4th.k4-basic-player-moves");
             if (pack) {
@@ -410,8 +474,8 @@ export default class K4Actor extends Actor {
                     return moveData?.data ?? {};
                 }));
                 if (newItems) {
-                    const brandNewItems = await this.createEmbeddedDocuments("Item", newItems);
-                    brandNewItems[0].sheet?.render(true);
+                    await this.createEmbeddedDocuments("Item", newItems);
+                    // brandNewItems[0].sheet?.render(true );
                 }
             }
             this.setFlag("kult4th", "sheetTab", "front");

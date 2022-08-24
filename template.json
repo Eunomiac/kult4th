@@ -72,18 +72,18 @@
 			},
 			"wounds": {},
 			"modifiers": {
-				"seriousWounds": [
+				"wounds_serious": [
 					{},
 					{"all": -1},
 					{"all": -1},
 					{"all": -1},
 					{"all": -1}
 				],
-				"criticalWounds": [
+				"wounds_critical": [
 					{},
 					{"all": -1}
 				],
-				"seriousAndCriticalWounds": [
+				"wounds_seriouscritical": [
 					{},
 					{"all": -2}
 				],
@@ -133,7 +133,8 @@
 				"pdfLink": ""
 			},
 			"hasSubItems": {
-				"subItems": []
+				"subItems": [],
+				"embeddedSubItems": []
 			},
 			"canSubItem": {
 				"sourceItem": {

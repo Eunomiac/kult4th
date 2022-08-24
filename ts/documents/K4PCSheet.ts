@@ -131,9 +131,8 @@ const ANIMATIONS = {
 			buttonSpikes: $(target).find(".tabs .nav-tab-container .svg-container[class*='nav-spoke'] .svg-def")
 		};
 
-
 		// @ts-expect-error MorphSVG does indeed accept functions.
-		return gsap.timeline({reversed: true/* , onComplete() { gsap.globalTimeline.timeScale(0) } */})
+		const navTL = gsap.timeline({reversed: true})
 			.to(target, {
 				scale: 1.2,
 				duration: 0.6,
@@ -157,11 +156,6 @@ const ANIMATIONS = {
 			.set($(target).find(".svg-def.main-ring"), {
 				fill: "url('#nav-main-ring-bg-end-gradient')"
 			}, 0.3)
-			.to(U.getSiblings(target), {
-				filter: "blur(5px)",
-				duration: 0.5,
-				ease: "back"
-			}, 0)
 			.to(svgs.mainRing, {
 				scale: 1,
 				opacity: 1,
@@ -219,11 +213,6 @@ const ANIMATIONS = {
 					from: "random"
 				}
 			}, 0.05)
-			.to(flare$, {
-				scale: 2.3,
-				duration: 0.45,
-				ease: "sine"
-			}, 0)
 			.from([closeButton$, minimizeButton$], {
 				// zIndex: -2,
 				pointerEvents: "none",
@@ -261,6 +250,26 @@ const ANIMATIONS = {
 				},
 				0.05
 			) */;
+
+		if (game.settings.get("kult4th", "blur")) {
+			navTL
+				.to(U.getSiblings(target), {
+					filter: "blur(5px)",
+					duration: 0.5,
+					ease: "back"
+				}, 0);
+		}
+
+		if (game.settings.get("kult4th", "flare")) {
+			navTL
+				.to(flare$, {
+					scale: 2.3,
+					duration: 0.45,
+					ease: "sine"
+				}, 0);
+		}
+
+		return navTL;
 	},
 	hoverNavTab(target: HTMLElement, context: JQuery): gsapAnim {
 		const tabLabel$ = $(target).find(".nav-tab-label");
@@ -304,7 +313,7 @@ const ANIMATIONS = {
 
 		const hoverTarget$ = $(context).find($(target).data("hover-target"));
 		const targetSiblings$ = U.getSiblings(target);
-		const stripIcon$ = $(target).find(".icon-container .svg-container");
+		const stripIcon$ = $(target).find(".icon-container");
 		const stripName$ = $(target).find(".strip-name");
 		const buttonStrip$ = $(target).find(".button-strip");
 
@@ -313,13 +322,13 @@ const ANIMATIONS = {
 		const stripToolTip$ = $(target).find(".strip-tooltip");
 
 		// const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
-		// const colorFG = $(target).css("--strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
-		// const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--strip-color-bg")?.trim()) ?? C.Colors.BLACK);
-		const colorFG = gsap.getProperty(stripName$[0], "color");
-		const colorBG = (String(getContrastingColor(String(colorFG), 4) || $(target).css("--strip-color-bg")?.trim()) ?? C.Colors.BLACK);
+		// const colorFG = $(target).css("--K4-strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
+		// const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--K4-strip-color-bg")?.trim()) ?? C.Colors.BLACK);
+		const colorFG = stripName$.css("color");
+		const colorBG = buttonStrip$.css("background-color");
 		const nameShift = U.get(target, "height", "px");
 
-		// console.log(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
+		// U.dbLog(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
 
 		const tl = gsap
 			.timeline({reversed: true})
@@ -338,10 +347,8 @@ const ANIMATIONS = {
 				duration: FULL_DURATION / 4,
 				ease: "none"
 			}, 0)
-			.fromTo(buttonStrip$, {
-				width: 0
-			}, {
-				width: "90%",
+			.from(buttonStrip$, {
+				width: 0,
 				duration: FULL_DURATION,
 				ease: "sine"
 			}, 0)
@@ -394,20 +401,20 @@ const ANIMATIONS = {
 
 		const buttonStrip$ = $(target).parent();
 		const svg$ = $(target).find(".svg-container");
-		const tooltip$ = $(target).find(".button-tooltip");
+		const tooltip$ = $(target).find(".button-tooltip:not(.button-tooltip-flare)");
+		const tooltipFlare$ = $(target).find(".button-tooltip-flare");
 
 		const tl = gsap.timeline({reversed: true})
 			.set(target, {zIndex: 30}, 0.1)
-			.fromTo(target, {
-				opacity: 0.7,
-				scale: 0.8
-			}, {
-				boxShadow: "0px 0px 5px var(--K4-bBLUE)",
-				opacity: 1,
-				scale: 1,
-				duration: FULL_DURATION,
-				ease: "power2"
-			}, 0)
+			// .fromTo(target, {
+			// 	opacity: 0.7,
+			// 	scale: 0.8
+			// }, {
+			// 	opacity: 1,
+			// 	scale: 1,
+			// 	duration: FULL_DURATION,
+			// 	ease: "power2"
+			// }, 0)
 			.to(svg$, {
 				filter: "blur(2px)",
 				scale: 5,
@@ -415,15 +422,26 @@ const ANIMATIONS = {
 				duration: 0.5 * FULL_DURATION,
 				ease: "power2"
 			}, 0)
-			.fromTo(tooltip$, {
-				filter: "blur(2px)"
-			}, {
-				opacity: 1,
-				filter: "none",
-				fontWeight: 900,
-				duration: FULL_DURATION,
+			// .fromTo(tooltip$, {
+			// 	filter: "blur(2px)"
+			// }, {
+			// 	opacity: 1,
+			// 	filter: "none",
+			// 	fontWeight: 900,
+			// 	duration: FULL_DURATION,
+			// 	ease: "power2"
+			// }, 0)
+			.to(tooltipFlare$, {
+				autoAlpha: 1,
+				duration: 0.1,
+				ease: "none"
+			}, 0.1)
+			.to(tooltipFlare$, {
+				scaleX: 0.75,
+				scaleY: 1,
+				duration: FULL_DURATION - 0.1,
 				ease: "power2"
-			}, 0);
+			}, 0.1);
 
 		return tl;
 	}/* ,
@@ -574,7 +592,7 @@ export default class K4PCSheet extends ActorSheet {
 			wounds: this.actor.woundStrips
 		};
 		/*DEVCODE*/
-		console.log("Final Actor Data", data);
+		U.dbLog("Final Actor Data", data);
 		Object.assign(globalThis, {actor: this.actor, sheet: this});
 		/*!DEVCODE*/
 		return data;
@@ -582,7 +600,7 @@ export default class K4PCSheet extends ActorSheet {
 
 	override setPosition(posData: Partial<Application.Position>) {
 		super.setPosition(posData);
-		cqApi.reevaluate();
+		// cqApi.reevaluate();
 	}
 
 	clamp(element: HTMLElement) {
@@ -601,47 +619,29 @@ export default class K4PCSheet extends ActorSheet {
 	unClamp(element: HTMLElement) { element.style.cssText = "" }
 
 	override activateListeners(html: JQuery) {
-		const ISDEBUGGING = false;
 
 		super.activateListeners(html);
 		const self = this;
 
 		$(() => {
+
+			if (!game.settings.get("kult4th", "shadows")) {
+				html.find(".tab-content").each(function cancelShadows() { $(this).css("filter", "none")});
+			}
+
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
-			// function softMouseLeave(hoverAnim: gsapAnim) {
-			// 	if (!hoverAnim.data.isLeaving) { return }
-			// 	if (hoverAnim.isActive()) {
-			// 		setTimeout(() => softMouseLeave(hoverAnim), 500);
-			// 	} else {
-			// 		hoverAnim.data.isLeaving = false;
-			// 		hoverAnim.reversed(true);
-			// 	}
-			// }
-
-			html.find(".nav-panel").each(function initNavPanel() {
-
-				// hoverTimelines.forEach(([target, anim]) => {
-				// const hoverAnim = ANIMATIONS.hoverNav(this);
-				// hoverAnim.data = {};
-				// $(this)
-				// 	.on("mouseenter", () => {
-				// 		hoverAnim.data.isLeaving = false;
-				// 		// console.log("Entering Nav Panel");
-				// 		hoverAnim.reversed(false);
-				// 	})
-				// 	.on("mouseleave", () => {
-				// 		hoverAnim.data.isLeaving = true;
-				// 		softMouseLeave(hoverAnim);
-				// 	});
-				// });
-
+			this.element.find(".nav-panel").each(function initNavPanel() {
+				if (!game.settings.get("kult4th", "flare")) {
+					gsap.set(self.element.find(".nav-flare"), {background: "none"});
+				}
+				if (!game.settings.get("kult4th", "animations")) {
+					gsap.set(self.element.find(".profile-image-animation"), {background: C.Colors.BLACK});
+				}
 				hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
 			});
-			html.find(".nav-tab")
+			this.element.find(".nav-tab")
 				.each(function initNavTab() {
-					// gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
 					hoverTimelines.push([this, ANIMATIONS.hoverNavTab(this, html)]);
-
 					$(this).on("click", function switchTab() {
 						self.activateTab(this.getAttribute("data-tab"));
 					});
@@ -651,18 +651,27 @@ export default class K4PCSheet extends ActorSheet {
 				self.clamp(this);
 			});
 
-			$(document).find(".gear-container.gear-huge")
-				.each(function initGearRotation() {
-					ANIMATIONS.gearHugeRotate(this);
-				});
-			$(document).find(".gear-container.gear-geburah")
-				.each(function initGearRotation() {
-					ANIMATIONS.gearGeburahRotate(this);
-				});
-			$(document).find(".gear-container.gear-binah")
-				.each(function initGearRotation() {
-					ANIMATIONS.gearBinahRotate(this);
-				});
+			if (game.settings.get("kult4th", "gears")) {
+				this.element.find(".gear-container.gear-huge")
+					.each(function initGearRotation() {
+						ANIMATIONS.gearHugeRotate(this);
+					});
+				this.element.find(".gear-container.gear-geburah")
+					.each(function initGearRotation() {
+						ANIMATIONS.gearGeburahRotate(this);
+					});
+				this.element.find(".gear-container.gear-binah")
+					.each(function initGearRotation() {
+						ANIMATIONS.gearBinahRotate(this);
+					});
+			} else {
+				this.element.find(".gear-container")
+					.remove();
+			}
+
+			if (!game.settings.get("kult4th", "animations")) {
+				gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.BLACK});
+			}
 
 			html.find("*[data-action=\"open\"]")
 				.each(function addItemOpenEvents() {
@@ -672,14 +681,14 @@ export default class K4PCSheet extends ActorSheet {
 					}
 				});
 			html.find("*[data-action=\"roll\"]")
-				.each(function addItemOpenEvents() {
+				.each(function addItemRollEvents() {
 					const itemName = $(this).attr("data-item-name");
 					if (itemName) {
 						$(this).on("click", () => self.actor.roll(itemName));
 					}
 				});
 			html.find("*[data-action=\"chat\"]")
-				.each(function addItemOpenEvents() {
+				.each(function addItemChatEvents() {
 					const itemName = $(this).attr("data-item-name");
 					if (itemName) {
 						$(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
@@ -726,7 +735,7 @@ export default class K4PCSheet extends ActorSheet {
 			if (!this.options.editable) { return }
 
 			html.find("*[data-action=\"drop\"]")
-				.each(function addItemOpenEvents() {
+				.each(function addItemDropEvents() {
 					const itemName = $(this).attr("data-item-name");
 					if (itemName) {
 						$(this).on("click", () => self.actor.dropItemByName(itemName));
@@ -743,7 +752,7 @@ export default class K4PCSheet extends ActorSheet {
 			html.find("button.wound-add")
 				.each(function addWoundButton() {
 					$(this).on("click", () => {
-						// console.log("Adding Wound. Button:", this);
+						// U.dbLog("Adding Wound. Button:", this);
 						self.actor.addWound();
 					});
 				});
@@ -751,7 +760,7 @@ export default class K4PCSheet extends ActorSheet {
 				.each(function deleteWoundButton() {
 					const woundID: string = $(this).data("woundId");
 					$(this).on("click", () => {
-						// console.log(`Deleting Wound ${woundID}. Button:`, this);
+						// U.dbLog(`Deleting Wound ${woundID}. Button:`, this);
 						self.actor.removeWound(woundID);
 					});
 				});

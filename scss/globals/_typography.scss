@@ -195,7 +195,10 @@ Number Display
 
 @font-face {
 	font-family: Sokol;
-	src: url("../assets/fonts/sokol.ttf");
+	src: url("../assets/fonts/sokol/sokol.woff2") format('woff2'),
+			 url("../assets/fonts/sokol/sokol.woff") format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {

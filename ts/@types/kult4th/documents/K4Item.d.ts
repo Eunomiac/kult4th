@@ -70,6 +70,11 @@ declare global {
 	: T extends K4WeaponClass.bomb ? ("")
 	: "";
 
+	type K4SourceItem = {
+		name: string,
+		id?: string | null,
+		type: K4ItemType
+	};
 	interface K4Attack {
 		name: string,
 		range: RangeType[],
@@ -99,17 +104,14 @@ declare global {
 		}
 
 		export interface HasSubItems {
-			subItems: ItemDataSource[]
+			subItems: ItemDataSource[],
+			embeddedSubItems: K4DerivedItem[]
 		}
 
 		export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear>;
 
 		export interface CanSubItem {
-			sourceItem?: {
-				name: string,
-				id?: string | null,
-				type: K4ItemType
-			}
+			sourceItem?: K4SourceItem
 		}
 		export type CanSlave = K4ItemSpec<K4ItemType.attack | K4ItemType.move>;
 
@@ -279,8 +281,7 @@ declare global {
 	}
 
 	type K4ItemSpec<Type extends K4ItemType> = K4Item & {data: {type: Type, _source: {type: Type}}}
-	type K4HasSubItems<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {data: {data: {subItems: ItemDataSource[]}}}
+	type K4HasSubItems<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {data: {data: {subItems: ItemDataSource[], embeddedSubItems: K4DerivedItem[]}}}
+	type K4DerivedItem<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {sourceName: string, sourceType: K4ItemType, data: {data: {sourceItem: K4SourceItem}}}
 	type K4RollableItem = K4ItemSpec<K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage>
-
-
 }

@@ -175,7 +175,7 @@ export default class K4NPCSheet extends ActorSheet {
             attacks: this.actor.attacks,
             attributes: this.actor.attributeData
         };
-        /*DEVCODE*/ console.log("Final Data", data); /*!DEVCODE*/
+        /*DEVCODE*/ U.dbLog("Final Data", data); /*!DEVCODE*/
         return data;
     }
     activateListeners(html) {
@@ -183,7 +183,7 @@ export default class K4NPCSheet extends ActorSheet {
         super.activateListeners(html);
         const self = this;
         $(() => {
-            console.log("ACTOR SHEET HTML OBJECT", html);
+            U.dbLog("ACTOR SHEET HTML OBJECT", html);
             const hoverTimelines = [];
             const [navPanel] = html.find(".nav-panel");
             $(navPanel)

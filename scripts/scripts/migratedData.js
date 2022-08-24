@@ -154,7 +154,7 @@ const sortIntoFolders = async (itemData, sortIntoSubFolders = false) => {
         // }
         return iData;
     });
-    console.log("FOLDER IDS", { record: folderIDRecord, folders: C.game.folders.map((folder) => [folder.name, folder.id]) });
+    U.dbLog("FOLDER IDS", { record: folderIDRecord, folders: C.game.folders.map((folder) => [folder.name, folder.id]) });
     await Promise.all(C.game.folders.map((folder) => {
         if (!(folderIDRecord.includes(folder.id) || folderIDRecord.includes(folder.name))) {
             return folder.delete();
@@ -241,7 +241,7 @@ const analyzeItemData = (NEW_ITEM_DATA) => {
             });
         }
     });
-    console.log("*** FLATTENED ITEM_DATA UNTYPESCRIPTED ***", FLAT_DATA_UNTYPESCRIPTED);
+    U.dbLog("*** FLATTENED ITEM_DATA UNTYPESCRIPTED ***", FLAT_DATA_UNTYPESCRIPTED);
     return finalLog;
 };
 const flattenItemData = (itemData) => Object.fromEntries(Object.entries(U.objClone(itemData)).map(([iType, tDict]) => [
@@ -275,16 +275,16 @@ const getLocalizationStrings = (itemData) => U.objMap(U.objFilter(U.objFlatten(i
     return `${k.charAt(0).toLowerCase()}${k.slice(1)}`;
 }, (v) => v);
 const parseItemData = (itemData) => {
-    console.log("*** INITIAL ITEM DATA ***", itemData);
+    U.dbLog("*** INITIAL ITEM DATA ***", itemData);
     const DATA_ANALYSIS = analyzeItemData(itemData);
-    console.log("*** DATA ANALYSIS ***", DATA_ANALYSIS);
+    U.dbLog("*** DATA ANALYSIS ***", DATA_ANALYSIS);
     const FLAT_DATA = flattenItemData(itemData);
-    console.log("*** FLATTENED ITEM_DATA ***", {
+    U.dbLog("*** FLATTENED ITEM_DATA ***", {
         FLAT_DATA,
         UNFLATTENED: U.objExpand(U.objFlatten(FLAT_DATA))
     });
     const LOCALIZATION_STRINGS = getLocalizationStrings(itemData);
-    console.log("*** LOCALIZATION STRINGS ***", LOCALIZATION_STRINGS);
+    U.dbLog("*** LOCALIZATION STRINGS ***", LOCALIZATION_STRINGS);
 };
 const getDerivedItemData = (itemData) => itemData
     // @ts-expect-error Why can't I narrow down nested keys?
@@ -295,7 +295,7 @@ const ISMUTATINGITEMS = false;
 // #region 🟩🟩🟩 DATA MUTATION & ITEM GENERATION 🟩🟩🟩 ~
 const mutateItemData = (itemData) => {
     itemData = U.objClone(itemData);
-    console.log("[mutateItemData] INITIAL DATA", itemData);
+    U.dbLog("[mutateItemData] INITIAL DATA", itemData);
     const mutateLog = [];
     const RegExpPatterns = Object.fromEntries(Object.entries(C.RegExpPatterns)
         .map(([cat, patterns]) => [
@@ -335,7 +335,7 @@ const mutateItemData = (itemData) => {
             .objMap(iDataDict, mutateData)))
         : itemData;
     if (mutateLog.length) {
-        console.log("[mutateItemData] MUTATION REPORT", mutateLog);
+        U.dbLog("[mutateItemData] MUTATION REPORT", mutateLog);
     }
     return newItemData;
 };
@@ -345,7 +345,7 @@ const resetItems = async () => {
     const NEW_ITEM_DICT = mutateItemData(ITEM_DATA);
     Object.assign(globalThis, { ITEM_DATA: NEW_ITEM_DICT });
     parseItemData(NEW_ITEM_DICT);
-    // console.log("DERIVED ITEMS", getDerivedItemData(getItemDataObjs(NEW_ITEM_DICT)));
+    // U.dbLog("DERIVED ITEMS", getDerivedItemData(getItemDataObjs(NEW_ITEM_DICT)));
     const NEW_ITEM_DATA = await sortIntoFolders(NEW_ITEM_DICT);
     // const DERIVED_ITEM_DATA = getDerivedItemData(NEW_ITEM_DATA) as ItemDataConstructorData[];
     await Item.createDocuments(NEW_ITEM_DATA);
@@ -10061,7 +10061,7 @@ function analyzePackData(itemData = ITEM_DATA) {
             dMoveBins[numSubItems].push(iName);
         }
     });
-    console.log({
+    U.dbLog({
         "By Item Name": dMoveData,
         "By Num SubItems": dMoveBins
     });

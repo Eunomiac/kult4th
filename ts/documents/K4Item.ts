@@ -14,7 +14,6 @@ export default class K4Item extends Item {
 		}
 	}
 
-	subItems?: K4Item[];
 	hasSubItems(): this is K4HasSubItems<typeof this.data.type> { return Boolean("subItems" in this.data.data && this.data.data.subItems.length) }
 	get subItemData(): ItemDataSource[] {
 		if (this.hasSubItems()) {
@@ -37,7 +36,7 @@ export default class K4Item extends Item {
 			case "AppendList": {
 				const [targetItemName, targetList, sourceList] = params;
 				const targetMove = this.parent?.items.find((item) => item.name === targetItemName);
-				console.log("Found Target Move", targetMove);
+				U.dbLog("Found Target Move", targetMove);
 				if (targetMove && targetMove.data.data.lists[targetList]) {
 					const sourceListItems = this.data.data.lists[sourceList].items
 						.map((listItem) => `${listItem} #>text-list-note:data-item-name='${this.name}':data-action='open'>(from ${this.name})<#`);
@@ -54,16 +53,54 @@ export default class K4Item extends Item {
 		}
 	}
 
-	get isDerived() { return "sourceItem" in this.data.data && Boolean(this.data.data.sourceItem?.name) }
+	unapplyEffectFunction(functionStr: string) {
+		const [funcName, ...params] = functionStr.split(/,/);
+		switch (funcName) {
+			case "AppendList": {
+				const [targetItemName, targetList, sourceList] = params;
+				const targetMove = this.parent?.items.find((item) => item.name === targetItemName);
+				U.dbLog("Found Target Move", targetMove);
+				if (targetMove && targetMove.data.data.lists[targetList]) {
+					const prunedListItems = this.data.data.lists[sourceList].items
+						.filter((listItem) => !(new RegExp(`data-item-name=.?${this.name}.?`)).test(listItem));
+					const updateData = [
+						{_id: targetMove.id, [`data.lists.${targetList}.items`]: [
+							...prunedListItems
+						]}
+					];
+					this.parent?.updateEmbeddedDocuments("Item", updateData);
+				}
+			}
+			// no default
+		}
+	}
+
+	isDerived(): this is K4DerivedItem<typeof this.data.type> { return "sourceItem" in this.data.data && Boolean(this.data.data.sourceItem?.name) }
+	get sourceID(): string | false { return this.isDerived() ? this.data.data.sourceItem.id ?? false : false }
+	get sourceName(): string | false { return this.isDerived() ? this.data.data.sourceItem.name : false }
+	get sourceType(): K4ItemType | false { return this.isDerived() ? this.data.data.sourceItem.type : false }
 
 	override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
 		await super._onCreate(...args);
 		if (this.isEmbedded && this.parent instanceof Actor) {
 			if (this.hasSubItems()) {
-				this.subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData as Array<Record<string, any>>) as K4Item[];
+				const subItems = await this.parent.createEmbeddedDocuments("Item", this.subItemData as Array<Record<string, any>>) as K4Item[];
+				this.update({"data.embeddedSubItems": subItems});
 			}
 			if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
 				this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
+			}
+		}
+	}
+
+	override async _onDelete(...args: Parameters<Item["_onDelete"]>) {
+		await super._onDelete(...args);
+		if (this.isEmbedded && this.parent instanceof Actor) {
+			if (this.hasSubItems()) {
+				this.data.data.embeddedSubItems.forEach((item) => item.delete());
+			}
+			if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
+				this.data.data.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
 			}
 		}
 	}
@@ -93,17 +130,17 @@ export default class K4Item extends Item {
 		const stripData: HoverStripData = {
 			id: this.id ?? `${this.data.type}-${U.randString(10)}`,
 			type: this.data.type,
-			display: this.name ?? "(unknown)",
-			...this.isDerived
+			...this.isDerived()
 				? {
+						display: (this as K4ItemSpec<K4ItemType.attack | K4ItemType.move>).data.data.sourceItem?.name ?? "(unknown)",
 						icon: U.toKey((this as K4ItemSpec<K4ItemType.attack | K4ItemType.move>).data.data.sourceItem!.name),
 						stripClasses: [
 							U.toKey(`${(this as K4ItemSpec<K4ItemType.attack | K4ItemType.move>).data.data.sourceItem!.type}-strip`),
-							`derived-${this.data.type}`,
-							"k4-theme-bright"
+							`derived-${this.data.type}`
 						]
 					}
 				: {
+						display: this.name ?? "(unknown)",
 						icon: U.toKey(this.name ?? `DEFAULT-${this.data.type}`),
 						stripClasses: [`${this.data.type}-strip`, theme]
 					},
@@ -150,7 +187,7 @@ export default class K4Item extends Item {
 		if (this.data.type !== K4ItemType.relation) {
 			stripData.tooltip = this.data.data.rules.trigger;
 		}
-		// console.log("Hover Strip Data", stripData);
+		// U.dbLog("Hover Strip Data", stripData);
 		return stripData;
 	}
 

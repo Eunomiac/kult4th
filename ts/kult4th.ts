@@ -17,11 +17,14 @@ import gsap, {MorphSVGPlugin} from "gsap/all";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 
 gsap.registerPlugin(MorphSVGPlugin);
+CONFIG.debug.hooks = true;
+
 
 Hooks.once("init", async () => {
-	console.log(U.loc("kult4th.system.prompts.systemInit"));
-
 	registerSettings();
+	console.log(U.loc("kult4th.system.prompts.systemInit"));
+	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func as Handlebars.HelperDelegate));
+	// console.log(game.i18n.format("kult4th.system.prompts.systemInit"));
 
 	CONFIG.Actor.documentClass = K4Actor;
 	Actors.unregisterSheet("core", ActorSheet);
@@ -61,20 +64,15 @@ Hooks.once("init", async () => {
 			"rules-block",
 			"roll-result",
 			"attribute-box",
+			"pc-header",
+			"pc-nav-menu",
 			"svg",
-			"nav-frame",
 			"toggle-box"
 		]),
 		...U.getTemplatePath("partials", [
-			"basic-move-card",
-			"derived-move-card",
+			"derived-item-summary",
 			"derived-move",
-			"attack-card",
-			"advantage-card",
-			"disadvantage-card",
-			"dark-secret-card",
-			"relation-card",
-			"derived-item-summary"
+			"pc-nav-menu-frame"
 		]),
 		...U.getTemplatePath("sidebar", [
 			"chat-message",
@@ -190,7 +188,7 @@ Hooks.once("init", async () => {
 						y: [0, 1],
 						...stroke ?? {},
 						stops: (stroke.stops ?? []).map((stop, i, stops) => {
-							// console.log(`Stroke-${iType}`, {stop, i, stops});
+							// U.dbLog(`Stroke-${iType}`, {stop, i, stops});
 							return {
 								offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
 								color: typeof stop === "string" ? stop : stop.color,
@@ -203,7 +201,7 @@ Hooks.once("init", async () => {
 							: stroke.stops)
 					}
 				};
-				// console.log(`fill-${iType} DATA`, data);
+				// U.dbLog(`fill-${iType} DATA`, data);
 				return data;
 			}
 		) as Record<
@@ -214,14 +212,12 @@ Hooks.once("init", async () => {
 		}
 		>).map((defs) => Object.values(defs)).flat()
 	};
-	// console.log("SVG DEFS", svgDefs);
+	// U.dbLog("SVG DEFS", svgDefs);
 	$(".vtt.game.system-kult4th").prepend(svgDefTemplate(svgDefs));
 
 	const colorDefTemplate = await getTemplate(U.getTemplatePath("globals", "color-defs"));
 	$(".vtt.game.system-kult4th").prepend(colorDefTemplate({colors: C.Colors}));
 	// #endregion ▄▄▄▄▄ STYLING ▄▄▄▄▄
-
-	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func as Handlebars.HelperDelegate));
 });
 
 

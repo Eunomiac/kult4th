@@ -71,6 +71,7 @@ Kult Black
 	...adobe:   rgb(30,30,28)       #1E1E1C
 Kult Grey
 Kult White:  #FFFFFF */
+  /* GRADIENTS */
   /* COLOR PALETTE & DEFAULT FOUNDRY OVERRIDES */ }
 
 @font-face {
@@ -198,7 +199,9 @@ Kult White:  #FFFFFF */
 @font-face {
   #tinymce {
     font-family: Sokol;
-    src: url("../assets/fonts/sokol.ttf"); } }
+    src: url("../assets/fonts/sokol/sokol.woff2") format("woff2"), url("../assets/fonts/sokol/sokol.woff") format("woff");
+    font-weight: normal;
+    font-style: normal; } }
 
 @font-face {
   #tinymce {
@@ -229,72 +232,95 @@ Kult White:  #FFFFFF */
     --font-decorative: Sokol, serif;
     --font-handwritten: GrandpaScript, serif; }
   #tinymce {
+    --GOLD: #968c6a;
+    --dGOLD: #413d2e;
+    --bGOLD: #ebdba6;
+    --gGOLD: #fffec8;
+    --RED: #9b2020;
+    --dRED: #460e0e;
+    --bRED: #f03232;
+    --gRED: #ff633e;
+    --BLUE: rgb(43, 85, 139);
+    --dBLUE: rgb(17, 33, 54);
+    --bBLUE: rgb(69, 137, 224);
+    --gBLUE: rgb(128, 185, 255);
+    --bWHITE: rgb(255, 255, 255);
+    --WHITE: #e2e2e2;
+    --bGREY: rgb(177, 177, 177);
+    --GREY: rgb(128, 128, 128);
+    --dGREY: rgb(78, 78, 78);
+    --BLACK: #1d1d1d;
+    --dBLACK: rgb(0, 0, 0);
     --K4-color-primary: var(--K4-GOLD);
     --K4-color-primary-bright: var(--K4-bGOLD);
     --K4-color-primary-glow: var(--K4-gGOLD);
     --K4-color-contrast: var(--K4-BLACK);
     --K4-color-contrast-low: var(--K4-dGOLD);
     --K4-color-contrast-high: var(--K4-dBLACK);
-    --K4-font-primary: var(--font-primary);
-    --K4-font-weight-primary: 400;
     --K4-color-title-fg: var(--K4-color-contrast);
     --K4-color-title-bg: var(--K4-color-primary);
     --K4-color-header: var(--K4-RED);
-    --K4-list-indent: 12px;
-    --K4-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
-    --K4-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
-    --K4-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
     --K4-color-keyword: var(--K4-bGOLD);
     --K4-color-keyword-bright: var(--K4-bGOLD);
     --K4-color-pos: var(--K4-bGOLD);
     --K4-color-neg: var(--K4-RED);
+    --K4-font-primary: var(--font-primary);
+    --K4-font-weight-primary: 400;
+    --K4-list-indent: 12px;
+    --K4-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
+    --K4-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
+    --K4-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+    --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+    --K4-strip-main-color-bg: var(--K4-color-contrast);
+    --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+    --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+    --K4-strip-button-color-fg: var(--K4-color-contrast);
+    --K4-strip-button-color-bg: var(--K4-color-primary);
+    --K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+    --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+    --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+    --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
     --K4-svg-fill: var(--K4-color-primary);
     --K4-svg-bg: none;
     --K4-svg-clip-path: none;
     --K4-svg-outline-color: transparent;
     --K4-svg-scale: 1;
     --color-text-light-primary: var(--K4-color-primary);
-    --color-text-light-highlight: magenta;
-    --color-text-light-heading: lime;
-    --color-text-dark-primary: var(--K4-color-contrast);
-    --color-text-dark-secondary: cyan;
-    --color-text-dark-header: purple;
-    --color-text-light-primary: var(--K4-color-primary);
-    --color-text-light-highlight: var(--K4-color-primary-bright);
+    --color-text-light-highlight: var(--K4-color-primary-glow);
     --color-text-light-heading: var(--K4-color-primary-bright);
-    --color-text-dark-primary: var(--K4-color-contrast);
+    --color-text-dark-primary: var(--K4-color-contrast-high);
     --color-text-dark-secondary: var(--K4-color-contrast-low);
-    --color-text-dark-header: var(--K4-color-contrast-low);
-    --color-text-dark-inactive: var(--K4-color-contrast-low);
+    --color-text-dark-header: var(--K4-color-contrast);
+    --color-text-dark-inactive: var(--K4-GREY);
     --color-text-hyperlink: var(--K4-color-keyword);
-    --color-text-light-0: var(--K4-color-white);
-    --color-text-light-1: var(--K4-color-primary-bright);
-    --color-text-light-2: var(--K4-color-primary-bright);
-    --color-text-light-3: var(--K4-color-primary-bright);
+    --color-text-light-0: var(--K4-bWHITE);
+    --color-text-light-1: var(--K4-WHITEt);
+    --color-text-light-2: var(--K4-color-primary-glow);
+    --color-text-light-3: var(--K4-color-primary-glow);
     --color-text-light-4: var(--K4-color-primary-bright);
     --color-text-light-5: var(--K4-color-primary-bright);
     --color-text-light-6: var(--K4-color-primary);
     --color-text-light-7: var(--K4-color-primary);
     --color-text-dark-1: var(--K4-color-contrast);
     --color-text-dark-2: var(--K4-color-contrast);
-    --color-text-dark-3: #444;
-    --color-text-dark-4: #555;
-    --color-text-dark-5: #666;
-    --color-text-dark-6: #777;
+    --color-text-dark-3: var(--K4-color-contrast-low);
+    --color-text-dark-4: var(--K4-color-contrast-low);
+    --color-text-dark-5: var(--K4-color-contrast-low);
+    --color-text-dark-6: var(--K4-color-contrast-low);
     --color-border-light-1: var(--K4-color-primary-bright);
     --color-border-light-2: var(--K4-color-primary);
-    --color-border-dark-1: var(--K4-color-contrast);
-    --color-border-dark-2: var(--K4-color-contrast);
-    --color-border-dark-3: var(--K4-color-contrast-low);
-    --color-border-dark-4: var(--K4-color-contrast-low);
-    --color-border-dark-5: var(--K4-color-contrast-low);
+    --color-border-dark-1: var(--K4-color-primary);
+    --color-border-dark-2: var(--K4-color-primary);
+    --color-border-dark-3: var(--K4-color-primary-dark);
+    --color-border-dark-4: var(--K4-color-primary-dark);
+    --color-border-dark-5: var(--K4-color-primary-dark);
     --color-shadow-primary: var(--K4-color-primary);
-    --color-shadow-highlight: var(--K4-color-primary);
-    --color-shadow-dark: #000;
-    --color-underline-inactive: var(--K4-color-contrast-low);
+    --color-shadow-highlight: var(--K4-color-primary-bright);
+    --color-shadow-dark: var(--K4-color-contrast-high);
+    --color-underline-inactive: var(--K4-color-primary-dark);
     --color-underline-active: var(--K4-color-keyword-bright);
     --color-underline-header: var(--K4-color-primary);
-    --color-border-light-highlight: var(--K4-color-primary-bright);
+    --color-border-light-highlight: var(--K4-color-primary-glow);
     --color-border-light-primary: var(--K4-color-primary-bright);
     --color-border-light-secondary: var(--K4-color-primary-bright);
     --color-border-light-tertiary: var(--K4-color-primary);
@@ -323,6 +349,16 @@ Kult White:  #FFFFFF */
     --K4-background: transparent url("../assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/white/border.webp") 30 / 30px / 15px round;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+    --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+    --K4-strip-main-color-bg: var(--K4-color-contrast);
+    --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+    --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+    --K4-strip-button-color-fg: var(--K4-color-contrast);
+    --K4-strip-button-color-bg: var(--K4-color-primary);
+    --K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+    --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+    --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+    --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
     --K4-color-keyword: var(--K4-BLUE);
     --K4-color-keyword-bright: var(--K4-dBLUE);
     --K4-color-pos: var(--K4-BLUE);
@@ -348,6 +384,16 @@ Kult White:  #FFFFFF */
     --K4-background: transparent url("../assets/backgrounds/dark/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/dark/border.webp") 30 / 30px / 15px round;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+    --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+    --K4-strip-main-color-bg: var(--K4-color-contrast);
+    --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+    --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+    --K4-strip-button-color-fg: var(--K4-color-contrast);
+    --K4-strip-button-color-bg: var(--K4-color-primary);
+    --K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+    --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+    --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+    --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
     --K4-color-keyword: var(--K4-bWHITE);
     --K4-color-keyword-bright: var(--K4-bWHITE);
     --K4-color-pos: var(--K4-bWHITE);
@@ -373,6 +419,16 @@ Kult White:  #FFFFFF */
     --K4-background: transparent url("../assets/backgrounds/red/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/red/border.webp") 150 / 100px / 20px repeat;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-red.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+    --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+    --K4-strip-main-color-bg: var(--K4-color-contrast);
+    --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+    --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+    --K4-strip-button-color-fg: var(--K4-color-contrast);
+    --K4-strip-button-color-bg: var(--K4-color-primary);
+    --K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+    --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+    --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+    --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
     --K4-color-keyword: var(--K4-bRED);
     --K4-color-keyword-bright: var(--K4-bRED);
     --K4-color-pos: var(--K4-RED);
@@ -398,6 +454,16 @@ Kult White:  #FFFFFF */
     --K4-background: transparent url("../assets/backgrounds/bgold/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/bgold/border.webp") 30 / 30px / 15px round;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-black.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+    --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+    --K4-strip-main-color-bg: var(--K4-color-contrast);
+    --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+    --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+    --K4-strip-button-color-fg: var(--K4-color-contrast);
+    --K4-strip-button-color-bg: var(--K4-color-primary);
+    --K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+    --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+    --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+    --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
     --K4-color-keyword: var(--K4-dBLACK);
     --K4-color-keyword-bright: var(--K4-dBLACK);
     --K4-color-pos: var(--K4-dBLACK);
@@ -513,9 +579,17 @@ Kult White:  #FFFFFF */
       font-variant: normal !important; }
   #tinymce button,
   #tinymce .mce-content-body button {
-    outline: none;
-    -webkit-box-shadow: none;
-    box-shadow: none; }
+    color: var(--K4-color-contrast);
+    font-weight: 700;
+    border: 1px solid var(--K4-color-contrast-low);
+    background: -webkit-gradient(linear, left top, left bottom, from(var(--K4-color-primary)), color-stop(15%), color-stop(50%, var(--K4-color-primary-bright)), color-stop(51%, var(--K4-color-primary-bright)), color-stop(85%), to(var(--K4-color-primary)));
+    background: -o-linear-gradient(top, var(--K4-color-primary) 0%, 15%, var(--K4-color-primary-bright) 50%, var(--K4-color-primary-bright) 51%, 85%, var(--K4-color-primary) 100%);
+    background: linear-gradient(to bottom, var(--K4-color-primary) 0%, 15%, var(--K4-color-primary-bright) 50%, var(--K4-color-primary-bright) 51%, 85%, var(--K4-color-primary) 100%);
+    border-radius: 3px; }
+    #tinymce button i, #tinymce button label,
+    #tinymce .mce-content-body button i,
+    #tinymce .mce-content-body button label {
+      color: var(--K4-color-contrast); }
   #tinymce i,
   #tinymce .mce-content-body i {
     --K4-color-primary: var(--K4-GOLD);
@@ -773,36 +847,58 @@ Kult White:  #FFFFFF */
     --strip-height: calc(var(--icon-size) + 2px);
     --strip-padding-vert: 5px;
     --strip-underline-width: 1px;
-    --strip-color-fg: var(--K4-color-primary-bright);
-    --strip-color-bg: var(--K4-color-contrast);
-    --icon-color-fg: var(--strip-color-fg);
-    --icon-color-bg: var(--strip-color-bg);
-    --icon-color-outline: transparent;
+    --icon-outline-color: var(--K4-strip-button-color-bg);
+    --icon-outline-width: 1px;
     --icon-clip-path: circle(closest-side);
     --strip-font-size: 1rem;
     --strip-font-weight: 600;
     --icon-scale: 1;
-    --button-color-bg: var(--K4-color-primary);
-    --button-color-fg: var(--K4-color-contrast);
-    --tooltip-color-fg: var(--K4-bWHITE);
-    --tooltip-color-bg: var(--K4-dBLACK);
+    --strip-scale: 1;
     position: relative;
     height: var(--strip-height);
-    white-space: nowrap; }
-    #tinymce div.hover-strip .icon-container, #tinymce div.hover-strip .icon-container .svg-container,
-    #tinymce .mce-content-body div.hover-strip .icon-container,
-    #tinymce .mce-content-body div.hover-strip .icon-container .svg-container {
-      position: relative;
+    white-space: nowrap;
+    -webkit-transform-origin: left center;
+    -ms-transform-origin: left center;
+    transform-origin: left center;
+    -webkit-transform: scale(var(--strip-scale));
+    -ms-transform: scale(var(--strip-scale));
+    transform: scale(var(--strip-scale));
+    padding: var(--strip-padding-vert) 0; }
+    #tinymce div.hover-strip .icon-container,
+    #tinymce .mce-content-body div.hover-strip .icon-container {
+      position: absolute;
       display: inline-block;
-      --K4-svg-bg: var(--icon-color-bg);
-      --K4-svg-fill: var(--icon-color-fg);
+      background: var(--icon-outline-color);
+      -webkit-clip-path: var(--icon-clip-path);
+      clip-path: var(--icon-clip-path);
+      --K4-svg-bg: var(--K4-strip-icon-color-bg);
+      --K4-svg-fill: var(--K4-strip-icon-color-fg);
       --K4-svg-clip-path: var(--icon-clip-path);
       --K4-svg-scale: var(--icon-scale);
       height: var(--icon-size);
       width: var(--icon-size);
       white-space: nowrap;
       font-size: 0;
+      top: 0;
       left: 0; }
+      #tinymce div.hover-strip .icon-container .svg-container,
+      #tinymce .mce-content-body div.hover-strip .icon-container .svg-container {
+        position: absolute;
+        height: calc(var(--icon-size) - 2 * var(--icon-outline-width));
+        width: calc(var(--icon-size) - 2 * var(--icon-outline-width));
+        top: var(--icon-outline-width);
+        left: var(--icon-outline-width); }
+    #tinymce div.hover-strip .strip-bg, #tinymce div.hover-strip .button-strip,
+    #tinymce .mce-content-body div.hover-strip .strip-bg,
+    #tinymce .mce-content-body div.hover-strip .button-strip {
+      position: absolute;
+      display: block;
+      height: calc(100% - 2 * var(--strip-padding-vert));
+      width: calc(100% - 0.5 * var(--icon-size));
+      top: var(--strip-padding-vert);
+      left: calc(0.5 * var(--icon-size));
+      background: var(--K4-strip-main-color-bg);
+      border-bottom: var(--strip-underline-width) solid var(--K4-strip-button-color-bg); }
     #tinymce div.hover-strip .button-strip,
     #tinymce .mce-content-body div.hover-strip .button-strip {
       position: absolute;
@@ -813,18 +909,13 @@ Kult White:  #FFFFFF */
       -webkit-box-direction: normal;
       -ms-flex-direction: row;
       flex-direction: row;
-      height: var(--icon-size);
-      top: calc(0.5 * (var(--strip-height) - var(--icon-size)));
       width: calc(100% - 0.5 * var(--icon-size));
       left: calc(0.5 * var(--icon-size));
-      background: var(--strip-color-bg);
       opacity: 0;
-      padding: calc(0.5 * var(--strip-padding-vert)) 0;
-      outline: 0px solid var(--button-color-bg);
+      outline: 0px solid var(--K4-strip-button-color-bg);
       -webkit-box-pack: justify;
       -ms-flex-pack: justify;
-      justify-content: space-between;
-      overflow: hidden; }
+      justify-content: space-between; }
       #tinymce div.hover-strip .button-strip .button-spacer,
       #tinymce .mce-content-body div.hover-strip .button-strip .button-spacer {
         display: inline-block;
@@ -840,10 +931,10 @@ Kult White:  #FFFFFF */
         -webkit-box-flex: 0.2;
         -ms-flex-positive: 0.2;
         flex-grow: 0.2;
-        --K4-svg-fill: var(--button-color-fg);
+        --K4-svg-fill: var(--K4-strip-button-color-fg);
         --K4-svg-bg: transparent;
         --K4-svg-clip-path: none;
-        background: var(--button-color-bg);
+        background: var(--K4-strip-button-color-bg);
         font-size: 0;
         -ms-flex-preferred-size: auto;
         flex-basis: auto;
@@ -853,7 +944,10 @@ Kult White:  #FFFFFF */
         padding: 0;
         -webkit-box-shadow: none;
         box-shadow: none;
-        border-radius: 0; }
+        border-radius: 0;
+        -webkit-transition: 0.25s;
+        -o-transition: 0.25s;
+        transition: 0.25s; }
         #tinymce div.hover-strip .button-strip .strip-button .svg-container,
         #tinymce .mce-content-body div.hover-strip .button-strip .strip-button .svg-container {
           top: 0;
@@ -865,7 +959,7 @@ Kult White:  #FFFFFF */
         #tinymce div.hover-strip .button-strip .strip-button .button-tooltip,
         #tinymce .mce-content-body div.hover-strip .button-strip .strip-button .button-tooltip {
           opacity: 0;
-          color: var(--button-color-fg);
+          color: var(--K4-strip-button-color-fg);
           text-align: center;
           line-height: var(--icon-size);
           font-size: 1rem;
@@ -882,11 +976,22 @@ Kult White:  #FFFFFF */
           pointer-events: none;
           left: 50%;
           top: 50%; }
+          #tinymce div.hover-strip .button-strip .strip-button .button-tooltip.button-tooltip-flare,
+          #tinymce .mce-content-body div.hover-strip .button-strip .strip-button .button-tooltip.button-tooltip-flare {
+            color: var(--K4-strip-button-hover-color-fg);
+            visibility: hidden;
+            -webkit-transform: translate(-50%, -50%) scaleX(5) scaleY(3);
+            -ms-transform: translate(-50%, -50%) scaleX(5) scaleY(3);
+            transform: translate(-50%, -50%) scaleX(5) scaleY(3); }
+        #tinymce div.hover-strip .button-strip .strip-button:hover,
+        #tinymce .mce-content-body div.hover-strip .button-strip .strip-button:hover {
+          --K4-svg-fill: var(--K4-strip-button-hover-color-fg);
+          background: var(--K4-strip-button-hover-color-bg); }
     #tinymce div.hover-strip .strip-name,
     #tinymce .mce-content-body div.hover-strip .strip-name {
       position: absolute;
       height: 100%;
-      color: var(--strip-color-fg);
+      color: var(--K4-strip-main-color-fg);
       font-size: var(--strip-font-size);
       font-weight: var(--strip-font-weight);
       line-height: var(--icon-size);
@@ -897,16 +1002,6 @@ Kult White:  #FFFFFF */
       #tinymce div.hover-strip .strip-name:not(.content-editable),
       #tinymce .mce-content-body div.hover-strip .strip-name:not(.content-editable) {
         pointer-events: none; }
-    #tinymce div.hover-strip .strip-bg,
-    #tinymce .mce-content-body div.hover-strip .strip-bg {
-      position: absolute;
-      display: block;
-      height: calc(100% - 2 * var(--strip-padding-vert));
-      width: calc(100% - 0.5 * var(--icon-size));
-      top: var(--strip-padding-vert);
-      left: calc(0.5 * var(--icon-size));
-      background: var(--strip-color-bg);
-      border-bottom: var(--strip-underline-width) solid var(--button-color-bg); }
     #tinymce div.hover-strip .strip-tooltip,
     #tinymce .mce-content-body div.hover-strip .strip-tooltip {
       pointer-events: none;
@@ -919,8 +1014,8 @@ Kult White:  #FFFFFF */
       font-style: italic;
       width: 100%;
       text-align: left;
-      color: var(--tooltip-color-fg);
-      background: var(--tooltip-color-bg);
+      color: var(--K4-strip-tooltip-color-fg);
+      background: var(--K4-strip-tooltip-color-bg);
       opacity: 0;
       bottom: calc(0.75 * var(--strip-height));
       left: 0;
@@ -928,51 +1023,47 @@ Kult White:  #FFFFFF */
       white-space: break-spaces;
       padding: 4px;
       border-radius: 20px; }
-    #tinymce div.hover-strip.move-strip:not(.derived-move),
-    #tinymce .mce-content-body div.hover-strip.move-strip:not(.derived-move) {
-      --icon-color-bg: var(--K4-color-primary);
-      --icon-color-fg: var(--K4-color-contrast);
-      --icon-color-outline: var(--K4-color-primary); }
+    #tinymce div.hover-strip.move-strip,
+    #tinymce .mce-content-body div.hover-strip.move-strip {
+      --K4-strip-icon-color-bg: var(--K4-color-primary);
+      --K4-strip-icon-color-fg: var(--K4-color-contrast);
+      --icon-outline-color: var(--K4-color-primary); }
     #tinymce div.hover-strip.wound-strip,
     #tinymce .mce-content-body div.hover-strip.wound-strip {
-      --icon-size: 20px;
-      --strip-color-bg: transparent;
-      --strip-font-size: 0.75rem;
+      --K4-strip-main-color-bg: transparent;
       --strip-underline-width: 0px;
-      --icon-color-bg: transparent;
-      --icon-clip-path: none; }
-      #tinymce div.hover-strip.wound-strip.wound-critical,
-      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical {
-        --strip-color-fg: var(--K4-bRED);
-        --icon-color-fg: var(--K4-bRED);
-        --icon-scale: 1.2; }
-        #tinymce div.hover-strip.wound-strip.wound-critical .strip-name,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name {
-          text-transform: uppercase;
-          font-weight: 900;
-          font-family: var(--font-primary-caps); }
-      #tinymce div.hover-strip.wound-strip.wound-stabilized, #tinymce div.hover-strip.wound-strip.wound-critical.wound-stabilized,
-      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized,
-      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical.wound-stabilized {
-        --icon-scale: 1;
-        --strip-color-fg: var(--K4-GOLD);
-        --icon-color-outline: transparent; }
-        #tinymce div.hover-strip.wound-strip.wound-stabilized .icon-container, #tinymce div.hover-strip.wound-strip.wound-stabilized .icon-container .svg-container, #tinymce div.hover-strip.wound-strip.wound-critical.wound-stabilized .icon-container, #tinymce div.hover-strip.wound-strip.wound-critical.wound-stabilized .icon-container .svg-container,
+      --K4-strip-icon-color-bg: transparent;
+      --icon-outline-color: transparent;
+      --icon-outline-width: 0px;
+      --icon-clip-path: none;
+      --strip-scale: 0.666; }
+      #tinymce div.hover-strip.wound-strip.wound-critical .strip-name,
+      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name {
+        text-transform: uppercase;
+        font-weight: 900;
+        font-family: var(--font-primary-caps); }
+      #tinymce div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized),
+      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized) {
+        --K4-strip-main-color-fg: var(--K4-gRED);
+        --K4-strip-icon-color-fg: var(--K4-gRED);
+        --icon-scale: 1.2;
+        --strip-scale: 0.75; }
+      #tinymce div.hover-strip.wound-strip.wound-stabilized,
+      #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized {
+        --K4-strip-main-color-fg: var(--K4-GOLD);
+        --icon-outline-color: transparent; }
+        #tinymce div.hover-strip.wound-strip.wound-stabilized .icon-container, #tinymce div.hover-strip.wound-strip.wound-stabilized .icon-container .svg-container,
         #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .icon-container,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .icon-container .svg-container,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical.wound-stabilized .icon-container,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical.wound-stabilized .icon-container .svg-container {
+        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .icon-container .svg-container {
           --K4-svg-bg: transparent;
           --K4-svg-fill: var(--K4-GOLD);
           --K4-svg-clip-path: none;
           --K4-svg-scale: 1; }
-        #tinymce div.hover-strip.wound-strip.wound-stabilized .strip-name, #tinymce div.hover-strip.wound-strip.wound-critical.wound-stabilized .strip-name,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical.wound-stabilized .strip-name {
+        #tinymce div.hover-strip.wound-strip.wound-stabilized .strip-name,
+        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name {
           font-style: italic; }
-        #tinymce div.hover-strip.wound-strip.wound-stabilized .strip-bg, #tinymce div.hover-strip.wound-strip.wound-critical.wound-stabilized .strip-bg,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-bg,
-        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical.wound-stabilized .strip-bg {
+        #tinymce div.hover-strip.wound-strip.wound-stabilized .strip-bg,
+        #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-bg {
           border-color: transparent; }
   #tinymce .result-entry,
   #tinymce .mce-content-body .result-entry {
