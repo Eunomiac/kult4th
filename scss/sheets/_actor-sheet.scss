@@ -474,7 +474,7 @@
 							"attributes attributes basic-moves attacks"
 							"footer footer footer footer";
 						grid-template-columns: #{$nav-buffer} #{$attributes-width - $nav-buffer - $grid-gap} 1fr 1fr;
-						grid-template-rows: #{$header-height} #{$status-height} #{$modifiers-height} #{$main-panel-height - $attack-height} auto #{$footer-height};
+						grid-template-rows: #{$header-height} #{$status-height} #{$modifiers-height} #{$main-panel-height - $attack-height} #{$attack-height} #{$footer-height};
 
 						.dramatic-hooks {
 							grid-area: dramatic-hooks;
@@ -482,7 +482,7 @@
 
 							.hook-label {
 								display: inline-block;
-								margin: 0 0 0 10px;
+								margin: 0 0 0 5px;
 								font-size: $rem-40;
 								line-height: $rem-40;
 								font-family: var(--font-decorative);
@@ -491,7 +491,6 @@
 
 							.dramatic-hook {
 								position: relative;
-								left: 80px;
 								width: calc(100% - 80px);
 								height: 16px;
 								margin: 4px 0;
@@ -507,10 +506,9 @@
 
 								input[type="checkbox"] {
 									display: inline-block;
-									float: left;
-									margin: 3px 0 0;
+									margin: 0;
 									padding: 0;
-									height: calc(50%);
+									height: $rem-14;
 								}
 
 								input[type="text"] {
@@ -526,6 +524,13 @@
 									// font-style: italic;
 									transform-origin: left center;
 									vertical-align: top;
+								}
+
+								input[type="checkbox"]:checked + input[type="text"] {
+									color: var(--K4-color-primary);
+									font-weight: $font-weight-light;
+									text-decoration: line-through;
+									font-style: italic;
 								}
 							}
 						}

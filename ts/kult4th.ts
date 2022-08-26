@@ -8,6 +8,7 @@ import C, {getContrastingColor} from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
 import {formatStringForKult, HandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
+import registerDebugger from "./scripts/logger.js";
 
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
@@ -16,13 +17,13 @@ import {resetItems, extractPackData, analyzePackData} from "./scripts/migratedDa
 import gsap, {MorphSVGPlugin} from "gsap/all";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 
+registerDebugger();
 gsap.registerPlugin(MorphSVGPlugin);
-CONFIG.debug.hooks = true;
 
 
 Hooks.once("init", async () => {
 	registerSettings();
-	console.log(U.loc("kult4th.system.prompts.systemInit"));
+	kLog.display(U.loc("kult4th.system.prompts.systemInit"));
 	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func as Handlebars.HelperDelegate));
 	// console.log(game.i18n.format("kult4th.system.prompts.systemInit"));
 
@@ -188,7 +189,7 @@ Hooks.once("init", async () => {
 						y: [0, 1],
 						...stroke ?? {},
 						stops: (stroke.stops ?? []).map((stop, i, stops) => {
-							// U.dbLog(`Stroke-${iType}`, {stop, i, stops});
+							// kLog.log(`Stroke-${iType}`, {stop, i, stops});
 							return {
 								offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
 								color: typeof stop === "string" ? stop : stop.color,
@@ -201,7 +202,7 @@ Hooks.once("init", async () => {
 							: stroke.stops)
 					}
 				};
-				// U.dbLog(`fill-${iType} DATA`, data);
+				// kLog.log(`fill-${iType} DATA`, data);
 				return data;
 			}
 		) as Record<
@@ -212,7 +213,7 @@ Hooks.once("init", async () => {
 		}
 		>).map((defs) => Object.values(defs)).flat()
 	};
-	// U.dbLog("SVG DEFS", svgDefs);
+	// kLog.log("SVG DEFS", svgDefs);
 	$(".vtt.game.system-kult4th").prepend(svgDefTemplate(svgDefs));
 
 	const colorDefTemplate = await getTemplate(U.getTemplatePath("globals", "color-defs"));

@@ -243,7 +243,10 @@ const C = {
     AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
     Colors,
     Ranges,
-    RegExpPatterns
+    RegExpPatterns,
+    imageDefaults: {
+        roller: "systems/kult4th/assets/icons/cameron-west.jpg"
+    }
 };
 Object.assign(C, {
     awareArchetypes: Object.keys(C.awareArchetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim()),

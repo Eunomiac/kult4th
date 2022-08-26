@@ -235,7 +235,7 @@ export default class K4NPCSheet extends ActorSheet {
 			attacks: this.actor.attacks,
 			attributes: this.actor.attributeData
 		};
-		/*DEVCODE*/U.dbLog("Final Data", data);/*!DEVCODE*/
+		/*DEVCODE*/kLog.log("Final Data", data);/*!DEVCODE*/
 		return data;
 	}
 
@@ -246,7 +246,7 @@ export default class K4NPCSheet extends ActorSheet {
 		const self = this;
 
 		$(() => {
-			U.dbLog("ACTOR SHEET HTML OBJECT", html);
+			kLog.log("ACTOR SHEET HTML OBJECT", html);
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
 
 			const [navPanel] = html.find(".nav-panel");

@@ -148,7 +148,7 @@ const GMID = (): string | false => game?.user?.find((user) => user.isGM)?.id ?? 
 const isNumber = (ref: unknown): ref is number => typeof ref === "number" && !isNaN(ref);
 const isArray = (ref: unknown): ref is unknown[] => Array.isArray(ref);
 const isSimpleObj = (ref: unknown): ref is Record<string | number | symbol, unknown> => ref === Object(ref) && !isArray(ref);
-const isList = <T>(ref: T): ref is T & Record<string | number | symbol, unknown> => ref === Object(ref) && !isArray(ref); // Boolean(ref) && Object.getPrototypeOf(ref) === Object.prototype;
+const isList = <T>(ref: T): ref is Record<string | number | symbol, unknown> & T => ref === Object(ref) && !isArray(ref); // Boolean(ref) && Object.getPrototypeOf(ref) === Object.prototype;
 const isFunc = (ref: unknown): ref is typeof Function => typeof ref === "function";
 const isInt = (ref: unknown): ref is int => isNumber(ref) && Math.round(ref) === ref;
 const isFloat = (ref: unknown): ref is float => isNumber(ref) && /\./.test(`${ref}`);
@@ -474,18 +474,21 @@ const getUID = (id: string): string => {
 	const indexNum = Math.max(0, ...UUIDLOG.filter(([genericID]) => genericID.startsWith(id)).map(([,,num]) => num)) + 1;
 	const uuid = indexNum === 1 ? id : `${id}_${indexNum}`;
 	UUIDLOG.push([id, uuid, indexNum]);
-	dbLog(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
+	kLog.log(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
 	Object.assign(globalThis, {UUIDLOG});
 	return uuid;
 };
 // #endregion ░░░░[Content]░░░░
 // #region ░░░░░░░[Localization]░░░░ Simplified Localization Functionality ░░░░░░░ ~
 const loc = (locRef: string, formatDict: Record<string,string> = {}) => {
-	if ((new RegExp(`^"?${C.SYSTEM_ID}\\.`, "u")).test(locRef) && typeof game.i18n.localize(locRef) === "string") {
+	if (/[a-z]/.test(locRef)) { // reference contains lower-case characters: add system ID namespacing to dot notation
+		locRef = locRef.replace(new RegExp(`^(${C.SYSTEM_ID}\.)*`), `${C.SYSTEM_ID}.`);
+	}
+	if (typeof game.i18n.localize(locRef) === "string") {
 		for (const [key, val] of Object.entries(formatDict)) {
 			formatDict[key] = loc(val);
 		}
-		return game.i18n.format(locRef, formatDict) || "";
+		return game.i18n.format(locRef, formatDict) || game.i18n.localize(locRef) || locRef;
 	}
 	return locRef;
 };
@@ -499,15 +502,15 @@ function getTemplatePath(subFolder: string, fileName: string|string[]) {
 	return fileName.map((fName) => getTemplatePath(subFolder, fName));
 }
 // #endregion ░░░░[Localization]░░░░
-const dbLog = (...content: any[]) => {
-	if (game.settings.get(C.SYSTEM_ID, "debug")) {
-		console.log(...content);
-	}
-};
-const toggleDebug = (isDebugging?: boolean) => {
-	isDebugging ??= !game.settings.get(C.SYSTEM_ID, "debug") as boolean;
-	game.settings.set(C.SYSTEM_ID, "debug", isDebugging);
-};
+// const dbLog = (...content: any[]) => {
+// 	if (U.getSetting("debug")) {
+// 		console.log(...content);
+// 	}
+// };
+// const toggleDebug = (isDebugging?: boolean) => {
+// 	isDebugging ??= !U.getSetting("debug") as boolean;
+// 	game.settings.set(C.SYSTEM_ID, "debug", isDebugging);
+// };
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
 // #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
@@ -617,7 +620,12 @@ const makeCycler = (array: unknown[], index = 0): Generator => {
 		}
 	}());
 };
-const getLast = (array: unknown[]) => (array.length ? array[array.length - 1] : undefined);
+
+
+function getLast<Type extends any[]>(array: Type): ValueOf<Type> {
+	return array.length === 0 ? undefined : array[array.length - 1];
+}
+// const getLast = <Type>(array: Type[]): typeof array extends [] ? undefined : Type => ;
 const unique = <Type>(array: Type[]): Type[] => {
 	const returnArray: Type[] = [];
 	array.forEach((item) => { if (!returnArray.includes(item)) { returnArray.push(item) } });
@@ -1059,7 +1067,7 @@ export default {
 	loremIpsum, randString, randWord,
 
 	// ░░░░░░░ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) ░░░░░░░
-	loc, getSetting, getTemplatePath, dbLog, toggleDebug,
+	loc, getSetting, getTemplatePath, // dbLog, toggleDebug,
 
 	// ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
 	isIn, isInExact,

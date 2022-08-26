@@ -251,7 +251,7 @@ const ANIMATIONS = {
 				0.05
 			) */;
 
-		if (game.settings.get("kult4th", "blur")) {
+		if (U.getSetting("blur")) {
 			navTL
 				.to(U.getSiblings(target), {
 					filter: "blur(5px)",
@@ -260,7 +260,7 @@ const ANIMATIONS = {
 				}, 0);
 		}
 
-		if (game.settings.get("kult4th", "flare")) {
+		if (U.getSetting("flare")) {
 			navTL
 				.to(flare$, {
 					scale: 2.3,
@@ -328,7 +328,7 @@ const ANIMATIONS = {
 		const colorBG = buttonStrip$.css("background-color");
 		const nameShift = U.get(target, "height", "px");
 
-		// U.dbLog(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
+		// kLog.log(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
 
 		const tl = gsap
 			.timeline({reversed: true})
@@ -592,7 +592,7 @@ export default class K4PCSheet extends ActorSheet {
 			wounds: this.actor.woundStrips
 		};
 		/*DEVCODE*/
-		U.dbLog("Final Actor Data", data);
+		kLog.log("Final Actor Data", data);
 		Object.assign(globalThis, {actor: this.actor, sheet: this});
 		/*!DEVCODE*/
 		return data;
@@ -625,16 +625,16 @@ export default class K4PCSheet extends ActorSheet {
 
 		$(() => {
 
-			if (!game.settings.get("kult4th", "shadows")) {
+			if (!U.getSetting("shadows")) {
 				html.find(".tab-content").each(function cancelShadows() { $(this).css("filter", "none")});
 			}
 
 			const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
 			this.element.find(".nav-panel").each(function initNavPanel() {
-				if (!game.settings.get("kult4th", "flare")) {
+				if (!U.getSetting("flare")) {
 					gsap.set(self.element.find(".nav-flare"), {background: "none"});
 				}
-				if (!game.settings.get("kult4th", "animations")) {
+				if (!U.getSetting("animations")) {
 					gsap.set(self.element.find(".profile-image-animation"), {background: C.Colors.BLACK});
 				}
 				hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
@@ -651,7 +651,7 @@ export default class K4PCSheet extends ActorSheet {
 				self.clamp(this);
 			});
 
-			if (game.settings.get("kult4th", "gears")) {
+			if (U.getSetting("gears")) {
 				this.element.find(".gear-container.gear-huge")
 					.each(function initGearRotation() {
 						ANIMATIONS.gearHugeRotate(this);
@@ -752,7 +752,7 @@ export default class K4PCSheet extends ActorSheet {
 			html.find("button.wound-add")
 				.each(function addWoundButton() {
 					$(this).on("click", () => {
-						// U.dbLog("Adding Wound. Button:", this);
+						// kLog.log("Adding Wound. Button:", this);
 						self.actor.addWound();
 					});
 				});
@@ -760,7 +760,7 @@ export default class K4PCSheet extends ActorSheet {
 				.each(function deleteWoundButton() {
 					const woundID: string = $(this).data("woundId");
 					$(this).on("click", () => {
-						// U.dbLog(`Deleting Wound ${woundID}. Button:`, this);
+						// kLog.log(`Deleting Wound ${woundID}. Button:`, this);
 						self.actor.removeWound(woundID);
 					});
 				});

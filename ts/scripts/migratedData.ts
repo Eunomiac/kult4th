@@ -167,7 +167,7 @@ const sortIntoFolders = async (itemData: Partial<ItemDataRecord>, sortIntoSubFol
 			return iData;
 		});
 
-	U.dbLog("FOLDER IDS", {record: folderIDRecord, folders: C.game.folders!.map((folder) => [folder.name, folder.id])});
+	kLog.log("FOLDER IDS", {record: folderIDRecord, folders: C.game.folders!.map((folder) => [folder.name, folder.id])});
 	await Promise.all(C.game.folders!.map((folder) => {
 		if (!(folderIDRecord.includes(folder.id) || folderIDRecord.includes(folder.name!))) {
 			return folder.delete();
@@ -257,7 +257,7 @@ const analyzeItemData = (NEW_ITEM_DATA: Partial<ItemDataRecord>) => {
 			});
 		}
 	});
-	U.dbLog("*** FLATTENED ITEM_DATA UNTYPESCRIPTED ***", FLAT_DATA_UNTYPESCRIPTED);
+	kLog.log("*** FLATTENED ITEM_DATA UNTYPESCRIPTED ***", FLAT_DATA_UNTYPESCRIPTED);
 	return finalLog;
 };
 const flattenItemData = (itemData: Partial<ItemDataRecord>): Record<string, any> => Object.fromEntries(Object.entries(U.objClone(itemData)).map(([iType, tDict]) => [
@@ -303,19 +303,19 @@ const getLocalizationStrings = (itemData: Partial<ItemDataRecord>) => U.objMap(
 	(v) => v
 ) as Record<string,string>;
 const parseItemData = (itemData: Partial<ItemDataRecord>) => {
-	U.dbLog("*** INITIAL ITEM DATA ***", itemData);
+	kLog.log("*** INITIAL ITEM DATA ***", itemData);
 
 	const DATA_ANALYSIS = analyzeItemData(itemData);
-	U.dbLog("*** DATA ANALYSIS ***", DATA_ANALYSIS);
+	kLog.log("*** DATA ANALYSIS ***", DATA_ANALYSIS);
 
 	const FLAT_DATA = flattenItemData(itemData);
-	U.dbLog("*** FLATTENED ITEM_DATA ***", {
+	kLog.log("*** FLATTENED ITEM_DATA ***", {
 		FLAT_DATA,
 		UNFLATTENED: U.objExpand(U.objFlatten(FLAT_DATA))
 	});
 
 	const LOCALIZATION_STRINGS = getLocalizationStrings(itemData);
-	U.dbLog("*** LOCALIZATION STRINGS ***", LOCALIZATION_STRINGS);
+	kLog.log("*** LOCALIZATION STRINGS ***", LOCALIZATION_STRINGS);
 };
 const getDerivedItemData = (itemData: Array<Partial<ItemDataConstructorData>>) => itemData
 	// @ts-expect-error Why can't I narrow down nested keys?
@@ -328,7 +328,7 @@ const ISMUTATINGITEMS = false;
 // #region 🟩🟩🟩 DATA MUTATION & ITEM GENERATION 🟩🟩🟩 ~
 const mutateItemData = (itemData: Partial<ItemDataRecord>): Partial<ItemDataRecord> => {
 	itemData = U.objClone(itemData);
-	U.dbLog("[mutateItemData] INITIAL DATA", itemData);
+	kLog.log("[mutateItemData] INITIAL DATA", itemData);
 	const mutateLog: string[] = [];
 	const RegExpPatterns = Object.fromEntries(Object.entries(C.RegExpPatterns)
 		.map(([cat, patterns]: [string, RegExp[]]) => [
@@ -376,7 +376,7 @@ const mutateItemData = (itemData: Partial<ItemDataRecord>): Partial<ItemDataReco
 		: itemData;
 
 	if (mutateLog.length) {
-		U.dbLog("[mutateItemData] MUTATION REPORT", mutateLog);
+		kLog.log("[mutateItemData] MUTATION REPORT", mutateLog);
 	}
 	return newItemData;
 };
@@ -389,7 +389,7 @@ const resetItems = async () => {
 	Object.assign(globalThis, {ITEM_DATA: NEW_ITEM_DICT});
 	parseItemData(NEW_ITEM_DICT);
 
-	// U.dbLog("DERIVED ITEMS", getDerivedItemData(getItemDataObjs(NEW_ITEM_DICT)));
+	// kLog.log("DERIVED ITEMS", getDerivedItemData(getItemDataObjs(NEW_ITEM_DICT)));
 
 	const NEW_ITEM_DATA = await sortIntoFolders(NEW_ITEM_DICT) as ItemDataConstructorData[];
 	// const DERIVED_ITEM_DATA = getDerivedItemData(NEW_ITEM_DATA) as ItemDataConstructorData[];
@@ -9086,6 +9086,41 @@ const ITEM_DATA: Partial<Record<
 				type: K4ItemType.disadvantage,
 				img: "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
 				data: {
+					subItems: [
+						{
+							name: "Reject Your Senses",
+							type: K4ItemType.move,
+							img: "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
+							data: {
+								sourceItem: {
+									name: "Rationalist",
+									type: K4ItemType.disadvantage
+								},
+								isCustom: false,
+								rules: {
+									intro: "In addition to the standard effects,",
+									trigger: "Whenever you #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
+									outro: "the GM may choose one option from the list below:",
+									listRefs: [
+										"gmoptions"
+									]
+								},
+								lists: {
+									gmoptions: {
+										name: "GM Options",
+										items: [
+											"Your presence nurtures the Illusion, making it more powerful and impenetrable.",
+											"Your bewildered psyche starts creating mirror images of familiar places and people in the Illusion.",
+											"You attract extradimensional entities.",
+											"You consciously deny what you see, even to your own detriment."
+										]
+									}
+								},
+								subType: K4ItemSubType.activeStatic,
+								attribute: K4Attribute.zero
+							}
+						}
+					],
 					lists: {
 						gmoptions: {
 							name: "GM Options",
@@ -9099,12 +9134,9 @@ const ITEM_DATA: Partial<Record<
 					},
 					isCustom: false,
 					rules: {
-						intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.%insert.break%in addition to the standard effects, the GM may choose one option from the list below:",
-						listRefs: [
-							"gmoptions"
-						]
+						intro: "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you."
 					},
-					subType: K4ItemSubType.passive,
+					subType: K4ItemSubType.activeStatic,
 					attribute: K4Attribute.zero
 				}
 			}
@@ -10121,7 +10153,7 @@ function analyzePackData(itemData = ITEM_DATA) {
 				dMoveBins[numSubItems].push(iName);
 			}
 		});
-	U.dbLog({
+	kLog.display("Pack Data Analysis", {
 		"By Item Name": dMoveData,
 		"By Num SubItems": dMoveBins
 	});

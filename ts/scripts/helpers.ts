@@ -42,7 +42,12 @@ export const HandlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 		return !Object.values(args).flat().join("");
 	},
 	"dbLog": function(...args) {
-		U.dbLog(...args);
+		args.pop();
+		let dbLevel = 4;
+		if ([0,1,2,3,4,5].includes(args[0])) {
+			dbLevel = args.shift();
+		}
+		kLog.hbsLog(...args, dbLevel);
 	},
 	"loc": function(...args) {
 		args.pop();
@@ -64,7 +69,7 @@ export const HandlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 		const iData = context instanceof K4Item
 			? context.data
 			: context.data.root.data;
-		U.dbLog("[FormatForKult]", {str, iData, "this": this});
+		kLog.hbsLog("[formatForKult]", {str, iData, "this": this}, 5);
 		const self = this as Record<string,any>;
 
 		// Step One: Replace any data object references.
@@ -156,7 +161,7 @@ export const HandlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 
 		strings.forEach((str) => {
 			// Insert function to test
-			U.dbLog(str);
+			kLog.log(str);
 		} */
 
 		str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
@@ -206,7 +211,7 @@ export const HandlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 
 		throw new Error(`No such SVG path: '${String(ref)}'`);
 	},
-	"getSVGKey": function(item: K4Item): string {
+	/* "getSVGKey": function(item: K4Item): string {
 		let svgKey: string;
 		if (item.data) {
 			switch (item.data.type) {
@@ -230,19 +235,27 @@ export const HandlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 				}
 			}
 			svgKey = U.toKey(svgKey);
+			if (svgKey in SVGKEYMAP) {
+				svgKey = SVGKEYMAP[svgKey];
+			}
 			if (svgKey in SVGDATA) {
 				return svgKey;
 			}
+
 			throw new Error(`No such SVG: '${String(svgKey)}'`);
 		} else {
 			console.error("Item missing data field:", item);
 			return "DEFAULT-advantage";
 		}
-	},
+	}, */
 	"getSVGs": function(ref: string) {
+		const isReporting = ref === "ten-sided-die";
 		ref = U.toKey(ref) ;
 		if (!(ref in SVGDATA) && ref in SVGKEYMAP) {
 			ref = SVGKEYMAP[ref];
+		}
+		if (isReporting) {
+			kLog.log("Get Die SVG", {ref, svgData: SVGDATA[ref]});
 		}
 		const pathData = U.getKey(ref, SVGDATA)
 			?.map((pData) => {

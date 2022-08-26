@@ -1,7 +1,7 @@
 {
 	"ACTOR": {
-		"TypePc": "Character",
-		"TypeNpc": "Opponent"
+		"TypePc": "Player Character",
+		"TypeNpc": "Non-Player Character"
 	},
 	"ITEM": {
 		"TypeAttack": "Attack",
@@ -31,6 +31,20 @@
 				"bold": "bold",
 				"extraBold": "extra bold",
 				"italics": "italics"
+			},
+			"settings": {
+				"debugModeTitle": "Debug Level",
+				"debugModeHint": "Debug messages logged to the console each have a priority, a value between 0 and 5. Set the minimum priority for displaying debug messages: Debug messages with priorities lower than this number will not be shown.",
+				"displayGearsTitle": "Toggle Ambient Gear Animations",
+				"displayGearsHint": "Toggle the appearance of decorative rotating gears.",
+				"displayShadowsTitle": "Toggle Sheet Drop Shadows",
+				"displayShadowsHint": "Controls whether item and actor sheets cast shadows onto the canvas.",
+				"displayBlurTitle": "Toggle Sheet Blur",
+				"displayBlurHint": "Controls the blur effect applied to the character sheet when hovering over its navigation radial menu.",
+				"displayNavFlareTitle": "Toggle Navigation Menu Flare Effect",
+				"displayNavFlareHint": "Toggle the rendering of the animated flare effect when hovering over navigation radial menus.",
+				"displayHeavyAnimationsTitle": "Toggle HQ Animations",
+				"displayHeavyAnimationsHint": "Toggle the rendering of performance-intensive animated backgrounds."
 			}
 		},
 		"archetype": {
@@ -73,11 +87,13 @@
 			"timeAndSpaceMagician": "Time and Space Magician"
 		},
 		"roll": {
+			"someone": "someone",
 			"success": "success",
 			"partialSuccess": "success with complications",
 			"failure": "failure",
 			"rollAttr": "roll {attributeName}",
-			"rollAttrToMove": "roll {attributeName} to {moveName}"
+			"rollAttrToMove": "roll {attributeName} to {moveName}",
+			"rollerName": "{rollerName} rolls +{rollerAttrName}..."
 		},
 		"trait": {
 			"attribute": "Attribute",
@@ -98,6 +114,7 @@
 			"violence": "Violence",
 			"charisma": "Charisma",
 			"soul": "Soul",
+			"zero": "0",
 			"stability": "Stability",
 			"harm": "Harm",
 			"harms": "Harm",

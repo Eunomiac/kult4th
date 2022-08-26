@@ -47,6 +47,13 @@ declare global {
 		config: Record<string,any>
 	}
 
+	declare const kLog: {
+		display: (...content: [string, ...any[]]) => void,
+		log: (...content: [string, ...any[]]) => void,
+		error: (...content: [string, ...any[]]) => void,
+		hbsLog: (...content: [string, ...any[]]) => void
+	};
+
 	interface LenientGlobalVariableTypes {
     game: never;
   }

@@ -2,58 +2,63 @@ import C from "./constants.js";
 import U from "./utilities.js";
 export default function registerSettings() {
     game.settings.register("kult4th", "debug", {
-        "name": "Toggle Debug Mode",
-        "hint": "Enable various debugging-related functionality.",
-        "scope": "world",
+        "name": U.loc("system.settings.debugModeTitle"),
+        "hint": U.loc("system.settings.debugModeHint"),
+        "scope": "client",
         "config": true,
-        "default": false,
-        "type": Boolean,
-        "onChange": () => window.location.reload()
+        "default": 3,
+        "type": Number,
+        "range": {
+            min: 0,
+            max: 5,
+            step: 1
+        },
+        "onChange": () => kLog.log(`Logging level set to ${U.getSetting("debug")}`, 0)
     });
     game.settings.register("kult4th", "gears", {
-        "name": "Toggle Ambient Gear Animations",
-        "hint": "Toggle the appearance of decorative rotating gears.",
-        "scope": "world",
+        "name": U.loc("system.settings.displayGearsTitle"),
+        "hint": U.loc("system.settings.displayGearsHint"),
+        "scope": "client",
         "config": true,
         "default": true,
-        "type": Boolean,
-        "onChange": () => window.location.reload()
+        "type": Boolean /* ,
+        "onChange": () => window.location.reload() */
     });
     game.settings.register("kult4th", "shadows", {
-        "name": "Toggle Sheet Drop Shadows",
-        "hint": "Controls whether item and actor sheets cast shadows onto the canvas.",
-        "scope": "world",
+        "name": U.loc("system.settings.displayShadowsTitle"),
+        "hint": U.loc("system.settings.displayShadowsHint"),
+        "scope": "client",
         "config": true,
         "default": true,
-        "type": Boolean,
-        "onChange": () => window.location.reload()
+        "type": Boolean /* ,
+        "onChange": () => window.location.reload() */
     });
     game.settings.register("kult4th", "blur", {
-        "name": "Toggle Sheet Blur",
-        "hint": "Controls the blur effect applied to the character sheet when hovering over its navigation radial menu.",
-        "scope": "world",
+        "name": U.loc("system.settings.displayBlurTitle"),
+        "hint": U.loc("system.settings.displayBlurHint"),
+        "scope": "client",
         "config": true,
         "default": true,
-        "type": Boolean,
-        "onChange": () => window.location.reload()
+        "type": Boolean /* ,
+        "onChange": () => window.location.reload() */
     });
     game.settings.register("kult4th", "flare", {
-        "name": "Toggle Navigation Menu Flare Effect",
-        "hint": "Toggle the rendering of the animated flare effect when hovering over navigation radial menus.",
-        "scope": "world",
+        "name": U.loc("system.settings.displayNavFlareTitle"),
+        "hint": U.loc("system.settings.displayNavFlareHint"),
+        "scope": "client",
         "config": true,
         "default": true,
-        "type": Boolean,
-        "onChange": () => window.location.reload()
+        "type": Boolean /* ,
+        "onChange": () => window.location.reload() */
     });
     game.settings.register("kult4th", "animations", {
-        "name": "Toggle HQ Animations",
-        "hint": "Toggle the rendering of performance-intensive animated backgrounds.",
-        "scope": "world",
+        "name": U.loc("system.settings.displayHeavyAnimationsTitle"),
+        "hint": U.loc("system.settings.displayHeavyAnimationsHint"),
+        "scope": "client",
         "config": true,
         "default": true,
-        "type": Boolean,
-        "onChange": () => window.location.reload()
+        "type": Boolean /* ,
+        "onChange": () => window.location.reload() */
     });
 }
 export function initTinyMCEStyles() {

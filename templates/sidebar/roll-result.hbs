@@ -1,7 +1,23 @@
 {{dbLog "{CHAT} roll-result.hbs" this}}
-<form class="kult-text-container kult4th-form {{cssClass}}" autocomplete="off">
-{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=context}}
-{{~#if result.listRefs}}
-	{{> "systems/kult4th/templates/components/item-list.hbs" lists=context.data.data.lists listRefs=result.listRefs itemData=context.data isDisplayingName=true}}
-{{/if}}
-</form>
+<div class="{{cssClass}}">
+	<div class="roll-result-header">
+		<div class="roll-img-container">
+			<img src="{{rollerImg}}" />
+		</div>
+		<h1 class="roll-intro">{{rolledName}}</h1>
+		<h2 class="roll-identity">{{localize "kult4th.roll.rollerName" rollerName=rollerName rollerAttrName=rolledAttribute}}</h2>
+	</div>
+	<div class="roll-dice-line">
+		{{#each dice}}
+		<div class="roll-d10-container">
+		<span class="roll-die-result">{{this}}</span>
+		</div>
+		{{/each}}
+		<div class="roll-result-total">{{total}}</div>
+	</div>
+	<div class="roll-result-title">{{resultDisplay}}</div>
+	{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=context}}
+	{{~#if result.listRefs}}
+		{{> "systems/kult4th/templates/components/item-list.hbs" lists=context.data.data.lists listRefs=result.listRefs itemData=context.data isDisplayingName=true}}
+	{{/if}}
+</div>

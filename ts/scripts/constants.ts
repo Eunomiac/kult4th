@@ -246,7 +246,10 @@ const C = {
 	AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
 	Colors,
 	Ranges,
-	RegExpPatterns
+	RegExpPatterns,
+	imageDefaults: {
+		roller: "systems/kult4th/assets/icons/cameron-west.jpg"
+	}
 };
 
 Object.assign(C, {

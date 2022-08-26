@@ -33,6 +33,7 @@ export default class K4ItemSheet extends ItemSheet {
 	get subItems() { return this.item.data.data.subItemData }
 	get subMoves() { return this.item.data.data.subMoveData }
 	get attacks() { return this.item.data.data.subAttackData }
+	get svgKey() { return this.item.svgKey }
 
 	constructor(item: K4Item, options?: Partial<DocumentSheetOptions>) {
 		options ??= {};
@@ -68,7 +69,7 @@ export default class K4ItemSheet extends ItemSheet {
 		const self = this;
 
 		$(() => {
-			U.dbLog("ITEM SHEET CONTEXT", {"this": this, self, html});
+			kLog.log("ITEM SHEET CONTEXT", {"this": this, self, html});
 
 			function createOpenLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
@@ -85,9 +86,9 @@ export default class K4ItemSheet extends ItemSheet {
 			function createRollLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
 					if (self.document.isEmbedded) {
-						$(elem).on("click", () => U.dbLog(`${self.actor?.name} Rolling (Embedded) ${iName}`));
+						$(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling (Embedded) ${iName}`));
 					} else {
-						$(elem).on("click", () => U.dbLog(`${self.actor?.name} Rolling ${iName}`));
+						$(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling ${iName}`));
 					}
 				}
 			}
@@ -95,9 +96,9 @@ export default class K4ItemSheet extends ItemSheet {
 			function createChatLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
 					if (self.document.isEmbedded) {
-						$(elem).on("click", () => U.dbLog(`${self.actor?.name} Chatting (Embedded) ${iName}`));
+						$(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
 					} else {
-						$(elem).on("click", () => U.dbLog(`${self.actor?.name} Chatting ${iName}`));
+						$(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting ${iName}`));
 					}
 				}
 			}
@@ -105,9 +106,9 @@ export default class K4ItemSheet extends ItemSheet {
 			function createDeleteLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
 					if (self.document.isEmbedded) {
-						$(elem).on("click", () => U.dbLog(`${self.actor?.name} Deleting (Embedded) ${iName}`));
+						$(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting (Embedded) ${iName}`));
 					} else {
-						$(elem).on("click", () => U.dbLog(`${self.actor?.name} Deleting ${iName}`));
+						$(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting ${iName}`));
 					}
 				}
 			}

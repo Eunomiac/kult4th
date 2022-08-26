@@ -9,28 +9,6 @@ export default class K4Actor extends Actor {
             this.preparePCData();
         }
     }
-    async populateDebugPC() {
-        // Add wounds
-        this.update({
-            "data.wounds": [
-                {
-                    description: "Scraped Knee",
-                    isCritical: false,
-                    isStabilized: true
-                },
-                {
-                    description: "Broken Arm",
-                    isCritical: false,
-                    isStabilized: false
-                },
-                {
-                    description: "Gunshot Wound",
-                    isCritical: true,
-                    isStabilized: true
-                }
-            ]
-        });
-    }
     preparePCData() {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
             this.data.data.moves = this.moves;
@@ -57,6 +35,9 @@ export default class K4Actor extends Actor {
     }
     getItemByName(iName) {
         return [...this.items].find((item) => item.name === iName);
+    }
+    getItemsBySource(sourceID) {
+        return [...this.items].filter((item) => item.isDerived() && item.data.data.sourceItem.id === sourceID);
     }
     async dropItemByName(iName) {
         return [...this.items].find((item) => item.name === iName)?.delete();
@@ -205,9 +186,9 @@ export default class K4Actor extends Actor {
                 isCritical: type === "critical" /* K4WoundType.critical */,
                 isStabilized: false
             };
-            U.dbLog("Starting Wounds", U.objClone(this.data.data.wounds));
+            kLog.log("Starting Wounds", U.objClone(this.data.data.wounds));
             await this.update({ [`data.wounds.${woundData.id}`]: woundData });
-            U.dbLog("Updated Wounds", U.objClone(this.data.data.wounds));
+            kLog.log("Updated Wounds", U.objClone(this.data.data.wounds));
         }
     }
     async toggleWound(id, toggleSwitch) {
@@ -235,9 +216,9 @@ export default class K4Actor extends Actor {
     }
     async removeWound(id) {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
-            U.dbLog("Starting Wounds", U.objClone(this.data.data.wounds));
+            kLog.log("Starting Wounds", U.objClone(this.data.data.wounds));
             await this.update({ [`data.wounds.-=${id}`]: null });
-            U.dbLog("Updated Wounds", this.data.data.wounds);
+            kLog.log("Updated Wounds", this.data.data.wounds);
         }
     }
     parseModsToStrings(modData = this.flatModifiersData) {
@@ -335,7 +316,12 @@ for each possible source of modifier:
         return modifiers;
     }
     async getRoll(rollSource, options) {
-        const rollData = {};
+        const rollData = {
+            type: "move" /* K4RollType.move */,
+            source: rollSource,
+            attrVal: 0,
+            modifiers: {}
+        };
         if (typeof rollSource === "string" && ![...C.AttrList, "zero" /* K4Attribute.zero */, "ask" /* K4Attribute.ask */].includes(rollSource)) {
             rollSource = this.getItemByName(rollSource) ?? rollSource;
         }
@@ -381,42 +367,57 @@ for each possible source of modifier:
             rollData.attrVal = this.attributes[rollSource];
         }
         rollData.modifiers = this.getRollModifiers(rollData);
-        U.dbLog("RETRIEVED ROLL DATA", rollData);
+        kLog.log("RETRIEVED ROLL DATA", rollData);
         return {
             roll: new Roll([
                 "2d10",
                 U.signNum(rollData.attrVal ?? 0, " "),
                 ...Object.values(rollData.modifiers)
-                    .map((modifier) => (modifier > 0 ? U.signNum(modifier, " ") : ""))
+                    .map((modifier) => U.signNum(modifier, " "))
                     .filter((elem) => elem !== "")
             ].join(" ")),
             rollData
         };
     }
-    async displayRollResult(roll, rollSource, options) {
-        U.dbLog("DISPLAYING ROLL RESULT", { roll, rollSource, options });
+    async displayRollResult(roll, rollData, options) {
         if (U.isUndefined(roll.total)) {
             return;
         }
+        const rollSource = rollData.source;
         if (!(rollSource instanceof K4Item && (rollSource.data.type === "move" /* K4ItemType.move */ || rollSource.data.type === "attack" /* K4ItemType.attack */ || rollSource.data.type === "advantage" /* K4ItemType.advantage */ || rollSource.data.type === "disadvantage" /* K4ItemType.disadvantage */))) {
             return;
         }
         let results;
         const template = await getTemplate(U.getTemplatePath("sidebar", "roll-result"));
         const templateData = {
-            cssClass: "kult4th-chat chat-roll-result",
-            context: rollSource
+            cssClass: ["kult4th-chat", "chat-roll-result", `${rollSource.rolledType ?? ""}-roll`].join(" "),
+            context: rollSource,
+            dice: roll.dice[0].results.map((dResult) => dResult.result),
+            total: roll.total,
+            resultDisplay: "",
+            rolledName: rollSource.rolledName ?? U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
+            rolledAttribute: U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
+            rollerName: this.name ?? U.loc("roll.someone"),
+            rollerImg: this.img ?? "systems/kult4th/assets/characters/generic.jpg",
+            modifiers: rollData.modifiers
         };
         // templateData.dice =
         if (roll.total >= 15) {
             templateData.result = rollSource.data.data.results.completeSuccess;
+            templateData.resultDisplay = U.loc("roll.success");
+            templateData.cssClass = `${templateData.cssClass} roll-success`;
         }
         else if (roll.total >= 9) {
             templateData.result = rollSource.data.data.results.partialSuccess;
+            templateData.resultDisplay = U.loc("roll.partialSuccess");
+            templateData.cssClass = `${templateData.cssClass} roll-partial`;
         }
         else {
             templateData.result = rollSource.data.data.results.failure;
+            templateData.resultDisplay = U.loc("roll.failure");
+            templateData.cssClass = `${templateData.cssClass} roll-failure`;
         }
+        kLog.log("DISPLAYING ROLL RESULT", { roll, templateData, rollSource, options });
         const content = template(templateData);
         ChatMessage.create({
             content,
@@ -456,14 +457,14 @@ for each possible source of modifier:
             await game.dice3d.showForRoll(roll);
         }
         if (roll.total) {
-            U.dbLog("Roll Successful");
+            kLog.log("Roll Successful", { roll, rollData, options });
             // this.update({"data.sitmod": 0});
-            // U.dbLog(`Sitmod is ` + this.data.data.sitmod);
-            this.displayRollResult(roll, rollData.source, options);
+            // kLog.log(`Sitmod is ` + this.data.data.sitmod);
+            this.displayRollResult(roll, rollData, options);
         }
     }
     async _onCreate(...[actorData, ...args]) {
-        // U.dbLog("ACTOR ON CREATE", actorData, args);
+        // kLog.log("ACTOR ON CREATE", actorData, args);
         if (this.type === "pc" /* K4ActorType.pc */) {
             const pack = await game.packs.get("kult4th.k4-basic-player-moves");
             if (pack) {

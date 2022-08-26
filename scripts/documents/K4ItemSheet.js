@@ -1,4 +1,3 @@
-import U from "../scripts/utilities.js";
 import C from "../scripts/constants.js";
 // const getTriggerAnim = (target: HTMLElement): gsapAnim => gsap.from(target, {
 // 	color: "rgb(200,0,0)",
@@ -23,6 +22,7 @@ export default class K4ItemSheet extends ItemSheet {
     get subItems() { return this.item.data.data.subItemData; }
     get subMoves() { return this.item.data.data.subMoveData; }
     get attacks() { return this.item.data.data.subAttackData; }
+    get svgKey() { return this.item.svgKey; }
     constructor(item, options) {
         options ??= {};
         options.classes = [
@@ -54,7 +54,7 @@ export default class K4ItemSheet extends ItemSheet {
         super.activateListeners(html);
         const self = this;
         $(() => {
-            U.dbLog("ITEM SHEET CONTEXT", { "this": this, self, html });
+            kLog.log("ITEM SHEET CONTEXT", { "this": this, self, html });
             function createOpenLinkFromName(elem, iName) {
                 if (iName) {
                     if (self.document.isEmbedded) {
@@ -70,30 +70,30 @@ export default class K4ItemSheet extends ItemSheet {
             function createRollLinkFromName(elem, iName) {
                 if (iName) {
                     if (self.document.isEmbedded) {
-                        $(elem).on("click", () => U.dbLog(`${self.actor?.name} Rolling (Embedded) ${iName}`));
+                        $(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling (Embedded) ${iName}`));
                     }
                     else {
-                        $(elem).on("click", () => U.dbLog(`${self.actor?.name} Rolling ${iName}`));
+                        $(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling ${iName}`));
                     }
                 }
             }
             function createChatLinkFromName(elem, iName) {
                 if (iName) {
                     if (self.document.isEmbedded) {
-                        $(elem).on("click", () => U.dbLog(`${self.actor?.name} Chatting (Embedded) ${iName}`));
+                        $(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
                     }
                     else {
-                        $(elem).on("click", () => U.dbLog(`${self.actor?.name} Chatting ${iName}`));
+                        $(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting ${iName}`));
                     }
                 }
             }
             function createDeleteLinkFromName(elem, iName) {
                 if (iName) {
                     if (self.document.isEmbedded) {
-                        $(elem).on("click", () => U.dbLog(`${self.actor?.name} Deleting (Embedded) ${iName}`));
+                        $(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting (Embedded) ${iName}`));
                     }
                     else {
-                        $(elem).on("click", () => U.dbLog(`${self.actor?.name} Deleting ${iName}`));
+                        $(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting ${iName}`));
                     }
                 }
             }

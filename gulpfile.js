@@ -401,7 +401,7 @@ const PLUMBING = {
 		}
 	},
 	tsInit: (source, destination) => function pipeTypeScript() {
-		const tsStream = src(source)
+		const tsStream = src(source, {allowEmpty: true})
 			.pipe(PIPES.openPipe("tsInit")())
 			.pipe(PIPES.tsProject());
 		if (ISGENERATINGTYPEFILES) {
@@ -418,14 +418,14 @@ const PLUMBING = {
 		.pipe(PIPES.closePipe("tsInit", source, destination));
 	},
 	jsFull: (source, destination) => function pipeFullJS() {
-		return src(source)
+		return src(source, {allowEmpty: true})
 			.pipe(PIPES.openPipe("jsFull")())
 			.pipe(header(BANNERS.js.full, {"package": packageJSON}))
 			.pipe(PIPES.replacer("js")())
 			.pipe(PIPES.closePipe("jsFull", source, destination));
 	},
 	jsMin: (source, destination) => function pipeMinJS() {
-		return src(source)
+		return src(source, {allowEmpty: true})
 			.pipe(PIPES.openPipe("jsMin")())
 			.pipe(header(BANNERS.js.min, {"package": packageJSON}))
 			.pipe(PIPES.replacer("js")())
@@ -434,7 +434,7 @@ const PLUMBING = {
 			.pipe(PIPES.closePipe("jsMin", source, destination));
 	},
 	cssFull: (source, destination) => function pipeFullCSS() {
-		return src(source)
+		return src(source, {allowEmpty: true})
 			.pipe(PIPES.openPipe("cssFull")())
 			.pipe(sasser({outputStyle: "nested"}))
 			.pipe(bundler([
@@ -444,7 +444,7 @@ const PLUMBING = {
 			.pipe(PIPES.closePipe("cssFull", source, destination));
 	},
 	cssMin: (source, destination) => function pipeMinCSS() {
-		return src(source)
+		return src(source, {allowEmpty: true})
 			.pipe(PIPES.openPipe("cssMin")())
 			.pipe(sasser({outputStyle: "compressed"}))
 			.pipe(bundler([
@@ -456,12 +456,12 @@ const PLUMBING = {
 			.pipe(PIPES.closePipe("cssMin", source, destination));
 	},
 	hbs: (source, destination) => function pipeHBS() {
-		return src(source)
+		return src(source, {allowEmpty: true})
 			.pipe(PIPES.openPipe("hbs")())
 			.pipe(PIPES.closePipe("hbs", source, destination));
 	},
 	toDest: (source, destination) => function pipeToDest() {
-		return src(source).pipe(PIPES.openPipe("toDest")()).pipe(PIPES.closePipe("toDest", source, destination));
+		return src(source, {allowEmpty: true}).pipe(PIPES.openPipe("toDest")()).pipe(PIPES.closePipe("toDest", source, destination));
 	}
 };
 // #endregion ▄▄▄▄▄ CONFIGURATION ▄▄▄▄▄
