@@ -11,10 +11,6 @@
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=data.data.results.partialSuccess.result}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
-
-			{{~#if data.data.results.listRefs}}
-				{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.data.lists listRefs=data.data.results.listRefs itemData=data isDisplayingName=true}}
-			{{/if}}
 		{{/if}}
 
 		{{~#if data.data.rules.listRefs}}

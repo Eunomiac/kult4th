@@ -1003,6 +1003,20 @@ const getRGBString = (red: string | number, green?: number, blue?: number, alpha
 	}
 	return null;
 };
+const getHEXString = (red: string | number, green?: number, blue?: number): HEXColor | null => {
+	function componentToHex(c: string | number): string {
+		const hex = c.toString(16);
+		return hex.length === 1 ? "0" + hex : hex;
+	}
+	if (isHexColor(red)) { return red }
+	if (isRGBColor(red)) {
+		[red, green, blue] = getColorVals(red) ?? [];
+	}
+	if (isDefined(red) && isDefined(green) && isDefined(blue) && [red, green, blue].every((color) => /^[.\d]+$/.test(`${color}`))) {
+		return "#" + componentToHex(red ?? 0) + componentToHex(green ?? 0) + componentToHex(blue ?? 0);
+	}
+	return null;
+};
 const getContrastingColor = (...colorVals: [string] | number[]): RGBColor | null => {
 	const [red, green, blue] = getColorVals(...colorVals) ?? [];
 	if ([red, green, blue].every(isNumber)) {
@@ -1103,7 +1117,7 @@ export default {
 
 	getRawCirclePath, drawCirclePath,
 
-	getColorVals, getRGBString, getContrastingColor, getRandomColor,
+	getColorVals, getRGBString, getHEXString, getContrastingColor, getRandomColor,
 
 	getSiblings,
 

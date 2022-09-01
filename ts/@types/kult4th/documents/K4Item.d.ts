@@ -56,9 +56,7 @@ declare global {
 					edges?: posInt,
 					hold?: posInt
 				}
-			> & {
-				listRefs?: string[]
-			}
+			>
 	}
 
 	type WeaponSubClass<T extends K4WeaponClass> =
@@ -217,8 +215,8 @@ declare global {
 
 		export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
 
-		export type subMove = move & {data: K4ItemComps.IsSubItem}
-		export type subAttack = attack & {data: K4ItemComps.IsSubItem}
+		export type subMove = move & {name?: string, data: K4ItemComps.IsSubItem}
+		export type subAttack = attack & {name: string, data: K4ItemComps.IsSubItem}
 
 		export type subItem = subMove|subAttack
 	}

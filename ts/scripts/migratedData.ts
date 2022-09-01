@@ -1,6 +1,7 @@
 
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
 import C from "./constants.js";
+import U from "./utilities.js";
 import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData.js";
 // #endregion ▮▮▮▮[IMPORTS]▮▮▮▮
 // #region ▮▮▮▮▮▮▮ UTILITY ▮▮▮▮▮▮▮ ~
@@ -61,11 +62,11 @@ const sortIntoFolders = async (itemData: iDataDict) => {
 		derived_attack: ""/*!DEVCODE*/
 	};
 	const itemFolders = {
-		"Advantages": C.Colors.dGOLD,
-		"Disadvantages": C.Colors.dGOLD,
-		"Basic Player Moves": C.Colors.dGOLD,
-		"Dark Secrets": C.Colors.dGOLD,
-		"Weapons": C.Colors.dGOLD
+		"Advantages": U.getHEXString(C.Colors.dGOLD),
+		"Disadvantages": U.getHEXString(C.Colors.dRED),
+		"Basic Player Moves": U.getHEXString(C.Colors.dGOLD),
+		"Dark Secrets": U.getHEXString(C.Colors.dRED),
+		"Weapons": U.getHEXString(C.Colors.dGOLD)
 	};
 	const FOLDERDATA = Object.entries(itemFolders).map(([folderName, folderColor]) => ({
 		name: folderName,
@@ -143,22 +144,19 @@ const mutateItemData = (itemData: iDataDict): iDataDict => {
 		return textStrings;
 	}
 	function getListRefs(iData: Partial<ItemDataConstructorData>) {
-		const listRefs: {rules: string[], topResults: string[], subResults: [string[], string[], string[]]} = {rules: [], topResults: [], subResults: [[],[],[]]};
+		const listRefs: {rules: string[], results: [string[], string[], string[]]} = {rules: [], results: [[],[],[]]};
 		if (iData.data && "rules" in iData.data && iData.data.rules && iData.data.rules.listRefs) {
 			listRefs.rules = iData.data.rules.listRefs;
 		}
 		if (iData.data && "results" in iData.data && iData.data.results) {
-			if (iData.data.results.listRefs) {
-				listRefs.topResults = iData.data.results.listRefs;
-			}
 			if (iData.data.results.completeSuccess?.listRefs) {
-				listRefs.subResults[0].push(...iData.data.results.completeSuccess.listRefs);
+				listRefs.results[0].push(...iData.data.results.completeSuccess.listRefs);
 			}
 			if (iData.data.results.partialSuccess?.listRefs) {
-				listRefs.subResults[1].push(...iData.data.results.partialSuccess.listRefs);
+				listRefs.results[1].push(...iData.data.results.partialSuccess.listRefs);
 			}
 			if (iData.data.results.failure?.listRefs) {
-				listRefs.subResults[2].push(...iData.data.results.failure.listRefs);
+				listRefs.results[2].push(...iData.data.results.failure.listRefs);
 			}
 		}
 	}
@@ -195,6 +193,19 @@ const mutateItemData = (itemData: iDataDict): iDataDict => {
 			}
 			return iData;
 		},
+		function moveResultsRefsToRules(iData: Partial<ItemDataConstructorData> & {data: K4ItemComps.RulesData} & {data: {results: {listRefs?: string[]}}}) {
+			if (iData.data && "results" in iData.data && iData.data.results && iData.data.results.listRefs) {
+				iData.data.rules ??= {};
+				iData.data.rules.listRefs ??= [];
+				iData.data.rules.listRefs.push(...iData.data.results.listRefs);
+				delete iData.data.results.listRefs;
+			}
+			if (hasDerivedItems(iData)) {
+				// @ts-expect-error Fuck
+				iData.data.subItems = iData.data.subItems.map((sData) => moveResultsRefsToRules(sData));
+			}
+			return iData;
+		},
 		function sortListRefs(iData: Partial<ItemDataConstructorData>, pData?: Partial<ItemDataConstructorData>) {
 			/*	 - list REFERENCES appear where they should:
 							- ANY ITEMS: If list is referenced by a %list.<key>%, then no listRefs for it anywhere
@@ -218,6 +229,7 @@ const mutateItemData = (itemData: iDataDict): iDataDict => {
 	];
 
 	function applyMutationFuncs(iData: Partial<ItemDataConstructorData>) {
+		// @ts-expect-error Fuck
 		MUTATIONFUNCS.forEach((func) => func(iData));
 		return iData;
 	}

@@ -34,7 +34,6 @@ export default class K4ItemSheet extends ItemSheet {
 	get subItems() { return this.item.subItems }
 	get subMoves() { return this.item.subMoves }
 	get attacks() { return this.item.subAttacks }
-	get svgKey() { return this.item.svgKey }
 
 	constructor(item: K4Item, options: Partial<ItemSheet.Options> = {}) {
 		// options.classes = [

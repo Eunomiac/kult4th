@@ -1,5 +1,4 @@
 import U from "../scripts/utilities.js";
-import SVGDATA, { SVGKEYMAP } from "../scripts/svgdata.js";
 export default class K4Item extends Item {
     prepareData() {
         super.prepareData();
@@ -17,31 +16,7 @@ export default class K4Item extends Item {
     // }
     get masterType() { return this.isDerived() ? this.data.data.sourceItem.type : this.data.type; }
     get masterName() { return (this.isDerived() ? this.data.data.sourceItem.name ?? this.name : this.name) ?? ""; }
-    get svgKey() {
-        let svgKey = this.data.data.key; // U.toKey(nameRef ?? "");
-        if (svgKey in SVGKEYMAP) {
-            svgKey = SVGKEYMAP[svgKey];
-        }
-        if (svgKey in SVGDATA) {
-            return svgKey;
-        }
-        return `DEFAULT-${U.toKey(this.masterType)}`;
-    }
     hasSubItems() { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }
-    // get subItemData(): K4ItemSourceData.subItem[] {
-    // 	if (this.hasSubItems()) {
-    // 		return this.data.data.subItems.map((subIData) => {
-    // 			if (subIData.data && ("sourceItem" in subIData.data)) {
-    // 				subIData.data.sourceItem = {
-    // 					...subIData.data.sourceItem!,
-    // 					id: this.id
-    // 				};
-    // 			}
-    // 			return subIData;
-    // 		});
-    // 	}
-    // 	return [];
-    // }
     isRollable() { return ["move" /* K4ItemType.move */, "attack" /* K4ItemType.attack */, "advantage" /* K4ItemType.advantage */, "disadvantage" /* K4ItemType.disadvantage */].includes(this.data.type); }
     get subItems() {
         return (this.isEmbedded && this.parent instanceof Actor && this.hasSubItems()) ? this.parent?.getItemsBySource(this.id) : [];
@@ -103,6 +78,7 @@ export default class K4Item extends Item {
             if (this.hasSubItems()) {
                 const subItemData = this.data.data.subItems
                     .map((subData) => {
+                    subData.name ??= this.name;
                     subData.data.sourceItem.id = this.id;
                     return subData;
                 });
@@ -150,10 +126,10 @@ export default class K4Item extends Item {
         const stripData = {
             id: this.id ?? `${this.data.type}-${U.randString(10)}`,
             type: this.data.type,
-            icon: this.svgKey,
+            icon: this.data.data.key,
+            display: this.name ?? "(enter name)",
             ...this.isDerived()
                 ? {
-                    display: this.data.data.sourceItem.name ?? "(enter name)",
                     stripClasses: [
                         U.toKey(`${stripType}-strip`),
                         `derived-${this.data.type}`,
@@ -161,7 +137,6 @@ export default class K4Item extends Item {
                     ]
                 }
                 : {
-                    display: this.name ?? "(enter name)",
                     stripClasses: [
                         U.toKey(`${stripType}-strip`),
                         theme

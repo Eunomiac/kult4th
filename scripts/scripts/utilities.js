@@ -1031,6 +1031,22 @@ const getRGBString = (red, green, blue, alpha) => {
     }
     return null;
 };
+const getHEXString = (red, green, blue) => {
+    function componentToHex(c) {
+        const hex = c.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }
+    if (isHexColor(red)) {
+        return red;
+    }
+    if (isRGBColor(red)) {
+        [red, green, blue] = getColorVals(red) ?? [];
+    }
+    if (isDefined(red) && isDefined(green) && isDefined(blue) && [red, green, blue].every((color) => /^[.\d]+$/.test(`${color}`))) {
+        return "#" + componentToHex(red ?? 0) + componentToHex(green ?? 0) + componentToHex(blue ?? 0);
+    }
+    return null;
+};
 const getContrastingColor = (...colorVals) => {
     const [red, green, blue] = getColorVals(...colorVals) ?? [];
     if ([red, green, blue].every(isNumber)) {
@@ -1114,7 +1130,7 @@ export default {
     // ░░░░░░░ GreenSock ░░░░░░░
     gsap, get, set, getGSAngleDelta,
     getRawCirclePath, drawCirclePath,
-    getColorVals, getRGBString, getContrastingColor, getRandomColor,
+    getColorVals, getRGBString, getHEXString, getContrastingColor, getRandomColor,
     getSiblings,
     // ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████
     sleep

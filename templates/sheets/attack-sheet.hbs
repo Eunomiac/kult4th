@@ -4,7 +4,7 @@
 	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
 	<main class="kult-text-container tab-content kult-{{data.type}}-container">
 		<div class="attack-specs">
-			<span class="attack-harm">{{data.data.harm}}</span><label class="attack-harm">{{loc "kult4th.trait.harm"}}</label>
+			<span class="attack-harm">{{data.data.harm}}</span><label class="attack-harm">{{localize "kult4th.trait.harm"}}</label>
 		</div>
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
 		{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
@@ -14,10 +14,6 @@
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=data.data.results.partialSuccess.result}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
-
-			{{~#if data.data.results.listRefs}}
-				{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.data.lists listRefs=data.data.results.listRefs itemData=data isDisplayingName=true}}
-			{{/if}}
 		{{/if}}
 
 		{{~#if data.data.rules.listRefs}}

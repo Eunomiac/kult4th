@@ -175,7 +175,8 @@
 						"effectFunctions": [],
 						"edges": 0,
 						"hold": 0
-					}
+					},
+					"listRefs": []
 				}
 			}
 		},

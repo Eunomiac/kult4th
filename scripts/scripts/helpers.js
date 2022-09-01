@@ -171,60 +171,6 @@ const handlebarHelpers = {
         return str;
     },
     "getImgName": U.toKey,
-    // "getSVGPaths": function(ref: KeyOf<typeof SVGDATA>) {
-    // 	if (ref && !(ref in SVGDATA) && ref in SVGKEYMAP) {
-    // 		ref = SVGKEYMAP[ref];
-    // 	}
-    // 	if (ref && ref in SVGDATA) {
-    // 		return SVGDATA[ref];
-    // 	}
-    // 	throw new Error(`No such SVG path: '${String(ref)}'`);
-    // },
-    // "getIconPaths": function(ref: string, {name}: {name?: string} = {}) {
-    // 	if (name && typeof name === "string") {
-    // 		ref = name;
-    // 	}
-    // 	const pathData = U.getKey(U.toKey(ref), SVGDATA)
-    // 		?.map((pData) => ({...pData, style: parsePathTransform(pData)}));
-    // 	throw new Error(`No such SVG path: '${String(ref)}'`);
-    // },
-    /* "getSVGKey": function(item: K4Item): string {
-        let svgKey: string;
-        if (item.data) {
-            switch (item.data.type) {
-                case "attack":
-                case "move": {
-                    if (item.data.data.sourceItem?.name) {
-                        svgKey = item.data.data.sourceItem.name;
-                        break;
-                    } else if (typeof item.data.name === "string") {
-                        svgKey = item.data.name;
-                        break;
-                    }
-                    throw new Error("Item name is NULL!");
-                }
-                default: {
-                    if (typeof item.data.name === "string") {
-                        svgKey = item.data.name;
-                        break;
-                    }
-                    throw new Error("Item name is NULL!");
-                }
-            }
-            svgKey = U.toKey(svgKey);
-            if (svgKey in SVGKEYMAP) {
-                svgKey = SVGKEYMAP[svgKey];
-            }
-            if (svgKey in SVGDATA) {
-                return svgKey;
-            }
-
-            throw new Error(`No such SVG: '${String(svgKey)}'`);
-        } else {
-            console.error("Item missing data field:", item);
-            return "DEFAULT-advantage";
-        }
-    }, */
     "getSVGs": function (ref) {
         const isReporting = ref === "ten-sided-die";
         ref = U.toKey(ref);

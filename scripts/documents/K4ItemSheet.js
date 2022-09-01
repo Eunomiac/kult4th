@@ -22,7 +22,6 @@ export default class K4ItemSheet extends ItemSheet {
     get subItems() { return this.item.subItems; }
     get subMoves() { return this.item.subMoves; }
     get attacks() { return this.item.subAttacks; }
-    get svgKey() { return this.item.svgKey; }
     constructor(item, options = {}) {
         // options.classes = [
         // 	...K4ItemSheet.defaultOptions.classes,

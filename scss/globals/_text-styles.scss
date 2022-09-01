@@ -277,6 +277,17 @@
 		}
 	}
 
+	.text-center {
+		text-align: center;
+
+		&.text-tag {
+			display: block;
+
+			+ br {
+				display: none;
+			}
+		}
+	}
 
 	.text-posmod,
 	.text-negmod,

@@ -70,19 +70,19 @@
 			<section class="subsection flex-item-list basic-moves">
 				<label class="k4-title section-title">{{case "upper" (localize "kult4th.item.type.basicPlayerMoves")}}</label>
 				{{#each baseMoves}}
-				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list special-moves">
 				<label class="k4-title section-title">{{case "upper" (localize "kult4th.item.type.specialMoves")}}</label>
 				{{#each derivedMoves}}
-				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list attacks k4-theme-red">
 				<label class="k4-title section-title">{{case "upper" (localize "kult4th.item.type.attacks")}}</label>
 				{{#each attacks}}
-				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
 				{{/each}}
 			</section>
 		</section>
@@ -95,25 +95,25 @@
 			<section class="subsection flex-item-list advantages">
 				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.advantages")}}</label>
 				{{#each advantages}}
-				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list disadvantages">
 				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.disadvantages")}}</label>
 				{{#each disadvantages}}
-				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list darksecrets">
 				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.darksecrets")}}</label>
 				{{#each darksecrets}}
-				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list relations">
 				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.relations")}}</label>
 				{{#each relations}}
-				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
+				{{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
 				{{/each}}
 			</section>
 		</section>

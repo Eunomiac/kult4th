@@ -786,6 +786,15 @@ Kult White:  #FFFFFF */
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 12.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.5), 0 0 21px rgba(65, 132, 220, 0.5), 0 0 29px rgba(65, 132, 220, 0.5), 0 0 41.5px rgba(65, 132, 220, 0.5); }
   100% {
     text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(65, 132, 220, 0.8), 0 0 6px rgba(65, 132, 220, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 10.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.8); } }
+  #tinymce .text-center,
+  #tinymce .mce-content-body .text-center {
+    text-align: center; }
+    #tinymce .text-center.text-tag,
+    #tinymce .mce-content-body .text-center.text-tag {
+      display: block; }
+      #tinymce .text-center.text-tag + br,
+      #tinymce .mce-content-body .text-center.text-tag + br {
+        display: none; }
   #tinymce .text-posmod,
   #tinymce .text-negmod,
   #tinymce .text-keyword,

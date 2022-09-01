@@ -536,17 +536,15 @@ export default class K4PCSheet extends ActorSheet {
         const baseContext = await super.getData();
         const context = {
             ...baseContext,
-            ...U.objMap({
-                baseMoves: this.actor.basicMoves,
-                derivedMoves: this.actor.derivedMoves,
-                advantages: this.actor.advantages,
-                disadvantages: this.actor.disadvantages,
-                darksecrets: this.actor.darkSecrets,
-                relations: this.actor.relations,
-                weapons: this.actor.weapons,
-                gear: this.actor.gear,
-                attacks: this.actor.attacks
-            }, (items) => items.map((item) => item.hoverStrip)),
+            baseMoves: this.actor.basicMoves,
+            derivedMoves: this.actor.derivedMoves,
+            advantages: this.actor.advantages,
+            disadvantages: this.actor.disadvantages,
+            darksecrets: this.actor.darkSecrets,
+            relations: this.actor.relations,
+            weapons: this.actor.weapons,
+            gear: this.actor.gear,
+            attacks: this.actor.attacks,
             attributes: this.actor.attributeData,
             curTab: this.actor.getFlag("kult4th", "sheetTab"),
             wounds: this.actor.woundStrips

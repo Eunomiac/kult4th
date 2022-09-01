@@ -1,5 +1,6 @@
 // #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
 import C from "./constants.js";
+import U from "./utilities.js";
 const clearItems = async () => Item.deleteDocuments(Array.from(game.items?.values() ?? []).map((item) => item.id));
 const clearFolders = async () => Folder.deleteDocuments(Array.from(game.folders?.values() ?? []).map((folder) => folder.id));
 const isFolderEmpty = (folder) => {
@@ -55,11 +56,11 @@ const sortIntoFolders = async (itemData) => {
         derived_attack: "" /*!DEVCODE*/
     };
     const itemFolders = {
-        "Advantages": C.Colors.dGOLD,
-        "Disadvantages": C.Colors.dGOLD,
-        "Basic Player Moves": C.Colors.dGOLD,
-        "Dark Secrets": C.Colors.dGOLD,
-        "Weapons": C.Colors.dGOLD
+        "Advantages": U.getHEXString(C.Colors.dGOLD),
+        "Disadvantages": U.getHEXString(C.Colors.dRED),
+        "Basic Player Moves": U.getHEXString(C.Colors.dGOLD),
+        "Dark Secrets": U.getHEXString(C.Colors.dRED),
+        "Weapons": U.getHEXString(C.Colors.dGOLD)
     };
     const FOLDERDATA = Object.entries(itemFolders).map(([folderName, folderColor]) => ({
         name: folderName,
@@ -131,22 +132,19 @@ const mutateItemData = (itemData) => {
         return textStrings;
     }
     function getListRefs(iData) {
-        const listRefs = { rules: [], topResults: [], subResults: [[], [], []] };
+        const listRefs = { rules: [], results: [[], [], []] };
         if (iData.data && "rules" in iData.data && iData.data.rules && iData.data.rules.listRefs) {
             listRefs.rules = iData.data.rules.listRefs;
         }
         if (iData.data && "results" in iData.data && iData.data.results) {
-            if (iData.data.results.listRefs) {
-                listRefs.topResults = iData.data.results.listRefs;
-            }
             if (iData.data.results.completeSuccess?.listRefs) {
-                listRefs.subResults[0].push(...iData.data.results.completeSuccess.listRefs);
+                listRefs.results[0].push(...iData.data.results.completeSuccess.listRefs);
             }
             if (iData.data.results.partialSuccess?.listRefs) {
-                listRefs.subResults[1].push(...iData.data.results.partialSuccess.listRefs);
+                listRefs.results[1].push(...iData.data.results.partialSuccess.listRefs);
             }
             if (iData.data.results.failure?.listRefs) {
-                listRefs.subResults[2].push(...iData.data.results.failure.listRefs);
+                listRefs.results[2].push(...iData.data.results.failure.listRefs);
             }
         }
     }
@@ -184,6 +182,19 @@ const mutateItemData = (itemData) => {
             }
             return iData;
         },
+        function moveResultsRefsToRules(iData) {
+            if (iData.data && "results" in iData.data && iData.data.results && iData.data.results.listRefs) {
+                iData.data.rules ??= {};
+                iData.data.rules.listRefs ??= [];
+                iData.data.rules.listRefs.push(...iData.data.results.listRefs);
+                delete iData.data.results.listRefs;
+            }
+            if (hasDerivedItems(iData)) {
+                // @ts-expect-error Fuck
+                iData.data.subItems = iData.data.subItems.map((sData) => moveResultsRefsToRules(sData));
+            }
+            return iData;
+        },
         function sortListRefs(iData, pData) {
             /*	 - list REFERENCES appear where they should:
                             - ANY ITEMS: If list is referenced by a %list.<key>%, then no listRefs for it anywhere
@@ -204,6 +215,7 @@ const mutateItemData = (itemData) => {
         }
     ];
     function applyMutationFuncs(iData) {
+        // @ts-expect-error Fuck
         MUTATIONFUNCS.forEach((func) => func(iData));
         return iData;
     }
