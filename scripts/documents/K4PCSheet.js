@@ -533,10 +533,9 @@ export default class K4PCSheet extends ActorSheet {
     hoverTimelineTarget;
     devTools = GSDevTools;
     async getData() {
-        const baseData = await super.getData();
-        const data = {
-            ...baseData,
-            actorData: this.actor.data.data,
+        const baseContext = await super.getData();
+        const context = {
+            ...baseContext,
             ...U.objMap({
                 baseMoves: this.actor.basicMoves,
                 derivedMoves: this.actor.derivedMoves,
@@ -547,16 +546,16 @@ export default class K4PCSheet extends ActorSheet {
                 weapons: this.actor.weapons,
                 gear: this.actor.gear,
                 attacks: this.actor.attacks
-            }, (items) => items.map((item) => item.toHoverStrip())),
+            }, (items) => items.map((item) => item.hoverStrip)),
             attributes: this.actor.attributeData,
             curTab: this.actor.getFlag("kult4th", "sheetTab"),
             wounds: this.actor.woundStrips
         };
         /*DEVCODE*/
-        kLog.log("Final Actor Data", data);
+        kLog.log("Final Actor Data", context);
         Object.assign(globalThis, { actor: this.actor, sheet: this });
         /*!DEVCODE*/
-        return data;
+        return context;
     }
     setPosition(posData) {
         super.setPosition(posData);

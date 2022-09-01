@@ -2,7 +2,7 @@ import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 export default class K4Actor extends Actor {
-    get kData() { return this.data.data; }
+    // get kData() { return this.data.data }
     prepareData() {
         super.prepareData();
         if (this.data.type === "pc" /* K4ActorType.pc */) {
@@ -390,12 +390,12 @@ for each possible source of modifier:
         let results;
         const template = await getTemplate(U.getTemplatePath("sidebar", "roll-result"));
         const templateData = {
-            cssClass: ["kult4th-chat", "chat-roll-result", `${rollSource.rolledType ?? ""}-roll`].join(" "),
+            cssClass: ["kult4th-chat", "chat-roll-result", `${rollSource.masterType ?? ""}-roll`].join(" "),
             context: rollSource,
             dice: roll.dice[0].results.map((dResult) => dResult.result),
             total: roll.total,
             resultDisplay: "",
-            rolledName: rollSource.rolledName ?? U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
+            rolledName: rollSource.masterName ?? U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
             rolledAttribute: U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
             rollerName: this.name ?? U.loc("roll.someone"),
             rollerImg: this.img ?? "systems/kult4th/assets/characters/generic.jpg",

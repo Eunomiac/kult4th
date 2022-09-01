@@ -53,8 +53,8 @@ declare global {
 					result: string,
 					listRefs?: string[],
 					effectFunctions?: string[],
-					edges: posInt,
-					hold: posInt
+					edges?: posInt,
+					hold?: posInt
 				}
 			> & {
 				listRefs?: string[]
@@ -91,12 +91,13 @@ declare global {
 	}
 	namespace K4ItemComps {
 		export interface Base {
+			key: string,
 			description: string,
 			lists: Record<string, {
 				name: string,
 				items: string[],
 				intro?: string,
-				isEditable?: boolean
+				requiresEdit?: boolean
 			}>,
 			isCustom: boolean,
 			pdfLink: string,
@@ -104,16 +105,19 @@ declare global {
 		}
 
 		export interface HasSubItems {
-			subItems: ItemDataSource[],
-			embeddedSubItems: K4DerivedItem[]
+			subItems: Array<K4ItemSourceData.subAttack> | Array<K4ItemSourceData.subMove> | Array<K4ItemSourceData.subAttack|K4ItemSourceData.subMove>
 		}
 
-		export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear>;
+		// export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear>;
 
 		export interface CanSubItem {
 			sourceItem?: K4SourceItem
 		}
-		export type CanSlave = K4ItemSpec<K4ItemType.attack | K4ItemType.move>;
+		// export type CanSlave = K4ItemSpec<K4ItemType.attack | K4ItemType.move>;
+
+		export interface IsSubItem extends CanSubItem {
+			sourceItem: K4SourceItem
+		}
 
 		export interface RulesData {
 			rules: {
@@ -125,7 +129,7 @@ declare global {
 				holdText?: string
 			}
 		}
-		export type HasRules = K4ItemSpec<Exclude<K4ItemType, K4ItemType.relation>>;
+		// export type HasRules = K4ItemSpec<Exclude<K4ItemType, K4ItemType.relation>>;
 	}
 	namespace K4ItemSourceSchema {
 		export interface move extends K4ItemComps.Base, K4ItemComps.CanSubItem, K4ItemComps.RulesData, ResultsData {
@@ -177,7 +181,7 @@ declare global {
 			armor: number
 		}
 	}
-		namespace K4ItemSourceData {
+	namespace K4ItemSourceData {
 		export interface move {
 			type: K4ItemType.move,
 			data: K4ItemSourceSchema.move
@@ -212,67 +216,65 @@ declare global {
 		}
 
 		export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
+
+		export type subMove = move & {data: K4ItemComps.IsSubItem}
+		export type subAttack = attack & {data: K4ItemComps.IsSubItem}
+
+		export type subItem = subMove|subAttack
 	}
-
 	namespace K4ItemPropertiesSchema {
-
-		interface Base {
-			subItemData?: Array<K4ItemPropertiesData.move|K4ItemPropertiesData.attack>
-			subMoveData?: Array<K4ItemPropertiesData.move>
-			subAttackData?: Array<K4ItemPropertiesData.attack>
-		}
 		interface HasSubItems {
-
-
+			subMoves: Array<K4ItemSourceData.move>
+			subAttacks: Array<K4ItemSourceData.attack>
 		}
-		export interface move extends K4ItemSourceSchema.move, Base {
+		export interface move extends K4ItemSourceSchema.move {
 		}
-		export interface attack extends K4ItemSourceSchema.attack, Base {
+		export interface attack extends K4ItemSourceSchema.attack {
 		}
-		export interface advantage extends K4ItemSourceSchema.advantage, Base, HasSubItems, ResultsData {
+		export interface advantage extends K4ItemSourceSchema.advantage, HasSubItems, ResultsData {
 		}
-		export interface disadvantage extends K4ItemSourceSchema.disadvantage, Base, HasSubItems, ResultsData {
+		export interface disadvantage extends K4ItemSourceSchema.disadvantage, HasSubItems, ResultsData {
 		}
-		export interface darksecret extends K4ItemSourceSchema.darksecret, Base {
+		export interface darksecret extends K4ItemSourceSchema.darksecret {
 		}
-		export interface relation extends K4ItemSourceSchema.relation, Base {
+		export interface relation extends K4ItemSourceSchema.relation {
 		}
-		export interface weapon extends K4ItemSourceSchema.weapon, Base, HasSubItems {
+		export interface weapon extends K4ItemSourceSchema.weapon, HasSubItems {
 		}
-		export interface gear extends K4ItemSourceSchema.gear, Base, HasSubItems {
+		export interface gear extends K4ItemSourceSchema.gear, HasSubItems {
 		}
 
 	}
 	namespace K4ItemPropertiesData {
-		export interface move {
+		export interface move extends K4ItemSourceData.move {
 			type: K4ItemType.move,
 			data: K4ItemPropertiesSchema.move
 		}
-		export interface attack {
+		export interface attack extends K4ItemSourceData.attack {
 			type: K4ItemType.attack,
 			data: K4ItemPropertiesSchema.attack
 		}
-		export interface advantage {
+		export interface advantage extends K4ItemSourceData.advantage {
 			type: K4ItemType.advantage,
 			data: K4ItemPropertiesSchema.advantage
 		}
-		export interface disadvantage {
+		export interface disadvantage extends K4ItemSourceData.disadvantage {
 			type: K4ItemType.disadvantage,
 			data: K4ItemPropertiesSchema.disadvantage
 		}
-		export interface darksecret {
+		export interface darksecret extends K4ItemSourceData.darksecret {
 			type: K4ItemType.darksecret,
 			data: K4ItemPropertiesSchema.darksecret
 		}
-		export interface relation {
+		export interface relation extends K4ItemSourceData.relation {
 			type: K4ItemType.relation,
 			data: K4ItemPropertiesSchema.relation
 		}
-		export interface weapon {
+		export interface weapon extends K4ItemSourceData.weapon {
 			type: K4ItemType.weapon,
 			data: K4ItemPropertiesSchema.weapon
 		}
-		export interface gear {
+		export interface gear extends K4ItemSourceData.gear {
 			type: K4ItemType.gear,
 			data: K4ItemPropertiesSchema.gear
 		}
@@ -281,7 +283,7 @@ declare global {
 	}
 
 	type K4ItemSpec<Type extends K4ItemType> = K4Item & {data: {type: Type, _source: {type: Type}}}
-	type K4HasSubItems<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {data: {data: {subItems: ItemDataSource[], embeddedSubItems: K4DerivedItem[]}}}
-	type K4DerivedItem<Type extends K4ItemType = K4ItemType> = K4ItemSpec<Type> & {sourceName: string, sourceType: K4ItemType, data: {data: {sourceItem: K4SourceItem}}}
+	type K4HasSubItems = K4ItemSpec<K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.weapon|K4ItemType.gear> & {data: {data: {subItems: K4ItemSourceData.subItem[], subMoves: K4ItemSourceData.subMove[], subAttacks: K4ItemSourceData.subAttack[]}}}
+	type K4DerivedItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack> = K4ItemSpec<Type> & {sourceName: string, sourceType: K4ItemType, data: {data: {sourceItem: K4SourceItem}}}
 	type K4RollableItem = K4ItemSpec<K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage>
 }

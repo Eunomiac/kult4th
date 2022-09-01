@@ -20,7 +20,7 @@
 	<main class="tab-content">
 		<section class="tab front {{~#if (eq curTab "front")}} active{{/if}}" data-group="primary" data-tab="front">
 			<section class="subsection dramatic-hooks">
-				<label class="hook-label">{{case "title" (loc "kult4th.sheet.hooks")}}:</label>
+				<label class="hook-label">{{case "title" (localize "kult4th.sheet.hooks")}}:</label>
 				{{#each data.data.dramaticHooks}}
 				<div class="dramatic-hook">
 					<input type="checkbox" name="data.dramaticHooks.{{@index}}.isChecked" {{checked isChecked}} />
@@ -62,25 +62,25 @@
 				<span class="modifiers-report">{{data.data.modifiersReport}}</span>
 			</section>
 			<section class="subsection attributes">
-				<label class="k4-title section-title">{{case "upper" (loc "kult4th.trait.attributes")}}</label>
+				<label class="k4-title section-title">{{case "upper" (localize "kult4th.trait.attributes")}}</label>
 				{{#each attributes}}
 				{{> "systems/kult4th/templates/components/attribute-box.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list basic-moves">
-				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.basicPlayerMoves")}}</label>
+				<label class="k4-title section-title">{{case "upper" (localize "kult4th.item.type.basicPlayerMoves")}}</label>
 				{{#each baseMoves}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list special-moves">
-				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.specialMoves")}}</label>
+				<label class="k4-title section-title">{{case "upper" (localize "kult4th.item.type.specialMoves")}}</label>
 				{{#each derivedMoves}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list attacks k4-theme-red">
-				<label class="k4-title section-title">{{case "upper" (loc "kult4th.item.type.attacks")}}</label>
+				<label class="k4-title section-title">{{case "upper" (localize "kult4th.item.type.attacks")}}</label>
 				{{#each attacks}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
@@ -89,29 +89,29 @@
 
 		<section class="tab bio {{~#if (eq curTab "bio")}} active{{/if}}" data-group="primary" data-tab="bio">
 			<section class="subsection description">
-				<label class="k4-title section-title">{{case "title" (loc "kult4th.sheet.description")}}</label>
+				<label class="k4-title section-title">{{case "title" (localize "kult4th.sheet.description")}}</label>
 				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection flex-item-list advantages">
-				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.advantages")}}</label>
+				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.advantages")}}</label>
 				{{#each advantages}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list disadvantages">
-				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.disadvantages")}}</label>
+				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.disadvantages")}}</label>
 				{{#each disadvantages}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list darksecrets">
-				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.darksecrets")}}</label>
+				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.darksecrets")}}</label>
 				{{#each darksecrets}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}
 			</section>
 			<section class="subsection flex-item-list relations">
-				<label class="k4-title section-title">{{case "title" (loc "kult4th.item.type.relations")}}</label>
+				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.relations")}}</label>
 				{{#each relations}}
 				{{> "systems/kult4th/templates/components/hover-strip.hbs"}}
 				{{/each}}

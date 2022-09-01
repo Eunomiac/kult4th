@@ -6,7 +6,7 @@ import {ActorDataConstructorData} from "@league-of-foundry-developers/foundry-vt
 
 export default class K4Actor extends Actor {
 
-	get kData() { return this.data.data }
+	// get kData() { return this.data.data }
 
 	override prepareData() {
 		super.prepareData();
@@ -428,12 +428,12 @@ for each possible source of modifier:
 
 		const template = await getTemplate(U.getTemplatePath("sidebar", "roll-result"));
 		const templateData: {result?: ValueOf<ResultsData["results"]>, cssClass: string, context: K4Item, dice: [number, number], total: number, resultDisplay: string, rolledName: string, rolledAttribute: string, rollerName: string, rollerImg: string, modifiers: Record<string,number>} = {
-			cssClass: ["kult4th-chat", "chat-roll-result", `${rollSource.rolledType ?? ""}-roll`].join(" "),
+			cssClass: ["kult4th-chat", "chat-roll-result", `${rollSource.masterType ?? ""}-roll`].join(" "),
 			context: rollSource,
 			dice: roll.dice[0].results.map((dResult) => dResult.result) as [number, number],
 			total: roll.total,
 			resultDisplay: "",
-			rolledName: rollSource.rolledName ?? U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
+			rolledName: rollSource.masterName ?? U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
 			rolledAttribute: U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
 			rollerName: this.name ?? U.loc("roll.someone"),
 			rollerImg: this.img ?? "systems/kult4th/assets/characters/generic.jpg",

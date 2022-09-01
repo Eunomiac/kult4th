@@ -19,35 +19,34 @@ export default class K4ItemSheet extends ItemSheet {
     get item() { return super.item; }
     get type() { return this.item.data.type; }
     get subType() { return this.item.data.data.subType; }
-    get subItems() { return this.item.data.data.subItemData; }
-    get subMoves() { return this.item.data.data.subMoveData; }
-    get attacks() { return this.item.data.data.subAttackData; }
+    get subItems() { return this.item.subItems; }
+    get subMoves() { return this.item.subMoves; }
+    get attacks() { return this.item.subAttacks; }
     get svgKey() { return this.item.svgKey; }
-    constructor(item, options) {
-        options ??= {};
-        options.classes = [
-            ...K4ItemSheet.defaultOptions.classes,
-            ...(options.classes ?? [])
-        ];
+    constructor(item, options = {}) {
+        // options.classes = [
+        // 	...K4ItemSheet.defaultOptions.classes,
+        // 	...(options.classes ?? [])
+        // ];
+        super(item, options);
         switch (item.data.type) {
             case "advantage" /* K4ItemType.advantage */: {
-                options.classes.push("k4-theme-dgold");
+                this.options.classes.push("k4-theme-dgold");
                 break;
             }
             case "darksecret" /* K4ItemType.darksecret */: {
-                options.classes.push("k4-theme-red");
+                this.options.classes.push("k4-theme-red");
                 break;
             }
             case "disadvantage" /* K4ItemType.disadvantage */: {
-                options.classes.push("k4-theme-dark");
+                this.options.classes.push("k4-theme-dark");
                 break;
             }
             default: {
-                options.classes.push("k4-theme-white");
+                this.options.classes.push("k4-theme-white");
                 break;
             }
         }
-        super(item, options);
     }
     activateListeners(html) {
         const opts = this.options;

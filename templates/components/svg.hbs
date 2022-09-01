@@ -1,8 +1,8 @@
 <div class="svg-container svg-{{key}} {{classes}}">
 	{{#each (getSVGs key) as |svg|}}
-	{{log svg}}
+	{{dbLog svg}}
 	<svg class="svg-def {{~#if svg.classes}}{{#each svg.classes}} {{this}}{{/each}}{{/if}}" viewbox="{{svg.viewBox}}" {{~#if ../style}} style="{{../style}}"{{else}}{{#if svg.style}} style="{{svg.style}}"{{/if}}{{/if}}>
-		{{log "Inside SVG!"}}
+		{{dbLog "Inside SVG!"}}
 		<path d="{{{svg.d}}}" />
 	</svg>
 	{{/each}}

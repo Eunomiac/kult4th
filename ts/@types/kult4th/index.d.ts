@@ -40,6 +40,10 @@ declare global {
 		}
 	}
 
+	declare interface CONFIG {
+		K4: List
+	}
+
 	declare const cqApi: {
 		reprocess: () => void,
 		reparse: () => void,

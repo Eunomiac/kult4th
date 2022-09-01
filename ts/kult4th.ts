@@ -1,3 +1,4 @@
+import K4Config from "./scripts/config.js";
 import K4Actor from "./documents/K4Actor.js";
 import K4Item from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
@@ -6,26 +7,26 @@ import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
 import C, {getContrastingColor} from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
-import {formatStringForKult, HandlebarHelpers} from "./scripts/helpers.js";
+import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
 
 // ts-expect-error Just until I get the compendium data migrated
 // import BUILD_ITEM_DATA, {EXTRACT_ALL_ITEMS, INTERMEDIATE_MIGRATE_DATA, CHECK_DATA_JSON} from "../scripts/jsonImport.mjs";
 // import MIGRATE_ITEM_DATA, {ItemMigrationData, cleanData, toDict, GROUPED_DATA} from "../kult4eoverrides/migratorts";
-import {resetItems, extractPackData, analyzePackData} from "./scripts/migratedData.js";
+import resetItems from "./scripts/migratedData.js";
 import gsap, {MorphSVGPlugin} from "gsap/all";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 
 registerDebugger();
 gsap.registerPlugin(MorphSVGPlugin);
 
-
 Hooks.once("init", async () => {
 	registerSettings();
-	kLog.display(U.loc("kult4th.system.prompts.systemInit"));
-	Object.entries(HandlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(String(name), func as Handlebars.HelperDelegate));
-	// console.log(game.i18n.format("kult4th.system.prompts.systemInit"));
+	kLog.display("Initializing 'Kult: Divinity Lost 4th Edition' for Foundry VTT", 0);
+
+	CONFIG.K4 = K4Config;
+	registerHandlebarHelpers();
 
 	CONFIG.Actor.documentClass = K4Actor;
 	Actors.unregisterSheet("core", ActorSheet);
@@ -41,48 +42,7 @@ Hooks.once("init", async () => {
 	CONFIG.ChatMessage.documentClass = K4ChatMessage;
 	CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
 
-	loadTemplates([
-		...U.getTemplatePath("globals", [
-			"svg-defs",
-			"color-defs"
-		]),
-		...U.getTemplatePath("sheets", [
-			"pc-sheet",
-			"npc-sheet",
-			"move-sheet",
-			"advantage-sheet",
-			"disadvantage-sheet",
-			"darksecret-sheet",
-			"weapon-sheet",
-			"relation-sheet",
-			"gear-sheet"
-		]),
-		...U.getTemplatePath("components", [
-			"form-header",
-			"hover-strip",
-			"hover-strip-editable",
-			"item-list",
-			"rules-block",
-			"roll-result",
-			"attribute-box",
-			"pc-header",
-			"pc-nav-menu",
-			"svg",
-			"toggle-box"
-		]),
-		...U.getTemplatePath("partials", [
-			"derived-item-summary",
-			"derived-move",
-			"pc-nav-menu-frame"
-		]),
-		...U.getTemplatePath("sidebar", [
-			"chat-message",
-			"roll-result"
-		]),
-		...U.getTemplatePath("dialog", [
-			"ask-for-attribute"
-		])
-	]);
+	preloadTemplates();
 
 	// #region ████████ STYLING: Create Style Definitions for SVG Files & Color Palette ████████ ~
 	const svgDefTemplate = await getTemplate(U.getTemplatePath("globals", "svg-defs"));
@@ -230,9 +190,9 @@ Hooks.once("ready", async () => {
 	const ACTOR = game.actors?.values().next().value as K4Actor;
 	const ITEM = game.items?.values().next().value as K4Item;
 	const EMBED = ACTOR.items?.values().next().value as K4Item;
-	const ACTORSHEET = ACTOR.sheet as unknown as K4PCSheet;
-	const ITEMSHEET = ITEM.sheet as unknown as K4ItemSheet;
-	const EMBEDSHEET = EMBED.sheet as unknown as K4ItemSheet;
+	const ACTORSHEET = ACTOR?.sheet as unknown as K4PCSheet;
+	const ITEMSHEET = ITEM?.sheet as unknown as K4ItemSheet;
+	const EMBEDSHEET = EMBED?.sheet as unknown as K4ItemSheet;
 
 	Object.assign(globalThis, {
 		gsap,
@@ -240,11 +200,8 @@ Hooks.once("ready", async () => {
 		U,
 		C,
 		resetItems,
-		extractPackData,
-		analyzePackData,
 		getContrastingColor,
 		formatStringForKult,
-		formatForKult: HandlebarHelpers.formatForKult,
 		ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
 		ENTITIES: [ACTOR, ITEM, EMBED],
 		SHEETS: [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
@@ -252,3 +209,50 @@ Hooks.once("ready", async () => {
 	});
 	/*!DEVCODE*/
 });
+
+async function preloadTemplates() {
+	const templatePaths = [
+		...U.getTemplatePath("globals", [
+			"svg-defs",
+			"color-defs"
+		]),
+		...U.getTemplatePath("sheets", [
+			"pc-sheet",
+			"npc-sheet",
+			"move-sheet",
+			"advantage-sheet",
+			"disadvantage-sheet",
+			"darksecret-sheet",
+			"weapon-sheet",
+			"relation-sheet",
+			"gear-sheet"
+		]),
+		...U.getTemplatePath("components", [
+			"form-header",
+			"hover-strip",
+			"hover-strip-editable",
+			"item-list",
+			"rules-block",
+			"roll-result",
+			"attribute-box",
+			"pc-header",
+			"pc-nav-menu",
+			"svg",
+			"toggle-box"
+		]),
+		...U.getTemplatePath("partials", [
+			"derived-item-summary",
+			"derived-move",
+			"pc-nav-menu-frame"
+		]),
+		...U.getTemplatePath("sidebar", [
+			"chat-message",
+			"roll-result"
+		]),
+		...U.getTemplatePath("dialog", [
+			"ask-for-attribute"
+		])
+	];
+
+	return loadTemplates(templatePaths);
+}

@@ -5,7 +5,7 @@ export function formatStringForKult(str) {
     // Apply spans around all hash-tag indicators
     return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
 }
-export const HandlebarHelpers = {
+const handlebarHelpers = {
     "test": function (param1, operator, param2) {
         switch (operator) {
             case "==": {
@@ -48,7 +48,7 @@ export const HandlebarHelpers = {
         if (Array.isArray(param) || U.isList(param)) {
             return Object.values(param).length;
         }
-        return 0;
+        return param ? 1 : 0;
     },
     "areEmpty": function (...args) {
         args.pop();
@@ -56,26 +56,11 @@ export const HandlebarHelpers = {
     },
     "dbLog": function (...args) {
         args.pop();
-        let dbLevel = 4;
+        let dbLevel = 5;
         if ([0, 1, 2, 3, 4, 5].includes(args[0])) {
             dbLevel = args.shift();
         }
         kLog.hbsLog(...args, dbLevel);
-    },
-    "loc": function (...args) {
-        args.pop();
-        const locString = args.shift();
-        if (typeof locString === "string") {
-            const formatDict = {};
-            while (args.length && args.length % 2 === 0) {
-                const [dictKey, dictVal] = [args.shift(), args.shift()];
-                if (typeof dictKey === "string" && typeof dictVal === "string") {
-                    formatDict[dictKey] = dictVal;
-                }
-            }
-            return U.loc(locString, formatDict);
-        }
-        throw new Error(`Bad Localization String: ${String(locString)}`);
     },
     "formatForKult": function (str, context) {
         // Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
@@ -88,7 +73,7 @@ export const HandlebarHelpers = {
         str = str.replace(/%([^%\.]+)\.([^%\.]+)%/g, (_, sourceRef, dataKey) => {
             switch (sourceRef) {
                 case "data": {
-                    return U.tCase(iData.data[dataKey]);
+                    return iData.data[dataKey];
                 }
                 case "list": {
                     switch (dataKey) {
@@ -111,7 +96,7 @@ export const HandlebarHelpers = {
                             }
                             return [
                                 `<ul class='inline-list list-${dataKey}'>`,
-                                ...iData.data.lists[dataKey].items.map((item) => `<li>${item}</li>`),
+                                ...listItems.map((item) => `<li>${item}</li>`),
                                 "</ul>"
                             ].join("");
                         }
@@ -133,30 +118,6 @@ export const HandlebarHelpers = {
                                 "roll ",
                                 `+${U.tCase(iData.data.attribute)}`,
                                 "<#"
-                            ].join("");
-                            // }
-                            return [
-                                "roll to ",
-                                ...[
-                                    "#>",
-                                    "item-button text-movename",
-                                    `:data-item-name='${self.name}'`,
-                                    ":data-action='open'",
-                                    ">",
-                                    self.name,
-                                    "<#"
-                                ],
-                                " (",
-                                ...[
-                                    "#>",
-                                    "item-button text-attributename",
-                                    `:data-item-name='${iData.name}'`,
-                                    ":data-action='roll'",
-                                    ">",
-                                    `+${U.tCase(iData.data.attribute)}`,
-                                    "<#"
-                                ],
-                                ")"
                             ].join("");
                         }
                         default: {
@@ -180,7 +141,7 @@ export const HandlebarHelpers = {
             // Insert function to test
             kLog.log(str);
         } */
-        str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
+        // str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
         let prevStr;
         while (str !== prevStr) {
             prevStr = str;
@@ -202,7 +163,7 @@ export const HandlebarHelpers = {
                 return htmlParts.join("");
             });
         }
-        str = str.replace(/CHECK/g, "Check: ");
+        // str = str.replace(/CHECK/g, "Check: ");
         // // Step Three: Apply final specific fixes to formatting
         // str = str
         // 	.replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>") // Remove empty <p> elements, except when used as breaks
@@ -210,20 +171,23 @@ export const HandlebarHelpers = {
         return str;
     },
     "getImgName": U.toKey,
-    "getSVGPaths": function (str) {
-        if (str in SVGDATA) {
-            return SVGDATA[str];
-        }
-        throw new Error(`No such SVG path: '${String(str)}'`);
-    },
-    "getIconPaths": function (ref, { name } = {}) {
-        if (name && typeof name === "string") {
-            ref = name;
-        }
-        const pathData = U.getKey(U.toKey(ref), SVGDATA)
-            ?.map((pData) => ({ ...pData, style: parsePathTransform(pData) }));
-        throw new Error(`No such SVG path: '${String(ref)}'`);
-    },
+    // "getSVGPaths": function(ref: KeyOf<typeof SVGDATA>) {
+    // 	if (ref && !(ref in SVGDATA) && ref in SVGKEYMAP) {
+    // 		ref = SVGKEYMAP[ref];
+    // 	}
+    // 	if (ref && ref in SVGDATA) {
+    // 		return SVGDATA[ref];
+    // 	}
+    // 	throw new Error(`No such SVG path: '${String(ref)}'`);
+    // },
+    // "getIconPaths": function(ref: string, {name}: {name?: string} = {}) {
+    // 	if (name && typeof name === "string") {
+    // 		ref = name;
+    // 	}
+    // 	const pathData = U.getKey(U.toKey(ref), SVGDATA)
+    // 		?.map((pData) => ({...pData, style: parsePathTransform(pData)}));
+    // 	throw new Error(`No such SVG path: '${String(ref)}'`);
+    // },
     /* "getSVGKey": function(item: K4Item): string {
         let svgKey: string;
         if (item.data) {
@@ -299,4 +263,7 @@ function parsePathTransform({ d, scale = 1, xShift = 0, yShift = 0 }) {
         `scale(${scale})`,
         `translate(${xShift}px, ${yShift}px);`
     ].join(" ");
+}
+export function registerHandlebarHelpers() {
+    Object.entries(handlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(name, func));
 }

@@ -2,6 +2,7 @@ import K4Item from "./K4Item.js";
 import U from "../scripts/utilities.js";
 import C from "../scripts/constants.js";
 import K4Actor from "./K4Actor.js";
+import {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 
 type K4ItemSheetOptions = DocumentSheetOptions & {
 	testing: true
@@ -30,36 +31,37 @@ export default class K4ItemSheet extends ItemSheet {
 	override get item(): K4Item { return super.item }
 	get type() { return this.item.data.type }
 	get subType() { return this.item.data.data.subType }
-	get subItems() { return this.item.data.data.subItemData }
-	get subMoves() { return this.item.data.data.subMoveData }
-	get attacks() { return this.item.data.data.subAttackData }
+	get subItems() { return this.item.subItems }
+	get subMoves() { return this.item.subMoves }
+	get attacks() { return this.item.subAttacks }
 	get svgKey() { return this.item.svgKey }
 
-	constructor(item: K4Item, options?: Partial<DocumentSheetOptions>) {
-		options ??= {};
-		options.classes = [
-			...K4ItemSheet.defaultOptions.classes,
-			...(options.classes ?? [])
-		];
+	constructor(item: K4Item, options: Partial<ItemSheet.Options> = {}) {
+		// options.classes = [
+		// 	...K4ItemSheet.defaultOptions.classes,
+		// 	...(options.classes ?? [])
+		// ];
+
+		super(item, options);
+
 		switch (item.data.type) {
 			case K4ItemType.advantage: {
-				options.classes.push("k4-theme-dgold");
+				this.options.classes.push("k4-theme-dgold");
 				break;
 			}
 			case K4ItemType.darksecret: {
-				options.classes.push("k4-theme-red");
+				this.options.classes.push("k4-theme-red");
 				break;
 			}
 			case K4ItemType.disadvantage: {
-				options.classes.push("k4-theme-dark");
+				this.options.classes.push("k4-theme-dark");
 				break;
 			}
 			default: {
-				options.classes.push("k4-theme-white");
+				this.options.classes.push("k4-theme-white");
 				break;
 			}
 		}
-		super(item, options);
 	}
 
 	override activateListeners(html: JQuery<HTMLElement>): void {

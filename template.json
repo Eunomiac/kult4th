@@ -126,6 +126,7 @@
 		],
 		"templates": {
 			"base": {
+				"key": "",
 				"description": "",
 				"lists": {},
 				"subType": "",
