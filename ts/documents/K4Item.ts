@@ -1,21 +1,31 @@
 import U from "../scripts/utilities.js";
+import K4ItemSheet from "./K4ItemSheet.js";
 import C from "../scripts/constants.js";
 import SVGDATA, {SVGKEYMAP} from "../scripts/svgdata.js";
 import type {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 
-export default class K4Item extends Item {
+class K4Item extends Item {
 
 	override prepareData() {
 		super.prepareData();
-		if (this.hasSubItems()) {
+		if (this.isOwnedItem() && this.isParentItem()) {
 			this.data.data.subMoves = this.data.data.subItems.filter((subData) => subData.type === K4ItemType.move) as K4ItemSourceData.subMove[];
 			this.data.data.subAttacks = this.data.data.subItems.filter((subData) => subData.type === K4ItemType.attack) as K4ItemSourceData.subAttack[];
-			if (this.isRollable()) {
+			if (this.isRollableItem()) {
 				this.data.data.results = this.data.data.subItems[0].data.results;
 			}
 		}
 	}
+
+	get itemSheet(): K4ItemSheet | null {
+		if (this.isOwnedItem()) {
+			return this._sheet as typeof this._sheet & K4ItemSheet;
+		}
+		return null;
+	}
+
+	get key() { return this.data.data.key }
 
 	// constructor(...args: ConstructorParameters<typeof Item>) {
 	// 	const data: ItemDataConstructorData = args[0]!;
@@ -23,36 +33,43 @@ export default class K4Item extends Item {
 	// 	super(...args);
 	// }
 
-	get masterType(): K4ItemType { return this.isDerived() ? this.data.data.sourceItem.type : this.data.type }
-	get masterName(): string { return (this.isDerived() ? this.data.data.sourceItem.name ?? this.name : this.name) ?? "" }
+	get masterType(): K4ItemType { return this.sourceItemData?.type ?? this.data.type }
+	// get masterName(): string { return (this.isSubItem() ? this.data.data.sourceItem.name ?? this.name : this.name) ?? "" }
 
-	hasSubItems(): this is K4HasSubItems { return Boolean("subItems" in this.data.data && this.data.data.subItems.length) }
-	isRollable(): this is K4RollableItem { return [K4ItemType.move, K4ItemType.attack, K4ItemType.advantage, K4ItemType.disadvantage].includes(this.data.type) }
-	get subItems(): K4DerivedItem[] {
-		return (this.isEmbedded && this.parent instanceof Actor && this.hasSubItems()) ? this.parent?.getItemsBySource(this.id!) : [];
+	isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.data.data && this.data.data.subItems.length) }
+	isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.data.data && this.data.data.sourceItem && this.data.data.sourceItem.name) }
+	isOwnedItem(): this is {parent: Actor} { return this.isEmbedded && this.parent instanceof Actor }
+	isOwnedSubItem(): this is K4SubItem & {parent: Actor, data: {data: {sourceItem: {id: string}}}} { return this.isSubItem() && this.isOwnedItem() }
+	isRollableItem(): this is K4RollableItem { return this.data.data.subType === K4ItemSubType.activeRolled }
+	isStaticItem(): this is K4StaticItem { return this.data.data.subType === K4ItemSubType.activeStatic }
+	isActiveItem(): this is K4ActiveItem { return this.isRollableItem() || this.isStaticItem() }
+	isPassiveItem(): this is K4PassiveItem { return this.data.data.subType === K4ItemSubType.passive }
+
+	get subItems(): K4SubItem[] {
+		return (this.isEmbedded && this.parent instanceof Actor && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : [];
 	}
-	get subMoves(): Array<K4DerivedItem<K4ItemType.move>> {
-		return this.subItems.filter((subItem) => subItem.data.type === K4ItemType.move) as Array<K4DerivedItem<K4ItemType.move>>;
+	get subMoves(): Array<K4SubItem<K4ItemType.move>> {
+		return this.subItems.filter((subItem) => subItem.data.type === K4ItemType.move) as Array<K4SubItem<K4ItemType.move>>;
 	}
-	get subAttacks(): Array<K4DerivedItem<K4ItemType.attack>> {
-		return this.subItems.filter((subItem) => subItem.data.type === K4ItemType.attack) as Array<K4DerivedItem<K4ItemType.attack>>;
+	get subAttacks(): Array<K4SubItem<K4ItemType.attack>> {
+		return this.subItems.filter((subItem) => subItem.data.type === K4ItemType.attack) as Array<K4SubItem<K4ItemType.attack>>;
 	}
-	isDerived(): this is K4DerivedItem<typeof this.data.type> { return "sourceItem" in this.data.data && Boolean(this.data.data.sourceItem?.name) }
-	get source(): K4SourceItem | false { return this.isDerived() ? this.data.data.sourceItem : false }
+	get sourceItemData(): K4SourceItemData | null { return this.isSubItem() ? this.data.data.sourceItem : null }
+	get sourceItem(): K4ParentItem | null { return this.isOwnedSubItem() ? this.parent.getEmbeddedDocument("Item", this.data.data.sourceItem.id) as K4ParentItem : null }
 
 	applyEffectFunction(functionStr: string) {
 		const [funcName, ...params] = functionStr.split(/,/);
 		switch (funcName) {
 			case "AppendList": {
 				const [targetItemName, targetList, sourceList] = params;
-				const targetMove = this.parent?.items.find((item) => item.name === targetItemName);
-				kLog.log("Found Target Move", targetMove);
-				if (targetMove && targetMove.data.data.lists[targetList]) {
+				const targetItem = this.parent?.items.find((item) => item.name === targetItemName && !item.isSubItem());
+				kLog.log("Found Target Item", targetItem);
+				if (targetItem && targetItem.data.data.lists[targetList]) {
 					const sourceListItems = this.data.data.lists[sourceList].items
 						.map((listItem) => `${listItem} #>text-list-note:data-item-name='${this.name}':data-action='open'>(from ${this.name})<#`);
 					const updateData = [
-						{_id: targetMove.id, [`data.lists.${targetList}.items`]: [
-							...targetMove.data.data.lists[targetList].items,
+						{_id: targetItem.id, [`data.lists.${targetList}.items`]: [
+							...targetItem.data.data.lists[targetList].items,
 							...sourceListItems
 						]}
 					];
@@ -85,17 +102,29 @@ export default class K4Item extends Item {
 		}
 	}
 
+	prepareSubItemData() {
+		if (this.isParentItem()) {
+			return this.data.data.subItems
+				.map((subData) => {
+					subData.name ??= this.name;
+					subData.data.sourceItem.id = this.id;
+					if ("lists" in this.data.data) {
+						subData.data.lists = {
+							...this.data.data.lists,
+							...subData.data.lists ?? {}
+						};
+					}
+					return subData;
+				}) as ItemDataConstructorData[] & Array<Record<string,unknown>>;
+		}
+		return [];
+	}
+
 	override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
 		await super._onCreate(...args);
 		if (this.isEmbedded && this.parent instanceof Actor) {
-			if (this.hasSubItems()) {
-				const subItemData: Array<Record<string, any>> = this.data.data.subItems
-					.map((subData) => {
-						subData.name ??= this.name!;
-						subData.data.sourceItem.id = this.id;
-						return subData;
-					});
-				await this.parent.createEmbeddedDocuments("Item", subItemData);
+			if (this.isParentItem()) {
+				await this.parent.createEmbeddedDocuments("Item", this.prepareSubItemData());
 			}
 			if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
 				this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
@@ -106,7 +135,7 @@ export default class K4Item extends Item {
 	override async _onDelete(...args: Parameters<Item["_onDelete"]>) {
 		await super._onDelete(...args);
 		if (this.isEmbedded && this.parent instanceof Actor) {
-			if (this.hasSubItems()) {
+			if (this.isParentItem()) {
 				this.subItems.forEach((item) => item.delete());
 			}
 			if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
@@ -125,7 +154,7 @@ export default class K4Item extends Item {
 			"disadvantage": "k4-theme-dark",
 			"darksecret": "k4-theme-red"
 		};
-		const stripType: K4ItemType = this.isDerived() ? this.data.data.sourceItem.type : this.data.type;
+		const stripType: K4ItemType = this.isSubItem() ? this.data.data.sourceItem.type : this.data.type;
 		const theme = themeMap[stripType] ?? themeMap.default;
 		/* interface StripButtonData {
 		icon: KeyOf<typeof SVGDATA>,
@@ -145,7 +174,7 @@ export default class K4Item extends Item {
 			type: this.data.type,
 			icon: this.data.data.key,
 			display: this.name ?? "(enter name)",
-			...this.isDerived()
+			...this.isSubItem()
 				? {
 						stripClasses: [
 							U.toKey(`${stripType}-strip`),
@@ -164,44 +193,65 @@ export default class K4Item extends Item {
 						"hover-target": `.attribute-box[data-attribute='${this.data.data.attribute}'] img`
 					}
 				: {},
-			buttons: [
-				{
-					icon: "hover-strip-button-roll",
-					dataset: {
-						"item-name": this.name ?? "",
-						"action": "roll"
-					},
-					tooltip: "ROLL"
-				},
-				{
-					icon: "hover-strip-button-chat",
-					dataset: {
-						"item-name": this.name ?? "",
-						"action": "chat"
-					},
-					tooltip: "CHAT"
-				},
-				{
-					icon: "hover-strip-button-open",
-					dataset: {
-						"item-name": this.name ?? "",
-						"action": "open"
-					},
-					tooltip: "OPEN"
-				},
-				{
-					icon: "hover-strip-button-drop",
-					dataset: {
-						"item-name": this.name ?? "",
-						"action": "drop"
-					},
-					tooltip: "DROP"
-				}
-			]
+			buttons: []
 		};
 		if (this.data.type !== K4ItemType.relation) {
 			stripData.tooltip = this.data.data.rules.trigger;
 		}
+
+		// Roll Button or Trigger Button?
+		if (this.isOwnedItem() && this.isRollableItem()) {
+			stripData.buttons.push({
+				icon: "hover-strip-button-roll",
+				dataset: {
+					"item-name": this.name ?? "",
+					"action": "roll"
+				},
+				tooltip: "ROLL"
+			});
+		} else if (this.isStaticItem()) {
+			stripData.buttons.push({
+				icon: "hover-strip-button-trigger",
+				dataset: {
+					"item-name": this.name ?? "",
+					"action": "trigger"
+				},
+				tooltip: "TRIGGER"
+			});
+		}
+
+		// Chat & View Buttons
+		stripData.buttons.push(
+			{
+				icon: "hover-strip-button-chat",
+				dataset: {
+					"item-name": this.name ?? "",
+					"action": "chat"
+				},
+				tooltip: "CHAT"
+			},
+			{
+				icon: "hover-strip-button-open",
+				dataset: {
+					"item-name": this.name ?? "",
+					"action": "open"
+				},
+				tooltip: "VIEW"
+			}
+		);
+
+		// Drop Button IF Sheet Unlocked AND Owner AND NOT SubItem
+		if (this.isOwnedItem() && !this.isSubItem() && this.itemSheet?.isUnlocked /* && check for user permissions */) {
+			stripData.buttons.push({
+				icon: "hover-strip-button-drop",
+				dataset: {
+					"item-name": this.name ?? "",
+					"action": "drop"
+				},
+				tooltip: "DROP"
+			});
+		}
+
 		// kLog.log("Hover Strip Data", stripData);
 		return stripData;
 	}
@@ -210,8 +260,8 @@ export default class K4Item extends Item {
 		const template = await getTemplate(this.sheet?.template ?? "");
 
 		const content = template(Object.assign(
-			this,
-			{cssClass: "kult4th-chat"}
+			this.toObject(),
+			{cssClass: "kult4th-chat", key: this.key}
 		));
 		ChatMessage.create({
 			content,
@@ -222,3 +272,11 @@ export default class K4Item extends Item {
 		});
 	}
 }
+
+declare interface K4Item {
+	get id(): string;
+	get name(): string;
+	get img(): string;
+}
+
+export default K4Item;

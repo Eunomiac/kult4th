@@ -80,7 +80,7 @@ export const AttributeButtons = (resolve) => {
         "soul" /* K4Attribute.soul */
     ].forEach((attr) => {
         attrButtons[attr] = {
-            label: `${String(attr).charAt(0).toUpperCase()}${String(attr).slice(1)}`,
+            label: U.loc(`trait.${attr}`),
             callback: () => resolve({ attribute: attr })
         };
     });

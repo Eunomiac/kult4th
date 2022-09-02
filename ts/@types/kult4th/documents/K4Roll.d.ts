@@ -16,7 +16,7 @@ declare global {
 	interface K4RollOptions {
 		type: K4RollType|K4ItemType.move|K4ItemType.attack,
 		isAssisting?: boolean,
-		modifiers?: K4RollModifier[]
+		modifiers?: K4RollMod[]
 	}
 	interface K4RollData {
 		type: K4RollType,

@@ -4,7 +4,6 @@ import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foun
 import {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
 import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item.js";
 import K4ItemSheet from '../../../documents/K4ItemSheet';
-import { K4Attribute } from '../../../scripts/constants';
 
 declare global {
 
@@ -68,7 +67,7 @@ declare global {
 	: T extends K4WeaponClass.bomb ? ("")
 	: "";
 
-	type K4SourceItem = {
+	type K4SourceItemData = {
 		name: string,
 		id?: string | null,
 		type: K4ItemType
@@ -109,12 +108,12 @@ declare global {
 		// export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear>;
 
 		export interface CanSubItem {
-			sourceItem?: K4SourceItem
+			sourceItem?: K4SourceItemData
 		}
 		// export type CanSlave = K4ItemSpec<K4ItemType.attack | K4ItemType.move>;
 
 		export interface IsSubItem extends CanSubItem {
-			sourceItem: K4SourceItem
+			sourceItem: K4SourceItemData
 		}
 
 		export interface RulesData {
@@ -280,8 +279,48 @@ declare global {
 		export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
 	}
 
-	type K4ItemSpec<Type extends K4ItemType> = K4Item & {data: {type: Type, _source: {type: Type}}}
-	type K4HasSubItems = K4ItemSpec<K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.weapon|K4ItemType.gear> & {data: {data: {subItems: K4ItemSourceData.subItem[], subMoves: K4ItemSourceData.subMove[], subAttacks: K4ItemSourceData.subAttack[]}}}
-	type K4DerivedItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack> = K4ItemSpec<Type> & {sourceName: string, sourceType: K4ItemType, data: {data: {sourceItem: K4SourceItem}}}
-	type K4RollableItem = K4ItemSpec<K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage>
+	type K4ItemSpec<Type extends K4ItemType> = K4Item
+		& {data: {
+				type: Type,
+				_source: {
+					type: Type
+				}
+			}}
+	type K4ParentItem<Type extends K4ItemType = K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.weapon|K4ItemType.gear> = K4ItemSpec<Type>
+		& {data: {
+				data: {
+					subItems: K4ItemSourceData.subItem[],
+					subMoves: K4ItemSourceData.subMove[],
+					subAttacks: K4ItemSourceData.subAttack[]
+				}
+			}}
+	type K4SubItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack> = K4ItemSpec<Type>
+		& {data: {
+				data: {
+					sourceItem: K4SourceItemData
+				}
+			}}
+	type K4RollableItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.gear> = K4ItemSpec<Type>
+		& {data: {
+			data: ResultsData
+		}}
+		& {data: {
+				data: {
+					attribute: K4Attribute
+					subType: K4ItemSubType.activeRolled
+				}
+			}}
+	type K4StaticItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.gear> = K4ItemSpec<Type>
+		& {data: {
+				data: {
+					subType: K4ItemSubType.activeStatic
+				}
+			}}
+	type K4PassiveItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.darksecret|K4ItemType.relation|K4ItemType.weapon|K4ItemType.gear> = K4ItemSpec<Type>
+		& {data: {
+				data: {
+					subType: K4ItemSubType.passive
+				}
+			}}
+	type K4ActiveItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.gear> = K4RollableItem<Type> | K4StaticItem<Type>
 }

@@ -1,0 +1,48 @@
+{{dbLog "{CHAT} result-rolled.hbs" this}}
+<div class="kult4th-chat chat-roll-result {{rollData.sourceType}}-roll {{cssClass}}">
+	<div class="roll-intro-header">
+		<span class="roll-char-name">{{rollerName}}</span>
+		<span class="roll-intro-line">
+			{{#if (eq rollData.sourceType "move")}}
+			{{{localize "kult4th.roll.rollAttrTo" attrName=rollData.attrName}}}
+			{{else}}
+			{{{localize "kult4th.roll.rollAttrFor" attrName=rollData.attrName}}}
+			{{/if}}
+		</span>
+	</div>
+	<div class="roll-source-header">
+		<img src="{{rollData.sourceImg}}" /><span class="roll-source-name">{{rollData.sourceName}}</span>
+	</div>
+
+	<div class="roll-dice-line">
+		<div class="roll-term-container roll-d10">{{dice.[0]}}</div>
+		<div class="roll-term-container attribute-{{rollData.attribute}}" data-attrVal="{{rollData.attrVal}}">{{signNum rollData.attrVal}}</div>
+		<div class="roll-term-container roll-d10">{{dice.[1]}}</div>
+	</div>
+
+	<div class="roll-dice-results">
+			<span class="roll-total">{{total}}</span>
+			<div class="roll-modifiers">
+				{{#each rollData.modifiers}}
+				<div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}}">
+					<span class="roll-mod-val">{{signNum value}}</span>
+					<span class="roll-mod-desc">({{display}})</span>
+				</div>
+				{{/each}}
+			</div>
+			{{#if (eq cssClass "roll-success")}}
+			<span class="roll-outcome-main">{{localize "kult4th.roll.success"}}</span>
+			{{/if}}
+			{{#if (eq cssClass "roll-partial")}}
+			<span class="roll-outcome-main">{{localize "kult4th.roll.success"}}</span>
+			<span class="roll-outcome-sub">{{localize "kult4th.roll.withComplications"}}</span>
+			{{/if}}
+			{{#if (eq cssClass "roll-failure")}}
+			<span class="roll-outcome-main">{{localize "kult4th.roll.failure"}}</span>
+			{{/if}}
+	</div>
+	{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=rollData.source}}
+	{{~#if result.listRefs}}
+		{{> "systems/kult4th/templates/components/item-list.hbs" lists=rollData.source.data.data.lists listRefs=result.listRefs itemData=rollData.source.data isDisplayingName=true}}
+	{{/if}}
+</div>

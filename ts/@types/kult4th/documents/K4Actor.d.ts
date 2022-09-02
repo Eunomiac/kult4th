@@ -30,43 +30,43 @@ declare global {
 		soul = "soul"
 	}
 
-	declare const enum K4CharAttribute {
-		fortitude = "fortitude",
-		reflexes = "reflexes",
-		willpower = "willpower",
-		reason = "reason",
-		intuition = "intuition",
-		perception = "perception",
-		coolness = "coolness",
-		violence = "violence",
-		charisma = "charisma",
-		soul = "soul"
-	}
+	type K4CharAttribute = Exclude<K4Attribute,K4Attribute.ask|K4Attribute.zero>;
+	type K4RollableAttribute = Exclude<K4Attribute,K4Attribute.ask>
 
 	declare const enum K4RollType {
 		zero = "zero",
 		attribute = "attribute",
-		move = "move",
-		attack = "attack",
-		advantage = "advantage",
-		disadvantage = "disadvantage"
+		move = "move"
 	}
 
-	type K4RollModData = Record<string,number>;
+	type K4RollSource = K4RollableItem|K4RollableAttribute;
 
-	type K4RollSource = K4RollableItem|K4CharAttribute|K4Attribute.zero;
-
-	type K4RollAttribute = Exclude<K4Attribute,K4Attribute.ask>;
+	type K4ModTargets = Record<string,number>;
+	type K4RollModData = {
+		category: string,
+		display: string,
+		targets: K4ModTargets
+	}
+	type K4RollMod = {
+		category: string,
+		display: string,
+		value: number
+	}
 	interface K4RollOptions {
 		type: K4RollType|K4ItemType.move|K4ItemType.attack,
 		isAssisting?: boolean,
-		modifiers?: K4RollModifier[]
+		modifiers?: K4RollMod[]
 	}
 	interface K4RollData {
 		type: K4RollType,
 		source: K4RollSource,
+		sourceType: K4ItemType|K4RollType.attribute,
+		sourceName: string,
+		sourceImg: string,
+		attribute: Exclude<K4Attribute,K4Attribute.ask>,
+		attrName: string,
 		attrVal: number,
-		modifiers: Record<string,number>
+		modifiers: K4RollMod[]
 	}
 	declare const enum K4WoundType {
 		serious = "serious",
@@ -108,47 +108,47 @@ declare global {
 				}
 			],
 			attributes: {
-				[K4CharAttribute.willpower]: {
+				[K4Attribute.willpower]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.fortitude]: {
+				[K4Attribute.fortitude]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.reflexes]: {
+				[K4Attribute.reflexes]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.reason]: {
+				[K4Attribute.reason]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.perception]: {
+				[K4Attribute.perception]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.coolness]: {
+				[K4Attribute.coolness]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.violence]: {
+				[K4Attribute.violence]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.charisma]: {
+				[K4Attribute.charisma]: {
 					min: int,
 					max: int,
 					value: int
 				},
-				[K4CharAttribute.soul]: {
+				[K4Attribute.soul]: {
 					min: int,
 					max: int,
 					value: int
@@ -156,10 +156,10 @@ declare global {
 			},
 			wounds: Record<string, K4Wound>,
 			modifiers: {
-				wounds_serious: K4RollModData[],
-				wounds_critical: K4RollModData[],
-				wounds_seriouscritical: K4RollModData[],
-				stability: K4RollModData[]
+				wounds_serious: K4ModTargets[],
+				wounds_critical: K4ModTargets[],
+				wounds_seriouscritical: K4ModTargets[],
+				stability: K4ModTargets[]
 			},
 			stability: {
 				min: int,

@@ -36,6 +36,9 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 		}
 		return param ? 1 : 0;
 	},
+	"signNum": function(num: number) {
+		return U.signNum(num);
+	},
 	"areEmpty": function(...args) {
 		args.pop();
 		return !Object.values(args).flat().join("");

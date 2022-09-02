@@ -637,6 +637,13 @@ export default class K4PCSheet extends ActorSheet {
                     $(this).on("click", () => self.actor.roll(itemName));
                 }
             });
+            html.find("*[data-action=\"trigger\"]")
+                .each(function addItemTriggerEvents() {
+                const itemName = $(this).attr("data-item-name");
+                if (itemName) {
+                    $(this).on("click", () => self.actor.trigger(itemName));
+                }
+            });
             html.find("*[data-action=\"chat\"]")
                 .each(function addItemChatEvents() {
                 const itemName = $(this).attr("data-item-name");
@@ -663,15 +670,6 @@ export default class K4PCSheet extends ActorSheet {
                 .each(function addHoverStripButtonEvents() {
                 hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this, html)]);
             });
-            // html.find(".item-card")
-            // 	.each(function addMoveHoverEvents() {
-            // 		if (!self.hoverTimeline) {
-            // 			self.hoverTimeline = ANIMATIONS.hoverMove(this, html);
-            // 			self.hoverTimeline.vars.id = "hoverTimeline";
-            // 			self.hoverTimelineTarget = this;
-            // 		}
-            // 		hoverTimelines.push([this, ANIMATIONS.hoverMove(this, html)]);
-            // 	});
             hoverTimelines.forEach(([target, anim]) => {
                 $(target)
                     .on("mouseenter", () => anim.reversed(false))

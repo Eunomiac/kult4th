@@ -1,10 +1,8 @@
 import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import SVGDATA from "../scripts/svgdata.js";
-import {ActorDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData.js";
 
-export default class K4Actor extends Actor {
+class K4Actor extends Actor {
 
 	// get kData() { return this.data.data }
 
@@ -33,7 +31,7 @@ export default class K4Actor extends Actor {
 				critical: this.data.data.modifiers.wounds_critical.length,
 				total: this.data.data.modifiers.wounds_serious.length + this.data.data.modifiers.wounds_critical.length
 			};
-			this.data.data.modifiersReport = this.parseModsToStrings(this.flatModifiersData).join("; ");
+			this.data.data.modifiersReport = this.parseModsToStrings(this.flatModTargets).join("; ");
 
 			// this.validateStability();
 		}
@@ -47,8 +45,8 @@ export default class K4Actor extends Actor {
 		return [...this.items].find((item: K4Item) => item.name === iName);
 	}
 
-	getItemsBySource(sourceID: string): K4DerivedItem[] {
-		return [...this.items].filter((item: K4Item) => item.isDerived() && item.data.data.sourceItem.id === sourceID) as K4DerivedItem[];
+	getItemsBySource(sourceID: string): K4SubItem[] {
+		return [...this.items].filter((item: K4Item) => item.isSubItem() && item.data.data.sourceItem.id === sourceID) as K4SubItem[];
 	}
 
 	async dropItemByName(iName: string) {
@@ -56,12 +54,12 @@ export default class K4Actor extends Actor {
 	}
 
 	get moves() { return this.getItemsOfType(K4ItemType.move) }
-	get basicMoves() { return this.moves.filter((move) => !move.isDerived()) }
-	get derivedMoves() { return this.moves.filter((move) => move.isDerived()) }
+	get basicMoves() { return this.moves.filter((move) => !move.isSubItem()) }
+	get derivedMoves() { return this.moves.filter((move) => move.isSubItem()) }
 
 	get attacks() { return this.getItemsOfType(K4ItemType.attack) }
-	get basicAttacks() { return this.attacks.filter((attack) => !attack.isDerived()) }
-	get derivedAttacks() { return this.attacks.filter((attack) => attack.isDerived()) }
+	get basicAttacks() { return this.attacks.filter((attack) => !attack.isSubItem()) }
+	get derivedAttacks() { return this.attacks.filter((attack) => attack.isSubItem()) }
 
 
 	get advantages() { return this.getItemsOfType(K4ItemType.advantage) }
@@ -71,7 +69,7 @@ export default class K4Actor extends Actor {
 	get gear() { return this.getItemsOfType(K4ItemType.gear) }
 	get relations() { return this.getItemsOfType(K4ItemType.relation) }
 
-	get derivedItems() { return [...this.items].filter((item) => item.isDerived()) }
+	get derivedItems() { return [...this.items].filter((item) => item.isSubItem()) }
 
 	get wounds(): Record<KeyOf<typeof this["data"]["data"]["wounds"]>,K4Wound> {
 		// if (this.type === K4ActorType.pc) {
@@ -165,7 +163,7 @@ export default class K4Actor extends Actor {
 		return Object.fromEntries(this.attributeData.map((aData) => [aData.key, aData.value])) as Record<K4CharAttribute,number>;
 	}
 
-	async askForAttribute(message?: string) {
+	async askForAttribute(message?: string): Promise<K4RollableAttribute | null> {
 		const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-attribute"));
 		const content = template({
 			id: this.id,
@@ -183,8 +181,8 @@ export default class K4Actor extends Actor {
 					classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
 				}
 			).render(true);
-		}) as {attribute: K4Attribute};
-		return userOutput.attribute;
+		}) as {attribute: K4RollableAttribute};
+		return userOutput.attribute || null;
 	}
 
 	validateStability() {
@@ -250,7 +248,7 @@ export default class K4Actor extends Actor {
 		}
 	}
 
-	parseModsToStrings(modData: K4RollModData = this.flatModifiersData): string[] {
+	parseModsToStrings(modData: K4ModTargets = this.flatModTargets): string[] {
 		const returnStrings = [];
 		for (const [modKey, modVal] of Object.entries(modData)) {
 			returnStrings.push(`${U.signNum(modVal)} to ${modKey === "all" ? "all" : U.tCase(modKey)} rolls`);
@@ -258,256 +256,235 @@ export default class K4Actor extends Actor {
 		return returnStrings;
 	}
 
-	get woundPenaltyData(): K4RollModData {
+	get woundModData(): K4RollModData {
+		const modData: K4RollModData = {
+			category: "wound",
+			display: U.loc("trait.wounds"),
+			targets: {}
+		};
 		if (this.data.type === K4ActorType.pc) {
 			const [unstabSerious, unstabCritical] = [
 				Object.values(this.wounds).filter((wound) => !wound.isCritical && !wound.isStabilized).length,
 				Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
 			];
 			if (unstabSerious && unstabCritical) {
-				return this.data.data.modifiers.wounds_seriouscritical[Math.min(
+				modData.targets = this.data.data.modifiers.wounds_seriouscritical[Math.min(
 					unstabSerious,
 					unstabCritical
 				)];
+			} else if (unstabCritical) {
+				modData.targets = this.data.data.modifiers.wounds_critical[unstabCritical];
+			} else if (unstabSerious) {
+				modData.targets = this.data.data.modifiers.wounds_serious[unstabSerious];
 			}
-			if (unstabCritical) {
-				return this.data.data.modifiers.wounds_critical[unstabCritical];
-			}
-			if (unstabSerious) {
-				return this.data.data.modifiers.wounds_serious[unstabSerious];
-			}
-			return {};
 		}
-		return {};
+		return modData;
 	}
-	get stabilityPenaltyData(): K4RollModData {
+	get stabilityModData(): K4RollModData {
+		const modData: K4RollModData = {
+			category: "stability",
+			display: U.loc("trait.stability"),
+			targets: {}
+		};
 		if (this.data.type === K4ActorType.pc) {
-			return this.data.data.modifiers.stability[this.data.data.stability.value];
+			modData.targets = this.data.data.modifiers.stability[this.data.data.stability.value];
 		}
-		return {};
+		return modData;
 	}
-	get conditionPenaltyData(): K4RollModData {
+	get conditionModData(): K4RollModData[] {
+		const modData: K4RollModData[] = [];
 
-		return {};
+		return modData;
 	}
-	get effectPenaltyData(): K4RollModData {
+	get effectModData(): K4RollModData[] {
+		const modData: K4RollModData[] = [];
 
-		return {};
+		return modData;
 	}
 
-	get modifierData(): Record<string,K4RollModData> {
-		return {
-			wounds: this.woundPenaltyData,
-			stability: this.stabilityPenaltyData
-			/* Add other categories here for _specific_ conditions and effects _by name_ (as key
-
-
-				*/
-		};
+	get modTargets(): K4RollModData[] {
+		return [
+			this.woundModData,
+			this.stabilityModData,
+			...this.conditionModData,
+			...this.effectModData
+		];
 	}
-	get flatModifiersData(): K4RollModData {
-		const returnData: K4RollModData = {};
-		Object.values(this.modifierData).forEach((modData) => {
-			for (const [modSource, modNum] of Object.entries(modData)) {
-				returnData[modSource] ??= 0;
-				returnData[modSource] += modNum;
+	get flatModTargets(): K4ModTargets {
+		const flatTargets: K4ModTargets = {};
+		this.modTargets.forEach(({targets}) => {
+			for (const [modSource, modNum] of Object.entries(targets)) {
+				flatTargets[modSource] ??= 0;
+				flatTargets[modSource] += modNum;
 			}
 		});
-		return returnData;
+		return flatTargets;
 	}
 
-	/*
-
-INCOMINGDATA = {
-  wounds:
-}
-
-for each possible source of modifier:
-  find the values matching actor's current status
-    (via the 'getWoundPenalties' stuff).
- THEN,
-    for each possible modifier
-      (= {"if key matches": apply this mod})
-      check if the key matches the roll.
-    IF IT DOES,
-      assign to the object of modifers you'll be returning
-      {"source of modifier": modifier number}
-
-*/
-	getRollModifiers(rollData: Partial<K4RollData>): Record<string,number> {
+	applyRollModifiers(rollData: Omit<K4RollData,"modifiers">): K4RollData {
 		function checkModTarget(target: string) {
-			return ["all", rollData.type, rollData.source].includes(target);
+			return ["all", rollData.sourceType, rollData.sourceName, rollData.attribute].includes(target);
 		}
-		const modifiers: Record<string, number> = {};
-		Object.entries(this.modifierData).forEach(([modSource, modData]) => {
-			let modFromSource = 0;
-			Object.entries(modData).forEach(([modTarget, modNum]) => {
-				if (checkModTarget(modTarget)) {
-					modFromSource += modNum;
+		function checkMod(modData: K4RollModData): K4RollMod | null {
+			const mod: K4RollMod = {category: modData.category, display: modData.display, value: 0};
+			for (const [target, value] of Object.entries(modData.targets)) {
+				if (checkModTarget(target)) {
+					mod.value += value;
 				}
-			});
-			if (modFromSource !== 0) {
-				modifiers[modSource] = modFromSource;
 			}
-		});
-		return modifiers;
+			if (mod.value === 0) {
+				return null;
+			}
+			return mod;
+		}
+		return {
+			...rollData,
+			modifiers: [
+				this.woundModData,
+				this.stabilityModData,
+				...this.conditionModData,
+				...this.effectModData
+			]
+				.map(checkMod)
+				.filter((mod): mod is K4RollMod => mod !== null)
+		};
 	}
 
-	async getRoll(rollSource: string|K4RollableItem, options: Partial<K4RollOptions>) {
-		const rollData: K4RollData = {
-			type: K4RollType.move,
-			source: rollSource as K4RollSource,
-			attrVal: 0,
-			modifiers: {}
-		};
+	async getRoll(rollSourceRef: string|K4RollSource|K4Attribute.ask, options: Partial<K4RollOptions>): Promise<{roll: Roll, rollData: K4RollData}|false> {
 
-		if (typeof rollSource === "string" && ![...C.AttrList, K4Attribute.zero, K4Attribute.ask].includes(rollSource)) {
-			rollSource = this.getItemByName(rollSource) as K4RollableItem ?? rollSource;
-		}
+		let rollSource: K4RollSource|undefined;
+		const rollData: Partial<K4RollData> = {};
 
-		if (rollSource instanceof K4Item/*  && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack) */) {
-			const rollSourceType: K4ItemType = rollSource.isDerived()
-				? rollSource.sourceType
-				: rollSource.data.type;
-			switch (rollSourceType) {
-				case K4ItemType.move: {
-					rollData.type = K4RollType.move;
-					break;
-				}
-				case K4ItemType.attack: {
-					rollData.type = K4RollType.attack;
-					break;
-				}
-				case K4ItemType.advantage: {
-					rollData.type = K4RollType.advantage;
-					break;
-				}
-				case K4ItemType.disadvantage: {
-					rollData.type = K4RollType.disadvantage;
-					break;
-				}
-				default: {
-					throw new Error(`Can't roll items of type '${rollSource.data.type}'`);
-				}
+		if (rollSourceRef === K4Attribute.ask) {
+			const attrResponse = await this.askForAttribute();
+			if (attrResponse) {
+				rollSource = attrResponse;
 			}
-			rollData.source = rollSource as K4RollableItem; // as K4ItemSpec<K4ItemType.move|K4ItemType.attack>;
-			rollSource = rollSource.data.data.attribute;
+		} else if (rollSourceRef instanceof K4Item) {
+			if (rollSourceRef instanceof K4Item && rollSourceRef.isRollableItem()) {
+				rollSource = rollSourceRef;
+			}
+		} else if (rollSourceRef in CONFIG.K4.attributes || rollSourceRef === K4Attribute.zero) {
+			rollSource = rollSourceRef as K4RollableAttribute;
+		} else if (typeof rollSourceRef === "string") {
+			const item = this.getItemByName(rollSourceRef);
+			if (item instanceof K4Item && item.isRollableItem()) {
+				rollSource = item;
+			}
 		}
-		if (rollSource === K4Attribute.ask) {
-			rollSource = await this.askForAttribute();
+
+		if (rollSource) {
+			if (rollSource instanceof K4Item) {
+				rollData.type = K4RollType.move;
+				rollData.source = rollSource;
+				rollData.sourceType = rollSource.masterType;
+				rollData.sourceName = rollSource.name;
+				rollData.sourceImg = rollSource.img;
+				if (rollSource.data.data.attribute === K4Attribute.ask) {
+					const attrResponse = await this.askForAttribute();
+					if (attrResponse) {
+						rollData.attribute = attrResponse;
+					} else {
+						return false;
+					}
+				} else {
+					rollData.attribute = rollSource.data.data.attribute;
+				}
+				rollData.attrName = U.loc(`trait.${rollData.attribute}`);
+				rollData.attrVal = rollData.attribute === K4Attribute.zero ? 0 : this.attributes[rollData.attribute];
+			} else if (rollSource in CONFIG.K4.attributes || rollSource === K4Attribute.zero) {
+				rollData.type = rollSource === K4Attribute.zero ? K4RollType.zero : K4RollType.attribute;
+				rollData.source = rollSource;
+				rollData.sourceType = K4RollType.attribute;
+				rollData.sourceName = "";
+				rollData.sourceImg = "";
+				rollData.attribute = rollSource;
+				rollData.attrName = U.loc(`trait.${rollSource}`);
+				rollData.attrVal = rollSource === K4Attribute.zero ? 0 : this.attributes[rollSource];
+			} else {
+				throw new Error(`Unable to compile roll data for rollRef '${String(rollSourceRef)}'`);
+			}
+
+			const finalData: K4RollData = this.applyRollModifiers(rollData as Omit<K4RollData,"modifiers">);
+
+			kLog.log("RETRIEVED ROLL DATA", finalData);
+			return {
+				roll: new Roll([
+					"2d10",
+					U.signNum(finalData.attrVal ?? 0, " "),
+					...Object.values(finalData.modifiers)
+						.map(({value}) => U.signNum(value, " "))
+						.filter((elem) => elem !== "")
+				].join(" ")),
+				rollData: finalData
+			};
 		}
-		if (rollSource === K4Attribute.zero) {
-			rollData.type ??= K4RollType.zero;
-			rollData.source ??= K4Attribute.zero;
-			rollData.attrVal = 0;
-		} else if (typeof rollSource === "string" && C.AttrList.includes(rollSource)) {
-			rollData.type ??= K4RollType.attribute;
-			rollData.source ??= rollSource as K4CharAttribute;
-			rollData.attrVal = this.attributes[rollSource as Exclude<K4RollAttribute,K4Attribute.zero>];
-		}
-		rollData.modifiers = this.getRollModifiers(rollData);
-		kLog.log("RETRIEVED ROLL DATA", rollData);
-		return {
-			roll: new Roll([
-				"2d10",
-				U.signNum(rollData.attrVal ?? 0, " "),
-				...Object.values(rollData.modifiers)
-					.map((modifier) => U.signNum(modifier, " "))
-					.filter((elem) => elem !== "")
-			].join(" ")),
-			rollData
-		};
+		return false;
 	}
 
 	async displayRollResult(roll: Roll, rollData: K4RollData, options: K4RollOptions) {
 		if (U.isUndefined(roll.total)) { return }
-		const rollSource = rollData.source!;
-		if (!(rollSource instanceof K4Item && (rollSource.data.type === K4ItemType.move || rollSource.data.type === K4ItemType.attack || rollSource.data.type === K4ItemType.advantage || rollSource.data.type === K4ItemType.disadvantage))) { return }
-		let results;
+		function isItem(ref: unknown): ref is K4RollableItem { return ref instanceof K4Item }
 
-
-		const template = await getTemplate(U.getTemplatePath("sidebar", "roll-result"));
-		const templateData: {result?: ValueOf<ResultsData["results"]>, cssClass: string, context: K4Item, dice: [number, number], total: number, resultDisplay: string, rolledName: string, rolledAttribute: string, rollerName: string, rollerImg: string, modifiers: Record<string,number>} = {
-			cssClass: ["kult4th-chat", "chat-roll-result", `${rollSource.masterType ?? ""}-roll`].join(" "),
-			context: rollSource,
+		const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
+		const templateData: {
+			cssClass: string,
+			result?: ValueOf<ResultsData["results"]>,
+			dice: [number, number],
+			total: number,
+			rollData: K4RollData,
+			rollerName: string
+		} = {
+			cssClass: "",
 			dice: roll.dice[0].results.map((dResult) => dResult.result) as [number, number],
 			total: roll.total,
-			resultDisplay: "",
-			rolledName: rollSource.masterName ?? U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
-			rolledAttribute: U.tCase(U.loc(`trait.${rollSource.data.data.attribute}`)),
-			rollerName: this.name ?? U.loc("roll.someone"),
-			rollerImg: this.img ?? "systems/kult4th/assets/characters/generic.jpg",
-			modifiers: rollData.modifiers
+			rollData,
+			rollerName: this.name ?? U.loc("roll.someone")
 		};
 		// templateData.dice =
 		if (roll.total >= 15) {
-			templateData.result = rollSource.data.data.results.completeSuccess;
-			templateData.resultDisplay = U.loc("roll.success");
-			templateData.cssClass = `${templateData.cssClass} roll-success`;
+			templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.completeSuccess : {result: ""};
+			templateData.cssClass = "roll-success";
 		} else if (roll.total >= 9) {
-			templateData.result = rollSource.data.data.results.partialSuccess;
-			templateData.resultDisplay = U.loc("roll.partialSuccess");
-			templateData.cssClass = `${templateData.cssClass} roll-partial`;
+			templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.partialSuccess : {result: ""};
+			templateData.cssClass = "roll-partial";
 		} else {
-			templateData.result = rollSource.data.data.results.failure;
-			templateData.resultDisplay = U.loc("roll.failure");
-			templateData.cssClass = `${templateData.cssClass} roll-failure`;
+			templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.failure : {result: ""};
+			templateData.cssClass = "roll-failure";
 		}
-		kLog.log("DISPLAYING ROLL RESULT", {roll, templateData, rollSource, options});
+		kLog.log("DISPLAYING ROLL RESULT", {roll, templateData, rollData, options});
 		const content = template(templateData);
 		ChatMessage.create({
 			content,
 			speaker: ChatMessage.getSpeaker()
 		});
-
-
-		// const sourceItem: {name?: string, type?: K4ItemType} = {};
-		// // Is source of roll an item?
-		// if (rollSource instanceof K4Item && [K4ItemType.move, K4ItemType.attack].includes(rollSource.data.type)) {
-		// 	if (rollSource.data.data.sourceItem?.name) {
-		// 		sourceItem.name = rollSource.data.data.sourceItem.name;
-		// 		sourceItem.type = rollSource.data.data.sourceItem?.type;
-		// 	}
-		// }
-
-		// const template = await getTemplate(C.getTemplatePath("dialog", "ask-for-attribute"));
-		// const content = template({
-		// 	id: this.id,
-		// 	message
-		// });
-		// const userOutput = await new Promise((resolve) => {
-		// 	new Dialog(
-		// 		{
-		// 			"title": "Attribute Selection",
-		// 			content,
-		// 			"default": K4Attribute.zero,
-		// 			"buttons": C.AttributeButtons(resolve)
-		// 		},
-		// 		{
-		// 			classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
-		// 		}
-		// 	).render(true);
-		// }) as {attribute: K4Attribute};
 	}
 
 	async roll(rollSource: string, options: Partial<K4RollOptions> = {}) {
-		const {roll, rollData} = await this.getRoll(rollSource, options);
-		await roll.evaluate({async: true});
-		if (game.dice3d) {
-			await game.dice3d.showForRoll(roll);
+		const rollResults = await this.getRoll(rollSource, options);
+		if (rollResults) {
+			// const {roll, rollData} = await this.getRoll(rollSource, options);
+			await rollResults.roll.evaluate({async: true});
+			if (game.dice3d) {
+				await game.dice3d.showForRoll(rollResults.roll);
+			}
+			if (rollResults.roll.total) {
+				kLog.log("Roll Successful", {roll: rollResults.roll, rollData: rollResults.rollData, options});
+				// this.update({"data.sitmod": 0});
+				// kLog.log(`Sitmod is ` + this.data.data.sitmod);
+				this.displayRollResult(rollResults.roll, rollResults.rollData, options as K4RollOptions);
+			}
 		}
+	}
 
-		if (roll.total) {
-			kLog.log("Roll Successful", {roll, rollData, options});
-			// this.update({"data.sitmod": 0});
-			// kLog.log(`Sitmod is ` + this.data.data.sitmod);
-			this.displayRollResult(roll, rollData, options as K4RollOptions);
+	trigger(rollSource: string) {
+		const triggeredItem = this.getItemByName(rollSource);
+		if (triggeredItem instanceof K4Item) {
+			triggeredItem.displayItemSummary();
 		}
 	}
 
 	override async _onCreate(...[actorData, ...args]: Parameters<Actor["_onCreate"]>) {
-		// kLog.log("ACTOR ON CREATE", actorData, args);
-
 		if (this.type === K4ActorType.pc){
 			const pack = await game.packs.get("kult4th.k4-basic-player-moves");
 			if (pack) {
@@ -519,10 +496,15 @@ for each possible source of modifier:
 				}));
 				if (newItems) {
 					await this.createEmbeddedDocuments("Item", newItems) as K4Item[];
-					// brandNewItems[0].sheet?.render(true );
 				}
 			}
 			this.setFlag("kult4th", "sheetTab", "front");
 		}
 	}
 }
+declare interface K4Actor {
+	get id(): string;
+	get name(): string;
+}
+
+export default K4Actor;

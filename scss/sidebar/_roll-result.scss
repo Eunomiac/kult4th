@@ -1,0 +1,187 @@
+&.chat-roll-result {
+	--roll-header-fg: var(--K4-color-primary);
+	--roll-header-bg: var(--K4-color-contrast);
+	--roll-header-border: var(--roll-header-fg);
+	--roll-result-fg: var(--K4-color-primary);
+	--roll-text-shadow-size: 4px;
+	--roll-text-shadow:
+		0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+		0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+		0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+		0 0 var(--roll-text-shadow-size) var(--K4-dBLACK);
+
+	&.move-roll {
+		--roll-header-fg: var(--K4-color-contrast);
+		--roll-header-bg: var(--K4-color-primary);
+		--roll-header-border: var(--K4-color-primary);
+	}
+
+	&.disadvantage-roll {
+		--roll-header-fg: var(--K4-RED);
+		--roll-header-border: var(--K4-RED);
+	}
+
+	&.roll-success {
+		--roll-result-fg: var(--K4-color-primary-bright);
+	}
+	&.roll-failure {
+		--roll-result-fg: var(--K4-RED);
+	}
+
+
+	.roll-intro-header {
+		padding: 0 10px;
+		.roll-char-name {
+			font-size: $rem-18;
+			font-weight: $font-weight-bold;
+			color: var(--K4-color-primary-bright);
+		}
+		.roll-intro-line {
+			display: block;
+			text-align: center;
+			font-size: $rem-16;
+			margin: 3px 0;
+		}
+	}
+	.roll-source-header {
+		margin-bottom: -40px;
+		img, svg {
+			position: relative;
+			height: 60px;
+			width: 60px;
+			clip-path: circle(closest-side);
+			background: var(--K4-color-primary);
+			top: -12px;
+			left: -10px;
+			z-index: 1;
+		}
+		.roll-source-name {
+			border-top: solid 2px var(--roll-header-fg);
+			border-bottom: solid 2px var(--roll-header-fg);
+			position: relative;
+			background: var(--roll-header-bg);
+			color: var(--roll-header-fg);
+			display: block;
+			text-align: center;
+			top: -60px;
+			font-size: $rem-16;
+			text-indent: 30px;
+			font-family: var(--font-primary-caps);
+			text-transform: uppercase;
+			font-weight: $font-weight-black;
+			padding: 5px 0px;
+			width: calc(100%);
+		}
+	}
+	.roll-dice-line {
+		display: flex;
+		justify-content: space-evenly;
+
+		.roll-term-container {
+			height: 60px;
+			width: 60px;
+			background: rgba(255,0,0,0.25);
+			text-align: center;
+			line-height: 50px;
+			font-size: $rem-32;
+			font-weight: $font-weight-black;
+
+			&.attribute-zero { display: none }
+		}
+	}
+
+	.roll-dice-results {
+		display: grid;
+		grid-template-areas:
+			"roll-total roll-modifiers"
+			"roll-total roll-outcome-main"
+			"roll-total roll-outcome-sub";
+		grid-template-columns: 80px 1fr;
+		grid-template-rows: 100px 30px 20px;
+		margin-top: 10px;
+		text-shadow: 0 0 1px var(--K4-BLACK) !important;
+
+		.roll-total {
+			grid-area: roll-total;
+			font-family: var(--font-decorative);
+			font-size: 200px;
+			line-height: 170px;
+			text-align: center;
+			color: var(--roll-result-fg);
+			text-shadow: var(--roll-text-shadow);
+		}
+		.roll-modifiers {
+			grid-area: roll-modifiers;
+			height: 100%;
+			width: 100%;
+			--roll-text-shadow-size: 2px;
+
+			.roll-mod {
+				display: inline-block;
+				width: 50%;
+				margin: 2px 0;
+				&.roll-mod-neg {
+					--K4-color-primary: var(--K4-RED);
+				}
+				.roll-mod-val {
+					font-size: $rem-20;
+					font-weight: $font-weight-bold;
+					width: 25px;
+					text-align: right;
+					display: inline-block;
+					text-shadow:
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK);
+				}
+				.roll-mod-desc {
+					text-shadow: var(--roll-text-shadow);
+					line-height: $rem-10;
+					text-transform: super;
+					position: relative;
+					top: -5px;
+					text-shadow:
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK);
+				}
+			}
+		}
+		.roll-outcome-main {
+			grid-area: roll-outcome-main;
+			font-size: $rem-48;
+			font-weight: $font-weight-black;
+			color: var(--roll-result-fg);
+			text-shadow:
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK);
+		}
+		.roll-outcome-sub {
+			grid-area: roll-outcome-sub;
+			text-align: right;
+			padding: 0 10px;
+			font-size: $rem-18;
+			font-style: italic;
+			font-weight: bold;
+			color: var(--roll-result-fg);
+			text-shadow:
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK);
+		}
+	}
+
+	.result-entry {
+		span {
+			width: 100%;
+			font-size: $rem-14;
+			text-align: justify;
+			margin-top: 10px;
+		}
+	}
+}

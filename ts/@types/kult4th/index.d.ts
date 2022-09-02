@@ -1,4 +1,5 @@
 import C from "../../scripts/constants";
+import K4Config from "../../scripts/config";
 import K4Actor from "../../documents/K4Actor.js";
 import K4Item from "../../documents/K4Item.js";
 import K4PCSheet from "../../documents/K4PCSheet.js";
@@ -41,7 +42,7 @@ declare global {
 	}
 
 	declare interface CONFIG {
-		K4: List
+		K4: typeof K4Config
 	}
 
 	declare const cqApi: {

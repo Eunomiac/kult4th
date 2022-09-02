@@ -247,7 +247,10 @@ async function preloadTemplates() {
 		]),
 		...U.getTemplatePath("sidebar", [
 			"chat-message",
-			"roll-result"
+			"result-rolled",
+			"result-attribute",
+			"item-display",
+			"result-static"
 		]),
 		...U.getTemplatePath("dialog", [
 			"ask-for-attribute"

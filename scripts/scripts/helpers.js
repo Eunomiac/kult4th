@@ -50,6 +50,9 @@ const handlebarHelpers = {
         }
         return param ? 1 : 0;
     },
+    "signNum": function (num) {
+        return U.signNum(num);
+    },
     "areEmpty": function (...args) {
         args.pop();
         return !Object.values(args).flat().join("");

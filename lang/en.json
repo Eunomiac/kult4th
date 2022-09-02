@@ -87,13 +87,13 @@
 			"timeAndSpaceMagician": "Time and Space Magician"
 		},
 		"roll": {
-			"someone": "someone",
-			"success": "success",
-			"partialSuccess": "success with complications",
-			"failure": "failure",
-			"rollAttr": "roll {attributeName}",
-			"rollAttrToMove": "roll {attributeName} to {moveName}",
-			"rollerName": "{rollerName} rolls +{rollerAttrName}..."
+			"someone": "Someone",
+			"success": "Success",
+			"withComplications": "with Complications",
+			"failure": "Failure",
+			"rollAttrTo": "rolls <span class='text-attributename'>+{attrName}</span> to …",
+			"rollAttrFor": "rolls <span class='text-attributename'>+{attrName}</span> for …",
+			"triggers": "triggers …"
 		},
 		"trait": {
 			"attribute": "Attribute",

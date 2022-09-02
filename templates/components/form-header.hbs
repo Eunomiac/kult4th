@@ -1,6 +1,10 @@
 {{dbLog "{comp} form-header.hbs" this}}
 <aside class="header-icon header-{{docType}}">
+	{{#if key}}
+	{{> "systems/kult4th/templates/components/svg.hbs" key=key classes=(concat "svg-" docType)}}
+	{{else}}
 	{{> "systems/kult4th/templates/components/svg.hbs" key=item.data.data.key classes=(concat "svg-" docType)}}
+	{{/if}}
 </aside>
 <header class="sheet-header {{docType}}-header">
 	{{~#if isBullet}}

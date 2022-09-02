@@ -67,7 +67,7 @@ export const Attributes = {
 		reflexes: {}
 	}
 } as const;
-export const AttributeButtons = (resolve: (value: {attribute: K4Attribute}) => void) => {
+export const AttributeButtons = (resolve: (value: {attribute: K4RollableAttribute}) => void) => {
 	const attrButtons: Record<string,Dialog.Button> = {};
 	[
 		K4Attribute.zero,
@@ -82,8 +82,8 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Attribute}) => v
 		K4Attribute.soul
 	].forEach((attr) => {
 		attrButtons[attr] = {
-			label: `${String(attr).charAt(0).toUpperCase()}${String(attr).slice(1)}`,
-			callback: () => resolve({attribute: attr})
+			label: U.loc(`trait.${attr}`),
+			callback: () => resolve({attribute: attr as K4RollableAttribute})
 		};
 	});
 	return attrButtons;

@@ -16,6 +16,7 @@ export default class K4ItemSheet extends ItemSheet {
     // 	const optionsData = {...super.options};
     // 	return optionsData;
     // }
+    isUnlocked = false;
     get item() { return super.item; }
     get type() { return this.item.data.type; }
     get subType() { return this.item.data.data.subType; }
@@ -55,7 +56,19 @@ export default class K4ItemSheet extends ItemSheet {
             kLog.log("ITEM SHEET CONTEXT", { "this": this, self, html });
             function createOpenLinkFromName(elem, iName) {
                 if (iName) {
-                    if (self.document.isEmbedded) {
+                    if (self.document.isOwnedItem()) {
+                        $(elem).on("click", () => self.actor?.getItemByName(iName)?.sheet?.render(true));
+                    }
+                    else {
+                        $(elem).on("click", () => Array.from(game.items ?? [])
+                            .find((item) => ["move" /* K4ItemType.move */, "attack" /* K4ItemType.attack */].includes(item.type) && item.name === iName)
+                            ?.sheet?.render(true));
+                    }
+                }
+            }
+            function createTriggerLinkFromName(elem, iName) {
+                if (iName) {
+                    if (self.document.isOwnedItem()) {
                         $(elem).on("click", () => self.actor?.getItemByName(iName)?.sheet?.render(true));
                     }
                     else {
@@ -67,7 +80,7 @@ export default class K4ItemSheet extends ItemSheet {
             }
             function createRollLinkFromName(elem, iName) {
                 if (iName) {
-                    if (self.document.isEmbedded) {
+                    if (self.document.isOwnedItem()) {
                         $(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling (Embedded) ${iName}`));
                     }
                     else {
@@ -77,7 +90,7 @@ export default class K4ItemSheet extends ItemSheet {
             }
             function createChatLinkFromName(elem, iName) {
                 if (iName) {
-                    if (self.document.isEmbedded) {
+                    if (self.document.isOwnedItem()) {
                         $(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
                     }
                     else {
@@ -87,7 +100,7 @@ export default class K4ItemSheet extends ItemSheet {
             }
             function createDeleteLinkFromName(elem, iName) {
                 if (iName) {
-                    if (self.document.isEmbedded) {
+                    if (self.document.isOwnedItem()) {
                         $(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting (Embedded) ${iName}`));
                     }
                     else {
@@ -100,16 +113,20 @@ export default class K4ItemSheet extends ItemSheet {
                 .each(function addItemOpenEvents() {
                 createOpenLinkFromName(this, $(this).attr("data-item-name"));
             });
+            html.find("*[data-action=\"trigger\"]")
+                .each(function addItemTriggerEvents() {
+                createTriggerLinkFromName(this, $(this).attr("data-item-name"));
+            });
             html.find("*[data-action=\"roll\"]")
-                .each(function addItemOpenEvents() {
+                .each(function addItemRollEvents() {
                 createRollLinkFromName(this, $(this).attr("data-item-name"));
             });
             html.find("*[data-action=\"chat\"]")
-                .each(function addItemOpenEvents() {
+                .each(function addItemChatEvents() {
                 createChatLinkFromName(this, $(this).attr("data-item-name"));
             });
             html.find("*[data-action=\"drop\"]")
-                .each(function addItemOpenEvents() {
+                .each(function addItemDropEvents() {
                 createDeleteLinkFromName(this, $(this).attr("data-item-name"));
             });
         });
