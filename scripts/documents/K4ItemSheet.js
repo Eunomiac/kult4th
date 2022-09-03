@@ -35,11 +35,11 @@ export default class K4ItemSheet extends ItemSheet {
                 break;
             }
             case "darksecret" /* K4ItemType.darksecret */: {
-                this.options.classes.push("k4-theme-red");
+                this.options.classes.push("k4-theme-dark");
                 break;
             }
             case "disadvantage" /* K4ItemType.disadvantage */: {
-                this.options.classes.push("k4-theme-dark");
+                this.options.classes.push("k4-theme-red");
                 break;
             }
             default: {

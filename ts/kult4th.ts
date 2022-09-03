@@ -57,6 +57,60 @@ Hooks.once("init", async () => {
 		y: [int, int],
 		stops: Array<SVGGradientStop|string>
 	};
+	/*
+<defs>
+		<linearGradient id="fill-advantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(235, 219, 166)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(65, 61, 46)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-advantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(150, 140, 106)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(65, 61, 46)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="fill-attack" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(240, 50, 50)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-attack" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(155, 32, 32)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="fill-darksecret" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-darksecret" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(240, 50, 50)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(155, 32, 32)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="fill-disadvantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(128, 128, 128)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(29, 29, 29)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-disadvantage" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(226, 226, 226)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(177, 177, 177)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="fill-move" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(150, 140, 106)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(65, 61, 46)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-move" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(235, 219, 166)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(235, 219, 166)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="fill-weapon" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(240, 50, 50)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
+		</linearGradient>
+		<linearGradient id="stroke-weapon" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="rgb(155, 32, 32)" stop-opacity="1"></stop>
+			<stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
+		</linearGradient>
+	</defs>
+	*/
+
+
 	const svgDefs: Record<string,Array<Partial<SVGGradientDef>>> = {
 		linearGradients: Object.values(U.objMap(
 			{

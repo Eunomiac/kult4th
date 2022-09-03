@@ -9,8 +9,8 @@
 	@include set-default-theme();
 
 	--color-text-dark-primary: var(--color-body-text);
-	--chat-vert-padding: 15px;
-	--chat-horiz-padding: 0px;
+	--chat-vert-padding: 10px;
+	--chat-horiz-padding: 10px;
 	// overflow: visible;
 
 	.chat-message {
@@ -72,8 +72,7 @@
 		}
 
 		.message-content {
-			padding:
-				var(--chat-vert-padding) calc(var(--scrollbar-width) + var(--chat-horiz-padding)) var(--chat-vert-padding) var(--chat-horiz-padding);
+			padding: var(--chat-vert-padding) var(--chat-horiz-padding);
 			min-height: 42px;
 
 			.kult4th-chat {

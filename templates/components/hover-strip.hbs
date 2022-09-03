@@ -12,7 +12,7 @@
 		{{/each}}
 	</span>
 	<div class="icon-container">
-		{{> "systems/kult4th/templates/components/svg.hbs" key=(getImgName icon) style="transform: translate(-50%, -50%)"}}
+		<img src="{{icon}}" />
 	</div>
 	{{#if tooltip}}<span class="tooltip strip-tooltip">{{{formatForKult tooltip}}}</span>{{/if}}
 </div>

@@ -1,6 +1,5 @@
 {
-  "name": "kult4th",
-	"id": "kult4th",
+  "id": "kult4th",
   "title": "Kult: Divinity Lost (4th Edition)",
   "description": "An implementation of Kult: Divinity Lost (4th Edition), based on the original Kult 4E Foundry system by Tom LaPorta.",
   "version": 0.1,

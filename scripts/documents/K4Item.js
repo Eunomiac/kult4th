@@ -129,8 +129,8 @@ class K4Item extends Item {
         const themeMap = {
             "advantage": "k4-theme-dgold",
             "default": "k4-theme-dgold",
-            "disadvantage": "k4-theme-dark",
-            "darksecret": "k4-theme-red"
+            "disadvantage": "k4-theme-red",
+            "darksecret": "k4-theme-dark"
         };
         const stripType = this.isSubItem() ? this.data.data.sourceItem.type : this.data.type;
         const theme = themeMap[stripType] ?? themeMap.default;
@@ -150,7 +150,7 @@ class K4Item extends Item {
         const stripData = {
             id: this.id ?? `${this.data.type}-${U.randString(10)}`,
             type: this.data.type,
-            icon: this.data.data.key,
+            icon: this.img,
             display: this.name ?? "(enter name)",
             ...this.isSubItem()
                 ? {

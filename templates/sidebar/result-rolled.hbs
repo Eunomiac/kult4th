@@ -1,5 +1,7 @@
 {{dbLog "{CHAT} result-rolled.hbs" this}}
+
 <div class="kult4th-chat chat-roll-result {{rollData.sourceType}}-roll {{cssClass}}">
+
 	<div class="roll-intro-header">
 		<span class="roll-char-name">{{rollerName}}</span>
 		<span class="roll-intro-line">
@@ -10,14 +12,27 @@
 			{{/if}}
 		</span>
 	</div>
+
 	<div class="roll-source-header">
-		<img src="{{rollData.sourceImg}}" /><span class="roll-source-name">{{rollData.sourceName}}</span>
+		<div class="icon-container">
+			<img src="{{rollData.sourceImg}}" />
+		</div>
+		<span class="roll-source-name">{{rollData.sourceName}}</span>
 	</div>
 
 	<div class="roll-dice-line">
-		<div class="roll-term-container roll-d10">{{dice.[0]}}</div>
-		<div class="roll-term-container attribute-{{rollData.attribute}}" data-attrVal="{{rollData.attrVal}}">{{signNum rollData.attrVal}}</div>
-		<div class="roll-term-container roll-d10">{{dice.[1]}}</div>
+		<div class="roll-term-container roll-d10">
+			{{> "systems/kult4th/templates/components/svg.hbs" key="ten-sided-die"}}
+			<span class="roll-d10-value">{{dice.[0]}}</span>
+		</div>
+		<div class="roll-term-container attribute-{{rollData.attribute}}">
+			{{> "systems/kult4th/templates/components/svg.hbs" key=rollData.attribute}}
+			<span class="roll-d10-value" data-attrVal="{{rollData.attrVal}}">{{signNum rollData.attrVal}}</span>
+		</div>
+		<div class="roll-term-container roll-d10">
+			{{> "systems/kult4th/templates/components/svg.hbs" key="ten-sided-die"}}
+			<span class="roll-d10-value">{{dice.[1]}}</span>
+		</div>
 	</div>
 
 	<div class="roll-dice-results">
@@ -41,8 +56,11 @@
 			<span class="roll-outcome-main">{{localize "kult4th.roll.failure"}}</span>
 			{{/if}}
 	</div>
+
 	{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=rollData.source}}
+
 	{{~#if result.listRefs}}
 		{{> "systems/kult4th/templates/components/item-list.hbs" lists=rollData.source.data.data.lists listRefs=result.listRefs itemData=rollData.source.data isDisplayingName=true}}
 	{{/if}}
+
 </div>

@@ -27,7 +27,7 @@ declare global {
 		id: string,
 		type: K4ItemType | K4WoundType,
 		display: string,
-		icon: KeyOf<typeof SVGDATA>,
+		icon: string,
 		stripClasses: string[],
 		buttons: StripButtonData[],
 		dataset?: Record<string,string>,

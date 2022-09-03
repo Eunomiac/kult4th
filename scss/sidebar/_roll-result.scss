@@ -14,6 +14,10 @@
 		--roll-header-fg: var(--K4-color-contrast);
 		--roll-header-bg: var(--K4-color-primary);
 		--roll-header-border: var(--K4-color-primary);
+
+		.roll-source-header .icon-container {
+			--icon-outline-color: var(--roll-header-bg);
+		}
 	}
 
 	&.disadvantage-roll {
@@ -31,6 +35,7 @@
 
 	.roll-intro-header {
 		padding: 0 10px;
+
 		.roll-char-name {
 			font-size: $rem-18;
 			font-weight: $font-weight-bold;
@@ -45,16 +50,18 @@
 	}
 	.roll-source-header {
 		margin-bottom: -40px;
-		img, svg {
+
+		.icon-container {
+			--icon-size: 60px;
+			--icon-outline-color: var(--roll-header-fg);
+			--icon-bg-color: var(--roll-header-bg);
+			--icon-outline-width: 2px;
 			position: relative;
-			height: 60px;
-			width: 60px;
-			clip-path: circle(closest-side);
-			background: var(--K4-color-primary);
-			top: -12px;
-			left: -10px;
 			z-index: 1;
+			top: -12px;
+			left: calc(-1 * var(--chat-horiz-padding) - 10px);
 		}
+
 		.roll-source-name {
 			border-top: solid 2px var(--roll-header-fg);
 			border-bottom: solid 2px var(--roll-header-fg);
@@ -64,13 +71,14 @@
 			display: block;
 			text-align: center;
 			top: -60px;
+			left: calc(-1 * var(--chat-horiz-padding));
 			font-size: $rem-16;
 			text-indent: 30px;
 			font-family: var(--font-primary-caps);
 			text-transform: uppercase;
 			font-weight: $font-weight-black;
 			padding: 5px 0px;
-			width: calc(100%);
+			width: calc(100% + 2 * var(--chat-horiz-padding));
 		}
 	}
 	.roll-dice-line {

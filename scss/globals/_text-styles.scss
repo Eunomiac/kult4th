@@ -339,19 +339,44 @@
 		font-style: italic;
 	}
 
+
+	.icon-container {
+		--icon-size: 100%;
+		--icon-bg-color: var(--K4-color-contrast);
+		--icon-outline-color: var(--K4-color-primary);
+		--icon-outline-width: 3px;
+		--icon-clip-path: circle(closest-side);
+		--icon-scale: 1;
+
+		position: absolute;
+		display: inline-block;
+		background: var(--icon-outline-color);
+		clip-path: var(--icon-clip-path);
+		height: var(--icon-size);
+		width: var(--icon-size);
+		white-space: nowrap;
+		font-size: 0;
+		top: 0;
+		left: 0;
+
+		img {
+			position: absolute;
+			height: calc(100% - 2 * var(--icon-outline-width));
+			width: calc(100% - 2 * var(--icon-outline-width));
+			top: var(--icon-outline-width);
+			left: var(--icon-outline-width);
+			clip-path: var(--icon-clip-path);
+			background: var(--icon-bg-color);
+		}
+	}
+
 	div.hover-strip {
-		--icon-size: 30px;
-		--strip-height: calc(var(--icon-size) + 2px);
+		--strip-icon-size: 30px;
+		--strip-height: calc(var(--strip-icon-size) + 2px);
 		--strip-padding-vert: 5px;
 		--strip-underline-width: 1px;
-
-		--icon-outline-color: var(--K4-strip-button-color-bg);
-		--icon-outline-width: 1px;
-		--icon-clip-path: circle(closest-side);
-
 		--strip-font-size: #{$rem-16};
 		--strip-font-weight: #{$font-weight-semi};
-		--icon-scale: 1;
 		--strip-scale: 1;
 
 		position: relative;
@@ -362,37 +387,40 @@
 		padding: var(--strip-padding-vert) 0;
 
 		.icon-container {
-			position: absolute;
-			display: inline-block;
-			background: var(--icon-outline-color);
-			clip-path: var(--icon-clip-path);
-			--K4-svg-bg: var(--K4-strip-icon-color-bg);
-			--K4-svg-fill: var(--K4-strip-icon-color-fg);
-			--K4-svg-clip-path: var(--icon-clip-path);
-			--K4-svg-scale: var(--icon-scale);
-			height: var(--icon-size);
-			width: var(--icon-size);
-			white-space: nowrap;
-			font-size: 0;
-			top: 0;
-			left: 0;
-
-			.svg-container {
-				position: absolute;
-				height: calc(var(--icon-size) - 2 * var(--icon-outline-width));
-				width: calc(var(--icon-size) - 2 * var(--icon-outline-width));
-				top: var(--icon-outline-width);
-				left: var(--icon-outline-width);
-			}
+			--icon-size: var(--strip-icon-size);
+			--icon-outline-color: var(--K4-strip-button-color-bg);
+			--icon-bg-color: var(--K4-strip-icon-color-bg);
+			--icon-outline-width: 2px;
 		}
+		// 	position: absolute;
+		// 	display: inline-block;
+		// 	background: var(--icon-outline-color);
+		// 	clip-path: var(--icon-clip-path);
+		// 	height: var(--icon-size);
+		// 	width: var(--icon-size);
+		// 	white-space: nowrap;
+		// 	font-size: 0;
+		// 	top: 0;
+		// 	left: 0;
+
+		// 	img {
+		// 		position: absolute;
+		// 		height: calc(100% - 2 * var(--icon-outline-width));
+		// 		width: calc(100% - 2 * var(--icon-outline-width));
+		// 		top: var(--icon-outline-width);
+		// 		left: var(--icon-outline-width);
+		// 		clip-path: var(--icon-clip-path);
+		// 		background: var(--K4-strip-icon-color-bg);
+		// 	}
+		// }
 
 		.strip-bg, .button-strip {
 			position: absolute;
 			display: block;
 			height: calc(100% - 2 * var(--strip-padding-vert));
-			width: calc(100% - 0.5 * var(--icon-size));
+			width: calc(100% - 0.5 * var(--strip-icon-size));
 			top: var(--strip-padding-vert);
-			left: calc(0.5 * var(--icon-size));
+			left: calc(0.5 * var(--strip-icon-size));
 			background: var(--K4-strip-main-color-bg);
 			border-bottom: var(--strip-underline-width) solid var(--K4-strip-button-color-bg);
 		}
@@ -401,8 +429,8 @@
 			position: absolute;
 			display: inline-flex;
 			flex-direction: row;
-			width: calc(100% - 0.5 * var(--icon-size));
-			left: calc(0.5 * var(--icon-size));
+			width: calc(100% - 0.5 * var(--strip-icon-size));
+			left: calc(0.5 * var(--strip-icon-size));
 			opacity: 0;
 			outline: 0px solid var(--K4-strip-button-color-bg);
 			justify-content: space-between;
@@ -410,7 +438,7 @@
 
 			.button-spacer {
 				display: inline-block;
-				width: var(--icon-size);
+				width: var(--strip-icon-size);
 				flex-grow: 0;
 				flex-shrink: 0;
 				position: relative;
@@ -444,7 +472,7 @@
 					opacity: 0;
 					color: var(--K4-strip-button-color-fg);
 					text-align: center;
-					line-height: var(--icon-size);
+					line-height: var(--strip-icon-size);
 					font-size: $rem-16;
 					text-transform: uppercase;
 					font-family: var(--font-primary-caps);
@@ -476,9 +504,9 @@
 			color: var(--K4-strip-main-color-fg);
 			font-size: var(--strip-font-size);
 			font-weight: var(--strip-font-weight);
-			line-height: var(--icon-size);
+			line-height: var(--strip-icon-size);
 			top: 0;
-			left: calc(var(--icon-size) + 5px);
+			left: calc(var(--strip-icon-size) + 5px);
 			white-space: nowrap;
 			z-index: 30;
 
