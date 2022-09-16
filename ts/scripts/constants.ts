@@ -88,6 +88,7 @@ export const AttributeButtons = (resolve: (value: {attribute: K4RollableAttribut
 	});
 	return attrButtons;
 };
+
 export const Colors = {
 	GOLD: "rgb(150, 140, 106)",
 	dGOLD: "rgb(65, 61, 46)",
@@ -249,6 +250,16 @@ const C = {
 	RegExpPatterns,
 	imageDefaults: {
 		roller: "systems/kult4th/assets/icons/cameron-west.jpg"
+	},
+	Themes: {
+		[K4ItemType.advantage]: "k4-theme-dgold",
+		[K4ItemType.disadvantage]: "k4-theme-red",
+		[K4ItemType.darksecret]: "k4-theme-dark",
+		[K4ItemType.relation]: "k4-theme-dgold",
+		[K4ItemType.weapon]: "k4-theme-dgold",
+		[K4ItemType.gear]: "k4-theme-dgold",
+		[K4ItemType.move]: "k4-theme-bgold",
+		[K4ItemType.attack]: "k4-theme-dgold"
 	}
 };
 

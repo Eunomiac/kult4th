@@ -14,11 +14,12 @@
 	// overflow: visible;
 
 	.chat-message {
-		background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat top left/var(--sidebar-internal-width);
-		margin: 3px 0;
+		// background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat top left/var(--sidebar-internal-width);
+		background: var(--K4-dBLACK);
+		margin: 40px 0;
 		padding: 0;
 		// border: 2px outset var(--K4-dGOLD);
-		border: none;
+		// border: none;
 		position: relative;
 
 		.message-header {
@@ -45,7 +46,7 @@
 			}
 		}
 
-		.message-content::before {
+/* 		.message-content::before {
 			content: "";
 			display: block;
 			position: absolute;
@@ -69,14 +70,16 @@
 			width: 299px;
 			background: transparent #{to-url("layout/border-chat-general-bottom.webp")} no-repeat bottom left/var(--sidebar-internal-width);
 			pointer-events: none;
-		}
+		} */
 
 		.message-content {
 			padding: var(--chat-vert-padding) var(--chat-horiz-padding);
 			min-height: 42px;
+			border: 1px solid transparent;
+			border-image: var(--K4-chat-border);
 
 			.kult4th-chat {
-				font-size: $rem-12;
+				font-size: $rem-14;
 				line-height: $rem-16;
 
 				ul,
@@ -96,8 +99,7 @@
 						line-height: $rem-20;
 						font-family: var(--font-primary-caps);
 						font-weight: $font-weight-bold;
-						background: #{to-url("layout/border-chat-general-bottom.webp")} repeat bottom left/var(--sidebar-internal-width),
-						linear-gradient(to right,
+						background: linear-gradient(to right,
 							var(--K4-color-contrast),
 							var(--K4-color-primary-bright) 30px,
 							var(--K4-color-primary-bright) calc(100% - 30px),
@@ -125,7 +127,7 @@
 				// .kult-text-container {
 				// margin: 0;
 
-			@import 'roll-result';
+				@import 'roll-result';
 			}
 
 		}

@@ -1,17 +1,17 @@
-{{dbLog "{SHEET} move-sheet.hbs" this}}
-
-<form class="kult4th-form {{cssClass}}" autocomplete="off">
-	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
 	<main class="kult-text-container tab-content kult-{{data.type}}-container">
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
 			{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
 		{{/unless}}
 
-		{{~#if (test data.data.subType "==" "active-rolled")}}
+		{{~#if (test (test data.data.subType "==" "active-rolled") "&&" (test data.type "==" "move")) }}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=data.data.results.partialSuccess.result}}
 			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
 		{{/if}}
+
+		{{#each data.data.subItems as |subMove|}}
+			{{> "systems/kult4th/templates/partials/subitem-block.hbs" subMove pItem=../this}}
+		{{/each}}
 
 		{{~#if data.data.rules.listRefs}}
 			{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.data.lists listRefs=data.data.rules.listRefs itemData=data isDisplayingName=true}}
@@ -22,4 +22,3 @@
 			<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
 		{{/if}}
 	</main>
-</form>

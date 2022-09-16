@@ -1,4 +1,6 @@
 import U from "../scripts/utilities.js";
+import K4ChatMessage from "./K4ChatMessage.js";
+import C from "../scripts/constants.js";
 class K4Item extends Item {
     prepareData() {
         super.prepareData();
@@ -22,7 +24,7 @@ class K4Item extends Item {
     // 	super(...args);
     // }
     get masterType() { return this.sourceItemData?.type ?? this.data.type; }
-    // get masterName(): string { return (this.isSubItem() ? this.data.data.sourceItem.name ?? this.name : this.name) ?? "" }
+    get masterName() { return this.isSubItem() ? this.data.data.sourceItem.name : this.name; }
     isParentItem() { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }
     isSubItem() { return Boolean("sourceItem" in this.data.data && this.data.data.sourceItem && this.data.data.sourceItem.name); }
     isOwnedItem() { return this.isEmbedded && this.parent instanceof Actor; }
@@ -126,29 +128,10 @@ class K4Item extends Item {
     }
     // get isRollable(): boolean { return }
     get hoverStrip() {
-        const themeMap = {
-            "advantage": "k4-theme-dgold",
-            "default": "k4-theme-dgold",
-            "disadvantage": "k4-theme-red",
-            "darksecret": "k4-theme-dark"
-        };
         const stripType = this.isSubItem() ? this.data.data.sourceItem.type : this.data.type;
-        const theme = themeMap[stripType] ?? themeMap.default;
-        /* interface StripButtonData {
-        icon: KeyOf<typeof SVGDATA>,
-        dataset: Record<string, string>,
-        classes?: string[],
-        tooltip?: string
-    }
-    interface HoverStripData {
-        icon: KeyOf<typeof SVGDATA>,
-        classes: string[],
-        buttons: StripButtonData[],
-        dataset?: Record<string,string>,
-        tooltip?: string
-    }	*/
+        const theme = C.Themes[stripType];
         const stripData = {
-            id: this.id ?? `${this.data.type}-${U.randString(10)}`,
+            id: this.id ?? `${this.data.type}-${U.randString(5)}`,
             type: this.data.type,
             icon: this.img,
             display: this.name ?? "(enter name)",
@@ -229,13 +212,13 @@ class K4Item extends Item {
     }
     async displayItemSummary(speaker) {
         const template = await getTemplate(this.sheet?.template ?? "");
-        const content = template(Object.assign(this.toObject(), { cssClass: "kult4th-chat", key: this.key }));
-        ChatMessage.create({
+        const content = template(Object.assign(this.toObject(), { key: this.key }));
+        K4ChatMessage.create({
             content,
-            speaker: ChatMessage.getSpeaker({ alias: speaker ?? "" }),
+            speaker: K4ChatMessage.getSpeaker({ alias: speaker ?? "" }) /* ,
             options: {
                 cssClass: "kult4th-chat"
-            }
+            } */
         });
     }
 }

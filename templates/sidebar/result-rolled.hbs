@@ -1,6 +1,6 @@
 {{dbLog "{CHAT} result-rolled.hbs" this}}
 
-<div class="kult4th-chat chat-roll-result {{rollData.sourceType}}-roll {{cssClass}}">
+<div class="kult4th-chat {{cssClass}}">
 
 	<div class="roll-intro-header">
 		<span class="roll-char-name">{{rollerName}}</span>
@@ -17,26 +17,33 @@
 		<div class="icon-container">
 			<img src="{{rollData.sourceImg}}" />
 		</div>
-		<span class="roll-source-name">{{rollData.sourceName}}</span>
+		<span class="roll-source-name"><span class="roll-source-text">{{rollData.sourceName}}</span></span>
 	</div>
 
 	<div class="roll-dice-line">
 		<div class="roll-term-container roll-d10">
-			{{> "systems/kult4th/templates/components/svg.hbs" key="ten-sided-die"}}
+			<img src="systems/kult4th/assets/icons/roll-terms/ten-sided-die.svg" />
 			<span class="roll-d10-value">{{dice.[0]}}</span>
 		</div>
 		<div class="roll-term-container attribute-{{rollData.attribute}}">
-			{{> "systems/kult4th/templates/components/svg.hbs" key=rollData.attribute}}
+			<img src="systems/kult4th/assets/icons/roll-terms/{{rollData.attribute}}.svg" />
 			<span class="roll-d10-value" data-attrVal="{{rollData.attrVal}}">{{signNum rollData.attrVal}}</span>
 		</div>
 		<div class="roll-term-container roll-d10">
-			{{> "systems/kult4th/templates/components/svg.hbs" key="ten-sided-die"}}
+			<img src="systems/kult4th/assets/icons/roll-terms/ten-sided-die.svg" />
 			<span class="roll-d10-value">{{dice.[1]}}</span>
 		</div>
 	</div>
 
 	<div class="roll-dice-results">
-			<span class="roll-total">{{total}}</span>
+			<div class="roll-total">
+				<span class="roll-total-gear">
+					<img class="gear-chagidiel-inner-ring" src="systems/kult4th/assets/gears/gear-chagidiel-inner-ring.svg">
+					<img class="gear-chagidiel-middle-ring" src="systems/kult4th/assets/gears/gear-chagidiel-middle-ring.svg">
+					<img class="gear-chagidiel-outer-ring" src="systems/kult4th/assets/gears/gear-chagidiel-outer-ring.svg">
+				</span>
+				<span class="roll-total-number {{~#if (gte total 20)}} narrow{{/if}}">{{total}}</span>
+			</div>
 			<div class="roll-modifiers">
 				{{#each rollData.modifiers}}
 				<div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}}">
@@ -45,16 +52,14 @@
 				</div>
 				{{/each}}
 			</div>
-			{{#if (eq cssClass "roll-success")}}
+			{{#if (gte total 15)}}
 			<span class="roll-outcome-main">{{localize "kult4th.roll.success"}}</span>
-			{{/if}}
-			{{#if (eq cssClass "roll-partial")}}
+			{{else}}{{#if (gte total 10)}}
 			<span class="roll-outcome-main">{{localize "kult4th.roll.success"}}</span>
 			<span class="roll-outcome-sub">{{localize "kult4th.roll.withComplications"}}</span>
-			{{/if}}
-			{{#if (eq cssClass "roll-failure")}}
+			{{else}}
 			<span class="roll-outcome-main">{{localize "kult4th.roll.failure"}}</span>
-			{{/if}}
+			{{/if}}{{/if}}
 	</div>
 
 	{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=rollData.source}}

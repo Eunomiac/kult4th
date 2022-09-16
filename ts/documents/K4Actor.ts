@@ -1,4 +1,5 @@
 import K4Item from "./K4Item.js";
+import K4ChatMessage from "./K4ChatMessage.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 
@@ -83,6 +84,7 @@ class K4Actor extends Actor {
 		return Object.values(this.wounds).map((wound) => {
 			const stripData: Partial<HoverStripData> = {
 				id: wound.id,
+				icon: "systems/kult4th/assets/icons/wounds/",
 				type: [
 					wound.isStabilized ? "stable" : "",
 					wound.isCritical ? "critical" : "serious"
@@ -127,18 +129,13 @@ class K4Actor extends Actor {
 				]
 			};
 			if (wound.isCritical) {
-				stripData.icon = "wound-critical";
+				stripData.icon += `wound-critical${wound.isStabilized ? "-stabilized" : ""}.svg`;
 				stripData.stripClasses?.push("wound-critical");
-				// stripData.dataset!["color-fg"] = C.Colors.WHITE;
-				// stripData.dataset!["color-bg"] = C.Colors["gRED"];
 			} else {
-				stripData.icon = "wound-serious";
+				stripData.icon += `wound-serious${wound.isStabilized ? "-stabilized" : ""}.svg`;
 			}
 			if (wound.isStabilized) {
-				stripData.icon = `${stripData.icon}-stabilized`;
 				stripData.stripClasses?.push("k4-theme-dgold", "wound-stabilized");
-				// stripData.dataset!["color-fg"] = C.Colors.GOLD;
-				// stripData.dataset!["color-bg"] = C.Colors.BLACK;
 			} else {
 				stripData.stripClasses?.push("k4-theme-red");
 			}
@@ -299,6 +296,24 @@ class K4Actor extends Actor {
 	get effectModData(): K4RollModData[] {
 		const modData: K4RollModData[] = [];
 
+		return [
+			{
+				category: "effect",
+				display: "Effect One",
+				targets: {"Keep It Together": 2}
+			},
+			{
+				category: "effect",
+				display: "Effect Two",
+				targets: {move: 4}
+			},
+			{
+				category: "effect",
+				display: "Effect Three",
+				targets: {[K4Attribute.willpower]: -1}
+			}
+		];
+
 		return modData;
 	}
 
@@ -441,22 +456,29 @@ class K4Actor extends Actor {
 			rollData,
 			rollerName: this.name ?? U.loc("roll.someone")
 		};
-		// templateData.dice =
+		const cssClasses = ["chat-roll-result", `${rollData.sourceType}-roll`];
 		if (roll.total >= 15) {
 			templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.completeSuccess : {result: ""};
-			templateData.cssClass = "roll-success";
+			cssClasses.push("roll-success");
 		} else if (roll.total >= 9) {
 			templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.partialSuccess : {result: ""};
-			templateData.cssClass = "roll-partial";
+			cssClasses.push("roll-partial");
 		} else {
 			templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.failure : {result: ""};
-			templateData.cssClass = "roll-failure";
+			cssClasses.push("roll-failure");
 		}
+		cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
+		if (rollData.sourceName.length > 22) {
+			cssClasses.push("ultra-condensed");
+		} else if (rollData.sourceName.length > 18) {
+			cssClasses.push("condensed");
+		}
+		templateData.cssClass = cssClasses.join(" ");
 		kLog.log("DISPLAYING ROLL RESULT", {roll, templateData, rollData, options});
 		const content = template(templateData);
-		ChatMessage.create({
+		K4ChatMessage.create({
 			content,
-			speaker: ChatMessage.getSpeaker()
+			speaker: K4ChatMessage.getSpeaker()
 		});
 	}
 

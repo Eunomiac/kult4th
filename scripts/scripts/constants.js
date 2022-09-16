@@ -246,6 +246,16 @@ const C = {
     RegExpPatterns,
     imageDefaults: {
         roller: "systems/kult4th/assets/icons/cameron-west.jpg"
+    },
+    Themes: {
+        ["advantage" /* K4ItemType.advantage */]: "k4-theme-dgold",
+        ["disadvantage" /* K4ItemType.disadvantage */]: "k4-theme-red",
+        ["darksecret" /* K4ItemType.darksecret */]: "k4-theme-dark",
+        ["relation" /* K4ItemType.relation */]: "k4-theme-dgold",
+        ["weapon" /* K4ItemType.weapon */]: "k4-theme-dgold",
+        ["gear" /* K4ItemType.gear */]: "k4-theme-dgold",
+        ["move" /* K4ItemType.move */]: "k4-theme-bgold",
+        ["attack" /* K4ItemType.attack */]: "k4-theme-dgold"
     }
 };
 Object.assign(C, {

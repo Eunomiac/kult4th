@@ -1,8 +1,7 @@
 import U from "../scripts/utilities.js";
 import K4ItemSheet from "./K4ItemSheet.js";
+import K4ChatMessage from "./K4ChatMessage.js";
 import C from "../scripts/constants.js";
-import SVGDATA, {SVGKEYMAP} from "../scripts/svgdata.js";
-import type {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 
 class K4Item extends Item {
@@ -34,7 +33,7 @@ class K4Item extends Item {
 	// }
 
 	get masterType(): K4ItemType { return this.sourceItemData?.type ?? this.data.type }
-	// get masterName(): string { return (this.isSubItem() ? this.data.data.sourceItem.name ?? this.name : this.name) ?? "" }
+	get masterName(): string { return this.isSubItem() ? this.data.data.sourceItem.name : this.name }
 
 	isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.data.data && this.data.data.subItems.length) }
 	isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.data.data && this.data.data.sourceItem && this.data.data.sourceItem.name) }
@@ -147,30 +146,10 @@ class K4Item extends Item {
 	// get isRollable(): boolean { return }
 
 	get hoverStrip(): HoverStripData {
-
-		const themeMap: Record<string, string> = {
-			"advantage": "k4-theme-dgold",
-			"default": "k4-theme-dgold",
-			"disadvantage": "k4-theme-red",
-			"darksecret": "k4-theme-dark"
-		};
 		const stripType: K4ItemType = this.isSubItem() ? this.data.data.sourceItem.type : this.data.type;
-		const theme = themeMap[stripType] ?? themeMap.default;
-		/* interface StripButtonData {
-		icon: KeyOf<typeof SVGDATA>,
-		dataset: Record<string, string>,
-		classes?: string[],
-		tooltip?: string
-	}
-	interface HoverStripData {
-		icon: KeyOf<typeof SVGDATA>,
-		classes: string[],
-		buttons: StripButtonData[],
-		dataset?: Record<string,string>,
-		tooltip?: string
-	}	*/
+		const theme = C.Themes[stripType];
 		const stripData: HoverStripData = {
-			id: this.id ?? `${this.data.type}-${U.randString(10)}`,
+			id: this.id ?? `${this.data.type}-${U.randString(5)}`,
 			type: this.data.type,
 			icon: this.img,
 			display: this.name ?? "(enter name)",
@@ -261,14 +240,14 @@ class K4Item extends Item {
 
 		const content = template(Object.assign(
 			this.toObject(),
-			{cssClass: "kult4th-chat", key: this.key}
+			{key: this.key}
 		));
-		ChatMessage.create({
+		K4ChatMessage.create({
 			content,
-			speaker: ChatMessage.getSpeaker({alias: speaker ?? ""}),
+			speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""})/* ,
 			options: {
 				cssClass: "kult4th-chat"
-			}
+			} */
 		});
 	}
 }

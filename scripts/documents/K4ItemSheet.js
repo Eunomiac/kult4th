@@ -8,10 +8,11 @@ import C from "../scripts/constants.js";
 export default class K4ItemSheet extends ItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: [C.SYSTEM_ID, "item", "sheet", "kult4th-sheet"]
+            classes: [C.SYSTEM_ID, "item", "sheet", "kult4th-sheet"],
+            template: "systems/kult4th/templates/sheets/item-sheet.hbs"
         });
     }
-    get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs`; }
+    // override get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs` }
     // override get options() {
     // 	const optionsData = {...super.options};
     // 	return optionsData;

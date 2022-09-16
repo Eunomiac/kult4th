@@ -232,25 +232,6 @@ Kult White:  #FFFFFF */
     --font-decorative: Sokol, serif;
     --font-handwritten: GrandpaScript, serif; }
   #tinymce {
-    --GOLD: #968c6a;
-    --dGOLD: #413d2e;
-    --bGOLD: #ebdba6;
-    --gGOLD: #fffec8;
-    --RED: #9b2020;
-    --dRED: #460e0e;
-    --bRED: #f03232;
-    --gRED: #ff633e;
-    --BLUE: rgb(43, 85, 139);
-    --dBLUE: rgb(17, 33, 54);
-    --bBLUE: rgb(69, 137, 224);
-    --gBLUE: rgb(128, 185, 255);
-    --bWHITE: rgb(255, 255, 255);
-    --WHITE: #e2e2e2;
-    --bGREY: rgb(177, 177, 177);
-    --GREY: rgb(128, 128, 128);
-    --dGREY: rgb(78, 78, 78);
-    --BLACK: #1d1d1d;
-    --dBLACK: rgb(0, 0, 0);
     --K4-color-primary: var(--K4-GOLD);
     --K4-color-primary-bright: var(--K4-bGOLD);
     --K4-color-primary-glow: var(--K4-gGOLD);
@@ -269,6 +250,7 @@ Kult White:  #FFFFFF */
     --K4-list-indent: 12px;
     --K4-background: transparent url("../assets/backgrounds/dgold/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/dgold/border.webp") 30 / 30px / 15px round;
+    --K4-chat-border: url("../assets/backgrounds/dgold/chat-border.svg") 50 50 / auto / 17px 0px stretch;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
     --K4-strip-main-color-fg: var(--K4-color-primary-bright);
     --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -348,6 +330,7 @@ Kult White:  #FFFFFF */
     --K4-list-indent: 12px;
     --K4-background: transparent url("../assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/white/border.webp") 30 / 30px / 15px round;
+    --K4-chat-border: url("../assets/backgrounds/white/chat-border.svg") 50 50 / auto / 17px 0px stretch;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
     --K4-strip-main-color-fg: var(--K4-color-primary-bright);
     --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -383,6 +366,7 @@ Kult White:  #FFFFFF */
     --K4-list-indent: 12px;
     --K4-background: transparent url("../assets/backgrounds/dark/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/dark/border.webp") 30 / 30px / 15px round;
+    --K4-chat-border: url("../assets/backgrounds/dark/chat-border.svg") 50 50 / auto / 17px 0px stretch;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-white.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
     --K4-strip-main-color-fg: var(--K4-color-primary-bright);
     --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -418,6 +402,7 @@ Kult White:  #FFFFFF */
     --K4-list-indent: 12px;
     --K4-background: transparent url("../assets/backgrounds/red/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/red/border.webp") 150 / 100px / 20px repeat;
+    --K4-chat-border: url("../assets/backgrounds/red/chat-border.svg") 50 50 / auto / 17px 0px stretch;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-red.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
     --K4-strip-main-color-fg: var(--K4-color-primary-bright);
     --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -453,6 +438,7 @@ Kult White:  #FFFFFF */
     --K4-list-indent: 12px;
     --K4-background: transparent url("../assets/backgrounds/bgold/bg.webp") repeat repeat center center/1000px 1000px;
     --K4-border: url("../assets/backgrounds/bgold/border.webp") 30 / 30px / 15px round;
+    --K4-chat-border: url("../assets/backgrounds/bgold/chat-border.svg") 50 50 / auto / 17px 0px stretch;
     --K4-bullet: transparent url("../assets/icons/bullets/bullet-black.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
     --K4-strip-main-color-fg: var(--K4-color-primary-bright);
     --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -1088,7 +1074,6 @@ Kult White:  #FFFFFF */
     --result-entry-horiz-padding: 20px;
     display: block;
     margin: 0 var(--result-entry-horiz-padding);
-    font-size: 1rem;
     clear: both; }
     #tinymce .result-entry > label,
     #tinymce .mce-content-body .result-entry > label {

@@ -236,13 +236,8 @@ async function preloadTemplates() {
         ...U.getTemplatePath("sheets", [
             "pc-sheet",
             "npc-sheet",
-            "move-sheet",
-            "advantage-sheet",
-            "disadvantage-sheet",
-            "darksecret-sheet",
-            "weapon-sheet",
-            "relation-sheet",
-            "gear-sheet"
+            "item-sheet",
+            "attack-sheet"
         ]),
         ...U.getTemplatePath("components", [
             "form-header",
@@ -258,15 +253,14 @@ async function preloadTemplates() {
             "toggle-box"
         ]),
         ...U.getTemplatePath("partials", [
-            "derived-item-summary",
-            "derived-move",
-            "pc-nav-menu-frame"
+            "item-block",
+            "subitem-block"
         ]),
         ...U.getTemplatePath("sidebar", [
             "chat-message",
-            "result-rolled",
-            "result-attribute",
             "item-display",
+            "result-attribute",
+            "result-rolled",
             "result-static"
         ]),
         ...U.getTemplatePath("dialog", [

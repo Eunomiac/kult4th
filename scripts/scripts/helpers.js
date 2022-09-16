@@ -15,19 +15,31 @@ const handlebarHelpers = {
                 return param1 === param2;
             }
             case ">": {
-                return param1 > param2;
+                return typeof param1 === "number" && typeof param2 === "number" && param1 > param2;
             }
             case "<": {
-                return param1 < param2;
+                return typeof param1 === "number" && typeof param2 === "number" && param1 < param2;
             }
             case ">=": {
-                return param1 >= param2;
+                return typeof param1 === "number" && typeof param2 === "number" && param1 >= param2;
             }
             case "<=": {
-                return param1 <= param2;
+                return typeof param1 === "number" && typeof param2 === "number" && param1 <= param2;
             }
             case "includes": {
                 return Array.isArray(param1) && param1.includes(param2);
+            }
+            case "in": {
+                if (Array.isArray(param2)) {
+                    return param2.includes(param1);
+                }
+                if (U.isList(param2) && (typeof param1 === "number" || typeof param1 === "string")) {
+                    return param1 in param2;
+                }
+                if (typeof param2 === "string") {
+                    return new RegExp(String(param2), "gu").test(String(param1));
+                }
+                return false;
             }
             default: {
                 return false;
