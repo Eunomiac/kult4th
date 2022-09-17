@@ -14,19 +14,15 @@
 	// overflow: visible;
 
 	.chat-message {
-		// background: transparent #{to-url("backgrounds/bg-chat-generic.webp")} no-repeat repeat top left/var(--sidebar-internal-width);
-		background: var(--K4-dBLACK);
-		margin: 40px 0;
+		margin: 44px 0;
 		padding: 0;
-		// border: 2px outset var(--K4-dGOLD);
-		// border: none;
 		position: relative;
+		background: transparent;
 
 		.message-header {
 			opacity: 0;
 			transition: 0.25s;
 			position: absolute;
-			// color: var(--K4-bGOLD);
 			padding: 0 5px;
 			height: 20px;
 			top: 0px;
@@ -46,41 +42,28 @@
 			}
 		}
 
-/* 		.message-content::before {
-			content: "";
-			display: block;
-			position: absolute;
-			left: 0;
-			top: 0;
-			height: 42px;
-			width: 299px;
-			background: transparent #{to-url("layout/border-chat-general-top.webp")} no-repeat top left/var(--sidebar-internal-width);
-			pointer-events: none;
-			overflow: visible;
-		}
-
-
-		.message-content::after {
-			content: "";
-			display: block;
-			position: absolute;
-			left: 0;
-			bottom: 0;
-			height: 42px;
-			width: 299px;
-			background: transparent #{to-url("layout/border-chat-general-bottom.webp")} no-repeat bottom left/var(--sidebar-internal-width);
-			pointer-events: none;
-		} */
-
 		.message-content {
 			padding: var(--chat-vert-padding) var(--chat-horiz-padding);
 			min-height: 42px;
-			border: 1px solid transparent;
-			border-image: var(--K4-chat-border);
+			position: relative;
+			overflow: clip visible;
+
+			.message-bg {
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				border: 1px solid transparent;
+				border-image: var(--K4-chat-border-image) 58 8/58px 8px/22px 0px 22px 0px stretch;
+				top: 0;
+				left: 0;
+				z-index: 1;
+			}
 
 			.kult4th-chat {
 				font-size: $rem-14;
 				line-height: $rem-16;
+				background: var(--K4-BLACK);
+				padding: 0 0 15px 0;
 
 				ul,
 				ul.rules-list,

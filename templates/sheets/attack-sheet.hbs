@@ -1,7 +1,6 @@
 {{dbLog "{SHEET} attack-sheet.hbs" this}}
 
 <form class="kult4th-form {{cssClass}}" autocomplete="off">
-	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
 	<main class="kult-text-container tab-content kult-{{data.type}}-container">
 		<div class="attack-specs">
 			<span class="attack-harm">{{data.data.harm}}</span><label class="attack-harm">{{localize "kult4th.trait.harm"}}</label>

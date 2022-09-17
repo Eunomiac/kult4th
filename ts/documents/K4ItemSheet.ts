@@ -7,28 +7,17 @@ import {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/sr
 type K4ItemSheetOptions = DocumentSheetOptions & {
 	testing: true
 };
-
-// const getTriggerAnim = (target: HTMLElement): gsapAnim => gsap.from(target, {
-// 	color: "rgb(200,0,0)",
-// 	textShadow: "-1px -1px 0 rgba(200, 150, 150, 1), 1px 1px 1px rgba(0, 0, 0, 0.3)",
-// 	duration: 25,
-// 	delay: 5,
-// 	ease: "slow(0.7, 0.7, false)"});
-
 export default class K4ItemSheet extends ItemSheet {
 
 	static override get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: [C.SYSTEM_ID, "item", "sheet", "kult4th-sheet"],
-			template: "systems/kult4th/templates/sheets/item-sheet.hbs"
+			template: "systems/kult4th/templates/sheets/item-sheet.hbs",
+			height: 590 * 0.75,
+			width: 384 * 0.75,
+			resizable: false
 		});
 	}
-	// override get template() { return `systems/kult4th/templates/sheets/${this.type}-sheet.hbs` }
-	// override get options() {
-	// 	const optionsData = {...super.options};
-
-	// 	return optionsData;
-	// }
 
 	public isUnlocked = false;
 	override get item(): K4Item { return super.item }
@@ -39,11 +28,6 @@ export default class K4ItemSheet extends ItemSheet {
 	get attacks() { return this.item.subAttacks }
 
 	constructor(item: K4Item, options: Partial<ItemSheet.Options> = {}) {
-		// options.classes = [
-		// 	...K4ItemSheet.defaultOptions.classes,
-		// 	...(options.classes ?? [])
-		// ];
-
 		super(item, options);
 
 		switch (item.data.type) {
@@ -78,11 +62,11 @@ export default class K4ItemSheet extends ItemSheet {
 			function createOpenLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
 					if (self.document.isOwnedItem()) {
-						$(elem).on("click", () => self.actor?.getItemByName(iName)?.sheet?.render(true));
+						$(elem).on("click", () => self.actor?.getItemByName(iName)?.sheetO?.render(true));
 					} else {
 						$(elem).on("click", () => Array.from(game.items ?? [])
 							.find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type as K4ItemType) && item.name === iName)
-							?.sheet?.render(true));
+							?.sheetO?.render(true));
 					}
 				}
 			}
@@ -90,11 +74,11 @@ export default class K4ItemSheet extends ItemSheet {
 			function createTriggerLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
 				if (iName) {
 					if (self.document.isOwnedItem()) {
-						$(elem).on("click", () => self.actor?.getItemByName(iName)?.sheet?.render(true));
+						$(elem).on("click", () => self.actor?.getItemByName(iName)?.sheetO?.render(true));
 					} else {
 						$(elem).on("click", () => Array.from(game.items ?? [])
 							.find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type as K4ItemType) && item.name === iName)
-							?.sheet?.render(true));
+							?.sheetO?.render(true));
 					}
 				}
 			}

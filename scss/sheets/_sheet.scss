@@ -101,9 +101,8 @@
 
 			.tab-content {
 				grid-area: main;
-				border: 1px solid transparent;
-				border-image: var(--K4-border);
-				background: var(--K4-background);
+				// border: 1px solid transparent;
+				// border-image: var(--K4-border);
 				filter: drop-shadow(var(--K4-section-drop-shadow));
 				overflow: hidden;
 				padding:
@@ -293,7 +292,7 @@
 		opacity: 0;
 
 		i {
-				color: var(--K4-color-title-bg);
+				color: var(--K4-color-contrast);
 				font-size: $rem-48;
 				text-shadow: 0 0 4px var(--K4-color-primary-bright), 0 0 4px var(--K4-color-primary-bright), 0 0 4px var(--K4-color-primary-bright);
 				transform-origin: center center;

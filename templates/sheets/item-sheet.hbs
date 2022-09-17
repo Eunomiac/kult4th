@@ -1,8 +1,5 @@
 {{dbLog "{SHEET} item-sheet.hbs" this}}
 
 <form class="kult4th-form {{cssClass}}" autocomplete="off">
-	{{> "systems/kult4th/templates/components/form-header.hbs" docType=data.type docName=data.name isBullet=false}}
-	<main class="kult-text-container tab-content kult-{{data.type}}-container">
-		{{> "systems/kult4th/templates/partials/item-block.hbs"}}
-	</main>
+	{{> "systems/kult4th/templates/partials/item-block.hbs"}}
 </form>

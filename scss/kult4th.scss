@@ -14,8 +14,18 @@
 	--scrollbar-width: 6px;
 
 	@import 'globals/root';
-	@import 'globals/text-styles';
-	@import 'globals/icon-styles';
+
+	#ui-left,
+	#ui-middle,
+	#ui-right,
+	#notifications,
+	#hud,
+	#board,
+	#pause,
+	.app.window-app {
+		@import 'globals/text-styles';
+		@import 'globals/icon-styles';
+	}
 
 	.app.window-app {
 		@import 'globals/app';

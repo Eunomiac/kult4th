@@ -1,4 +1,4 @@
-<li class="chat-message message flexcol {{cssClass}}" data-message-id="{{message._id}}" {{#if borderColor}}style="border-color:{{borderColor}}"{{/if}}>
+<li class="chat-message message flexcol {{cssClass}}" data-message-id="{{message._id}}">
     <header class="message-header flexrow">
         <h4 class="message-sender">{{alias}}</h4>
         <span class="message-metadata">
@@ -9,14 +9,15 @@
         </span>
 
         {{#if isWhisper}}
-        <span class="whisper-to">{{localize 'CHAT.To'}}: {{whisperTo}}</span>
+        <span class="whisper-to">{{localize "kult4th.chat.to"}}: {{whisperTo}}</span>
         {{/if}}
 
         {{#if message.flavor}}
         <span class="flavor-text">{{{message.flavor}}}</span>
         {{/if}}
     </header>
-    <div class="message-content kult4th-chat">
-        {{{message.content}}}
+		<div class="message-content">
+			<div class="message-bg"></div>
+			{{{message.content}}}
     </div>
 </li>
