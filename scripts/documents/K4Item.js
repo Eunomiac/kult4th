@@ -5,130 +5,141 @@ class K4Item extends Item {
     prepareData() {
         super.prepareData();
         if (this.isOwnedItem() && this.isParentItem()) {
-            this.data.data.subMoves = this.data.data.subItems.filter((subData) => subData.type === "move" /* K4ItemType.move */);
-            this.data.data.subAttacks = this.data.data.subItems.filter((subData) => subData.type === "attack" /* K4ItemType.attack */);
+            this.system.subMoves = this.system.subItems.filter((subData) => subData.type === "move" /* K4ItemType.move */);
+            this.system.subAttacks = this.system.subItems.filter((subData) => subData.type === "attack" /* K4ItemType.attack */);
             if (this.isRollableItem()) {
-                this.data.data.results = this.data.data.subItems[0].data.results;
+                this.system.results = this.system.subItems[0].data.results;
             }
         }
     }
-    get itemSheet() {
-        if (this.isOwnedItem()) {
-            return this._sheet;
+    get key() { return this.system.key; }
+    _img;
+    get img() { return (this._img ??= `systems/kult4th/assets/icons/${this.masterType}/${this.key}.svg`); }
+    get itemSheet() { return this._sheet ?? null; }
+    get system() { return this.data.data; }
+    get masterKey() {
+        if (!this.isSubItem()) {
+            return this.key;
         }
-        return null;
+        if (!this.isOwnedSubItem()) {
+            return this.key;
+        }
+        return game.items?.getName(this.system.sourceItem.name)?.key ?? this.key;
     }
-    get key() { return this.data.data.key; }
-    // constructor(...args: ConstructorParameters<typeof Item>) {
-    // 	const data: ItemDataConstructorData = args[0]!;
-    // 	super(...args);
-    // }
-    get masterType() { return this.sourceItemData?.type ?? this.data.type; }
-    get masterName() { return this.isSubItem() ? this.data.data.sourceItem.name : this.name; }
-    isParentItem() { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }
-    isSubItem() { return Boolean("sourceItem" in this.data.data && this.data.data.sourceItem && this.data.data.sourceItem.name); }
+    get masterType() { return this.isSubItem() ? this.system.sourceItem.type : this.data.type; }
+    get masterName() { return this.isSubItem() ? this.system.sourceItem.name : this.name; }
+    isParentItem() { return Boolean("subItems" in this.system && this.system.subItems.length); }
+    isSubItem() { return Boolean("sourceItem" in this.system && this.system.sourceItem && this.system.sourceItem.name); }
     isOwnedItem() { return this.isEmbedded && this.parent instanceof Actor; }
     isOwnedSubItem() { return this.isSubItem() && this.isOwnedItem(); }
-    isRollableItem() { return this.data.data.subType === "active-rolled" /* K4ItemSubType.activeRolled */; }
-    isStaticItem() { return this.data.data.subType === "active-static" /* K4ItemSubType.activeStatic */; }
+    isRollableItem() { return this.system.subType === "active-rolled" /* K4ItemSubType.activeRolled */; }
+    isStaticItem() { return this.system.subType === "active-static" /* K4ItemSubType.activeStatic */; }
     isActiveItem() { return this.isRollableItem() || this.isStaticItem(); }
-    isPassiveItem() { return this.data.data.subType === "passive" /* K4ItemSubType.passive */; }
-    get subItems() {
-        return (this.isEmbedded && this.parent instanceof Actor && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : [];
-    }
-    get subMoves() {
-        return this.subItems.filter((subItem) => subItem.data.type === "move" /* K4ItemType.move */);
-    }
-    get subAttacks() {
-        return this.subItems.filter((subItem) => subItem.data.type === "attack" /* K4ItemType.attack */);
-    }
-    get sourceItemData() { return this.isSubItem() ? this.data.data.sourceItem : null; }
+    isPassiveItem() { return this.system.subType === "passive" /* K4ItemSubType.passive */; }
+    get subItems() { return (this.isOwnedItem() && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : []; }
+    get subMoves() { return this.subItems.filter((subItem) => subItem.data.type === "move" /* K4ItemType.move */); }
+    get subAttacks() { return this.subItems.filter((subItem) => subItem.data.type === "attack" /* K4ItemType.attack */); }
+    get sourceItemData() { return this.isSubItem() ? this.system.sourceItem : null; }
     get sourceItem() { return this.isOwnedSubItem() ? this.parent.getEmbeddedDocument("Item", this.data.data.sourceItem.id) : null; }
     applyEffectFunction(functionStr) {
+        if (!this.isOwnedItem()) {
+            return;
+        }
         const [funcName, ...params] = functionStr.split(/,/);
         switch (funcName) {
             case "AppendList": {
                 const [targetItemName, targetList, sourceList] = params;
-                const targetItem = this.parent?.items.find((item) => item.name === targetItemName && !item.isSubItem());
+                const targetItem = this.parent.getItemByName(targetItemName); // items.find((item) => item.name === targetItemName && !item.isSubItem());
                 kLog.log("Found Target Item", targetItem);
-                if (targetItem && targetItem.data.data.lists[targetList]) {
-                    const sourceListItems = this.data.data.lists[sourceList].items
-                        .map((listItem) => `${listItem} #>text-list-note:data-item-name='${this.name}':data-action='open'>(from ${this.name})<#`);
+                if (targetItem && targetItem.system.lists[targetList]) {
+                    const sourceListItems = this.system.lists[sourceList].items
+                        .map((listItem) => `${listItem} #>text-list-note:data-item-name='${this.masterName}':data-action='open'>(from ${this.masterName})<#`);
                     const updateData = [
                         { _id: targetItem.id, [`data.lists.${targetList}.items`]: [
-                                ...targetItem.data.data.lists[targetList].items,
+                                ...targetItem.system.lists[targetList].items,
                                 ...sourceListItems
                             ] }
                     ];
-                    this.parent?.updateEmbeddedDocuments("Item", updateData);
+                    this.parent.updateEmbeddedDocuments("Item", updateData);
                 }
             }
             // no default
         }
     }
     unapplyEffectFunction(functionStr) {
+        if (!this.isOwnedItem()) {
+            return;
+        }
         const [funcName, ...params] = functionStr.split(/,/);
         switch (funcName) {
             case "AppendList": {
                 const [targetItemName, targetList, sourceList] = params;
-                const targetMove = this.parent?.items.find((item) => item.name === targetItemName);
-                kLog.log("Found Target Move", targetMove);
-                if (targetMove && targetMove.data.data.lists[targetList]) {
-                    const prunedListItems = this.data.data.lists[sourceList].items
-                        .filter((listItem) => !(new RegExp(`data-item-name=.?${this.name}.?`)).test(listItem));
+                const targetItem = this.parent.getItemByName(targetItemName); // items.find((item) => item.name === targetItemName && !item.isSubItem());
+                kLog.log("Found Target Move", targetItem);
+                if (targetItem && targetItem.system.lists[targetList]) {
+                    const prunedListItems = this.system.lists[sourceList].items
+                        .filter((listItem) => !(new RegExp(`data-item-name=.?${this.masterName}.?`)).test(listItem));
                     const updateData = [
-                        { _id: targetMove.id, [`data.lists.${targetList}.items`]: [
+                        { _id: targetItem.id, [`data.lists.${targetList}.items`]: [
                                 ...prunedListItems
                             ] }
                     ];
-                    this.parent?.updateEmbeddedDocuments("Item", updateData);
+                    this.parent.updateEmbeddedDocuments("Item", updateData);
                 }
             }
             // no default
         }
     }
     prepareSubItemData() {
-        if (this.isParentItem()) {
-            return this.data.data.subItems
-                .map((subData) => {
-                subData.name ??= this.name;
-                subData.data.sourceItem.id = this.id;
-                if ("lists" in this.data.data) {
-                    subData.data.lists = {
-                        ...this.data.data.lists,
-                        ...subData.data.lists ?? {}
-                    };
-                }
-                return subData;
-            });
+        if (!this.isParentItem()) {
+            return [];
         }
-        return [];
+        return this.system.subItems
+            .map((subData) => {
+            subData.name ??= this.name;
+            subData.data.sourceItem.id = this.id;
+            if ("lists" in this.system) {
+                subData.data.lists = {
+                    ...this.system.lists,
+                    ...subData.data.lists ?? {}
+                };
+            }
+            return subData;
+        });
+    }
+    applyOnCreateEffectFunctions() {
+        if ("rules" in this.system && this.system.rules.effectFunctions) {
+            this.system.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
+        }
+    }
+    unapplyOnCreateEffectFunctions() {
+        if ("rules" in this.system && this.system.rules.effectFunctions) {
+            this.system.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
+        }
     }
     async _onCreate(...args) {
         await super._onCreate(...args);
-        if (this.isEmbedded && this.parent instanceof Actor) {
-            if (this.isParentItem()) {
-                await this.parent.createEmbeddedDocuments("Item", this.prepareSubItemData());
-            }
-            if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
-                this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
-            }
+        if (!this.isOwnedItem()) {
+            return;
         }
+        if (this.isParentItem()) {
+            await this.parent.createEmbeddedDocuments("Item", this.prepareSubItemData());
+        }
+        this.applyOnCreateEffectFunctions();
     }
     async _onDelete(...args) {
         await super._onDelete(...args);
-        if (this.isEmbedded && this.parent instanceof Actor) {
-            if (this.isParentItem()) {
-                this.subItems.forEach((item) => item.delete());
-            }
-            if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
-                this.data.data.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
-            }
+        if (!this.isOwnedItem()) {
+            return;
         }
+        if (this.isParentItem()) {
+            this.subItems.forEach((item) => item.delete());
+        }
+        this.unapplyOnCreateEffectFunctions();
     }
     // get isRollable(): boolean { return }
     get hoverStrip() {
-        const stripType = this.isSubItem() ? this.data.data.sourceItem.type : this.data.type;
+        const stripType = this.isSubItem() ? this.system.sourceItem.type : this.data.type;
         const theme = C.Themes[stripType];
         const stripData = {
             id: this.id ?? `${this.data.type}-${U.randString(5)}`,
@@ -149,9 +160,9 @@ class K4Item extends Item {
                         theme
                     ]
                 },
-            dataset: "attribute" in this.data.data
+            dataset: "attribute" in this.system
                 ? {
-                    "hover-target": `.attribute-box[data-attribute='${this.data.data.attribute}'] img`
+                    "hover-target": `.attribute-box[data-attribute='${this.system.attribute}'] img`
                 }
                 : {},
             buttons: []
@@ -211,7 +222,7 @@ class K4Item extends Item {
         return stripData;
     }
     async displayItemSummary(speaker) {
-        const template = await getTemplate(this.sheet?.template ?? "");
+        const template = await getTemplate(this.sheetO?.template ?? "");
         const content = template(Object.assign(this.toObject(), { key: this.key }));
         K4ChatMessage.create({
             content,

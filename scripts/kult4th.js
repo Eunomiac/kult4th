@@ -209,9 +209,9 @@ Hooks.once("ready", async () => {
     const ACTOR = game.actors?.values().next().value;
     const ITEM = game.items?.values().next().value;
     const EMBED = ACTOR.items?.values().next().value;
-    const ACTORSHEET = ACTOR?.sheet;
-    const ITEMSHEET = ITEM?.sheet;
-    const EMBEDSHEET = EMBED?.sheet;
+    const ACTORSHEET = ACTOR?.actorSheet;
+    const ITEMSHEET = ITEM?.itemSheet;
+    const EMBEDSHEET = EMBED?.itemSheet;
     Object.assign(globalThis, {
         gsap,
         MorphSVGPlugin,
@@ -240,7 +240,6 @@ async function preloadTemplates() {
             "attack-sheet"
         ]),
         ...U.getTemplatePath("components", [
-            "form-header",
             "hover-strip",
             "hover-strip-editable",
             "item-list",

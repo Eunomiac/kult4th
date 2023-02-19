@@ -244,9 +244,9 @@ Hooks.once("ready", async () => {
 	const ACTOR = game.actors?.values().next().value as K4Actor;
 	const ITEM = game.items?.values().next().value as K4Item;
 	const EMBED = ACTOR.items?.values().next().value as K4Item;
-	const ACTORSHEET = ACTOR?.sheet as unknown as K4PCSheet;
-	const ITEMSHEET = ITEM?.sheet as unknown as K4ItemSheet;
-	const EMBEDSHEET = EMBED?.sheet as unknown as K4ItemSheet;
+	const ACTORSHEET = ACTOR?.actorSheet;
+	const ITEMSHEET = ITEM?.itemSheet;
+	const EMBEDSHEET = EMBED?.itemSheet;
 
 	Object.assign(globalThis, {
 		gsap,
@@ -277,7 +277,6 @@ async function preloadTemplates() {
 			"attack-sheet"
 		]),
 		...U.getTemplatePath("components", [
-			"form-header",
 			"hover-strip",
 			"hover-strip-editable",
 			"item-list",

@@ -3,7 +3,10 @@ import K4ChatMessage from "./K4ChatMessage.js";
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 class K4Actor extends Actor {
-    // get kData() { return this.data.data }
+    get actorSheet() {
+        return this._sheet;
+    }
+    get system() { return this.data.data; }
     prepareData() {
         super.prepareData();
         if (this.data.type === "pc" /* K4ActorType.pc */) {
@@ -12,22 +15,22 @@ class K4Actor extends Actor {
     }
     preparePCData() {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
-            this.data.data.moves = this.moves;
-            this.data.data.basicMoves = this.basicMoves;
-            this.data.data.derivedMoves = this.derivedMoves;
-            this.data.data.attacks = this.attacks;
-            this.data.data.advantages = this.advantages;
-            this.data.data.disadvantages = this.disadvantages;
-            this.data.data.darkSecrets = this.darkSecrets;
-            this.data.data.weapons = this.weapons;
-            this.data.data.gear = this.gear;
-            this.data.data.relations = this.relations;
-            this.data.data.maxWounds = {
-                serious: this.data.data.modifiers.wounds_serious.length,
-                critical: this.data.data.modifiers.wounds_critical.length,
-                total: this.data.data.modifiers.wounds_serious.length + this.data.data.modifiers.wounds_critical.length
+            this.system.moves = this.moves;
+            this.system.basicMoves = this.basicMoves;
+            this.system.derivedMoves = this.derivedMoves;
+            this.system.attacks = this.attacks;
+            this.system.advantages = this.advantages;
+            this.system.disadvantages = this.disadvantages;
+            this.system.darkSecrets = this.darkSecrets;
+            this.system.weapons = this.weapons;
+            this.system.gear = this.gear;
+            this.system.relations = this.relations;
+            this.system.maxWounds = {
+                serious: this.system.modifiers.wounds_serious.length,
+                critical: this.system.modifiers.wounds_critical.length,
+                total: this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length
             };
-            this.data.data.modifiersReport = this.parseModsToStrings(this.flatModTargets).join("; ");
+            this.system.modifiersReport = this.parseModsToStrings(this.flatModTargets).join("; ");
             // this.validateStability();
         }
     }
@@ -38,7 +41,7 @@ class K4Actor extends Actor {
         return [...this.items].find((item) => item.name === iName);
     }
     getItemsBySource(sourceID) {
-        return [...this.items].filter((item) => item.isSubItem() && item.data.data.sourceItem.id === sourceID);
+        return [...this.items].filter((item) => item.isSubItem() && item.system.sourceItem.id === sourceID);
     }
     async dropItemByName(iName) {
         return [...this.items].find((item) => item.name === iName)?.delete();
@@ -58,7 +61,7 @@ class K4Actor extends Actor {
     get derivedItems() { return [...this.items].filter((item) => item.isSubItem()); }
     get wounds() {
         // if (this.type === K4ActorType.pc) {
-        return this.data.data.wounds;
+        return this.system.wounds;
         // } else {
         // return ;
         // }
@@ -133,9 +136,9 @@ class K4Actor extends Actor {
             return attrList.map((attrName) => ({
                 name: U.tCase(attrName),
                 key: attrName,
-                min: this.data.data.attributes[attrName].min,
-                max: this.data.data.attributes[attrName].max,
-                value: this.data.data.attributes[attrName].value
+                min: this.system.attributes[attrName].min,
+                max: this.system.attributes[attrName].max,
+                value: this.system.attributes[attrName].value
             }));
         }
         return [];
@@ -162,14 +165,14 @@ class K4Actor extends Actor {
         return userOutput.attribute || null;
     }
     validateStability() {
-        const { value, min, max } = this.data.data.stability;
+        const { value, min, max } = this.system.stability;
         if (U.clampNum(value, [min, max]) !== value) {
             this.update({ ["data.stability.value"]: U.clampNum(value, [min, max]) });
         }
     }
     changeStability(delta) {
         if (delta) {
-            const { value, min, max } = this.data.data.stability;
+            const { value, min, max } = this.system.stability;
             if (U.clampNum(value + delta, [min, max]) !== value) {
                 this.update({ ["data.stability.value"]: U.clampNum(value + delta, [min, max]) });
             }
@@ -183,9 +186,9 @@ class K4Actor extends Actor {
                 isCritical: type === "critical" /* K4WoundType.critical */,
                 isStabilized: false
             };
-            kLog.log("Starting Wounds", U.objClone(this.data.data.wounds));
+            kLog.log("Starting Wounds", U.objClone(this.system.wounds));
             await this.update({ [`data.wounds.${woundData.id}`]: woundData });
-            kLog.log("Updated Wounds", U.objClone(this.data.data.wounds));
+            kLog.log("Updated Wounds", U.objClone(this.system.wounds));
         }
     }
     async toggleWound(id, toggleSwitch) {
@@ -213,9 +216,9 @@ class K4Actor extends Actor {
     }
     async removeWound(id) {
         if (this.data.type === "pc" /* K4ActorType.pc */) {
-            kLog.log("Starting Wounds", U.objClone(this.data.data.wounds));
+            kLog.log("Starting Wounds", U.objClone(this.system.wounds));
             await this.update({ [`data.wounds.-=${id}`]: null });
-            kLog.log("Updated Wounds", this.data.data.wounds);
+            kLog.log("Updated Wounds", this.system.wounds);
         }
     }
     parseModsToStrings(modData = this.flatModTargets) {
@@ -237,13 +240,13 @@ class K4Actor extends Actor {
                 Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
             ];
             if (unstabSerious && unstabCritical) {
-                modData.targets = this.data.data.modifiers.wounds_seriouscritical[Math.min(unstabSerious, unstabCritical)];
+                modData.targets = this.system.modifiers.wounds_seriouscritical[Math.min(unstabSerious, unstabCritical)];
             }
             else if (unstabCritical) {
-                modData.targets = this.data.data.modifiers.wounds_critical[unstabCritical];
+                modData.targets = this.system.modifiers.wounds_critical[unstabCritical];
             }
             else if (unstabSerious) {
-                modData.targets = this.data.data.modifiers.wounds_serious[unstabSerious];
+                modData.targets = this.system.modifiers.wounds_serious[unstabSerious];
             }
         }
         return modData;
@@ -255,7 +258,7 @@ class K4Actor extends Actor {
             targets: {}
         };
         if (this.data.type === "pc" /* K4ActorType.pc */) {
-            modData.targets = this.data.data.modifiers.stability[this.data.data.stability.value];
+            modData.targets = this.system.modifiers.stability[this.system.stability.value];
         }
         return modData;
     }
@@ -302,35 +305,21 @@ class K4Actor extends Actor {
         });
         return flatTargets;
     }
-    applyRollModifiers(rollData) {
-        function checkModTarget(target) {
-            return ["all", rollData.sourceType, rollData.sourceName, rollData.attribute].includes(target);
-        }
-        function checkMod(modData) {
-            const mod = { category: modData.category, display: modData.display, value: 0 };
-            for (const [target, value] of Object.entries(modData.targets)) {
-                if (checkModTarget(target)) {
-                    mod.value += value;
-                }
+    async roll(rollSource, options = {}) {
+        const rollResults = await this.#getRoll(rollSource, options);
+        if (rollResults) {
+            await rollResults.roll.evaluate({ async: true });
+            if (game.dice3d) {
+                await game.dice3d.showForRoll(rollResults.roll);
             }
-            if (mod.value === 0) {
-                return null;
+            if (rollResults.roll.total) {
+                kLog.log("Roll Successful", { roll: rollResults.roll, rollData: rollResults.rollData, options });
+                this.#displayRollResult(rollResults.roll, rollResults.rollData, options);
             }
-            return mod;
         }
-        return {
-            ...rollData,
-            modifiers: [
-                this.woundModData,
-                this.stabilityModData,
-                ...this.conditionModData,
-                ...this.effectModData
-            ]
-                .map(checkMod)
-                .filter((mod) => mod !== null)
-        };
     }
-    async getRoll(rollSourceRef, options) {
+    async trigger(rollSource) { this.getItemByName(rollSource)?.displayItemSummary(); }
+    async #getRoll(rollSourceRef, options) {
         let rollSource;
         const rollData = {};
         if (rollSourceRef === "ask" /* K4Attribute.ask */) {
@@ -360,7 +349,7 @@ class K4Actor extends Actor {
                 rollData.sourceType = rollSource.masterType;
                 rollData.sourceName = rollSource.name;
                 rollData.sourceImg = rollSource.img;
-                if (rollSource.data.data.attribute === "ask" /* K4Attribute.ask */) {
+                if (rollSource.system.attribute === "ask" /* K4Attribute.ask */) {
                     const attrResponse = await this.askForAttribute();
                     if (attrResponse) {
                         rollData.attribute = attrResponse;
@@ -370,7 +359,7 @@ class K4Actor extends Actor {
                     }
                 }
                 else {
-                    rollData.attribute = rollSource.data.data.attribute;
+                    rollData.attribute = rollSource.system.attribute;
                 }
                 rollData.attrName = U.loc(`trait.${rollData.attribute}`);
                 rollData.attrVal = rollData.attribute === "zero" /* K4Attribute.zero */ ? 0 : this.attributes[rollData.attribute];
@@ -388,7 +377,7 @@ class K4Actor extends Actor {
             else {
                 throw new Error(`Unable to compile roll data for rollRef '${String(rollSourceRef)}'`);
             }
-            const finalData = this.applyRollModifiers(rollData);
+            const finalData = this.#applyRollModifiers(rollData);
             kLog.log("RETRIEVED ROLL DATA", finalData);
             return {
                 roll: new Roll([
@@ -403,7 +392,35 @@ class K4Actor extends Actor {
         }
         return false;
     }
-    async displayRollResult(roll, rollData, options) {
+    #applyRollModifiers(rollData) {
+        function checkModTarget(target) {
+            return ["all", rollData.sourceType, rollData.sourceName, rollData.attribute].includes(target);
+        }
+        function checkMod(modData) {
+            const mod = { category: modData.category, display: modData.display, value: 0 };
+            for (const [target, value] of Object.entries(modData.targets)) {
+                if (checkModTarget(target)) {
+                    mod.value += value;
+                }
+            }
+            if (mod.value === 0) {
+                return null;
+            }
+            return mod;
+        }
+        return {
+            ...rollData,
+            modifiers: [
+                this.woundModData,
+                this.stabilityModData,
+                ...this.conditionModData,
+                ...this.effectModData
+            ]
+                .map(checkMod)
+                .filter((mod) => mod !== null)
+        };
+    }
+    async #displayRollResult(roll, rollData, options) {
         if (U.isUndefined(roll.total)) {
             return;
         }
@@ -418,15 +435,15 @@ class K4Actor extends Actor {
         };
         const cssClasses = ["chat-roll-result", `${rollData.sourceType}-roll`];
         if (roll.total >= 15) {
-            templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.completeSuccess : { result: "" };
+            templateData.result = isItem(rollData.source) ? rollData.source.system.results.completeSuccess : { result: "" };
             cssClasses.push("roll-success");
         }
         else if (roll.total >= 9) {
-            templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.partialSuccess : { result: "" };
+            templateData.result = isItem(rollData.source) ? rollData.source.system.results.partialSuccess : { result: "" };
             cssClasses.push("roll-partial");
         }
         else {
-            templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.failure : { result: "" };
+            templateData.result = isItem(rollData.source) ? rollData.source.system.results.failure : { result: "" };
             cssClasses.push("roll-failure");
         }
         cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
@@ -444,29 +461,8 @@ class K4Actor extends Actor {
             speaker: K4ChatMessage.getSpeaker()
         });
     }
-    async roll(rollSource, options = {}) {
-        const rollResults = await this.getRoll(rollSource, options);
-        if (rollResults) {
-            // const {roll, rollData} = await this.getRoll(rollSource, options);
-            await rollResults.roll.evaluate({ async: true });
-            if (game.dice3d) {
-                await game.dice3d.showForRoll(rollResults.roll);
-            }
-            if (rollResults.roll.total) {
-                kLog.log("Roll Successful", { roll: rollResults.roll, rollData: rollResults.rollData, options });
-                // this.update({"data.sitmod": 0});
-                // kLog.log(`Sitmod is ` + this.data.data.sitmod);
-                this.displayRollResult(rollResults.roll, rollResults.rollData, options);
-            }
-        }
-    }
-    trigger(rollSource) {
-        const triggeredItem = this.getItemByName(rollSource);
-        if (triggeredItem instanceof K4Item) {
-            triggeredItem.displayItemSummary();
-        }
-    }
-    async _onCreate(...[actorData, ...args]) {
+    async _onCreate(...params) {
+        await super._onCreate(...params);
         if (this.type === "pc" /* K4ActorType.pc */) {
             const pack = await game.packs.get("kult4th.k4-basic-player-moves");
             if (pack) {

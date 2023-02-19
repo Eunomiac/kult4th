@@ -25,10 +25,12 @@
 			<img src="systems/kult4th/assets/icons/roll-terms/ten-sided-die.svg" />
 			<span class="roll-d10-value">{{dice.[0]}}</span>
 		</div>
+		{{#unless (eq rollData.attribute "zero")}}
 		<div class="roll-term-container attribute-{{rollData.attribute}}">
 			<img src="systems/kult4th/assets/icons/roll-terms/{{rollData.attribute}}.svg" />
 			<span class="roll-d10-value" data-attrVal="{{rollData.attrVal}}">{{signNum rollData.attrVal}}</span>
 		</div>
+		{{/unless}}
 		<div class="roll-term-container roll-d10">
 			<img src="systems/kult4th/assets/icons/roll-terms/ten-sided-die.svg" />
 			<span class="roll-d10-value">{{dice.[1]}}</span>

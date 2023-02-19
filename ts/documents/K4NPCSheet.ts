@@ -192,7 +192,7 @@ const ANIMATIONS = {
 export default class K4NPCSheet extends ActorSheet {
 	_actor?: any;
 	get $entity(): K4Entity { return this.object ?? this }
-	get $sheet(): K4Sheet|false { return (this.$entity.sheet ?? false) as K4Sheet|false }
+	get $sheet(): K4Sheet|false { return (this.$entity.sheetO ?? false) as K4Sheet|false }
 	get $actor(): K4Actor|false {
 		return (this._actor = this._actor
 			?? this.actor

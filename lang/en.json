@@ -86,6 +86,9 @@
 			"revenant": "Revenant",
 			"timeAndSpaceMagician": "Time and Space Magician"
 		},
+		"chat": {
+			"to": "to"
+		},
 		"roll": {
 			"someone": "Someone",
 			"success": "Success",

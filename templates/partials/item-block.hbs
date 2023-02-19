@@ -1,4 +1,6 @@
 	<main class="kult-text-container tab-content kult-{{data.type}}-container">
+		<label class="k4-title item-title">{{title}}</label>
+
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
 			{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
 		{{/unless}}

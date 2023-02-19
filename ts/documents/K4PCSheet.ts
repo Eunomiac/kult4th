@@ -674,7 +674,7 @@ export default class K4PCSheet extends ActorSheet {
 				.each(function addItemOpenEvents() {
 					const itemName = $(this).attr("data-item-name");
 					if (itemName) {
-						$(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
+						$(this).on("click", () => self.actor.getItemByName(itemName)?.sheetO?.render(true));
 					}
 				});
 			html.find("*[data-action=\"roll\"]")
@@ -794,7 +794,7 @@ export default class K4PCSheet extends ActorSheet {
 				});
 			html.find(".header-button.close")
 				.each(function closeSheetEvent() {
-					$(this).on("click", () => self.actor.sheet?.close());
+					$(this).on("click", () => self.actor.sheetO?.close());
 				});
 
 			html.find(".header-button.minimize")
