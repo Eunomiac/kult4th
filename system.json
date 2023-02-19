@@ -7,7 +7,7 @@
 	"compatibility": {
 		"minimum": "0.8.4",
 		"verified": 9,
-		"maximum": 9
+		"maximum": 10
 	},
   "authors": [{
 		"name": "Ryan West",
