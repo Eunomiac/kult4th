@@ -1,0 +1,9 @@
+{{dbLog "Roll Result Entry THIS" this}}
+<div class="result-entry">
+	{{#if context}}
+	<span>{{{formatForKult result.result context}}}</span>
+	{{else}}
+	<label class="text-tag text-resultlabel">{{{diceRange}}}</label>
+	<span>{{{formatForKult result}}}</span>
+	{{/if}}
+</div>

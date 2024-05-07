@@ -1,9 +1,0 @@
-{{dbLog "{comp} HOVER STRIP EDITABLE" this}}
-
-<div class="hover-strip {{~#each stripClasses}} {{this}}{{/each}}" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}>
-	<span class="strip-bg"></span>
-	<div id="{{id}}" class="strip-name content-editable clamp-text" data-field="{{dataTarget}}" data-placeholder="{{placeholder}}" data-clamplines="1" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"{{/each}}{{/if}}> </div>
-	<div class="icon-container">
-		<img src="{{icon}}" />
-	</div>
-</div>

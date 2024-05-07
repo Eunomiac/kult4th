@@ -2,6 +2,7 @@
 **/lang/**
 **/packs/**
 **/assets/**
+**/.dev-refs/**
 .gitattributes
 .stylelintignore
 .stylelintrc.js

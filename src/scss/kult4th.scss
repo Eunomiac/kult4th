@@ -1,0 +1,66 @@
+@import 'globals/functions';
+@import 'globals/typography';
+
+.vtt.game.system-kult4th {
+	@import 'globals/colors';
+
+	// @include cq-prolyfill("width >= 1000px") {
+	// 	outline: 3px solid lime !important;
+	// }
+
+	$isDebugging: false;
+	$isDebuggingChat: false;
+	@import 'debug';
+	--scrollbar-width: 6px;
+
+	@import 'globals/root';
+
+	#ui-left,
+	#ui-middle,
+	#ui-right,
+	#notifications,
+	#hud,
+	#board,
+	#pause,
+	.app.window-app {
+		@import 'globals/text-styles';
+		@import 'globals/icon-styles';
+	}
+
+	.app.window-app {
+		@import 'globals/app';
+
+		&.kult4th-sheet {
+			@import 'sheets/sheet';
+
+			&.actor {
+				@import 'sheets/actor-sheet';
+			}
+			&.item {
+				@import 'sheets/item-sheet';
+			}
+		}
+		&.dialog {
+			@import 'dialog/dialog';
+		}
+	}
+
+	#ui-right {
+		#sidebar {
+
+			/* FOUNDRY OVERRIDES */
+			--sidebar-width: 300px;
+			--sidebar-internal-width: calc(var(--sidebar-width) - var(--scrollbar-width));
+			--sidebar-header-height: 32px; // 0px; // 32px;
+			--sidebar-item-height: 48px; // 80px; // 48px;
+
+			border: none;
+			box-shadow: none;
+			overflow: visible;
+
+			@include set-default-theme()
+
+			#chat { @import 'sidebar/chat' }
+		}
+	}
+}

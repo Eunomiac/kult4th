@@ -1,0 +1,48 @@
+{
+  "extends": "@tsconfig/node21/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "checkJs": false,
+            "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+          "paths": {
+            "*": [
+              "*",
+              "D:/Projects/.CODING/FoundryVTT/FoundryV10DistData/Data/modules/*",
+              "D:/Projects/.CODING/FoundryVTT/FoundryV10DevData/Data/modules/*",
+              "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/*"
+            ]
+          },
+    "plugins": [
+      {
+        "name": "typescript-eslint-language-service"
+      }
+    ],
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "traceResolution": false,
+    "types": [
+      "@league-of-foundry-developers/foundry-vtt-types"
+    ]
+  },
+  "include": [
+    "./src/ts/**/*.ts"
+  ]
+}

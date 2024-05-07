@@ -1,52 +1,173 @@
 {
 	"version": "2.0.0",
-	"tasks": [
+  "tasks": [
     {
-      "label": "Launch System",
+      "label": "[MULTI] Run Foundry Server",
       "type": "shell",
-      "command": "powershell",
-      "args": ["-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/run-tasks.ps1"],
-      "problemMatcher": [],
-      "group": "build"
-    },
-    {
-      "label": "Kill System",
-      "type": "shell",
-      "command": "powershell",
-      "args": ["-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/kill-tasks.ps1"],
-      "problemMatcher": []
-    },
-		{
-      "label": "GULP Custom CSS",
-      "type": "shell",
-      "command": "npm run-script 'build all' -- --compileCustomCSS true",
-      "group": "build",
-      "problemMatcher": [],
-      "detail": "gulp css"
-    },
-    {
-      "label": "Typedoc",
-      "type": "shell",
-      "command": "typedoc --out ./tsdocs --hideGenerator --navigation --sort source-order --includes ./node_modules/@league-of-foundry-developers/foundry-vtt-types --entryPointStrategy expand --exclude **/*.d.ts ./ts",
-      "problemMatcher": [],
+      "command": "node",
+      "args": [
+        "C:/FoundryVTT/v11/Foundry Virtual Tabletop/resources/app/main.js",
+        "--world=kult-dev",
+        "--port=31100",
+        "--dataPath=D:/Projects/.CODING/FoundryVTT/FoundryV11DistData",
+        "--hotReload"
+      ],
       "presentation": {
+        "echo": true,
         "reveal": "always",
-        "panel": "new"
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [
+        {
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Running on Node\\.js.*$",
+            "endsPattern": "^.*Created client session.*$"
+          },
+          "pattern": {
+            "regexp": "Error:\\s*(.*)$",
+            "message": 1
+          },
+          "severity": "error",
+          "source": "foundry-vtt"
+        },
+        {
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Running on Node\\.js.*$",
+            "endsPattern": "^.*Created client session.*$"
+          },
+          "pattern": {
+            "regexp": "(^\\(node:.*DeprecationWarning.*$)",
+            "message": 1
+          },
+          "severity": "info",
+          "source": "foundry-vtt"
+        },
+        {
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Running on Node\\.js.*$",
+            "endsPattern": "^.*Created client session.*$"
+          },
+          "pattern": {
+            "regexp": "^FoundryVTT.*?warn\\]\\s+(.*)$",
+            "message": 1
+          },
+          "severity": "warning",
+          "source": "foundry-vtt"
+        },
+        {
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Running on Node\\.js.*$",
+            "endsPattern": "^.*Created client session.*$"
+          },
+          "pattern": {
+            "regexp": "^FoundryVTT.*?error\\]\\s+(.*)$",
+            "message": 1
+          },
+          "severity": "error",
+          "source": "foundry-vtt"
+        }
+      ]
+    },
+    {
+      "label": "[Dep] Build TinyMCE",
+      "type": "shell",
+      "command": "npx sass src/scss/tmce-editor.scss:public/css/tmce-editor.css",
+      "group": "build",
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": {
+        "owner": "sass",
+        "fileLocation": ["absolute"],
+        "pattern": [
+          {
+            "regexp": "^[0-9]+(?::[0-9]{1,2}){2}.*?server error:\\s*(.*)$",
+            "message": 1
+          },
+          {
+            "regexp": "^\\s*╵"
+          },
+          {
+            "regexp": "^\\s+(src\\scss\\.*?scss)\\s*(\\d+):(\\d+)",
+            "file": 1,
+            "line": 2,
+            "column": 3
+          }
+        ]
       }
     },
-		{
-      "label": "types",
-			"type": "npm",
-			"script": "emit types",
-			"problemMatcher": [],
-			"detail": "gulp types"
-		},
-		{
-      "label": "npm: preinstall",
-			"type": "npm",
-			"script": "preinstall",
-			"problemMatcher": [],
-			"detail": "npx npm-force-resolutions"
-		}
-	]
+    {
+      "label": "[MULTI] Run Vite Dev Server",
+      "type": "shell",
+      "command": "npx vite",
+      "group": "build",
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      },
+      "dependsOn": ["[Dep] Build TinyMCE"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "LINTING FIX: Fix Indentation",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/d", "/c",
+        "set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --format html --ignore-path .eslintignore --color --fix . > ./.status-reports/fix-indentation.html"
+      ],
+      "problemMatcher": "$eslint-stylish",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "LINTING SCAN: Deployment",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/d", "/c",
+        "set \"DEPLOYING=true\" && set \"JSDOC=true\" && set \"FIXING_COMMENTS=true\" && set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --format html --ignore-path .eslintignore --color . > ./.status-reports/scan-deployment.html"
+      ],
+      "problemMatcher": "$eslint-stylish",
+      "group": "test"
+    },
+    {
+      "label": "LINTING FIX: Deployment",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/d", "/c",
+        "set \"DEPLOYING=true\" && set \"JSDOC=true\" && set \"FIXING_COMMENTS=true\" && set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --ignore-path .eslintignore --color --fix ."
+      ],
+      "problemMatcher": "$eslint-stylish",
+      "group": "test"
+    },
+    {
+      "label": "LINTING SCAN: All Rules",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/d", "/c",
+        "set \"ALL_RULES_ACTIVE=true\" && set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --config .eslintrc.cjs --format html --ignore-path .eslintignore --color . > ./.status-reports/scan-all-rules.html"
+      ],
+      "problemMatcher": "$eslint-stylish",
+      "group": "test"
+    }
+  ]
 }

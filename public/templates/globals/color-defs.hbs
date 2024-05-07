@@ -1,0 +1,9 @@
+{{dbLog "Color Defs" this}}
+
+<style>
+	* {
+		{{#each colors as |color name|}}
+			--K4-{{{name}}}: {{{color}}};
+		{{/each}}
+	}
+</style>

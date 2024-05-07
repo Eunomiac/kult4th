@@ -1,9 +1,0 @@
-// ████████████████████████████████████████
-// █████████ WORKSPACE SETTINGS ███████████
-// ████████████████████████████████████████
-{
-  "sonarlint.connectedMode.project": {
-    "connectionId": "eunomiac",
-    "projectKey": "Eunomiac_kult4th"
-  }
-}

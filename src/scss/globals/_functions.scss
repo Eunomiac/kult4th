@@ -1,0 +1,34 @@
+@import '../third-party/sassmeister/sassmeister';
+@import '../third-party/cq-prolyfill/cq-prolyfill';
+
+@function to-url($path, $subFolder: false) {
+	@if ($subFolder) {
+		@return unquote(str-insert(str-insert(str-insert(str-insert('url("../assets/',
+			$subFolder,
+			1000),
+			"/",
+			1000),
+			$path,
+			1000),
+		'")',
+		1000));
+	}
+	@return unquote(str-insert(str-insert('url("../assets/',
+				$path,
+				1000),
+			'")',
+			1000));
+}
+
+@mixin to-mask($size, $radius, $padding: (0px 0px), $filter: none, $isExclusion: false) {
+	$cx: 50; $cy: 50;
+	$padding-x: to-number(nth($padding, 1));
+	$padding-y: to-number(nth($padding, 2));
+	$sheet-mask: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="#{$cx}" cy="#{$cy}" r="#{$radius}" fill="black" filter="#{$filter}" /></svg>';
+
+	@if ($isExclusion) {
+		mask-composite: exclude;
+	}
+
+	mask: url('#{$sheet-mask}') #{$padding-x - 0.5 * $size} #{$padding-y - 0.5 * $size}/#{$size} #{$size} no-repeat, linear-gradient(#fff, #fff);
+}

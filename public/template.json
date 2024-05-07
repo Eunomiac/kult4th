@@ -1,0 +1,235 @@
+{
+	"Actor": {
+		"types": [
+			"pc",
+			"npc"
+		],
+		"pc": {
+			"archetype": "",
+			"description": "",
+			"history": "",
+			"dramaticHooks": [
+				{
+					"value": "",
+					"isChecked": false
+				},
+				{
+					"value": "",
+					"isChecked": false
+				}
+			],
+			"attributes": {
+				"willpower": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"fortitude": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"reflexes": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"reason": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"intuition": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"perception": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"coolness": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"violence": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"charisma": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				},
+				"soul": {
+					"min": -5,
+					"max": 7,
+					"value": 0
+				}
+			},
+			"wounds": {},
+			"modifiers": {
+				"wounds_serious": [
+					{},
+					{"all": -1},
+					{"all": -1},
+					{"all": -1},
+					{"all": -1}
+				],
+				"wounds_critical": [
+					{},
+					{"all": -1}
+				],
+				"wounds_seriouscritical": [
+					{},
+					{"all": -2}
+				],
+				"stability": [
+					{"disadvantage": -3, "Keep It Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep It Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep It Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep It Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -3, "Keep It Together": -2, "See Through the Illusion": 1},
+					{"disadvantage": -2, "Keep It Together": -1},
+					{"disadvantage": -2, "Keep It Together": -1},
+					{"disadvantage": -2, "Keep It Together": -1},
+					{"disadvantage": -1},
+					{"disadvantage": -1},
+					{}
+				]
+			},
+			"stability": {
+				"min": 1,
+				"max": 10,
+				"value": 10
+			},
+			"edges": {
+				"sourceName": "",
+				"value": 0
+			}
+		},
+		"npc": {}
+	},
+	"Item": {
+		"types": [
+			"move",
+			"attack",
+			"advantage",
+			"disadvantage",
+			"darksecret",
+			"relation",
+			"weapon",
+			"gear"
+		],
+		"templates": {
+			"base": {
+				"key": "",
+				"description": "",
+				"lists": {},
+				"subType": "",
+				"isCustom": true,
+				"pdfLink": ""
+			},
+			"hasSubItems": {
+				"subItems": []
+			},
+			"canSubItem": {
+				"sourceItem": {
+					"name": "",
+					"id": "",
+					"type": ""
+				}
+			},
+			"rulesData": {
+				"rules": {
+					"intro": "",
+					"trigger": "",
+					"outro": "",
+					"listRefs": [],
+					"effectFunctions": [],
+					"holdText": ""
+				}
+			},
+			"resultsData": {
+				"results": {
+					"completeSuccess": {
+						"result": "",
+						"listRefs": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"partialSuccess": {
+						"result": "",
+						"listRefs": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"failure": {
+						"result": "",
+						"listRefs": [],
+						"effectFunctions": [],
+						"edges": 0,
+						"hold": 0
+					},
+					"listRefs": []
+				}
+			}
+		},
+		"move": {
+			"templates": ["base", "canSubItem", "rulesData", "resultsData"],
+			"attribute": ""
+		},
+		"attack": {
+			"templates": ["base", "canSubItem", "rulesData", "resultsData"],
+			"range": ["arm"],
+			"harm": 0,
+			"ammo": 0
+		},
+		"advantage": {
+			"templates": ["base", "hasSubItems", "rulesData"],
+			"attribute": "",
+			"currentHold": 0,
+			"currentEdges": 0
+		},
+		"disadvantage": {
+			"templates": ["base", "hasSubItems", "rulesData"],
+			"attribute": "",
+			"currentHold": 0
+		},
+		"darksecret": {
+			"templates": ["base", "rulesData"],
+			"drive": "",
+			"currentHold": 0,
+			"playerNotes": "",
+			"gmNotes": ""
+		},
+		"relation": {
+			"templates": ["base"],
+			"target": "",
+			"strength": {
+				"min": 0,
+				"max": 2,
+				"value": 0
+			}
+		},
+		"weapon": {
+			"templates": ["base", "hasSubItems", "rulesData"],
+			"class": "",
+			"subClass": "",
+			"ammo": {
+				"min": 0,
+				"max": 0,
+				"value": 0
+			}
+		},
+		"gear": {
+			"templates": ["base", "rulesData"],
+			"armor": 0
+		}
+	}
+}
