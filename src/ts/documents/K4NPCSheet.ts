@@ -8,7 +8,7 @@ import gsap, {GSDevTools} from "gsap/all";
 // #endregion
 
 const ANIMATIONS = {
-  hoverNav(target: HTMLElement, context: JQuery): gsapAnim {
+  hoverNav(target: HTMLElement): gsapAnim {
     const headerButtons = target.getElementsByClassName("header-button");
     return gsap
       .timeline({
@@ -45,7 +45,7 @@ const ANIMATIONS = {
         0
       );
   },
-  hoverTab(target: HTMLElement, context: JQuery): gsapAnim {
+  hoverTab(target: HTMLElement): gsapAnim {
     const tabLabel$ = $(target).find(".nav-tab-label");
     const tabAnimation$ = $(target).find(".nav-tab-animation");
     return gsap
@@ -83,7 +83,7 @@ const ANIMATIONS = {
         0
       );
   },
-  hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
+  hoverMove(target: HTMLElement): gsapAnim {
     const FULL_DURATION = 0.5;
 
     const attribute = $(target).data("attribute");
@@ -103,7 +103,7 @@ const ANIMATIONS = {
           width: "100%",
           borderRadius: 0,
           duration: FULL_DURATION,
-          backgroundColor: C.Colors["bGOLD"],
+          backgroundColor: C.Colors.bGOLD,
           ease: "sine"
         },
         0
@@ -117,13 +117,13 @@ const ANIMATIONS = {
           textShadow: 0
         },
         {
-          x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`)) - 40,
+          x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`, 10)) - 40,
           width: 0,
           color: C.Colors.BLACK,
           textShadow: [
-            ...new Array(4).fill(`0 0 15px ${C.Colors["bGOLD"]}`),
-            ...new Array(6).fill(`0 0 5px ${C.Colors["bGOLD"]}`),
-            ...new Array(4).fill(`0 0 2px ${C.Colors["bGOLD"]}`)
+            ...Array.from({length: 4}).fill(`0 0 15px ${C.Colors.bGOLD}`),
+            ...Array.from({length: 6}).fill(`0 0 5px ${C.Colors.bGOLD}`),
+            ...Array.from({length: 4}).fill(`0 0 2px ${C.Colors.bGOLD}`)
           ].join(", "),
           duration: FULL_DURATION,
           ease: "back"
@@ -145,7 +145,7 @@ const ANIMATIONS = {
         },
         0.01
       ).fromTo(
-        $(target).find(".trigger-tooltip"),
+        toolTip$,
         {
           opacity: 0,
           bottom: 30,
@@ -162,7 +162,8 @@ const ANIMATIONS = {
       );
 
     if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
-      const animation$ = context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`);
+      const context$ = $(target).closest(".tab-content");
+      const animation$ = context$.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`);
       tl
         .fromTo(
           animation$,
@@ -194,20 +195,21 @@ const ANIMATIONS = {
   }
 };
 export default class K4NPCSheet extends ActorSheet {
-  _actor?: any;
-  get $entity(): K4Entity { return this.object ?? this }
-  get $sheet(): K4Sheet|false { return (this.$entity.sheetO ?? false) as K4Sheet|false }
+  _actor?: K4Actor;
+  get $entity(): EntityDoc { return this.object ?? this; }
+  get $sheet(): EntitySheet|false { return (this.$entity.sheet ?? false) as EntitySheet|false; }
   get $actor(): K4Actor|false {
-    return (this._actor = this._actor
-      ?? this.actor
-      ?? (this.$entity.documentName === "Actor" ? this.$entity : false));
+    if (this._actor) { return this._actor; }
+    if (this.$entity.documentName !== "Actor") { return false; }
+    this._actor = this.actor ?? this.$entity;
+    return this._actor!;
   }
 
-  get $id() { return this.$entity.id }
-  get $type() { return this.$entity.type }
+  get $id() { return this.$entity.id; }
+  get $type() { return this.$entity.type; }
 
-  get $root() { return this.$entity.data }
-  get $data() { return this.$root.data }
+  get $root() { return this.$entity.data; }
+  get $data() { return this.$root.data; }
 
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -217,7 +219,7 @@ export default class K4NPCSheet extends ActorSheet {
       ]
     });
   }
-  override get template() { return "systems/kult4th/templates/sheets/npc-sheet.hbs" }
+  override get template() { return "systems/kult4th/templates/sheets/npc-sheet.hbs"; }
 
   hoverTimeline?: gsapAnim;
   hoverTimelineTarget?: HTMLElement;
@@ -264,7 +266,7 @@ export default class K4NPCSheet extends ActorSheet {
             perspective: 600,
             transformStyle: "preserve-3d"
           });
-          const hoverTimeline = ANIMATIONS.hoverNav(navPanel, html);
+          const hoverTimeline = ANIMATIONS.hoverNav(navPanel);
 
           $(navPanel).on("mouseenter", () => {
             if (!$(navPanel).data("isHovered")) {
@@ -289,7 +291,7 @@ export default class K4NPCSheet extends ActorSheet {
                 const maxX = $(navPanel).width() ?? 0;
                 const maxY = $(navPanel).height() ?? 0;
 
-                if (!maxX || !maxY) { return }
+                if (!maxX || !maxY) { return; }
 
                 const posX = U.pInt(event.clientX) - (self.position.left ?? 0); // event.offsetX;
                 const posY = U.pInt(event.clientY) - (self.position.top ?? 0); // event.offsetY;
@@ -315,9 +317,9 @@ export default class K4NPCSheet extends ActorSheet {
         });
 
       html.find(".nav-tab")
-        .each(function initNavTab() {
+        .each(function() {
           gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
-          hoverTimelines.push([this, ANIMATIONS.hoverTab(this, html)]);
+          hoverTimelines.push([this, ANIMATIONS.hoverTab(this)]);
         });
 
       hoverTimelines.forEach(([target, anim]) => {

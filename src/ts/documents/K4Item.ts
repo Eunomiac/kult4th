@@ -10,7 +10,9 @@ import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt
 // #endregion
 
 
-export const enum K4ItemType {
+
+
+export enum K4ItemType {
   advantage = "advantage",
   disadvantage = "disadvantage",
   move = "move",
@@ -21,18 +23,18 @@ export const enum K4ItemType {
   weapon = "weapon"
 }
 
-export const enum K4ItemSubType {
+export enum K4ItemSubType {
   activeRolled = "active-rolled",
   activeStatic = "active-static",
   passive = "passive"
 }
-export const enum K4ItemRange {
+export enum K4ItemRange {
   arm = "arm",
   room = "room",
   field = "field",
   horizon = "horizon"
 }
-export const enum K4WeaponClass {
+export enum K4WeaponClass {
   meleeUnarmed = "melee-unarmed",
   meleeCrush = "melee-crush",
   meleeSlash = "melee-slash",
@@ -40,7 +42,7 @@ export const enum K4WeaponClass {
   firearm = "firearm",
   bomb = "bomb"
 }
-export const enum K4ItemResultType {
+export enum K4ItemResultType {
   completeSuccess = "completeSuccess",
   partialSuccess = "partialSuccess",
   failure = "failure"
@@ -48,48 +50,50 @@ export const enum K4ItemResultType {
 
 class K4Item extends Item {
 
+  hasSubMoves(): this is K4ParentItem { return "subMoves" in this.system; }
+
   override prepareData() {
     super.prepareData();
-    if (this.isOwnedItem() && this.isParentItem()) {
+    if (this.isOwnedItem() && this.isParentItem() && "subMoves" in this.system) {
       this.system.subMoves = this.system.subItems.filter((subData) => subData.type === K4ItemType.move) as K4ItemSourceData.subMove[];
       this.system.subAttacks = this.system.subItems.filter((subData) => subData.type === K4ItemType.attack) as K4ItemSourceData.subAttack[];
-      if (this.isRollableItem()) {
+      if (this.isRollableItem() && "results" in this.system) {
         this.system.results = this.system.subItems[0].data.results;
       }
     }
   }
 
-  get key() { return this.system.key }
+  get key() { return this.system.key; }
   _img?: string;
-  override get img(): string { return (this._img ??= `systems/kult4th/assets/icons/${this.masterType}/${this.key}.svg`) }
-  get itemSheet(): typeof this._sheet & K4ItemSheet | null { return this._sheet as typeof this._sheet & K4ItemSheet ?? null }
-  get system() { return this.data.data as typeof this["data"]["data"] }
+  override get img(): string { return (this._img ??= `systems/kult4th/assets/icons/${this.masterType}/${this.key}.svg`); }
+  get itemSheet(): typeof this._sheet & K4ItemSheet | null { return this._sheet as typeof this._sheet & K4ItemSheet ?? null; }
+  get system() { return this.data.data as typeof this["data"]["data"]; }
 
   get masterKey(): string {
-    if (!this.isSubItem()) { return this.key }
-    if (!this.isOwnedSubItem()) { return this.key }
+    if (!this.isSubItem()) { return this.key; }
+    if (!this.isOwnedSubItem()) { return this.key; }
     return game.items?.getName(this.system.sourceItem.name)?.key ?? this.key;
   }
-  get masterType(): K4ItemType { return this.isSubItem() ? this.system.sourceItem.type : this.data.type }
-  get masterName(): string { return this.isSubItem() ? this.system.sourceItem.name : this.name }
+  get masterType(): K4ItemType { return this.isSubItem() ? this.system.sourceItem.type : this.data.type; }
+  get masterName(): string { return this.isSubItem() ? this.system.sourceItem.name : this.name; }
 
-  isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.system && this.system.subItems.length) }
-  isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.system && this.system.sourceItem && this.system.sourceItem.name) }
-  isOwnedItem(): this is {parent: K4Actor, itemSheet: K4ItemSheet} { return this.isEmbedded && this.parent instanceof Actor }
-  isOwnedSubItem(): this is K4SubItem & {parent: K4Actor, itemSheet: K4ItemSheet, data: {data: {sourceItem: K4SourceItemData & {id: string}}}} { return this.isSubItem() && this.isOwnedItem() }
-  isRollableItem(): this is K4RollableItem { return this.system.subType === K4ItemSubType.activeRolled }
-  isStaticItem(): this is K4StaticItem { return this.system.subType === K4ItemSubType.activeStatic }
-  isActiveItem(): this is K4ActiveItem { return this.isRollableItem() || this.isStaticItem() }
-  isPassiveItem(): this is K4PassiveItem { return this.system.subType === K4ItemSubType.passive }
+  isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.system && this.system.subItems.length); }
+  isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.system && this.system.sourceItem && this.system.sourceItem.name); }
+  isOwnedItem(): this is {parent: K4Actor, itemSheet: K4ItemSheet} { return this.isEmbedded && this.parent instanceof Actor; }
+  isOwnedSubItem(): this is K4SubItem & {parent: K4Actor, itemSheet: K4ItemSheet, data: {data: {sourceItem: K4SourceItemData & {id: string}}}} { return this.isSubItem() && this.isOwnedItem(); }
+  isRollableItem(): this is K4RollableItem { return this.system.subType === K4ItemSubType.activeRolled; }
+  isStaticItem(): this is K4StaticItem { return this.system.subType === K4ItemSubType.activeStatic; }
+  isActiveItem(): this is K4ActiveItem { return this.isRollableItem() || this.isStaticItem(); }
+  isPassiveItem(): this is K4PassiveItem { return this.system.subType === K4ItemSubType.passive; }
 
-  get subItems(): K4SubItem[] { return (this.isOwnedItem() && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : [] }
-  get subMoves(): Array<K4SubItem<K4ItemType.move>> { return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.move> => subItem.data.type === K4ItemType.move) }
-  get subAttacks(): Array<K4SubItem<K4ItemType.attack>> { return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.attack> => subItem.data.type === K4ItemType.attack) }
-  get sourceItemData(): K4SourceItemData | null { return this.isSubItem() ? this.system.sourceItem : null }
-  get sourceItem(): K4ParentItem | null { return this.isOwnedSubItem() ? this.parent.getEmbeddedDocument("Item", this.data.data.sourceItem.id) as K4ParentItem : null }
+  get subItems(): K4SubItem[] { return (this.isOwnedItem() && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : []; }
+  get subMoves(): Array<K4SubItem<K4ItemType.move>> { return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.move> => subItem.data.type === K4ItemType.move); }
+  get subAttacks(): Array<K4SubItem<K4ItemType.attack>> { return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.attack> => subItem.data.type === K4ItemType.attack); }
+  get sourceItemData(): K4SourceItemData | null { return this.isSubItem() ? this.system.sourceItem : null; }
+  get sourceItem(): K4ParentItem | null { return this.isOwnedSubItem() ? this.parent.getEmbeddedDocument("Item", this.data.data.sourceItem.id) as K4ParentItem : null; }
 
   applyEffectFunction(functionStr: string) {
-    if (!this.isOwnedItem()) { return }
+    if (!this.isOwnedItem()) { return; }
     const [funcName, ...params] = functionStr.split(/,/);
     switch (funcName) {
       case "AppendList": {
@@ -103,7 +107,7 @@ class K4Item extends Item {
             {_id: targetItem.id, [`data.lists.${targetList}.items`]: [
               ...targetItem.system.lists[targetList].items,
               ...sourceListItems
-            ]}
+            ] }
           ];
           this.parent.updateEmbeddedDocuments("Item", updateData);
         }
@@ -113,7 +117,7 @@ class K4Item extends Item {
   }
 
   unapplyEffectFunction(functionStr: string) {
-    if (!this.isOwnedItem()) { return }
+    if (!this.isOwnedItem()) { return; }
     const [funcName, ...params] = functionStr.split(/,/);
     switch (funcName) {
       case "AppendList": {
@@ -126,7 +130,7 @@ class K4Item extends Item {
           const updateData = [
             {_id: targetItem.id, [`data.lists.${targetList}.items`]: [
               ...prunedListItems
-            ]}
+            ] }
           ];
           this.parent.updateEmbeddedDocuments("Item", updateData);
         }
@@ -136,7 +140,7 @@ class K4Item extends Item {
   }
 
   prepareSubItemData() {
-    if (!this.isParentItem()) { return [] }
+    if (!this.isParentItem()) { return []; }
     return this.system.subItems
       .map((subData) => {
         subData.name ??= this.name;
@@ -148,7 +152,7 @@ class K4Item extends Item {
           };
         }
         return subData;
-      }) as ItemDataConstructorData[] & Array<Record<string,unknown>>;
+      }) as ItemDataConstructorData[] & Array<Record<string, unknown>>;
   }
 
   applyOnCreateEffectFunctions() {
@@ -164,7 +168,7 @@ class K4Item extends Item {
 
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     await super._onCreate(...args);
-    if (!this.isOwnedItem()) { return }
+    if (!this.isOwnedItem()) { return; }
     if (this.isParentItem()) {
       await this.parent.createEmbeddedDocuments("Item", this.prepareSubItemData());
     }
@@ -173,7 +177,7 @@ class K4Item extends Item {
 
   override async _onDelete(...args: Parameters<Item["_onDelete"]>) {
     await super._onDelete(...args);
-    if (!this.isOwnedItem()) { return }
+    if (!this.isOwnedItem()) { return; }
     if (this.isParentItem()) {
       this.subItems.forEach((item) => item.delete());
     }

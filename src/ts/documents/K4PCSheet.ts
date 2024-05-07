@@ -24,32 +24,32 @@ const ANIMATIONS = {
     });
     tl.glitchScale = startingGlitchScale;
     tl.to(".glitch", {
-      skewX() { return 20 * this.glitchScale },
-      duration() { return 0.1 * this.glitchScale },
+      skewX() { return 20 * this.glitchScale; },
+      duration() { return 0.1 * this.glitchScale; },
       ease: "power4.inOut"
     })
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale },skewX: 0, ease: "power4.inOut"})
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale },opacity:0})
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale },opacity:1})
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale },x() { return -10 * this.glitchScale }})
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale },x:0})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, skewX: 0, ease: "power4.inOut"})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, opacity:0})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, opacity:1})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, x() { return -10 * this.glitchScale; }})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, x:0})
       .add("split", 0)
-      .to(".top", {duration() { return 0.5 },x() { return -10 * this.glitchScale} ,ease: "power4.inOut"},"split")
-      .to(".bottom", {duration() { return 0.5 },x() { return 10 * this.glitchScale}, ease: "power4.inOut"},"split")
-      .to(".glitch", {duration() { return 0.08 },className: "+=redShadow"},"split")
+      .to(".top", {duration() { return 0.5; }, x() { return -10 * this.glitchScale;}, ease: "power4.inOut"}, "split")
+      .to(".bottom", {duration() { return 0.5; }, x() { return 10 * this.glitchScale;}, ease: "power4.inOut"}, "split")
+      .to(".glitch", {duration() { return 0.08; }, className: "+=redShadow"}, "split")
 
-      .to("#txt", {duration() { return 0 },scale() { return 1 + (0.05 * (this.glitchScale - 1)) }},"split")
-      .to("#txt", {duration() { return 0 },scale:1}, "+=0.02")
+      .to("#txt", {duration() { return 0; }, scale() { return 1 + (0.05 * (this.glitchScale - 1)); }}, "split")
+      .to("#txt", {duration() { return 0; }, scale:1}, "+=0.02")
 
-      .to(".glitch", {duration() { return 0.08 },className: "-=redShadow"}, "+=0.09")
-      .to(".glitch", {className: "+=greenShadow", duration: 0.03},"split")
-      .to(".glitch", {className: "-=greenShadow", duration: 0.03},"+=0.01")
+      .to(".glitch", {duration() { return 0.08; }, className: "-=redShadow"}, "+=0.09")
+      .to(".glitch", {className: "+=greenShadow", duration: 0.03}, "split")
+      .to(".glitch", {className: "-=greenShadow", duration: 0.03}, "+=0.01")
 
-      .to(".top", {duration() { return 0.2 },x:0,ease: "power4.inOut"})
-      .to(".bottom", {duration() { return 0.2 },x:0,ease: "power4.inOut"})
+      .to(".top", {duration() { return 0.2; }, x:0, ease: "power4.inOut"})
+      .to(".bottom", {duration() { return 0.2; }, x:0, ease: "power4.inOut"})
 
-      .to(".glitch", {duration() { return 0.02 },scaleY() { return 1 + (0.05 * (this.glitchScale - 1))}, ease: "power4.inOut"})
-      .to(".glitch", {duration() { return 0.04 },scaleY:1,ease: "power4.inOut"});
+      .to(".glitch", {duration() { return 0.02; }, scaleY() { return 1 + (0.05 * (this.glitchScale - 1));}, ease: "power4.inOut"})
+      .to(".glitch", {duration() { return 0.04; }, scaleY:1, ease: "power4.inOut"});
 
     return tl;
   },
@@ -184,7 +184,7 @@ const ANIMATIONS = {
       }, 0)
       .to(svgs.outerSpikes, {
         // @ts-expect-error MorphSVG does indeed accept functions.
-        morphSVG(i) { return svgs.outerSpikePaths[i] },
+        morphSVG(i) { return svgs.outerSpikePaths[i]; },
         scale: 1,
         duration: 0.3,
         ease: "power2"
@@ -244,7 +244,7 @@ const ANIMATIONS = {
         zIndex: 1,
         ease: "power3",
         duration: 0.01
-      })
+      });
       /* .to(
         svgs.container,
         {
@@ -253,7 +253,7 @@ const ANIMATIONS = {
           ease: "power3"
         },
         0.05
-      ) */;
+      ) */
 
     if (U.getSetting("blur")) {
       navTL
@@ -321,7 +321,7 @@ const ANIMATIONS = {
     const stripName$ = $(target).find(".strip-name");
     const buttonStrip$ = $(target).find(".button-strip");
 
-    if (!buttonStrip$[0]) { return gsap.timeline({reversed: true}) }
+    if (!buttonStrip$[0]) { return gsap.timeline({reversed: true}); }
 
     const stripToolTip$ = $(target).find(".strip-tooltip");
 
@@ -391,7 +391,7 @@ const ANIMATIONS = {
     if (hoverTarget$[0]) {
       tl.fromTo(hoverTarget$, {
         opacity: 0
-      },{
+      }, {
         opacity: 1,
         duration: FULL_DURATION,
         ease: "sine"
@@ -569,7 +569,7 @@ export default class K4PCSheet extends ActorSheet {
       ]
     });
   }
-  override get template() { return `systems/kult4th/templates/sheets/${this.actor.data.type}-sheet.hbs` }
+  override get template() { return `systems/kult4th/templates/sheets/${this.actor.data.type}-sheet.hbs`; }
 
   hoverTimeline?: gsapAnim;
   hoverTimelineTarget?: HTMLElement;
@@ -617,7 +617,7 @@ export default class K4PCSheet extends ActorSheet {
       $clamp(element, {clamp: "auto"});
     }
   }
-  unClamp(element: HTMLElement) { element.style.cssText = "" }
+  unClamp(element: HTMLElement) { element.style.cssText = ""; }
 
   override activateListeners(html: JQuery) {
 
@@ -627,7 +627,7 @@ export default class K4PCSheet extends ActorSheet {
     $(() => {
 
       if (!U.getSetting("shadows")) {
-        html.find(".tab-content").each(function cancelShadows() { $(this).css("filter", "none")});
+        html.find(".tab-content").each(function cancelShadows() { $(this).css("filter", "none");});
       }
 
       const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
@@ -732,7 +732,7 @@ export default class K4PCSheet extends ActorSheet {
           .on("mouseleave", () => anim.reversed(true));
       });
 
-      if (!this.options.editable) { return }
+      if (!this.options.editable) { return; }
 
       html.find("*[data-action=\"drop\"]")
         .each(function addItemDropEvents() {

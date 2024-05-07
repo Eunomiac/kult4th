@@ -1,11 +1,11 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs';
+import EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
 import {ItemDataBaseProperties, ItemDataConstructorData, ItemDataSchema, ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
-import {ItemData} from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
-import {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes';
+import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
+import {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item.js";
-import K4ItemSheet from '../../../documents/K4ItemSheet';
+import K4ItemSheet from "../../../documents/K4ItemSheet";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -70,7 +70,7 @@ declare global {
     }
 
     export interface HasSubItems {
-      subItems: Array<K4ItemSourceData.subAttack> | Array<K4ItemSourceData.subMove> | Array<K4ItemSourceData.subAttack|K4ItemSourceData.subMove>
+      subItems: K4ItemSourceData.subAttack[] | K4ItemSourceData.subMove[] | Array<K4ItemSourceData.subAttack|K4ItemSourceData.subMove>
     }
 
     // export type CanMaster = K4ItemSpec<K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear>;
@@ -189,8 +189,8 @@ declare global {
   }
   namespace K4ItemPropertiesSchema {
     interface HasSubItems {
-      subMoves: Array<K4ItemSourceData.move>
-      subAttacks: Array<K4ItemSourceData.attack>
+      subMoves: K4ItemSourceData.move[]
+      subAttacks: K4ItemSourceData.attack[]
     }
     export interface move extends K4ItemSourceSchema.move {
     }

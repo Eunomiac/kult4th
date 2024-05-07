@@ -5,8 +5,7 @@ import type {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundr
 import C from "../../../scripts/constants";
 
 import * as ACTORDATA from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
-import K4Actor from "../../../documents/K4Actor";
-import {K4ActorType} from "../../../documents/K4Actor";
+import K4Actor, {K4ActorType, K4Attribute, K4RollType, K4WoundType} from "../../../documents/K4Actor";
 
 import K4PCSheet from "../../../documents/K4PCSheet";
 import K4NPCSheet from "../../../documents/K4NPCSheet";
@@ -14,34 +13,10 @@ import K4NPCSheet from "../../../documents/K4NPCSheet";
 // #endregion
 
 declare global {
-  declare const enum K4ActorType {
-    pc = "pc",
-    npc = "npc"
-  }
 
-  declare const enum K4Attribute {
-    ask = "ask",
-    zero = "zero",
-    fortitude = "fortitude",
-    reflexes = "reflexes",
-    willpower = "willpower",
-    reason = "reason",
-    intuition = "intuition",
-    perception = "perception",
-    coolness = "coolness",
-    violence = "violence",
-    charisma = "charisma",
-    soul = "soul"
-  }
 
   type K4CharAttribute = Exclude<K4Attribute, K4Attribute.ask|K4Attribute.zero>;
   type K4RollableAttribute = Exclude<K4Attribute, K4Attribute.ask>
-
-  declare const enum K4RollType {
-    zero = "zero",
-    attribute = "attribute",
-    move = "move"
-  }
 
   type K4RollSource = K4RollableItem|K4RollableAttribute;
 
@@ -71,12 +46,6 @@ declare global {
     attrName: string,
     attrVal: number,
     modifiers: K4RollMod[]
-  }
-  declare const enum K4WoundType {
-    serious = "serious",
-    critical = "critical",
-    stableserious = "stableserious",
-    stablecritical = "stablecritical"
   }
   interface K4Wound {
     id: string,
@@ -246,9 +215,9 @@ declare global {
 
   type K4ActorSchema<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorPropertiesSchema.pc
     : T extends K4ActorType.npc ? K4ActorPropertiesSchema.npc
-    : never)
+    : K4ActorPropertiesSchema.pc & K4ActorPropertiesSchema.npc)
 
   type K4ActorData<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorPropertiesData.pc
     : T extends K4ActorType.npc ? K4ActorPropertiesData.npc
-    : never)
+    : K4ActorPropertiesData.pc & K4ActorPropertiesData.npc)
 }

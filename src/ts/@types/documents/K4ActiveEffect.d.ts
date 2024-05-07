@@ -1,14 +1,14 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs.js';
-import type {ConfiguredDocumentClass} from '@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js';
+import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs.js";
+import type {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
 import C from "../../../scripts/constants";
 
 import * as ACTORDATA from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
 import K4ActiveEffect from "../../../documents/K4ActiveEffect";
 
-import K4PCSheet from '../../../documents/K4PCSheet';
-import K4NPCSheet from '../../../documents/K4NPCSheet';
+import K4PCSheet from "../../../documents/K4PCSheet";
+import K4NPCSheet from "../../../documents/K4NPCSheet";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 

@@ -1,6 +1,6 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import K4Item from "./K4Item.js";
+import K4Item, {K4ItemType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
@@ -9,6 +9,36 @@ import U from "../scripts/utilities.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
+export enum K4ActorType {
+  pc = "pc",
+  npc = "npc"
+}
+
+export enum K4Attribute {
+  ask = "ask",
+  zero = "zero",
+  fortitude = "fortitude",
+  reflexes = "reflexes",
+  willpower = "willpower",
+  reason = "reason",
+  intuition = "intuition",
+  perception = "perception",
+  coolness = "coolness",
+  violence = "violence",
+  charisma = "charisma",
+  soul = "soul"
+}
+export enum K4RollType {
+  zero = "zero",
+  attribute = "attribute",
+  move = "move"
+}
+export enum K4WoundType {
+  serious = "serious",
+  critical = "critical",
+  stableserious = "stableserious",
+  stablecritical = "stablecritical"
+}
 class K4Actor extends Actor {
 
   get actorSheet() {
@@ -16,7 +46,7 @@ class K4Actor extends Actor {
       typeof this.data.type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet
      );
   }
-  get system() { return this.data.data as typeof this["data"]["data"] }
+  get system() { return this.data.data as typeof this["data"]["data"]; }
 
   override prepareData() {
     super.prepareData();
@@ -50,7 +80,7 @@ class K4Actor extends Actor {
   }
 
   getItemsOfType<Type extends K4ItemType>(type: Type): Array<K4ItemSpec<Type>> {
-    return [...this.items].filter((item: K4Item): item is K4ItemSpec<Type> => { return item.data.type === type });
+    return [...this.items].filter((item: K4Item): item is K4ItemSpec<Type> => item.data.type === type);
   }
 
   getItemByName(iName: string): K4Item | undefined {
@@ -58,31 +88,35 @@ class K4Actor extends Actor {
   }
 
   getItemsBySource(sourceID: string): K4SubItem[] {
-    return [...this.items].filter((item: K4Item): item is K4SubItem => item.isSubItem() && item.system.sourceItem.id === sourceID);
+    return [...this.items].filter((item: K4Item): item is K4SubItem => {
+      if (!("sourceItem" in item.system)) { return false; }
+      const {sourceItem} = item.system;
+      return item.isSubItem() && sourceItem?.id === sourceID;
+    });
   }
 
   async dropItemByName(iName: string) {
     return [...this.items].find((item: K4Item) => item.name === iName)?.delete();
   }
 
-  get moves() { return this.getItemsOfType(K4ItemType.move) }
-  get basicMoves() { return this.moves.filter((move) => !move.isSubItem()) }
-  get derivedMoves() { return this.moves.filter((move): move is K4SubItem<K4ItemType.move> => move.isSubItem()) }
+  get moves() { return this.getItemsOfType(K4ItemType.move); }
+  get basicMoves() { return this.moves.filter((move) => !move.isSubItem()); }
+  get derivedMoves() { return this.moves.filter((move): move is K4SubItem<K4ItemType.move> => move.isSubItem()); }
 
-  get attacks() { return this.getItemsOfType(K4ItemType.attack) }
-  get basicAttacks() { return this.attacks.filter((attack) => !attack.isSubItem()) }
-  get derivedAttacks() { return this.attacks.filter((attack): attack is K4SubItem<K4ItemType.attack> => attack.isSubItem()) }
+  get attacks() { return this.getItemsOfType(K4ItemType.attack); }
+  get basicAttacks() { return this.attacks.filter((attack) => !attack.isSubItem()); }
+  get derivedAttacks() { return this.attacks.filter((attack): attack is K4SubItem<K4ItemType.attack> => attack.isSubItem()); }
 
-  get advantages() { return this.getItemsOfType(K4ItemType.advantage) }
-  get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage) }
-  get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret) }
-  get weapons() { return this.getItemsOfType(K4ItemType.weapon) }
-  get gear() { return this.getItemsOfType(K4ItemType.gear) }
-  get relations() { return this.getItemsOfType(K4ItemType.relation) }
+  get advantages() { return this.getItemsOfType(K4ItemType.advantage); }
+  get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage); }
+  get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret); }
+  get weapons() { return this.getItemsOfType(K4ItemType.weapon); }
+  get gear() { return this.getItemsOfType(K4ItemType.gear); }
+  get relations() { return this.getItemsOfType(K4ItemType.relation); }
 
-  get derivedItems() { return [...this.items].filter((item): item is K4SubItem => item.isSubItem()) }
+  get derivedItems() { return [...this.items].filter((item): item is K4SubItem => item.isSubItem()); }
 
-  get wounds(): Record<KeyOf<typeof this["data"]["data"]["wounds"]>,K4Wound> {
+  get wounds(): Record<KeyOf<typeof this["data"]["data"]["wounds"]>, K4Wound> {
     // if (this.type === K4ActorType.pc) {
     return this.system.wounds;
     // } else {
@@ -157,17 +191,17 @@ class K4Actor extends Actor {
     if (this.type === K4ActorType.pc) {
       const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as K4CharAttribute[];
       return attrList.map((attrName) => ({
-        name: U.tCase(attrName) as Capitalize<K4CharAttribute>,
+        name: U.tCase(attrName),
         key: attrName,
-        min: this.system.attributes[attrName].min as int,
-        max: this.system.attributes[attrName].max as int,
-        value: this.system.attributes[attrName].value as int
+        min: this.system.attributes[attrName].min,
+        max: this.system.attributes[attrName].max,
+        value: this.system.attributes[attrName].value
       }));
     }
     return [];
   }
   get attributes() {
-    return Object.fromEntries(this.attributeData.map((aData) => [aData.key, aData.value])) as Record<K4CharAttribute,number>;
+    return Object.fromEntries(this.attributeData.map((aData) => [aData.key, aData.value])) as Record<K4CharAttribute, number>;
   }
 
   async askForAttribute(message?: string): Promise<K4RollableAttribute | null> {
@@ -176,34 +210,34 @@ class K4Actor extends Actor {
       id: this.id,
       message
     });
-    const userOutput = await new Promise((resolve) => {
+    const userOutput = await new Promise<{attribute: K4RollableAttribute}>((resolve) => {
       new Dialog(
         {
-          "title": "Attribute Selection",
+          title: "Attribute Selection",
           content,
-          "default": K4Attribute.zero,
-          "buttons": C.AttributeButtons(resolve)
+          default: K4Attribute.zero,
+          buttons: C.AttributeButtons(resolve)
         },
         {
           classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
         }
       ).render(true);
-    }) as {attribute: K4RollableAttribute};
+    });
     return userOutput.attribute || null;
   }
 
   validateStability() {
     const {value, min, max} = this.system.stability;
     if (U.clampNum(value, [min, max]) !== value) {
-      this.update({["data.stability.value"]: U.clampNum(value, [min, max])});
+      this.update({"data.stability.value": U.clampNum(value, [min, max])});
     }
   }
 
-  changeStability(delta: int) {
+  changeStability(delta: number) {
     if (delta) {
       const {value, min, max} = this.system.stability;
       if (U.clampNum(value + delta, [min, max]) !== value) {
-        this.update({["data.stability.value"]: U.clampNum(value + delta, [min, max])});
+        this.update({"data.stability.value": U.clampNum(value + delta, [min, max])});
       }
     }
   }
@@ -232,7 +266,7 @@ class K4Actor extends Actor {
         }
         case "stabilized": {
           await this.update({[`data.wounds.${id}.isStabilized`]: !this.wounds[id].isStabilized});
-          return;
+
         }
         // no default
       }
@@ -243,7 +277,7 @@ class K4Actor extends Actor {
     const woundData = this.wounds[id];
     if (woundData) {
       await this.update({[`data.wounds.${id}.description`]: ""});
-      return;
+
     }
   }
 
@@ -304,27 +338,27 @@ class K4Actor extends Actor {
     return modData;
   }
   get effectModData(): K4RollModData[] {
-    const modData: K4RollModData[] = [];
+    // const modData: K4RollModData[] = [];
 
     return [
       {
         category: "effect",
-        display: "Effect One",
+        display: "Test Effect One",
         targets: {"Keep It Together": 2}
       },
       {
         category: "effect",
-        display: "Effect Two",
+        display: "Test Effect Two",
         targets: {move: 4}
       },
       {
         category: "effect",
-        display: "Effect Three",
+        display: "Test Effect Three",
         targets: {[K4Attribute.willpower]: -1}
       }
     ];
 
-    return modData;
+    // return modData;
   }
   get modTargets(): K4RollModData[] {
     return [
@@ -346,7 +380,7 @@ class K4Actor extends Actor {
   }
 
   public async roll(rollSource: string, options: Partial<K4RollOptions> = {}) {
-    const rollResults = await this.#getRoll(rollSource, options);
+    const rollResults = await this.#getRoll(rollSource);
     if (rollResults) {
       await rollResults.roll.evaluate({async: true});
       if (game.dice3d) {
@@ -359,9 +393,9 @@ class K4Actor extends Actor {
     }
   }
 
-  public async trigger(rollSource: string) { this.getItemByName(rollSource)?.displayItemSummary() }
+  public async trigger(rollSource: string) { this.getItemByName(rollSource)?.displayItemSummary(); }
 
-  async #getRoll(rollSourceRef: string|K4RollSource|K4Attribute.ask, options: Partial<K4RollOptions>): Promise<{roll: Roll, rollData: K4RollData}|false> {
+  async #getRoll(rollSourceRef: string|K4RollSource|K4Attribute.ask): Promise<{roll: Roll, rollData: K4RollData}|false> {
 
     let rollSource: K4RollSource|undefined;
     const rollData: Partial<K4RollData> = {};
@@ -384,56 +418,54 @@ class K4Actor extends Actor {
       }
     }
 
-    if (rollSource) {
-      if (rollSource instanceof K4Item) {
-        rollData.type = K4RollType.move;
-        rollData.source = rollSource;
-        rollData.sourceType = rollSource.masterType;
-        rollData.sourceName = rollSource.name;
-        rollData.sourceImg = rollSource.img;
+    if (!rollSource) { return false; }
+
+    if (rollSource instanceof K4Item) {
+      rollData.type = K4RollType.move;
+      rollData.source = rollSource;
+      rollData.sourceType = rollSource.masterType;
+      rollData.sourceName = rollSource.name;
+      rollData.sourceImg = rollSource.img;
+      if ("attribute" in rollSource.system) {
         if (rollSource.system.attribute === K4Attribute.ask) {
           const attrResponse = await this.askForAttribute();
-          if (attrResponse) {
-            rollData.attribute = attrResponse;
-          } else {
-            return false;
-          }
+          if (!attrResponse) { return false; }
+          rollData.attribute = attrResponse;
         } else {
           rollData.attribute = rollSource.system.attribute;
         }
         rollData.attrName = U.loc(`trait.${rollData.attribute}`);
-        rollData.attrVal = rollData.attribute === K4Attribute.zero ? 0 : this.attributes[rollData.attribute];
-      } else if (rollSource in CONFIG.K4.attributes || rollSource === K4Attribute.zero) {
-        rollData.type = rollSource === K4Attribute.zero ? K4RollType.zero : K4RollType.attribute;
-        rollData.source = rollSource;
-        rollData.sourceType = K4RollType.attribute;
-        rollData.sourceName = "";
-        rollData.sourceImg = "";
-        rollData.attribute = rollSource;
-        rollData.attrName = U.loc(`trait.${rollSource}`);
-        rollData.attrVal = rollSource === K4Attribute.zero ? 0 : this.attributes[rollSource];
-      } else {
-        throw new Error(`Unable to compile roll data for rollRef '${String(rollSourceRef)}'`);
+        rollData.attrVal = rollData.attribute === K4Attribute.zero ? 0 : this.attributes[rollData.attribute as K4CharAttribute];
       }
-
-      const finalData: K4RollData = this.#applyRollModifiers(rollData as Omit<K4RollData,"modifiers">);
-
-      kLog.log("RETRIEVED ROLL DATA", finalData);
-      return {
-        roll: new Roll([
-          "2d10",
-          U.signNum(finalData.attrVal ?? 0, " "),
-          ...Object.values(finalData.modifiers)
-            .map(({value}) => U.signNum(value, " "))
-            .filter((elem) => elem !== "")
-        ].join(" ")),
-        rollData: finalData
-      };
+    } else if (rollSource in K4Attribute) {
+      rollData.type = rollSource === K4Attribute.zero ? K4RollType.zero : K4RollType.attribute;
+      rollData.source = rollSource;
+      rollData.sourceType = K4RollType.attribute;
+      rollData.sourceName = "";
+      rollData.sourceImg = "";
+      rollData.attribute = rollSource;
+      rollData.attrName = U.loc(`trait.${rollSource}`);
+      rollData.attrVal = rollSource === K4Attribute.zero ? 0 : this.attributes[rollSource as K4CharAttribute];
+    } else {
+      throw new Error(`Unable to compile roll data for rollRef '${String(rollSourceRef)}'`);
     }
-    return false;
+
+    const finalData: K4RollData = this.#applyRollModifiers(rollData as Omit<K4RollData, "modifiers">);
+
+    kLog.log("RETRIEVED ROLL DATA", finalData);
+    return {
+      roll: new Roll([
+        "2d10",
+        U.signNum(finalData.attrVal ?? 0, " "),
+        ...Object.values(finalData.modifiers)
+          .map(({value}) => U.signNum(value, " "))
+          .filter((elem) => elem !== "")
+      ].join(" ")),
+      rollData: finalData
+    };
   }
 
-  #applyRollModifiers(rollData: Omit<K4RollData,"modifiers">): K4RollData {
+  #applyRollModifiers(rollData: Omit<K4RollData, "modifiers">): K4RollData {
     function checkModTarget(target: string) {
       return ["all", rollData.sourceType, rollData.sourceName, rollData.attribute].includes(target);
     }
@@ -463,8 +495,8 @@ class K4Actor extends Actor {
   }
 
   async #displayRollResult(roll: Roll, rollData: K4RollData, options: K4RollOptions) {
-    if (U.isUndefined(roll.total)) { return }
-    function isItem(ref: unknown): ref is K4RollableItem { return ref instanceof K4Item }
+    if (U.isUndefined(roll.total)) { return; }
+    function isItem(ref: unknown): ref is K4RollableItem { return ref instanceof K4Item; }
 
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: {
@@ -508,12 +540,12 @@ class K4Actor extends Actor {
   }
 
   override async _onCreate(...params: Parameters<Actor["_onCreate"]>) {
-    await super._onCreate(...params);
-    if (this.type === K4ActorType.pc){
+    super._onCreate(...params);
+    if (this.type === K4ActorType.pc) {
       const pack = await game.packs.get("kult4th.k4-basic-player-moves");
       if (pack) {
         const index = await pack.getIndex();
-        const moveArray = await Array.from(index);
+        const moveArray = Array.from(index);
         const newItems = await Promise.all(moveArray.map(async (move) => {
           const moveData = await pack.getDocument(move._id);
           return moveData?.data ?? {};

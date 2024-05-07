@@ -1,6 +1,8 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import U from "./utilities.js";
+import {K4Attribute} from "../documents/K4Actor";
+import {K4ItemType} from "../documents/K4Item";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -189,7 +191,7 @@ export const RegExpPatterns = {
     "\\bSee Through the Illusion\\b"
   ].map((patStr) => new RegExp(`(${patStr})`, "g")),
   Keywords: [
-    /[\-+]/g,
+    /[-+]/g,
     "(\\b|[^ :a-z()]+ )Harm\\b",
     "(\\b|[^ :a-z()]+ )Armor\\b",
     "\\bStability\\b( \\(.?\\d+\\))?",
@@ -205,7 +207,7 @@ export const RegExpPatterns = {
 };
 
 const C = {
-  get game() { return game as Game },
+  get game() { return game },
   SYSTEM_ID: "kult4th",
   SYSTEM_NAME: "Kult: Divinity Lost",
   SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",

@@ -1,3 +1,5 @@
+import {K4Attribute} from "../documents/K4Actor";
+
 const K4Config = {
   colors: {
     GOLD: "rgb(150, 140, 106)",

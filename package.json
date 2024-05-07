@@ -24,6 +24,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
 		"@tsconfig/node21": "^21.0.1",
 		"@tsconfig/svelte": "^5.0.2",
+		"@types/gsap": "^3.0.0",
 		"@types/jquery": "^3.5.29",
 		"@types/prop-types": "^15.7.11",
 		"@types/yaireo__tagify": "^4.17.0",
@@ -72,12 +73,12 @@
 		"url": "https://github.com/Eunomiac/kult4th"
 	},
 	"dependencies": {
+		"@yaireo/tagify": "^4.21.1",
 		"axios": "^1.5.1",
 		"form-data": "^4.0.0",
 		"gsap": "^3.12.5",
 		"openai": "^4.29.2",
 		"tinymce": "^6.7.1",
-		"yargs": "^17.7.2",
-		"@yaireo/tagify": "^4.21.1"
+		"yargs": "^17.7.2"
 	}
 }

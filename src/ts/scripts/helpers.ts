@@ -12,7 +12,7 @@ export function formatStringForKult(str: string) {
 }
 
 const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
-  "test": function(param1: unknown, operator: string, param2: unknown) {
+  "test"(param1: unknown, operator: string, param2: unknown) {
     switch (operator) {
       case "==": { return param1 == param2 } // eslint-disable-line eqeqeq
       case "===": { return param1 === param2 }
@@ -36,7 +36,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
       default: { return false }
     }
   },
-  "case": function(mode: "upper" | "lower" | "sentence" | "title", str: string) {
+  "case"(mode: "upper" | "lower" | "sentence" | "title", str: string) {
     // return U[`${mode.charAt(0)}Case`](str);
     switch (mode) {
       case "upper": return U.uCase(str);
@@ -46,20 +46,20 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
       default: return str;
     }
   },
-  "count": function(param: unknown): number {
+  "count"(param: unknown): number {
     if (Array.isArray(param) || U.isList(param)) {
       return Object.values(param).length;
     }
     return param ? 1 : 0;
   },
-  "signNum": function(num: number) {
+  "signNum"(num: number) {
     return U.signNum(num);
   },
-  "areEmpty": function(...args) {
+  "areEmpty"(...args) {
     args.pop();
     return !Object.values(args).flat().join("");
   },
-  "dbLog": function(...args) {
+  "dbLog"(...args) {
     args.pop();
     let dbLevel = 5;
     if ([0,1,2,3,4,5].includes(args[0])) {
@@ -67,7 +67,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     }
     kLog.hbsLog(...args, dbLevel);
   },
-  "formatForKult": function(str: string, context: List<any> | K4Item) {
+  "formatForKult"(str: string, context: List<any> | K4Item) {
     // Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
     const iData = context instanceof K4Item
       ? context.data
@@ -175,7 +175,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     return str;
   },
   "getImgName": U.toKey,
-  "getSVGs": function(ref: string) {
+  "getSVGs"(ref: string) {
     const isReporting = ref === "ten-sided-die";
     ref = U.toKey(ref) ;
     if (!(ref in SVGDATA) && ref in SVGKEYMAP) {

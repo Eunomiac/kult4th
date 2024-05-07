@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import C from "./constants.js";
 import U from "./utilities.js";
+import {K4ItemType} from "../documents/K4Item.js";
 import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -115,7 +116,7 @@ const sortIntoFolders = async (itemData: iDataDict) => {
 // #region 🟩🟩🟩 DATA MUTATION & ITEM GENERATION 🟩🟩🟩 ~
 const mutateItemData = (itemData: iDataDict): iDataDict => {
   function isDerivedItem(iData: Partial<ItemDataConstructorData>): iData is Partial<ItemDataConstructorData> & {data: {sourceItem: {type: K4ItemType, name: string, id?: string}}} { return "sourceItem" in iData.data! }
-  function hasDerivedItems(iData: Partial<ItemDataConstructorData>): iData is Partial<ItemDataConstructorData> & {data: {subItems: Array<Partial<ItemDataConstructorData>>}} { return "subItems" in iData.data! && iData.data!.subItems!.length > 0 }
+  function hasDerivedItems(iData: Partial<ItemDataConstructorData>): iData is Partial<ItemDataConstructorData> & {data: {subItems: Array<Partial<ItemDataConstructorData>>}} { return "subItems" in iData.data! && iData.data.subItems!.length > 0 }
   function getDerivedItems(iData: Partial<ItemDataConstructorData>): [Array<Partial<ItemDataConstructorData>>, Array<Partial<ItemDataConstructorData>>] {
     if (hasDerivedItems(iData)) {
       const subMoves = iData.data.subItems.filter((sData) => sData.type === K4ItemType.move);
@@ -147,7 +148,7 @@ const mutateItemData = (itemData: iDataDict): iDataDict => {
   }
   function getListRefs(iData: Partial<ItemDataConstructorData>) {
     const listRefs: {rules: string[], results: [string[], string[], string[]]} = {rules: [], results: [[],[],[]]};
-    if (iData.data && "rules" in iData.data && iData.data.rules && iData.data.rules.listRefs) {
+    if ("rules" in (iData?.data ?? {}) && (iData?.data?.rules?.listRefs)) {
       listRefs.rules = iData.data.rules.listRefs;
     }
     if (iData.data && "results" in iData.data && iData.data.results) {

@@ -1,12 +1,6 @@
+import {K4RollType} from "../documents/K4Roll";
+
 declare global {
-  declare const enum K4RollType {
-    zero = "zero",
-    attribute = "attribute",
-    move = "move",
-    attack = "attack",
-    advantage = "advantage",
-    disadvantage = "disadvantage"
-  }
 
   type K4RollModData = Record<string, number>;
 

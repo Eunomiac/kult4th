@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import K4Config from "./scripts/config.js";
 import K4Actor from "./documents/K4Actor.js";
-import K4Item from "./documents/K4Item.js";
+import K4Item, {K4ItemType} from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
@@ -48,14 +48,14 @@ Hooks.once("init", async () => {
   // #region ████████ STYLING: Create Style Definitions for SVG Files & Color Palette ████████ ~
   const svgDefTemplate = await getTemplate(U.getTemplatePath("globals", "svg-defs"));
   type SVGGradientStop = {
-    offset: int,
+    offset: number,
     color: string,
-    opacity: float
+    opacity: number
   };
   type SVGGradientDef = {
     id: string,
-    x: [int, int],
-    y: [int, int],
+    x: [number, number],
+    y: [number, number],
     stops: Array<SVGGradientStop | string>
   };
   /*

@@ -624,7 +624,7 @@ const getUID = (id: string): string => {
   ) + 1;
   const uuid = indexNum === 1 ? id : `${id}_${indexNum}`;
   UUIDLOG.push([id, uuid, indexNum]);
-  eLog.log(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
+  kLog.log(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
   Object.assign(globalThis, {UUIDLOG});
   return uuid;
 };
@@ -1830,7 +1830,7 @@ const testFuncPerformance = (
       // If 10 seconds have passed, calculate the total and average time and log them
       const elapsedTime = performance.now() - start;
       const timePerCall = roundNum(elapsedTime / tally / 4000, 4);
-      eLog.checkLog3("performance", `[TestPerformance] Function Ran ${tally} Times in ${roundNum(elapsedTime / 1000, 4)}s, Averaging ${timePerCall}s per Call`);
+      kLog.log("performance", `[TestPerformance] Function Ran ${tally} Times in ${roundNum(elapsedTime / 1000, 4)}s, Averaging ${timePerCall}s per Call`);
     }
   };
 
@@ -1964,7 +1964,7 @@ function waitFor(waitForTarget: unknown): Promise<void> {
 // #endregion â–„â–„â–„â–„â–„ ASYNC â–„â–„â–„â–„â–„
 
 const EventHandlers = {
-  onSelectChange: async (inst: BladesSheet, event: SelectChangeEvent) => {
+  onSelectChange: async (inst: EntitySheet, event: SelectChangeEvent) => {
     const elem = event.currentTarget;
     const {action, dtype, target, flagTarget} = elem.dataset;
 
