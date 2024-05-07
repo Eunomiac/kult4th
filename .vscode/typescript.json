@@ -1,0 +1,11 @@
+{
+  "Object Map": {
+    "prefix": "oMap",
+    "body": [
+      "Object.fromEntries(",
+      "  Object.entries(${1:object}).map(([k, v]) => [k, ${2:/* Your code here */}])",
+      ") as ${3:Record<key,unknown>};"
+    ],
+    "description": "Maps an object's values to a new object"
+  }
+}

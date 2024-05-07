@@ -1,0 +1,52 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+    {
+      "label": "Launch System",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/run-tasks.ps1"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Kill System",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/kill-tasks.ps1"],
+      "problemMatcher": []
+    },
+		{
+      "label": "GULP Custom CSS",
+      "type": "shell",
+      "command": "npm run-script 'build all' -- --compileCustomCSS true",
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "gulp css"
+    },
+    {
+      "label": "Typedoc",
+      "type": "shell",
+      "command": "typedoc --out ./tsdocs --hideGenerator --navigation --sort source-order --includes ./node_modules/@league-of-foundry-developers/foundry-vtt-types --entryPointStrategy expand --exclude **/*.d.ts ./ts",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+		{
+      "label": "types",
+			"type": "npm",
+			"script": "emit types",
+			"problemMatcher": [],
+			"detail": "gulp types"
+		},
+		{
+      "label": "npm: preinstall",
+			"type": "npm",
+			"script": "preinstall",
+			"problemMatcher": [],
+			"detail": "npx npm-force-resolutions"
+		}
+	]
+}

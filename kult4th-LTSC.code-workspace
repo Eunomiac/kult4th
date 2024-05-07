@@ -1,0 +1,79 @@
+{
+	"folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../../../../../../../../../../LTSC Programs/FoundryVTT/resources/app"
+    },
+    {
+      "path": "../../modules"
+    },
+    {
+      "path": "../../../../../!!VSC_Custom_CSS"
+    }
+  ],
+	"settings": {
+		"task.allowAutomaticTasks": "on",
+		"files.exclude": {
+      "**/.git": false,
+      "**/.svn": false,
+      "**/.hg": false,
+      "**/CVS": false,
+      "**/.DS_Store": false,
+      "**/Thumbs.db": false,
+      "**/node_modules": false,
+      "scss/tinymce": false,
+      "gulpfile.*": false,
+      ".vscode/**": false,
+      "css/**": false,
+      "lang/**": false,
+      "module/**": false,
+      "module_staging_1/**": false,
+      "module_staging_2/**": false,
+      "packs/**": false,
+      "*.code-workspace": false,
+      "tsconfig.json": false,
+      ".eslintrc.js": false,
+      ".eslintignore": false,
+      ".stylelintrc.js": false,
+      ".stylelintignore": false,
+      "package*.json": false,
+      ".live-css.config.js": false,
+      ".gitignore": false,
+      ".npmignore": false,
+      "node_modules": false,
+      "**/lib": false,
+      "lib": false,
+      "vscode-firefox-debug.log": false,
+      "sonar-project.properties": false,
+      "**/.sonarlintignore": false,
+      "**/.cursorignore": false,
+      "**/.gitattributes": false,
+      "**/extensions.txt": false,
+      "**/LICENSE": false,
+      "**/README.md": false,
+      "**/.dev-refs": false,
+      "**/.github": false,
+      "**/*.lnk": false,
+      "*.lnk": false
+    },
+		"explorerExclude.backup": {},
+		"files.watcherExclude": {
+			"**/assets/**": true,
+			"**/css/**": true,
+			"**/json/**": true,
+			"**/lang/**": true,
+			"**/lib/**": true,
+			"**/module_staging_1/**": true,
+			"**/module/**": true,
+			"**/packs/**": true,
+			"D:/LTSC Programs/FoundryVTT/**": true,
+			"D:/Users/Ryan/Documents/Projects/!!!!CODING/!!VSC_Custom_CSS/**": true
+		},
+    "sonarlint.connectedMode.project": {
+      "connectionId": "eunomiac",
+      "projectKey": "Eunomiac_kult4th"
+    }
+	}
+}
