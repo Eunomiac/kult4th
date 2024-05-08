@@ -18,14 +18,14 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-          "paths": {
-            "*": [
-              "*",
-              "D:/Projects/.CODING/FoundryVTT/FoundryV10DistData/Data/modules/*",
-              "D:/Projects/.CODING/FoundryVTT/FoundryV10DevData/Data/modules/*",
-              "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/*"
-            ]
-          },
+    "paths": {
+      "*": [
+        "*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV11DistData/Data/modules/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV11DevData/Data/modules/*",
+        "C:/FoundryVTT/v11/Foundry Virtual Tabletop/resources/app/*"
+      ]
+    },
     "plugins": [
       {
         "name": "typescript-eslint-language-service"
@@ -40,9 +40,10 @@
     "traceResolution": false,
     "types": [
       "@league-of-foundry-developers/foundry-vtt-types"
-    ]
+    ],
   },
   "include": [
-    "./src/ts/**/*.ts"
+    "./src/ts/**/*.ts",
+    "vite.config.ts"
   ]
 }

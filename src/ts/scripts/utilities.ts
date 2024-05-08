@@ -1,15 +1,3 @@
-// /// <reference types="gsap" />
-
-// #region IMPORTS ~
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import C from "./constants";
-import {gsap, MotionPathPlugin} from "../libraries";
-// import gsap from "../../../public/lib/greensock/all";
-// import gsap, {MotionPathPlugin} from "gsap/all";
-gsap.registerPlugin(MotionPathPlugin);
-/* eslint-enable @typescript-eslint/no-unused-vars */
-// #endregion
-
 // #region â–®â–®â–®â–®â–®â–®â–® [HELPERS] Internal Functions, Data & References Used by Utility Functions â–®â–®â–®â–®â–®â–®â–® ~
 
 // _noCapWords -- Patterns matching words that should NOT be capitalized when converting to TITLE case.
@@ -157,35 +145,35 @@ const GMID = (): string | false => game?.user?.find((user) => user.isGM)?.id ?? 
 // #endregion â–„â–„â–„â–„â–„ GETTERS â–„â–„â–„â–„â–„
 
 // #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
-
-const isNumber = (ref: unknown): ref is number => typeof ref === "number" && !isNaN(ref);
-const isNumString = (ref: unknown): ref is string => typeof ref === "string"
-  && !isNaN(parseFloat(ref))
-  && isFinite(parseFloat(ref));
-const isBooleanString = (ref: unknown): ref is "true"|"false" => typeof ref === "string"
+const isNumString = <T>(ref: T): ref is T & NumString => typeof ref === "string" && !isNaN(parseFloat(ref)) && isFinite(parseFloat(ref));
+const isBooleanString = <T>(ref: T): ref is T & BoolString => typeof ref === "string"
   && (ref === "true" || ref === "false");
-const isArray = (ref: unknown): ref is unknown[] => Array.isArray(ref);
-const isSimpleObj = (ref: unknown): ref is Record<key, unknown> => ref === Object(ref) && !isArray(ref);
-const isList = <T>(ref: T): ref is Record<key, unknown> & T => ref === Object(ref) && !isArray(ref);
-const isFunc = (ref: unknown): ref is ((...args: unknown[]) => unknown) => typeof ref === "function";
-const isInt = (ref: unknown): ref is int => isNumber(ref) && Math.round(ref) === ref;
-const isFloat = (ref: unknown): ref is float => isNumber(ref) && /\./.test(`${ref}`);
-const isPosInt = (ref: unknown): ref is posInt => isInt(ref) && ref >= 0;
+
+const isArray = <T>(ref: T): ref is T & Array<ValOf<T>> => Array.isArray(ref);
+const isSimpleObj = <T>(ref: T): ref is T & Record<Key, unknown> => ref === Object(ref) && !isArray(ref);
+const isNumber = <T>(ref: T): ref is T & number => typeof ref === "number" && !isNaN(ref);
+const isInt = <T>(ref: T): ref is T & Integer => isNumber(ref) && ref % 1 === 0;
+const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && /\./.test(`${ref}`);
+const isPosInt = <T>(ref: T): ref is T & PosInteger => isInt(ref) && ref >= 0;
+const isPosFloat = <T>(ref: T): ref is T & PosFloat => isFloat(ref) && ref >= 0;
+
+const isList = <T>(ref: T): ref is T & List<ValOf<T>> => ref === Object(ref) && !isArray(ref);
 const isIndex = <T>(ref: T): ref is T & Index<ValOf<T>> => isList(ref) || isArray(ref);
-const isIterable = (ref: unknown): ref is Iterable<unknown> => typeof ref === "object" && ref !== null && Symbol.iterator in ref;
-const isHTMLCode = (ref: unknown): ref is HTMLCode => typeof ref === "string" && /^<.*>$/u.test(ref);
-const isHexColor = (ref: unknown): ref is HEXColor => typeof ref === "string" && /^#(([0-9a-fA-F]{2}){3,4}|[0-9a-fA-F]{3,4})$/.test(ref);
-const isRGBColor = (ref: unknown): ref is RGBColor => typeof ref === "string" && /^rgba?\((\d{1,3},\s*){1,2}?\d{1,3},\s*\d{1,3}(\.\d+)?\)$/.test(ref);
+const isIterable = <T>(ref: T): ref is T & Iterable<unknown> => typeof ref === "object" && ref !== null && Symbol.iterator in ref;
+
+const isHTMLCode = <T>(ref: T): ref is T & HTMLCode => typeof ref === "string" && /^<.*>$/u.test(ref);
+const isHexColor = <T>(ref: T): ref is T & HexColor => typeof ref === "string" && /^#(([0-9a-fA-F]{2}){3,4}|[0-9a-fA-F]{3,4})$/.test(ref);
+const isRGBColor = <T>(ref: T): ref is T & RGBColor => typeof ref === "string" && /^rgba?\((\d{1,3},\s*){1,2}?\d{1,3},\s*\d{1,3}(\.\d+)?\)$/.test(ref);
+
+const isFunc = <T>(ref: T): ref is T & ((...args: unknown[]) => unknown) => typeof ref === "function";
 const isUndefined = (ref: unknown): ref is undefined => ref === undefined;
-const isNullOrUndefined = (ref: unknown): ref is null | undefined => ref === null || ref === undefined;
+const isNullOrUndefined = <T>(ref: T): ref is T & (null | undefined) => ref === null || ref === undefined;
 const isDefined = <T>(ref: T): ref is T & (null | NonNullable<T>) => !isUndefined(ref);
-const isEmpty = (ref: Record<key, unknown> | unknown[]): boolean => Object.keys(ref).length === 0;
+
+const isEmpty = (ref: Index): boolean => Object.keys(ref).length === 0;
 const hasItems = (ref: Index): boolean => !isEmpty(ref);
-const isInstance = <T extends new (...args: unknown[]) => unknown>(
-  classRef: T,
-  ref: unknown
-): ref is InstanceType<T> => ref instanceof classRef;
-const isNullish = (ref: unknown): ref is null|undefined => isUndefined(ref) || ref === null;
+const isInstanceOf = <T, C extends new (...args: unknown[]) => unknown>(ref: T, classRef: C): ref is T & InstanceType<C> => ref instanceof classRef;
+
 /**
  * Asserts that a given value is of a specified type.
  * Throws an error if the value is not of the expected type.
@@ -295,26 +283,47 @@ const areEqual = (...refs: unknown[]) => {
   return true;
 };
 
-const pFloat = (ref: unknown, sigDigits?: posInt, isStrict = false): number => {
+const pFloat = <IsStrict extends boolean>(
+  ref: unknown,
+  sigDigits?: number,
+  isStrict = false as IsStrict
+): IsStrict extends true ? (typeof NaN | Float) : Float => {
+  let num: number;
+
   if (typeof ref === "string") {
-    ref = parseFloat(ref);
+    num = parseFloat(ref);
+  } else if (typeof ref === "number") {
+    num = ref;
+  } else {
+    return (isStrict ? NaN : 0) as IsStrict extends true ? (typeof NaN | Float) : Float;
   }
-  if (typeof ref === "number") {
-    if (isNaN(ref)) {return isStrict ? NaN : 0;}
-    if (isUndefined(sigDigits)) {return ref;}
-    return Math.round(ref * (10 ** sigDigits)) / (10 ** sigDigits);
+
+  if (isNaN(num)) {
+    return (isStrict ? NaN : 0) as IsStrict extends true ? (typeof NaN | Float) : Float;
   }
-  return isStrict ? NaN : 0;
+
+  if (isUndefined(sigDigits)) {
+    return num as Float;
+  }
+
+  // Calculate the number to the specified significant digits
+  const factor = Math.pow(10, sigDigits);
+  const rounded = Math.round(num * factor) / factor;
+
+  return rounded as Float; // Explicitly cast to Float for clarity
 };
+
 const pInt: {
   (ref: unknown, isStrict?: boolean): number;
   (ref: unknown, index: number, array: unknown[]): number;
-} = (ref: unknown, isStrictOrIndex?: boolean | number, _arr?: unknown[]): number => {
+} = (ref: unknown, isStrictOrIndex?: boolean | number, _arr?: unknown[]): typeof NaN|Integer => {
   let isStrict = false;
   if (typeof isStrictOrIndex === "boolean") {
     isStrict = isStrictOrIndex;
   }
-  return (isNaN(pFloat(ref, 0, isStrict)) ? NaN : Math.round(pFloat(ref, 0, isStrict)));
+  return isNaN(pFloat(ref, 0, isStrict))
+    ? NaN
+    : Math.round(pFloat(ref, 0, isStrict)) as Integer;
 };
 
 const pBool = (
@@ -341,7 +350,7 @@ const degToRad = (deg: number, isConstrained = true): number => {
   deg *= Math.PI / 180;
   return deg;
 };
-const getKey = <T>(key: key, obj: Record<key, T>): T | null => {
+const getKey = <T>(key: Key, obj: Record<Key, T>): T | null => {
   if (key in obj) {
     return obj[key];
   }
@@ -368,19 +377,20 @@ const checkAllFail = <T>(items: T[], test: (item: T) => boolean): boolean => !ch
 
 // #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ STRINGS: String Parsing, Manipulation, Conversion, Regular Expressions â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
 // #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Case Conversion]â–‘â–‘â–‘â–‘ Upper, Lower, Sentence & Title Case â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
-const uCase = <T>(str: T): Uppercase<string & T> => String(str).toUpperCase() as Uppercase<string & T>;
-const lCase = <T>(str: T): Lowercase<string & T> => String(str).toLowerCase() as Lowercase<string & T>;
-const sCase = <T>(str: T): Capitalize<string & T> => {
+const uCase = (str: unknown): Uppercase<string> => String(str).toUpperCase() as Uppercase<string>;
+const lCase = (str: unknown): Lowercase<string> => String(str).toLowerCase() as Lowercase<string>;
+const sCase = (str: unknown): Capitalize<string> => {
+  if (typeof str === "object") { throw new Error("Cannot convert object to sentence case.");}
   let [first, ...rest] = `${str ?? ""}`.split(/\s+/);
   first = testRegExp(first, _capWords) ? first : `${uCase(first.charAt(0))}${lCase(first.slice(1))}`;
   if (hasItems(rest)) {
     rest = rest.map((word) => (testRegExp(word, _capWords) ? word : lCase(word)));
   }
-  return [first, ...rest].join(" ").trim() as Capitalize<string & T>;
+  return [first, ...rest].join(" ").trim() as Capitalize<string>;
 };
-const tCase = <T>(str: T): tCase<string & T> => String(str).split(/\s/)
+const tCase = (str: unknown): Capitalize<string> => String(str).split(/\s/)
   .map((word, i) => (i && testRegExp(word, _noCapWords) ? lCase(word) : sCase(word)))
-  .join(" ").trim() as tCase<string & T>;
+  .join(" ").trim() as Capitalize<string>;
 // #endregion â–‘â–‘â–‘â–‘[Case Conversion]â–‘â–‘â–‘â–‘
 // #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[RegExp]â–‘â–‘â–‘â–‘ Regular Expressions â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
 const testRegExp = (str: unknown, patterns: Array<RegExp | string> = [], flags = "gui", isTestingAll = false) => patterns
@@ -431,7 +441,7 @@ const ellipsize = (text: unknown, maxLength: number): string => {
   const str = String(text);
   return str.length > maxLength ? `${str.slice(0, maxLength - 3)}â€¦` : str;
 };
-const pad = (text: unknown, minLength: posInt, delim = " "): string => {
+const pad = (text: unknown, minLength: number, delim = " "): string => {
   const str = `${text}`;
   if (str.length < minLength) {
     return `${delim.repeat(minLength - str.length)}${str}`;
@@ -440,7 +450,7 @@ const pad = (text: unknown, minLength: posInt, delim = " "): string => {
 };
 const toKey = (text: string): string => (text ?? "").toLowerCase().replace(/ /g, "-").replace(/default/, "DEFAULT");
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
-const signNum = (num: int, delim = "", zeroSign = "+") => {
+const signNum = (num: number, delim = "", zeroSign = "+") => {
   let sign;
   const parsedNum = pFloat(num);
   if (parsedNum < 0) {
@@ -452,7 +462,7 @@ const signNum = (num: int, delim = "", zeroSign = "+") => {
   }
   return `${sign}${delim}${Math.abs(parsedNum)}`;
 };
-const padNum = (num: number, numDecDigits: int, includePlus = false) => {
+const padNum = (num: number, numDecDigits: number, includePlus = false) => {
   const prefix = (includePlus && num >= 0) ? "+" : "";
   const [leftDigits, rightDigits] = `${pFloat(num)}`.split(/\./);
   if (getType(rightDigits) === "int") {
@@ -466,44 +476,49 @@ const padNum = (num: number, numDecDigits: int, includePlus = false) => {
   }
   return `${prefix}${leftDigits}.${"0".repeat(numDecDigits)}`;
 };
-const stringifyNum = (num: number | string) => {
+
+const stringifyNum = (num: number | string): NumString => {
   // Can take string representations of numbers, either in standard or scientific/engineering notation.
   // Returns a string representation of the number in standard notation.
-  if (pFloat(num) === 0) {return "0";}
-  const stringyNum = lCase(num).replace(/[^\d.e+-]/g, "");
+  const parsedNum = pFloat(num, undefined, true);
+  if (isNaN(parsedNum)) { return "0" as NumString;}
+  const stringyNum = lCase(parsedNum).replace(/[^\d.e+-]/g, "");
   const base = regExtract(stringyNum, /^-?[\d.]+/) as string | undefined;
   const exp = pInt(regExtract(stringyNum, /e([+-]?\d+)$/) as string | undefined);
-  if (typeof base === "string" && typeof exp === "string") {
-    let baseInts = regExtract(base, /^-?(\d+)/);
-    let baseDecs = regExtract(base, /\.(\d+)/);
-    if (isArray(baseInts) && isArray(baseDecs)) {
-      baseInts = baseInts.pop()?.replace(/^0+/, "");
-      baseDecs = lCase(baseDecs?.pop()).replace(/0+$/, "");
-      if (!isUndefined(baseInts) && !isUndefined(baseDecs)) {
-        const numFinalInts = Math.max(0, baseInts.length + exp);
-        const numFinalDecs = Math.max(0, baseDecs.length - exp);
-        const finalInts = [
-          baseInts.slice(0, numFinalInts),
-          baseDecs.slice(0, Math.max(0, exp))
-        ].join("") || "0";
-        const finalDecs = [
-          baseInts.length - numFinalInts > 0
-            ? baseInts.slice(baseInts.length - numFinalInts - 1)
-            : "",
-          baseDecs.slice(baseDecs.length - numFinalDecs)
-        ].join("");
-        return [
-          stringyNum.startsWith("-") ? "-" : "",
-          finalInts,
-          "0".repeat(Math.max(0, numFinalInts - finalInts.length)),
-          finalDecs.length ? "." : "",
-          "0".repeat(Math.max(0, numFinalDecs - finalDecs.length)),
-          finalDecs
-        ].join("");
-      }
-    }
-  }
-  return `${num}`;
+  if (typeof base !== "string") { return `${parsedNum}`; }
+  if (typeof exp !== "number") { return `${parsedNum}`; }
+  let baseInts = regExtract(base, /^-?(\d+)/);
+  let baseDecs = regExtract(base, /\.(\d+)/);
+  if (!isArray(baseInts)) { return `${parsedNum}`; }
+  if (!isArray(baseDecs)) { return `${parsedNum}`; }
+  const lastBaseInt = baseInts.pop();
+  const lastBaseDec = baseDecs.pop();
+  if (typeof lastBaseInt !== "string") { return `${parsedNum}` }
+  if (typeof lastBaseDec !== "string") { return `${parsedNum}` }
+  baseInts = lastBaseInt.replace(/^0+/, "");
+  baseDecs = lCase(lastBaseDec).replace(/0+$/, "");
+  if (isUndefined(baseInts)) { return `${parsedNum}` }
+  if (isUndefined(baseDecs)) { return `${parsedNum}` }
+  const numFinalInts = Math.max(0, baseInts.length + exp);
+  const numFinalDecs = Math.max(0, baseDecs.length - exp);
+  const finalInts = [
+    baseInts.slice(0, numFinalInts),
+    baseDecs.slice(0, Math.max(0, exp))
+  ].join("") || "0";
+  const finalDecs = [
+    baseInts.length - numFinalInts > 0
+      ? baseInts.slice(baseInts.length - numFinalInts - 1)
+      : "",
+    baseDecs.slice(baseDecs.length - numFinalDecs)
+  ].join("");
+  return [
+    stringyNum.startsWith("-") ? "-" : "",
+    finalInts,
+    "0".repeat(Math.max(0, numFinalInts - finalInts.length)),
+    finalDecs.length ? "." : "",
+    "0".repeat(Math.max(0, numFinalDecs - finalDecs.length)),
+    finalDecs
+  ].join("") as NumString;
 };
 const verbalizeNum = (num: number | string) => {
   // Converts a float with absolute magnitude <= 9.99e303 into words.
@@ -703,7 +718,7 @@ const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num: number, [min = 0, max = Infinity] = []): number => gsap.utils.wrap(min, max, num);
 const clampNum = (num: number, [min = 0, max = Infinity] = []): number => gsap.utils.clamp(min, max, num);
 const cycleAngle = (angle: number, range: [number, number] = [0, 360]) => cycleNum(angle, range);
-const roundNum = (num: number, sigDigits: posInt = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
+const roundNum = (num: number, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
 const sum = (...nums: Array<number | number[]>) => Object.values(nums.flat()).reduce((num, tot) => tot + num, 0);
 const average = (...nums: Array<number | number[]>) => sum(...nums) / nums.flat().length;
 // #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Positioning]â–‘â–‘â–‘â–‘ Relationships On 2D Cartesian Plane â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
@@ -787,9 +802,9 @@ const getBoundingRectangle = (
 
 // #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ARRAYS: Array Manipulation â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
 const randElem = <Type>(array: Type[]): Type => gsap.utils.random(array);
-const randIndex = (array: unknown[]): posInt => randInt(0, array.length - 1);
-const makeIntRange = (min: int, max: int) => {
-  const intRange: int[] = [];
+const randIndex = (array: unknown[]): number => randInt(0, array.length - 1);
+const makeIntRange = (min: number, max: number) => {
+  const intRange: number[] = [];
   for (let i = min; i <= max; i++) {
     intRange.push(i);
   }
@@ -892,8 +907,8 @@ function pullElement<T>(array: T[], checkFunc: T|((_v: T, _i?: number, _a?: T[])
   return array.splice(index, 1).pop();
 }
 
-const pullIndex = (array: unknown[], index: posInt) => pullElement(array, (_: unknown, i: number) => i === index);
-const subGroup = (array: unknown[], groupSize: posInt) => {
+const pullIndex = (array: unknown[], index: number) => pullElement(array, (_: unknown, i: number) => i === index);
+const subGroup = (array: unknown[], groupSize: number) => {
   const subArrays = [];
   while (array.length > groupSize) {
     const subArray = [];
@@ -1037,7 +1052,7 @@ const objClean = <T>(data: T, remVals: UncleanValues[] = [undefined, null, "", {
 //   one with entries that pass, one with entries that fail.
 const partition = <Type>(obj: Type[], predicate: testFunc<valFunc> = () => true): [Type[], Type[]] => [
   objFilter(obj, predicate),
-  objFilter(obj, (v: unknown, k: key | undefined) => !predicate(v, k))
+  objFilter(obj, (v: unknown, k: Key | undefined) => !predicate(v, k))
 ];
 
 /**
@@ -1050,7 +1065,7 @@ const partition = <Type>(obj: Type[], predicate: testFunc<valFunc> = () => true)
  * @returns {Record<T, U>} - The resulting object.
  * @throws {Error} - Throws an error if the arrays are not of equal length, if the keys are not unique, or if the keys are not of a type that can be used as object keys.
  */
-const zip = <T extends key, U>(keys: T[], values: U[]): Record<T, U> => {
+const zip = <T extends Key, U>(keys: T[], values: U[]): Record<T, U> => {
   // Check that the arrays are of equal length
   if (keys.length !== values.length) {
     throw new Error("The arrays must be of equal length.");
@@ -1201,7 +1216,7 @@ const objFilter = <Type extends Index>(
     const entriesToRemove = Object.entries(obj)
       .filter(([key, val]: [string, unknown]) => !(kFunc(key, val) && vFunc(val, key)));
     for (const [key] of entriesToRemove) {
-      delete obj[key];
+      delete obj[key as KeyOf<Type>];
     }
     return obj;
   }
@@ -1374,12 +1389,12 @@ const objExpand = <T>(obj: List<T>): List<T> => {
   function arrayify<X>(o: Index<X> | X): Index<X> | X {
     if (isList(o)) {
       if (/^\d+$/.test(Object.keys(o).join(""))) {
-        return Object.values(o).map(arrayify) as X[];
+        return Object.values(o).map((val) => arrayify(val)) as X[];
       }
       return objMap(o, (v: unknown): unknown => arrayify(v)) as List<X>;
     }
     if (isArray(o)) {
-      return o.map(arrayify) as X[];
+      return o.map((val) => arrayify(val)) as X[];
     }
     return o;
   }
@@ -1661,32 +1676,37 @@ const drawCirclePath = (radius: number, origin: Point) => {
 
 // #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Colors]â–‘â–‘â–‘â–‘ Color Manipulation â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
 const getColorVals = (
-  red?: string | number | number[],
+  red?: HexColor | RGBColor | ItemOrList<number>,
   green?: number,
   blue?: number,
   alpha?: number
-): number[] | null => {
+): Maybe<Array<number>> => {
+  if (isUndefined(red)) { return undefined; }
+  let [redVal, greenVal, blueVal, alphaVal]: Array<Maybe<number>> = [];
   if (isRGBColor(red)) {
-    [red, green, blue, alpha] = red
+    [redVal, greenVal, blueVal, alphaVal] = red
       .replace(/[^\d.,]/g, "")
       .split(/,/)
-      .map((color) => (isUndefined(color) ? undefined : parseFloat(color)));
-  }
-  if (isHexColor(red)) {
-    if ([4, 5].includes(red.length)) {
-      red = red.replace(/([^#])/g, "$1$1");
+      .map((color) => (isUndefined(color) ? undefined : pFloat(color)));
+  } else if (isHexColor(red)) {
+    if ([3, 4].includes(red.length - 1)) {
+      red = parseInt(red.replace(/([^#])/g, "$1$1"), 16);
     }
-    [red, green, blue, alpha] = red
+    [redVal, greenVal, blueVal, alphaVal] = String(red)
       .match(/[^#]{2}/g)
       ?.map((val) => parseInt(val, 16)) ?? [];
+  } else if (isIndex(red)) {
+    [redVal, greenVal, blueVal, alphaVal] = Object.values(red).map((val) => Number(val));
+  } else {
+    [redVal, greenVal, blueVal, alphaVal] = [red, green, blue, alpha];
   }
-  if ([red, green, blue].every((color) => /^\d+$/.test(`${color}`))) {
-    return [red, green, blue, alpha]
-      .filter((color) => /^[\d.]+$/.test(`${color}`)) as number[];
+
+  if ([redVal, greenVal, blueVal].every(isPosInt)) {
+    return [redVal, greenVal, blueVal, alphaVal].filter(isPosFloat);
   }
-  return null;
+  return undefined;
 };
-const getRGBString = (red: string | number, green?: number, blue?: number, alpha?: number): RGBColor | null => {
+const getRGBString = (red: string | number, green?: number, blue?: number, alpha?: number): RGBColor | undefined => {
   if (isRGBColor(red) || isHexColor(red)) {
     [red, green, blue, alpha] = getColorVals(red) ?? [];
   }
@@ -1697,11 +1717,11 @@ const getRGBString = (red: string | number, green?: number, blue?: number, alpha
       colors.push(alpha as number >= 1 ? pInt(alpha) : pFloat(alpha, 2));
       colorString += "a";
     }
-    return `${colorString}(${colors.join(", ")})`;
+    return `${colorString}(${colors.join(", ")})` as RGBColor;
   }
-  return null;
+  return undefined;
 };
-const getHEXString = (red: string | number, green?: number, blue?: number): HEXColor | null => {
+const getHEXString = (red: string | number, green?: number, blue?: number): HexColor | undefined => {
 
   function componentToHex(c: string | number): string {
     const hex = c.toString(16);
@@ -1711,24 +1731,24 @@ const getHEXString = (red: string | number, green?: number, blue?: number): HEXC
   if (isRGBColor(red)) {
     [red, green, blue] = getColorVals(red) ?? [];
   }
-  if (isDefined(red) && isDefined(green) && isDefined(blue) && [red, green, blue].every((color) => /^[.\d]+$/.test(`${color}`))) {
-    return `#${componentToHex(red ?? 0)}${componentToHex(green ?? 0)}${componentToHex(blue ?? 0)}`;
+  if ([red, green, blue].every(isDefined) && [red, green, blue].every((color) => isPosInt(color) || isNumString(color))) {
+    return `#${componentToHex(red ?? 0)}${componentToHex(green ?? 0)}${componentToHex(blue ?? 0)}` as HexColor;
   }
-  return null;
+  return undefined;
 };
-const getContrastingColor = (...colorVals: [string] | number[]): RGBColor | null => {
+const getContrastingColor = (...colorVals: [HexColor] | [RGBColor] | number[]): RGBColor | undefined => {
   const [red, green, blue] = getColorVals(...colorVals) ?? [];
   if ([red, green, blue].every(isNumber)) {
     const YIQ = ((red * 299) + (green * 587) + (blue * 114)) / 1000;
     return (YIQ >= 128) ? "rgba(0, 0, 0, 1)" : "rgba(255, 255, 255, 0.8)";
   }
-  return null;
+  return undefined;
 };
 const getRandomColor = () => getRGBString(
   gsap.utils.random(0, 255, 1),
   gsap.utils.random(0, 255, 1),
   gsap.utils.random(0, 255, 1)
-) as RGBColor;
+)!;
 // #endregion â–‘â–‘â–‘â–‘[Colors]â–‘â–‘â–‘â–‘
 
 // #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[DOM]â–‘â–‘â–‘â–‘ DOM Manipulation â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
@@ -1944,8 +1964,8 @@ const sleep = (duration: number): Promise<void> => new Promise(
  * @param {any} waitForTarget - Any value. If not a Promise or GSAP animation, the function resolves immediately.
  * @returns {Promise<void>} A promise that resolves immediately.
  */
-function waitFor(waitForTarget: Array<Promise<unknown>|gsapAnim>): Promise<void>;
-function waitFor(waitForTarget: Promise<unknown>|gsapAnim|undefined): Promise<void>;
+function waitFor(waitForTarget: Array<Promise<unknown>|GsapAnimation>): Promise<void>;
+function waitFor(waitForTarget: Promise<unknown>|GsapAnimation|undefined): Promise<void>;
 function waitFor(waitForTarget: unknown): Promise<void>;
 function waitFor(waitForTarget: unknown): Promise<void> {
   return new Promise<void>(
@@ -1995,9 +2015,9 @@ const EventHandlers = {
       await inst.document.update({[target]: value});
     } else if (flagTarget) {
       if (elem.value === "") {
-        await inst.document.unsetFlag(C.SYSTEM_ID, flagTarget);
+        await inst.document.unsetFlag(game.system.id, flagTarget);
       } else {
-        await (inst.document as Item).setFlag(C.SYSTEM_ID, flagTarget, value);
+        await (inst.document as Item).setFlag(game.system.id, flagTarget, value);
       }
     }
   }
@@ -2047,7 +2067,7 @@ const parseDocRefToUUID = (ref: unknown): UUIDString => {
 
 const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
   if (/[a-z]/.test(locRef)) { // Reference contains lower-case characters: add system ID namespacing to dot notation
-    locRef = locRef.replace(new RegExp(`^(${C.SYSTEM_ID}.)*`), `${C.SYSTEM_ID}.`);
+    locRef = locRef.replace(new RegExp(`^(${game.system.id}.)*`), `${game.system.id}.`);
   }
   if (typeof game.i18n.localize(locRef) === "string") {
     for (const [key, val] of Object.entries(formatDict)) {
@@ -2060,8 +2080,8 @@ const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
 
 const getSetting = (setting: string, submenu?: string) => {
   const settingPath = [submenu, setting].filter(isDefined).join(".");
-  if (game.settings.settings.has(`${C.SYSTEM_ID}.${settingPath}`)) {
-    return game.settings.get(C.SYSTEM_ID, settingPath);
+  if (game.settings.settings.has(`${game.system.id}.${settingPath}`)) {
+    return game.settings.get(game.system.id, settingPath);
   }
   return undefined;
 };
@@ -2075,7 +2095,7 @@ function getTemplatePath(subFolder: string, fileName: string[]): string[]
  */
 function getTemplatePath(subFolder: string, fileName: string | string[]) {
   if (typeof fileName === "string") {
-    return `${C.TEMPLATE_ROOT}/${subFolder}/${fileName.replace(/\..*$/, "")}.hbs`;
+    return `systems/${game.system.id}/templates/${subFolder}/${fileName.replace(/\..*$/, "")}.hbs`;
   }
   return fileName.map((fName) => getTemplatePath(subFolder, fName));
 }
@@ -2091,7 +2111,7 @@ function getTemplatePath(subFolder: string, fileName: string | string[]) {
  */
 function displayImageSelector(
   callback: (path: string) => void,
-  pathRoot = `systems/${C.SYSTEM_ID}/assets`,
+  pathRoot = `systems/${game.system.id}/assets`,
   position: {top: number | null, left: number | null} = {top: 200, left: 200}
 ) {
   const fp = new FilePicker({
@@ -2117,7 +2137,7 @@ export default {
   // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
   isNumber, isNumString, isBooleanString, isSimpleObj, isList, isArray, isFunc, isInt, isFloat, isPosInt, isIterable,
   isHTMLCode, isRGBColor, isHexColor,
-  isUndefined, isDefined, isEmpty, hasItems, isInstance, isNullish,
+  isUndefined, isDefined, isEmpty, hasItems, isInstance: isInstanceOf,
   areEqual, areFuzzyEqual,
   pFloat, pInt, pBool, radToDeg, degToRad,
   getKey,

@@ -7,7 +7,7 @@
 	"compatibility": {
 		"minimum": "0.8.4",
 		"verified": 9,
-		"maximum": 10
+		"maximum": 11
 	},
   "authors": [{
 		"name": "Ryan West",
@@ -20,11 +20,12 @@
 		"scripts/clamp.min.js"
 	],
   "esmodules": [
-		"scripts/kult4th.js",
+    "index.js",
 		"greensock/esm/all.js"
 	],
   "styles": [
-		"css/kult4th.css"
+		"style.css",
+    "css/tmce-editor.css"
 	],
   "packs": [
 		{

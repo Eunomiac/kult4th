@@ -3,7 +3,7 @@
 
 @function to-url($path, $subFolder: false) {
 	@if ($subFolder) {
-		@return unquote(str-insert(str-insert(str-insert(str-insert('url("../assets/',
+		@return unquote(str-insert(str-insert(str-insert(str-insert('url("/assets/',
 			$subFolder,
 			1000),
 			"/",
@@ -13,7 +13,7 @@
 		'")',
 		1000));
 	}
-	@return unquote(str-insert(str-insert('url("../assets/',
+	@return unquote(str-insert(str-insert('url("/assets/',
 				$path,
 				1000),
 			'")',

@@ -1,49 +1,44 @@
-// #region IMPORTS ~
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import C from "../../scripts/constants";
-import K4Config from "../../scripts/config";
-import K4Actor, {K4ActorType} from "../../documents/K4Actor.js";
-import K4Item, {K4ItemType} from "../../documents/K4Item.js";
-import K4PCSheet from "../../documents/K4PCSheet.js";
-import K4NPCSheet from "../../documents/K4NPCSheet.js";
-import K4ItemSheet from "../../documents/K4ItemSheet.js";
-import K4ActiveEffect from "../../documents/K4ActiveEffect.js";
 import "./documents";
 import "./scripts";
 import "./general-types";
 import "./system-types";
-/* eslint-enable @typescript-eslint/no-unused-vars */
-// #endregion
-declare module "gsap/all" {
-  export * from "gsap";
-}
+
+import * as gsap from "gsap/all";
+declare module "gsap/all";
+
 // Declaration for the virtual module "virtual:colors"
 declare module "virtual:colors" {
   export const Colors: Record<string, string>;
 }
-
+declare module "@league-of-foundry-developers/foundry-vtt-types" {
+  export interface Scenes {
+    get current(): SceneDoc;
+  }
+}
 declare global {
+  function fromUuidSync(uuid: string, options?: {
+    relative?: Document,
+    invalid?: boolean,
+    strict?: boolean
+  }): EntityDoc | null;
 
   namespace foundry {
     namespace data {
       namespace fields {
-        class ObjectField extends foundry.data.fields.OBJECT_FIELD {
-        }
+        class ObjectField extends foundry.data.fields.OBJECT_FIELD { }
       }
     }
   }
-
-  declare class ObjectField extends foundry.data.fields.OBJECT_FIELD { }
-
-  declare interface Game {
+  interface LenientGlobalVariableTypes {
+    game: never,
+    ui: never,
+    canvas: never,
+    socket: never
+  }
+  interface Game {
     dice3d: {
       showForRoll: (r: Roll) => Promise<void>
-    }
-  }
-
-  declare interface Game extends {
-    scenes: Scenes
-  } {
+    },
     items: Collection<ActorDoc>,
     actors: Collection<ItemDoc>,
     user: UserDoc,
@@ -55,9 +50,8 @@ declare global {
       Item: Record<K4ItemType, Item["data"]["_source"]>
     }
   }
-  interface LenientGlobalVariableTypes { game: never }
 
-  declare interface CONFIG {
+  interface CONFIG {
     debug: {
       logging: boolean,
       hooks: boolean
@@ -66,23 +60,20 @@ declare global {
     K4: typeof K4Config
   }
 
-  declare const cqApi: {
+  const cqApi: {
     reprocess: () => void,
     reparse: () => void,
     reevaluate: () => void,
     config: Record<string, unknown>
   };
 
-  declare const kLog: {
+  const kLog: {
     display: (...content: [string, ...unknown[]]) => void,
     log: (...content: [string, ...unknown[]]) => void,
     error: (...content: [string, ...unknown[]]) => void,
     hbsLog: (...content: [string, ...unknown[]]) => void
   };
 
-  interface LenientGlobalVariableTypes {
-    game: never;
-  }
   interface SourceConfig {
     Actor: K4ActorSourceData.any,
     Item: K4ItemSourceData.any
@@ -92,6 +83,7 @@ declare global {
     Actor: K4ActorPropertiesData.any,
     Item: K4ItemPropertiesData.any
   }
+
   interface DocumentClassConfig {
     Actor: ConstructorOf<ActorDoc>;
     Item: ConstructorOf<ItemDoc>;

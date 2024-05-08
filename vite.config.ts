@@ -1,11 +1,9 @@
 // Importing necessary functions and types from the Vite package and the path module from Node.js
-import {defineConfig, type Plugin, type UserConfig} from "vite";
+import {defineConfig, type UserConfig, type Plugin} from "vite";
 import path from "path";
 import fs from "fs";
 import checker from "vite-plugin-checker";
-import {svelte} from "@sveltejs/vite-plugin-svelte";
 import {visualizer} from "rollup-plugin-visualizer";
-import commonjs from "@rollup/plugin-commonjs";
 import {exec} from "child_process";
 
 /** *** CHECK: *** https://vitejs.dev/guide/performance
@@ -16,13 +14,28 @@ import {exec} from "child_process";
  * ... in your tsconfig.json's compilerOptions to use .ts and .tsx extensions directly in your code.
  * */
 
+/* ==== CONFIGURATION ==== */
+
+const FOUNDRY_VERSION = 11;
+const PACKAGE_TYPE: "module"|"system" = "system";
+const PACKAGE_ID = "kult4th";
+const ENTRY_FILE_NAME = "kult4th";
+
+/* --- SCSS Color Extraction --- */
+// Path to the SCSS file containing color definitions
+const COLOR_STYLESHEET_PATH: string|false = false; // Set to false to disable SCSS color extraction.
+// Must match the SCSS variable name format, capturing 'hue', 'brightness', 'red', 'green', and 'blue' values
+const COLOR_MATCH_REGEXP: Maybe<RegExp> = undefined; // /--blades-(?<hue>[a-z]+)-(?<brightness>[a-z]+)-nums:\s*(?<red>\d+),\s*(?<green>\d+),\s*(?<blue>\d+)\s*;/g;
+/* --- SCSS Color Extraction --- */
+
+/* ==== END CONFIGURATION ==== */
+
 /**
  * Custom plugin to open Chrome with specific flags when the Vite server starts.
  */
-
 function openChromePlugin(): Plugin {
   return {
-    name: "open-chrome",
+    name:  "open-chrome",
     apply: "serve", // Only apply this plugin during development
     configResolved(chromeConfig) {
       if (chromeConfig.command === "serve") {
@@ -59,25 +72,20 @@ function scssVariablesToJsPlugin(): Plugin {
     // This function will load the content for our virtual module
     load(id) {
       if (id === "virtual:colors") {
-        const filePath = "src/scss/core/_colors.scss"; // Path to your SCSS variables file
-        // console.log(`Processing SCSS file: ${filePath}`);
-        const scssVariables: string = fs.readFileSync(filePath, "utf-8");
-        const regex = /--elh-([a-z]+-)+nums:\s*(\d+),\s*(\d+),\s*(\d+)\s*;/g;
+        if (!COLOR_STYLESHEET_PATH || !COLOR_MATCH_REGEXP) {
+          return null;
+        }
+        const scssVariables: string = fs.readFileSync(COLOR_STYLESHEET_PATH, "utf-8");
         let match: RegExpExecArray | null;
 
-        type brightness = "brightest"|"bright"|"normal"|"dark"|"darkest"|"black";
-        const colorDefs: Record<string, Partial<Record<brightness, number[]>>> = {};
+        type Brightness = "brightest"|"bright"|"normal"|"dark"|"darkest"|"black";
+        const colorDefs: Record<string, Partial<Record<Brightness, number[]>>> = {};
 
-        while ((match = regex.exec(scssVariables)) !== null) {
-          const varName: string = match[0]
-            .split(":")[0].trim()
-            .replace(/^--elh-/, "")
-            .replace(/-nums$/, "")
-            .replace(/-/g, "_");
-          const [hue, brightness] = varName.split(/_/);
-          const brightnessValue = brightness || "normal";
+        while ((match = COLOR_MATCH_REGEXP.exec(scssVariables)) !== null) {
+          const {hue, brightness, red, green, blue} = match.groups!;
+          const brightnessValue = (brightness || "normal") as Brightness;
           colorDefs[hue] ??= {};
-          colorDefs[hue][brightnessValue] = [parseInt(match[2], 10), parseInt(match[3], 10), parseInt(match[4], 10)];
+          colorDefs[hue][brightnessValue] = [parseInt(red, 10), parseInt(green, 10), parseInt(blue, 10)];
         }
 
         return {
@@ -96,7 +104,7 @@ function foundryPlugin(): Plugin {
   return {
     name: "foundry-plugin",
 
-    async resolveId(source) {
+    resolveId(source) {
       if (source === "gsap/all") {
         return {
           id: "scripts/greensock/esm/all.js",
@@ -112,7 +120,7 @@ function foundryPlugin(): Plugin {
 
       return null;
     },
-    async load(id) {
+    load(id) {
       const moduleInfo = this.getModuleInfo(id);
 
       if (moduleInfo == null) {
@@ -132,57 +140,44 @@ function foundryPlugin(): Plugin {
   };
 }
 
-
+const foundryPort = 30000 + (FOUNDRY_VERSION * 1000);
+const vitePort = foundryPort + 1;
 
 // Defining the Vite configuration object with specific settings for this project
 const config: UserConfig = defineConfig({
   // Setting the root directory for the project to the "src" folder
   root:      "src",
   // Setting the base URL for the project when deployed
-  base:      "/systems/kult4th/",
+  base:      `/${PACKAGE_TYPE}s/${PACKAGE_ID}/`,
   // Specifying the directory where static assets are located
   publicDir: path.resolve(__dirname, "public"),
   // Configuration for the development server
   server:    {
     // Setting the port number for the development server
-    port:  31001,
+    port:  vitePort,
     // Automatically open the project in the browser when the server starts
     open:  false,
     // Configuring proxy rules for certain URLs
     proxy: {
-      // Redirecting requests that do not start with "/eunos-lancer-hacks" to localhost:31000
-      "^(?!/systems/kult4th)": "http://localhost:31000/",
+      // Redirecting requests that do not start with "/systems/eunos-blades" to localhost:31100
+      [`^(?!/${PACKAGE_TYPE}s/${PACKAGE_ID})`]: `http://localhost:${foundryPort}/`,
       // Special proxy configuration for WebSocket connections used by socket.io
-      "/socket.io":                       {
-        target: "ws://localhost:31000", // Target server for the proxy
+      "/socket.io":                             {
+        target: `ws://localhost:${foundryPort}`, // Target server for the proxy
         ws:     true // Enable WebSocket support
       }
     }
   },
-  resolve: {
-    // preserveSymlinks: true,
-    alias: [
-      {
-        find: "gsap/all",
-        replacement: "scripts/greensock/esm/all.js"
-      },
-      {
-        find: "./runtimeConfig",
-        replacement: "./runtimeConfig.browser"
-      }
-    ]
-  },
-  optimizeDeps: {},
   // Configuration for the build process
   build: {
     // Directory where the build output will be placed
-    outDir:       path.resolve(__dirname, "dist"),
+    outDir:        path.resolve(__dirname, "dist"),
     // Clear the output directory before building
     emptyOutDir:   true,
     // Generate source maps for the build
     sourcemap:     true,
     // Configuration for the Terser minifier
-    minify: "terser",
+    minify:        "terser",
     terserOptions: {
       mangle:          false, // Disable mangling of variable and function names
       keep_classnames: true, // Preserve class names
@@ -192,25 +187,42 @@ const config: UserConfig = defineConfig({
     // minify: false,
     // Configuration for building a library
     lib: {
-      name:     "kult4th", // Name of the library
-      entry:    path.resolve(__dirname, "src/ts/kult4th.ts"), // Entry point for the library
+      name:     ENTRY_FILE_NAME, // Name of the library
+      entry:    path.resolve(__dirname, `src/ts/${ENTRY_FILE_NAME}.ts`), // Entry point for the library
       formats:  ["es"], // Output format(s) for the library
-      fileName: "index" // Name for the output file(s)
+      fileName: ENTRY_FILE_NAME // Name for the output file(s)
+    },
+    rollupOptions: {
+      external: [
+        "gsap/CustomEase",
+        "gsap/EasePack",
+        "gsap/Flip",
+        "gsap/Observer",
+        "gsap/Draggable",
+        "gsap/MotionPathPlugin",
+        "gsap/MorphSVGPlugin",
+        "gsap/PixiPlugin",
+        "gsap/TextPlugin",
+        "gsap/GSDevTools"
+      ]
+    }
+  },
+  resolve: {
+    preserveSymlinks: true,
+    alias:            {
+      "gsap/all": "scripts/greensock/esm/all.js"
     }
   },
   plugins: [
-    commonjs(),
-    svelte({configFile: "../svelte.config.cjs"}),
-
     foundryPlugin(),
     checker({typescript: true}),
-    // scssVariablesToJsPlugin(),
+    COLOR_STYLESHEET_PATH ? scssVariablesToJsPlugin() : undefined,
     visualizer({
       gzipSize: true,
       template: "treemap"
     }),
-    openChromePlugin()
-  ]
+    openChromePlugin() // Add the custom plugin here
+  ].filter(Boolean)
 });
 
 // Exporting the configuration object to be used by Vite

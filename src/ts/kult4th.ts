@@ -1,5 +1,7 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import "../scss/style.scss";
+
 import K4Config from "./scripts/config.js";
 import K4Actor from "./documents/K4Actor.js";
 import K4Item, {K4ItemType} from "./documents/K4Item.js";
@@ -14,7 +16,7 @@ import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/s
 import registerDebugger from "./scripts/logger.js";
 
 import resetItems from "./scripts/migratedData.js";
-import gsap, {MorphSVGPlugin} from "gsap/all";
+import {gsap, MorphSVGPlugin} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -47,17 +49,17 @@ Hooks.once("init", async () => {
 
   // #region ████████ STYLING: Create Style Definitions for SVG Files & Color Palette ████████ ~
   const svgDefTemplate = await getTemplate(U.getTemplatePath("globals", "svg-defs"));
-  type SVGGradientStop = {
+  interface SVGGradientStop {
     offset: number,
     color: string,
     opacity: number
-  };
-  type SVGGradientDef = {
+  }
+  interface SVGGradientDef {
     id: string,
     x: [number, number],
     y: [number, number],
     stops: Array<SVGGradientStop | string>
-  };
+  }
   /*
 <defs>
     <linearGradient id="fill-advantage" x1="0" x2="1" y1="0" y2="1">
@@ -184,13 +186,13 @@ Hooks.once("init", async () => {
       ({fill, stroke}: {fill: Partial<SVGGradientDef>, stroke: Partial<SVGGradientDef>}, iType: K4ItemType) => {
         return {
           fill: {
-            id: `fill-${iType}`,
-            x: [0, 1],
-            y: [0, 1],
+            id:    `fill-${iType}`,
+            x:     [0, 1],
+            y:     [0, 1],
             ...fill ?? {},
             stops: (fill.stops ?? []).map((stop, i, stops) => ({
-              offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
-              color: typeof stop === "string" ? stop : stop.color,
+              offset:  U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+              color:   typeof stop === "string" ? stop : stop.color,
               opacity: 1,
               ...(U.isList(stop) ? stop : {})
             })),
@@ -199,15 +201,15 @@ Hooks.once("init", async () => {
               : fill.stops)
           },
           stroke: {
-            id: `stroke-${iType}`,
-            x: [0, 1],
-            y: [0, 1],
+            id:    `stroke-${iType}`,
+            x:     [0, 1],
+            y:     [0, 1],
             ...stroke ?? {},
             stops: (stroke.stops ?? []).map((stop, i, stops) => {
               // kLog.log(`Stroke-${iType}`, {stop, i, stops});
               return {
-                offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
-                color: typeof stop === "string" ? stop : stop.color,
+                offset:  U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                color:   typeof stop === "string" ? stop : stop.color,
                 opacity: 1,
                 ...(U.isList(stop) ? stop : {})
               };
@@ -257,8 +259,8 @@ Hooks.once("ready", async () => {
     formatStringForKult,
     ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
     ENTITIES: [ACTOR, ITEM, EMBED],
-    SHEETS: [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
-    DOCS: [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
+    SHEETS:   [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
+    DOCS:     [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
   });
   /*!DEVCODE*/
 });

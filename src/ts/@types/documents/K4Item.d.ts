@@ -20,8 +20,8 @@ declare global {
           result: string,
           listRefs?: string[],
           effectFunctions?: string[],
-          edges?: posInt,
-          hold?: posInt
+          edges?: PosInteger,
+          hold?: PosInteger
         }
       >
   }
@@ -43,8 +43,8 @@ declare global {
   interface K4Attack {
     name: string,
     range: RangeType[],
-    harm: posInt,
-    ammoCost?: posInt,
+    harm: PosInteger,
+    ammoCost?: PosInteger,
     sourceItem?: {
       name: string,
       id?: string,
@@ -103,22 +103,22 @@ declare global {
     export interface attack extends K4ItemComps.Base, K4ItemComps.CanSubItem, K4ItemComps.RulesData, ResultsData {
       attribute: K4Attribute
       range: RangeType[],
-      harm: posInt,
-      ammo: posInt
+      harm: PosInteger,
+      ammo: PosInteger
     }
     export interface advantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
       attribute: K4Attribute,
-      currentHold: posInt,
-      currentEdges: posInt
+      currentHold: PosInteger,
+      currentEdges: PosInteger
     }
     export interface disadvantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
       attribute: K4Attribute,
-      currentHold: posInt
+      currentHold: PosInteger
     }
 
     export interface darksecret extends K4ItemComps.Base, K4ItemComps.RulesData {
       drive: string,
-      currentHold: posInt,
+      currentHold: PosInteger,
       playerNotes: string,
       gmNotes: string
     }

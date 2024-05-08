@@ -3,12 +3,12 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor from "./K4Actor.js";
-import gsap, {GSDevTools} from "gsap/all";
+import {gsap, GSDevTools} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
 const ANIMATIONS = {
-  hoverNav(target: HTMLElement): gsapAnim {
+  hoverNav(target: HTMLElement): GsapAnimation {
     const headerButtons = target.getElementsByClassName("header-button");
     return gsap
       .timeline({
@@ -16,36 +16,36 @@ const ANIMATIONS = {
       }).to(
         target,
         {
-          scale: 1.25,
-          x: 10,
-          y: 20,
+          scale:    1.25,
+          x:        10,
+          y:        20,
           duration: 0.5,
-          ease: "back"
+          ease:     "back"
         },
         0
       ).to(
         U.getSiblings(target),
         {
-          opacity: 0.75,
-          filter: "blur(5px)",
+          opacity:  0.75,
+          filter:   "blur(5px)",
           duration: 0.5,
-          ease: "back"
+          ease:     "back"
         },
         0
       ).to(
         headerButtons,
         {
-          scale: 0.75,
-          y: -100,
+          scale:    0.75,
+          y:        -100,
           duration: 0.5,
-          stagger: 0.1,
-          ease: "back.out(3)"
+          stagger:  0.1,
+          ease:     "back.out(3)"
           // opacity: 1
         },
         0
       );
   },
-  hoverTab(target: HTMLElement): gsapAnim {
+  hoverTab(target: HTMLElement): GsapAnimation {
     const tabLabel$ = $(target).find(".nav-tab-label");
     const tabAnimation$ = $(target).find(".nav-tab-animation");
     return gsap
@@ -54,36 +54,36 @@ const ANIMATIONS = {
       }).fromTo(
         tabLabel$,
         {
-          scale: 3,
+          scale:   3,
           opacity: 0,
-          filter: "blur(10px)"
+          filter:  "blur(10px)"
         },
         {
-          scale: 2,
-          opacity: 1,
-          filter: "none",
+          scale:    2,
+          opacity:  1,
+          filter:   "none",
           duration: 1,
-          ease: "back"
+          ease:     "back"
         },
         0
       ).fromTo(
         tabAnimation$,
         {
-          scale: 1,
+          scale:   1,
           opacity: 0,
-          filter: "blur(10px)"
+          filter:  "blur(10px)"
         },
         {
-          scale: 5,
-          opacity: 0.75,
-          filter: "none",
+          scale:    5,
+          opacity:  0.75,
+          filter:   "none",
           duration: 1,
-          ease: "back"
+          ease:     "back"
         },
         0
       );
   },
-  hoverMove(target: HTMLElement): gsapAnim {
+  hoverMove(target: HTMLElement): GsapAnimation {
     const FULL_DURATION = 0.5;
 
     const attribute = $(target).data("attribute");
@@ -97,36 +97,36 @@ const ANIMATIONS = {
         itemIcon$,
         {
           borderRadius: 25,
-          overflow: "hidden"
+          overflow:     "hidden"
         },
         {
-          width: "100%",
-          borderRadius: 0,
-          duration: FULL_DURATION,
+          width:           "100%",
+          borderRadius:    0,
+          duration:        FULL_DURATION,
           backgroundColor: C.Colors.bGOLD,
-          ease: "sine"
+          ease:            "sine"
         },
         0
       ).fromTo(
         itemText$,
         {
-          x: 0,
-          width: "auto",
-          opacity: 1,
-          color: C.Colors.GOLD,
+          x:          0,
+          width:      "auto",
+          opacity:    1,
+          color:      C.Colors.GOLD,
           textShadow: 0
         },
         {
-          x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`, 10)) - 40,
-          width: 0,
-          color: C.Colors.BLACK,
+          x:          -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`, 10)) - 40,
+          width:      0,
+          color:      C.Colors.BLACK,
           textShadow: [
             ...Array.from({length: 4}).fill(`0 0 15px ${C.Colors.bGOLD}`),
             ...Array.from({length: 6}).fill(`0 0 5px ${C.Colors.bGOLD}`),
             ...Array.from({length: 4}).fill(`0 0 2px ${C.Colors.bGOLD}`)
           ].join(", "),
           duration: FULL_DURATION,
-          ease: "back"
+          ease:     "back"
         },
         0
       ).set(
@@ -139,24 +139,24 @@ const ANIMATIONS = {
       .to(
         itemText$,
         {
-          opacity: 1,
+          opacity:  1,
           duration: FULL_DURATION - 0.01,
-          ease: "sine"
+          ease:     "sine"
         },
         0.01
       ).fromTo(
         toolTip$,
         {
           opacity: 0,
-          bottom: 30,
-          scale: 1.5
+          bottom:  30,
+          scale:   1.5
         },
         {
-          opacity: 1,
-          bottom: 30,
-          scale: 1,
+          opacity:  1,
+          bottom:   30,
+          scale:    1,
           duration: 0.75 * FULL_DURATION,
-          ease: "power2.in"
+          ease:     "power2.in"
         },
         0
       );
@@ -171,9 +171,9 @@ const ANIMATIONS = {
             opacity: 0
           },
           {
-            opacity: 1,
+            opacity:  1,
             duration: FULL_DURATION,
-            ease: "sine"
+            ease:     "sine"
           },
           0
         );
@@ -214,14 +214,14 @@ export default class K4NPCSheet extends ActorSheet {
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "npc-sheet", "k4-theme-dgold"],
-      tabs: [
+      tabs:    [
         {navSelector: ".tabs", contentSelector: ".tab-content", initial: "front"}
       ]
     });
   }
   override get template() { return "systems/kult4th/templates/sheets/npc-sheet.hbs"; }
 
-  hoverTimeline?: gsapAnim;
+  hoverTimeline?: GsapAnimation;
   hoverTimelineTarget?: HTMLElement;
   devTools = GSDevTools;
 
@@ -229,17 +229,17 @@ export default class K4NPCSheet extends ActorSheet {
     const baseData = await super.getData();
     const data = {
       ...baseData,
-      actorData: this.actor.data.data,
-      baseMoves: this.actor.basicMoves,
-      derivedMoves: this.actor.derivedMoves,
-      advantages: this.actor.advantages,
+      actorData:     this.actor.data.data,
+      baseMoves:     this.actor.basicMoves,
+      derivedMoves:  this.actor.derivedMoves,
+      advantages:    this.actor.advantages,
       disadvantages: this.actor.disadvantages,
-      darksecrets: this.actor.darkSecrets,
-      relations: this.actor.relations,
-      weapons: this.actor.weapons,
-      gear: this.actor.gear,
-      attacks: this.actor.attacks,
-      attributes: this.actor.attributeData
+      darksecrets:   this.actor.darkSecrets,
+      relations:     this.actor.relations,
+      weapons:       this.actor.weapons,
+      gear:          this.actor.gear,
+      attacks:       this.actor.attacks,
+      attributes:    this.actor.attributeData
     };
     /*DEVCODE*/kLog.log("Final Data", data);/*!DEVCODE*/
     return data;
@@ -253,18 +253,18 @@ export default class K4NPCSheet extends ActorSheet {
 
     $(() => {
       kLog.log("ACTOR SHEET HTML OBJECT", html);
-      const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
+      const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
 
       const [navPanel] = html.find(".nav-panel");
 
       $(navPanel)
         .each(() => {
           gsap.set(navPanel, {
-            xPercent: -50,
-            yPercent: -50,
+            xPercent:             -50,
+            yPercent:             -50,
             transformPerspective: 1000,
-            perspective: 600,
-            transformStyle: "preserve-3d"
+            perspective:          600,
+            transformStyle:       "preserve-3d"
           });
           const hoverTimeline = ANIMATIONS.hoverNav(navPanel);
 
@@ -283,8 +283,8 @@ export default class K4NPCSheet extends ActorSheet {
                 gsap.to(navPanel, {
                   rotationX: 0,
                   rotationY: 0,
-                  duration: 2,
-                  ease: "power3.out"
+                  duration:  2,
+                  ease:      "power3.out"
                 });
                 hoverTimeline.reversed(true);
               } else {
@@ -308,8 +308,8 @@ export default class K4NPCSheet extends ActorSheet {
                 gsap.to(navPanel, {
                   rotationX: rotX,
                   rotationY: rotY,
-                  ease: "back.out",
-                  duration: 0.5
+                  ease:      "back.out",
+                  duration:  0.5
                 });
               }
             }

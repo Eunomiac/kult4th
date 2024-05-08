@@ -1,6 +1,6 @@
-import SVGDATA from "../scripts/svgdata";
-import {K4ItemType} from "../documents/K4Item";
-import {K4WoundType} from "../documents/K4Actor";
+import SVGDATA from "../scripts/svgdata.ts";
+import {K4ItemType} from "../documents/K4Item.ts";
+import {K4WoundType} from "../documents/K4Actor.ts";
 
 declare global {
   interface StripButtonData {

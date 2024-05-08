@@ -5,19 +5,19 @@ import U from "../scripts/utilities.js";
 import SVGDATA from "../scripts/svgdata.js";
 import K4Actor from "./K4Actor.js";
 import type K4Item from "./K4Item.js";
-import gsap, {GSDevTools, MorphSVGPlugin} from "gsap/all";
+import {gsap, GSDevTools, MorphSVGPlugin} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
 gsap.registerPlugin(MorphSVGPlugin);
 
 const ANIMATIONS = {
-  _glitchText(target: HTMLElement, startingGlitchScale = 1): gsapAnim {
+  _glitchText(target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
 
     const tl = gsap.timeline({
-      repeat: -1,
+      repeat:      -1,
       repeatDelay: 10,
-      reversed: true,
+      reversed:    true,
       onRepeat() {
         this.timeScale(this.glitchScale);
       }
@@ -29,60 +29,60 @@ const ANIMATIONS = {
       ease: "power4.inOut"
     })
       .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, skewX: 0, ease: "power4.inOut"})
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, opacity:0})
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, opacity:1})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, opacity: 0})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, opacity: 1})
       .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, x() { return -10 * this.glitchScale; }})
-      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, x:0})
+      .to(".glitch", {duration() { return 0.01 * this.glitchScale; }, x: 0})
       .add("split", 0)
       .to(".top", {duration() { return 0.5; }, x() { return -10 * this.glitchScale;}, ease: "power4.inOut"}, "split")
       .to(".bottom", {duration() { return 0.5; }, x() { return 10 * this.glitchScale;}, ease: "power4.inOut"}, "split")
       .to(".glitch", {duration() { return 0.08; }, className: "+=redShadow"}, "split")
 
       .to("#txt", {duration() { return 0; }, scale() { return 1 + (0.05 * (this.glitchScale - 1)); }}, "split")
-      .to("#txt", {duration() { return 0; }, scale:1}, "+=0.02")
+      .to("#txt", {duration() { return 0; }, scale: 1}, "+=0.02")
 
       .to(".glitch", {duration() { return 0.08; }, className: "-=redShadow"}, "+=0.09")
       .to(".glitch", {className: "+=greenShadow", duration: 0.03}, "split")
       .to(".glitch", {className: "-=greenShadow", duration: 0.03}, "+=0.01")
 
-      .to(".top", {duration() { return 0.2; }, x:0, ease: "power4.inOut"})
-      .to(".bottom", {duration() { return 0.2; }, x:0, ease: "power4.inOut"})
+      .to(".top", {duration() { return 0.2; }, x: 0, ease: "power4.inOut"})
+      .to(".bottom", {duration() { return 0.2; }, x: 0, ease: "power4.inOut"})
 
       .to(".glitch", {duration() { return 0.02; }, scaleY() { return 1 + (0.05 * (this.glitchScale - 1));}, ease: "power4.inOut"})
-      .to(".glitch", {duration() { return 0.04; }, scaleY:1, ease: "power4.inOut"});
+      .to(".glitch", {duration() { return 0.04; }, scaleY: 1, ease: "power4.inOut"});
 
     return tl;
   },
-  gearGeburahRotate(target: HTMLElement): gsapAnim {
+  gearGeburahRotate(target: HTMLElement): GsapAnimation {
     const outerGear$ = $(target).find(".svg-gear-geburah");
     const centerSaw$ = $(target).find(".svg-gear-geburah-center-saw");
     const centerSawRotate = gsap.timeline({repeat: -1})
       .to(centerSaw$, {
         rotation: "-=360",
         duration: 10,
-        ease: "none"
+        ease:     "none"
       });
     return gsap.timeline({delay: 0.2, repeat: -1})
       .to(outerGear$, {
-        rotation: "-=20",
-        duration: 0.4,
+        rotation:      "-=20",
+        duration:      0.4,
         repeatRefresh: true,
-        repeatDelay: 1.6,
-        ease: "back",
-        repeat: -1
+        repeatDelay:   1.6,
+        ease:          "back",
+        repeat:        -1
       }, 0)
       .fromTo(centerSawRotate, {
         timeScale: 8
       }, {
-        timeScale: 0.5,
-        duration: 1.9,
-        ease: "power2",
+        timeScale:   0.5,
+        duration:    1.9,
+        ease:        "power2",
         repeatDelay: 0,
-        delay: 0.1,
-        repeat: -1
+        delay:       0.1,
+        repeat:      -1
       }, 0);
   },
-  gearBinahRotate(target: HTMLElement): gsapAnim {
+  gearBinahRotate(target: HTMLElement): GsapAnimation {
     const binahTeeth$ = $(target).find(".svg-gear-binah-outer-teeth");
     const binahInner$ = $(target).find(".svg-gear-binah-inner-full");
     gsap.set(binahTeeth$, {scale: 0.97});
@@ -90,27 +90,27 @@ const ANIMATIONS = {
       .to(binahTeeth$, {
         rotation: "-=360",
         duration: 5,
-        repeat: -1,
-        ease: "none"
+        repeat:   -1,
+        ease:     "none"
       }, 0)
       .to(binahInner$, {
-        rotation: "+=10",
-        duration: 0.4,
+        rotation:      "+=10",
+        duration:      0.4,
         repeatRefresh: true,
-        repeatDelay: 0.85,
-        ease: "back.out(14)",
-        repeat: -1
+        repeatDelay:   0.85,
+        ease:          "back.out(14)",
+        repeat:        -1
       }, 0);
   },
-  gearHugeRotate(target: HTMLElement): gsapAnim {
+  gearHugeRotate(target: HTMLElement): GsapAnimation {
     return gsap.to(target, {
       rotation: "+=360",
       duration: 50,
-      ease: "none",
-      repeat: -1
+      ease:     "none",
+      repeat:   -1
     });
   },
-  hoverNav(target: HTMLElement): gsapAnim {
+  hoverNav(target: HTMLElement): GsapAnimation {
     // const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
     const navLens$ = $(target).find(".nav-lens");
     const profileImg$ = $(target).find(".profile-image");
@@ -124,125 +124,125 @@ const ANIMATIONS = {
     const flare$ = $(target).find(".nav-flare");
 
     const svgs = {
-      container: $(target).find(".nav-svg"),
+      container:           $(target).find(".nav-svg"),
       outerSpikeContainer: $(target).find(".outer-spikes"),
-      outerSpikes: Array.from($(target).find(".outer-spikes").children()),
-      outerSpikePaths: Array.from($(target).find(".outer-spikes-hover").children())
+      outerSpikes:         Array.from($(target).find(".outer-spikes").children()),
+      outerSpikePaths:     Array.from($(target).find(".outer-spikes-hover").children())
         .map((spike) => spike.getAttribute("d")),
-      innerSpikes: $(target).find(".inner-spikes"),
-      innerMesh: $(target).find(".inner-mesh"),
-      mainRing: $(target).find(".main-ring"),
+      innerSpikes:  $(target).find(".inner-spikes"),
+      innerMesh:    $(target).find(".inner-mesh"),
+      mainRing:     $(target).find(".main-ring"),
       buttonSpikes: $(target).find(".tabs .nav-tab-container .svg-container[class*='nav-spoke'] .svg-def")
     };
 
     // @ts-expect-error MorphSVG does indeed accept functions.
     const navTL = gsap.timeline({reversed: true})
       .to(target, {
-        scale: 1.2,
+        scale:    1.2,
         duration: 0.6,
-        ease: "power2"
+        ease:     "power2"
       }, 0)
       .to(target, {
-        x: "+=20",
+        x:        "+=20",
         duration: 0.5,
-        ease: "sine.inOut"
+        ease:     "sine.inOut"
       }, 0)
       .to(target, {
-        y: "+=50",
+        y:        "+=50",
         duration: 0.5,
-        ease: "sine.out"
+        ease:     "sine.out"
       }, 0)
       .to($(target).find(".svg-def:not(.main-ring)"), {
         "--K4-svg-fill": C.Colors.BLACK,
-        "duration": 0.6,
-        "ease": "sine"
+        "duration":      0.6,
+        "ease":          "sine"
       }, 0)
       .set($(target).find(".svg-def.main-ring"), {
         fill: "url('#nav-main-ring-bg-end-gradient')"
       }, 0.3)
       .to(svgs.mainRing, {
-        scale: 1,
-        opacity: 1,
-        ease: "sine",
-        duration: 0.6,
+        scale:       1,
+        opacity:     1,
+        ease:        "sine",
+        duration:    0.6,
         strokeWidth: 0,
-        stroke: 0
+        stroke:      0
       }, 0)
       .to(svgs.innerMesh, {
-        scale: 1,
-        ease: "sine",
+        scale:    1,
+        ease:     "sine",
         duration: 0.45
       }, 0).to(svgs.innerMesh, {
-        opacity: 1,
-        ease: "sine",
+        opacity:  1,
+        ease:     "sine",
         duration: 0.3
       }, 0.15)
       .to(svgs.outerSpikeContainer, {
-        scale: 1,
+        scale:    1,
         duration: 0.3,
-        ease: "power2"
+        ease:     "power2"
       }, 0)
       .to(svgs.outerSpikes, {
         // @ts-expect-error MorphSVG does indeed accept functions.
         morphSVG(i) { return svgs.outerSpikePaths[i]; },
-        scale: 1,
+        scale:    1,
         duration: 0.3,
-        ease: "power2"
+        ease:     "power2"
       }, 0)
       .to(svgs.innerSpikes, {
-        scale: 1,
+        scale:    1,
         duration: 0.3,
-        ease: "power2"
+        ease:     "power2"
       }, 0.15).to(svgs.innerSpikes, {
-        opacity: 1,
+        opacity:  1,
         duration: 0.15,
-        ease: "power2"
+        ease:     "power2"
       }, 0.2)
       .to(navLens$, {
         rotation: "+=180",
         duration: 0.6,
-        ease: "sine.inOut"
+        ease:     "sine.inOut"
       }, 0).to(navLens$, {
-        opacity: 0,
+        opacity:  0,
         duration: 0.3,
-        ease: "power2"
+        ease:     "power2"
       }, 0.3)
       .to(buttonSliders$, {
-        y: "-=85",
-        ease: "sine",
+        y:             "-=85",
+        ease:          "sine",
         pointerEvents: "all",
-        duration: 0.3,
-        stagger: {
+        duration:      0.3,
+        stagger:       {
           amount: 0.25,
-          from: "random"
+          from:   "random"
         }
       }, 0.05)
       .from([closeButton$, minimizeButton$], {
         // zIndex: -2,
         pointerEvents: "none",
-        filter: "blur(5px)",
-        ease: "sine",
-        duration: 0.6
+        filter:        "blur(5px)",
+        ease:          "sine",
+        duration:      0.6
       }, 0).to([closeButton$, minimizeButton$], {
-        opacity: 1,
-        duration: 0.3,
+        opacity:       1,
+        duration:      0.3,
         pointerEvents: "all"
       }, 0)
       .to(profileImg$, {
-        opacity: 0,
+        opacity:  0,
         duration: 0.6,
-        ease: "power2.out"
+        ease:     "power2.out"
       }, 0)
       .to(profileBg$, {
-        opacity: 0.65, // 0.65,
+        opacity:  0.65, // 0.65,
         duration: 0.6,
-        ease: "sine"
+        ease:     "sine"
       }, 0)
       .to(buttonContainer$, {
       //   scale: 1,
       //   opacity: 1,
-        zIndex: 1,
-        ease: "power3",
+        zIndex:   1,
+        ease:     "power3",
         duration: 0.01
       });
       /* .to(
@@ -258,42 +258,42 @@ const ANIMATIONS = {
     if (U.getSetting("blur")) {
       navTL
         .to(U.getSiblings(target), {
-          filter: "blur(5px)",
+          filter:   "blur(5px)",
           duration: 0.5,
-          ease: "back"
+          ease:     "back"
         }, 0);
     }
 
     if (U.getSetting("flare")) {
       navTL
         .to(flare$, {
-          scale: 2.3,
+          scale:    2.3,
           duration: 0.45,
-          ease: "sine"
+          ease:     "sine"
         }, 0);
     }
 
     return navTL;
   },
-  hoverNavTab(target: HTMLElement, context: JQuery): gsapAnim {
+  hoverNavTab(target: HTMLElement, context: JQuery): GsapAnimation {
     const tabLabel$ = $(target).find(".nav-tab-label");
     // const tabAnimation$ = $(target).find(".nav-tab-animation");
     const tl = gsap.timeline({reversed: true})
       .to(tabLabel$, {
-        opacity: 1,
+        opacity:  1,
         duration: 0.25,
-        ease: "sine"
+        ease:     "sine"
       }, 0)
       .fromTo(tabLabel$, {
-        scale: 3,
+        scale:  3,
         // scaleX: 1.5,
         filter: "blur(10px)"
       }, {
         // scaleY: 2,
-        scale: 1,
-        filter: "none",
+        scale:    1,
+        filter:   "none",
         duration: 0.35,
-        ease: "power3"
+        ease:     "power3"
       }, 0)/* .fromTo(
         tabAnimation$,
         {
@@ -312,7 +312,7 @@ const ANIMATIONS = {
       ) */;
     return tl;
   },
-  hoverStrip(target: HTMLElement, context: JQuery): gsapAnim {
+  hoverStrip(target: HTMLElement, context: JQuery): GsapAnimation {
     const FULL_DURATION = 0.5;
 
     const hoverTarget$ = $(context).find($(target).data("hover-target"));
@@ -337,35 +337,35 @@ const ANIMATIONS = {
     const tl = gsap
       .timeline({reversed: true})
       .to(stripIcon$, {
-        scale: "+=1",
+        scale:    "+=1",
         duration: FULL_DURATION,
-        ease: "sine"
+        ease:     "sine"
       }, 0)
       .to(target, {
         duration: 0.1,
-        zIndex: 5000,
-        ease: "none"
+        zIndex:   5000,
+        ease:     "none"
       }, 0)
       .to(buttonStrip$, {
-        opacity: 1,
+        opacity:  1,
         duration: FULL_DURATION / 4,
-        ease: "none"
+        ease:     "none"
       }, 0)
       .from(buttonStrip$, {
-        width: 0,
+        width:    0,
         duration: FULL_DURATION,
-        ease: "sine"
+        ease:     "sine"
       }, 0)
       .fromTo(stripName$, {
         color: colorFG
       }, {
-        xPercent: -100,
-        x: `-=${2 * nameShift}`,
+        xPercent:   -100,
+        x:          `-=${2 * nameShift}`,
         fontWeight: 900,
-        fontStyle: "normal",
-        zIndex: 20,
-        duration: FULL_DURATION,
-        color: colorBG,
+        fontStyle:  "normal",
+        zIndex:     20,
+        duration:   FULL_DURATION,
+        color:      colorBG,
         textShadow: [
           ...new Array(4).fill(`0 0 15px ${colorFG}`),
           ...new Array(6).fill(`0 0 5px ${colorFG}`),
@@ -378,13 +378,13 @@ const ANIMATIONS = {
     if (stripToolTip$[0]) {
       tl.fromTo(stripToolTip$, {
         opacity: 0,
-        scale: 1.5
+        scale:   1.5
       }, {
-        opacity: 1,
-        scale: 1,
-        y: "-=10",
+        opacity:  1,
+        scale:    1,
+        y:        "-=10",
         duration: 0.75 * FULL_DURATION,
-        ease: "power2.in"
+        ease:     "power2.in"
       }, 0);
     }
 
@@ -392,15 +392,15 @@ const ANIMATIONS = {
       tl.fromTo(hoverTarget$, {
         opacity: 0
       }, {
-        opacity: 1,
+        opacity:  1,
         duration: FULL_DURATION,
-        ease: "sine"
+        ease:     "sine"
       }, 0);
     }
 
     return tl;
   },
-  hoverStripButton(target: HTMLElement, context: JQuery): gsapAnim {
+  hoverStripButton(target: HTMLElement, context: JQuery): GsapAnimation {
     const FULL_DURATION = 0.25;
 
     const buttonStrip$ = $(target).parent();
@@ -420,11 +420,11 @@ const ANIMATIONS = {
       //   ease: "power2"
       // }, 0)
       .to(svg$, {
-        filter: "blur(2px)",
-        scale: 5,
-        opacity: 0,
+        filter:   "blur(2px)",
+        scale:    5,
+        opacity:  0,
         duration: 0.5 * FULL_DURATION,
-        ease: "power2"
+        ease:     "power2"
       }, 0)
       // .fromTo(tooltip$, {
       //   filter: "blur(2px)"
@@ -437,14 +437,14 @@ const ANIMATIONS = {
       // }, 0)
       .to(tooltipFlare$, {
         autoAlpha: 1,
-        duration: 0.1,
-        ease: "none"
+        duration:  0.1,
+        ease:      "none"
       }, 0.1)
       .to(tooltipFlare$, {
-        scaleX: 0.75,
-        scaleY: 1,
+        scaleX:   0.75,
+        scaleY:   1,
         duration: FULL_DURATION - 0.1,
-        ease: "power2"
+        ease:     "power2"
       }, 0.1);
 
     return tl;
@@ -564,14 +564,14 @@ export default class K4PCSheet extends ActorSheet {
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "k4-theme-dgold"],
-      tabs: [
+      tabs:    [
         {navSelector: ".tabs", contentSelector: ".tab-content", initial: "bio"}
       ]
     });
   }
   override get template() { return `systems/kult4th/templates/sheets/${this.actor.data.type}-sheet.hbs`; }
 
-  hoverTimeline?: gsapAnim;
+  hoverTimeline?: GsapAnimation;
   hoverTimelineTarget?: HTMLElement;
   devTools = GSDevTools;
 
@@ -579,18 +579,18 @@ export default class K4PCSheet extends ActorSheet {
     const baseContext = await super.getData();
     const context = {
       ...baseContext,
-      baseMoves: this.actor.basicMoves,
-      derivedMoves: this.actor.derivedMoves,
-      advantages: this.actor.advantages,
+      baseMoves:     this.actor.basicMoves,
+      derivedMoves:  this.actor.derivedMoves,
+      advantages:    this.actor.advantages,
       disadvantages: this.actor.disadvantages,
-      darksecrets: this.actor.darkSecrets,
-      relations: this.actor.relations,
-      weapons: this.actor.weapons,
-      gear: this.actor.gear,
-      attacks: this.actor.attacks,
-      attributes: this.actor.attributeData,
-      curTab: this.actor.getFlag("kult4th", "sheetTab"),
-      wounds: this.actor.woundStrips
+      darksecrets:   this.actor.darkSecrets,
+      relations:     this.actor.relations,
+      weapons:       this.actor.weapons,
+      gear:          this.actor.gear,
+      attacks:       this.actor.attacks,
+      attributes:    this.actor.attributeData,
+      curTab:        this.actor.getFlag("kult4th", "sheetTab"),
+      wounds:        this.actor.woundStrips
     };
     /*DEVCODE*/
     kLog.log("Final Actor Data", context);
@@ -630,7 +630,7 @@ export default class K4PCSheet extends ActorSheet {
         html.find(".tab-content").each(function cancelShadows() { $(this).css("filter", "none");});
       }
 
-      const hoverTimelines: Array<[HTMLElement, gsapAnim]> = [];
+      const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
       this.element.find(".nav-panel").each(function initNavPanel() {
         if (!U.getSetting("flare")) {
           gsap.set(self.element.find(".nav-flare"), {background: "none"});

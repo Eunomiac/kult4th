@@ -82,49 +82,49 @@ declare global {
       ],
       attributes: {
         [K4Attribute.willpower]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.fortitude]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.reflexes]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.reason]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.perception]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.coolness]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.violence]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.charisma]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         },
         [K4Attribute.soul]: {
-          min: int,
-          max: int,
-          value: int
+          min: Integer,
+          max: Integer,
+          value: Integer
         }
       },
       wounds: Record<string, K4Wound>,
@@ -135,13 +135,13 @@ declare global {
         stability: K4ModTargets[]
       },
       stability: {
-        min: int,
-        max: int,
-        value: int
+        min: Integer,
+        max: Integer,
+        value: Integer
       },
       edges: {
         sourceName: string,
-        value: posInt
+        value: PosInteger
       }
     }
     export interface npc extends Pick<pc, description|wounds|penalties> { }
@@ -174,23 +174,23 @@ declare global {
       relations: Array<K4ItemSpec<K4ItemType.relation>>;
 
       maxWounds: {
-        serious: int,
-        critical: int,
-        total: int
+        serious: Integer,
+        critical: Integer,
+        total: Integer
       }
 
       modifiersReport: string,
 
       edges: {
         sourceName: string,
-        value: posInt,
+        value: PosInteger,
         items: string[]
       }
 
       stability: {
-        min: int,
-        max: int,
-        value: int,
+        min: Integer,
+        max: Integer,
+        value: Integer,
         statusOptions: string[]
       }
     }

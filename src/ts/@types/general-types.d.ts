@@ -9,7 +9,7 @@ import K4NPCSheet from "../documents/K4NPCSheet.js";
 import K4ItemSheet from "../documents/K4ItemSheet.js";
 import K4ActiveEffect from "../documents/K4ActiveEffect.js";
 
-import {gsap} from "gsap/all";
+import {gsap} from "gsap";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -39,25 +39,34 @@ declare global {
   // #region MISCELLANEOUS TYPE ALIASES (nonfunctional; for clarity) ~
 
   // Represents a list of a certain type
-  type List<Type = unknown> = Record<key, Type>
+  type List<V = unknown, K extends Key = Key> = Record<K, V>
 
-  // Represents an index of a certain type
-  type Index<Type = unknown> = List<Type> | Type[];
+  // Represents either an item or a list of items
+  type ItemOrList<V = unknown, K extends Key = Key> = V | List<V, K>;
+
+  // Represents an index of a certain type, where the keys do not matter
+  type Index<V = unknown> = List<V> | V[];
+
+  // Represents either an item or and index of items
+  type ItemOrIndex<V = unknown> = V | Index<V>;
+
+  // Represents an item or a Promise resolving to an item
+  type ItemOrPromise<V = unknown> = V | Promise<V>;
 
   // Represents a string, false, or undefined
   type MaybeStringOrFalse = string | false | undefined;
 
   // Represents a function with an unknown number of parameters, returning a value of type R
-  type func<R = unknown> = (...args: unknown[]) => R;
+  type Func<R = unknown> = (...args: unknown[]) => R;
 
   // Represents an async function with an unknown number of parameters, returning a Promise resolving to a value of type R
-  type asyncFunc<R = unknown> = (...args: unknown[]) => Promise<R>;
+  type AsyncFunc<R = unknown> = (...args: unknown[]) => Promise<R>;
 
   // Represents any class constructor with an unknown number of parameters
   type AnyClass<T = unknown> = new (...args: unknown[]) => T;
 
   // Represents a key which can be a string, number, or symbol
-  type key = string | number | symbol;
+  type Key = string | number | symbol;
 
   // Represents a small integer from -10 to 10
   type SmallInt = -10 | -9 | -8 | -7 | -6 | -5 | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
@@ -65,11 +74,11 @@ declare global {
   // Represents a string-like value
   type StringLike = string | number | boolean | null | undefined;
 
-  // Represents a number represented as a string
-  type NumString = `${number}`;
-
   // Represents an object with number-strings as keys
   type StringArray<T> = Record<NumString, T>;
+
+  // Represents a number represented as a string
+  type NumString = `${number}`;
 
   // Represents "true" or "false" as a string
   type BoolString = `${boolean}`;
@@ -91,16 +100,6 @@ declare global {
   // Represents an allowed string case
   type StringCase = "upper" | "lower" | "sentence" | "title";
 
-  // Represents HTML code as a string
-  type HTMLCode = string & {__htmlStringBrand: never};
-
-  // Represents a HEX color as a string, allowing for six (RGB) or eight (RGBA) uppercase hexadecimal digits
-  type HexColor = `#${HexDigit}${HexDigit}${HexDigit}` | `#${HexDigit}${HexDigit}${HexDigit}${HexDigit}`;
-
-  // Represents an RGB color as a string
-  type RGBColor = `rgb(${number}${FlexComma}${number}${FlexComma}${number})` |
-    `rgba(${number}${FlexComma}${number}${FlexComma}${number}${FlexComma}${number})`;
-
   // Represents a key of a certain type
   type KeyOf<T> = keyof T;
 
@@ -108,10 +107,10 @@ declare global {
   type ValOf<T> = T extends unknown[] | readonly unknown[] ? T[number] : T[keyof T];
 
   // Represents a function that takes a key and an optional value and returns unknown
-  type keyFunc = (key: key, val?: unknown) => unknown;
+  type keyFunc = (key: Key, val?: unknown) => unknown;
 
   // Represents a function that takes a value and an optional key and returns any
-  type valFunc = (val: unknown, key?: key) => unknown;
+  type valFunc = (val: unknown, key?: Key) => unknown;
 
   // Represents a test function
   type testFunc<Type extends keyFunc | valFunc> = (...args: Parameters<Type>) => boolean;
@@ -123,25 +122,44 @@ declare global {
   type checkTest = ((...args: unknown[]) => unknown) | testFunc<keyFunc> | testFunc<valFunc> | RegExp | number | string;
   // #endregion
 
-  // Represents a document id as a string
+  // #region BRANDED TYPES ~
+  // number === Integer type guard
+  type Integer = number & { __intBrand: never };
+
+  // number === Positive integer type guard
+  type PosInteger = number & { __posIntBrand: never };
+
+  // number === Float type guard
+  type Float = number & { __floatBrand: never };
+
+  // number === Positive float type guard
+  type PosFloat = number & { __posFloatBrand: never };
+
+  // string === HTML code
+  type HTMLCode = string & {__htmlStringBrand: never};
+
+  // string === RGB color
+  type RGBColor = `rgb(${number}${FlexComma}${number}${FlexComma}${number})` |
+    `rgba(${number}${FlexComma}${number}${FlexComma}${number}${FlexComma}${number})`;
+
+  // string === Hex color
+  type HexColor = string & { __hexColorBrand: never };
+
+  // string === Document id
   type IDString = string & {__idStringBrand: never};
 
-  // Represents a UUID string, of the form /^[A-Za-z]+\.[A-Za-z0-9]{16}$/
-  type UUIDString = string & {__uuidStringBrand: never}; // This type is compatible with string, but requires explicit casting, enforcing the UUID pattern.
+  // string === UUID
+  type UUIDString = string & {__uuidStringBrand: never};
 
-  // Represents a dotkey
+  // string === Dotkey
   type DotKey = string & {__dotKeyBrand: never};
 
-  // Represents a dotkey appropriate for an update() data object
+  // string === Dotkey appropriate for update() data object
   type TargetKey = string & DotKey & {__targetKeyBrand: never};
 
-  // Represents a dotkey point to a a flag instead of the document schema
+  // string === Dotkey pointing to a flag instead of the document schema
   type TargetFlagKey = string & DotKey & {__targetFlagKeyBrand: never};
-
-  // Represents a jQuery text term
-  type jQueryTextTerm = string | number | boolean | (
-    (this: Element, index: number, text: string) => string | number | boolean
-  );
+  // #endregion
 
   // Represents an object describing dimensions of an HTML element, of form {x: number, y: number, width: number, height: number}
   interface ElemPosData {x: number, y: number, width: number, height: number}
@@ -161,6 +179,9 @@ declare global {
   // Represents a tuple of three elements
   type Threeple<T1, T2 = T1, T3 = T2> = [T1, T2, T3];
 
+  // Represents a tuple of four elements
+  type Fourple<T1, T2 = T1, T3 = T2, T4 = T3> = [T1, T2, T3, T4];
+
   // Represents an object with frozen properties
   type FreezeProps<T> = {
     [Prop in keyof T as string extends Prop ? never : number extends Prop ? never : Prop]: T[Prop]
@@ -176,8 +197,6 @@ declare global {
     -readonly [P in keyof T]: T[P];
   };
 
-  // Represents a gsap animation
-  type gsapAnim = gsap.core.Tween | gsap.core.Timeline;
 
   // Represents an Actor or Item document
   type EntityDoc = ActorDoc | ItemDoc;
@@ -214,6 +233,7 @@ declare global {
     current: SceneDoc;
   }
 
+  // #region TinyMCE ~
   interface TinyMCEConfig {
     skin: boolean;
     skin_url?: string;
@@ -268,21 +288,43 @@ declare global {
     tooltip: string;
     items: string;
   }
+  // #endregion
 
-  // GreenSock Accessor Object
-  type GsapConfig = typeof gsapEffects[keyof typeof gsapEffects]["defaults"];
-  declare namespace gsap.core {
-    class Timeline extends Animation {
-      // Use a mapped type to dynamically add methods based on gsapEffects keys
-      [K in gsapEffectKey]?: (
-        targets: gsap.TweenTarget,
-        config: {duration?: number} & GsapConfig
-      ) => gsap.core.Timeline;
-    }
-  }
+  // #region GreenSock ~
+  // Represents a gsap animation
+  type GsapAnimation = gsap.core.Tween | gsap.core.Timeline;
+
+  // Represents a valid gsap animation target
   type TweenTarget = JQuery | gsap.TweenTarget;
+  interface GSAPEffect<Defaults extends gsap.TweenVars> {
+    effect: (
+      targets: TweenTarget,
+      config: Partial<Defaults>
+    ) => GsapAnimation,
+    defaults: Defaults,
+    extendTimeline?: boolean
+  }
 
-  // JQuery Simplified Events
+  // type GsapEffectConfig = typeof gsapEffects[keyof typeof gsapEffects]["defaults"];
+  // namespace gsap.core {
+  //   interface Timeline {
+  //     // Use a mapped type to dynamically add methods based on gsapEffects keys
+  //     [K in gsapEffectKey]?: (
+  //       targets: gsap.TweenTarget,
+  //       config: {duration?: number} & GsapEffectConfig
+  //     ) => gsap.core.Timeline;
+  //   }
+  // }
+
+  // #endregion
+
+  // #region JQuery ~
+  // Represents a jQuery text term
+  type jQueryTextTerm = string | number | boolean | (
+    (this: Element, index: number, text: string) => string | number | boolean
+  );
+
+  // Simplified JQuery Events
   type ClickEvent = JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type ContextMenuEvent = JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type TriggerEvent = JQuery.TriggeredEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
@@ -290,15 +332,9 @@ declare global {
   type BlurEvent = JQuery.BlurEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type DropEvent = JQuery.DropEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type OnSubmitEvent = Event & ClickEvent & {
-    result: Promise<Record<string, string|number|boolean>>
+    result: Promise<Record<string, string | number | boolean>>
   }
   type ChangeEvent = JQuery.ChangeEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type SelectChangeEvent = JQuery.ChangeEvent<HTMLSelectElement, undefined, HTMLSelectElement, HTMLSelectElement>;
-
-  declare function fromUuidSync(uuid: string, options?: {
-    relative?: Document,
-    invalid?: boolean,
-    strict?: boolean
-  }): EntityDoc | null;
-
+  // #endregion
 }

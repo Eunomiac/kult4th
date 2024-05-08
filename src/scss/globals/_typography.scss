@@ -23,32 +23,32 @@ Number Display
 // 	font: {
 // 		family: AlverataLight;
 // 	}
-// 	src: url("../assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype");
+// 	src: url("/assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype");
 // }
 // @font-face {
 // 	font: {
 // 		family: AlverataMedium;
 // 	}
-// 	src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype");
+// 	src: url("/assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype");
 // }
 @font-face {
 	font-family: Alverata;
 	font-weight: 0 450;
 	font-style: normal;
-	src: url("../assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype");
+	src: url("/assets/fonts/alverata/irreg/alverataIrreg-light.otf") format("opentype");
 }
 @font-face {
 	font-family: Alverata;
 	font-weight: 451 650;
 	font-style: normal;
-	src: url("../assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype");
+	src: url("/assets/fonts/alverata/irreg/alverataIrreg-med.otf") format("opentype");
 }
 
 @font-face {
 	font-family: Alverata;
 	font-weight: 651 1000;
 	font-style: normal;
-	src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype");
+	src: url("/assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype");
 }
 
 @font-face {
@@ -57,8 +57,8 @@ Number Display
 		weight: 0 350;
 		style: italic;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-light-italic.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-light-italic.otf") format("opentype");
 }
 
 @font-face {
@@ -67,8 +67,8 @@ Number Display
 		weight: 351 450;
 		style: italic;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-italic.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-italic.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-italic.otf") format("opentype");
 }
 
 @font-face {
@@ -77,8 +77,8 @@ Number Display
 		weight: 451 550;
 		style: italic;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-med-italic.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-med-italic.otf") format("opentype");
 }
 
 @font-face {
@@ -87,8 +87,8 @@ Number Display
 		weight: 551 650;
 		style: italic;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype");
 }
 
 @font-face {
@@ -97,8 +97,8 @@ Number Display
 		weight: 651 800;
 		style: italic;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-bold-italic.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-bold-italic.otf") format("opentype");
 }
 
 @font-face {
@@ -107,8 +107,8 @@ Number Display
 		weight: 801 1000;
 		style: italic;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-black-italic.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-black-italic.otf") format("opentype");
 }
 
 @font-face {
@@ -117,8 +117,8 @@ Number Display
 		weight: 0 350;
 		style: normal;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-light.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-light.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-light.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-light.otf") format("opentype");
 }
 
 @font-face {
@@ -127,8 +127,8 @@ Number Display
 		weight: 351 450;
 		style: normal;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata.otf") format("opentype");
 }
 
 @font-face {
@@ -137,8 +137,8 @@ Number Display
 		weight: 451 550;
 		style: normal;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-med.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-med.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-med.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-med.otf") format("opentype");
 }
 
 @font-face {
@@ -147,8 +147,8 @@ Number Display
 		weight: 551 650;
 		style: normal;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-semi.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-semi.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-semi.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-semi.otf") format("opentype");
 }
 
 @font-face {
@@ -157,8 +157,8 @@ Number Display
 		weight: 651 800;
 		style: normal;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-bold.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-bold.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-bold.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-bold.otf") format("opentype");
 }
 
 @font-face {
@@ -167,8 +167,8 @@ Number Display
 		weight: 801 1000;
 		style: normal;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-black.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-black.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-black.otf") format("opentype");
 }
 
 @font-face {
@@ -176,7 +176,7 @@ Number Display
 		family: AlverataSemiBold;
 		style: normal;
 	}
-	src: url("../assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype");
+	src: url("/assets/fonts/alverata/irreg/alverataIrreg-bold.otf") format("opentype");
 }
 
 @font-face {
@@ -184,27 +184,27 @@ Number Display
 		family: AlverataSemiBold;
 		style: italic;
 	}
-	src: url("../assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"),
-			 url("../assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype");
+	src: url("/assets/fonts/alverata/reg/alverata-semi-italic.ttf") format("truetype"),
+			 url("/assets/fonts/alverata/reg/alverata-semi-italic.otf") format("opentype");
 }
 
 @font-face {
 	font-family: Infidel;
-	src: url("../assets/fonts/infidel.ttf");
+	src: url("/assets/fonts/infidel.ttf");
 }
 
 @font-face {
 	font-family: Sokol;
-	src: url("../assets/fonts/sokol/sokol.woff2") format('woff2'),
-			 url("../assets/fonts/sokol/sokol.woff") format('woff');
+	src: url("/assets/fonts/sokol/sokol.woff2") format('woff2'),
+			 url("/assets/fonts/sokol/sokol.woff") format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: GrandpasScript;
-	src: url("../assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format('woff2'),
-			 url("../assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format('woff');
+	src: url("/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format('woff2'),
+			 url("/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
