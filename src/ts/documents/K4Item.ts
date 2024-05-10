@@ -50,104 +50,147 @@ export enum K4ItemResultType {
 
 class K4Item extends Item {
 
-  hasSubMoves(): this is K4ParentItem { return "subMoves" in this.system; }
+  hasSubMoves(): this is K4ParentItem { return "subMoves" in this.data.data; }
 
   override prepareData() {
     super.prepareData();
-    if (this.isOwnedItem() && this.isParentItem() && "subMoves" in this.system) {
-      this.system.subMoves = this.system.subItems.filter((subData) => subData.type === K4ItemType.move) as K4ItemSourceData.subMove[];
-      this.system.subAttacks = this.system.subItems.filter((subData) => subData.type === K4ItemType.attack) as K4ItemSourceData.subAttack[];
-      if (this.isRollableItem() && "results" in this.system) {
-        this.system.results = this.system.subItems[0].data.results;
+    if (this.isOwnedItem() && this.isParentItem() && "subMoves" in this.data.data) {
+      this.data.data.subMoves = this.data.data.subItems.filter((subData): subData is K4ItemSourceData.subMove => subData.type === K4ItemType.move);
+      this.data.data.subAttacks = this.data.data.subItems.filter((subData): subData is K4ItemSourceData.subAttack => subData.type === K4ItemType.attack);
+      if (this.isRollableItem() && "results" in this.data.data) {
+        this.data.data.results = this.data.data.subItems[0].data.results;
       }
     }
   }
 
-  get key() { return this.system.key; }
+  get key() { return this.data.data.key; }
   _img?: string;
-  override get img(): string { return (this._img ??= `systems/kult4th/assets/icons/${this.masterType}/${this.key}.svg`); }
+  override get img(): string {
+    this._img ??= `data.datas/kult4th/assets/icons/${this.masterType}/${this.key}.svg`;
+    return this._img;
+  }
   get itemSheet(): typeof this._sheet & K4ItemSheet | null { return this._sheet as typeof this._sheet & K4ItemSheet ?? null; }
-  get system() { return this.data.data as typeof this["data"]["data"]; }
 
   get masterKey(): string {
     if (!this.isSubItem()) { return this.key; }
     if (!this.isOwnedSubItem()) { return this.key; }
-    return game.items?.getName(this.system.sourceItem.name)?.key ?? this.key;
+    const keyItem = game.items?.getName(this.data.data.sourceItem.name) as Maybe<K4Item>;
+    if (keyItem?.key) { return keyItem.key; }
+    return this.key;
   }
-  get masterType(): K4ItemType { return this.isSubItem() ? this.system.sourceItem.type : this.data.type; }
-  get masterName(): string { return this.isSubItem() ? this.system.sourceItem.name : this.name; }
+  get masterType(): K4ItemType { return this.isSubItem() ? this.data.data.sourceItem.type : this.data.type; }
+  get masterName(): string { return this.isSubItem() ? this.data.data.sourceItem.name : this.name; }
 
-  isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.system && this.system.subItems.length); }
-  isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.system && this.system.sourceItem && this.system.sourceItem.name); }
+  isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }
+  isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.data.data && this.data.data.sourceItem?.name); }
   isOwnedItem(): this is {parent: K4Actor, itemSheet: K4ItemSheet} { return this.isEmbedded && this.parent instanceof Actor; }
   isOwnedSubItem(): this is K4SubItem & {parent: K4Actor, itemSheet: K4ItemSheet, data: {data: {sourceItem: K4SourceItemData & {id: string}}}} { return this.isSubItem() && this.isOwnedItem(); }
-  isRollableItem(): this is K4RollableItem { return this.system.subType === K4ItemSubType.activeRolled; }
-  isStaticItem(): this is K4StaticItem { return this.system.subType === K4ItemSubType.activeStatic; }
+  isRollableItem(): this is K4RollableItem { return this.data.data.subType === K4ItemSubType.activeRolled; }
+  isStaticItem(): this is K4StaticItem { return this.data.data.subType === K4ItemSubType.activeStatic; }
   isActiveItem(): this is K4ActiveItem { return this.isRollableItem() || this.isStaticItem(); }
-  isPassiveItem(): this is K4PassiveItem { return this.system.subType === K4ItemSubType.passive; }
+  isPassiveItem(): this is K4PassiveItem { return this.data.data.subType === K4ItemSubType.passive; }
 
-  get subItems(): K4SubItem[] { return (this.isOwnedItem() && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : []; }
-  get subMoves(): Array<K4SubItem<K4ItemType.move>> { return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.move> => subItem.data.type === K4ItemType.move); }
-  get subAttacks(): Array<K4SubItem<K4ItemType.attack>> { return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.attack> => subItem.data.type === K4ItemType.attack); }
-  get sourceItemData(): K4SourceItemData | null { return this.isSubItem() ? this.system.sourceItem : null; }
-  get sourceItem(): K4ParentItem | null { return this.isOwnedSubItem() ? this.parent.getEmbeddedDocument("Item", this.data.data.sourceItem.id) as K4ParentItem : null; }
+  get sourceItemData(): K4SourceItemData | null {
+    if (!this.isSubItem()) { return null; }
+    return this.data.data.sourceItem;
+  }
 
-  applyEffectFunction(functionStr: string) {
+  get sourceItem(): K4ParentItem | null {
+    if (!this.isOwnedSubItem()) { return null; }
+    const sourceItem = this.parent.getEmbeddedDocument("Item", this.data.data.sourceItem.id) as Maybe<K4ParentItem>;
+    if (!sourceItem) { return null; }
+    return sourceItem;
+  }
+
+  get subItems(): K4SubItem[] {
+    return (this.isOwnedItem() && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : [];
+  }
+
+  get subMoves(): Array<K4SubItem<K4ItemType.move>> {
+    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.move> => subItem.data.type === K4ItemType.move);
+  }
+
+  get subAttacks(): Array<K4SubItem<K4ItemType.attack>> {
+    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.attack> => subItem.data.type === K4ItemType.attack);
+  }
+
+  async applyEffectFunction(functionStr: string) {
     if (!this.isOwnedItem()) { return; }
     const [funcName, ...params] = functionStr.split(/,/);
     switch (funcName) {
       case "AppendList": {
         const [targetItemName, targetList, sourceList] = params;
-        const targetItem = this.parent.getItemByName(targetItemName); // items.find((item) => item.name === targetItemName && !item.isSubItem());
+        const targetItem: Maybe<K4Item> = this.parent.getItemByName(targetItemName);
         kLog.log("Found Target Item", targetItem);
-        if (targetItem && targetItem.system.lists[targetList]) {
-          const sourceListItems = this.system.lists[sourceList].items
-            .map((listItem) => `${listItem} #>text-list-note:data-item-name='${this.masterName}':data-action='open'>(from ${this.masterName})<#`);
+        if (targetItem?.data.data.lists[targetList]) {
+          const sourceListItems = this.data.data.lists[sourceList].items
+            .map((listItem: string) => `${listItem} #>text-list-note:data-item-name='${this.masterName}':data-action='open'>(from ${this.masterName})<#`);
           const updateData = [
-            {_id: targetItem.id, [`data.lists.${targetList}.items`]: [
-              ...targetItem.system.lists[targetList].items,
-              ...sourceListItems
-            ] }
+            {
+              _id:                                targetItem.id,
+              [`data.lists.${targetList}.items`]: [
+                ...targetItem.data.data.lists[targetList].items,
+                ...sourceListItems
+              ]
+            }
           ];
-          this.parent.updateEmbeddedDocuments("Item", updateData);
+          await this.parent.updateEmbeddedDocuments("Item", updateData);
         }
+        break;
       }
-      // no default
+      case "_Unimplemented_1": {
+        throw new Error(`Unimplemented Effect Function: ${funcName}`);
+      }
+      case "_Unimplemented_2": {
+        throw new Error(`Unimplemented Effect Function: ${funcName}`);
+      }
+      default: {
+        throw new Error(`Unknown Effect Function: ${funcName}`);
+      }
     }
   }
 
-  unapplyEffectFunction(functionStr: string) {
+  async unapplyEffectFunction(functionStr: string) {
     if (!this.isOwnedItem()) { return; }
     const [funcName, ...params] = functionStr.split(/,/);
     switch (funcName) {
       case "AppendList": {
         const [targetItemName, targetList, sourceList] = params;
-        const targetItem = this.parent.getItemByName(targetItemName); // items.find((item) => item.name === targetItemName && !item.isSubItem());
+        const targetItem: K4Item | undefined = this.parent.getItemByName(targetItemName);
         kLog.log("Found Target Move", targetItem);
-        if (targetItem && targetItem.system.lists[targetList]) {
-          const prunedListItems = this.system.lists[sourceList].items
+        if (targetItem?.data.data.lists[targetList]) {
+          const prunedListItems = this.data.data.lists[sourceList].items
             .filter((listItem) => !(new RegExp(`data-item-name=.?${this.masterName}.?`)).test(listItem));
           const updateData = [
-            {_id: targetItem.id, [`data.lists.${targetList}.items`]: [
+            {_id:                                targetItem.id, [`data.lists.${targetList}.items`]: [
               ...prunedListItems
             ] }
           ];
-          this.parent.updateEmbeddedDocuments("Item", updateData);
+          await this.parent.updateEmbeddedDocuments("Item", updateData);
         }
+        break;
       }
-      // no default
+      case "_Unimplemented_1": {
+        throw new Error(`Unimplemented Effect Function: ${funcName}`);
+      }
+      case "_Unimplemented_2": {
+        throw new Error(`Unimplemented Effect Function: ${funcName}`);
+      }
+      default: {
+        throw new Error(`Unknown Effect Function: ${funcName}`);
+      }
     }
   }
 
   prepareSubItemData() {
     if (!this.isParentItem()) { return []; }
-    return this.system.subItems
+    return this.data.data.subItems
       .map((subData) => {
         subData.name ??= this.name;
         subData.data.sourceItem.id = this.id;
-        if ("lists" in this.system) {
+        if ("lists" in this.data.data) {
           subData.data.lists = {
-            ...this.system.lists,
+            ...this.data.data.lists,
             ...subData.data.lists ?? {}
           };
         }
@@ -156,18 +199,18 @@ class K4Item extends Item {
   }
 
   applyOnCreateEffectFunctions() {
-    if ("rules" in this.system && this.system.rules.effectFunctions) {
-      this.system.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
+    if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
+      this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
     }
   }
   unapplyOnCreateEffectFunctions() {
-    if ("rules" in this.system && this.system.rules.effectFunctions) {
-      this.system.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
+    if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
+      this.data.data.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
     }
   }
 
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
-    await super._onCreate(...args);
+    super._onCreate(...args);
     if (!this.isOwnedItem()) { return; }
     if (this.isParentItem()) {
       await this.parent.createEmbeddedDocuments("Item", this.prepareSubItemData());
@@ -175,8 +218,8 @@ class K4Item extends Item {
     this.applyOnCreateEffectFunctions();
   }
 
-  override async _onDelete(...args: Parameters<Item["_onDelete"]>) {
-    await super._onDelete(...args);
+  override _onDelete(...args: Parameters<Item["_onDelete"]>) {
+    super._onDelete(...args);
     if (!this.isOwnedItem()) { return; }
     if (this.isParentItem()) {
       this.subItems.forEach((item) => item.delete());
@@ -187,12 +230,12 @@ class K4Item extends Item {
   // get isRollable(): boolean { return }
 
   get hoverStrip(): HoverStripData {
-    const stripType: K4ItemType = this.isSubItem() ? this.system.sourceItem.type : this.data.type;
+    const stripType: K4ItemType = this.isSubItem() ? this.data.data.sourceItem.type : this.data.type;
     const theme = C.Themes[stripType];
     const stripData: HoverStripData = {
-      id: this.id ?? `${this.data.type}-${U.randString(5)}`,
-      type: this.data.type,
-      icon: this.img,
+      id:      this.id ?? `${this.data.type}-${U.randString(5)}`,
+      type:    this.data.type,
+      icon:    this.img,
       display: this.name ?? "(enter name)",
       ...this.isSubItem()
         ? {
@@ -208,33 +251,33 @@ class K4Item extends Item {
               theme
             ]
           },
-      dataset: "attribute" in this.system
+      dataset: "attribute" in this.data.data
         ? {
-            "hover-target": `.attribute-box[data-attribute='${this.system.attribute}'] img`
+            "hover-target": `.attribute-box[data-attribute='${this.data.data.attribute}'] img`
           }
         : {},
       buttons: []
     };
     if (this.data.type !== K4ItemType.relation) {
-      stripData.tooltip = this.data.data.rules.trigger;
+      stripData.tooltip = this.data.data.rules?.trigger;
     }
 
     // Roll Button or Trigger Button?
     if (this.isOwnedItem() && this.isRollableItem()) {
       stripData.buttons.push({
-        icon: "hover-strip-button-roll",
+        icon:    "hover-strip-button-roll",
         dataset: {
           "item-name": this.name ?? "",
-          "action": "roll"
+          "action":    "roll"
         },
         tooltip: "ROLL"
       });
     } else if (this.isStaticItem()) {
       stripData.buttons.push({
-        icon: "hover-strip-button-trigger",
+        icon:    "hover-strip-button-trigger",
         dataset: {
           "item-name": this.name ?? "",
-          "action": "trigger"
+          "action":    "trigger"
         },
         tooltip: "TRIGGER"
       });
@@ -243,18 +286,18 @@ class K4Item extends Item {
     // Chat & View Buttons
     stripData.buttons.push(
       {
-        icon: "hover-strip-button-chat",
+        icon:    "hover-strip-button-chat",
         dataset: {
           "item-name": this.name ?? "",
-          "action": "chat"
+          "action":    "chat"
         },
         tooltip: "CHAT"
       },
       {
-        icon: "hover-strip-button-open",
+        icon:    "hover-strip-button-open",
         dataset: {
           "item-name": this.name ?? "",
-          "action": "open"
+          "action":    "open"
         },
         tooltip: "VIEW"
       }
@@ -263,10 +306,10 @@ class K4Item extends Item {
     // Drop Button IF Sheet Unlocked AND Owner AND NOT SubItem
     if (this.isOwnedItem() && !this.isSubItem() && this.itemSheet?.isUnlocked /* && check for user permissions */) {
       stripData.buttons.push({
-        icon: "hover-strip-button-drop",
+        icon:    "hover-strip-button-drop",
         dataset: {
           "item-name": this.name ?? "",
-          "action": "drop"
+          "action":    "drop"
         },
         tooltip: "DROP"
       });
@@ -277,13 +320,13 @@ class K4Item extends Item {
   }
 
   async displayItemSummary(speaker?: string) {
-    const template = await getTemplate(this.sheetO?.template ?? "");
+    const template = await getTemplate(this.sheet?.template ?? "");
 
     const content = template(Object.assign(
       this.toObject(),
       {key: this.key}
     ));
-    K4ChatMessage.create({
+    await K4ChatMessage.create({
       content,
       speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""})/* ,
       options: {
@@ -296,6 +339,7 @@ class K4Item extends Item {
 declare interface K4Item {
   get id(): string;
   get name(): string;
+  parent: Maybe<K4Item|K4Actor>;
 }
 
 export default K4Item;

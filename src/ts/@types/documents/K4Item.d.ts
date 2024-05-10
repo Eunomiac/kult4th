@@ -4,8 +4,8 @@ import EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/
 import {ItemDataBaseProperties, ItemDataConstructorData, ItemDataSchema, ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
-import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../../documents/K4Item.js";
-import K4ItemSheet from "../../../documents/K4ItemSheet";
+import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../documents/K4Item.js";
+import K4ItemSheet from "../../documents/K4ItemSheet";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -35,11 +35,11 @@ declare global {
   : T extends K4WeaponClass.bomb ? ("")
   : "";
 
-  type K4SourceItemData = {
+  interface K4SourceItemData {
     name: string,
     id?: string | null,
     type: K4ItemType
-  };
+  }
   interface K4Attack {
     name: string,
     range: RangeType[],
@@ -245,6 +245,7 @@ declare global {
     }
 
     export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
+    export type rules = move|attack|advantage|disadvantage|darksecret|weapon|gear
   }
 
   type K4ItemSpec<Type extends K4ItemType> = K4Item
@@ -262,7 +263,7 @@ declare global {
           subAttacks: K4ItemSourceData.subAttack[]
         }
       }}
-  type K4SubItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack> = K4ItemSpec<Type>
+  type K4SubItem<Type extends (K4ItemType.move|K4ItemType.attack) = K4ItemType.move|K4ItemType.attack> = K4ItemSpec<Type>
     & {data: {
         data: {
           sourceItem: K4SourceItemData
@@ -290,5 +291,5 @@ declare global {
           subType: K4ItemSubType.passive
         }
       }}
-  type K4ActiveItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.gear> = K4RollableItem<Type> | K4StaticItem<Type>
+  type K4ActiveItem<Type extends K4ItemType = K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.gear> = K4RollableItem<Type>
 }

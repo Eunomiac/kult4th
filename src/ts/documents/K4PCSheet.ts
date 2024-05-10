@@ -1,10 +1,8 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C, {getContrastingColor} from "../scripts/constants.js";
+import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import SVGDATA from "../scripts/svgdata.js";
-import K4Actor from "./K4Actor.js";
-import type K4Item from "./K4Item.js";
+import {K4ActorType} from "./K4Actor.js";
 import {gsap, GSDevTools, MorphSVGPlugin} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -12,13 +10,13 @@ import {gsap, GSDevTools, MorphSVGPlugin} from "../libraries.js";
 gsap.registerPlugin(MorphSVGPlugin);
 
 const ANIMATIONS = {
-  _glitchText(target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
+  _glitchText(_target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
 
     const tl = gsap.timeline({
       repeat:      -1,
       repeatDelay: 10,
       reversed:    true,
-      onRepeat() {
+      onRepeat(this: gsap.core.Timeline & {glitchScale: number}) {
         this.timeScale(this.glitchScale);
       }
     });
@@ -116,11 +114,9 @@ const ANIMATIONS = {
     const profileImg$ = $(target).find(".profile-image");
     const profileBg$ = $(target).find(".profile-image-bg");
     const buttonContainer$ = $(target).find(".tabs");
-    const buttonSpikes$ = $(target).find(".nav-tab-container");
     const buttonSliders$ = $(target).find(".nav-tab-slider");
     const closeButton$ = $(target).find(".header-button.close");
     const minimizeButton$ = $(target).find(".header-button.minimize");
-    const animation$ = $(target).find(".profile-image-animation");
     const flare$ = $(target).find(".nav-flare");
 
     const svgs = {
@@ -135,7 +131,14 @@ const ANIMATIONS = {
       buttonSpikes: $(target).find(".tabs .nav-tab-container .svg-container[class*='nav-spoke'] .svg-def")
     };
 
-    // @ts-expect-error MorphSVG does indeed accept functions.
+    const spikeVars: gsap.TweenVars = {
+      // @ts-expect-error MorphSVG does indeed accept functions.
+      morphSVG(i: number) { return svgs.outerSpikePaths[i]; },
+      scale:    1,
+      duration: 0.3,
+      ease:     "power2"
+    };
+
     const navTL = gsap.timeline({reversed: true})
       .to(target, {
         scale:    1.2,
@@ -182,13 +185,7 @@ const ANIMATIONS = {
         duration: 0.3,
         ease:     "power2"
       }, 0)
-      .to(svgs.outerSpikes, {
-        // @ts-expect-error MorphSVG does indeed accept functions.
-        morphSVG(i) { return svgs.outerSpikePaths[i]; },
-        scale:    1,
-        duration: 0.3,
-        ease:     "power2"
-      }, 0)
+      .to(svgs.outerSpikes, spikeVars, 0)
       .to(svgs.innerSpikes, {
         scale:    1,
         duration: 0.3,
@@ -275,10 +272,10 @@ const ANIMATIONS = {
 
     return navTL;
   },
-  hoverNavTab(target: HTMLElement, context: JQuery): GsapAnimation {
+  hoverNavTab(target: HTMLElement): GsapAnimation {
     const tabLabel$ = $(target).find(".nav-tab-label");
     // const tabAnimation$ = $(target).find(".nav-tab-animation");
-    const tl = gsap.timeline({reversed: true})
+    return gsap.timeline({reversed: true})
       .to(tabLabel$, {
         opacity:  1,
         duration: 0.25,
@@ -294,7 +291,7 @@ const ANIMATIONS = {
         filter:   "none",
         duration: 0.35,
         ease:     "power3"
-      }, 0)/* .fromTo(
+      }, 0);/* .fromTo(
         tabAnimation$,
         {
           scale: 1,
@@ -309,14 +306,12 @@ const ANIMATIONS = {
           ease: "back"
         },
         0
-      ) */;
-    return tl;
+      ); */
   },
   hoverStrip(target: HTMLElement, context: JQuery): GsapAnimation {
     const FULL_DURATION = 0.5;
 
     const hoverTarget$ = $(context).find($(target).data("hover-target"));
-    const targetSiblings$ = U.getSiblings(target);
     const stripIcon$ = $(target).find(".icon-container");
     const stripName$ = $(target).find(".strip-name");
     const buttonStrip$ = $(target).find(".button-strip");
@@ -367,9 +362,9 @@ const ANIMATIONS = {
         duration:   FULL_DURATION,
         color:      colorBG,
         textShadow: [
-          ...new Array(4).fill(`0 0 15px ${colorFG}`),
-          ...new Array(6).fill(`0 0 5px ${colorFG}`),
-          ...new Array(4).fill(`0 0 2px ${colorFG}`)
+          ...Array.from({length: 4}).fill(`0 0 15px ${colorFG}`) as string[],
+          ...Array.from({length: 6}).fill(`0 0 5px ${colorFG}`) as string[],
+          ...Array.from({length: 4}).fill(`0 0 2px ${colorFG}`) as string[]
         ].join(", "),
         ease: "back"
       }, 0);
@@ -400,15 +395,13 @@ const ANIMATIONS = {
 
     return tl;
   },
-  hoverStripButton(target: HTMLElement, context: JQuery): GsapAnimation {
+  hoverStripButton(target: HTMLElement): GsapAnimation {
     const FULL_DURATION = 0.25;
 
-    const buttonStrip$ = $(target).parent();
     const svg$ = $(target).find(".svg-container");
-    const tooltip$ = $(target).find(".button-tooltip:not(.button-tooltip-flare)");
     const tooltipFlare$ = $(target).find(".button-tooltip-flare");
 
-    const tl = gsap.timeline({reversed: true})
+    return gsap.timeline({reversed: true})
       .set(target, {zIndex: 30}, 0.1)
       // .fromTo(target, {
       //   opacity: 0.7,
@@ -446,8 +439,6 @@ const ANIMATIONS = {
         duration: FULL_DURATION - 0.1,
         ease:     "power2"
       }, 0.1);
-
-    return tl;
   }/* ,
   hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
     const FULL_DURATION = 0.5;
@@ -560,7 +551,7 @@ const ANIMATIONS = {
   } */
 };
 
-export default class K4PCSheet extends ActorSheet {
+class K4PCSheet extends ActorSheet {
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "k4-theme-dgold"],
@@ -627,11 +618,11 @@ export default class K4PCSheet extends ActorSheet {
     $(() => {
 
       if (!U.getSetting("shadows")) {
-        html.find(".tab-content").each(function cancelShadows() { $(this).css("filter", "none");});
+        html.find(".tab-content").each(function() { $(this).css("filter", "none");});
       }
 
       const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
-      this.element.find(".nav-panel").each(function initNavPanel() {
+      this.element.find(".nav-panel").each(function() {
         if (!U.getSetting("flare")) {
           gsap.set(self.element.find(".nav-flare"), {background: "none"});
         }
@@ -641,28 +632,28 @@ export default class K4PCSheet extends ActorSheet {
         hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
       });
       this.element.find(".nav-tab")
-        .each(function initNavTab() {
-          hoverTimelines.push([this, ANIMATIONS.hoverNavTab(this, html)]);
-          $(this).on("click", function switchTab() {
+        .each(function() {
+          hoverTimelines.push([this, ANIMATIONS.hoverNavTab(this)]);
+          $(this).on("click", function() {
             self.activateTab(this.getAttribute("data-tab"));
           });
         });
 
-      html.find(".clamp-text").each(function clampTextElems() {
+      html.find(".clamp-text").each(function() {
         self.clamp(this);
       });
 
       if (U.getSetting("gears")) {
         this.element.find(".gear-container.gear-huge")
-          .each(function initGearRotation() {
+          .each(function() {
             ANIMATIONS.gearHugeRotate(this);
           });
         this.element.find(".gear-container.gear-geburah")
-          .each(function initGearRotation() {
+          .each(function() {
             ANIMATIONS.gearGeburahRotate(this);
           });
         this.element.find(".gear-container.gear-binah")
-          .each(function initGearRotation() {
+          .each(function() {
             ANIMATIONS.gearBinahRotate(this);
           });
       } else {
@@ -675,14 +666,14 @@ export default class K4PCSheet extends ActorSheet {
       }
 
       html.find("*[data-action=\"open\"]")
-        .each(function addItemOpenEvents() {
+        .each(function() {
           const itemName = $(this).attr("data-item-name");
           if (itemName) {
-            $(this).on("click", () => self.actor.getItemByName(itemName)?.sheetO?.render(true));
+            $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
           }
         });
       html.find("*[data-action=\"roll\"]")
-        .each(function addItemRollEvents() {
+        .each(function() {
           const itemName = $(this).attr("data-item-name");
           if (itemName) {
             $(this).on("click", () => self.actor.roll(itemName));
@@ -690,14 +681,14 @@ export default class K4PCSheet extends ActorSheet {
         });
 
       html.find("*[data-action=\"trigger\"]")
-        .each(function addItemTriggerEvents() {
+        .each(function() {
           const itemName = $(this).attr("data-item-name");
           if (itemName) {
             $(this).on("click", () => self.actor.trigger(itemName));
           }
         });
       html.find("*[data-action=\"chat\"]")
-        .each(function addItemChatEvents() {
+        .each(function() {
           const itemName = $(this).attr("data-item-name");
           if (itemName) {
             $(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
@@ -705,7 +696,7 @@ export default class K4PCSheet extends ActorSheet {
         });
 
       html.find(".content-editable")
-        .each(function initEditableStyles() {
+        .each(function() {
           $(this).attr("contenteditable", "false");
           const innerText = $(this).text().trim();
 
@@ -713,17 +704,17 @@ export default class K4PCSheet extends ActorSheet {
             || (innerText === $(this).data("placeholder"))) {
             $(this)
               .addClass("placeholder")
-              .text($(this).data("placeholder"));
+              .text($(this).data("placeholder") as string);
           }
         });
 
       html.find(".hover-strip")
-        .each(function addHoverStripEvents() {
+        .each(function() {
           hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html)]);
         });
       html.find(".hover-strip .strip-button")
-        .each(function addHoverStripButtonEvents() {
-          hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this, html)]);
+        .each(function() {
+          hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this)]);
         });
 
       hoverTimelines.forEach(([target, anim]) => {
@@ -735,84 +726,84 @@ export default class K4PCSheet extends ActorSheet {
       if (!this.options.editable) { return; }
 
       html.find("*[data-action=\"drop\"]")
-        .each(function addItemDropEvents() {
+        .each(function() {
           const itemName = $(this).attr("data-item-name");
           if (itemName) {
             $(this).on("click", () => self.actor.dropItemByName(itemName));
           }
         });
       html.find("button.stability-add")
-        .each(function addStabilityButton() {
+        .each(function() {
           $(this).on("click", () => self.actor.changeStability(1));
         });
       html.find("button.stability-remove")
-        .each(function removeStabilityButton() {
+        .each(function() {
           $(this).on("click", () => self.actor.changeStability(-1));
         });
       html.find("button.wound-add")
-        .each(function addWoundButton() {
+        .each(function() {
           $(this).on("click", () => {
             // kLog.log("Adding Wound. Button:", this);
-            self.actor.addWound();
+            self.actor.addWound().catch(kLog.error);
           });
         });
       html.find("button.wound-delete")
-        .each(function deleteWoundButton() {
-          const woundID: string = $(this).data("woundId");
+        .each(function() {
+          const woundID = $(this).data("woundId") as string;
           $(this).on("click", () => {
             // kLog.log(`Deleting Wound ${woundID}. Button:`, this);
-            self.actor.removeWound(woundID);
+            self.actor.removeWound(woundID).catch(kLog.error);
           });
         });
 
       html.find("*[data-action=\"toggle-wound-type\"]")
-        .each(function toggleWoundTypeEvent() {
-          const woundID = $(this).data("target");
+        .each(function() {
+          const woundID = $(this).data("target") as string;
           if (woundID) {
             $(this).on("click", () => self.actor.toggleWound(woundID, "type"));
           }
         });
 
       html.find("*[data-action=\"reset-wound-name\"]")
-        .each(function addItemDropEvents() {
-          const woundID = $(this).data("target");
+        .each(function() {
+          const woundID = $(this).data("target") as string;
           if (woundID) {
             $(this).on("click", () => self.actor.resetWoundName(woundID));
           }
         });
 
       html.find("*[data-action=\"toggle-wound-stabilize\"]")
-        .each(function toggleWoundStabilizeEvent() {
-          const woundID = $(this).data("target");
+        .each(function() {
+          const woundID = $(this).data("target") as string;
           if (woundID) {
             $(this).on("click", () => self.actor.toggleWound(woundID, "stabilized"));
           }
         });
 
       html.find("*[data-action=\"drop-wound\"]")
-        .each(function dropWoundEvent() {
-          const woundID: string = $(this).data("target");
+        .each(function() {
+          const woundID: string = $(this).data("target") as string;
           if (woundID) {
             $(this).on("click", () => self.actor.removeWound(woundID));
           }
         });
       html.find(".header-button.close")
-        .each(function closeSheetEvent() {
-          $(this).on("click", () => self.actor.sheetO?.close());
+        .each(function() {
+          $(this).on("click", () => self.actor.sheet?.close());
         });
 
       html.find(".header-button.minimize")
-        .each(function minimizeSheetEvent() {
+        .each(function() {
           $(this).on("click", () => {
             if (self._minimized) {
-              self.maximize();
+              self.maximize().catch(kLog.error);
             } else {
-              self.minimize();
+              self.minimize().catch(kLog.error);
             }
           });
         });
 
-      html.find(".content-editable").each(function enableContentEditable() {
+      html.find(".content-editable").each(function() {
         $(this)
           .on("click", (clickEvent) => {
             if ($(clickEvent.currentTarget).attr("contenteditable") === "true") {
@@ -838,7 +829,18 @@ export default class K4PCSheet extends ActorSheet {
           })
           .on("focus", (focusEvent) => {
             self.unClamp(focusEvent.currentTarget);
-            document.execCommand("selectAll");
+            const element = focusEvent.currentTarget;
+
+            if (element) {
+              const range = document.createRange(); // Create a new range
+              const selection = window.getSelection(); // Get the current selection
+
+              if (selection) {
+                selection.removeAllRanges(); // Clear any existing selections
+                range.selectNodeContents(element); // Select the contents of the element
+                selection.addRange(range); // Add the range to the selection
+              }
+            }
           })
           .on("blur", (blurEvent) => {
             blurEvent.preventDefault();
@@ -849,7 +851,7 @@ export default class K4PCSheet extends ActorSheet {
             if (!elemText && $(currentTarget).data("placeholder")) {
               $(currentTarget)
                 .addClass("placeholder")
-                .text($(currentTarget).data("placeholder"));
+                .text($(currentTarget).data("placeholder") as string);
             } else {
               $(currentTarget).removeClass("placeholder");
             }
@@ -860,10 +862,10 @@ export default class K4PCSheet extends ActorSheet {
             self.clamp(currentTarget);
 
             // Sync with actor data
-            const dataField: string = $(currentTarget).data("field");
-            const curData = getProperty(self.actor, dataField.replace(/^(data\.)+/g, "data.data."));
+            const dataField = $(currentTarget).data("field") as string;
+            const curData = getProperty(self.actor, dataField.replace(/^(data\.)+/g, "data.data.")) as string;
             if (curData !== elemText) {
-              self.actor.update({[dataField]: elemText});
+              self.actor.update({[dataField]: elemText}).catch(kLog.error);
             }
           });
       });
@@ -874,7 +876,15 @@ export default class K4PCSheet extends ActorSheet {
     tabName ??= "front";
     const curTab = (this.actor.getFlag("kult4th", "sheetTab") ?? "front") as string;
     if (tabName && tabName !== curTab) {
-      this.actor.setFlag("kult4th", "sheetTab", tabName);
+      this.actor.setFlag("kult4th", "sheetTab", tabName).catch(kLog.error);
     }
   }
 }
+
+
+interface K4PCSheet {
+  object: K4ActorSpec<K4ActorType.pc>,
+  _actor: K4ActorSpec<K4ActorType.pc>
+}
+
+export default K4PCSheet;

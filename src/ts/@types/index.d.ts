@@ -1,3 +1,5 @@
+import K4Config from "../scripts/config";
+
 import "./documents";
 import "./scripts";
 import "./general-types";
@@ -15,12 +17,29 @@ declare module "@league-of-foundry-developers/foundry-vtt-types" {
     get current(): SceneDoc;
   }
 }
+
+interface ClampOptions {
+  clamp?: number | string;
+  useNativeClamp?: boolean;
+  splitOnChars?: string[];
+  animate?: boolean | number;
+  truncationChar?: string;
+  truncationHTML?: string;
+}
+
+interface ClampResponse {
+  original: string;
+  clamped: string | undefined;
+}
+
 declare global {
   function fromUuidSync(uuid: string, options?: {
     relative?: Document,
     invalid?: boolean,
     strict?: boolean
   }): EntityDoc | null;
+
+  function $clamp(element: HTMLElement, options?: ClampOptions): ClampResponse;
 
   namespace foundry {
     namespace data {

@@ -122,15 +122,18 @@ export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
   }
   colorVal = U.getRGBString(colorVal) ?? "";
   if (colorVal && Object.values(Colors).includes(colorVal)) {
-    return U.objFindKey(Colors, (v: string) => v === colorVal);
+    return U.objFindKey(Colors, ((v: string) => v === colorVal) as testFunc<valFunc<unknown, unknown>>);
   }
   return false;
 }
-export function getContrastingColor(colorVal: string, contrastLevel: 1|2|3|4 = 1, bgShade: "light"|"dark" = "dark") {
+export function getContrastingColor(colorVal: string, contrastLevel = 1 as PosInteger, bgShade: "light"|"dark" = "dark") {
   let colorName = getColorName(colorVal);
   if (!colorName) {
     console.error(`Unable to find official contrast for ${colorVal}: Generating one instead.`);
-    return U.getContrastingColor(colorVal);
+    if (U.isRGBColor(colorVal)) {
+      return U.getContrastingColor(colorVal);
+    }
+    throw new Error(`${colorVal} is not a recognized color name or RGB color value.`);
   }
   const masterColor = colorName.replace(/[a-z]/g, "");
   if (colorName && /GOLD|BLUE|RED/.test(colorName)) { // it's a color

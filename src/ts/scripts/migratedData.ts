@@ -146,10 +146,14 @@ const mutateItemData = (itemData: iDataDict): iDataDict => {
     }
     return textStrings;
   }
-  function getListRefs(iData: Partial<ItemDataConstructorData>) {
+  function getListRefs(iData: Partial<K4ItemPropertiesData.any>) {
     const listRefs: {rules: string[], results: [string[], string[], string[]]} = {rules: [], results: [[],[],[]]};
-    if ("rules" in (iData?.data ?? {}) && (iData?.data?.rules?.listRefs)) {
-      listRefs.rules = iData.data.rules.listRefs;
+    // const iDataData = iData.data as DeepPartial<
+    if (iData.type !== K4ItemType.relation) {
+      const iDataRules = iData as Partial<K4ItemPropertiesData.rules>;
+      if (iDataRules.data?.rules?.listRefs) {
+        listRefs.rules = iDataRules.data.rules.listRefs;
+      }
     }
     if (iData.data && "results" in iData.data && iData.data.results) {
       if (iData.data.results.completeSuccess?.listRefs) {
@@ -209,7 +213,7 @@ const mutateItemData = (itemData: iDataDict): iDataDict => {
       }
       return iData;
     },
-    function sortListRefs(iData: Partial<ItemDataConstructorData>, pData?: Partial<ItemDataConstructorData>) {
+    function sortListRefs(iData: Partial<ItemDataConstructorData>, _pData?: Partial<ItemDataConstructorData>) {
       /*   - list REFERENCES appear where they should:
               - ANY ITEMS: If list is referenced by a %list.<key>%, then no listRefs for it anywhere
             OTHERWISE
@@ -241,7 +245,7 @@ const mutateItemData = (itemData: iDataDict): iDataDict => {
     .map((iData) => [iData.name, applyMutationFuncs(iData)]));
 };
 
-const resetItems = async () => {
+const resetItems: () => Promise<void> = async () => {
   await clearItems();
   await clearFolders();
 
@@ -276,4 +280,4 @@ const resetItems = async () => {
     - four Advantages have TWO moves: "Explosives Expert", "Shadow", "Divine Champion" and "Sealed Fate"
     - all OTHER ACTIVE Advantages/Disadvantages have ONE move
 - */
-export default resetItems;
+export {resetItems};

@@ -1,11 +1,9 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import K4Item from "./K4Item.js";
-import U from "../scripts/utilities.js";
 import C from "../scripts/constants.js";
 import K4Actor from "./K4Actor.js";
 import {K4ItemType} from "./K4Item";
-import {ItemDataSource} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -55,42 +53,43 @@ export default class K4ItemSheet extends ItemSheet {
     }
   }
 
-  override activateListeners(html: JQuery<HTMLElement>): void {
+  override activateListeners(html: JQuery): void {
 
-    const opts = this.options;
     super.activateListeners(html);
     const self = this;
+    const itemDoc = this.document as K4Item;
+    const parentActor: Maybe<K4Actor> = this.actor instanceof K4Actor ? this.actor : undefined;
 
     $(() => {
       kLog.log("ITEM SHEET CONTEXT", {this: this, self, html});
 
-      function createOpenLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
+      function createOpenLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
-          if (self.document.isOwnedItem()) {
-            $(elem).on("click", () => self.actor?.getItemByName(iName)?.sheetO?.render(true));
+          if (itemDoc.isOwnedItem()) {
+            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
-            $(elem).on("click", () => Array.from(game.items ?? [])
+            $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
               .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type as K4ItemType) && item.name === iName)
-              ?.sheetO?.render(true));
+              ?.sheet?.render(true));
           }
         }
       }
 
-      function createTriggerLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
+      function createTriggerLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
-          if (self.document.isOwnedItem()) {
-            $(elem).on("click", () => self.actor?.getItemByName(iName)?.sheetO?.render(true));
+          if (itemDoc.isOwnedItem()) {
+            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
-            $(elem).on("click", () => Array.from(game.items ?? [])
+            $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
               .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type as K4ItemType) && item.name === iName)
-              ?.sheetO?.render(true));
+              ?.sheet?.render(true));
           }
         }
       }
 
-      function createRollLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
+      function createRollLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
-          if (self.document.isOwnedItem()) {
+          if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling (Embedded) ${iName}`));
           } else {
             $(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling ${iName}`));
@@ -98,9 +97,9 @@ export default class K4ItemSheet extends ItemSheet {
         }
       }
 
-      function createChatLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
+      function createChatLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
-          if (self.document.isOwnedItem()) {
+          if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
           } else {
             $(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting ${iName}`));
@@ -108,9 +107,9 @@ export default class K4ItemSheet extends ItemSheet {
         }
       }
 
-      function createDeleteLinkFromName(elem: JQuery<HTMLElement>|HTMLElement, iName?: string): void {
+      function createDeleteLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
-          if (self.document.isOwnedItem()) {
+          if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting (Embedded) ${iName}`));
           } else {
             $(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting ${iName}`));
@@ -120,23 +119,23 @@ export default class K4ItemSheet extends ItemSheet {
       // getTriggerAnim(html.find(".text-trigger")[0]);
 
       html.find("*[data-action=\"open\"]")
-        .each(function addItemOpenEvents() {
+        .each(function() {
           createOpenLinkFromName(this, $(this).attr("data-item-name"));
         });
       html.find("*[data-action=\"trigger\"]")
-        .each(function addItemTriggerEvents() {
+        .each(function() {
           createTriggerLinkFromName(this, $(this).attr("data-item-name"));
         });
       html.find("*[data-action=\"roll\"]")
-        .each(function addItemRollEvents() {
+        .each(function() {
           createRollLinkFromName(this, $(this).attr("data-item-name"));
         });
       html.find("*[data-action=\"chat\"]")
-        .each(function addItemChatEvents() {
+        .each(function() {
           createChatLinkFromName(this, $(this).attr("data-item-name"));
         });
       html.find("*[data-action=\"drop\"]")
-        .each(function addItemDropEvents() {
+        .each(function() {
           createDeleteLinkFromName(this, $(this).attr("data-item-name"));
         });
     });

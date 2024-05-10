@@ -4,9 +4,9 @@
 .vtt.game.system-kult4th {
 	@import 'globals/colors';
 
-	// @include cq-prolyfill("width >= 1000px") {
-	// 	outline: 3px solid lime !important;
-	// }
+	@include cq-prolyfill("width >= 1000px") {
+		outline: 3px solid lime !important;
+	}
 
 	$isDebugging: false;
 	$isDebuggingChat: false;

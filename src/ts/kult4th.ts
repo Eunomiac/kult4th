@@ -15,7 +15,7 @@ import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.j
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
 
-import resetItems from "./scripts/migratedData.js";
+import {resetItems} from "./scripts/migratedData.js";
 import {gsap, MorphSVGPlugin} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
@@ -45,15 +45,16 @@ Hooks.once("init", async () => {
   CONFIG.ChatMessage.documentClass = K4ChatMessage;
   CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
 
-  preloadTemplates();
+  await preloadTemplates().catch(kLog.error);
 
   // #region ████████ STYLING: Create Style Definitions for SVG Files & Color Palette ████████ ~
   const svgDefTemplate = await getTemplate(U.getTemplatePath("globals", "svg-defs"));
-  interface SVGGradientStop {
+  interface SVGGradientStopParams {
     offset: number,
     color: string,
     opacity: number
   }
+  type SVGGradientStop = SVGGradientStopParams & Record<string, number|string>;
   interface SVGGradientDef {
     id: string,
     x: [number, number],
@@ -112,7 +113,14 @@ Hooks.once("init", async () => {
     </linearGradient>
   </defs>
   */
+  interface GradientDef { fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>; }
 
+  // // Use mapFunc and valFunc with GradientDef as the argument type
+  // let myFunc: mapFunc<GradientDef, unknown, valFunc<GradientDef>>;
+
+  // myFunc = ({fill, stroke}: GradientDef, iType?: Key) => {
+  //   // ...
+  // };
 
   const svgDefs: Record<string, Array<Partial<SVGGradientDef>>> = {
     linearGradients: Object.values(U.objMap(
@@ -182,20 +190,21 @@ Hooks.once("init", async () => {
           }
         }
       },
-      // @ts-expect-error Damn map function needs to be resolved!
-      ({fill, stroke}: {fill: Partial<SVGGradientDef>, stroke: Partial<SVGGradientDef>}, iType: K4ItemType) => {
+      (({fill, stroke}: GradientDef, iType: K4ItemType) => {
         return {
           fill: {
             id:    `fill-${iType}`,
             x:     [0, 1],
             y:     [0, 1],
             ...fill ?? {},
-            stops: (fill.stops ?? []).map((stop, i, stops) => ({
-              offset:  U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
-              color:   typeof stop === "string" ? stop : stop.color,
-              opacity: 1,
-              ...(U.isList(stop) ? stop : {})
-            })),
+            stops: (fill.stops ?? []).map((stop, i, stops) => {
+              return ({
+                offset:  U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                color:   typeof stop === "string" ? stop : stop.color,
+                opacity: 1,
+                ...(typeof stop === "string" ? {} : stop)
+              });
+            }),
             ...(typeof fill.stops === "string"
               ? {}
               : fill.stops)
@@ -206,12 +215,11 @@ Hooks.once("init", async () => {
             y:     [0, 1],
             ...stroke ?? {},
             stops: (stroke.stops ?? []).map((stop, i, stops) => {
-              // kLog.log(`Stroke-${iType}`, {stop, i, stops});
               return {
                 offset:  U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
                 color:   typeof stop === "string" ? stop : stop.color,
                 opacity: 1,
-                ...(U.isList(stop) ? stop : {})
+                ...(typeof stop === "string" ? {} : stop)
               };
             }),
             ...(typeof stroke.stops === "string"
@@ -219,7 +227,7 @@ Hooks.once("init", async () => {
               : stroke.stops)
           }
         };
-      }
+      }) as mapFunc<valFunc<unknown, GradientDef>, unknown, GradientDef>
     ) as Record<
       K4ItemType,
       {
@@ -237,7 +245,7 @@ Hooks.once("init", async () => {
 });
 
 
-Hooks.once("ready", async () => {
+Hooks.once("ready", () => {
   initCanvasStyles();
   initTinyMCEStyles();
 
@@ -254,13 +262,13 @@ Hooks.once("ready", async () => {
     MorphSVGPlugin,
     U,
     C,
-    resetItems,
+    resetItems: resetItems as () => Promise<void>,
     getContrastingColor,
     formatStringForKult,
     ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
-    ENTITIES: [ACTOR, ITEM, EMBED],
-    SHEETS:   [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
-    DOCS:     [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
+    ENTITIES:   [ACTOR, ITEM, EMBED],
+    SHEETS:     [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
+    DOCS:       [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
   });
   /*!DEVCODE*/
 });

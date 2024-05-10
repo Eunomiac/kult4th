@@ -36,7 +36,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
       default: { return false }
     }
   },
-  "case"(mode: "upper" | "lower" | "sentence" | "title", str: string) {
+  "case"(mode: StringCase, str: string) {
     // return U[`${mode.charAt(0)}Case`](str);
     switch (mode) {
       case "upper": return U.uCase(str);
@@ -73,10 +73,9 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
       ? context.data
       : context.data.root.data;
     kLog.hbsLog("[formatForKult]", {str, iData, "this": this}, 5);
-    const self = this as Record<string,any>;
 
     // Step One: Replace any data object references.
-    str = str.replace(/%([^%\.]+)\.([^%\.]+)%/g, (_, sourceRef: string, dataKey: string) => {
+    str = str.replace(/%([^%.]+)\.([^%.]+)%/g, (_, sourceRef: string, dataKey: string) => {
       switch (sourceRef) {
         case "data": {
           return iData.data[dataKey as KeyOf<typeof iData["data"]>];
@@ -208,7 +207,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
   }
 };
 
-function parsePathTransform({d, scale = 1, xShift = 0, yShift = 0}: {d: string, scale?: number, xShift?: number, yShift?: number}): string {
+function parsePathTransform({scale = 1, xShift = 0, yShift = 0}: {scale?: number, xShift?: number, yShift?: number}): string {
   return [
     "transform: translate(-50%, -50%)",
     `scale(${scale})`,

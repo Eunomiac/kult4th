@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import K4Actor from "./K4Actor.js";
+import {K4Attribute, K4ActorType} from "./K4Actor.js";
 import {gsap, GSDevTools} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -86,7 +86,7 @@ const ANIMATIONS = {
   hoverMove(target: HTMLElement): GsapAnimation {
     const FULL_DURATION = 0.5;
 
-    const attribute = $(target).data("attribute");
+    const attribute = $(target).data("attribute") as K4Attribute;
     const itemText$ = $(target).find(".item-text");
     const itemIcon$ = $(target).find(".item-icon");
     const toolTip$ = $(target).find(".trigger-tooltip");
@@ -194,15 +194,11 @@ const ANIMATIONS = {
     return tl;
   }
 };
-export default class K4NPCSheet extends ActorSheet {
-  _actor?: K4Actor;
-  get $entity(): EntityDoc { return this.object ?? this; }
+class K4NPCSheet extends ActorSheet {
+  get $entity(): EntityDoc { return this._actor; }
   get $sheet(): EntitySheet|false { return (this.$entity.sheet ?? false) as EntitySheet|false; }
-  get $actor(): K4Actor|false {
-    if (this._actor) { return this._actor; }
-    if (this.$entity.documentName !== "Actor") { return false; }
-    this._actor = this.actor ?? this.$entity;
-    return this._actor!;
+  get $actor(): K4ActorSpec<K4ActorType.npc> {
+    return this.actor ?? this._actor;
   }
 
   get $id() { return this.$entity.id; }
@@ -219,7 +215,8 @@ export default class K4NPCSheet extends ActorSheet {
       ]
     });
   }
-  override get template() { return "systems/kult4th/templates/sheets/npc-sheet.hbs"; }
+  readonly _template = "systems/kult4th/templates/sheets/npc-sheet.hbs";
+  override get template() { return this._template; }
 
   hoverTimeline?: GsapAnimation;
   hoverTimelineTarget?: HTMLElement;
@@ -229,106 +226,111 @@ export default class K4NPCSheet extends ActorSheet {
     const baseData = await super.getData();
     const data = {
       ...baseData,
-      actorData:     this.actor.data.data,
-      baseMoves:     this.actor.basicMoves,
-      derivedMoves:  this.actor.derivedMoves,
-      advantages:    this.actor.advantages,
-      disadvantages: this.actor.disadvantages,
-      darksecrets:   this.actor.darkSecrets,
-      relations:     this.actor.relations,
-      weapons:       this.actor.weapons,
-      gear:          this.actor.gear,
-      attacks:       this.actor.attacks,
-      attributes:    this.actor.attributeData
+      actorData:     this.$actor.data.data,
+      baseMoves:     this.$actor.basicMoves,
+      derivedMoves:  this.$actor.derivedMoves,
+      advantages:    this.$actor.advantages,
+      disadvantages: this.$actor.disadvantages,
+      darksecrets:   this.$actor.darkSecrets,
+      relations:     this.$actor.relations,
+      weapons:       this.$actor.weapons,
+      gear:          this.$actor.gear,
+      attacks:       this.$actor.attacks,
+      attributes:    this.$actor.attributeData
     };
     /*DEVCODE*/kLog.log("Final Data", data);/*!DEVCODE*/
     return data;
+  }
+
+  handleMouseMove(event: JQuery.MouseMoveEvent, navPanel: HTMLElement, hoverTimeline: gsap.core.Timeline) {
+    if (!$(navPanel).data("isHovered")) { return; }
+    const animParams: gsap.TweenVars = {};
+    const panelElem = document.elementsFromPoint(event.clientX, event.clientY).find((elem) => $(elem).hasClass("nav-panel"));
+    if (!panelElem) {
+      $(navPanel).data({isHovered: false});
+      gsap.to(navPanel, {
+        rotationX: 0,
+        rotationY: 0,
+        duration:  2,
+        ease:      "power3.out"
+      });
+      hoverTimeline.reversed(true);
+    } else {
+      const maxX = $(navPanel).width() ?? 0;
+      const maxY = $(navPanel).height() ?? 0;
+
+      if (!maxX || !maxY) { return; }
+
+      const posX = U.pInt(event.clientX) - (this.position.left ?? 0); // event.offsetX;
+      const posY = U.pInt(event.clientY) - (this.position.top ?? 0); // event.offsetY;
+
+      const percentX = (100 / (maxX / posX)) - 50;
+      const percentY = (100 / (maxY / posY)) - 50;
+
+      const maxRotX = 10;
+      const maxRotY = 10;
+
+      const rotX = (maxRotY / 100) * percentY;
+      const rotY = (-maxRotX / 100) * percentX;
+
+      gsap.to(navPanel, {
+        rotationX: rotX,
+        rotationY: rotY,
+        ease:      "back.out",
+        duration:  0.5
+      });
+    }
   }
 
   override activateListeners(html: JQuery) {
     const ISDEBUGGING = false;
 
     super.activateListeners(html);
-    const self = this;
 
-    $(() => {
-      kLog.log("ACTOR SHEET HTML OBJECT", html);
-      const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
+    kLog.log("ACTOR SHEET HTML OBJECT", html);
+    const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
 
-      const [navPanel] = html.find(".nav-panel");
+    const [navPanel] = html.find(".nav-panel");
 
-      $(navPanel)
-        .each(() => {
-          gsap.set(navPanel, {
-            xPercent:             -50,
-            yPercent:             -50,
-            transformPerspective: 1000,
-            perspective:          600,
-            transformStyle:       "preserve-3d"
-          });
-          const hoverTimeline = ANIMATIONS.hoverNav(navPanel);
+    $(navPanel).each(() => {
 
-          $(navPanel).on("mouseenter", () => {
-            if (!$(navPanel).data("isHovered")) {
-              $(navPanel).data({isHovered: true});
-              hoverTimeline.reversed(false);
-            }
-          });
+      gsap.set(navPanel, {
+        xPercent:             -50,
+        yPercent:             -50,
+        transformPerspective: 1000,
+        perspective:          600,
+        transformStyle:       "preserve-3d"
+      });
+      const hoverTimeline = ANIMATIONS.hoverNav(navPanel);
 
-          $(document).on("mousemove", (event) => {
-            if ($(navPanel).data("isHovered")) {
-              if (!document.elementsFromPoint(event.clientX, event.clientY)
-                .find((elem) => $(elem).hasClass("nav-panel"))) {
-                $(navPanel).data({isHovered: false});
-                gsap.to(navPanel, {
-                  rotationX: 0,
-                  rotationY: 0,
-                  duration:  2,
-                  ease:      "power3.out"
-                });
-                hoverTimeline.reversed(true);
-              } else {
-                const maxX = $(navPanel).width() ?? 0;
-                const maxY = $(navPanel).height() ?? 0;
-
-                if (!maxX || !maxY) { return; }
-
-                const posX = U.pInt(event.clientX) - (self.position.left ?? 0); // event.offsetX;
-                const posY = U.pInt(event.clientY) - (self.position.top ?? 0); // event.offsetY;
-
-                const percentX = (100 / (maxX / posX)) - 50;
-                const percentY = (100 / (maxY / posY)) - 50;
-
-                const maxRotX = 10;
-                const maxRotY = 10;
-
-                const rotX = (maxRotY / 100) * percentY;
-                const rotY = (-maxRotX / 100) * percentX;
-
-                gsap.to(navPanel, {
-                  rotationX: rotX,
-                  rotationY: rotY,
-                  ease:      "back.out",
-                  duration:  0.5
-                });
-              }
-            }
-          });
-        });
-
-      html.find(".nav-tab")
-        .each(function() {
-          gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
-          hoverTimelines.push([this, ANIMATIONS.hoverTab(this)]);
-        });
-
-      hoverTimelines.forEach(([target, anim]) => {
-        $(target)
-          .on("mouseenter", () => anim.reversed(false))
-          .on("mouseleave", () => anim.reversed(true));
+      $(navPanel).on("mouseenter", () => {
+        if (!$(navPanel).data("isHovered")) {
+          $(navPanel).data({isHovered: true});
+          hoverTimeline.reversed(false);
+        }
       });
 
+      $(document).on("mousemove", this.handleMouseMove.bind(this));
     });
-  }
 
+    html.find(".nav-tab")
+      .each(function() {
+        gsap.set(this, {xPercent: -50, yPercent: -50, opacity: 1});
+        hoverTimelines.push([this, ANIMATIONS.hoverTab(this)]);
+      });
+
+    hoverTimelines.forEach(([target, anim]) => {
+      $(target)
+        .on("mouseenter", () => anim.reversed(false))
+        .on("mouseleave", () => anim.reversed(true));
+    });
+
+  }
 }
+
+interface K4NPCSheet {
+  object: K4ActorSpec<K4ActorType.npc>,
+  _actor: K4ActorSpec<K4ActorType.npc>
+}
+
+export default K4NPCSheet;

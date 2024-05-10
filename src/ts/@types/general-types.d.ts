@@ -34,6 +34,8 @@ type HexDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "A" 
 type MaybeSpace = " " | "";
 type FlexComma = `${MaybeSpace},${MaybeSpace}`;
 // #endregion
+// Type definitions for Clamp.js
+
 
 declare global {
   // #region MISCELLANEOUS TYPE ALIASES (nonfunctional; for clarity) ~
@@ -106,20 +108,43 @@ declare global {
   // Represents a value of a certain type
   type ValOf<T> = T extends unknown[] | readonly unknown[] ? T[number] : T[keyof T];
 
-  // Represents a function that takes a key and an optional value and returns unknown
-  type keyFunc = (key: Key, val?: unknown) => unknown;
+  /**
+   * Represents a function that takes a key of type `Key` and an optional value of type `T`, and returns a value of type `R`.
+   * @template T - The type of the value parameter (defaults to `unknown` if not specified).
+   * @template R - The return type of the function (defaults to `unknown` if not specified).
+   */
+  type keyFunc<T = unknown, R = unknown> = (key: Key, val?: T) => R;
 
-  // Represents a function that takes a value and an optional key and returns any
-  type valFunc = (val: unknown, key?: Key) => unknown;
+  /**
+   * Represents a function that takes a value of type `T` and an optional key of type `Key`, and returns a value of type `R`.
+   * @template T - The type of the value parameter (defaults to `unknown` if not specified).
+   * @template R - The return type of the function (defaults to `unknown` if not specified).
+   */
+  type valFunc<T = unknown, R = unknown> = (val: T, key?: Key) => R;
 
-  // Represents a test function
-  type testFunc<Type extends keyFunc | valFunc> = (...args: Parameters<Type>) => boolean;
+  /**
+   * Represents a test function that takes the same parameters as either `keyFunc` or `valFunc` and returns a boolean.
+   * This function is used to test conditions or validate arguments dynamically.
+   * @template T - The type of the value parameter used in the function being tested.
+   * @template R - The return type of the function being tested.
+   * @template Type - The type of the function being tested, constrained to either `keyFunc` or `valFunc`.
+   */
+  type testFunc<Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>, T = unknown, R = unknown> = (...args: Parameters<Type>) => boolean;
 
-  // Represents a map function
-  type mapFunc<Type extends keyFunc | valFunc> = (...args: Parameters<Type>) => ReturnType<Type>;
+  /**
+   * Represents a map function that takes the same parameters as either `keyFunc` or `valFunc` and returns the return type of the function being mapped.
+   * This function is typically used to transform elements of an array or properties of an object.
+   * @template T - The type of the value parameter used in the function being mapped.
+   * @template R - The return type of the function being mapped.
+   * @template Type - The type of the function being mapped, constrained to either `keyFunc` or `valFunc`.
+   */
+  type mapFunc<Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>, T = unknown, R = unknown> = (...args: Parameters<Type>) => ReturnType<Type>;
 
-  // Represents a check test
-  type checkTest = ((...args: unknown[]) => unknown) | testFunc<keyFunc> | testFunc<valFunc> | RegExp | number | string;
+  /**
+   * Represents a type that can be used to check values. It can be a function that takes any number of unknown parameters and returns unknown,
+   * a `testFunc` for either `keyFunc` or `valFunc`, a regular expression, a number, or a string.
+   */
+  type checkTest = ((...args: unknown[]) => unknown) | testFunc<unknown, unknown, keyFunc> | testFunc<unknown, unknown, valFunc> | RegExp | number | string;
   // #endregion
 
   // #region BRANDED TYPES ~
@@ -235,10 +260,10 @@ declare global {
 
   // #region TinyMCE ~
   interface TinyMCEConfig {
-    skin: boolean;
+    skin: string|boolean;
     skin_url?: string;
-    content_css: string;
-    font_css: string;
+    content_css: string|string[];
+    font_css: string|string[];
     max_height: number;
     min_height: number;
     autoresize_overflow_padding: number;

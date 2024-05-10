@@ -2,13 +2,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs.js";
 import type {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
-import C from "../../../scripts/constants";
+import C from "../../scripts/constants";
 
 import * as ACTORDATA from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
-import K4Actor, {K4ActorType, K4Attribute, K4RollType, K4WoundType} from "../../../documents/K4Actor";
+import K4Actor, {K4ActorType, K4Attribute, K4RollType, K4WoundType} from "../../documents/K4Actor";
+import K4Item, {K4ItemType} from "../../documents/K4Item.js";
+import {K4RollType} from "../../documents/K4Roll.js";
 
-import K4PCSheet from "../../../documents/K4PCSheet";
-import K4NPCSheet from "../../../documents/K4NPCSheet";
+import K4PCSheet from "../../documents/K4PCSheet";
+import K4NPCSheet from "../../documents/K4NPCSheet";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -21,12 +23,12 @@ declare global {
   type K4RollSource = K4RollableItem|K4RollableAttribute;
 
   type K4ModTargets = Record<string, number>;
-  type K4RollModData = {
+  interface K4RollModData {
     category: string,
     display: string,
     targets: K4ModTargets
   }
-  type K4RollMod = {
+  interface K4RollMod {
     category: string,
     display: string,
     value: number
@@ -101,6 +103,11 @@ declare global {
           max: Integer,
           value: Integer
         },
+        [K4Attribute.intuition]: {
+          min: Integer,
+          max: Integer,
+          value: Integer
+        },
         [K4Attribute.perception]: {
           min: Integer,
           max: Integer,
@@ -127,7 +134,7 @@ declare global {
           value: Integer
         }
       },
-      wounds: Record<string, K4Wound>,
+      wounds: Record<keyof typeof this["data"]["data"]["wounds"], K4Wound>,
       modifiers: {
         wounds_serious: K4ModTargets[],
         wounds_critical: K4ModTargets[],
@@ -144,7 +151,7 @@ declare global {
         value: PosInteger
       }
     }
-    export interface npc extends Pick<pc, description|wounds|penalties> { }
+    export interface npc extends Pick<pc, "description"|"wounds"|"penalties"> { }
   }
 
   namespace K4ActorSourceData {
@@ -220,4 +227,12 @@ declare global {
   type K4ActorData<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorPropertiesData.pc
     : T extends K4ActorType.npc ? K4ActorPropertiesData.npc
     : K4ActorPropertiesData.pc & K4ActorPropertiesData.npc)
+
+  type K4ActorSpec<Type extends K4ActorType> = K4Actor
+  & {data: {
+      type: Type,
+      _source: {
+        type: Type
+      }
+    }}
 }

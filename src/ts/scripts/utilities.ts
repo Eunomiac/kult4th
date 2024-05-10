@@ -157,7 +157,7 @@ const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && /\./.test(`${r
 const isPosInt = <T>(ref: T): ref is T & PosInteger => isInt(ref) && ref >= 0;
 const isPosFloat = <T>(ref: T): ref is T & PosFloat => isFloat(ref) && ref >= 0;
 
-const isList = <T>(ref: T): ref is T & List<ValOf<T>> => ref === Object(ref) && !isArray(ref);
+const isList = <T>(ref: T): ref is T & List => ref === Object(ref) && !isArray(ref);
 const isIndex = <T>(ref: T): ref is T & Index<ValOf<T>> => isList(ref) || isArray(ref);
 const isIterable = <T>(ref: T): ref is T & Iterable<unknown> => typeof ref === "object" && ref !== null && Symbol.iterator in ref;
 
@@ -381,7 +381,7 @@ const uCase = (str: unknown): Uppercase<string> => String(str).toUpperCase() as 
 const lCase = (str: unknown): Lowercase<string> => String(str).toLowerCase() as Lowercase<string>;
 const sCase = (str: unknown): Capitalize<string> => {
   if (typeof str === "object") { throw new Error("Cannot convert object to sentence case.");}
-  let [first, ...rest] = `${str ?? ""}`.split(/\s+/);
+  let [first, ...rest] = `${String(str)}`.split(/\s+/);
   first = testRegExp(first, _capWords) ? first : `${uCase(first.charAt(0))}${lCase(first.slice(1))}`;
   if (hasItems(rest)) {
     rest = rest.map((word) => (testRegExp(word, _capWords) ? word : lCase(word)));
@@ -955,7 +955,7 @@ const checkVal = ({k, v}: {k?: unknown, v?: unknown}, checkTest: checkTest) => {
  * @param {testFunc<keyFunc | valFunc> | number | string} checkTest The search function.
  * @returns {unknown | false} - The removed element or false if no element was found.
  */
-const remove = (obj: Index, checkTest: testFunc<keyFunc | valFunc> | number | string) => {
+const remove = (obj: Index, checkTest: testFunc | number | string) => {
   if (isArray(obj)) {
     const index = obj.findIndex((v) => checkVal({v}, checkTest));
     if (index >= 0) {
@@ -1394,7 +1394,7 @@ const objExpand = <T>(obj: List<T>): List<T> => {
       return objMap(o, (v: unknown): unknown => arrayify(v)) as List<X>;
     }
     if (isArray(o)) {
-      return o.map((val) => arrayify(val)) as X[];
+      return o.map((val) => arrayify(val as Index<X>)) as X[];
     }
     return o;
   }

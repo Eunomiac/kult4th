@@ -1,3 +1,4 @@
+@use "sass:math";
 & {
 	--K4-border: #{to-url("layout/border-actor-sheet.svg")} 130 275/130px 275px/32px 40px repeat;
 
@@ -454,7 +455,7 @@
 
 					&.front {
 						$attributes-width: 200px;
-						$attributes-height: $attributes-width * (494 / 261) + 30px + 20px;
+						$attributes-height: $attributes-width * (math.div(494, 261)) + 30px + 20px;
 						$main-panel-height: 450px;
 						$attack-height: 150px;
 						// $attributes-padding-bottom: $main-panel-height - $attributes-height;
