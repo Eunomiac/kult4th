@@ -1,4 +1,4 @@
-import {K4Attribute} from "../documents/K4Actor";
+import {K4Attribute} from "./constants.js";
 
 const K4Config = {
   colors: {

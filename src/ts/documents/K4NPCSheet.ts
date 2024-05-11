@@ -1,8 +1,8 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C from "../scripts/constants.js";
+import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import {K4Attribute, K4ActorType} from "./K4Actor.js";
+import {K4ActorType} from "./K4Actor.js";
 import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion

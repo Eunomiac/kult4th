@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs.js";
 import type {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
-import C from "../../scripts/constants";
+import C, {K4Attribute} from "../../scripts/constants";
 
 import * as ACTORDATA from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
-import K4Actor, {K4ActorType, K4Attribute, K4RollType, K4WoundType} from "../../documents/K4Actor";
+import K4Actor, {K4ActorType, K4RollType, K4WoundType} from "../../documents/K4Actor";
 import K4Item, {K4ItemType} from "../../documents/K4Item.js";
 import {K4RollType} from "../../documents/K4Roll.js";
 
@@ -82,58 +82,7 @@ declare global {
           isChecked: boolean
         }
       ],
-      attributes: {
-        [K4Attribute.willpower]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.fortitude]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.reflexes]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.reason]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.intuition]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.perception]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.coolness]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.violence]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.charisma]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        },
-        [K4Attribute.soul]: {
-          min: Integer,
-          max: Integer,
-          value: Integer
-        }
-      },
+      attributes: Record<K4CharAttribute, ValueMax>,
       wounds: Record<keyof typeof this["data"]["data"]["wounds"], K4Wound>,
       modifiers: {
         wounds_serious: K4ModTargets[],

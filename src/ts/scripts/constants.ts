@@ -1,10 +1,25 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import U from "./utilities.js";
-import {K4Attribute} from "../documents/K4Actor";
 import {K4ItemType} from "../documents/K4Item";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
+
+
+export enum K4Attribute {
+  ask = "ask",
+  zero = "zero",
+  fortitude = "fortitude",
+  reflexes = "reflexes",
+  willpower = "willpower",
+  reason = "reason",
+  intuition = "intuition",
+  perception = "perception",
+  coolness = "coolness",
+  violence = "violence",
+  charisma = "charisma",
+  soul = "soul"
+}
 
 export const ActorTypes = {
   pc: "Player Character",
@@ -208,6 +223,7 @@ export const RegExpPatterns = {
     /\b([Tt]he GM takes \d+ Hold)\b/g
   ]
 };
+
 
 const C = {
   get game() { return game },

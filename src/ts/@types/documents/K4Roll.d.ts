@@ -1,4 +1,5 @@
-import {K4RollType} from "../documents/K4Roll";
+
+import {K4Attribute} from "../../scripts/constants.js";
 
 declare global {
 

@@ -6,6 +6,7 @@ import {ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foun
 import {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass, K4ItemResultType} from "../../documents/K4Item.js";
 import K4ItemSheet from "../../documents/K4ItemSheet";
+import {K4Attribute} from "../../scripts/constants";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 

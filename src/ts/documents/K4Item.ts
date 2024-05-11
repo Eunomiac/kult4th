@@ -65,10 +65,10 @@ class K4Item extends Item {
 
   get key() { return this.data.data.key; }
   _img?: string;
-  override get img(): string {
-    this._img ??= `data.datas/kult4th/assets/icons/${this.masterType}/${this.key}.svg`;
-    return this._img;
-  }
+  // override get img(): string {
+  //   this._img ??= `systems/kult4th/assets/icons/${this.masterType}/${this.key}.svg`;
+  //   return this._img;
+  // }
   get itemSheet(): typeof this._sheet & K4ItemSheet | null { return this._sheet as typeof this._sheet & K4ItemSheet ?? null; }
 
   get masterKey(): string {

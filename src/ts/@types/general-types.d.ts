@@ -251,7 +251,7 @@ declare global {
   type ItemRef = string | ItemDoc;
 
   // Utility Types for Variable Template Values
-  interface ValueMax {max: number, value: number}
+  interface ValueMax {min: number, max: number, value: number}
   type NamedValueMax = ValueMax & {name: string};
 
   interface Scenes {

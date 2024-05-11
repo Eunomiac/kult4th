@@ -4,7 +4,7 @@ import K4Item, {K4ItemType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
-import C from "../scripts/constants.js";
+import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -14,20 +14,8 @@ export enum K4ActorType {
   npc = "npc"
 }
 
-export enum K4Attribute {
-  ask = "ask",
-  zero = "zero",
-  fortitude = "fortitude",
-  reflexes = "reflexes",
-  willpower = "willpower",
-  reason = "reason",
-  intuition = "intuition",
-  perception = "perception",
-  coolness = "coolness",
-  violence = "violence",
-  charisma = "charisma",
-  soul = "soul"
-}
+export {K4Attribute};
+
 export enum K4RollType {
   zero = "zero",
   attribute = "attribute",
@@ -127,7 +115,7 @@ class K4Actor extends Actor {
     return Object.values(this.wounds).map((wound) => {
       const stripData: Partial<HoverStripData> = {
         id:   wound.id,
-        icon: "data.datas/kult4th/assets/icons/wounds/",
+        icon: "systems/kult4th/assets/icons/wounds/",
         type: [
           wound.isStabilized ? "stable" : "",
           wound.isCritical ? "critical" : "serious"
