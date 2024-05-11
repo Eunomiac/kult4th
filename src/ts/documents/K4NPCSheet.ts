@@ -3,7 +3,7 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {K4Attribute, K4ActorType} from "./K4Actor.js";
-import {gsap, GSDevTools} from "../libraries.js";
+import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -220,7 +220,7 @@ class K4NPCSheet extends ActorSheet {
 
   hoverTimeline?: GsapAnimation;
   hoverTimelineTarget?: HTMLElement;
-  devTools = GSDevTools;
+  // devTools = GSDevTools;
 
   override async getData() {
     const baseData = await super.getData();

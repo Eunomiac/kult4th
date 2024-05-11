@@ -16,13 +16,13 @@ import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/s
 import registerDebugger from "./scripts/logger.js";
 
 import {resetItems} from "./scripts/migratedData.js";
-import {gsap, MorphSVGPlugin} from "./libraries.js";
+import {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
 registerDebugger();
-gsap.registerPlugin(MorphSVGPlugin);
+// gsap.registerPlugin(MorphSVGPlugin);
 
 Hooks.once("init", async () => {
   registerSettings();
@@ -259,7 +259,7 @@ Hooks.once("ready", () => {
 
   Object.assign(globalThis, {
     gsap,
-    MorphSVGPlugin,
+    // MorphSVGPlugin,
     U,
     C,
     resetItems: resetItems as () => Promise<void>,

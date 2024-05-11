@@ -140,7 +140,7 @@ function foundryPlugin(): Plugin {
   };
 }
 
-const foundryPort = 30000 + (FOUNDRY_VERSION * 1000);
+const foundryPort = 30000 + (FOUNDRY_VERSION * 100);
 const vitePort = foundryPort + 1;
 
 // Defining the Vite configuration object with specific settings for this project
@@ -190,10 +190,11 @@ const config: UserConfig = defineConfig({
       name:     ENTRY_FILE_NAME, // Name of the library
       entry:    path.resolve(__dirname, `src/ts/${ENTRY_FILE_NAME}.ts`), // Entry point for the library
       formats:  ["es"], // Output format(s) for the library
-      fileName: ENTRY_FILE_NAME // Name for the output file(s)
+      fileName: "index" // Name for the output file(s)
     },
     rollupOptions: {
       external: [
+        "gsap/all",
         "gsap/CustomEase",
         "gsap/EasePack",
         "gsap/Flip",

@@ -1,3 +1,5 @@
+import {gsap, MotionPathPlugin} from "../libraries";
+
 // #region â–®â–®â–®â–®â–®â–®â–® [HELPERS] Internal Functions, Data & References Used by Utility Functions â–®â–®â–®â–®â–®â–®â–® ~
 
 // _noCapWords -- Patterns matching words that should NOT be capitalized when converting to TITLE case.

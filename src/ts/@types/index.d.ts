@@ -5,9 +5,15 @@ import "./scripts";
 import "./general-types";
 import "./system-types";
 
-import * as gsap from "gsap/all";
+// import * as gsap from "gsap/all";
+// declare module "gsap/all";
 declare module "gsap/all";
-
+// declare module "gsap/MorphSVGPlugin";
+// declare module "gsap/GSDevTools";
+// export {MorphSVGPlugin} from "gsap/MorphSVGPlugin";
+// export {PixiPlugin} from "gsap/PixiPlugin";
+// export {TextPlugin} from "gsap/TextPlugin";
+// export {GSDevTools} from "gsap/GSDevTools";
 // Declaration for the virtual module "virtual:colors"
 declare module "virtual:colors" {
   export const Colors: Record<string, string>;

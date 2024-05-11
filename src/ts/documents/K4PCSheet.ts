@@ -3,11 +3,11 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {K4ActorType} from "./K4Actor.js";
-import {gsap, GSDevTools, MorphSVGPlugin} from "../libraries.js";
+import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
-gsap.registerPlugin(MorphSVGPlugin);
+// gsap.registerPlugin(MorphSVGPlugin);
 
 const ANIMATIONS = {
   _glitchText(_target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
@@ -564,7 +564,7 @@ class K4PCSheet extends ActorSheet {
 
   hoverTimeline?: GsapAnimation;
   hoverTimelineTarget?: HTMLElement;
-  devTools = GSDevTools;
+  // devTools = GSDevTools;
 
   override async getData() {
     const baseContext = await super.getData();
