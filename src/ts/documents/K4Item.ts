@@ -235,7 +235,7 @@ class K4Item extends Item {
     const stripData: HoverStripData = {
       id:      this.id ?? `${this.data.type}-${U.randString(5)}`,
       type:    this.data.type,
-      icon:    this.img,
+      icon:    this.img ?? "",
       display: this.name ?? "(enter name)",
       ...this.isSubItem()
         ? {
@@ -319,19 +319,23 @@ class K4Item extends Item {
     return stripData;
   }
 
-  async displayItemSummary(speaker?: string) {
-    const template = await getTemplate(this.sheet?.template ?? "");
+  get itemSummaryContext() {
+    return {
+      name:     this.name,
+      img:      this.img,
+      data:     this.data,
+      cssClass: "kult4th-chat kult4th-item-display"
+    };
+  }
 
-    const content = template(Object.assign(
-      this.toObject(),
-      {key: this.key}
-    ));
+  chatTemplate = "systems/kult4th/templates/sidebar/item-display.hbs";
+  async displayItemSummary(speaker?: string) {
+    const template = await getTemplate(this.chatTemplate);
+
+    const content = template(this.itemSummaryContext);
     await K4ChatMessage.create({
       content,
-      speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""})/* ,
-      options: {
-        cssClass: "kult4th-chat"
-      } */
+      speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""})
     });
   }
 }

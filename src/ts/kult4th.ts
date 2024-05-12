@@ -25,6 +25,10 @@ registerDebugger();
 // gsap.registerPlugin(MorphSVGPlugin);
 
 Hooks.once("init", async () => {
+
+  // Disable Compatibility Warnings
+  CONFIG.compatibility.mode = 0;
+
   registerSettings();
   kLog.display("Initializing 'Kult: Divinity Lost 4th Edition' for Foundry VTT", 0);
 
@@ -246,6 +250,7 @@ Hooks.once("init", async () => {
 
 
 Hooks.once("ready", () => {
+
   initCanvasStyles();
   initTinyMCEStyles();
 

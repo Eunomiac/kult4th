@@ -178,10 +178,14 @@ declare global {
     : K4ActorPropertiesData.pc & K4ActorPropertiesData.npc)
 
   type K4ActorSpec<Type extends K4ActorType> = K4Actor
-  & {data: {
+  & {
+    type: Type,
+    system: K4ActorSchema<Type>,
+    data: {
       type: Type,
       _source: {
         type: Type
       }
-    }}
+    }
+  }
 }

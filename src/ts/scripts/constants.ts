@@ -128,7 +128,7 @@ export const Colors = {
   bGREY: "rgb(177, 177, 177)",
   GREY: "rgb(128, 128, 128)",
   dGREY: "rgb(78, 78, 78)",
-  BLACK: "rgb(29, 29, 29)",
+  BLACK: "rgb(30, 30, 28)",
   dBLACK: "rgb(0, 0, 0)"
 };
 export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {

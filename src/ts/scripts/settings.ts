@@ -159,6 +159,6 @@ export function initCanvasStyles() {
     wordWrap: true,
     wordWrapWidth: 0.1
   });
-  CONFIG.fontFamilies = ["Alverata", "AlverataCaps", "Infidel", "Sokol"];
+  // CONFIG.fontFamilies = ["Alverata", "AlverataCaps", "Infidel", "Sokol"];
   CONFIG.defaultFontFamily = "Alverata";
 }

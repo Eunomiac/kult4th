@@ -408,7 +408,7 @@ class K4Actor extends Actor {
     rollData.source = item;
     rollData.sourceType = item.masterType;
     rollData.sourceName = item.name;
-    rollData.sourceImg = item.img;
+    rollData.sourceImg = item.img ?? "";
 
     if ("attribute" in item.data.data) {
       if (item.data.data.attribute === K4Attribute.ask) {

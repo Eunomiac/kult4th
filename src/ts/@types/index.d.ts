@@ -8,8 +8,8 @@ import "./system-types";
 // import * as gsap from "gsap/all";
 // declare module "gsap/all";
 declare module "gsap/all";
-// declare module "gsap/MorphSVGPlugin";
-// declare module "gsap/GSDevTools";
+declare module "gsap/MorphSVGPlugin";
+declare module "gsap/GSDevTools";
 // export {MorphSVGPlugin} from "gsap/MorphSVGPlugin";
 // export {PixiPlugin} from "gsap/PixiPlugin";
 // export {TextPlugin} from "gsap/TextPlugin";
@@ -82,7 +82,10 @@ declare global {
       hooks: boolean
     },
     TinyMCE: TinyMCEConfig,
-    K4: typeof K4Config
+    K4: typeof K4Config,
+    compatibility: {
+      mode: number
+    }
   }
 
   const cqApi: {

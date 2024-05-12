@@ -131,13 +131,13 @@ const ANIMATIONS = {
       buttonSpikes: $(target).find(".tabs .nav-tab-container .svg-container[class*='nav-spoke'] .svg-def")
     };
 
-    const spikeVars: gsap.TweenVars = {
-      // @ts-expect-error MorphSVG does indeed accept functions.
-      morphSVG(i: number) { return svgs.outerSpikePaths[i]; },
-      scale:    1,
-      duration: 0.3,
-      ease:     "power2"
-    };
+    // const spikeVars: gsap.TweenVars = {
+    //   // @ts-expect-error MorphSVG does indeed accept functions.
+    //   morphSVG(i: number) { return svgs.outerSpikePaths[i]; },
+    //   scale:    1,
+    //   duration: 0.3,
+    //   ease:     "power2"
+    // };
 
     const navTL = gsap.timeline({reversed: true})
       .to(target, {
@@ -185,7 +185,11 @@ const ANIMATIONS = {
         duration: 0.3,
         ease:     "power2"
       }, 0)
-      .to(svgs.outerSpikes, spikeVars, 0)
+      .to(svgs.outerSpikes, {
+        scale:    1.5,
+        duration: 0.3,
+        ease:     "power2"
+      }, 0)
       .to(svgs.innerSpikes, {
         scale:    1,
         duration: 0.3,
