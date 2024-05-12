@@ -3,7 +3,7 @@
 import "../scss/style.scss";
 
 import K4Config from "./scripts/config.js";
-import K4Actor from "./documents/K4Actor.js";
+import K4Actor, {K4ActorType} from "./documents/K4Actor.js";
 import K4Item, {K4ItemType} from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
@@ -38,7 +38,7 @@ Hooks.once("init", async () => {
   CONFIG.Actor.documentClass = K4Actor;
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
-  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: false});
+  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc]});
 
   CONFIG.Item.documentClass = K4Item;
   Items.unregisterSheet("core", ItemSheet);

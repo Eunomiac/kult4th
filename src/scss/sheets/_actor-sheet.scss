@@ -421,6 +421,7 @@
 				filter: drop-shadow(rgb(0, 0, 0) 2px 4px 2px) drop-shadow(rgb(0, 0, 0) 20px 20px 20px);
 				margin-bottom: -15px;
 				background: var(--K4-bg-inset);
+        border-image: var(--K4-border);
 
 				.tab {
 					$grid-gap: 5px;

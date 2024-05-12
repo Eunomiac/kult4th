@@ -212,6 +212,10 @@
 		text-align: center;
 		height: $rem-32;
 		line-height: $rem-28;
+    white-space: nowrap;
+    transform-origin: 0% 50%;
+    scale: 0.8 1;
+    width: calc(100% / 0.8);
 
 		font-variant: all-small-caps;
 		margin: 10px 0;
@@ -253,6 +257,7 @@
 			background: var(--K4-dBLUE);
 
 			animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
+
 
 			@keyframes neonGlowBlue {
 				0% {

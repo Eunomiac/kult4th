@@ -1,5 +1,5 @@
 // Importing necessary functions and types from the Vite package and the path module from Node.js
-import {defineConfig, type UserConfig, type Plugin} from "vite";
+import {defineConfig, type UserConfig, Plugin} from "vite";
 import path from "path";
 import fs from "fs";
 import checker from "vite-plugin-checker";
@@ -29,6 +29,43 @@ const COLOR_MATCH_REGEXP: Maybe<RegExp> = undefined; // /--blades-(?<hue>[a-z]+)
 /* --- SCSS Color Extraction --- */
 
 /* ==== END CONFIGURATION ==== */
+
+/**
+ * Plugin to watch changes in the public directory, trigger a full reload, and append a timestamp query string for cache busting.
+ */
+function watchPublicDirPlugin(): Plugin {
+  let lastUpdated = Date.now();
+  return {
+    name: "watch-public-directory",
+    configureServer(server) {
+      const {watcher, ws, middlewares} = server;
+      // Watch for changes in the public directory
+      watcher.add(path.resolve(__dirname, "public/**/*"));
+      watcher.on("change", (changedPath) => {
+        if (changedPath.startsWith(path.resolve(__dirname, "public"))) {
+          lastUpdated = Date.now();
+          // Trigger a full reload on the client
+          ws.send({
+            type: "full-reload"
+          });
+        }
+      });
+
+      // Middleware to append a cache-busting query string
+      middlewares.use((req, res, next) => {
+        if (req.url?.startsWith("/public/")) {
+          // Redirect to the URL with the updated query string
+          res.writeHead(302, {
+            Location: `${req.url}?t=${lastUpdated}`
+          });
+          res.end();
+        } else {
+          next();
+        }
+      });
+    }
+  };
+}
 
 /**
  * Custom plugin to open Chrome with specific flags when the Vite server starts.
@@ -222,6 +259,7 @@ const config: UserConfig = defineConfig({
     }
   },
   plugins: [
+    watchPublicDirPlugin(),
     foundryPlugin(),
     checker({typescript: true}),
     COLOR_STYLESHEET_PATH ? scssVariablesToJsPlugin() : undefined,

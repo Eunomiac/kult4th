@@ -77,17 +77,26 @@
 			var(--K4-sheet-padding-bottom)
 			var(--K4-sheet-padding-left);
 
+    &.wide-content {
+      width: 400px;
+    }
+
+    &.tall-content {
+      height: 800px;
+    }
+
 
 		.kult4th-form {
 			display: grid;
 			position: relative;
-			height: calc(100% - var(--K4-sheet-padding-top) - var(--K4-sheet-padding-bottom));
+			// height: calc(100% - var(--K4-sheet-padding-top) - var(--K4-sheet-padding-bottom));
 			width: calc(100% - var(--K4-sheet-padding-left) - var(--K4-sheet-padding-right));
 			grid-template-areas:
 				"header"
 				"main";
 			grid-template-rows: var(--K4-sheet-header-height) 1fr;
 			grid-template-columns: 1fr;
+      height: 100%;
 
 			> * {
 				position: relative;

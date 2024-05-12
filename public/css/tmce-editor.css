@@ -193,6 +193,7 @@
 #tinymce * {
   /* FOUNDRY OVERRIDES */
   --font-primary: Alverata, serif;
+  --font-primary-italics: AlverataCaps, serif;
   --font-mono: monospace;
   --font-size-11: 0.6875rem;
   --font-size-12: 0.75rem;
@@ -223,10 +224,10 @@
   --K4-color-title-fg: var(--K4-color-primary);
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-RED);
-  --K4-color-keyword: var(--K4-bGOLD);
-  --K4-color-keyword-bright: var(--K4-bGOLD);
-  --K4-color-pos: var(--K4-bGOLD);
-  --K4-color-neg: var(--K4-RED);
+  --K4-color-keyword: var(--K4-gGOLD);
+  --K4-color-keyword-bright: var(--K4-gGOLD);
+  --K4-color-pos: var(--K4-gGOLD);
+  --K4-color-neg: var(--K4-bRED);
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 400;
   --K4-list-indent: 12px;
@@ -847,6 +848,7 @@
 #tinymce .mce-content-body .text-trigger {
   color: var(--K4-color-primary-bright);
   font-weight: 600;
+  font-family: var(--font-primary-italics);
   font-style: italic;
 }
 #tinymce .icon-container,
@@ -1078,9 +1080,9 @@
 }
 #tinymce .result-entry,
 #tinymce .mce-content-body .result-entry {
-  --label-width: 60px;
-  --label-gap: 10px;
-  --result-entry-horiz-padding: 20px;
+  --label-width: 45px;
+  --label-gap: 5px;
+  --result-entry-horiz-padding: 5px;
   display: block;
   margin: 0 var(--result-entry-horiz-padding);
   clear: both;

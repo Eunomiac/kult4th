@@ -22,11 +22,13 @@
 		background: none;
 
 		form {
-			font-size: 0.7rem;
+			font-size: $rem-12;
 			line-height: $rem-16;
 			background: var(--K4-bg);
 			border-radius: 30px;
 			filter: drop-shadow(10px 10px 10px var(--K4-BLACK));
+      height: auto;
+      min-height: 150px;
 
 			.header-icon {
 				// display: none;
@@ -69,7 +71,8 @@
 				text-align: center;
 				// align-self: stretch;
 				// justify-self: stretch;
-				height: var(--K4-sheet-header-height);
+				// height: var(--K4-sheet-header-height);
+        height: 30px;
 				margin-bottom: calc(var(--K4-sheet-header-height) * -1);
 
 				// --K4-color-title-bg: none;

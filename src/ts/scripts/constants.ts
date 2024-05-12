@@ -124,7 +124,7 @@ export const Colors = {
   gBLUE: "rgb(128, 185, 255)",
 
   bWHITE: "rgb(255, 255, 255)",
-  WHITE: "rgb(226, 226, 226)",
+  WHITE: "rgb(200, 200, 200)",
   bGREY: "rgb(177, 177, 177)",
   GREY: "rgb(128, 128, 128)",
   dGREY: "rgb(78, 78, 78)",
