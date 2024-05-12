@@ -16,7 +16,7 @@ import {exec} from "child_process";
 
 /* ==== CONFIGURATION ==== */
 
-const FOUNDRY_VERSION = 11;
+const FOUNDRY_VERSION = 10;
 const PACKAGE_TYPE: "module"|"system" = "system";
 const PACKAGE_ID = "kult4th";
 const ENTRY_FILE_NAME = "kult4th";
@@ -100,14 +100,19 @@ function scssVariablesToJsPlugin(): Plugin {
 
 function foundryPlugin(): Plugin {
   const usesFoundryPlugin = Symbol("foundry-plugin");
+  const externalsSourceMap = new Map([
+    ["gsap/all", "scripts/greensock/esm/all.js"],
+    ["gsap/MorphSVGPlugin", "scripts/greensock/esm/MorphSVGPlugin.js"],
+    ["gsap/GSDevTools", "scripts/greensock/esm/GSDevTools.js"]
+  ]);
 
   return {
     name: "foundry-plugin",
 
     resolveId(source) {
-      if (source === "gsap/all") {
+      if (externalsSourceMap.has(source)) {
         return {
-          id: "scripts/greensock/esm/all.js",
+          id: externalsSourceMap.get(source)!,
 
           // This is used to make sure that there's no later transformations during production.
           external: "absolute",
@@ -211,7 +216,9 @@ const config: UserConfig = defineConfig({
   resolve: {
     preserveSymlinks: true,
     alias:            {
-      "gsap/all": "scripts/greensock/esm/all.js"
+      "gsap/all":            "scripts/greensock/esm/all.js",
+      "gsap/MorphSVGPlugin": "scripts/greensock/esm/MorphSVGPlugin.js",
+      "gsap/GSDevTools":     "scripts/greensock/esm/GSDevTools.js"
     }
   },
   plugins: [

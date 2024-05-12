@@ -21,7 +21,9 @@
 	],
   "esmodules": [
     "index.js",
-		"greensock/esm/all.js"
+		"greensock/esm/all.js",
+		"greensock/esm/MorphSVGPlugin.js",
+		"greensock/esm/GSDevTools.js"
 	],
   "styles": [
 		"style.css",
