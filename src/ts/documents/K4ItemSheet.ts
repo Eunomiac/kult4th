@@ -63,6 +63,12 @@ export default class K4ItemSheet extends ItemSheet {
     $(() => {
       kLog.log("ITEM SHEET CONTEXT", {this: this, self, html});
 
+      const height = html.height() ?? 0;
+
+      if (height > 450 || html.find(".k4-header").length > 0) {
+        html.parent().addClass("wide-content");
+      }
+
       function createOpenLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
@@ -144,5 +150,26 @@ export default class K4ItemSheet extends ItemSheet {
     // const editors = Object.values(this.editors);
 
     // <div>{{editor content=data.trigger target="data.trigger" button=true owner=owner editable=editable}}</div>
+  }
+  override _canDragStart(_dragSelector: string) {
+    kLog.log("K4ItemSheet._canDragStart", `Not Implemented. _dragSelector: ${_dragSelector}`);
+    return false;
+  }
+
+  override _canDragDrop(_dropSelector: string) {
+    kLog.log("K4ItemSheet._canDragDrop", `Not Implemented. _dropSelector: ${_dropSelector}`);
+    return false;
+  }
+
+  override _onDragOver(_event: DragEvent) {
+    kLog.log("K4ItemSheet._onDragOver", "Not Implemented", {dragEvent: _event});
+  }
+
+  override _onDrop(_event: DragEvent) {
+    kLog.log("K4ItemSheet._onDrop", "Not Implemented", {dragEvent: _event});
+  }
+
+  override _onDragStart(_event: DragEvent) {
+    kLog.log("K4ItemSheet._onDragStart", "Not Implemented", {dragEvent: _event});
   }
 }

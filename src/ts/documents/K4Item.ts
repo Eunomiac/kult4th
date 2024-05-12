@@ -324,6 +324,7 @@ class K4Item extends Item {
       name:     this.name,
       img:      this.img,
       data:     this.data,
+      item:     this,
       cssClass: "kult4th-chat kult4th-item-display"
     };
   }

@@ -1,4 +1,4 @@
-<div class="hover-strip {{~#each stripClasses}} {{this}}{{/each}}" data-type={{type}} {{~#if dataset}}{{#each dataset as
+<div class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}}" data-type={{type}} {{~#if dataset}}{{#each dataset as
   |val key|}} data-{{key}}="{{val}}" {{/each}}{{/if}}>
   <span class="strip-bg"></span>
   <div class="strip-name" data-clamplines="1" {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}"

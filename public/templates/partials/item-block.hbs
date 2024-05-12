@@ -1,9 +1,9 @@
 
-{{dbLog "{SHEET} item-block.hbs" this}}
-{{log "item-block.hbs" this}}
+{{dbLog "{SHEET} item-block.hbs title" this}}
+{{log "item-block.hbs title" this}}
 	<main class="kult-text-container tab-content kult-{{data.type}}-container {{cssClass}}">
     <div class="sheet-header">
-		  <label class="k4-title item-title">{{name}}</label>
+		  <label class="k4-title item-title">{{item.name}}</label>
     </div>
 
 		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}

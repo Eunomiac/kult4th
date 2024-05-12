@@ -561,7 +561,8 @@ class K4PCSheet extends ActorSheet {
       classes: [C.SYSTEM_ID, "actor", "sheet", "kult4th-sheet", "k4-theme-dgold"],
       tabs:    [
         {navSelector: ".tabs", contentSelector: ".tab-content", initial: "bio"}
-      ]
+      ],
+      dragDrop: [{dragSelector: ".item-list .item, .flex-item-list .item"}]
     });
   }
   override get template() { return `systems/kult4th/templates/sheets/${this.actor.data.type}-sheet.hbs`; }
@@ -624,6 +625,8 @@ class K4PCSheet extends ActorSheet {
       if (!U.getSetting("shadows")) {
         html.find(".tab-content").each(function() { $(this).css("filter", "none");});
       }
+
+
 
       const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
       this.element.find(".nav-panel").each(function() {
@@ -875,6 +878,28 @@ class K4PCSheet extends ActorSheet {
       });
     });
   }
+
+  // override _canDragStart(_dragSelector: string) {
+  //   kLog.log("K4PCSheet._canDragStart", `Not Implemented. _dragSelector: ${_dragSelector}`);
+  //   return true;
+  // }
+
+  override _canDragDrop(_dropSelector: string) {
+    kLog.log("K4PCSheet._canDragDrop", `Not Implemented. _dropSelector: ${_dropSelector}`);
+    return false;
+  }
+
+  // override _onDragOver(_event: DragEvent) {
+  //   kLog.log("K4PCSheet._onDragOver", "Not Implemented", {dragEvent: _event});
+  // }
+
+  // override _onDrop(_event: DragEvent) {
+  //   kLog.log("K4PCSheet._onDrop", "Not Implemented", {dragEvent: _event});
+  // }
+
+  // override _onDragStart(_event: DragEvent) {
+  //   kLog.log("K4PCSheet._onDragStart", "Not Implemented", {dragEvent: _event});
+  // }
 
   activateTab(tabName: string | null) {
     tabName ??= "front";
