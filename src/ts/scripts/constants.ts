@@ -137,7 +137,7 @@ export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
   }
   colorVal = U.getRGBString(colorVal) ?? "";
   if (colorVal && Object.values(Colors).includes(colorVal)) {
-    return U.objFindKey(Colors, ((v: string) => v === colorVal) as testFunc<valFunc<unknown, unknown>>);
+    return U.objFindKey(Colors, ((v: string) => v === colorVal) as testFunc<valFunc>);
   }
   return false;
 }

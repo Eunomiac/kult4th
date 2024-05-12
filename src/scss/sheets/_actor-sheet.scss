@@ -614,15 +614,12 @@
 								--button-gradient-dark: var(--K4-dRED);
 								display: grid;
 								padding: 5px;
-								// height: $button-size + $button-size + 5px;
-								// max-height: $button-size + $button-size + 5px;
 								grid-template-columns: 1fr 1fr 1fr;
 								grid-template-rows: 20px 20px 20px;
 								grid-row-gap: 5px;
 								grid-column-gap: 15px;
 								grid-auto-flow: column;
 								border-radius: 5px;
-								padding: 5px;
 
 								.wound-add {
 									position: relative;
@@ -632,23 +629,17 @@
 								> * { left: -40px }
 								> *:nth-child(3n-1) { left: -20px }
 								> *:nth-child(3n) { left: 0px }
-
-								// input {
-								// 	margin: 0;
-								// 	height: 100%;
-								// }
 							}
 
 							/* EDGES */
 							.edges {
-								// opacity: 0;
 								background: var(--K4-color-primary);
 								clip-path: polygon(0% 0%, 100% 0%, 100% 100%, #{$unslanted-space} 100%);
 
 								* { opacity: 0}
 							}
 
-							.edges button {}
+/* 							.edges button {}
 
 							.edges button.edges-add {}
 
@@ -660,7 +651,7 @@
 
 							.edges .edges-source {}
 
-							.edges .edges-tooltip {}
+							.edges .edges-tooltip {} */
 
 						}
 

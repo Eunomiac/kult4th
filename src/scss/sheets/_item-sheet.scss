@@ -31,7 +31,6 @@
       min-height: 150px;
 
 			.header-icon {
-				// display: none;
 				$icon-size: 80px;
 
 				--K4-svg-bg: var(--K4-color-contrast);
@@ -58,24 +57,15 @@
 						--K4-svg-fill: var(--K4-BLACK);
 						--K4-svg-stroke: none;
 					}
-					// background: var(--K4-GOLD);
-					// outline-color: var(--K4-GOLD);
 				}
 			}
 
 			.sheet-header {
-				// display: none;
-				// margin-left: 15px;
 				border-bottom: 3px solid var(--K4-color-title-bg);
 				flex-wrap: nowrap;
 				text-align: center;
-				// align-self: stretch;
-				// justify-self: stretch;
-				// height: var(--K4-sheet-header-height);
         height: 30px;
 				margin-bottom: calc(var(--K4-sheet-header-height) * -1);
-
-				// --K4-color-title-bg: none;
 
 				.header-bullet,
 				.item-title {
@@ -91,7 +81,6 @@
 
 				&.move-header {
 					--K4-color-title-fg: var(--K4-BLACK);
-					// --K4-color-title-bg: var(--K4-GOLD);
 				}
 			}
 

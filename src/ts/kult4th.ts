@@ -38,7 +38,7 @@ Hooks.once("init", async () => {
   CONFIG.Actor.documentClass = K4Actor;
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
-  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc]});
+  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc] });
 
   CONFIG.Item.documentClass = K4Item;
   Items.unregisterSheet("core", ItemSheet);

@@ -56,7 +56,6 @@
 		.header-button {
 			top: 10px;
 
-			// &.close { display: none }
 			&.close {
 				order: -1;
 				transform: translateY(2px) scale(1.25);
@@ -89,7 +88,6 @@
 		.kult4th-form {
 			display: grid;
 			position: relative;
-			// height: calc(100% - var(--K4-sheet-padding-top) - var(--K4-sheet-padding-bottom));
 			width: calc(100% - var(--K4-sheet-padding-left) - var(--K4-sheet-padding-right));
 			grid-template-areas:
 				"header"
@@ -110,8 +108,6 @@
 
 			.tab-content {
 				grid-area: main;
-				// border: 1px solid transparent;
-				// border-image: var(--K4-border);
 				filter: drop-shadow(var(--K4-section-drop-shadow));
 				overflow: hidden;
 				padding:
@@ -172,12 +168,9 @@
 				position: relative;
 				display: inline-block;
 				background: var(--icon-background);
-				// vertical-align: top;
 				height: var(--icon-size);
 				width: var(--icon-size);
 				margin: var(--icon-margin);
-				// transform-origin: center center;
-				// box-sizing: border-box;
 				border: var(--border-width) solid var(--K4-color-primary);
 				border-radius: calc(var(--icon-size) / 2);
 				overflow: hidden;
@@ -190,9 +183,7 @@
 					max-width: unset;
 					position: relative;
 					top: calc(-1 * var(--border-width) - 1px);
-					// margin-bottom: calc(-1 * var(--border-width) - 1px);
 					left: calc(-1 * var(--border-width) - 1px);
-					// margin-right: calc(-1 * var(--border-width) - 1px);
 					filter: var(--icon-filter);
 				}
 
@@ -220,7 +211,6 @@
 
 			.item-name {
 				position: absolute;
-				// display: inline-block;
 				width: 100%;
 				height: 100%;
 				padding: var(--name-vert-padding) 0;
@@ -255,7 +245,6 @@
 				font-family: var(--font-primary);
 				font-size: 10px;
 				line-height: $rem-12;
-				text-align: center;
 				font-style: italic;
 				width: 100%;
 				text-align: left;
