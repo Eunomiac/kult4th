@@ -6,7 +6,7 @@
 		{{~#if data.isDisplayingName}}
 			{{#if (test listKey "==" "edges")}}
 				<label class="k4-header edges-header">
-					{{#with data.itemData.type as |type|}}
+					{{#with data.type as |type|}}
 					{{localize "kult4th.item.headings.suppliesEdges" itemType=type}}
 					{{/with}}
 				</label>

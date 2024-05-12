@@ -67,7 +67,7 @@
 	{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=rollData.source}}
 
 	{{~#if result.listRefs}}
-		{{> "systems/kult4th/templates/components/item-list.hbs" lists=rollData.source.data.data.lists listRefs=result.listRefs itemData=rollData.source.data isDisplayingName=true}}
+		{{> "systems/kult4th/templates/components/item-list.hbs" lists=rollData.source.system.lists listRefs=result.listRefs type=rollData.source.type isDisplayingName=true}}
 	{{/if}}
 
 </div>

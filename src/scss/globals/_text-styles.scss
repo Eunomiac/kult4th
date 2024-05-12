@@ -339,6 +339,7 @@
 	.text-trigger {
 		color: var(--K4-color-primary-bright);
 		font-weight: $font-weight-semi;
+    font-family: var(--font-primary-italics);
 		font-style: italic;
 	}
 
@@ -596,9 +597,9 @@
 	}
 
 	.result-entry {
-		--label-width: 60px;
-		--label-gap: 10px;
-		--result-entry-horiz-padding: 20px;
+		--label-width: 45px; // 60px;
+		--label-gap: 5px; // 10px;
+		--result-entry-horiz-padding: 5px; // 20px;
 		display: block;
 		margin: 0 var(--result-entry-horiz-padding);
 		clear: both;

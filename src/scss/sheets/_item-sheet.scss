@@ -98,8 +98,15 @@
 				--K4-color-primary-glow: var(--K4-bWHITE);
 				--K4-color-header: var(--K4-bWHITE);
 				--K4-color-neg: var(--K4-gRED);
-				// --K4-color-keyword: var(--K4-bWHITE);
-				
+
+        &.kult-move-container {
+          text-shadow: none;
+          --K4-color-primary-bright: var(--K4-dBLACK);
+          --K4-color-primary: var(--K4-BLACK);
+          --K4-color-header: var(--K4-RED);
+        }
+
+
 				background: var(--K4-bg-inset);
 				margin: 15px;
 				padding: 0 10px;

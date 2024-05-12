@@ -16,7 +16,7 @@
 		{{/if}}
 
 		{{~#if data.data.rules.listRefs}}
-			{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.data.lists listRefs=data.data.rules.listRefs itemData=data isDisplayingName=true}}
+			{{> "systems/kult4th/templates/components/item-list.hbs" lists=system.lists listRefs=system.rules.listRefs type=type isDisplayingName=true}}
 		{{/if}}
 
 		{{#if data.data.rules.holdText}}

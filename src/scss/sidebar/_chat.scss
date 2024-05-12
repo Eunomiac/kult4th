@@ -44,6 +44,7 @@
 
 		.message-content {
 			padding: var(--chat-vert-padding) var(--chat-horiz-padding);
+      background: var(--K4-BLACK);
 			min-height: 42px;
 			position: relative;
 			overflow: clip visible;
@@ -60,8 +61,10 @@
 			}
 
 			.kult4th-chat {
+        position: relative;
+        z-index: 2;
 				font-size: $rem-14;
-				line-height: $rem-16;
+				line-height: $rem-18;
 				background: var(--K4-BLACK);
 				padding: 0 0 15px 0;
 
@@ -80,6 +83,7 @@
 						font-size: $rem-18;
 						height: $rem-24;
 						line-height: $rem-20;
+            color: var(--K4-color-contrast);
 						font-family: var(--font-primary-caps);
 						font-weight: $font-weight-bold;
 						background: linear-gradient(to right,
