@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import {K4ActorType} from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -562,10 +562,10 @@ class K4PCSheet extends ActorSheet {
       tabs:    [
         {navSelector: ".tabs", contentSelector: ".tab-content", initial: "bio"}
       ],
-      dragDrop: [{dragSelector: ".item-list .item, .flex-item-list .item"}]
+      dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}]
     });
   }
-  override get template() { return `systems/kult4th/templates/sheets/${this.actor.data.type}-sheet.hbs`; }
+  override get template() { return `systems/kult4th/templates/sheets/${this.actor.type}-sheet.hbs`; }
 
   hoverTimeline?: GsapAnimation;
   hoverTimelineTarget?: HTMLElement;
@@ -585,7 +585,7 @@ class K4PCSheet extends ActorSheet {
       gear:          this.actor.gear,
       attacks:       this.actor.attacks,
       attributes:    this.actor.attributeData,
-      curTab:        this.actor.getFlag("kult4th", "sheetTab"),
+      curTab:        this.actor.getFlag("kult4th", "sheetTab") as string,
       wounds:        this.actor.woundStrips
     };
     /*DEVCODE*/
@@ -870,7 +870,7 @@ class K4PCSheet extends ActorSheet {
 
             // Sync with actor data
             const dataField = $(currentTarget).data("field") as string;
-            const curData = getProperty(self.actor, dataField.replace(/^(data\.)+/g, "data.data.")) as string;
+            const curData = getProperty(self.actor, dataField) as string;
             if (curData !== elemText) {
               self.actor.update({[dataField]: elemText}).catch(kLog.error);
             }
@@ -884,10 +884,10 @@ class K4PCSheet extends ActorSheet {
   //   return true;
   // }
 
-  override _canDragDrop(_dropSelector: string) {
-    kLog.log("K4PCSheet._canDragDrop", `Not Implemented. _dropSelector: ${_dropSelector}`);
-    return false;
-  }
+  // override _canDragDrop(_dropSelector: string) {
+  //   kLog.log("K4PCSheet._canDragDrop", `Not Implemented. _dropSelector: ${_dropSelector}`);
+  //   return false;
+  // }
 
   // override _onDragOver(_event: DragEvent) {
   //   kLog.log("K4PCSheet._onDragOver", "Not Implemented", {dragEvent: _event});
@@ -912,8 +912,8 @@ class K4PCSheet extends ActorSheet {
 
 
 interface K4PCSheet {
-  object: K4ActorSpec<K4ActorType.pc>,
-  _actor: K4ActorSpec<K4ActorType.pc>
+  object: K4Actor<K4ActorType.pc>,
+  _actor: K4Actor<K4ActorType.pc>
 }
 
 export default K4PCSheet;

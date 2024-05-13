@@ -29,55 +29,54 @@ export enum K4WoundType {
 }
 class K4Actor extends Actor {
 
-  get actorSheet() {
-    return this._sheet as typeof this._sheet & (
-      typeof this.data.type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet
-     );
+  is<T extends K4ActorType = K4ActorType>(type: T): this is K4Actor<T> {
+    // @ts-expect-error -- Unable to resolve 'this.type' and 'type' to the same type.
+    return this.type === type;
   }
 
   override prepareData() {
     super.prepareData();
-    if (this.data.type === K4ActorType.pc) {
+    if (this.is(K4ActorType.pc)) {
       this.preparePCData();
     }
   }
 
   preparePCData() {
-    if (this.data.type === K4ActorType.pc) {
-      this.data.data.moves = this.moves;
-      this.data.data.basicMoves = this.basicMoves;
-      this.data.data.derivedMoves = this.derivedMoves;
-      this.data.data.attacks = this.attacks;
-      this.data.data.advantages = this.advantages;
-      this.data.data.disadvantages = this.disadvantages;
-      this.data.data.darkSecrets = this.darkSecrets;
-      this.data.data.weapons = this.weapons;
-      this.data.data.gear = this.gear;
-      this.data.data.relations = this.relations;
+    if (this.is(K4ActorType.pc)) {
+      this.system.moves = this.moves;
+      this.system.basicMoves = this.basicMoves;
+      this.system.derivedMoves = this.derivedMoves;
+      this.system.attacks = this.attacks;
+      this.system.advantages = this.advantages;
+      this.system.disadvantages = this.disadvantages;
+      this.system.darkSecrets = this.darkSecrets;
+      this.system.weapons = this.weapons;
+      this.system.gear = this.gear;
+      this.system.relations = this.relations;
 
-      this.data.data.maxWounds = {
-        serious:  this.data.data.modifiers.wounds_serious.length as Integer,
-        critical: this.data.data.modifiers.wounds_critical.length as Integer,
-        total:    (this.data.data.modifiers.wounds_serious.length + this.data.data.modifiers.wounds_critical.length) as Integer
+      this.system.maxWounds = {
+        serious:  this.system.modifiers.wounds_serious.length as Integer,
+        critical: this.system.modifiers.wounds_critical.length as Integer,
+        total:    (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
       };
-      this.data.data.modifiersReport = this.parseModsToStrings(this.flatModTargets).join("; ");
+      this.system.modifiersReport = this.parseModsToStrings(this.flatModTargets).join("; ");
 
       // this.validateStability();
     }
   }
 
-  getItemsOfType<Type extends K4ItemType>(type: Type): Array<K4ItemSpec<Type>> {
-    return [...this.items].filter((item: K4Item) => item.data.type === type) as Array<K4ItemSpec<Type>>;
+  getItemsOfType<Type extends K4ItemType>(type: Type): Array<K4Item<Type>> {
+    return [...this.items].filter((item: K4Item): item is K4Item<Type> => item.is(type));
   }
 
   getItemByName(iName: string): K4Item | undefined {
-    return [...this.items].find((item: K4Item): item is K4Item => item.name === iName);
+    return this.items.find((item: K4Item) => item.name === iName);
   }
 
   getItemsBySource(sourceID: string): K4SubItem[] {
-    return [...this.items].filter((item: K4Item): item is K4SubItem => {
-      if (!("sourceItem" in item.data.data)) { return false; }
-      const {sourceItem} = item.data.data;
+    return this.items.filter((item: K4Item): item is K4SubItem => {
+      if (!("sourceItem" in item.system)) { return false; }
+      const {sourceItem} = item.system;
       return item.isSubItem() && sourceItem?.id === sourceID;
     });
   }
@@ -103,9 +102,9 @@ class K4Actor extends Actor {
 
   get derivedItems() { return [...this.items].filter((item: K4Item): item is K4SubItem => item.isSubItem()); }
 
-  get wounds(): Record<KeyOf<typeof this["data"]["data"]["wounds"]>, K4Wound> {
+  get wounds(): Record<KeyOf<typeof this["system"]["wounds"]>, K4Wound> {
     // if (this.type === K4ActorType.pc) {
-    return this.data.data.wounds;
+    return this.system.wounds;
     // } else {
     // return ;
     // }
@@ -122,7 +121,7 @@ class K4Actor extends Actor {
         ].join("") as K4WoundType,
         display:      wound.description ?? "",
         stripClasses: ["wound-strip"],
-        dataTarget:   `data.wounds.${wound.id}.description`,
+        dataTarget:   `system.wounds.${wound.id}.description`,
         placeholder:  "(description)  ",
         buttons:      [
           {
@@ -175,9 +174,9 @@ class K4Actor extends Actor {
   }
 
   get attributeData() {
-    if (this.data.type === K4ActorType.pc) {
+    if (this.is(K4ActorType.pc)) {
       const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as K4CharAttribute[];
-      const pcData = this.data.data;
+      const pcData: K4ActorSystem<K4ActorType.pc> = this.system;
       return attrList.map((attrName) => ({
         name:  U.tCase(attrName),
         key:   attrName,
@@ -233,34 +232,34 @@ class K4Actor extends Actor {
   }
 
   async validateStability() {
-    if (this.data.type === K4ActorType.pc) {
-      const {value, min, max} = this.data.data.stability;
+    if (this.is(K4ActorType.pc)) {
+      const {value, min, max} = this.system.stability;
       if (U.clampNum(value, [min, max]) !== value) {
-        await this.update({"data.stability.value": U.clampNum(value, [min, max])});
+        await this.update({"system.stability.value": U.clampNum(value, [min, max])});
       }
     }
   }
 
   async changeStability(delta: number) {
-    if (delta && this.data.type === K4ActorType.pc) {
-      const {value, min, max} = this.data.data.stability;
+    if (delta && this.is(K4ActorType.pc)) {
+      const {value, min, max} = this.system.stability;
       if (U.clampNum(value + delta, [min, max]) !== value) {
-        await this.update({"data.stability.value": U.clampNum(value + delta, [min, max])});
+        await this.update({"system.stability.value": U.clampNum(value + delta, [min, max])});
       }
     }
   }
 
   async addWound(type?: K4WoundType, description?: string) {
-    if (this.data.type === K4ActorType.pc) {
+    if (this.is(K4ActorType.pc)) {
       const woundData: K4Wound = {
         id:           `wound_${U.randString(10)}`,
         description:  description ?? "",
         isCritical:   type === K4WoundType.critical,
         isStabilized: false
       };
-      kLog.log("Starting Wounds", U.objClone(this.data.data.wounds));
-      await this.update({[`data.wounds.${woundData.id}`]: woundData});
-      kLog.log("Updated Wounds", U.objClone(this.data.data.wounds));
+      kLog.log("Starting Wounds", U.objClone(this.system.wounds));
+      await this.update({[`system.wounds.${woundData.id}`]: woundData});
+      kLog.log("Updated Wounds", U.objClone(this.system.wounds));
     }
   }
 
@@ -269,12 +268,11 @@ class K4Actor extends Actor {
     if (woundData) {
       switch (toggleSwitch) {
         case "type": {
-          await this.update({[`data.wounds.${id}.isCritical`]: !this.wounds[id].isCritical});
+          await this.update({[`system.wounds.${id}.isCritical`]: !this.wounds[id].isCritical});
           return;
         }
         case "stabilized": {
-          await this.update({[`data.wounds.${id}.isStabilized`]: !this.wounds[id].isStabilized});
-
+          await this.update({[`system.wounds.${id}.isStabilized`]: !this.wounds[id].isStabilized});
         }
         // no default
       }
@@ -284,16 +282,15 @@ class K4Actor extends Actor {
   async resetWoundName(id: string) {
     const woundData = this.wounds[id];
     if (woundData) {
-      await this.update({[`data.wounds.${id}.description`]: ""});
-
+      await this.update({[`system.wounds.${id}.description`]: ""});
     }
   }
 
   async removeWound(id: string) {
-    if (this.data.type === K4ActorType.pc) {
-      kLog.log("Starting Wounds", U.objClone(this.data.data.wounds));
-      await this.update({[`data.wounds.-=${id}`]: null});
-      kLog.log("Updated Wounds", this.data.data.wounds);
+    if (this.is(K4ActorType.pc)) {
+      kLog.log("Starting Wounds", U.objClone(this.system.wounds));
+      await this.update({[`system.wounds.-=${id}`]: null});
+      kLog.log("Updated Wounds", this.system.wounds);
     }
   }
 
@@ -311,20 +308,20 @@ class K4Actor extends Actor {
       display:  U.loc("trait.wounds"),
       targets:  {}
     };
-    if (this.data.type === K4ActorType.pc) {
+    if (this.is(K4ActorType.pc)) {
       const [unstabSerious, unstabCritical] = [
         Object.values(this.wounds).filter((wound) => !wound.isCritical && !wound.isStabilized).length,
         Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
       ];
       if (unstabSerious && unstabCritical) {
-        modData.targets = this.data.data.modifiers.wounds_seriouscritical[Math.min(
+        modData.targets = this.system.modifiers.wounds_seriouscritical[Math.min(
           unstabSerious,
           unstabCritical
         )];
       } else if (unstabCritical) {
-        modData.targets = this.data.data.modifiers.wounds_critical[unstabCritical];
+        modData.targets = this.system.modifiers.wounds_critical[unstabCritical];
       } else if (unstabSerious) {
-        modData.targets = this.data.data.modifiers.wounds_serious[unstabSerious];
+        modData.targets = this.system.modifiers.wounds_serious[unstabSerious];
       }
     }
     return modData;
@@ -335,8 +332,8 @@ class K4Actor extends Actor {
       display:  U.loc("trait.stability"),
       targets:  {}
     };
-    if (this.data.type === K4ActorType.pc) {
-      modData.targets = this.data.data.modifiers.stability[this.data.data.stability.value];
+    if (this.is(K4ActorType.pc)) {
+      modData.targets = this.system.modifiers.stability[this.system.stability.value];
     }
     return modData;
   }
@@ -410,15 +407,15 @@ class K4Actor extends Actor {
     rollData.sourceName = item.name;
     rollData.sourceImg = item.img ?? "";
 
-    if ("attribute" in item.data.data) {
-      if (item.data.data.attribute === K4Attribute.ask) {
+    if ("attribute" in item.system) {
+      if (item.system.attribute === K4Attribute.ask) {
         const attrResponse = await this.askForAttribute();
         if (!attrResponse) {
           return false; // User cancelled: Abort roll.
         }
         rollData.attribute = attrResponse;
       } else {
-        rollData.attribute = item.data.data.attribute as K4RollableAttribute;
+        rollData.attribute = item.system.attribute as K4RollableAttribute;
       }
       rollData.attrName = U.loc(`trait.${rollData.attribute}`);
       rollData.attrVal = rollData.attribute === K4Attribute.zero
@@ -538,13 +535,13 @@ class K4Actor extends Actor {
     };
     const cssClasses = ["chat-roll-result", `${rollData.sourceType}-roll`];
     if (roll.total >= 15) {
-      templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.completeSuccess : {result: ""};
+      templateData.result = isItem(rollData.source) ? rollData.source.system.results.completeSuccess : {result: ""};
       cssClasses.push("roll-success");
     } else if (roll.total >= 9) {
-      templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.partialSuccess : {result: ""};
+      templateData.result = isItem(rollData.source) ? rollData.source.system.results.partialSuccess : {result: ""};
       cssClasses.push("roll-partial");
     } else {
-      templateData.result = isItem(rollData.source) ? rollData.source.data.data.results.failure : {result: ""};
+      templateData.result = isItem(rollData.source) ? rollData.source.system.results.failure : {result: ""};
       cssClasses.push("roll-failure");
     }
     cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
@@ -573,9 +570,9 @@ class K4Actor extends Actor {
         // Fetch all move documents and extract their data, ensuring type safety
         const newItems = await Promise.all(moveArray.map(async (move) => {
           // Explicitly type the result of getDocument to avoid 'any' type issues
-          const moveData = await pack.getDocument(move._id) as Maybe<K4ItemSpec<K4ItemType.move>>;
+          const moveData = await pack.getDocument(move._id) as Maybe<K4Item<K4ItemType.move>>;
           // Safely return the data or an empty object if undefined
-          return moveData?.data ?? {};
+          return moveData?.system ?? {};
         }));
         // Check if newItems array is not empty before creating embedded documents
         if (newItems.length > 0) {
@@ -587,9 +584,14 @@ class K4Actor extends Actor {
     }
   }
 }
-declare interface K4Actor {
-  get id(): string;
+
+interface K4Actor<Type extends K4ActorType = K4ActorType> {
+  get id(): IDString;
   get name(): string;
+  get type(): Type;
+  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
+  get items(): Actor["items"] & Collection<K4Item>;
+  system: K4ActorSystem<Type>;
 }
 
 export default K4Actor;

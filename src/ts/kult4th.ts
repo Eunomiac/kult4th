@@ -15,7 +15,6 @@ import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.j
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
 
-import {resetItems} from "./scripts/migratedData.js";
 import {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
@@ -258,7 +257,7 @@ Hooks.once("ready", () => {
   const ACTOR = game.actors?.values().next().value as K4Actor;
   const ITEM = game.items?.values().next().value as K4Item;
   const EMBED = ACTOR.items?.values().next().value as K4Item;
-  const ACTORSHEET = ACTOR?.actorSheet;
+  const ACTORSHEET = ACTOR?.sheet;
   const ITEMSHEET = ITEM?.itemSheet;
   const EMBEDSHEET = EMBED?.itemSheet;
 
@@ -267,7 +266,6 @@ Hooks.once("ready", () => {
     // MorphSVGPlugin,
     U,
     C,
-    resetItems: resetItems as () => Promise<void>,
     getContrastingColor,
     formatStringForKult,
     ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,

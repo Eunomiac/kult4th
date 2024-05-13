@@ -190,48 +190,24 @@
   font-weight: normal;
   font-style: normal;
 }
-
-* {
-  --K4-GOLD: rgb(150, 140, 106);
-  --K4-dGOLD: rgb(65, 61, 46);
-  --K4-bGOLD: rgb(235, 219, 166);
-  --K4-gGOLD: rgb(255, 254, 200);
-  --K4-RED: rgb(155, 32, 32);
-  --K4-dRED: rgb(70, 14, 14);
-  --K4-bRED: rgb(240, 50, 50);
-  --K4-gRED: rgb(255, 0, 0);
-  --K4-BLUE: rgb(43, 85, 139);
-  --K4-dBLUE: rgb(17, 33, 54);
-  --K4-bBLUE: rgb(69, 137, 224);
-  --K4-gBLUE: rgb(128, 185, 255);
-  --K4-bWHITE: rgb(255, 255, 255);
-  --K4-WHITE: rgb(200, 200, 200);
-  --K4-bGREY: rgb(177, 177, 177);
-  --K4-GREY: rgb(128, 128, 128);
-  --K4-dGREY: rgb(78, 78, 78);
-  --K4-BLACK: rgb(30, 30, 28);
-  --K4-dBLACK: rgb(0, 0, 0);
-}
-
-
 #tinymce * {
   /* FOUNDRY OVERRIDES */
   --font-primary: Alverata, serif;
   --font-primary-italics: AlverataCaps, serif;
   --font-mono: monospace;
-  --font-size-11: 0.6875rem;
-  --font-size-12: 0.75rem;
-  --font-size-13: 0.8125rem;
-  --font-size-14: 0.875rem;
-  --font-size-16: 1rem;
-  --font-size-18: 1.125rem;
-  --font-size-20: 1.25rem;
-  --font-size-24: 1.5rem;
-  --font-size-28: 1.75rem;
-  --line-height-12: 0.75rem;
-  --line-height-16: 1rem;
-  --line-height-20: 1.25rem;
-  --line-height-30: 1.875rem;
+  --font-size-11: 11px;
+  --font-size-12: 12px;
+  --font-size-13: 13px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-28: 28px;
+  --line-height-12: 2px;
+  --line-height-16: 16px;
+  --line-height-20: 20px;
+  --line-height-30: 30px;
   --font-primary-caps: AlverataCaps, serif;
   --font-icon: "Font Awesome 5 Free";
   --font-heading: Infidel, sans-serif;
@@ -245,7 +221,7 @@
   --K4-color-contrast: var(--K4-BLACK);
   --K4-color-contrast-low: var(--K4-dGOLD);
   --K4-color-contrast-high: var(--K4-dBLACK);
-  --K4-color-title-fg: var(--K4-color-primary);
+  --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-RED);
   --K4-color-keyword: var(--K4-gGOLD);
@@ -332,8 +308,7 @@
   --K4-color-contrast-high: var(--K4-bWHITE);
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 400;
-  --K4-color-title-fg: var(--K4-GOLD);
-  --K4-color-title-bg: var(--K4-color-primary);
+  --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-header: var(--K4-RED);
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/white/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
@@ -369,7 +344,7 @@
   --K4-color-contrast-high: var(--K4-dBLACK);
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 400;
-  --K4-color-title-fg: var(--K4-color-primary);
+  --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-bRED);
   --K4-list-indent: 12px;
@@ -406,7 +381,7 @@
   --K4-color-contrast-high: var(--K4-dBLACK);
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 500;
-  --K4-color-title-fg: var(--K4-color-primary);
+  --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-bRED);
   --K4-list-indent: 12px;
@@ -443,7 +418,7 @@
   --K4-color-contrast-high: var(--K4-bGOLD);
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 600;
-  --K4-color-title-fg: var(--K4-color-primary);
+  --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-dRED);
   --K4-list-indent: 12px;
@@ -697,9 +672,9 @@
   color: var(--K4-color-title-fg);
   background: var(--K4-color-title-bg);
   font-weight: 600;
-  font-size: 1.375rem;
-  line-height: 1.5rem;
-  height: 1.5rem;
+  font-size: 22px;
+  line-height: 24px;
+  height: 24px;
   white-space: nowrap;
   text-align: center;
 }
@@ -714,7 +689,7 @@
 }
 #tinymce label.k4-title.item-title,
 #tinymce .mce-content-body label.k4-title.item-title {
-  line-height: 2rem;
+  line-height: 32px;
   margin-bottom: 10px;
   text-align: center;
   font-weight: 700;
@@ -725,25 +700,25 @@
 #tinymce .mce-content-body h1 {
   color: var(--K4-color-header);
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 600;
-  height: 2rem;
+  height: 32px;
   margin: 20px 0 10px;
 }
 #tinymce h2,
 #tinymce .mce-content-body h2 {
   color: var(--K4-color-header);
   font-family: var(--font-primary);
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 700;
-  height: 1.5rem;
+  height: 24px;
   margin: 10px 0;
 }
 #tinymce h3,
 #tinymce .mce-content-body h3 {
   color: var(--K4-color-header);
   font-family: var(--font-primary);
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 700;
   font-variant: all-small-caps;
   margin: 10px 0 0 0;
@@ -752,20 +727,24 @@
 #tinymce .mce-content-body label.k4-h4 {
   color: var(--K4-color-header);
   font-family: var(--font-primary);
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 700;
   font-style: italic;
-  height: 0.75rem;
+  height: 12px;
   margin: 5px 0 -5px;
 }
 #tinymce label.k4-header,
 #tinymce .mce-content-body label.k4-header {
   display: block;
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 700;
   text-align: center;
-  height: 2rem;
-  line-height: 1.75rem;
+  height: 32px;
+  line-height: 28px;
+  white-space: nowrap;
+  transform-origin: 0% 50%;
+  scale: 0.8 1;
+  width: 125%;
   font-variant: all-small-caps;
   margin: 10px 0;
 }
@@ -910,7 +889,7 @@
   --strip-height: calc(var(--strip-icon-size) + 2px);
   --strip-padding-vert: 5px;
   --strip-underline-width: 1px;
-  --strip-font-size: 1rem;
+  --strip-font-size: 16px;
   --strip-font-weight: 600;
   --strip-scale: 1;
   position: relative;
@@ -991,7 +970,7 @@
   color: var(--K4-strip-button-color-fg);
   text-align: center;
   line-height: var(--strip-icon-size);
-  font-size: 1rem;
+  font-size: 16px;
   text-transform: uppercase;
   font-family: var(--font-primary-caps);
   font-weight: 900;
@@ -1036,8 +1015,8 @@
   position: absolute;
   display: block;
   font-family: var(--font-primary);
-  font-size: 0.75rem;
-  line-height: 0.875rem;
+  font-size: 12px;
+  line-height: 14px;
   text-align: center;
   font-style: italic;
   width: 100%;

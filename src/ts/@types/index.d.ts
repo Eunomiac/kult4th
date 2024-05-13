@@ -4,6 +4,7 @@ import "./documents";
 import "./scripts";
 import "./general-types";
 import "./system-types";
+import "./league-types";
 
 // import * as gsap from "gsap/all";
 // declare module "gsap/all";
@@ -107,10 +108,10 @@ declare global {
     Item: K4ItemSourceData.any
   }
 
-  interface DataConfig {
-    Actor: K4ActorPropertiesData.any,
-    Item: K4ItemPropertiesData.any
-  }
+  // interface DataConfig {
+  //   Actor: K4ActorPropertiesData.any,
+  //   Item: K4ItemPropertiesData.any
+  // }
 
   interface DocumentClassConfig {
     Actor: ConstructorOf<ActorDoc>;

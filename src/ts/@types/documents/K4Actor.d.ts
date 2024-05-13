@@ -1,10 +1,6 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs.js";
-import type {ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.js";
 import C, {K4Attribute} from "../../scripts/constants";
-
-import * as ACTORDATA from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
 import K4Actor, {K4ActorType, K4RollType, K4WoundType} from "../../documents/K4Actor";
 import K4Item, {K4ItemType} from "../../documents/K4Item.js";
 import {K4RollType} from "../../documents/K4Roll.js";
@@ -83,7 +79,7 @@ declare global {
         }
       ],
       attributes: Record<K4CharAttribute, ValueMax>,
-      wounds: Record<keyof typeof this["data"]["data"]["wounds"], K4Wound>,
+      wounds: Record<keyof typeof this["system"]["wounds"], K4Wound>,
       modifiers: {
         wounds_serious: K4ModTargets[],
         wounds_critical: K4ModTargets[],
@@ -103,31 +99,18 @@ declare global {
     export interface npc extends Pick<pc, "description"|"wounds"|"penalties"> { }
   }
 
-  namespace K4ActorSourceData {
-    export interface pc {
-      type: K4ActorType.pc,
-      data: K4ActorSourceSchema.pc
-    }
-    export interface npc {
-      type: K4ActorType.npc,
-      data: K4ActorSourceSchema.npc
-    }
-
-    export type any = pc|npc
-  }
-
-  namespace K4ActorPropertiesSchema {
+  namespace K4ActorSystemSchema {
     export interface pc extends K4ActorSourceSchema.pc {
-      moves: Array<K4ItemSpec<K4ItemType.move>>;
-      basicMoves: Array<K4ItemSpec<K4ItemType.move>>;
-      derivedMoves: Array<K4ItemSpec<K4ItemType.move>>;
-      attacks: Array<K4ItemSpec<K4ItemType.attack>>;
-      advantages: Array<K4ItemSpec<K4ItemType.advantage>>;
-      disadvantages: Array<K4ItemSpec<K4ItemType.disadvantage>>;
-      darkSecrets: Array<K4ItemSpec<K4ItemType.darksecret>>;
-      weapons: Array<K4ItemSpec<K4ItemType.weapon>>;
-      gear: Array<K4ItemSpec<K4ItemType.gear>>;
-      relations: Array<K4ItemSpec<K4ItemType.relation>>;
+      moves: Array<K4Item<K4ItemType.move>>;
+      basicMoves: Array<K4Item<K4ItemType.move>>;
+      derivedMoves: Array<K4Item<K4ItemType.move>>;
+      attacks: Array<K4Item<K4ItemType.attack>>;
+      advantages: Array<K4Item<K4ItemType.advantage>>;
+      disadvantages: Array<K4Item<K4ItemType.disadvantage>>;
+      darkSecrets: Array<K4Item<K4ItemType.darksecret>>;
+      weapons: Array<K4Item<K4ItemType.weapon>>;
+      gear: Array<K4Item<K4ItemType.gear>>;
+      relations: Array<K4Item<K4ItemType.relation>>;
 
       maxWounds: {
         serious: Integer,
@@ -151,41 +134,14 @@ declare global {
       }
     }
     export interface npc extends K4ActorSourceSchema.npc {
-      moves: Array<K4ItemSpec<K4ItemType.move>>;
+      moves: Array<K4Item<K4ItemType.move>>;
     }
-
-  }
-
-  namespace K4ActorPropertiesData {
-    export interface pc {
-      type: K4ActorType.pc,
-      data: K4ActorPropertiesSchema.pc
-    }
-    export interface npc {
-      type: K4ActorType.npc,
-      data: K4ActorPropertiesSchema.npc
-    }
-
     export type any = pc|npc
+
   }
 
-  type K4ActorSchema<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorPropertiesSchema.pc
-    : T extends K4ActorType.npc ? K4ActorPropertiesSchema.npc
-    : K4ActorPropertiesSchema.pc & K4ActorPropertiesSchema.npc)
+  type K4ActorSystem<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorSystemSchema.pc
+    : T extends K4ActorType.npc ? K4ActorSystemSchema.npc
+    : K4ActorSystemSchema.pc | K4ActorSystemSchema.npc)
 
-  type K4ActorData<T extends K4ActorType = K4ActorType> = (T extends K4ActorType.pc ? K4ActorPropertiesData.pc
-    : T extends K4ActorType.npc ? K4ActorPropertiesData.npc
-    : K4ActorPropertiesData.pc & K4ActorPropertiesData.npc)
-
-  type K4ActorSpec<Type extends K4ActorType> = K4Actor
-  & {
-    type: Type,
-    system: K4ActorSchema<Type>,
-    data: {
-      type: Type,
-      _source: {
-        type: Type
-      }
-    }
-  }
 }

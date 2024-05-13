@@ -5,7 +5,6 @@ import K4ItemSheet from "./K4ItemSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import C from "../scripts/constants.js";
 import K4Actor from "./K4Actor.js";
-import {ItemDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -50,20 +49,42 @@ export enum K4ItemResultType {
 
 class K4Item extends Item {
 
-  hasSubMoves(): this is K4ParentItem { return "subMoves" in this.data.data; }
+  is<T extends K4ItemType>(...types: T[]): this is K4Item<T> {
+    // @ts-expect-error -- Unable to resolve 'this.type' and 'type' to the same type.
+    return types.some((type) => this.type === type);
+  }
+
+  isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.system && this.system.subItems.length); }
+  isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.system && this.system.sourceItem?.name); }
+  isOwnedItem(): this is {parent: K4Actor, itemSheet: K4ItemSheet} { return this.isEmbedded && this.parent instanceof Actor; }
+  isOwnedSubItem(): this is K4SubItem & {parent: K4Actor, itemSheet: K4ItemSheet, system: {sourceItem: K4SourceItemData & {id: string}}} { return this.isSubItem() && this.isOwnedItem(); }
+  isRollableItem(): this is K4RollableItem { return this.system.subType === K4ItemSubType.activeRolled; }
+  isStaticItem(): this is K4StaticItem { return this.system.subType === K4ItemSubType.activeStatic; }
+  isActiveItem(): this is K4ActiveItem { return this.isRollableItem() || this.isStaticItem(); }
+  isPassiveItem(): this is K4PassiveItem { return this.system.subType === K4ItemSubType.passive; }
+  hasRules(): this is K4RulesItem { return "rules" in this.system;}
+
+
+  doParentStuff(item: K4Item) {
+    if (item.isParentItem()) {
+      // Do stuff with system.subItems, without knowing exactly the type of item.
+    }
+  }
+
+  hasSubMoves(): this is K4ParentItem { return "subMoves" in this.system; }
 
   override prepareData() {
     super.prepareData();
-    if (this.isOwnedItem() && this.isParentItem() && "subMoves" in this.data.data) {
-      this.data.data.subMoves = this.data.data.subItems.filter((subData): subData is K4ItemSourceData.subMove => subData.type === K4ItemType.move);
-      this.data.data.subAttacks = this.data.data.subItems.filter((subData): subData is K4ItemSourceData.subAttack => subData.type === K4ItemType.attack);
-      if (this.isRollableItem() && "results" in this.data.data) {
-        this.data.data.results = this.data.data.subItems[0].data.results;
+    if (this.isOwnedItem() && this.isParentItem() && "subMoves" in this.system) {
+      this.system.subMoves = this.system.subItems.filter((subData): subData is K4SubItemSchema.subMove => subData.type === K4ItemType.move);
+      this.system.subAttacks = this.system.subItems.filter((subData): subData is K4SubItemSchema.subAttack => subData.type === K4ItemType.attack);
+      if (this.isRollableItem() && "results" in this.system) {
+        this.system.results = this.system.subItems[0].system.results;
       }
     }
   }
 
-  get key() { return this.data.data.key; }
+  get key() { return this.system.key; }
   _img?: string;
   // override get img(): string {
   //   this._img ??= `systems/kult4th/assets/icons/${this.masterType}/${this.key}.svg`;
@@ -74,30 +95,23 @@ class K4Item extends Item {
   get masterKey(): string {
     if (!this.isSubItem()) { return this.key; }
     if (!this.isOwnedSubItem()) { return this.key; }
-    const keyItem = game.items?.getName(this.data.data.sourceItem.name) as Maybe<K4Item>;
+    const keyItem = game.items?.getName(this.system.sourceItem.name) as Maybe<K4Item>;
     if (keyItem?.key) { return keyItem.key; }
     return this.key;
   }
-  get masterType(): K4ItemType { return this.isSubItem() ? this.data.data.sourceItem.type : this.data.type; }
-  get masterName(): string { return this.isSubItem() ? this.data.data.sourceItem.name : this.name; }
+  get masterType(): K4ItemType { return this.isSubItem() ? this.system.sourceItem?.type : this.type; }
+  get masterName(): string { return this.isSubItem() ? this.system.sourceItem?.name : this.name; }
 
-  isParentItem(): this is K4ParentItem { return Boolean("subItems" in this.data.data && this.data.data.subItems.length); }
-  isSubItem(): this is K4SubItem { return Boolean("sourceItem" in this.data.data && this.data.data.sourceItem?.name); }
-  isOwnedItem(): this is {parent: K4Actor, itemSheet: K4ItemSheet} { return this.isEmbedded && this.parent instanceof Actor; }
-  isOwnedSubItem(): this is K4SubItem & {parent: K4Actor, itemSheet: K4ItemSheet, data: {data: {sourceItem: K4SourceItemData & {id: string}}}} { return this.isSubItem() && this.isOwnedItem(); }
-  isRollableItem(): this is K4RollableItem { return this.data.data.subType === K4ItemSubType.activeRolled; }
-  isStaticItem(): this is K4StaticItem { return this.data.data.subType === K4ItemSubType.activeStatic; }
-  isActiveItem(): this is K4ActiveItem { return this.isRollableItem() || this.isStaticItem(); }
-  isPassiveItem(): this is K4PassiveItem { return this.data.data.subType === K4ItemSubType.passive; }
+
 
   get sourceItemData(): K4SourceItemData | null {
     if (!this.isSubItem()) { return null; }
-    return this.data.data.sourceItem;
+    return this.system.sourceItem;
   }
 
   get sourceItem(): K4ParentItem | null {
     if (!this.isOwnedSubItem()) { return null; }
-    const sourceItem = this.parent.getEmbeddedDocument("Item", this.data.data.sourceItem.id) as Maybe<K4ParentItem>;
+    const sourceItem = this.parent.getEmbeddedDocument("Item", this.system.sourceItem.id) as Maybe<K4ParentItem>;
     if (!sourceItem) { return null; }
     return sourceItem;
   }
@@ -107,11 +121,11 @@ class K4Item extends Item {
   }
 
   get subMoves(): Array<K4SubItem<K4ItemType.move>> {
-    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.move> => subItem.data.type === K4ItemType.move);
+    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move);
   }
 
   get subAttacks(): Array<K4SubItem<K4ItemType.attack>> {
-    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.attack> => subItem.data.type === K4ItemType.attack);
+    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.attack> => subItem.type === K4ItemType.attack);
   }
 
   async applyEffectFunction(functionStr: string) {
@@ -122,14 +136,14 @@ class K4Item extends Item {
         const [targetItemName, targetList, sourceList] = params;
         const targetItem: Maybe<K4Item> = this.parent.getItemByName(targetItemName);
         kLog.log("Found Target Item", targetItem);
-        if (targetItem?.data.data.lists[targetList]) {
-          const sourceListItems = this.data.data.lists[sourceList].items
+        if (targetItem?.system.lists[targetList]) {
+          const sourceListItems = this.system.lists[sourceList].items
             .map((listItem: string) => `${listItem} #>text-list-note:data-item-name='${this.masterName}':data-action='open'>(from ${this.masterName})<#`);
           const updateData = [
             {
-              _id:                                targetItem.id,
-              [`data.lists.${targetList}.items`]: [
-                ...targetItem.data.data.lists[targetList].items,
+              _id:                                  targetItem.id,
+              [`system.lists.${targetList}.items`]: [
+                ...targetItem.system.lists[targetList].items,
                 ...sourceListItems
               ]
             }
@@ -158,13 +172,14 @@ class K4Item extends Item {
         const [targetItemName, targetList, sourceList] = params;
         const targetItem: K4Item | undefined = this.parent.getItemByName(targetItemName);
         kLog.log("Found Target Move", targetItem);
-        if (targetItem?.data.data.lists[targetList]) {
-          const prunedListItems = this.data.data.lists[sourceList].items
+        if (targetItem?.system.lists[targetList]) {
+          const prunedListItems = this.system.lists[sourceList].items
             .filter((listItem) => !(new RegExp(`data-item-name=.?${this.masterName}.?`)).test(listItem));
           const updateData = [
-            {_id:                                targetItem.id, [`data.lists.${targetList}.items`]: [
-              ...prunedListItems
-            ] }
+            {
+              _id:                                  targetItem.id,
+              [`system.lists.${targetList}.items`]: prunedListItems
+            }
           ];
           await this.parent.updateEmbeddedDocuments("Item", updateData);
         }
@@ -184,28 +199,28 @@ class K4Item extends Item {
 
   prepareSubItemData() {
     if (!this.isParentItem()) { return []; }
-    return this.data.data.subItems
+    return this.system.subItems
       .map((subData) => {
         subData.name ??= this.name;
-        subData.data.sourceItem.id = this.id;
-        if ("lists" in this.data.data) {
-          subData.data.lists = {
-            ...this.data.data.lists,
-            ...subData.data.lists ?? {}
+        subData.system.sourceItem.id = this.id;
+        if ("lists" in this.system) {
+          subData.system.lists = {
+            ...this.system.lists,
+            ...subData.system.lists ?? {}
           };
         }
         return subData;
-      }) as ItemDataConstructorData[] & Array<Record<string, unknown>>;
+      }) as Array<K4SubItemSchema.subItem & Record<string, unknown>>;
   }
 
   applyOnCreateEffectFunctions() {
-    if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
-      this.data.data.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
+    if ("rules" in this.system && this.system.rules.effectFunctions) {
+      this.system.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
     }
   }
   unapplyOnCreateEffectFunctions() {
-    if ("rules" in this.data.data && this.data.data.rules.effectFunctions) {
-      this.data.data.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
+    if ("rules" in this.system && this.system.rules.effectFunctions) {
+      this.system.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
     }
   }
 
@@ -230,18 +245,18 @@ class K4Item extends Item {
   // get isRollable(): boolean { return }
 
   get hoverStrip(): HoverStripData {
-    const stripType: K4ItemType = this.isSubItem() ? this.data.data.sourceItem.type : this.data.type;
+    const stripType: K4ItemType = this.isSubItem() ? this.system.sourceItem.type : this.type;
     const theme = C.Themes[stripType];
     const stripData: HoverStripData = {
-      id:      this.id ?? `${this.data.type}-${U.randString(5)}`,
-      type:    this.data.type,
+      id:      this.id ?? `${this.type}-${U.randString(5)}`,
+      type:    this.type,
       icon:    this.img ?? "",
       display: this.name ?? "(enter name)",
       ...this.isSubItem()
         ? {
             stripClasses: [
               U.toKey(`${stripType}-strip`),
-              `derived-${this.data.type}`,
+              `derived-${this.type}`,
               theme
             ]
           }
@@ -251,15 +266,15 @@ class K4Item extends Item {
               theme
             ]
           },
-      dataset: "attribute" in this.data.data
+      dataset: "attribute" in this.system
         ? {
-            "hover-target": `.attribute-box[data-attribute='${this.data.data.attribute}'] img`
+            "hover-target": `.attribute-box[data-attribute='${this.system.attribute}'] img`
           }
         : {},
       buttons: []
     };
-    if (this.data.type !== K4ItemType.relation) {
-      stripData.tooltip = this.data.data.rules?.trigger;
+    if (this.hasRules()) {
+      stripData.tooltip = this.system.rules.trigger;
     }
 
     // Roll Button or Trigger Button?
@@ -323,7 +338,7 @@ class K4Item extends Item {
     return {
       name:     this.name,
       img:      this.img,
-      data:     this.data,
+      system:   this.system,
       item:     this,
       cssClass: "kult4th-chat kult4th-item-display"
     };
@@ -341,9 +356,12 @@ class K4Item extends Item {
   }
 }
 
-declare interface K4Item {
-  get id(): string;
+declare interface K4Item<Type extends K4ItemType = K4ItemType> {
+  get id(): IDString;
   get name(): string;
+  get type(): Type;
+  get sheet(): K4Item["_sheet"] & K4ItemSheet;
+  system: K4ItemSystem<Type>;
   parent: Maybe<K4Item|K4Actor>;
 }
 

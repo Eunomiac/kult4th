@@ -17,14 +17,15 @@
 
 	{{> "systems/kult4th/templates/components/pc-header.hbs" }}
 
+  {{log "PC SHEET CONTEXT" this}}
 	<main class="tab-content">
 		<section class="tab front {{~#if (eq curTab "front")}} active{{/if}}" data-group="primary" data-tab="front">
 			<section class="subsection dramatic-hooks">
 				<label class="hook-label">{{case "title" (localize "kult4th.sheet.hooks")}}:</label>
-				{{#each data.data.dramaticHooks}}
+				{{#each actor.system.dramaticHooks}}
 				<div class="dramatic-hook">
-					<input type="checkbox" name="data.dramaticHooks.{{@index}}.isChecked" {{checked isChecked}} />
-					<input type="text" name="data.dramaticHooks.{{@index}}.value" value="{{value}}" />
+					<input type="checkbox" name="system.dramaticHooks.{{@index}}.isChecked" {{checked isChecked}} />
+					<input type="text" name="system.dramaticHooks.{{@index}}.value" value="{{value}}" />
 				</div>
 				{{/each}}
 			</section>
@@ -33,7 +34,7 @@
 					{{> "systems/kult4th/templates/components/svg.hbs" key="stability"}}
 					<button class="stability-add">+</button>
 					<button class="stability-remove">&minus;</button>
-					<span class="stability-count">{{data.data.stability.value}}</span>
+					<span class="stability-count">{{actor.system.stability.value}}</span>
 				</div>
 				<div class="wounds">
 					{{#each wounds}}
@@ -48,10 +49,10 @@
 					<button class="edges-add">+</button>
 					<button class="edges-remove">&minus;</button>
 					<button class="edges-clear">X</button>
-					<span class="edges-count">{{data.data.edges.value}}</span>
-					<span class="edges-source">{{data.data.edges.sourceName}}</span>
+					<span class="edges-count">{{actor.system.edges.value}}</span>
+					<span class="edges-source">{{actor.system.edges.sourceName}}</span>
 					<span class="edges-tooltip">
-						{{#each data.data.edges.items}}
+						{{#each actor.system.edges.items}}
 						<button class="edge-use" data-edge="{{this}}">#</button>
 						<span class="edge-item">{{{formatForKult this}}}</span>
 						{{/each}}
@@ -59,7 +60,7 @@
 				</div>
 			</section>
 			<section class="subsection modifiers">
-				<span class="modifiers-report">{{data.data.modifiersReport}}</span>
+				<span class="modifiers-report">{{actor.system.modifiersReport}}</span>
 			</section>
 			<section class="subsection attributes">
 				<label class="k4-title section-title">{{case "upper" (localize "kult4th.trait.attributes")}}</label>
@@ -90,7 +91,7 @@
 		<section class="tab bio {{~#if (eq curTab "bio")}} active{{/if}}" data-group="primary" data-tab="bio">
 			<section class="subsection description">
 				<label class="k4-title section-title">{{case "title" (localize "kult4th.sheet.description")}}</label>
-				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+				{{editor content=actor.system.description target="system.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection flex-item-list advantages">
 				<label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.advantages")}}</label>

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import U from "./utilities.js";
 import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
+import K4Actor from "../documents/K4Actor.js";
 import K4Item from "../documents/K4Item.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -70,26 +71,31 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
   "formatForKult"(str: string, context: List<any> | K4Item) {
     // Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
     const iData = context instanceof K4Item
-      ? context.data
-      : context.data.root.data;
-    kLog.hbsLog("[formatForKult]", {str, iData, "this": this}, 5);
+      ? context
+      : context.data.root.document ?? context.data.root.item ?? {system: context.data.root};
+    // if (!(iData instanceof K4Item || iData instanceof K4Actor)) {
+    //   kLog.error("Invalid context for formatForKult", {str, context, iData, "this": this});
+    //   throw new Error(`Cannot format ${str}: Invalid context (see log)`);
+    // }
 
     // Step One: Replace any data object references.
     str = str.replace(/%([^%.]+)\.([^%.]+)%/g, (_, sourceRef: string, dataKey: string) => {
       switch (sourceRef) {
         case "data": {
-          return iData.data[dataKey as KeyOf<typeof iData["data"]>];
+          kLog.log("[formatForKult: 'data']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
+          return iData.system[dataKey];
         }
         case "list": {
+          kLog.log("[formatForKult: 'list']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
           switch (dataKey) {
             case "inline-attacks": { return "<span style='color: red;'>Inline Attacks TBD...</span>" }
             case "parent-attacks": { return "<span style='color: red;'>Inline PARENT Attacks TBD...</span>" }
             default: {
               const listItems: string[] = [];
-              if (dataKey && (dataKey in iData.data.lists)) {
-                listItems.push(...iData.data.lists[dataKey].items);
-              } else if (dataKey && (dataKey in iData.lists)) {
-                listItems.push(...iData.lists[dataKey].items);
+              if (dataKey && (dataKey in iData.system.lists)) {
+                listItems.push(...iData.system.lists[dataKey].items);
+              // } else if (dataKey && (dataKey in iData.lists)) {
+              //   listItems.push(...iData.lists[dataKey].items);
               } else {
                 return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
               }
@@ -102,6 +108,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
           }
         }
         case "insert": {
+          kLog.log("[formatForKult: 'insert']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
           switch (dataKey) {
             case "break": {
               return "<br /><br />"; // <p></p>";
@@ -115,7 +122,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
                 ":data-action='roll'",
                 ">",
                 "roll ",
-                `+${U.tCase(iData.data.attribute)}`,
+                `+${U.tCase(iData.system.attribute)}`,
                 "<#"
               ].join("");
             }

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import {K4ActorType} from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -195,17 +195,6 @@ const ANIMATIONS = {
   }
 };
 class K4NPCSheet extends ActorSheet {
-  get $entity(): EntityDoc { return this._actor; }
-  get $sheet(): EntitySheet|false { return (this.$entity.sheet ?? false) as EntitySheet|false; }
-  get $actor(): K4ActorSpec<K4ActorType.npc> {
-    return this.actor ?? this._actor;
-  }
-
-  get $id() { return this.$entity.id; }
-  get $type() { return this.$entity.type; }
-
-  get $root() { return this.$entity.data; }
-  get $data() { return this.$root.data; }
 
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -224,22 +213,22 @@ class K4NPCSheet extends ActorSheet {
 
   override async getData() {
     const baseData = await super.getData();
-    const data = {
+    const context = {
       ...baseData,
-      actorData:     this.$actor.data.data,
-      baseMoves:     this.$actor.basicMoves,
-      derivedMoves:  this.$actor.derivedMoves,
-      advantages:    this.$actor.advantages,
-      disadvantages: this.$actor.disadvantages,
-      darksecrets:   this.$actor.darkSecrets,
-      relations:     this.$actor.relations,
-      weapons:       this.$actor.weapons,
-      gear:          this.$actor.gear,
-      attacks:       this.$actor.attacks,
-      attributes:    this.$actor.attributeData
+      actorData:     this.actor.system,
+      baseMoves:     this.actor.basicMoves,
+      derivedMoves:  this.actor.derivedMoves,
+      advantages:    this.actor.advantages,
+      disadvantages: this.actor.disadvantages,
+      darksecrets:   this.actor.darkSecrets,
+      relations:     this.actor.relations,
+      weapons:       this.actor.weapons,
+      gear:          this.actor.gear,
+      attacks:       this.actor.attacks,
+      attributes:    this.actor.attributeData
     };
-    /*DEVCODE*/kLog.log("Final Data", data);/*!DEVCODE*/
-    return data;
+    /*DEVCODE*/kLog.log("Final Context", context);/*!DEVCODE*/
+    return context;
   }
 
   handleMouseMove(event: JQuery.MouseMoveEvent, navPanel: HTMLElement, hoverTimeline: gsap.core.Timeline) {
@@ -329,8 +318,8 @@ class K4NPCSheet extends ActorSheet {
 }
 
 interface K4NPCSheet {
-  object: K4ActorSpec<K4ActorType.npc>,
-  _actor: K4ActorSpec<K4ActorType.npc>
+  object: K4Actor<K4ActorType.npc>,
+  _actor: K4Actor<K4ActorType.npc>
 }
 
 export default K4NPCSheet;

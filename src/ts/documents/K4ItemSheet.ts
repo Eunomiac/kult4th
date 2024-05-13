@@ -24,8 +24,8 @@ export default class K4ItemSheet extends ItemSheet {
 
   public isUnlocked = false;
   override get item(): K4Item { return super.item; }
-  get type() { return this.item.data.type; }
-  get subType() { return this.item.data.data.subType; }
+  get type() { return this.item.type; }
+  get subType() { return this.item.system.subType; }
   get subItems() { return this.item.subItems; }
   get subMoves() { return this.item.subMoves; }
   get attacks() { return this.item.subAttacks; }
@@ -33,7 +33,7 @@ export default class K4ItemSheet extends ItemSheet {
   constructor(item: K4Item, options: Partial<ItemSheet.Options> = {}) {
     super(item, options);
 
-    switch (item.data.type) {
+    switch (item.type) {
       case K4ItemType.advantage: {
         this.options.classes.push("k4-theme-dgold");
         break;
@@ -75,7 +75,7 @@ export default class K4ItemSheet extends ItemSheet {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
             $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
-              .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type as K4ItemType) && item.name === iName)
+              .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type) && item.name === iName)
               ?.sheet?.render(true));
           }
         }
@@ -87,7 +87,7 @@ export default class K4ItemSheet extends ItemSheet {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
             $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
-              .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type as K4ItemType) && item.name === iName)
+              .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type) && item.name === iName)
               ?.sheet?.render(true));
           }
         }
@@ -145,11 +145,6 @@ export default class K4ItemSheet extends ItemSheet {
           createDeleteLinkFromName(this, $(this).attr("data-item-name"));
         });
     });
-
-    // Apply custom styles to TinyMCE editors
-    // const editors = Object.values(this.editors);
-
-    // <div>{{editor content=data.trigger target="data.trigger" button=true owner=owner editable=editable}}</div>
   }
   override _canDragStart(_dragSelector: string) {
     kLog.log("K4ItemSheet._canDragStart", `Not Implemented. _dragSelector: ${_dragSelector}`);

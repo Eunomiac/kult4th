@@ -1,5 +1,4 @@
-{{dbLog this}}
-{{dbLog "DATA" data}}
+{{log "NPC SHEET", this}}
 
 <form class="kult4th-form {{cssClass}} actor-npc" autocomplete="off">
 	<nav class="nav-panel">
@@ -60,7 +59,7 @@
 	<main class="tab-content">
 		<section class="active tab front" data-group="primary" data-tab="front">
 			<section class="subsection description">
-				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+				{{editor content=system.description target="system.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection attributes">
 				<h1 class="subsection-header">Attributes</h1>
@@ -69,7 +68,7 @@
 				{{/each}}
 			</section>
 			<section class="subsection questions">
-				{{editor content=data.data.archetype target="data.archetype" button=true owner=owner editable=editable}}
+				{{editor content=system.archetype target="system.archetype" button=true owner=owner editable=editable}}
 			</section>
 		</section>
 		<section class="tab bio" data-group="primary" data-tab="bio">
@@ -99,10 +98,10 @@
 		</section>
 		<section class="tab assets" data-group="primary" data-tab="assets">
 			<section class="subsection column-50">
-				{{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+				{{editor content=system.description target="system.description" button=true owner=owner editable=editable}}
 			</section>
 			<section class="subsection column-50">
-				{{editor content=data.data.archetype target="data.archetype" button=true owner=owner editable=editable}}
+				{{editor content=system.archetype target="system.archetype" button=true owner=owner editable=editable}}
 			</section>
 		</section>
 	</main>

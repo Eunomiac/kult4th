@@ -1,31 +1,34 @@
 
-{{dbLog "{SHEET} item-block.hbs title" this}}
-{{log "item-block.hbs title" this}}
-	<main class="kult-text-container tab-content kult-{{data.type}}-container {{cssClass}}">
+
+{{log "item-block.hbs this" this}}
+{{log "item-block.hbs item" item}}
+{{#with item as |item|}}
+	<main class="kult-text-container tab-content kult-{{item.type}}-container {{../cssClass}}">
     <div class="sheet-header">
 		  <label class="k4-title item-title">{{item.name}}</label>
     </div>
 
-		{{#unless (areEmpty data.data.rules.intro data.data.rules.trigger data.data.rules.outro)}}
-			{{> "systems/kult4th/templates/components/rules-block.hbs" rules=data.data.rules}}
+		{{#unless (areEmpty item.system.rules.intro item.system.rules.trigger item.system.rules.outro)}}
+			{{> "systems/kult4th/templates/components/rules-block.hbs" rules=item.system.rules}}
 		{{/unless}}
 
-    {{#if (test data.system.subType "==" "active-rolled")}}{{#if (test data.type "==" "move")}}
-			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=data.data.results.completeSuccess.result}}
-			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=data.data.results.partialSuccess.result}}
-			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=data.data.results.failure.result}}
+    {{#if (test item.system.subType "==" "active-rolled")}}{{#if (test item.type "==" "move")}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(15+)" result=item.system.results.completeSuccess.result}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(10-14)" result=item.system.results.partialSuccess.result}}
+			{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="(&minus;9)" result=item.system.results.failure.result}}
 		{{/if}}{{/if}}
 
-		{{#each data.data.subItems as |subMove|}}
-			{{> "systems/kult4th/templates/partials/subitem-block.hbs" subMove pItem=../this}}
+		{{#each item.system.subItems as |subMove|}}
+			{{> "systems/kult4th/templates/partials/subitem-block.hbs" subMove=subMove pItem=item}}
 		{{/each}}
 
-		{{~#if data.data.rules.listRefs}}
-			{{> "systems/kult4th/templates/components/item-list.hbs" lists=data.system.lists listRefs=data.system.rules.listRefs type=data.type isDisplayingName=true}}
+		{{~#if item.system.rules.listRefs}}
+			{{> "systems/kult4th/templates/components/item-list.hbs" lists=item.system.lists listRefs=item.system.rules.listRefs type=item.type isDisplayingName=true}}
 		{{/if}}
 
-		{{#if data.data.rules.holdText}}
-			<label class="k4-header hold-header">{{localize "kult4th.item.headings.risksHold" itemType=(case "title" data.type)}}</label>
-			<span class="hold-body">{{{formatForKult data.data.rules.holdText}}}</span>
+		{{#if item.system.rules.holdText}}
+			<label class="k4-header hold-header">{{localize "kult4th.item.headings.risksHold" itemType=(case "title" item.type)}}</label>
+			<span class="hold-body">{{{formatForKult item.system.rules.holdText}}}</span>
 		{{/if}}
 	</main>
+{{/with}}
