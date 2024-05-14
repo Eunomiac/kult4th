@@ -60,13 +60,13 @@
 	.app.window-app {
 		@import 'globals/app';
 
-		&.kult4th-sheet {
+		&.k4-sheet {
 			@import 'sheets/sheet';
 
-			&.actor {
+			&.k4-actor-sheet {
 				@import 'sheets/actor-sheet';
 			}
-			&.item {
+			&.k4-item-sheet {
 				@import 'sheets/item-sheet';
 			}
 		}

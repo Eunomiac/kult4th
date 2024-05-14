@@ -47,6 +47,7 @@ export enum K4ItemResultType {
   failure = "failure"
 }
 
+
 class K4Item extends Item {
 
   is<T extends K4ItemType>(...types: T[]): this is K4Item<T> {

@@ -73,6 +73,14 @@ class K4Actor extends Actor {
     return this.items.find((item: K4Item) => item.name === iName);
   }
 
+  getMoveByName(mName: string) {
+    return this.moves.find((move: K4Item) => move.name === mName);
+  }
+
+  getAttackByName(aName: string) {
+    return this.attacks.find((attack: K4Item) => attack.name === aName);
+  }
+
   getItemsBySource(sourceID: string): K4SubItem[] {
     return this.items.filter((item: K4Item): item is K4SubItem => {
       if (!("sourceItem" in item.system)) { return false; }
@@ -445,7 +453,7 @@ class K4Actor extends Actor {
     ].includes(rollSourceRef)) {
       rollSource = rollSourceRef as K4RollableAttribute;
     } else if (typeof rollSourceRef === "string") {
-      const item = this.getItemByName(rollSourceRef);
+      const item = this.getMoveByName(rollSourceRef) ?? this.getAttackByName(rollSourceRef);
       if (item instanceof K4Item && item.isRollableItem()) {
         rollSource = item;
       }
@@ -572,7 +580,7 @@ class K4Actor extends Actor {
           // Explicitly type the result of getDocument to avoid 'any' type issues
           const moveData = await pack.getDocument(move._id) as Maybe<K4Item<K4ItemType.move>>;
           // Safely return the data or an empty object if undefined
-          return moveData?.system ?? {};
+          return moveData?.data ?? {};
         }));
         // Check if newItems array is not empty before creating embedded documents
         if (newItems.length > 0) {

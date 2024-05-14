@@ -14,7 +14,7 @@ export default class K4ItemSheet extends ItemSheet {
 
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes:   [C.SYSTEM_ID, "item", "sheet", "kult4th-sheet"],
+      classes:   [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-item-sheet"],
       template:  "systems/kult4th/templates/sheets/item-sheet.hbs",
       height:    590 * 0.75,
       width:     384 * 0.75,

@@ -37,6 +37,7 @@ Hooks.once("init", async () => {
   CONFIG.Actor.documentClass = K4Actor;
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
+  // Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
   Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc] });
 
   CONFIG.Item.documentClass = K4Item;
@@ -266,6 +267,8 @@ Hooks.once("ready", () => {
     // MorphSVGPlugin,
     U,
     C,
+    ActorSheet,
+    K4PCSheet,
     getContrastingColor,
     formatStringForKult,
     ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
@@ -283,7 +286,7 @@ async function preloadTemplates() {
       "color-defs"
     ]),
     ...U.getTemplatePath("sheets", [
-      "pc-sheet",
+      "pc-sheet", "pc-sheet-temp",
       "npc-sheet",
       "item-sheet",
       "attack-sheet"
