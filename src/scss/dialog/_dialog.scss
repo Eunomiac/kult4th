@@ -1,3 +1,36 @@
 & {
 
+  &.attribute-selection {
+
+    .dialog-buttons {
+      display: grid;
+
+      grid-template-areas:
+        ". zero ."
+        "fortitude willpower reflexes"
+        "reason perception intuition"
+        "coolness charisma violence"
+        ". soul .";
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+      grid-column-gap: 30px;
+      grid-row-gap: 2px;
+
+      .dialog-button { padding-left: 10px; padding-right: 10px;}
+
+      .dialog-button.zero { grid-area: zero; margin-bottom: 10px; }
+      .dialog-button.fortitude { grid-area: fortitude; margin-top: 10px; }
+      .dialog-button.willpower { grid-area: willpower; margin-bottom: 10px; }
+      .dialog-button.reflexes { grid-area: reflexes; margin-top: 10px; }
+      .dialog-button.reason { grid-area: reason; margin-bottom: 0px; margin-top: 10px; }
+      .dialog-button.perception { grid-area: perception; margin-top: 20px; margin-bottom: -10px; }
+      .dialog-button.intuition { grid-area: intuition; margin-bottom: 0px; margin-top: 10px; }
+      .dialog-button.coolness { grid-area: coolness; margin-bottom: 10px; }
+      .dialog-button.charisma { grid-area: charisma; margin-top: 10px; }
+      .dialog-button.violence { grid-area: violence; margin-bottom: 10px; }
+      .dialog-button.soul { grid-area: soul; margin-top: 0px; margin-bottom: 10px; }
+    }
+
+  }
+
 }
