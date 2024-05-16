@@ -94,6 +94,7 @@ export const AttributeButtons = (resolve: (value: {attribute: K4RollableAttribut
     K4Attribute.reflexes,
     K4Attribute.reason,
     K4Attribute.perception,
+    K4Attribute.intuition,
     K4Attribute.coolness,
     K4Attribute.violence,
     K4Attribute.charisma,
@@ -128,7 +129,7 @@ export const Colors = {
   bGREY: "rgb(177, 177, 177)",
   GREY: "rgb(128, 128, 128)",
   dGREY: "rgb(78, 78, 78)",
-  BLACK: "rgb(30, 30, 28)",
+  BLACK: "rgb(20, 20, 20)",
   dBLACK: "rgb(0, 0, 0)"
 };
 export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
@@ -274,14 +275,14 @@ const C = {
     roller: "systems/kult4th/assets/icons/cameron-west.jpg"
   },
   Themes: {
-    [K4ItemType.advantage]: "k4-theme-dgold",
+    [K4ItemType.advantage]: "k4-theme-gold",
     [K4ItemType.disadvantage]: "k4-theme-red",
     [K4ItemType.darksecret]: "k4-theme-dark",
-    [K4ItemType.relation]: "k4-theme-dgold",
-    [K4ItemType.weapon]: "k4-theme-dgold",
-    [K4ItemType.gear]: "k4-theme-dgold",
+    [K4ItemType.relation]: "k4-theme-gold",
+    [K4ItemType.weapon]: "k4-theme-gold",
+    [K4ItemType.gear]: "k4-theme-gold",
     [K4ItemType.move]: "k4-theme-bgold",
-    [K4ItemType.attack]: "k4-theme-dgold"
+    [K4ItemType.attack]: "k4-theme-gold"
   }
 };
 

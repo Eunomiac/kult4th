@@ -198,7 +198,7 @@ class K4NPCSheet extends ActorSheet {
 
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-actor-sheet", "k4-theme-dgold"],
+      classes: [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-actor-sheet", "k4-theme-gold"],
       tabs:    [
         {navSelector: ".tabs", contentSelector: ".tab-content", initial: "front"}
       ]

@@ -35,7 +35,7 @@ export default class K4ItemSheet extends ItemSheet {
 
     switch (item.type) {
       case K4ItemType.advantage: {
-        this.options.classes.push("k4-theme-dgold");
+        this.options.classes.push("k4-theme-gold");
         break;
       }
       case K4ItemType.darksecret: {

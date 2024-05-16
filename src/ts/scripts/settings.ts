@@ -104,7 +104,7 @@ export function initTinyMCEStyles() {
     }
   ];
   CONFIG.TinyMCE.skin = "Kult4th";
-  CONFIG.TinyMCE.skin_url = "systems/kult4th/css/third-party/tinymce/ui/Kult4th";
+  CONFIG.TinyMCE.skin_url = "systems/kult4th/tinymce/ui/Kult4th";
   CONFIG.TinyMCE.style_formats_merge = false;
   // CONFIG.TinyMCE.template_selected_content_classes += " ws-contents";
   // CONFIG.TinyMCE.templates = CONFIG.TinyMCE.templates ?? [];
@@ -125,7 +125,7 @@ export function initTinyMCEStyles() {
     CONFIG.TinyMCE.content_css = [];
   }
   // CONFIG.TinyMCE.content_css.unshift("dark");
-  CONFIG.TinyMCE.content_css.push("systems/kult4th/css/tmce-editor.css");
+  CONFIG.TinyMCE.content_css.push("systems/kult4th/tmce-editor.css");
 
 }
 
@@ -146,7 +146,7 @@ export function initCanvasStyles() {
       0,
       0.3
     ],
-    fontFamily: "AlverataSemiBold",
+    fontFamily: "Alverata",
     fontSize: 32,
     letterSpacing: 2,
     lineHeight: 32,
@@ -159,6 +159,6 @@ export function initCanvasStyles() {
     wordWrap: true,
     wordWrapWidth: 0.1
   });
-  // CONFIG.fontFamilies = ["Alverata", "AlverataCaps", "Infidel", "Sokol"];
+  // CONFIG.fontFamilies = ["Alverata", "AlverataRegular", "Infidel", "Sokol"];
   CONFIG.defaultFontFamily = "Alverata";
 }

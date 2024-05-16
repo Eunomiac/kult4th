@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import U from "./utilities.js";
 import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
-import K4Actor from "../documents/K4Actor.js";
 import K4Item from "../documents/K4Item.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -12,31 +11,62 @@ export function formatStringForKult(str: string) {
   return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
 }
 
-const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
-  "test"(param1: unknown, operator: string, param2: unknown) {
-    switch (operator) {
-      case "==": { return param1 == param2 } // eslint-disable-line eqeqeq
-      case "===": { return param1 === param2 }
-      case ">": { return typeof param1 === "number" && typeof param2 === "number" && param1 > param2 }
-      case "<": { return typeof param1 === "number" && typeof param2 === "number" && param1 < param2 }
-      case ">=": { return typeof param1 === "number" && typeof param2 === "number" && param1 >= param2 }
-      case "<=": { return typeof param1 === "number" && typeof param2 === "number" && param1 <= param2 }
-      case "includes": { return Array.isArray(param1) && param1.includes(param2) }
-      case "in": {
-        if (Array.isArray(param2)) {
-          return param2.includes(param1);
-        }
-        if (U.isList(param2) && (typeof param1 === "number" || typeof param1 === "string")) {
-          return param1 in param2;
-        }
-        if (typeof param2 === "string") {
-          return new RegExp(String(param2), "gu").test(String(param1));
-        }
-        return false;
-      }
-      default: { return false }
+
+export function registerHooks(): void {
+  // Register the hook in your module or system initialization code
+  Hooks.on("preCreateItem", async (itemData: K4Item) => {
+    // Ensure the item is being created for an actor
+    if (!itemData.parent || itemData.parent.documentName !== "Actor") {
+      return true;
     }
-  },
+
+    const actor = itemData.parent;
+    const existingItem = actor.items.find((i) => i.name === itemData.name);
+
+    // If an item with the same name already exists, prevent the creation
+    if (existingItem) {
+      ui.notifications.warn(`The item "${itemData.name}" already exists on this actor.`);
+      return false; // Returning false prevents the item from being created
+    }
+
+    return true;
+  });
+}
+
+const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
+/**
+ * Handlebars helper to perform various comparison operations.
+ * @param {unknown} param1 - The first parameter for comparison.
+ * @param {string} operator - The comparison operator.
+ * @param {unknown} param2 - The second parameter for comparison.
+ * @returns {boolean} - The result of the comparison.
+ */
+"test"(param1: unknown, operator: string, param2: unknown): boolean {
+  const isStringOrNumber = (a: unknown): a is string | number => typeof a === "number" || typeof a === "string";
+
+  switch (operator) {
+    case "==":
+    case "===":
+      return param1 === param2;
+    case ">":
+      return U.isNumber(param1) && U.isNumber(param2) && param1 > param2;
+    case "<":
+      return U.isNumber(param1) && U.isNumber(param2) && param1 < param2;
+    case ">=":
+      return U.isNumber(param1) && U.isNumber(param2) && param1 >= param2;
+    case "<=":
+      return U.isNumber(param1) && U.isNumber(param2) && param1 <= param2;
+    case "includes":
+      return Array.isArray(param1) && param1.includes(param2);
+    case "in":
+      if (Array.isArray(param2)) { return param2.includes(param1); }
+      if (U.isList(param2) && isStringOrNumber(param1)) { return param1 in param2; }
+      if (typeof param2 === "string") { return new RegExp(String(param2), "gu").test(String(param1)); }
+      return false;
+    default:
+      return false;
+  }
+},
   "case"(mode: StringCase, str: string) {
     // return U[`${mode.charAt(0)}Case`](str);
     switch (mode) {

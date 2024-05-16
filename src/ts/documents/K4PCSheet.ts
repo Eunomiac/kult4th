@@ -131,13 +131,13 @@ const ANIMATIONS = {
       buttonSpikes: $(target).find(".tabs .nav-tab-container .svg-container[class*='nav-spoke'] .svg-def")
     };
 
-    // const spikeVars: gsap.TweenVars = {
-    //   // @ts-expect-error MorphSVG does indeed accept functions.
-    //   morphSVG(i: number) { return svgs.outerSpikePaths[i]; },
-    //   scale:    1,
-    //   duration: 0.3,
-    //   ease:     "power2"
-    // };
+    const spikeVars: gsap.TweenVars = {
+      // @ts-expect-error MorphSVG does indeed accept functions.
+      morphSVG(i: number) { return svgs.outerSpikePaths[i]; },
+      scale:    1,
+      duration: 0.3,
+      ease:     "power2"
+    };
 
     const navTL = gsap.timeline({reversed: true})
       .to(target, {
@@ -185,11 +185,7 @@ const ANIMATIONS = {
         duration: 0.3,
         ease:     "power2"
       }, 0)
-      .to(svgs.outerSpikes, {
-        scale:    1.5,
-        duration: 0.3,
-        ease:     "power2"
-      }, 0)
+      .to(svgs.outerSpikes, spikeVars, 0)
       .to(svgs.innerSpikes, {
         scale:    1,
         duration: 0.3,
@@ -407,15 +403,6 @@ const ANIMATIONS = {
 
     return gsap.timeline({reversed: true})
       .set(target, {zIndex: 30}, 0.1)
-      // .fromTo(target, {
-      //   opacity: 0.7,
-      //   scale: 0.8
-      // }, {
-      //   opacity: 1,
-      //   scale: 1,
-      //   duration: FULL_DURATION,
-      //   ease: "power2"
-      // }, 0)
       .to(svg$, {
         filter:   "blur(2px)",
         scale:    5,
@@ -423,15 +410,6 @@ const ANIMATIONS = {
         duration: 0.5 * FULL_DURATION,
         ease:     "power2"
       }, 0)
-      // .fromTo(tooltip$, {
-      //   filter: "blur(2px)"
-      // }, {
-      //   opacity: 1,
-      //   filter: "none",
-      //   fontWeight: 900,
-      //   duration: FULL_DURATION,
-      //   ease: "power2"
-      // }, 0)
       .to(tooltipFlare$, {
         autoAlpha: 1,
         duration:  0.1,
@@ -443,116 +421,7 @@ const ANIMATIONS = {
         duration: FULL_DURATION - 0.1,
         ease:     "power2"
       }, 0.1);
-  }/* ,
-  hoverMove(target: HTMLElement, context: JQuery, isDerivedMove = true): gsapAnim {
-    const FULL_DURATION = 0.5;
-
-    const attribute = $(target).data("attribute");
-    const itemText$ = $(target).find(".item-text");
-    const itemIcon$ = $(target).find(".item-icon");
-    const toolTip$ = $(target).find(".trigger-tooltip");
-    const tl = gsap
-      .timeline({
-        reversed: true
-      }).fromTo(
-        itemIcon$,
-        {
-          borderRadius: 25,
-          overflow: "hidden"
-        },
-        {
-          width: "100%",
-          borderRadius: 0,
-          duration: FULL_DURATION,
-          backgroundColor: C.Colors["bGOLD"],
-          ease: "sine"
-        },
-        0
-      ).fromTo(
-        itemText$,
-        {
-          x: 0,
-          width: "auto",
-          opacity: 1,
-          color: C.Colors.GOLD,
-          textShadow: 0
-        },
-        {
-          x: -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`)) - 40,
-          width: 0,
-          color: C.Colors.BLACK,
-          textShadow: [
-            ...new Array(4).fill(`0 0 15px ${C.Colors["bGOLD"]}`),
-            ...new Array(6).fill(`0 0 5px ${C.Colors["bGOLD"]}`),
-            ...new Array(4).fill(`0 0 2px ${C.Colors["bGOLD"]}`)
-          ].join(", "),
-          duration: FULL_DURATION,
-          ease: "back"
-        },
-        0
-      ).set(
-        itemText$,
-        {
-          opacity: 0
-        },
-        0.01
-      )
-      .to(
-        itemText$,
-        {
-          opacity: 1,
-          duration: FULL_DURATION - 0.01,
-          ease: "sine"
-        },
-        0.01
-      ).fromTo(
-        toolTip$,
-        {
-          opacity: 0,
-          bottom: 30,
-          scale: 1.5
-        },
-        {
-          opacity: 1,
-          bottom: 30,
-          scale: 1,
-          duration: 0.75 * FULL_DURATION,
-          ease: "power2.in"
-        },
-        0
-      );
-
-    if ((attribute in C.Attributes.Active) || (attribute in C.Attributes.Passive)) {
-      const animation$ = context.find(`.subsection.attributes .attribute-box[data-attribute="${attribute}"] img`);
-      tl
-        .fromTo(
-          animation$,
-          {
-            opacity: 0
-          },
-          {
-            opacity: 1,
-            duration: FULL_DURATION,
-            ease: "sine"
-          },
-          0
-        );
-      // .fromTo(
-      //   animation$,
-      //   {
-      //     filter: "blur(40px)"
-      //   },
-      //   {
-      //     filter: "none",
-      //     duration: FULL_DURATION,
-      //     ease: "sine"
-      //   },
-      //   0
-      // );
-    }
-
-    return tl;
-  } */
+  }
 };
 
 class K4PCSheet extends ActorSheet {
@@ -614,291 +483,375 @@ class K4PCSheet extends ActorSheet {
   }
   unClamp(element: HTMLElement) { element.style.cssText = ""; }
 
+  /* Modifier report resizing function
+  - accepts the JQuery HTML context of the character sheet
+  - locates the modifier report element
+  - compares the height of the element to the height of a single row of modifiers (20px)
+  - if the height is larger than a single row, first, it adds the "minimal" class to the .modifiers-report element
+    - the minimal class sets font size to zero except for <strong> elements, reducing the width of each modifier span
+    - it checks again to see how many rows of modifiers there are
+    - if there is no change to the number of rows, it removes the minimal class
+  - sets the `--num-modifier-rows` on the `.tab.front` element to the number of rows (with or without the minimal class) */
+  resizeModifierReport(html: JQuery) {
+    // Get the width of the container element
+    const container = html.find(".tab.front.active");
+    if (!container[0]) { return; }
+    const formWidth = container.width() ?? Infinity;
+    const report = html.find(".modifiers-report");
+    if (!report[0]) { return; }
+    report.removeClass("minimal");
+    report.css("width", "");
+    const modReportWidth = report.width() ?? 0;
+    let height = report.height();
+    if (modReportWidth > formWidth) {
+      report.css("width", formWidth);
+      height = report.height();
+    }
+    if (!height) { return; }
+    let rows = Math.floor(height / 20);
+    if (rows > 1) {
+      report.addClass("minimal");
+      height = report.height()!;
+      const newRows = Math.floor(height / 20);
+      if (newRows === rows) {
+        report.removeClass("minimal");
+      } else {
+        rows = newRows;
+      }
+    }
+    html.find(".tab.front").css("--num-modifier-rows", rows);
+  }
+
+
+
   override activateListeners(html: JQuery) {
 
+    // Call the parent class's activateListeners method to ensure any inherited listeners are also activated
     super.activateListeners(html);
     const self = this;
 
-    $(() => {
+    // Remove shadows from tab content if the "shadows" setting is disabled
+    if (!U.getSetting("shadows")) {
+      html.find(".tab-content").each(function() { $(this).css("filter", "none");});
+    }
 
-      if (!U.getSetting("shadows")) {
-        html.find(".tab-content").each(function() { $(this).css("filter", "none");});
+    const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
+
+    // Iterate over each nav-panel element to set up animations and styles
+    this.element.find(".nav-panel").each(function() {
+      // Remove flare background if the "flare" setting is disabled
+      if (!U.getSetting("flare")) {
+        gsap.set(self.element.find(".nav-flare"), {background: "none"});
       }
+      // Set profile image background to black if animations are disabled
+      if (!U.getSetting("animations")) {
+        gsap.set(self.element.find(".profile-image-animation"), {background: C.Colors.BLACK});
+      }
+      // Add hover animation to the hoverTimelines array for nav-panel
+      hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
+    });
 
+    // Iterate over each nav-tab element to set up animations and click listeners
+    this.element.find(".nav-tab")
+      .each(function() {
+        // Add hover animation to the hoverTimelines array for nav-tab
+        hoverTimelines.push([this, ANIMATIONS.hoverNavTab(this)]);
+        // Add click listener to activate the corresponding tab when clicked
+        $(this).on("click", function() {
+          self.activateTab(this.getAttribute("data-tab"));
+        });
+      });
 
+    // Apply text clamping to each element with the class "clamp-text"
+    html.find(".clamp-text").each(function() {
+      self.clamp(this);
+    });
 
-      const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
-      this.element.find(".nav-panel").each(function() {
-        if (!U.getSetting("flare")) {
-          gsap.set(self.element.find(".nav-flare"), {background: "none"});
+    // Handle gear animations based on the "gears" setting
+    if (U.getSetting("gears")) {
+      // Rotate huge gears if the setting is enabled
+      this.element.find(".gear-container.gear-huge")
+        .each(function() {
+          ANIMATIONS.gearHugeRotate(this);
+        });
+      // Rotate Geburah gears if the setting is enabled
+      this.element.find(".gear-container.gear-geburah")
+        .each(function() {
+          ANIMATIONS.gearGeburahRotate(this);
+        });
+      // Rotate Binah gears if the setting is enabled
+      this.element.find(".gear-container.gear-binah")
+        .each(function() {
+          ANIMATIONS.gearBinahRotate(this);
+        });
+    } else {
+      // Remove all gear containers if the setting is disabled
+      this.element.find(".gear-container")
+        .remove();
+    }
+
+    // Set actor name background to black if animations are disabled
+    if (!game.settings.get("kult4th", "animations")) {
+      gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.BLACK});
+    }
+
+    // Add click listeners for elements with data-action="open" to open item sheets
+    html.find("*[data-action=\"open\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
         }
-        if (!U.getSetting("animations")) {
-          gsap.set(self.element.find(".profile-image-animation"), {background: C.Colors.BLACK});
+      });
+
+    // Add click listeners for elements with data-action="roll" to roll item actions
+    html.find("*[data-action=\"roll\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on("click", () => self.actor.roll(itemName));
         }
-        hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
-      });
-      this.element.find(".nav-tab")
-        .each(function() {
-          hoverTimelines.push([this, ANIMATIONS.hoverNavTab(this)]);
-          $(this).on("click", function() {
-            self.activateTab(this.getAttribute("data-tab"));
-          });
-        });
-
-      html.find(".clamp-text").each(function() {
-        self.clamp(this);
       });
 
-      if (U.getSetting("gears")) {
-        this.element.find(".gear-container.gear-huge")
-          .each(function() {
-            ANIMATIONS.gearHugeRotate(this);
-          });
-        this.element.find(".gear-container.gear-geburah")
-          .each(function() {
-            ANIMATIONS.gearGeburahRotate(this);
-          });
-        this.element.find(".gear-container.gear-binah")
-          .each(function() {
-            ANIMATIONS.gearBinahRotate(this);
-          });
-      } else {
-        this.element.find(".gear-container")
-          .remove();
-      }
-
-      if (!game.settings.get("kult4th", "animations")) {
-        gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.BLACK});
-      }
-
-      html.find("*[data-action=\"open\"]")
-        .each(function() {
-          const itemName = $(this).attr("data-item-name");
-          if (itemName) {
-            $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
-          }
-        });
-      html.find("*[data-action=\"roll\"]")
-        .each(function() {
-          const itemName = $(this).attr("data-item-name");
-          if (itemName) {
-            $(this).on("click", () => self.actor.roll(itemName));
-          }
-        });
-
-      html.find("*[data-action=\"trigger\"]")
-        .each(function() {
-          const itemName = $(this).attr("data-item-name");
-          if (itemName) {
-            $(this).on("click", () => self.actor.trigger(itemName));
-          }
-        });
-      html.find("*[data-action=\"chat\"]")
-        .each(function() {
-          const itemName = $(this).attr("data-item-name");
-          if (itemName) {
-            $(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
-          }
-        });
-
-      html.find(".content-editable")
-        .each(function() {
-          $(this).attr("contenteditable", "false");
-          const innerText = $(this).text().trim();
-
-          if ((!innerText && $(this).data("placeholder"))
-            || (innerText === $(this).data("placeholder"))) {
-            $(this)
-              .addClass("placeholder")
-              .text($(this).data("placeholder") as string);
-          }
-        });
-
-      html.find(".hover-strip")
-        .each(function() {
-          hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html)]);
-        });
-      html.find(".hover-strip .strip-button")
-        .each(function() {
-          hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this)]);
-        });
-
-      hoverTimelines.forEach(([target, anim]) => {
-        $(target)
-          .on("mouseenter", () => anim.reversed(false))
-          .on("mouseleave", () => anim.reversed(true));
+    // Add click listeners for elements with data-action="trigger" to trigger item actions
+    html.find("*[data-action=\"trigger\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on("click", () => self.actor.trigger(itemName));
+        }
       });
 
-      if (!this.options.editable) { return; }
+    // Add click listeners for elements with data-action="chat" to display item summaries in chat
+    html.find("*[data-action=\"chat\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
+        }
+      });
 
-      html.find("*[data-action=\"drop\"]")
-        .each(function() {
-          const itemName = $(this).attr("data-item-name");
-          if (itemName) {
-            $(this).on("click", () => self.actor.dropItemByName(itemName));
+    // Initialize content-editable elements with placeholder text if necessary
+    html.find(".content-editable")
+      .each(function() {
+        $(this).attr("contenteditable", "false");
+        const innerText = $(this).text().trim();
+
+        if ((!innerText && $(this).data("placeholder"))
+          || (innerText === $(this).data("placeholder"))) {
+          $(this)
+            .addClass("placeholder")
+            .text($(this).data("placeholder") as string);
+        }
+      });
+
+    // Add hover animations for hover-strip elements
+    html.find(".hover-strip")
+      .each(function() {
+        hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html)]);
+      });
+
+    // Add hover animations for hover-strip button elements
+    html.find(".hover-strip .strip-button")
+      .each(function() {
+        hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this)]);
+      });
+
+    // Add mouseenter and mouseleave listeners to control hover animations
+    hoverTimelines.forEach(([target, anim]) => {
+      $(target)
+        .on("mouseenter", () => anim.reversed(false))
+        .on("mouseleave", () => anim.reversed(true));
+    });
+
+    // Add resize listener that calls resizeModifierReport when sheet is resized
+    const resizableHandle = this.element.find(".window-resizable-handle");
+    const debouncedResizeModifierReport = debounce(() => this.resizeModifierReport(html), 1);
+
+    const onMouseMove = () => {
+      debouncedResizeModifierReport();
+    };
+
+    const onMouseUp = () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      this.resizeModifierReport(html); // Final call to ensure the last size is handled
+    };
+
+    resizableHandle.on("mousedown", () => {
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+      this.resizeModifierReport(html); // Initial call to handle the start of the resize
+    });
+
+    // Initial call to resizeModifierReport
+    requestAnimationFrame(() => this.resizeModifierReport(html));
+
+    // If the sheet is not editable, return early
+    if (!this.options.editable) { return; }
+
+    // Add click listeners for elements with data-action="drop" to drop items
+    html.find("*[data-action=\"drop\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on("click", () => self.actor.dropItemByName(itemName));
+        }
+      });
+
+    // Add click listeners for stability-add buttons to increase stability
+    html.find("button.stability-add")
+      .each(function() {
+        $(this).on("click", () => self.actor.changeStability(1));
+      });
+
+    // Add click listeners for stability-remove buttons to decrease stability
+    html.find("button.stability-remove")
+      .each(function() {
+        $(this).on("click", () => self.actor.changeStability(-1));
+      });
+
+    // Add click listeners for wound-add buttons to add a new wound
+    html.find("button.wound-add")
+      .each(function() {
+        $(this).on("click", () => {
+          // kLog.log("Adding Wound. Button:", this);
+          self.actor.addWound().catch(kLog.error);
+        });
+      });
+
+    // Add click listeners for wound-delete buttons to remove a specific wound
+    html.find("button.wound-delete")
+      .each(function() {
+        const woundID = $(this).data("woundId") as string;
+        $(this).on("click", () => {
+          // kLog.log(`Deleting Wound ${woundID}. Button:`, this);
+          self.actor.removeWound(woundID).catch(kLog.error);
+        });
+      });
+
+    // Add click listeners for elements with data-action="toggle-wound-type" to toggle the wound type
+    html.find("*[data-action=\"toggle-wound-type\"]")
+      .each(function() {
+        const woundID = $(this).data("target") as string;
+        if (woundID) {
+          $(this).on("click", () => self.actor.toggleWound(woundID, "type"));
+        }
+      });
+
+    // Add click listeners for elements with data-action="reset-wound-name" to reset the wound name
+    html.find("*[data-action=\"reset-wound-name\"]")
+      .each(function() {
+        const woundID = $(this).data("target") as string;
+        if (woundID) {
+          $(this).on("click", () => self.actor.resetWoundName(woundID));
+        }
+      });
+
+    // Add click listeners for elements with data-action="toggle-wound-stabilize" to toggle wound stabilization
+    html.find("*[data-action=\"toggle-wound-stabilize\"]")
+      .each(function() {
+        const woundID = $(this).data("target") as string;
+        if (woundID) {
+          $(this).on("click", () => self.actor.toggleWound(woundID, "stabilized"));
+        }
+      });
+
+    // Add click listeners for elements with data-action="drop-wound" to remove a specific wound
+    html.find("*[data-action=\"drop-wound\"]")
+      .each(function() {
+        const woundID: string = $(this).data("target") as string;
+        if (woundID) {
+          $(this).on("click", () => self.actor.removeWound(woundID));
+        }
+      });
+
+    // Add click listeners for close buttons in the header to close the sheet
+    html.find(".header-button.close")
+      .each(function() {
+        $(this).on("click", () => self.actor.sheet?.close());
+      });
+
+    // Add click listeners for minimize buttons in the header to toggle minimize/maximize state
+    html.find(".header-button.minimize")
+      .each(function() {
+        $(this).on("click", () => {
+          if (self._minimized) {
+            self.maximize().catch(kLog.error);
+          } else {
+            self.minimize().catch(kLog.error);
           }
         });
-      html.find("button.stability-add")
-        .each(function() {
-          $(this).on("click", () => self.actor.changeStability(1));
-        });
-      html.find("button.stability-remove")
-        .each(function() {
-          $(this).on("click", () => self.actor.changeStability(-1));
-        });
-      html.find("button.wound-add")
-        .each(function() {
-          $(this).on("click", () => {
-            // kLog.log("Adding Wound. Button:", this);
-            self.actor.addWound().catch(kLog.error);
-          });
-        });
-      html.find("button.wound-delete")
-        .each(function() {
-          const woundID = $(this).data("woundId") as string;
-          $(this).on("click", () => {
-            // kLog.log(`Deleting Wound ${woundID}. Button:`, this);
-            self.actor.removeWound(woundID).catch(kLog.error);
-          });
-        });
+      });
 
-      html.find("*[data-action=\"toggle-wound-type\"]")
-        .each(function() {
-          const woundID = $(this).data("target") as string;
-          if (woundID) {
-            $(this).on("click", () => self.actor.toggleWound(woundID, "type"));
+    // Initialize content-editable elements with click, focus, and blur listeners for inline editing
+    html.find(".content-editable").each(function() {
+      $(this)
+        .on("click", (clickEvent) => {
+          if ($(clickEvent.currentTarget).attr("contenteditable") === "true") {
+            return;
           }
-        });
-
-      html.find("*[data-action=\"reset-wound-name\"]")
-        .each(function() {
-          const woundID = $(this).data("target") as string;
-          if (woundID) {
-            $(this).on("click", () => self.actor.resetWoundName(woundID));
+          clickEvent.preventDefault();
+          const {currentTarget} = clickEvent;
+          let elemText = $(currentTarget).text().trim();
+          if ($(currentTarget).hasClass("placeholder")) {
+            elemText = "";
           }
-        });
-
-      html.find("*[data-action=\"toggle-wound-stabilize\"]")
-        .each(function() {
-          const woundID = $(this).data("target") as string;
-          if (woundID) {
-            $(this).on("click", () => self.actor.toggleWound(woundID, "stabilized"));
-          }
-        });
-
-      html.find("*[data-action=\"drop-wound\"]")
-        .each(function() {
-          const woundID: string = $(this).data("target") as string;
-          if (woundID) {
-            $(this).on("click", () => self.actor.removeWound(woundID));
-          }
-        });
-      html.find(".header-button.close")
-        .each(function() {
-          $(this).on("click", () => self.actor.sheet?.close());
-        });
-
-      html.find(".header-button.minimize")
-        .each(function() {
-          $(this).on("click", () => {
-            if (self._minimized) {
-              self.maximize().catch(kLog.error);
-            } else {
-              self.minimize().catch(kLog.error);
-            }
-          });
-        });
-
-      html.find(".content-editable").each(function() {
-        $(this)
-          .on("click", (clickEvent) => {
-            if ($(clickEvent.currentTarget).attr("contenteditable") === "true") {
-              return;
-            }
-            clickEvent.preventDefault();
-            const {currentTarget} = clickEvent;
-            let elemText = $(currentTarget).text().trim();
-            if ($(currentTarget).hasClass("placeholder")) {
-              elemText = "";
-            }
-            $(currentTarget)
-              .text(elemText || " ")
-              .removeClass("placeholder")
-              .attr({contenteditable: "true"})
-              .on("keydown", (keyboardEvent) => {
-                if (keyboardEvent.key === "Enter") {
-                  keyboardEvent.preventDefault();
-                  $(currentTarget).trigger("blur");
-                }
-              })
-              .trigger("focus");
-          })
-          .on("focus", (focusEvent) => {
-            self.unClamp(focusEvent.currentTarget);
-            const element = focusEvent.currentTarget;
-
-            if (element) {
-              const range = document.createRange(); // Create a new range
-              const selection = window.getSelection(); // Get the current selection
-
-              if (selection) {
-                selection.removeAllRanges(); // Clear any existing selections
-                range.selectNodeContents(element); // Select the contents of the element
-                selection.addRange(range); // Add the range to the selection
+          $(currentTarget)
+            .text(elemText || " ")
+            .removeClass("placeholder")
+            .attr({contenteditable: "true"})
+            .on("keydown", (keyboardEvent) => {
+              if (keyboardEvent.key === "Enter") {
+                keyboardEvent.preventDefault();
+                $(currentTarget).trigger("blur");
               }
-            }
-          })
-          .on("blur", (blurEvent) => {
-            blurEvent.preventDefault();
-            const {currentTarget} = blurEvent;
-            const elemText = $(currentTarget).text().trim();
+            })
+            .trigger("focus");
+        })
+        .on("focus", (focusEvent) => {
+          self.unClamp(focusEvent.currentTarget);
+          const element = focusEvent.currentTarget;
 
-            // Set placeholder text where text content is blank
-            if (!elemText && $(currentTarget).data("placeholder")) {
-              $(currentTarget)
-                .addClass("placeholder")
-                .text($(currentTarget).data("placeholder") as string);
-            } else {
-              $(currentTarget).removeClass("placeholder");
-            }
+          if (element) {
+            const range = document.createRange(); // Create a new range
+            const selection = window.getSelection(); // Get the current selection
 
+            if (selection) {
+              selection.removeAllRanges(); // Clear any existing selections
+              range.selectNodeContents(element); // Select the contents of the element
+              selection.addRange(range); // Add the range to the selection
+            }
+          }
+        })
+        .on("blur", (blurEvent) => {
+          blurEvent.preventDefault();
+          const {currentTarget} = blurEvent;
+          const elemText = $(currentTarget).text().trim();
+
+          // Set placeholder text where text content is blank
+          if (!elemText && $(currentTarget).data("placeholder")) {
             $(currentTarget)
-              .attr({contenteditable: "false"})
-              .off("keydown");
-            self.clamp(currentTarget);
+              .addClass("placeholder")
+              .text($(currentTarget).data("placeholder") as string);
+          } else {
+            $(currentTarget).removeClass("placeholder");
+          }
 
-            // Sync with actor data
-            const dataField = $(currentTarget).data("field") as string;
-            const curData = getProperty(self.actor, dataField) as string;
-            if (curData !== elemText) {
-              self.actor.update({[dataField]: elemText}).catch(kLog.error);
-            }
-          });
-      });
+          $(currentTarget)
+            .attr({contenteditable: "false"})
+            .off("keydown");
+          self.clamp(currentTarget);
+
+          // Sync with actor data
+          const dataField = $(currentTarget).data("field") as string;
+          const curData = getProperty(self.actor, dataField) as string;
+          if (curData !== elemText) {
+            self.actor.update({[dataField]: elemText}).catch(kLog.error);
+          }
+        });
     });
   }
-
-  // override _canDragStart(_dragSelector: string) {
-  //   kLog.log("K4PCSheet._canDragStart", `Not Implemented. _dragSelector: ${_dragSelector}`);
-  //   return true;
-  // }
-
-  // override _canDragDrop(_dropSelector: string) {
-  //   kLog.log("K4PCSheet._canDragDrop", `Not Implemented. _dropSelector: ${_dropSelector}`);
-  //   return false;
-  // }
-
-  // override _onDragOver(_event: DragEvent) {
-  //   kLog.log("K4PCSheet._onDragOver", "Not Implemented", {dragEvent: _event});
-  // }
-
-  // override _onDrop(_event: DragEvent) {
-  //   kLog.log("K4PCSheet._onDrop", "Not Implemented", {dragEvent: _event});
-  // }
-
-  // override _onDragStart(_event: DragEvent) {
-  //   kLog.log("K4PCSheet._onDragStart", "Not Implemented", {dragEvent: _event});
-  // }
 
   activateTab(tabName: string | null) {
     tabName ??= "front";

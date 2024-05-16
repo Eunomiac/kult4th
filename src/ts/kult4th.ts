@@ -11,7 +11,7 @@ import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
 import C, {getContrastingColor} from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
-import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.js";
+import {formatStringForKult, registerHandlebarHelpers, registerHooks} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
 
@@ -44,7 +44,7 @@ Hooks.once("init", async () => {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
-  CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
+  // CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
 
   CONFIG.ChatMessage.documentClass = K4ChatMessage;
   CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
@@ -253,6 +253,7 @@ Hooks.once("ready", () => {
 
   initCanvasStyles();
   initTinyMCEStyles();
+  registerHooks();
 
   /*DEVCODE*/
   const ACTOR = game.actors?.values().next().value as K4Actor;

@@ -27,13 +27,27 @@ export enum K4WoundType {
   stableserious = "stableserious",
   stablecritical = "stablecritical"
 }
+
+/**
+ * Represents an actor in the KULT: Divinity Lost game system.
+ * Extends the base Actor class provided by Foundry VTT.
+ */
 class K4Actor extends Actor {
 
+  /**
+   * Type guard to check if the actor is of a specific type.
+   * @param {T} type - The type to check against.
+   * @returns {boolean} True if the actor is of the specified type.
+   */
   is<T extends K4ActorType = K4ActorType>(type: T): this is K4Actor<T> {
     // @ts-expect-error -- Unable to resolve 'this.type' and 'type' to the same type.
     return this.type === type;
   }
 
+  /**
+   * Prepares the actor's data.
+   * Overrides the base method to include additional preparation for player characters.
+   */
   override prepareData() {
     super.prepareData();
     if (this.is(K4ActorType.pc)) {
@@ -41,6 +55,9 @@ class K4Actor extends Actor {
     }
   }
 
+  /**
+   * Prepares data specific to player characters.
+   */
   preparePCData() {
     if (this.is(K4ActorType.pc)) {
       this.system.moves = this.moves;
@@ -59,64 +76,97 @@ class K4Actor extends Actor {
         critical: this.system.modifiers.wounds_critical.length as Integer,
         total:    (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
       };
-      this.system.modifiersReport = this.parseModsToStrings(this.flatModTargets).join("; ");
+      this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
 
       // this.validateStability();
     }
   }
 
+  // #region GETTERS ~
+  /**
+   * Retrieves items of a specific type.
+   * @param {Type} type - The type of items to retrieve.
+   * @returns {Array<K4Item<Type>>} An array of items of the specified type.
+   */
   getItemsOfType<Type extends K4ItemType>(type: Type): Array<K4Item<Type>> {
     return [...this.items].filter((item: K4Item): item is K4Item<Type> => item.is(type));
   }
 
+  /**
+   * Retrieves an item by its name.
+   * @param {string} iName - The name of the item.
+   * @returns {K4Item | undefined} The item if found, otherwise undefined.
+   */
   getItemByName(iName: string): K4Item | undefined {
     return this.items.find((item: K4Item) => item.name === iName);
   }
 
+  /**
+   * Retrieves a move by its name.
+   * @param {string} mName - The name of the move.
+   * @returns {K4Item | undefined} The move if found, otherwise undefined.
+   */
   getMoveByName(mName: string) {
     return this.moves.find((move: K4Item) => move.name === mName);
   }
 
+  /**
+   * Retrieves an attack by its name.
+   * @param {string} aName - The name of the attack.
+   * @returns {K4Item | undefined} The attack if found, otherwise undefined.
+   */
   getAttackByName(aName: string) {
     return this.attacks.find((attack: K4Item) => attack.name === aName);
   }
 
+  /**
+   * Retrieves items by their source ID.
+   * @param {string} sourceID - The source ID of the items.
+   * @returns {K4SubItem[]} An array of sub-items with the specified source ID.
+   */
   getItemsBySource(sourceID: string): K4SubItem[] {
     return this.items.filter((item: K4Item): item is K4SubItem => {
-      if (!("sourceItem" in item.system)) { return false; }
+      if (!("sourceItem" in item.system)) {return false;}
       const {sourceItem} = item.system;
       return item.isSubItem() && sourceItem?.id === sourceID;
     });
   }
 
+  /**
+   * Deletes an item by its name.
+   * @param {string} iName - The name of the item.
+   * @returns {Promise<void>} A promise that resolves when the item is deleted.
+   */
   async dropItemByName(iName: string) {
     return [...this.items].find((item: K4Item): item is K4Item => item.name === iName)?.delete();
   }
 
-  get moves() { return this.getItemsOfType(K4ItemType.move); }
-  get basicMoves() { return this.moves.filter((move) => !move.isSubItem()); }
-  get derivedMoves() { return this.moves.filter((move): move is K4SubItem<K4ItemType.move> => move.isSubItem()); }
+  get moves() {return this.getItemsOfType(K4ItemType.move);}
+  get basicMoves() {return this.moves.filter((move) => !move.isSubItem());}
+  get derivedMoves() {return this.moves.filter((move): move is K4SubItem<K4ItemType.move> => move.isSubItem());}
 
-  get attacks() { return this.getItemsOfType(K4ItemType.attack); }
-  get basicAttacks() { return this.attacks.filter((attack) => !attack.isSubItem()); }
-  get derivedAttacks() { return this.attacks.filter((attack): attack is K4SubItem<K4ItemType.attack> => attack.isSubItem()); }
+  get attacks() {return this.getItemsOfType(K4ItemType.attack);}
+  get basicAttacks() {return this.attacks.filter((attack) => !attack.isSubItem());}
+  get derivedAttacks() {return this.attacks.filter((attack): attack is K4SubItem<K4ItemType.attack> => attack.isSubItem());}
 
-  get advantages() { return this.getItemsOfType(K4ItemType.advantage); }
-  get disadvantages() { return this.getItemsOfType(K4ItemType.disadvantage); }
-  get darkSecrets() { return this.getItemsOfType(K4ItemType.darksecret); }
-  get weapons() { return this.getItemsOfType(K4ItemType.weapon); }
-  get gear() { return this.getItemsOfType(K4ItemType.gear); }
-  get relations() { return this.getItemsOfType(K4ItemType.relation); }
+  get advantages() {return this.getItemsOfType(K4ItemType.advantage);}
+  get disadvantages() {return this.getItemsOfType(K4ItemType.disadvantage);}
+  get darkSecrets() {return this.getItemsOfType(K4ItemType.darksecret);}
+  get weapons() {return this.getItemsOfType(K4ItemType.weapon);}
+  get gear() {return this.getItemsOfType(K4ItemType.gear);}
+  get relations() {return this.getItemsOfType(K4ItemType.relation);}
 
-  get derivedItems() { return [...this.items].filter((item: K4Item): item is K4SubItem => item.isSubItem()); }
+  get derivedItems() {return [...this.items].filter((item: K4Item): item is K4SubItem => item.isSubItem());}
 
   get wounds(): Record<KeyOf<typeof this["system"]["wounds"]>, K4Wound> {
-    // if (this.type === K4ActorType.pc) {
     return this.system.wounds;
-    // } else {
-    // return ;
-    // }
   }
+  // #endregion
+
+
+
+
+
 
   get woundStrips(): HoverStripData[] {
     return Object.values(this.wounds).map((wound) => {
@@ -173,7 +223,7 @@ class K4Actor extends Actor {
         stripData.icon += `wound-serious${wound.isStabilized ? "-stabilized" : ""}.svg`;
       }
       if (wound.isStabilized) {
-        stripData.stripClasses?.push("k4-theme-dgold", "wound-stabilized");
+        stripData.stripClasses?.push("k4-theme-gold", "wound-stabilized");
       } else {
         stripData.stripClasses?.push("k4-theme-red");
       }
@@ -195,12 +245,12 @@ class K4Actor extends Actor {
     }
     return [];
   }
+
   /**
    * Retrieves a record of character attributes with their corresponding values.
    * @returns {Record<K4CharAttribute, number>} A record mapping each attribute to its integer value.
    */
   get attributes(): Record<K4CharAttribute, number> {
-    // Map attribute data to a record format, ensuring all expected attributes are present.
     const attributeMap: Record<K4CharAttribute, number> = {} as Record<K4CharAttribute, number>;
     this.attributeData.forEach((aData) => {
       attributeMap[aData.key] = aData.value;
@@ -239,6 +289,10 @@ class K4Actor extends Actor {
     }
   }
 
+  /**
+   * Validates the stability of the actor.
+   * Ensures the stability value is within the defined range.
+   */
   async validateStability() {
     if (this.is(K4ActorType.pc)) {
       const {value, min, max} = this.system.stability;
@@ -248,6 +302,10 @@ class K4Actor extends Actor {
     }
   }
 
+  /**
+   * Changes the stability of the actor by a specified delta.
+   * @param {number} delta - The change in stability.
+   */
   async changeStability(delta: number) {
     if (delta && this.is(K4ActorType.pc)) {
       const {value, min, max} = this.system.stability;
@@ -257,6 +315,11 @@ class K4Actor extends Actor {
     }
   }
 
+  /**
+   * Adds a wound to the actor.
+   * @param {K4WoundType} [type] - The type of the wound.
+   * @param {string} [description] - The description of the wound.
+   */
   async addWound(type?: K4WoundType, description?: string) {
     if (this.is(K4ActorType.pc)) {
       const woundData: K4Wound = {
@@ -271,7 +334,12 @@ class K4Actor extends Actor {
     }
   }
 
-  async toggleWound(id: string, toggleSwitch: "type"|"stabilized") {
+  /**
+   * Toggles the type or stabilization state of a wound.
+   * @param {string} id - The ID of the wound.
+   * @param {"type"|"stabilized"} toggleSwitch - The property to toggle.
+   */
+  async toggleWound(id: string, toggleSwitch: "type" | "stabilized") {
     const woundData = this.wounds[id];
     if (woundData) {
       switch (toggleSwitch) {
@@ -287,6 +355,10 @@ class K4Actor extends Actor {
     }
   }
 
+  /**
+   * Resets the name of a wound.
+   * @param {string} id - The ID of the wound.
+   */
   async resetWoundName(id: string) {
     const woundData = this.wounds[id];
     if (woundData) {
@@ -294,6 +366,10 @@ class K4Actor extends Actor {
     }
   }
 
+  /**
+   * Removes a wound from the actor.
+   * @param {string} id - The ID of the wound.
+   */
   async removeWound(id: string) {
     if (this.is(K4ActorType.pc)) {
       kLog.log("Starting Wounds", U.objClone(this.system.wounds));
@@ -302,14 +378,27 @@ class K4Actor extends Actor {
     }
   }
 
-  parseModsToStrings(modData: K4ModTargets = this.flatModTargets): string[] {
+  /**
+   *
+   * @param {K4ModTargets} [modData=this.flatModTargets] - The modifiers to parse.
+   * @returns {string[]} An array of strings representing the modifiers.
+   */
+  buildModifierReport(modData: K4ModTargets = this.flatModTargets): string {
     const returnStrings = [];
     for (const [modKey, modVal] of Object.entries(modData)) {
-      returnStrings.push(`${U.signNum(modVal)} to ${modKey === "all" ? "all" : U.tCase(modKey)} rolls`);
+      if (modVal < 0) {
+        returnStrings.push(`<span class="k4-theme-red"><strong>${modVal}</strong> to <strong>${modKey === "all" ? "all" : U.tCase(modKey)}</strong> rolls</span>`);
+      } else {
+        returnStrings.push(`<span class="k4-theme-gold"><strong>+${modVal}</strong> to <strong>${modKey === "all" ? "all" : U.tCase(modKey)}</strong> rolls</span>`);
+      }
     }
-    return returnStrings;
+    return returnStrings.join("<span class='k4-theme-black no-flex'>&#9670;</span>");
   }
 
+  /**
+   * Retrieves wound modifier data.
+   * @returns {K4RollModData} The wound modifier data.
+   */
   get woundModData(): K4RollModData {
     const modData: K4RollModData = {
       category: "wound",
@@ -334,6 +423,11 @@ class K4Actor extends Actor {
     }
     return modData;
   }
+
+  /**
+   * Retrieves stability modifier data.
+   * @returns {K4RollModData} The stability modifier data.
+   */
   get stabilityModData(): K4RollModData {
     const modData: K4RollModData = {
       category: "stability",
@@ -345,14 +439,22 @@ class K4Actor extends Actor {
     }
     return modData;
   }
+
+  /**
+   * Retrieves condition modifier data.
+   * @returns {K4RollModData[]} An array of condition modifier data.
+   */
   get conditionModData(): K4RollModData[] {
     const modData: K4RollModData[] = [];
 
     return modData;
   }
-  get effectModData(): K4RollModData[] {
-    // const modData: K4RollModData[] = [];
 
+  /**
+   * Retrieves effect modifier data.
+   * @returns {K4RollModData[]} An array of effect modifier data.
+   */
+  get effectModData(): K4RollModData[] {
     return [
       {
         category: "effect",
@@ -370,9 +472,12 @@ class K4Actor extends Actor {
         targets:  {[K4Attribute.willpower]: -1}
       }
     ];
-
-    // return modData;
   }
+
+  /**
+   * Retrieves all modifier targets.
+   * @returns {K4RollModData[]} An array of all modifier targets.
+   */
   get modTargets(): K4RollModData[] {
     return [
       this.woundModData,
@@ -382,14 +487,28 @@ class K4Actor extends Actor {
     ];
   }
   get flatModTargets(): K4ModTargets {
+
+    // Flatten all modifiers by combining total modifiers for each target
     const flatTargets: K4ModTargets = {};
-    this.modTargets.forEach(({targets}) => {
-      for (const [modSource, modNum] of Object.entries(targets)) {
-        flatTargets[modSource] ??= 0;
-        flatTargets[modSource] += modNum;
+    this.modTargets
+      .forEach(({targets}) => {
+        Object.entries(targets)
+          .filter(([_, modNum]) => modNum !== 0)
+          .forEach(([modSource, modNum]) => {
+            flatTargets[modSource] ??= 0;
+            flatTargets[modSource] += modNum;
+          });
+      });
+
+    // Remove any targets with a modifier of 0
+    for (const [key, value] of Object.entries(flatTargets)) {
+      if (value === 0) {
+        delete flatTargets[key];
       }
-    });
-    return flatTargets;
+    }
+
+    // Sort the targets by modifier value
+    return Object.fromEntries(Object.entries(flatTargets).sort((a, b) => b[1] - a[1]));
   }
 
   public async roll(rollSource: string, options: Partial<K4RollOptions> = {}) {
@@ -406,7 +525,7 @@ class K4Actor extends Actor {
     }
   }
 
-  public async trigger(rollSource: string) { await this.getItemByName(rollSource)?.displayItemSummary(); }
+  public async trigger(rollSource: string) {await this.getItemByName(rollSource)?.displayItemSummary();}
 
   async #parseItemRollSource(item: K4Item & K4RollSource, rollData: Partial<K4RollData>) {
     rollData.type = K4RollType.move;
@@ -433,9 +552,9 @@ class K4Actor extends Actor {
     return true;
   }
 
-  async #getRoll(rollSourceRef: string|K4RollSource|K4Attribute): Promise<{roll: Roll, rollData: K4RollData}|false> {
+  async #getRoll(rollSourceRef: string | K4RollSource | K4Attribute): Promise<{roll: Roll, rollData: K4RollData} | false> {
 
-    let rollSource: K4RollSource|undefined;
+    let rollSource: K4RollSource | undefined;
     const rollData: Partial<K4RollData> = {};
 
     if (rollSourceRef === K4Attribute.ask) {
@@ -459,7 +578,7 @@ class K4Actor extends Actor {
       }
     }
 
-    if (!rollSource) { return false; }
+    if (!rollSource) {return false;}
 
     if (rollSource instanceof K4Item) {
       if (!await this.#parseItemRollSource(rollSource, rollData)) {
@@ -493,22 +612,24 @@ class K4Actor extends Actor {
     };
   }
 
+  #checkModTarget(target: string, rollData: Omit<K4RollData, "modifiers">) {
+    return ["all", rollData.sourceType, rollData.sourceName, rollData.attribute].includes(target);
+  }
+
+  #checkMod(modData: K4RollModData, rollData: Omit<K4RollData, "modifiers">): K4RollMod | null {
+    const mod: K4RollMod = {category: modData.category, display: modData.display, value: 0};
+    for (const [target, value] of Object.entries(modData.targets)) {
+      if (this.#checkModTarget(target, rollData)) {
+        mod.value += value;
+      }
+    }
+    if (mod.value === 0) {
+      return null;
+    }
+    return mod;
+  }
+
   #applyRollModifiers(rollData: Omit<K4RollData, "modifiers">): K4RollData {
-    function checkModTarget(target: string) {
-      return ["all", rollData.sourceType, rollData.sourceName, rollData.attribute].includes(target);
-    }
-    function checkMod(modData: K4RollModData): K4RollMod | null {
-      const mod: K4RollMod = {category: modData.category, display: modData.display, value: 0};
-      for (const [target, value] of Object.entries(modData.targets)) {
-        if (checkModTarget(target)) {
-          mod.value += value;
-        }
-      }
-      if (mod.value === 0) {
-        return null;
-      }
-      return mod;
-    }
     return {
       ...rollData,
       modifiers: [
@@ -517,14 +638,14 @@ class K4Actor extends Actor {
         ...this.conditionModData,
         ...this.effectModData
       ]
-        .map(checkMod)
+        .map((modData) => this.#checkMod(modData, rollData))
         .filter((mod): mod is K4RollMod => mod !== null)
     };
   }
 
   async #displayRollResult(roll: Roll, rollData: K4RollData, options: K4RollOptions) {
-    if (U.isUndefined(roll.total)) { return; }
-    function isItem(ref: unknown): ref is K4RollableItem { return ref instanceof K4Item; }
+    if (U.isUndefined(roll.total)) {return;}
+    function isItem(ref: unknown): ref is K4RollableItem {return ref instanceof K4Item;}
 
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: {
