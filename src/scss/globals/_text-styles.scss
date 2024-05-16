@@ -166,6 +166,95 @@
 		}
 	}
 
+  @keyframes neonGlow-blue {
+    0% {
+      text-shadow: 0 0 2px rgba(255,255,255,.8),
+                  0 0 4px rgba(255,255,255,.8),
+                  0 0 4.5px  rgba(255,255,255,.8),
+                  0 0 8px  rgba(65,132, 220, 0.8),
+                  0 0 12.5px  rgba(65,132, 220,.8),
+                  0 0 16.5px  rgba(65,132, 220,.5),
+                  0 0 21px rgba(65,132, 220,.5),
+                  0 0 29px rgba(65,132, 220,.5),
+                  0 0 41.5px rgba(65,132, 220,.5);
+    }
+    100% {
+      text-shadow: 0 0 0.5px rgba(255,255,255,.8),
+                  0 0 1.5px rgba(255,255,255,.8),
+                  0 0 2px rgba(255,255,255,.8),
+                  0 0 4px rgba(65,132, 220,.8),
+                  0 0 6px rgba(65,132, 220,.8),
+                  0 0 8px rgba(65,132, 220,.8),
+                  0 0 10.5px rgba(65,132, 220,.8),
+                  0 0 16.5px rgba(65,132, 220,.8);
+    }
+  }
+
+  @keyframes neonGlow-red {
+    0% {
+      text-shadow: 0 0 2px rgba(255, 255, 255, 0.8),
+                  0 0 4px rgba(255, 255, 255, 0.8),
+                  0 0 4.5px  rgba(255, 255, 255, 0.8),
+                  0 0 8px  rgba(220, 65, 65, 0.8),
+                  0 0 12.5px  rgba(220, 65, 65, 0.8),
+                  0 0 16.5px  rgba(220, 65, 65, 0.5),
+                  0 0 21px rgba(220, 65, 65, 0.5),
+                  0 0 29px rgba(220, 65, 65, 0.5),
+                  0 0 41.5px rgba(220, 65, 65, 0.5);
+    }
+    100% {
+      text-shadow: 0 0 0.5px rgba(255,255,255,.8),
+                  0 0 1.5px rgba(255,255,255,.8),
+                  0 0 2px rgba(255,255,255,.8),
+                  0 0 4px rgba(220, 65, 65, 0.8),
+                  0 0 6px rgba(220, 65, 65, 0.8),
+                  0 0 8px rgba(220, 65, 65, 0.8),
+                  0 0 10.5px rgba(220, 65, 65, 0.8),
+                  0 0 16.5px rgba(220, 65, 65, 0.8);
+    }
+  }
+
+  @keyframes neonGlow-gold {
+    0% {
+      text-shadow: 0 0 2px rgba(255, 255, 255, 0.8),
+                  0 0 4px rgba(255, 255, 255, 0.8),
+                  0 0 4.5px  rgba(255, 255, 255, 0.8),
+                  0 0 8px  rgba(220, 220, 65, 0.8),
+                  0 0 12.5px  rgba(220, 220, 65, 0.8),
+                  0 0 16.5px  rgba(220, 220, 65, 0.5),
+                  0 0 21px rgba(220, 220, 65, 0.5),
+                  0 0 29px rgba(220, 220, 65, 0.5),
+                  0 0 41.5px rgba(220, 220, 65, 0.5);
+    }
+    100% {
+      text-shadow: 0 0 0.5px rgba(255,255,255,.8),
+                  0 0 1.5px rgba(255,255,255,.8),
+                  0 0 2px rgba(255,255,255,.8),
+                  0 0 4px rgba(220, 220, 65, 0.8),
+                  0 0 6px rgba(220, 220, 65, 0.8),
+                  0 0 8px rgba(220, 220, 65, 0.8),
+                  0 0 10.5px rgba(220, 220, 65, 0.8),
+                  0 0 16.5px rgba(220, 220, 65, 0.8);
+    }
+  }
+
+  @mixin neon-glow($color) {
+    color: var(--K4-bWHITE);
+    animation: neonGlow-#{$color} 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
+  }
+
+  .neon-glow-blue {
+    @include neon-glow(blue);
+  }
+
+  .neon-glow-red {
+    @include neon-glow(red);
+  }
+
+  .neon-glow-gold {
+    @include neon-glow(gold);
+  }
+
 	h1 {
 		color: var(--K4-color-header);
 		font-family: var(--font-heading);
@@ -218,68 +307,6 @@
 
 		font-variant: all-small-caps;
 		margin: 10px 0;
-		// padding: 5px 0 4px 0;
-
-		&.hold-header {
-			color: var(--K4-bWHITE);
-
-			animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
-
-			@keyframes neonGlowRed {
-				0% {
-					text-shadow: 0 0 2px rgba(255, 255, 255, 0.8),
-											0 0 4px rgba(255, 255, 255, 0.8),
-											0 0 4.5px  rgba(255, 255, 255, 0.8),
-											0 0 8px  rgba(220, 65, 65, 0.8),
-											0 0 12.5px  rgba(220, 65, 65, 0.8),
-											0 0 16.5px  rgba(220, 65, 65, 0.5),
-											0 0 21px rgba(220, 65, 65, 0.5),
-											0 0 29px rgba(220, 65, 65, 0.5),
-											0 0 41.5px rgba(220, 65, 65, 0.5);
-				}
-				100% {
-					text-shadow: 0 0 0.5px rgba(255,255,255,.8),
-											0 0 1.5px rgba(255,255,255,.8),
-											0 0 2px rgba(255,255,255,.8),
-											0 0 4px rgba(220, 65, 65, 0.8),
-											0 0 6px rgba(220, 65, 65, 0.8),
-											0 0 8px rgba(220, 65, 65, 0.8),
-											0 0 10.5px rgba(220, 65, 65, 0.8),
-											0 0 16.5px rgba(220, 65, 65, 0.8);
-				}
-			}
-		}
-
-		&.edges-header {
-			color: var(--K4-bWHITE);
-
-			animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
-
-
-			@keyframes neonGlowBlue {
-				0% {
-					text-shadow: 0 0 2px rgba(255,255,255,.8),
-											0 0 4px rgba(255,255,255,.8),
-											0 0 4.5px  rgba(255,255,255,.8),
-											0 0 8px  rgba(65,132, 220, 0.8),
-											0 0 12.5px  rgba(65,132, 220,.8),
-											0 0 16.5px  rgba(65,132, 220,.5),
-											0 0 21px rgba(65,132, 220,.5),
-											0 0 29px rgba(65,132, 220,.5),
-											0 0 41.5px rgba(65,132, 220,.5);
-				}
-				100% {
-					text-shadow: 0 0 0.5px rgba(255,255,255,.8),
-											0 0 1.5px rgba(255,255,255,.8),
-											0 0 2px rgba(255,255,255,.8),
-											0 0 4px rgba(65,132, 220,.8),
-											0 0 6px rgba(65,132, 220,.8),
-											0 0 8px rgba(65,132, 220,.8),
-											0 0 10.5px rgba(65,132, 220,.8),
-											0 0 16.5px rgba(65,132, 220,.8);
-				}
-			}
-		}
 	}
 
 	.text-center {
@@ -317,7 +344,8 @@
 		font-style: italic;
 	}
 	.text-edgename {
-		color: var(--K4-color-pos);
+    @include neon-glow(blue);
+		// color: var(--K4-color-pos);
 	}
 	.text-posmod,
 	.text-posmod+.text-keyword,
@@ -332,7 +360,7 @@
 	}
 
 	.text-gmtext {
-		color: var(--K4-color-neg);
+		@include neon-glow(red);
 	}
 
 	.text-resultlabel {
@@ -397,7 +425,7 @@
 			--icon-size: var(--strip-icon-size);
 			--icon-outline-color: var(--K4-strip-button-color-bg);
 			--icon-bg-color: var(--K4-strip-icon-color-bg);
-			--icon-outline-width: 2px;
+			--icon-outline-width: 1px;
 		}
 
 		.strip-bg, .button-strip {
@@ -506,7 +534,6 @@
 			font-family: var(--font-primary);
 			font-size: $rem-12;
 			line-height: $rem-14;
-			text-align: center;
 			font-style: italic;
 			width: 100%;
 			text-align: left;
@@ -526,53 +553,6 @@
 			--K4-strip-icon-color-bg: var(--K4-color-primary);
 			--K4-strip-icon-color-fg: var(--K4-color-contrast);
 			--icon-outline-color: var(--K4-color-primary);
-		}
-
-		&.wound-strip {
-			// --icon-size: 20px;
-			--K4-strip-main-color-bg: transparent;
-			// --strip-font-size: #{$rem-12};
-			--strip-underline-width: 0px;
-			--K4-strip-icon-color-bg: transparent; // var(--K4-dRED);
-			--icon-outline-color: transparent;
-			--icon-outline-width: 0px;
-			--icon-clip-path: none;
-			--strip-scale: 0.666;
-
-			&.wound-critical {
-				.strip-name {
-					text-transform: uppercase;
-					font-weight: 900;
-					font-family: var(--font-primary-caps);
-				}
-
-				&:not(.wound-stabilized) {
-					--K4-strip-main-color-fg: var(--K4-gRED);
-					--K4-strip-icon-color-fg: var(--K4-gRED);
-					--icon-scale: 1.2;
-					--strip-scale: 0.75;
-				}
-			}
-
-			&.wound-stabilized {
-				// --icon-scale: 1;
-				--K4-strip-main-color-fg: var(--K4-GOLD);
-				--icon-outline-color: transparent;
-				.icon-container, .icon-container .svg-container {
-					--K4-svg-bg: transparent;
-					--K4-svg-fill: var(--K4-GOLD);
-					--K4-svg-clip-path: none;
-					--K4-svg-scale: 1;
-				}
-				.strip-name {
-					font-style: italic;
-				}
-				.strip-bg {
-					border-color: transparent;
-				}
-
-
-			}
 		}
 	}
 

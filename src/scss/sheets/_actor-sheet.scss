@@ -130,7 +130,7 @@
       height: auto;
       width: auto;
       max-width: $gear-size - 2 * $frame-width;
-      top: 55%; // $gear-size / 2;
+      top: 50%; // $gear-size / 2;
       left: 50%; // $gear-size / 2;
       transform: translate(-50%, -50%);
       pointer-events: all;
@@ -599,20 +599,69 @@
               .wounds {
                 --button-gradient-light: var(--K4-bRED);
                 --button-gradient-dark: var(--K4-dRED);
+                --K4-color-primary: var(--K4-bWHITE);
                 display: grid;
-                padding: 5px;
-                grid-template-columns: 1fr 1fr 1fr;
+                padding: 0px;
+                grid-template-columns: 1fr 1fr;
                 grid-template-rows: 20px 20px 20px;
                 grid-row-gap: 5px;
                 grid-column-gap: 15px;
                 grid-auto-flow: column;
                 border-radius: 5px;
+                width: 100%;
+                min-width: 350px;
 
-                .wound-add {
-                  position: relative;
+                .wound-strip {
+                  --K4-strip-main-color-bg: transparent;
+                  --strip-underline-width: 0px;
+                  --K4-strip-icon-color-bg: transparent; // var(--K4-dRED);
+                  --icon-outline-color: transparent;
+                  --icon-outline-width: 0px;
+                  --icon-clip-path: none;
+                  --strip-scale: 0.8;
 
-                  button.wound-add {
-                    width: 100%
+                  .strip-button {
+                    flex-grow: 1;
+                  }
+                  .button-tooltip {
+                    font-size: $rem-12;
+                  }
+
+                  &.wound-critical {
+                    --strip-scale: 1;
+                    .strip-name {
+                      text-transform: uppercase;
+                      font-weight: 900;
+                      font-family: var(--font-primary-caps);
+                    }
+
+                    &:not(.wound-stabilized) {
+                      --K4-strip-main-color-fg: var(--K4-gRED);
+                      --K4-strip-icon-color-fg: var(--K4-gRED);
+                      --icon-scale: 1.2;
+                    }
+                  }
+
+                  .icon-container {
+                    background: transparent;
+                  }
+
+                  &.wound-stabilized {
+                    // --icon-scale: 1;
+                    --K4-strip-main-color-fg: var(--K4-GOLD);
+                    --icon-outline-color: transparent;
+                    .icon-container, .icon-container .svg-container {
+                      --K4-svg-bg: transparent;
+                      --K4-svg-fill: var(--K4-GOLD);
+                      --K4-svg-clip-path: none;
+                      // --K4-svg-scale: 1;
+                    }
+                    .strip-name {
+                      font-style: italic;
+                    }
+                    .strip-bg {
+                      border-color: transparent;
+                    }
                   }
                 }
 

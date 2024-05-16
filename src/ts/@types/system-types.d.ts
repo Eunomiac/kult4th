@@ -14,6 +14,7 @@ declare global {
     type: K4ItemType | K4WoundType,
     display: string,
     icon: string,
+    isGlowing?: "red"|"blue"|"gold"|false,
     stripClasses: string[],
     buttons: StripButtonData[],
     dataset?: Record<string, string>,

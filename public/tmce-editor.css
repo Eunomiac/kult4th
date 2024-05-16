@@ -74,125 +74,121 @@
   /* GRADIENTS */
   /* COLOR PALETTE & DEFAULT FOUNDRY OVERRIDES */
 }
-
-@font-face { // Alverata Irregular Light
-  font-family: Alverata, AlverataIrregular;
+@font-face {
+  font-family: Alverata;
   font-weight: 300; /* Light */
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-irreg-light.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-irreg-light.ttf") format("truetype");
 }
-@font-face { // Alverata Irregular Regular
-  font-family: Alverata, AlverataIrregular;
+@font-face {
+  font-family: Alverata;
   font-weight: 400; /* Regular */
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-irreg.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-irreg.ttf") format("truetype");
 }
-@font-face { // Alverata Irregular Medium
-  font-family: Alverata, AlverataIrregular;
+@font-face {
+  font-family: Alverata;
   font-weight: 500; /* Medium */
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-irreg-med.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-irreg-med.ttf") format("truetype");
 }
-@font-face { // Alverata Irregular Semi-Bold
-  font-family: Alverata, AlverataIrregular;
+@font-face {
+  font-family: Alverata;
   font-weight: 600; /* Semi-Bold */
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-irreg-semi.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-irreg-semi.ttf") format("truetype");
 }
-@font-face { // Alverata Irregular Bold
-  font-family: Alverata, AlverataIrregular;
+@font-face {
+  font-family: Alverata;
   font-weight: 700; /* Bold */
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-irreg-bold.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-irreg-bold.ttf") format("truetype");
 }
-@font-face { // Alverata Irregular Black
-  font-family: Alverata, AlverataIrregular;
+@font-face {
+  font-family: Alverata;
   font-weight: 900; /* Black */
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-irreg-black.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-irreg-black.ttf") format("truetype");
 }
-
-@font-face { // Alverata Regular Light
+@font-face {
   font-family: AlverataRegular;
   font-weight: 300; /* Light */
   font-style: normal;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-light.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-light.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Regular
+@font-face {
   font-family: AlverataRegular;
   font-weight: 400; /* Regular */
   font-style: normal;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Medium
+@font-face {
   font-family: AlverataRegular;
   font-weight: 500; /* Medium */
   font-style: normal;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-med.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-med.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Semi-Bold
+@font-face {
   font-family: AlverataRegular;
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-semi.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-semi.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Bold
+@font-face {
   font-family: AlverataRegular;
   font-weight: 700; /* Bold */
   font-style: normal;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-bold.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-bold.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Black
+@font-face {
   font-family: AlverataRegular;
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-black.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-black.ttf") format("truetype");
 }
-
-@font-face { // Alverata Regular Light Italic
+@font-face {
   font-family: AlverataRegular;
   font-weight: 300; /* Light */
   font-style: italic;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-light-italic.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-light-italic.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Regular Italic
+@font-face {
   font-family: AlverataRegular;
   font-weight: 400; /* Regular */
   font-style: italic;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-italic.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-italic.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Medium Italic
+@font-face {
   font-family: AlverataRegular;
   font-weight: 500; /* Medium */
   font-style: italic;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-med-italic.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-med-italic.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Semi-Bold Italic
+@font-face {
   font-family: AlverataRegular;
   font-weight: 600; /* Semi-Bold */
   font-style: italic;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-semi-italic.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-semi-italic.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Bold Italic
+@font-face {
   font-family: AlverataRegular;
   font-weight: 700; /* Bold */
   font-style: italic;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-bold-italic.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-bold-italic.ttf") format("truetype");
 }
-@font-face { // Alverata Regular Black Italic
+@font-face {
   font-family: AlverataRegular;
   font-weight: 900; /* Black */
   font-style: italic;
-  src: url("systems/kult4th/assets/fonts/alverata/alverata-reg-black-italic.ttf") format("truetype");
+  src: url("/assets/fonts/alverata/alverata-reg-black-italic.ttf") format("truetype");
 }
-
-@font-face { // Infidel
+@font-face {
   font-family: Infidel;
-  src: url("systems/kult4th/assets/fonts/infidel.ttf");
+  src: url("/assets/fonts/infidel.ttf");
 }
-@font-face { // Sokol
+@font-face {
   font-family: Sokol;
-  src: url("systems/kult4th/assets/fonts/sokol/sokol.woff2") format("woff2"), url("systems/kult4th/assets/fonts/sokol/sokol.woff") format("woff");
+  src: url("/assets/fonts/sokol/sokol.woff2") format("woff2"), url("/assets/fonts/sokol/sokol.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
-@font-face { // GrandpaScript
+@font-face {
   font-family: GrandpasScript;
-  src: url("systems/kult4th/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format("woff2"), url("systems/kult4th/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format("woff");
+  src: url("/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format("woff2"), url("/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -221,11 +217,46 @@
   --font-handwritten: GrandpaScript, serif;
 }
 #tinymce {
+  --K4-color-primary: var(--K4-GOLD);
+  --K4-color-primary-bright: var(--K4-bGOLD);
+  --K4-color-primary-glow: var(--K4-gGOLD);
+  --K4-color-contrast: var(--K4-BLACK);
+  --K4-color-contrast-low: var(--K4-dGOLD);
+  --K4-color-contrast-high: var(--K4-dBLACK);
+  --K4-color-title-fg: var(--K4-color-primary-bright);
+  --K4-color-title-bg: transparent;
+  --K4-color-header: var(--K4-RED);
+  --K4-color-keyword: var(--K4-gGOLD);
+  --K4-color-keyword-bright: var(--K4-gGOLD);
+  --K4-color-pos: var(--K4-gGOLD);
+  --K4-color-neg: var(--K4-bRED);
+  --K4-font-primary: var(--font-primary);
+  --K4-font-weight-primary: 400;
+  --K4-list-indent: 12px;
+  --K4-bg: transparent url("/assets/backgrounds/dgold/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
+  --K4-bg-inset: var(--K4-BLACK);
+  --K4-chat-border-image: url("/assets/backgrounds/dgold/chat-border.svg");
+  --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+  --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+  --K4-strip-main-color-bg: var(--K4-color-contrast);
+  --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
+  --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+  --K4-strip-button-color-fg: var(--K4-color-contrast);
+  --K4-strip-button-color-bg: var(--K4-color-primary);
+  --K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+  --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+  --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+  --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
+  --K4-svg-fill: var(--K4-color-primary);
+  --K4-svg-bg: none;
+  --K4-svg-clip-path: none;
+  --K4-svg-outline-color: transparent;
+  --K4-svg-scale: 1;
   --color-text-light-primary: var(--K4-color-primary);
   --color-text-light-highlight: var(--K4-color-primary-glow);
   --color-text-light-heading: var(--K4-color-primary-bright);
-  --color-text-dark-primary: var(--K4-color-contrast-high);
-  --color-text-dark-secondary: var(--K4-color-contrast-low);
+  --color-text-dark-primary: var(--K4-color-primary-bright);
+  --color-text-dark-secondary: var(--K4-color-primary);
   --color-text-dark-header: var(--K4-color-contrast);
   --color-text-dark-inactive: var(--K4-GREY);
   --color-text-hyperlink: var(--K4-color-keyword);
@@ -287,10 +318,10 @@
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 400;
   --K4-list-indent: 12px;
-  --K4-bg: transparent url("systems/kult4th/assets/backgrounds/dgold/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
+  --K4-bg: transparent url("/assets/backgrounds/dgold/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: var(--K4-BLACK);
-  --K4-chat-border-image: url("systems/kult4th/assets/backgrounds/dgold/chat-border.svg");
-  --K4-bullet: transparent url("systems/kult4th/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+  --K4-chat-border-image: url("/assets/backgrounds/dgold/chat-border.svg");
+  --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
   --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
@@ -324,10 +355,10 @@
   --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-header: var(--K4-RED);
   --K4-list-indent: 12px;
-  --K4-bg: transparent url("systems/kult4th/assets/backgrounds/white/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
-  --K4-bg-inset: transparent url("systems/kult4th/assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("systems/kult4th/assets/backgrounds/white/chat-border.svg");
-  --K4-bullet: transparent url("systems/kult4th/assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+  --K4-bg: transparent url("/assets/backgrounds/white/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
+  --K4-bg-inset: transparent url("/assets/backgrounds/white/bg.webp") repeat repeat center center/1000px 1000px;
+  --K4-chat-border-image: url("/assets/backgrounds/white/chat-border.svg");
+  --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
   --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
@@ -361,10 +392,10 @@
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-bRED);
   --K4-list-indent: 12px;
-  --K4-bg: transparent url("systems/kult4th/assets/backgrounds/dark/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
+  --K4-bg: transparent url("/assets/backgrounds/dark/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: var(--K4-BLACK);
-  --K4-chat-border-image: url("systems/kult4th/assets/backgrounds/dark/chat-border.svg");
-  --K4-bullet: transparent url("systems/kult4th/assets/icons/bullets/bullet-white.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+  --K4-chat-border-image: url("/assets/backgrounds/dark/chat-border.svg");
+  --K4-bullet: transparent url("/assets/icons/bullets/bullet-white.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
   --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
@@ -403,10 +434,10 @@
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-bRED);
   --K4-list-indent: 12px;
-  --K4-bg: transparent url("systems/kult4th/assets/backgrounds/red/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
+  --K4-bg: transparent url("/assets/backgrounds/red/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: var(--K4-BLACK);
-  --K4-chat-border-image: url("systems/kult4th/assets/backgrounds/red/chat-border.svg");
-  --K4-bullet: transparent url("systems/kult4th/assets/icons/bullets/bullet-red.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+  --K4-chat-border-image: url("/assets/backgrounds/red/chat-border.svg");
+  --K4-bullet: transparent url("/assets/icons/bullets/bullet-red.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
   --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
@@ -440,10 +471,10 @@
   --K4-color-title-bg: transparent;
   --K4-color-header: var(--K4-dRED);
   --K4-list-indent: 12px;
-  --K4-bg: transparent url("systems/kult4th/assets/backgrounds/bgold/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
+  --K4-bg: transparent url("/assets/backgrounds/bgold/item-bg.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: var(--K4-BLACK);
-  --K4-chat-border-image: url("systems/kult4th/assets/backgrounds/bgold/chat-border.svg");
-  --K4-bullet: transparent url("systems/kult4th/assets/icons/bullets/bullet-black.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+  --K4-chat-border-image: url("/assets/backgrounds/bgold/chat-border.svg");
+  --K4-bullet: transparent url("/assets/icons/bullets/bullet-black.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
   --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
@@ -716,6 +747,45 @@
   width: 100%;
   display: block;
 }
+#tinymce .neon-glow-blue,
+#tinymce .mce-content-body .neon-glow-blue {
+  color: var(--K4-bWHITE);
+  animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+@keyframes neonGlowBlue {
+  0% {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 12.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.5), 0 0 21px rgba(65, 132, 220, 0.5), 0 0 29px rgba(65, 132, 220, 0.5), 0 0 41.5px rgba(65, 132, 220, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(65, 132, 220, 0.8), 0 0 6px rgba(65, 132, 220, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 10.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.8);
+  }
+}
+#tinymce .neon-glow-red,
+#tinymce .mce-content-body .neon-glow-red {
+  color: var(--K4-bWHITE);
+  animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+@keyframes neonGlowRed {
+  0% {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(220, 65, 65, 0.8), 0 0 6px rgba(220, 65, 65, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 10.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.8);
+  }
+}
+#tinymce .neon-glow-gold,
+#tinymce .mce-content-body .neon-glow-gold {
+  color: var(--K4-bWHITE);
+  animation: neonGlowGold 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+@keyframes neonGlowGold {
+  0% {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 12.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.5), 0 0 21px rgba(220, 220, 65, 0.5), 0 0 29px rgba(220, 220, 65, 0.5), 0 0 41.5px rgba(220, 220, 65, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(220, 220, 65, 0.8), 0 0 6px rgba(220, 220, 65, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 10.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.8);
+  }
+}
 #tinymce h1,
 #tinymce .mce-content-body h1 {
   color: var(--K4-color-header);
@@ -768,32 +838,6 @@
   font-variant: all-small-caps;
   margin: 10px 0;
 }
-#tinymce label.k4-header.hold-header,
-#tinymce .mce-content-body label.k4-header.hold-header {
-  color: var(--K4-bWHITE);
-  animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-@keyframes neonGlowRed {
-  0% {
-    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5);
-  }
-  100% {
-    text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(220, 65, 65, 0.8), 0 0 6px rgba(220, 65, 65, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 10.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.8);
-  }
-}
-#tinymce label.k4-header.edges-header,
-#tinymce .mce-content-body label.k4-header.edges-header {
-  color: var(--K4-bWHITE);
-  animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-@keyframes neonGlowBlue {
-  0% {
-    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 12.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.5), 0 0 21px rgba(65, 132, 220, 0.5), 0 0 29px rgba(65, 132, 220, 0.5), 0 0 41.5px rgba(65, 132, 220, 0.5);
-  }
-  100% {
-    text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(65, 132, 220, 0.8), 0 0 6px rgba(65, 132, 220, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 10.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.8);
-  }
-}
 #tinymce .text-center,
 #tinymce .mce-content-body .text-center {
   text-align: center;
@@ -822,7 +866,7 @@
 #tinymce .mce-content-body .text-edgename,
 #tinymce .mce-content-body .text-gmtext,
 #tinymce .mce-content-body .text-resultlabel {
-  font-weight: 700;
+  font-weight: 900;
 }
 #tinymce .text-keyword,
 #tinymce .mce-content-body .text-keyword {
@@ -933,8 +977,6 @@
   width: calc(100% - 0.5 * var(--strip-icon-size));
   top: var(--strip-padding-vert);
   left: calc(0.5 * var(--strip-icon-size));
-  background: var(--K4-strip-main-color-bg);
-  border-bottom: var(--strip-underline-width) solid var(--K4-strip-button-color-bg);
 }
 #tinymce div.hover-strip .button-strip,
 #tinymce .mce-content-body div.hover-strip .button-strip {
@@ -1035,7 +1077,6 @@
   font-family: var(--font-primary);
   font-size: 12px;
   line-height: 14px;
-  text-align: center;
   font-style: italic;
   width: 100%;
   text-align: left;
@@ -1063,7 +1104,7 @@
   --icon-outline-color: transparent;
   --icon-outline-width: 0px;
   --icon-clip-path: none;
-  --strip-scale: 0.666;
+  --strip-scale: 0.8;
 }
 #tinymce div.hover-strip.wound-strip.wound-critical .strip-name,
 #tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name {
@@ -1076,7 +1117,10 @@
   --K4-strip-main-color-fg: var(--K4-gRED);
   --K4-strip-icon-color-fg: var(--K4-gRED);
   --icon-scale: 1.2;
-  --strip-scale: 0.75;
+}
+#tinymce div.hover-strip.wound-strip .icon-container,
+#tinymce .mce-content-body div.hover-strip.wound-strip .icon-container {
+  background: transparent;
 }
 #tinymce div.hover-strip.wound-strip.wound-stabilized,
 #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized {
@@ -1089,7 +1133,6 @@
   --K4-svg-bg: transparent;
   --K4-svg-fill: var(--K4-GOLD);
   --K4-svg-clip-path: none;
-  --K4-svg-scale: 1;
 }
 #tinymce div.hover-strip.wound-strip.wound-stabilized .strip-name,
 #tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name {

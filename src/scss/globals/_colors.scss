@@ -109,8 +109,8 @@ Kult White:  #FFFFFF */
 	--color-text-light-highlight: var(--K4-color-primary-glow); // var(--K4-color-primary-bright); // #f0f0e0;
   --color-text-light-heading: var(--K4-color-primary-bright); // #c9c7b8;
 
-  --color-text-dark-primary: var(--K4-color-contrast-high); // #191813;
-  --color-text-dark-secondary: var(--K4-color-contrast-low); // #4b4a44;
+  --color-text-dark-primary: var(--K4-color-primary-bright); // var(--K4-color-contrast-high); // #191813;
+  --color-text-dark-secondary: var(--K4-color-primary); // var(--K4-color-contrast-low); // #4b4a44;
   --color-text-dark-header: var(--K4-color-contrast); // #23221d;
   --color-text-dark-inactive: var(--K4-GREY);
 

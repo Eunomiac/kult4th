@@ -161,6 +161,12 @@ class K4Actor extends Actor {
   get wounds(): Record<KeyOf<typeof this["system"]["wounds"]>, K4Wound> {
     return this.system.wounds;
   }
+  get wounds_serious() {return Object.values(this.wounds).filter((wound) => !wound.isCritical);}
+  get wounds_critical() {return Object.values(this.wounds).filter((wound) => wound.isCritical);}
+  get wounds_serious_unstabilized() {return this.wounds_serious.filter((wound) => !wound.isStabilized);}
+  get wounds_critical_unstabilized() {return this.wounds_critical.filter((wound) => !wound.isStabilized);}
+  get wounds_serious_stabilized() {return this.wounds_serious.filter((wound) => wound.isStabilized);}
+  get wounds_critical_stabilized() {return this.wounds_critical.filter((wound) => wound.isStabilized);}
   // #endregion
 
 
@@ -178,6 +184,7 @@ class K4Actor extends Actor {
           wound.isCritical ? "critical" : "serious"
         ].join("") as K4WoundType,
         display:      wound.description ?? "",
+        // isGlowing:    (wound.isCritical && !wound.isStabilized) ? "red" : false,
         stripClasses: ["wound-strip"],
         dataTarget:   `system.wounds.${wound.id}.description`,
         placeholder:  "(description)  ",
@@ -289,6 +296,15 @@ class K4Actor extends Actor {
     }
   }
 
+  // async askForTextInput(prompt: string, placeholder?: string): Promise<string | null> {
+  //   const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-text-input"));
+  //   const content = template({
+  //     id: this.id,
+  //     prompt,
+  //     placeholder
+  //   });
+  // }
+
   /**
    * Validates the stability of the actor.
    * Ensures the stability value is within the defined range.
@@ -328,6 +344,33 @@ class K4Actor extends Actor {
         isCritical:   type === K4WoundType.critical,
         isStabilized: false
       };
+      let isWoundUpgrading = false;
+      if (!woundData.isCritical) {
+        // If the wound is serious, check if the actor has more than the maximum number of allowed serious wounds
+        if (this.wounds_serious.length >= this.system.maxWounds.serious) {
+          // If the actor has reached the limit for serious wounds, upgrade the wound to critical
+          woundData.isCritical = true;
+          isWoundUpgrading = true;
+        }
+      }
+      if (woundData.isCritical) {
+        // If critical, check if actor already has a critical wound; if so, reject the wound and alert the players
+        if (this.wounds_critical.length) {
+          if (isWoundUpgrading) {
+            ui.notifications?.error(`${this.name} has already suffered ${U.verbalizeNum(this.wounds_serious.length)} serious wounds and a critical wound: They can withstand no further injury.`)
+          } else {
+            ui.notifications?.error(`${this.name} has already suffered a critical wound and cannot withstand another.`);
+          }
+          return;
+        }
+        if (isWoundUpgrading) {
+          ui.notifications?.warn(`${this.name} already has ${U.verbalizeNum(this.wounds_serious.length)} serious wounds, and suffers a CRITICAL WOUND instead!`);
+        } else {
+          ui.notifications?.warn(`${this.name} suffers a CRITICAL WOUND!`);
+        }
+      } else {
+        ui.notifications?.warn(`${this.name} suffers a Serious Wound!`);
+      }
       kLog.log("Starting Wounds", U.objClone(this.system.wounds));
       await this.update({[`system.wounds.${woundData.id}`]: woundData});
       kLog.log("Updated Wounds", U.objClone(this.system.wounds));
