@@ -45,6 +45,7 @@
 		width: calc(var(--K4-sheet-dragbar-width) - var(--K4-sheet-dragbar-shift-horiz));
 		left: var(--K4-sheet-dragbar-shift-horiz);
 		top: var(--K4-sheet-dragbar-shift-vert);
+    background: transparent;
 		overflow: visible;
 		border: none;
 		padding: 0;
