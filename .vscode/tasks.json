@@ -77,7 +77,7 @@
     {
       "label": "[Dep] Build TinyMCE",
       "type": "shell",
-      "command": "npx sass src/scss/tmce-editor.scss:public/css/tmce-editor.css",
+      "command": "npx sass src/scss/tmce-editor.scss:public/tmce-editor.css",
       "group": "build",
       "presentation": {
         "echo": false,

@@ -2,16 +2,19 @@
 import Tagify from "@yaireo/tagify";
 export {Tagify};
 
-export {gsap} from "gsap";
+// Import GSAP and its plugins from Foundry's provided path
+import {gsap, RoughEase, ExpoScaleEase, SlowMo, Flip, Observer, Draggable, MotionPathPlugin, PixiPlugin, TextPlugin, MorphSVGPlugin, GSDevTools} from "gsap/all";
 
-export {CustomEase} from "gsap/CustomEase";
-export {RoughEase, ExpoScaleEase, SlowMo} from "gsap/EasePack";
+gsap.registerPlugin(RoughEase, ExpoScaleEase, SlowMo, Flip, Observer, Draggable, MotionPathPlugin, PixiPlugin, TextPlugin, MorphSVGPlugin, GSDevTools);
 
-export {Flip} from "gsap/Flip";
-export {Observer} from "gsap/Observer";
-export {Draggable} from "gsap/Draggable";
-export {MotionPathPlugin} from "gsap/MotionPathPlugin";
-// export {MorphSVGPlugin} from "gsap/MorphSVGPlugin";
-export {PixiPlugin} from "gsap/PixiPlugin";
-export {TextPlugin} from "gsap/TextPlugin";
-// export {GSDevTools} from "gsap/GSDevTools";
+// Export GSAP and its plugins
+export {gsap};
+export {RoughEase, ExpoScaleEase, SlowMo};
+export {Flip};
+export {Observer};
+export {Draggable};
+export {MotionPathPlugin};
+export {PixiPlugin};
+export {TextPlugin};
+export {MorphSVGPlugin};
+export {GSDevTools};

@@ -138,9 +138,7 @@ function scssVariablesToJsPlugin(): Plugin {
 function foundryPlugin(): Plugin {
   const usesFoundryPlugin = Symbol("foundry-plugin");
   const externalsSourceMap = new Map([
-    ["gsap/all", "scripts/greensock/esm/all.js"],
-    ["gsap/MorphSVGPlugin", "scripts/greensock/esm/MorphSVGPlugin.js"],
-    ["gsap/GSDevTools", "scripts/greensock/esm/GSDevTools.js"]
+    ["gsap", "scripts/greensock/esm/all.js"]
   ]);
 
   return {
@@ -236,26 +234,14 @@ const config: UserConfig = defineConfig({
     },
     rollupOptions: {
       external: [
-        "gsap/all",
-        "gsap/CustomEase",
-        "gsap/EasePack",
-        "gsap/Flip",
-        "gsap/Observer",
-        "gsap/Draggable",
-        "gsap/MotionPathPlugin",
-        "gsap/MorphSVGPlugin",
-        "gsap/PixiPlugin",
-        "gsap/TextPlugin",
-        "gsap/GSDevTools"
+        "gsap/all"
       ]
     }
   },
   resolve: {
     preserveSymlinks: true,
     alias:            {
-      "gsap/all":            "scripts/greensock/esm/all.js",
-      "gsap/MorphSVGPlugin": "scripts/greensock/esm/MorphSVGPlugin.js",
-      "gsap/GSDevTools":     "scripts/greensock/esm/GSDevTools.js"
+      "gsap/all": path.resolve(__dirname, "public/scripts/greensock/esm/all.js")
     }
   },
   plugins: [

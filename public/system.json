@@ -20,14 +20,11 @@
 		"scripts/clamp.min.js"
 	],
   "esmodules": [
-    "index.js",
-		"greensock/esm/all.js",
-		"greensock/esm/MorphSVGPlugin.js",
-		"greensock/esm/GSDevTools.js"
+    "index.js"
 	],
   "styles": [
 		"style.css",
-    "css/tmce-editor.css"
+    "tmce-editor.css"
 	],
   "packs": [
 		{
