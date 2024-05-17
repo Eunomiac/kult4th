@@ -1,2282 +1,2284 @@
-[{
-  "name": "Competitor",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
-  "data": {
-    "key": "competitor",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Competitor",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you neglect to protect your interests or are distracted elsewhere,",
-            "outro": "%insert.rollPrompt% to see if your competitor managed to damage your business.",
-            "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You are safe from your competitor, for the moment."
+[
+  {
+    "name": "Competitor",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
+    "data": {
+      "key": "competitor",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Competitor",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You have been careless. Your competitor may strike against you. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you neglect to protect your interests or are distracted elsewhere,",
+              "outro": "%insert.rollPrompt% to see if your competitor managed to damage your business.",
+              "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
             },
-            "failure": {
-              "result": "You hand your competitor a golden opportunity, and they move against your interests. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "competitor"
+            "results": {
+              "completeSuccess": {
+                "result": "You are safe from your competitor, for the moment."
+              },
+              "partialSuccess": {
+                "result": "You have been careless. Your competitor may strike against you. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "You hand your competitor a golden opportunity, and they move against your interests. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "competitor"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You have a competitor in the criminal underworld, whose business niche is similar to yours.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "1DZfibKZVOfLvLHq"
-},
-{
-  "name": "Mental Compulsion",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
-  "data": {
-    "key": "mental-compulsion",
-    "description": "",
-    "lists": {
-      "options": {
-        "name": "Options",
-        "items": [
-          "Cleaning",
-          "Counting",
-          "Triple-checking",
-          "Showering",
-          "Memorizing",
-          "Pyromania",
-          "Kleptomania",
-          "Cursing",
-          "Confessing your sins",
-          "Eating",
-          "Hypochondria"
-        ]
-      }
-    },
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Mental Compulsion",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In situations where you could be distracted by your compulsion,",
-            "outro": "%insert.rollPrompt%."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You control your compulsions and can focus on other things."
-            },
-            "partialSuccess": {
-              "result": "You become distracted and take #>text-negmod>−1<# #>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
-            },
-            "failure": {
-              "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "mental-compulsion"
-        }
-      }
-    ],
-    "rules": {
-      "intro": "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage:",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [
-        "options"
       ],
-      "effectFunctions": [],
-      "holdText": ""
+      "rules": {
+        "intro": "You have a competitor in the criminal underworld, whose business niche is similar to yours.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "9URKadb13t32Bgq1"
-},
-{
-  "name": "Sexual Neurosis",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
-  "data": {
-    "key": "sexual-neurosis",
-    "description": "",
-    "lists": {
-      "gmoptions": {
-        "name": "GM Options",
-        "items": [
-          "You hurt, or you are hurt by, your sexual partner (physically or psychologically).",
-          "The boundaries between dimensions are weakened; an entity from beyond catches the scent of you or your lover.",
-          "Your sexual partner becomes obsessed with you and starts stalking you."
-        ]
-      }
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
     },
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Sexual Neurosis",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you have the opportunity to have consensual sex or take advantage of someone vulnerable to your advances,",
-            "outro": "%insert.rollPrompt%."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You can control your urges."
-            },
-            "partialSuccess": {
-              "result": "Choose between having sex with the person or reduce your #>text-negmod>−1<# #>text-keyword>Stability<#."
-            },
-            "failure": {
-              "result": "You cannot resist having sex with the person and the GM chooses one option from the list below: %list.gmoptions%"
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "sexual-neurosis"
+    "flags": {},
+    "_id": "1DZfibKZVOfLvLHq"
+  },
+  {
+    "name": "Mental Compulsion",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
+    "data": {
+      "key": "mental-compulsion",
+      "description": "",
+      "lists": {
+        "options": {
+          "name": "Options",
+          "items": [
+            "Cleaning",
+            "Counting",
+            "Triple-checking",
+            "Showering",
+            "Memorizing",
+            "Pyromania",
+            "Kleptomania",
+            "Cursing",
+            "Confessing your sins",
+            "Eating",
+            "Hypochondria"
+          ]
         }
-      }
-    ],
-    "rules": {
-      "intro": "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "AcqkAOO30OolxA0l"
-},
-{
-  "name": "Phobia",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
-  "data": {
-    "key": "phobia",
-    "description": "",
-    "lists": {},
-    "subType": "active-static",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Phobia",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you're confronted by the object of your phobia,",
-            "outro": "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
-          },
-          "subType": "active-static",
-          "attribute": "zero",
-          "key": "phobia"
+      },
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Mental Compulsion",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "In situations where you could be distracted by your compulsion,",
+              "outro": "%insert.rollPrompt%."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "You control your compulsions and can focus on other things."
+              },
+              "partialSuccess": {
+                "result": "You become distracted and take #>text-negmod>−1<# #>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
+              },
+              "failure": {
+                "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "mental-compulsion"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You harbor an overpowering fear of something. Choose the stimulus that frightens you when you take this Disadvantage.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "AlyKpOXzXFx4thIK"
-},
-{
-  "name": "Infirm",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
-  "data": {
-    "key": "infirm",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Infirm",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you are subjected to major physical or psychological stress,",
-            "outro": "%insert.rollPrompt%."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "Your condition is under control."
-            },
-            "partialSuccess": {
-              "result": "Your condition triggers, causing pain and daze (#>text-negmod>−1<# to all rolls until the scene ends)."
-            },
-            "failure": {
-              "result": "Your condition is aggravated with life threatening results (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "infirm"
-        }
-      }
-    ],
-    "rules": {
-      "intro": "You suffer from a dangerous physical disease or condition, such as heart disease, hypertension, morbid obesity, or serious gastric ulcer.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "D2TS5wdlSehWIUtl"
-},
-{
-  "name": "Drug Addict",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
-  "data": {
-    "key": "drug-addict",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Drug Addict",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you have been using, or have the opportunity to use,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You are in control of the urge, for now."
-            },
-            "partialSuccess": {
-              "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
-            },
-            "failure": {
-              "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "drug-addict"
-        }
-      }
-    ],
-    "rules": {
-      "intro": "You are addicted to hard drugs; name at least one when you gain this Disadvantage.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "E0aZK5z3dDCSpOHL"
-},
-{
-  "name": "Victim of Passion",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
-  "data": {
-    "key": "victim-of-passion",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Victim of Passion",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You keep your passion in check."
-            },
-            "partialSuccess": {
-              "result": "The passion awakens within you. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
-            },
-            "failure": {
-              "result": "You are completely in the passion's grip. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "victim-of-passion"
-        }
-      }
-    ],
-    "rules": {
-      "intro": "You have an overwhelming passion for someone or something, seeking to possess it at any cost. Define the object of your passions when you take this Disadvantage.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "H26AIMvKnqsIBIys"
-},
-{
-  "name": "Obsession",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
-  "data": {
-    "key": "obsession",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Obsession",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "At the first game session and whenever you encounter something associated with your obsession,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You overcome your obsession for the moment."
-            },
-            "partialSuccess": {
-              "result": "Your obsession influences your behavior. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
-            },
-            "failure": {
-              "result": "Your obsession takes over completely. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "obsession"
-        }
-      }
-    ],
-    "rules": {
-      "intro": "You have discovered a conspiracy or supernatural phenomenon, and you can't stop yourself from getting to the bottom of it.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "MdteXeG4LEyjZueV"
-},
-{
-  "name": "Broken",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/broken.svg",
-  "data": {
-    "key": "broken",
-    "description": "",
-    "lists": {},
-    "subType": "passive",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [],
-    "rules": {
-      "intro": "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.%insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [
-        "SetTrait:actor/data.stability.max,6"
       ],
-      "holdText": ""
+      "rules": {
+        "intro": "You are fixated on a particular idea or action, to the point of it strongly impacting your life. Choose a compulsion when you take this Disadvantage:",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [
+          "options"
+        ],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "9URKadb13t32Bgq1"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "ORy3pj0grvPaY6QD"
-},
-{
-  "name": "Nightmares",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
-  "data": {
-    "key": "nightmares",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Nightmares",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "During any scene when you sleep,",
-            "outro": "%insert.rollPrompt%."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You sleep in peace."
-            },
-            "partialSuccess": {
-              "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#) when you wake up."
-            },
-            "failure": {
-              "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "nightmares"
+  {
+    "name": "Sexual Neurosis",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
+    "data": {
+      "key": "sexual-neurosis",
+      "description": "",
+      "lists": {
+        "gmoptions": {
+          "name": "GM Options",
+          "items": [
+            "You hurt, or you are hurt by, your sexual partner (physically or psychologically).",
+            "The boundaries between dimensions are weakened; an entity from beyond catches the scent of you or your lover.",
+            "Your sexual partner becomes obsessed with you and starts stalking you."
+          ]
         }
-      }
-    ],
-    "rules": {
-      "intro": "You suffer from recurring nightmares, probably connected to your Dark Secrets.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
-    },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "PWJbww72v6WFBzEd"
-},
-{
-  "name": "Experiment Gone Wrong",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
-  "data": {
-    "key": "experiment-gone-wrong",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Experiment Gone Wrong",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first session and whenever things seem in control,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "Your experiment leaves you alone."
+      },
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Sexual Neurosis",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "Your experiment is close on your heels. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you have the opportunity to have consensual sex or take advantage of someone vulnerable to your advances,",
+              "outro": "%insert.rollPrompt%."
             },
-            "failure": {
-              "result": "Your experiment is in your vicinity and acts against you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "experiment-gone-wrong"
+            "results": {
+              "completeSuccess": {
+                "result": "You can control your urges."
+              },
+              "partialSuccess": {
+                "result": "Choose between having sex with the person or reduce your #>text-negmod>−1<# #>text-keyword>Stability<#."
+              },
+              "failure": {
+                "result": "You cannot resist having sex with the person and the GM chooses one option from the list below: %list.gmoptions%"
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "sexual-neurosis"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You have carried out a scientific experiment, which went horribly awry. The experiment gave rise to something unnatural, which escaped and disappeared without a trace. Recently, the 'results' of your experiment tracked you down, reappearing in your life, and forcing you to either escape or confront it.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
+      ],
+      "rules": {
+        "intro": "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "AcqkAOO30OolxA0l"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "S1x32nJ5RxZfh6Qg"
-},
-{
-  "name": "Lost Identity",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
-  "data": {
-    "key": "lost-identity",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Lost Identity",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you encounter something from your repressed past,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You repress your true identity, remaining in the present."
+  {
+    "name": "Phobia",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
+    "data": {
+      "key": "phobia",
+      "description": "",
+      "lists": {},
+      "subType": "active-static",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Phobia",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "Your true identity is catching up to you. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you're confronted by the object of your phobia,",
+              "outro": "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
             },
-            "failure": {
-              "result": "Your true identity resurfaces. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "lost-identity"
+            "subType": "active-static",
+            "attribute": "zero",
+            "key": "phobia"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "Your true identity has been lost to a military or private-run secret agent program. You do not remember anything about your pre-employment life. Recently, memories of your true identity have started coming back to you.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
+      ],
+      "rules": {
+        "intro": "You harbor an overpowering fear of something. Choose the stimulus that frightens you when you take this Disadvantage.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "AlyKpOXzXFx4thIK"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "Sd5icgTqqB4Oz3X7"
-},
-{
-  "name": "Guilt",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
-  "data": {
-    "key": "guilt",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Guilt",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever everything appears okay,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "Your guilt isn't on your mind at the moment."
+  {
+    "name": "Infirm",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
+    "data": {
+      "key": "infirm",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Infirm",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You are reminded of your guilt. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you are subjected to major physical or psychological stress,",
+              "outro": "%insert.rollPrompt%."
             },
-            "failure": {
-              "result": "Your guilt catches up to you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "guilt"
+            "results": {
+              "completeSuccess": {
+                "result": "Your condition is under control."
+              },
+              "partialSuccess": {
+                "result": "Your condition triggers, causing pain and daze (#>text-negmod>−1<# to all rolls until the scene ends)."
+              },
+              "failure": {
+                "result": "Your condition is aggravated with life threatening results (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "infirm"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You carry heavy guilt for your past sins, having harmed one or several people through your actions or inaction.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
+      ],
+      "rules": {
+        "intro": "You suffer from a dangerous physical disease or condition, such as heart disease, hypertension, morbid obesity, or serious gastric ulcer.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "D2TS5wdlSehWIUtl"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "UWfP1mWzutahcJYu"
-},
-{
-  "name": "Haunted",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
-  "data": {
-    "key": "haunted",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Haunted",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first session and whenever you are distracted or weakened,",
-            "outro": "%insert.rollPrompt% to see if the entity gains power over you.",
-            "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "The entity leaves you alone."
+  {
+    "name": "Drug Addict",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
+    "data": {
+      "key": "drug-addict",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Drug Addict",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you have been using, or have the opportunity to use,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
             },
-            "failure": {
-              "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "haunted"
+            "results": {
+              "completeSuccess": {
+                "result": "You are in control of the urge, for now."
+              },
+              "partialSuccess": {
+                "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "drug-addict"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are haunted by supernatural forces. With the GM's assistance, determine the nature of what you believe is haunting you.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
+      ],
+      "rules": {
+        "intro": "You are addicted to hard drugs; name at least one when you gain this Disadvantage.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "E0aZK5z3dDCSpOHL"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "XcxPnFhPkII1G15Q"
-},
-{
-  "name": "Wanted",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
-  "data": {
-    "key": "wanted",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Wanted",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you attract attention to yourself or forget to keep your head down,",
-            "outro": "%insert.rollPrompt% to see if you've been discovered.",
-            "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You are safe, for now."
+  {
+    "name": "Victim of Passion",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
+    "data": {
+      "key": "victim-of-passion",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Victim of Passion",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You have made a mistake. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
             },
-            "failure": {
-              "result": "All eyes are on you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "wanted"
+            "results": {
+              "completeSuccess": {
+                "result": "You keep your passion in check."
+              },
+              "partialSuccess": {
+                "result": "The passion awakens within you. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "You are completely in the passion's grip. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "victim-of-passion"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are wanted by the authorities—local, state, or federal—for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
+      ],
+      "rules": {
+        "intro": "You have an overwhelming passion for someone or something, seeking to possess it at any cost. Define the object of your passions when you take this Disadvantage.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "H26AIMvKnqsIBIys"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "ZQ6AVElfg0JlcN4N"
-},
-{
-  "name": "Stalker",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
-  "data": {
-    "key": "stalker",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Stalker",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you expose your current location,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You are safe for now."
+  {
+    "name": "Obsession",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
+    "data": {
+      "key": "obsession",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Obsession",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "Your enemies are on to you. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "At the first game session and whenever you encounter something associated with your obsession,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
             },
-            "failure": {
-              "result": "Your enemies have caught up to you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "stalker"
+            "results": {
+              "completeSuccess": {
+                "result": "You overcome your obsession for the moment."
+              },
+              "partialSuccess": {
+                "result": "Your obsession influences your behavior. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Your obsession takes over completely. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "obsession"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are hunted by a faceless enemy. Anyone you meet could be one of their minions—or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
+      ],
+      "rules": {
+        "intro": "You have discovered a conspiracy or supernatural phenomenon, and you can't stop yourself from getting to the bottom of it.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "MdteXeG4LEyjZueV"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
+  {
+    "name": "Broken",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/broken.svg",
+    "data": {
+      "key": "broken",
+      "description": "",
+      "lists": {},
+      "subType": "passive",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [],
+      "rules": {
+        "intro": "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.%insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [
+          "SetTrait:actor/data.stability.max,6"
+        ],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "ORy3pj0grvPaY6QD"
   },
-  "flags": {},
-  "_id": "eKG4cYELMT0feVkG"
-},
-{
-  "name": "Oath of Revenge",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
-  "data": {
-    "key": "oath-of-revenge",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Oath of Revenge",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever the target of your vengeance (or someone/something associated with them) appears,",
-            "outro": "%insert.rollPrompt%."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You remain in control of your vengeful nature and can act rationally."
+  {
+    "name": "Nightmares",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
+    "data": {
+      "key": "nightmares",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Nightmares",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
+            "isCustom": false,
+            "rules": {
+              "trigger": "During any scene when you sleep,",
+              "outro": "%insert.rollPrompt%."
             },
-            "failure": {
-              "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "oath-of-revenge"
+            "results": {
+              "completeSuccess": {
+                "result": "You sleep in peace."
+              },
+              "partialSuccess": {
+                "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#) when you wake up."
+              },
+              "failure": {
+                "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "nightmares"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You have sworn to avenge an unforgivable injustice. Decide who is the subject of your vengeance and what they have done to you. It could be a single individual, people who share a certain trait, or members of an organization.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
+      ],
+      "rules": {
+        "intro": "You suffer from recurring nightmares, probably connected to your Dark Secrets.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "PWJbww72v6WFBzEd"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "ep0A7jzxR73ybFZ5"
-},
-{
-  "name": "Jealousy",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
-  "data": {
-    "key": "jealousy",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Jealousy",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you encounter the subject of your jealousy or their life's trappings (possessions, family, friends, etc),",
-            "outro": "%insert.rollPrompt% to see if you can keep your cool."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You maintain control over your jealousy."
+  {
+    "name": "Experiment Gone Wrong",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
+    "data": {
+      "key": "experiment-gone-wrong",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Experiment Gone Wrong",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You're afflicted by jealousy and take #>text-negmod>−1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first session and whenever things seem in control,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
             },
-            "failure": {
-              "result": "Your jealousy takes hold of you. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "jealousy"
+            "results": {
+              "completeSuccess": {
+                "result": "Your experiment leaves you alone."
+              },
+              "partialSuccess": {
+                "result": "Your experiment is close on your heels. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Your experiment is in your vicinity and acts against you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "experiment-gone-wrong"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "There is someone who has the life you want to have, and you would do anything to possess it.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
+      ],
+      "rules": {
+        "intro": "You have carried out a scientific experiment, which went horribly awry. The experiment gave rise to something unnatural, which escaped and disappeared without a trace. Recently, the 'results' of your experiment tracked you down, reappearing in your life, and forcing you to either escape or confront it.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "S1x32nJ5RxZfh6Qg"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "h8zDL8ADNZfTGsKD"
-},
-{
-  "name": "Harassed",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
-  "data": {
-    "key": "harassed",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Harassed",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you draw attention to yourself,",
-            "outro": "%insert.rollPrompt% to see if you're harassed.",
-            "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You've managed to keep clear of harassment."
+  {
+    "name": "Lost Identity",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
+    "data": {
+      "key": "lost-identity",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Lost Identity",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you encounter something from your repressed past,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
             },
-            "failure": {
-              "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "harassed"
+            "results": {
+              "completeSuccess": {
+                "result": "You repress your true identity, remaining in the present."
+              },
+              "partialSuccess": {
+                "result": "Your true identity is catching up to you. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Your true identity resurfaces. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "lost-identity"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "For some reason, personal or otherwise, people tend to harass you; the authorities in particular.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
+      ],
+      "rules": {
+        "intro": "Your true identity has been lost to a military or private-run secret agent program. You do not remember anything about your pre-employment life. Recently, memories of your true identity have started coming back to you.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "Sd5icgTqqB4Oz3X7"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "hV6exUEvjIjnushd"
-},
-{
-  "name": "Rival",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
-  "data": {
-    "key": "rival",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Rival",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you make a mistake or let down your guard,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "All clear; your rival makes no moves against you."
+  {
+    "name": "Guilt",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
+    "data": {
+      "key": "guilt",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Guilt",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You've given your rival an opportunity. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever everything appears okay,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
             },
-            "failure": {
-              "result": "You've handed your rival whatever they needed to completely undermine you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "rival"
+            "results": {
+              "completeSuccess": {
+                "result": "Your guilt isn't on your mind at the moment."
+              },
+              "partialSuccess": {
+                "result": "You are reminded of your guilt. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Your guilt catches up to you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "guilt"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You have an ambitious rival, who will do anything to be in your shoes. Choose who your rival is when you take this Disadvantage.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
+      ],
+      "rules": {
+        "intro": "You carry heavy guilt for your past sins, having harmed one or several people through your actions or inaction.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "hxjVOiUHz6FdJqKt"
-},
-{
-  "name": "Rationalist",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
-  "data": {
-    "key": "rationalist",
-    "description": "",
-    "lists": {
-      "gmoptions": {
-        "name": "GM Options",
-        "items": [
-          "Your presence nurtures the Illusion, making it more powerful and impenetrable.",
-          "Your bewildered psyche starts creating mirror images of familiar places and people in the Illusion.",
-          "You attract extradimensional entities.",
-          "You consciously deny what you see, even to your own detriment."
-        ]
-      }
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
     },
-    "subType": "active-static",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Rationalist",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "intro": "In addition to the standard effects,",
-            "trigger": "Whenever you #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
-            "outro": "the GM may choose one option from the list below:",
-            "listRefs": [
-              "gmoptions"
-            ]
-          },
-          "subType": "active-static",
-          "attribute": "zero",
-          "key": "rationalist"
+    "flags": {},
+    "_id": "UWfP1mWzutahcJYu"
+  },
+  {
+    "name": "Haunted",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
+    "data": {
+      "key": "haunted",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Haunted",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first session and whenever you are distracted or weakened,",
+              "outro": "%insert.rollPrompt% to see if the entity gains power over you.",
+              "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "The entity leaves you alone."
+              },
+              "partialSuccess": {
+                "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "haunted"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
+      ],
+      "rules": {
+        "intro": "You are haunted by supernatural forces. With the GM's assistance, determine the nature of what you believe is haunting you.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "XcxPnFhPkII1G15Q"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "iLDr4zXmvnxeomKW"
-},
-{
-  "name": "Fanatic",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
-  "data": {
-    "key": "fanatic",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Fanatic",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever someone questions your ideology,",
-            "outro": "%insert.rollPrompt%."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You can keep your emotions in check."
+  {
+    "name": "Wanted",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
+    "data": {
+      "key": "wanted",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Wanted",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You become angry, confused, or frustrated. You take #>text-negmod>−1<# to your next roll."
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you attract attention to yourself or forget to keep your head down,",
+              "outro": "%insert.rollPrompt% to see if you've been discovered.",
+              "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
             },
-            "failure": {
-              "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "fanatic"
+            "results": {
+              "completeSuccess": {
+                "result": "You are safe, for now."
+              },
+              "partialSuccess": {
+                "result": "You have made a mistake. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "All eyes are on you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "wanted"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are a fervent adherent of an ideology, which you must define when you take this Disadvantage. You interpret the whole world in accordance with your ideology, which must not be questioned.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
+      ],
+      "rules": {
+        "intro": "You are wanted by the authorities—local, state, or federal—for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "ZQ6AVElfg0JlcN4N"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "j0A9hfeUPMlAPQ4b"
-},
-{
-  "name": "Liar",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
-  "data": {
-    "key": "liar",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Liar",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "At the start of every session,",
-            "outro": "%insert.rollPrompt% to see what trouble your lies have gotten you into this time.",
-            "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You have kept your lies tangle-free."
+  {
+    "name": "Stalker",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
+    "data": {
+      "key": "stalker",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Stalker",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You've told one too many lies. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you expose your current location,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
             },
-            "failure": {
-              "result": "Your web of lies has come completely unraveled. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "liar"
+            "results": {
+              "completeSuccess": {
+                "result": "You are safe for now."
+              },
+              "partialSuccess": {
+                "result": "Your enemies are on to you. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Your enemies have caught up to you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "stalker"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You're a compulsive liar, who invents stories at every opportunity, especially when it's beneficial for you.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
+      ],
+      "rules": {
+        "intro": "You are hunted by a faceless enemy. Anyone you meet could be one of their minions—or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "eKG4cYELMT0feVkG"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "k8h3BExyy5LvE7dg"
-},
-{
-  "name": "Marked",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
-  "data": {
-    "key": "marked",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Marked",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you consciously #>text-keyword>Harm<# someone,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You are still in control."
+  {
+    "name": "Oath of Revenge",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
+    "data": {
+      "key": "oath-of-revenge",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Oath of Revenge",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You feed the darkness. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever the target of your vengeance (or someone/something associated with them) appears,",
+              "outro": "%insert.rollPrompt%."
             },
-            "failure": {
-              "result": "The darkness gains power over you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "marked"
+            "results": {
+              "completeSuccess": {
+                "result": "You remain in control of your vengeful nature and can act rationally."
+              },
+              "partialSuccess": {
+                "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
+              },
+              "failure": {
+                "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "oath-of-revenge"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are marked by the darkness. The mark can take the shape of a full-body tattoo, a demonic body part such as a vestigial arm, an extra eye or mouth, machine parts integrated with your flesh, or similar manifestations.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
+      ],
+      "rules": {
+        "intro": "You have sworn to avenge an unforgivable injustice. Decide who is the subject of your vengeance and what they have done to you. It could be a single individual, people who share a certain trait, or members of an organization.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "ep0A7jzxR73ybFZ5"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "l2oAK6a95v5tPeNe"
-},
-{
-  "name": "Cursed",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
-  "data": {
-    "key": "cursed",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Cursed",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first session and whenever you're confronted by the supernatural,",
-            "outro": "%insert.rollPrompt% to see how strongly the curse influences you.",
-            "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You temporarily avoid the curse's influence."
+  {
+    "name": "Jealousy",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
+    "data": {
+      "key": "jealousy",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Jealousy",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you encounter the subject of your jealousy or their life's trappings (possessions, family, friends, etc),",
+              "outro": "%insert.rollPrompt% to see if you can keep your cool."
             },
-            "failure": {
-              "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "cursed"
+            "results": {
+              "completeSuccess": {
+                "result": "You maintain control over your jealousy."
+              },
+              "partialSuccess": {
+                "result": "You're afflicted by jealousy and take #>text-negmod>−1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
+              },
+              "failure": {
+                "result": "Your jealousy takes hold of you. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "jealousy"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are cursed.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
+      ],
+      "rules": {
+        "intro": "There is someone who has the life you want to have, and you would do anything to possess it.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "h8zDL8ADNZfTGsKD"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "mrJ5OXmrMOBpZIVY"
-},
-{
-  "name": "Nemesis",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
-  "data": {
-    "key": "nemesis",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Nemesis",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you let your guard down,",
-            "outro": "%insert.rollPrompt% to see if your nemesis moves against you.",
-            "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You are safe from your nemesis for the moment."
+  {
+    "name": "Harassed",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
+    "data": {
+      "key": "harassed",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Harassed",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You have been careless and your nemesis moves against you. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you draw attention to yourself,",
+              "outro": "%insert.rollPrompt% to see if you're harassed.",
+              "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
             },
-            "failure": {
-              "result": "You have compromised your position and your nemesis strikes against you in full force. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "nemesis"
+            "results": {
+              "completeSuccess": {
+                "result": "You've managed to keep clear of harassment."
+              },
+              "partialSuccess": {
+                "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "harassed"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "Through some terrible act you have made an enemy, who does everything in their power to take revenge. Decide who your nemesis is and what you have done to earn their vengeance.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
+      ],
+      "rules": {
+        "intro": "For some reason, personal or otherwise, people tend to harass you; the authorities in particular.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "o4Xie5PCgwNYigKQ"
-},
-{
-  "name": "Condemned",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
-  "data": {
-    "key": "condemned",
-    "description": "",
-    "lists": {
-      "gmoptions": {
-        "name": "GM Options",
-        "items": [
-          "You mark 1 Time.",
-          "You're tortured by dreams or visions of your fate. Reduce #>text-negmod>−2<# #>text-keyword>Stability<#.",
-          "You're haunted by the entity or event that sealed your fate.",
-          "Someone in your vicinity is negatively affected by your fate.",
-          "Something provides you with false hope of escaping your fate."
-        ]
-      }
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
     },
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Condemned",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "At the start of every game session,",
-            "outro": "%insert.rollPrompt%.",
-            "listRefs": [
-              "gmoptions"
-            ]
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You still have some time remaining."
+    "flags": {},
+    "_id": "hV6exUEvjIjnushd"
+  },
+  {
+    "name": "Rival",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
+    "data": {
+      "key": "rival",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Rival",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "Your fate approaches. The GM chooses one option from the list below.",
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you make a mistake or let down your guard,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "All clear; your rival makes no moves against you."
+              },
+              "partialSuccess": {
+                "result": "You've given your rival an opportunity. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "You've handed your rival whatever they needed to completely undermine you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "rival"
+          }
+        }
+      ],
+      "rules": {
+        "intro": "You have an ambitious rival, who will do anything to be in your shoes. Choose who your rival is when you take this Disadvantage.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "hxjVOiUHz6FdJqKt"
+  },
+  {
+    "name": "Rationalist",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
+    "data": {
+      "key": "rationalist",
+      "description": "",
+      "lists": {
+        "gmoptions": {
+          "name": "GM Options",
+          "items": [
+            "Your presence nurtures the Illusion, making it more powerful and impenetrable.",
+            "Your bewildered psyche starts creating mirror images of familiar places and people in the Illusion.",
+            "You attract extradimensional entities.",
+            "You consciously deny what you see, even to your own detriment."
+          ]
+        }
+      },
+      "subType": "active-static",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Rationalist",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "intro": "In addition to the standard effects,",
+              "trigger": "Whenever you #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
+              "outro": "the GM may choose one option from the list below:",
               "listRefs": [
                 "gmoptions"
               ]
             },
-            "failure": {
-              "result": "Your end approaches. The GM chooses two options from the list below, and may choose the same option twice.",
+            "subType": "active-static",
+            "attribute": "zero",
+            "key": "rationalist"
+          }
+        }
+      ],
+      "rules": {
+        "intro": "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "iLDr4zXmvnxeomKW"
+  },
+  {
+    "name": "Fanatic",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
+    "data": {
+      "key": "fanatic",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Fanatic",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever someone questions your ideology,",
+              "outro": "%insert.rollPrompt%."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "You can keep your emotions in check."
+              },
+              "partialSuccess": {
+                "result": "You become angry, confused, or frustrated. You take #>text-negmod>−1<# to your next roll."
+              },
+              "failure": {
+                "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "fanatic"
+          }
+        }
+      ],
+      "rules": {
+        "intro": "You are a fervent adherent of an ideology, which you must define when you take this Disadvantage. You interpret the whole world in accordance with your ideology, which must not be questioned.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "j0A9hfeUPMlAPQ4b"
+  },
+  {
+    "name": "Liar",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
+    "data": {
+      "key": "liar",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Liar",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "At the start of every session,",
+              "outro": "%insert.rollPrompt% to see what trouble your lies have gotten you into this time.",
+              "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "You have kept your lies tangle-free."
+              },
+              "partialSuccess": {
+                "result": "You've told one too many lies. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Your web of lies has come completely unraveled. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "liar"
+          }
+        }
+      ],
+      "rules": {
+        "intro": "You're a compulsive liar, who invents stories at every opportunity, especially when it's beneficial for you.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "k8h3BExyy5LvE7dg"
+  },
+  {
+    "name": "Marked",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
+    "data": {
+      "key": "marked",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Marked",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you consciously #>text-keyword>Harm<# someone,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "You are still in control."
+              },
+              "partialSuccess": {
+                "result": "You feed the darkness. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "The darkness gains power over you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "marked"
+          }
+        }
+      ],
+      "rules": {
+        "intro": "You are marked by the darkness. The mark can take the shape of a full-body tattoo, a demonic body part such as a vestigial arm, an extra eye or mouth, machine parts integrated with your flesh, or similar manifestations.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "l2oAK6a95v5tPeNe"
+  },
+  {
+    "name": "Cursed",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
+    "data": {
+      "key": "cursed",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Cursed",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first session and whenever you're confronted by the supernatural,",
+              "outro": "%insert.rollPrompt% to see how strongly the curse influences you.",
+              "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "You temporarily avoid the curse's influence."
+              },
+              "partialSuccess": {
+                "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "cursed"
+          }
+        }
+      ],
+      "rules": {
+        "intro": "You are cursed.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "mrJ5OXmrMOBpZIVY"
+  },
+  {
+    "name": "Nemesis",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
+    "data": {
+      "key": "nemesis",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Nemesis",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you let your guard down,",
+              "outro": "%insert.rollPrompt% to see if your nemesis moves against you.",
+              "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "You are safe from your nemesis for the moment."
+              },
+              "partialSuccess": {
+                "result": "You have been careless and your nemesis moves against you. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "You have compromised your position and your nemesis strikes against you in full force. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "nemesis"
+          }
+        }
+      ],
+      "rules": {
+        "intro": "Through some terrible act you have made an enemy, who does everything in their power to take revenge. Decide who your nemesis is and what you have done to earn their vengeance.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
+      },
+      "attribute": "zero",
+      "currentHold": 0
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "o4Xie5PCgwNYigKQ"
+  },
+  {
+    "name": "Condemned",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
+    "data": {
+      "key": "condemned",
+      "description": "",
+      "lists": {
+        "gmoptions": {
+          "name": "GM Options",
+          "items": [
+            "You mark 1 Time.",
+            "You're tortured by dreams or visions of your fate. Reduce #>text-negmod>−2<# #>text-keyword>Stability<#.",
+            "You're haunted by the entity or event that sealed your fate.",
+            "Someone in your vicinity is negatively affected by your fate.",
+            "Something provides you with false hope of escaping your fate."
+          ]
+        }
+      },
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Condemned",
+              "type": "disadvantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "At the start of every game session,",
+              "outro": "%insert.rollPrompt%.",
               "listRefs": [
                 "gmoptions"
               ]
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "condemned"
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "You still have some time remaining."
+              },
+              "partialSuccess": {
+                "result": "Your fate approaches. The GM chooses one option from the list below.",
+                "listRefs": [
+                  "gmoptions"
+                ]
+              },
+              "failure": {
+                "result": "Your end approaches. The GM chooses two options from the list below, and may choose the same option twice.",
+                "listRefs": [
+                  "gmoptions"
+                ]
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "condemned"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "Your fate has already been sealed. Perhaps you're dying from a disease, been promised as the sacrificial offering to a forgotten god, or you've sold your soul to some entity, waiting to drag you off to hell when your time is up. When you finally run out of Time, you meet your ultimate fate.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [
-        ">CreateTracker:Time,10"
       ],
-      "holdText": ""
+      "rules": {
+        "intro": "Your fate has already been sealed. Perhaps you're dying from a disease, been promised as the sacrificial offering to a forgotten god, or you've sold your soul to some entity, waiting to drag you off to hell when your time is up. When you finally run out of Time, you meet your ultimate fate.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [
+          ">CreateTracker:Time,10"
+        ],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "oFyrQ7X4UH9qJaNE"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "oFyrQ7X4UH9qJaNE"
-},
-{
-  "name": "Depression",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
-  "data": {
-    "key": "depression",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Depression",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever facing personal setbacks,",
-            "outro": "%insert.rollPrompt%."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You remain in control."
+  {
+    "name": "Depression",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
+    "data": {
+      "key": "depression",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Depression",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll."
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever facing personal setbacks,",
+              "outro": "%insert.rollPrompt%."
             },
-            "failure": {
-              "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "depression"
+            "results": {
+              "completeSuccess": {
+                "result": "You remain in control."
+              },
+              "partialSuccess": {
+                "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll."
+              },
+              "failure": {
+                "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "depression"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are constantly struggling with depression, which is only worsened by dejection and discouragement.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
+      ],
+      "rules": {
+        "intro": "You are constantly struggling with depression, which is only worsened by dejection and discouragement.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "rFdO4oq2iMEXltOF"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "rFdO4oq2iMEXltOF"
-},
-{
-  "name": "Schizophrenia",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
-  "data": {
-    "key": "schizophrenia",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Schizophrenia",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you go through difficult experiences,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You maintain control of your insanity."
+  {
+    "name": "Schizophrenia",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
+    "data": {
+      "key": "schizophrenia",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Schizophrenia",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you go through difficult experiences,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
             },
-            "failure": {
-              "result": "Schizophrenia overtakes you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "schizophrenia"
+            "results": {
+              "completeSuccess": {
+                "result": "You maintain control of your insanity."
+              },
+              "partialSuccess": {
+                "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Schizophrenia overtakes you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "schizophrenia"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You struggle with recurring psychotic episodes and terrifying hallucinations.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
+      ],
+      "rules": {
+        "intro": "You struggle with recurring psychotic episodes and terrifying hallucinations.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "rzKRvteJYMlxC1JI"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "rzKRvteJYMlxC1JI"
-},
-{
-  "name": "Bad Reputation",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
-  "data": {
-    "key": "bad-reputation",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Bad Reputation",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you attract the public's attention,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You blend in. Nobody is out to get you."
+  {
+    "name": "Bad Reputation",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
+    "data": {
+      "key": "bad-reputation",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Bad Reputation",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "You have been recognized. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you attract the public's attention,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
             },
-            "failure": {
-              "result": "Several people have recognized you. Anger and fear control their actions. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "bad-reputation"
+            "results": {
+              "completeSuccess": {
+                "result": "You blend in. Nobody is out to get you."
+              },
+              "partialSuccess": {
+                "result": "You have been recognized. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Several people have recognized you. Anger and fear control their actions. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "bad-reputation"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "For some reason, you have attracted the public's disapproval—even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
+      ],
+      "rules": {
+        "intro": "For some reason, you have attracted the public's disapproval—even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "trB3PbbQXMYf0e9f"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "trB3PbbQXMYf0e9f"
-},
-{
-  "name": "Greedy",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
-  "data": {
-    "key": "greedy",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Greedy",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "When an opportunity to increase your wealth arises,",
-            "outro": "%insert.rollPrompt% to see if you are in control of your desire."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You keep your greed in check."
+  {
+    "name": "Greedy",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
+    "data": {
+      "key": "greedy",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Greedy",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>−1<# #>text-keyword>ongoing<# to any rolls you make."
+            "isCustom": false,
+            "rules": {
+              "trigger": "When an opportunity to increase your wealth arises,",
+              "outro": "%insert.rollPrompt% to see if you are in control of your desire."
             },
-            "failure": {
-              "result": "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "greedy"
+            "results": {
+              "completeSuccess": {
+                "result": "You keep your greed in check."
+              },
+              "partialSuccess": {
+                "result": "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>−1<# #>text-keyword>ongoing<# to any rolls you make."
+              },
+              "failure": {
+                "result": "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "greedy"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are driven by an unquenchable desire for money and wealth, and are prepared to sacrifice your health, family, and friends to fill the emptiness inside.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
+      ],
+      "rules": {
+        "intro": "You are driven by an unquenchable desire for money and wealth, and are prepared to sacrifice your health, family, and friends to fill the emptiness inside.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "uh63yGYqPo6TiHkZ"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "uh63yGYqPo6TiHkZ"
-},
-{
-  "name": "Involuntary Medium",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
-  "data": {
-    "key": "involuntary-medium",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Involuntary Medium",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "Whenever you encounter spiritual entities or haunted places,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You resist the possession."
+  {
+    "name": "Involuntary Medium",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
+    "data": {
+      "key": "involuntary-medium",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Involuntary Medium",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "The entity gains influence over you. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever you encounter spiritual entities or haunted places,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
             },
-            "failure": {
-              "result": "The entity gains control over you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "involuntary-medium"
+            "results": {
+              "completeSuccess": {
+                "result": "You resist the possession."
+              },
+              "partialSuccess": {
+                "result": "The entity gains influence over you. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "The entity gains control over you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "involuntary-medium"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You are an open vessel for any spirits or demonic entities who desire a medium to speak through or need a corporeal body to use for their purposes.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
+      ],
+      "rules": {
+        "intro": "You are an open vessel for any spirits or demonic entities who desire a medium to speak through or need a corporeal body to use for their purposes.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "vIkXBEQYOWo2ohUM"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "vIkXBEQYOWo2ohUM"
-},
-{
-  "name": "Repressed Memories",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
-  "data": {
-    "key": "repressed-memories",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Repressed Memories",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In situations associated with your repressed memories,",
-            "outro": "%insert.rollPrompt% to determine if the memories resurface."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "You continue to suppress the memories."
+  {
+    "name": "Repressed Memories",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
+    "data": {
+      "key": "repressed-memories",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Repressed Memories",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+            "isCustom": false,
+            "rules": {
+              "trigger": "In situations associated with your repressed memories,",
+              "outro": "%insert.rollPrompt% to determine if the memories resurface."
             },
-            "failure": {
-              "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "repressed-memories"
+            "results": {
+              "completeSuccess": {
+                "result": "You continue to suppress the memories."
+              },
+              "partialSuccess": {
+                "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+              },
+              "failure": {
+                "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "repressed-memories"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You have repressed a particularly unpleasant event from your past, but the memory of it sometimes rises to the surface. It could be a crime or some horrible thing you have done, been subjected to, or witnessed. The GM decides the nature of your repressed memory, usually based on your Dark Secrets.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": ""
+      ],
+      "rules": {
+        "intro": "You have repressed a particularly unpleasant event from your past, but the memory of it sometimes rises to the surface. It could be a crime or some horrible thing you have done, been subjected to, or witnessed. The GM decides the nature of your repressed memory, usually based on your Dark Secrets.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": ""
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "w24zxPP58PG43I1l"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "w24zxPP58PG43I1l"
-},
-{
-  "name": "Owned",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
-  "data": {
-    "key": "owned",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Owned",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "In the first game session and whenever you draw attention to yourself in public,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "For the moment, you are safe."
+  {
+    "name": "Owned",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
+    "data": {
+      "key": "owned",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Owned",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "Your former owner picks up your scent. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "In the first game session and whenever you draw attention to yourself in public,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
             },
-            "failure": {
-              "result": "Your owner finds you. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "owned"
+            "results": {
+              "completeSuccess": {
+                "result": "For the moment, you are safe."
+              },
+              "partialSuccess": {
+                "result": "Your former owner picks up your scent. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "Your owner finds you. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "owned"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "You used to be a dangerous person's private property, willingly or not. Since your escape, your former owner has been looking for you. Decide who your former owner is when you take this Disadvantage.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
+      ],
+      "rules": {
+        "intro": "You used to be a dangerous person's private property, willingly or not. Since your escape, your former owner has been looking for you. Decide who your former owner is when you take this Disadvantage.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "wIUTDcDyHKcitGwp"
   },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "wIUTDcDyHKcitGwp"
-},
-{
-  "name": "Object of Desire",
-  "type": "disadvantage",
-  "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
-  "data": {
-    "key": "object-of-desire",
-    "description": "",
-    "lists": {},
-    "subType": "active-rolled",
-    "isCustom": false,
-    "pdfLink": "",
-    "subItems": [
-      {
-        "type": "move",
-        "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
-        "data": {
-          "sourceItem": {
-            "name": "Object of Desire",
-            "type": "disadvantage"
-          },
-          "isCustom": false,
-          "rules": {
-            "trigger": "At the first game session and whenever you meet one or more new people,",
-            "outro": "%insert.rollPrompt%.",
-            "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
-          },
-          "results": {
-            "completeSuccess": {
-              "result": "The desire is not awakened at this moment."
+  {
+    "name": "Object of Desire",
+    "type": "disadvantage",
+    "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
+    "data": {
+      "key": "object-of-desire",
+      "description": "",
+      "lists": {},
+      "subType": "active-rolled",
+      "isCustom": false,
+      "pdfLink": "",
+      "subItems": [
+        {
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Object of Desire",
+              "type": "disadvantage"
             },
-            "partialSuccess": {
-              "result": "Someone becomes desirous of you. #>text-gmtext>The GM takes 1 Hold<#.",
-              "hold": 1
+            "isCustom": false,
+            "rules": {
+              "trigger": "At the first game session and whenever you meet one or more new people,",
+              "outro": "%insert.rollPrompt%.",
+              "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
             },
-            "failure": {
-              "result": "A strong desire is awakened in one or several people. #>text-gmtext>The GM takes 3 Hold<#.",
-              "hold": 3
-            }
-          },
-          "subType": "active-rolled",
-          "attribute": "zero",
-          "key": "object-of-desire"
+            "results": {
+              "completeSuccess": {
+                "result": "The desire is not awakened at this moment."
+              },
+              "partialSuccess": {
+                "result": "Someone becomes desirous of you. #>text-gmtext>The GM takes 1 Hold<#.",
+                "hold": 1
+              },
+              "failure": {
+                "result": "A strong desire is awakened in one or several people. #>text-gmtext>The GM takes 3 Hold<#.",
+                "hold": 3
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "zero",
+            "key": "object-of-desire"
+          }
         }
-      }
-    ],
-    "rules": {
-      "intro": "There is just something special about you. You ignite deep unhealthy desires in others, which they are unable to keep in check.",
-      "trigger": "",
-      "outro": "",
-      "listRefs": [],
-      "effectFunctions": [],
-      "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
+      ],
+      "rules": {
+        "intro": "There is just something special about you. You ignite deep unhealthy desires in others, which they are unable to keep in check.",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effectFunctions": [],
+        "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
+      },
+      "attribute": "zero",
+      "currentHold": 0
     },
-    "attribute": "zero",
-    "currentHold": 0
-  },
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "permission": {
-    "default": 0,
-    "6HIKi4Xz8CaHoizM": 3
-  },
-  "flags": {},
-  "_id": "wpzD4TGdNBgU6DzO"
-}]
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "permission": {
+      "default": 0,
+      "6HIKi4Xz8CaHoizM": 3
+    },
+    "flags": {},
+    "_id": "wpzD4TGdNBgU6DzO"
+  }
+]

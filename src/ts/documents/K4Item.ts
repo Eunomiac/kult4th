@@ -132,6 +132,45 @@ class K4Item extends Item {
   async applyEffectFunction(functionStr: string) {
     if (!this.isOwnedItem()) { return; }
     const [funcName, ...params] = functionStr.split(/,/);
+
+    /* Run 'getUniqueValuesForKey(PACKS.all, "rules.effectFunctions")' in the console to get a list of all effect functions,
+       as they are defined in the .db JSON data manually copied into data.ts.
+
+       Currently:
+
+       [
+        "[>CreateTracker:Time,10]",
+        "[>ModValue:weapon/firearm,harm,1]",
+        "[Add Armor, subtract Harm from roll]"
+
+        "[AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.']",
+        "[
+          AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.,
+          AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.
+        ]",
+        "[AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect]",
+
+        "[AppendList,Investigate,questions,questions]",
+        "[AppendList,Observe a Situation,questions,questions]",
+        "[AppendList,Read a Person,questions,questions]",
+        "[AppendList,weapon/sword,attacks,attacks]",
+
+        "[BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1]",
+        "[GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions), StoreInput: text=Field of Expertise #1>flags.field_1, StoreInput: text=Field of Expertise #2>flags.field_2]",
+        "[Requires the Disadvantage Condemned]",
+        "[
+          SetTrait:actor/data.stability.max,6,
+
+          // NEED TO HANDLE ARRAY VALUES LIKE: //
+          SetTrait:actor/system.modifiers.wounds_critical.1.all,0,
+          SetTrait:actor/system.modifiers.wounds_serious.1.all,0,
+          SetTrait:actor/system.modifiers.wounds_serious.2.all,0,
+          SetTrait:actor/system.modifiers.wounds_serious.3.all,0,
+          SetTrait:actor/system.modifiers.wounds_serious.4.all,0,
+          SetTrait:actor/system.modifiers.wounds_seriouscritical.1.all,0
+        ]",
+      ]
+*/
     switch (funcName) {
       case "AppendList": {
         const [targetItemName, targetList, sourceList] = params;
@@ -151,6 +190,14 @@ class K4Item extends Item {
           ];
           await this.parent.updateEmbeddedDocuments("Item", updateData);
         }
+        break;
+      }
+      case "SetTrait": {
+        console.error("'SetTrait' is unimplemented.");
+        break;
+      }
+      case "AddNote": {
+        console.error("'AddNote' is unimplemented.");
         break;
       }
       case "_Unimplemented_1": {

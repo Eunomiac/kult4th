@@ -1,6 +1,11 @@
 #tinymce {
+
   @import 'globals/functions';
-  @import 'globals/typography';
+
+
+  $assetPath: '/systems/kult4th/assets';
+  @import 'globals/typography'; // Use something like `src('#{$assetPath}fonts/...)` to load fonts?
+
   @import 'globals/colors';
   @import 'globals/text-styles';
   @import 'third-party/tinymce/tinymce';

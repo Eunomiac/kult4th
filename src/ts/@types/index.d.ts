@@ -29,6 +29,18 @@ import "./league-types";
 // export {TextPlugin} from "gsap/TextPlugin";
 // export {GSDevTools} from "gsap/GSDevTools";
 // Declaration for the virtual module "virtual:colors"
+
+type SceneDoc = Scene;
+type ActorDoc = K4Actor;
+type ItemDoc = K4Item;
+type ActiveEffectDoc = ActiveEffect;
+type ChatMessageDoc = ChatMessage;
+type DialogDoc = Dialog;
+type RollDoc = Roll;
+type UserDoc = User;
+
+
+
 declare module "virtual:colors" {
   export const Colors: Record<string, string>;
 }

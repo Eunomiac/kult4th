@@ -17,6 +17,7 @@ import registerDebugger from "./scripts/logger.js";
 
 import {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
+import {PACKS, getUniqueSubItemKeys, getUniqueValuesForKey, getUniqueKeys, getItemReport, getSubItemReport, parseItemSchemasForCreation, BUILD_ITEMS_FROM_DATA} from "./scripts/data.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -251,6 +252,11 @@ Hooks.once("init", async () => {
 
 Hooks.once("ready", () => {
 
+  // If user is GM, add "gm-user" class to #sidebar-tabs
+  if (game.user?.isGM) {
+    $("#sidebar-tabs").addClass("gm-user");
+  }
+
   initCanvasStyles();
   initTinyMCEStyles();
   registerHooks();
@@ -275,7 +281,15 @@ Hooks.once("ready", () => {
     ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
     ENTITIES:   [ACTOR, ITEM, EMBED],
     SHEETS:     [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
-    DOCS:       [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET]
+    DOCS:       [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET],
+    PACKS,
+    getUniqueSubItemKeys,
+    getUniqueValuesForKey,
+    getUniqueKeys,
+    getItemReport,
+    getSubItemReport,
+    parseItemSchemasForCreation,
+    BUILD_ITEMS_FROM_DATA
   });
   /*!DEVCODE*/
 });
@@ -287,7 +301,7 @@ async function preloadTemplates() {
       "color-defs"
     ]),
     ...U.getTemplatePath("sheets", [
-      "pc-sheet", "pc-sheet-temp",
+      "pc-sheet",
       "npc-sheet",
       "item-sheet",
       "attack-sheet"

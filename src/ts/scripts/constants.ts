@@ -176,17 +176,30 @@ export function getContrastingColor(colorVal: string, contrastLevel = 1 as PosIn
   }
 }
 
+export enum AttackRange {
+  arm = "arm",
+  arm_room = "arm_room",
+  arm_room_field = "arm_room_field",
+  arm_room_field_horizon = "arm_room_field_horizon",
+  room = "room",
+  room_field = "room_field",
+  room_field_horizon = "room_field_horizon",
+  field = "field",
+  field_horizon = "field_horizon",
+  horizon = "horizon"
+}
+
 export const Ranges = {
-  arm: "When you engage an able opponent within arm's reach in close combat,",
-  arm_room: "When you engage an able opponent within several steps of you in ranged combat,",
-  arm_room_field: "up to a hundred meters away in combat,",
-  arm_room_field_horizon: "that you can see at any distance in combat,",
-  room: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-  room_field: "When you engage an able opponent out of arm's reach, up to a hundred meters away, in ranged combat,",
-  room_field_horizon: "When you engage an able opponent out of arm's reach but still visible, however distant, in ranged combat,",
-  field: "When you engage an able opponent several to one hundred meters away in ranged combat,",
-  field_horizon: "over a hundred meters away in ranged combat,",
-  horizon: "at extreme range (over one hundred meters away) in ranged combat,"
+  [AttackRange.arm]: "When you engage an able opponent within arm's reach in close combat,",
+  [AttackRange.arm_room]: "When you engage an able opponent within several steps of you in ranged combat,",
+  [AttackRange.arm_room_field]: "up to a hundred meters away in combat,",
+  [AttackRange.arm_room_field_horizon]: "that you can see at any distance in combat,",
+  [AttackRange.room]: "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
+  [AttackRange.room_field]: "When you engage an able opponent out of arm's reach, up to a hundred meters away, in ranged combat,",
+  [AttackRange.room_field_horizon]: "When you engage an able opponent out of arm's reach but still visible, however distant, in ranged combat,",
+  [AttackRange.field]: "When you engage an able opponent several to one hundred meters away in ranged combat,",
+  [AttackRange.field_horizon]: "over a hundred meters away in ranged combat,",
+  [AttackRange.horizon]: "at extreme range (over one hundred meters away) in ranged combat,"
 } as const;
 export const RegExpPatterns = {
   Attributes: [

@@ -1,3 +1,5 @@
+$assetPath: '/assets';
+
 @import 'globals/functions';
 @import 'globals/typography';
 
@@ -26,6 +28,8 @@
 		@import 'globals/text-styles';
 		@import 'globals/icon-styles';
 	}
+
+  #controls { overflow: visible; }
 
   .editor-content {
     position: static !important;
@@ -71,6 +75,31 @@
 			@include set-default-theme();
 
 			#chat { @import 'sidebar/chat' }
+
+      #sidebar-tabs {
+        .item[data-tab="combat"],
+        .item[data-tab="tables"],
+        .item[data-tab="cards"] {
+          display: none;
+        }
+
+        &:not(.gm-user) {
+          .item[data-tab="scenes"],
+          .item[data-tab="compendium"] {
+            display: none;
+          }
+        }
+
+      }
 		}
 	}
+
+  #logo {
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    max-height: 10px;
+    margin: 0;
+    padding: 0;
+  }
 }

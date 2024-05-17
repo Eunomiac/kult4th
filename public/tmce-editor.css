@@ -77,118 +77,118 @@
 @font-face {
   font-family: Alverata;
   font-weight: 300; /* Light */
-  src: url("/assets/fonts/alverata/alverata-irreg-light.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-light.ttf") format("truetype");
 }
 @font-face {
   font-family: Alverata;
   font-weight: 400; /* Regular */
-  src: url("/assets/fonts/alverata/alverata-irreg.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg.ttf") format("truetype");
 }
 @font-face {
   font-family: Alverata;
   font-weight: 500; /* Medium */
-  src: url("/assets/fonts/alverata/alverata-irreg-med.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-med.ttf") format("truetype");
 }
 @font-face {
   font-family: Alverata;
   font-weight: 600; /* Semi-Bold */
-  src: url("/assets/fonts/alverata/alverata-irreg-semi.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-semi.ttf") format("truetype");
 }
 @font-face {
   font-family: Alverata;
   font-weight: 700; /* Bold */
-  src: url("/assets/fonts/alverata/alverata-irreg-bold.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-black.ttf") format("truetype");
 }
 @font-face {
   font-family: Alverata;
   font-weight: 900; /* Black */
-  src: url("/assets/fonts/alverata/alverata-irreg-black.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-black.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 300; /* Light */
   font-style: normal;
-  src: url("/assets/fonts/alverata/alverata-reg-light.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-light.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 400; /* Regular */
   font-style: normal;
-  src: url("/assets/fonts/alverata/alverata-reg.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 500; /* Medium */
   font-style: normal;
-  src: url("/assets/fonts/alverata/alverata-reg-med.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-med.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
-  src: url("/assets/fonts/alverata/alverata-reg-semi.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-semi.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 700; /* Bold */
   font-style: normal;
-  src: url("/assets/fonts/alverata/alverata-reg-bold.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-bold.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("/assets/fonts/alverata/alverata-reg-black.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-black.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 300; /* Light */
   font-style: italic;
-  src: url("/assets/fonts/alverata/alverata-reg-light-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-light-italic.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 400; /* Regular */
   font-style: italic;
-  src: url("/assets/fonts/alverata/alverata-reg-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-italic.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 500; /* Medium */
   font-style: italic;
-  src: url("/assets/fonts/alverata/alverata-reg-med-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-med-italic.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 600; /* Semi-Bold */
   font-style: italic;
-  src: url("/assets/fonts/alverata/alverata-reg-semi-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-semi-italic.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 700; /* Bold */
   font-style: italic;
-  src: url("/assets/fonts/alverata/alverata-reg-bold-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-bold-italic.ttf") format("truetype");
 }
 @font-face {
   font-family: AlverataRegular;
   font-weight: 900; /* Black */
   font-style: italic;
-  src: url("/assets/fonts/alverata/alverata-reg-black-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-black-italic.ttf") format("truetype");
 }
 @font-face {
   font-family: Infidel;
-  src: url("/assets/fonts/infidel.ttf");
+  src: url("/systems/kult4th/assets/fonts/infidel.ttf");
 }
 @font-face {
   font-family: Sokol;
-  src: url("/assets/fonts/sokol/sokol.woff2") format("woff2"), url("/assets/fonts/sokol/sokol.woff") format("woff");
+  src: url("/systems/kult4th/assets/fonts/sokol/sokol.woff2") format("woff2"), url("/systems/kult4th/assets/fonts/sokol/sokol.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: GrandpasScript;
-  src: url("/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format("woff2"), url("/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format("woff");
+  src: url("/systems/kult4th/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format("woff2"), url("/systems/kult4th/assets/fonts/ft-grandpas-script/ft-grandpas-script.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -747,12 +747,7 @@
   width: 100%;
   display: block;
 }
-#tinymce .neon-glow-blue,
-#tinymce .mce-content-body .neon-glow-blue {
-  color: var(--K4-bWHITE);
-  animation: neonGlowBlue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-@keyframes neonGlowBlue {
+@keyframes neonGlow-blue {
   0% {
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 12.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.5), 0 0 21px rgba(65, 132, 220, 0.5), 0 0 29px rgba(65, 132, 220, 0.5), 0 0 41.5px rgba(65, 132, 220, 0.5);
   }
@@ -760,12 +755,7 @@
     text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(65, 132, 220, 0.8), 0 0 6px rgba(65, 132, 220, 0.8), 0 0 8px rgba(65, 132, 220, 0.8), 0 0 10.5px rgba(65, 132, 220, 0.8), 0 0 16.5px rgba(65, 132, 220, 0.8);
   }
 }
-#tinymce .neon-glow-red,
-#tinymce .mce-content-body .neon-glow-red {
-  color: var(--K4-bWHITE);
-  animation: neonGlowRed 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-@keyframes neonGlowRed {
+@keyframes neonGlow-red {
   0% {
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5);
   }
@@ -773,18 +763,28 @@
     text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(220, 65, 65, 0.8), 0 0 6px rgba(220, 65, 65, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 10.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.8);
   }
 }
-#tinymce .neon-glow-gold,
-#tinymce .mce-content-body .neon-glow-gold {
-  color: var(--K4-bWHITE);
-  animation: neonGlowGold 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-@keyframes neonGlowGold {
+@keyframes neonGlow-gold {
   0% {
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 12.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.5), 0 0 21px rgba(220, 220, 65, 0.5), 0 0 29px rgba(220, 220, 65, 0.5), 0 0 41.5px rgba(220, 220, 65, 0.5);
   }
   100% {
     text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(220, 220, 65, 0.8), 0 0 6px rgba(220, 220, 65, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 10.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.8);
   }
+}
+#tinymce .neon-glow-blue,
+#tinymce .mce-content-body .neon-glow-blue {
+  color: var(--K4-bWHITE);
+  animation: neonGlow-blue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+#tinymce .neon-glow-red,
+#tinymce .mce-content-body .neon-glow-red {
+  color: var(--K4-bWHITE);
+  animation: neonGlow-red 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+#tinymce .neon-glow-gold,
+#tinymce .mce-content-body .neon-glow-gold {
+  color: var(--K4-bWHITE);
+  animation: neonGlow-gold 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce h1,
 #tinymce .mce-content-body h1 {
@@ -883,7 +883,8 @@
 }
 #tinymce .text-edgename,
 #tinymce .mce-content-body .text-edgename {
-  color: var(--K4-color-pos);
+  color: var(--K4-bWHITE);
+  animation: neonGlow-blue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce .text-posmod,
 #tinymce .text-posmod + .text-keyword,
@@ -903,7 +904,8 @@
 }
 #tinymce .text-gmtext,
 #tinymce .mce-content-body .text-gmtext {
-  color: var(--K4-color-neg);
+  color: var(--K4-bWHITE);
+  animation: neonGlow-red 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce .text-resultlabel,
 #tinymce .mce-content-body .text-resultlabel {
@@ -966,7 +968,7 @@
   --icon-size: var(--strip-icon-size);
   --icon-outline-color: var(--K4-strip-button-color-bg);
   --icon-bg-color: var(--K4-strip-icon-color-bg);
-  --icon-outline-width: 2px;
+  --icon-outline-width: 1px;
 }
 #tinymce div.hover-strip .strip-bg, #tinymce div.hover-strip .button-strip,
 #tinymce .mce-content-body div.hover-strip .strip-bg,
@@ -1095,52 +1097,6 @@
   --K4-strip-icon-color-bg: var(--K4-color-primary);
   --K4-strip-icon-color-fg: var(--K4-color-contrast);
   --icon-outline-color: var(--K4-color-primary);
-}
-#tinymce div.hover-strip.wound-strip,
-#tinymce .mce-content-body div.hover-strip.wound-strip {
-  --K4-strip-main-color-bg: transparent;
-  --strip-underline-width: 0px;
-  --K4-strip-icon-color-bg: transparent;
-  --icon-outline-color: transparent;
-  --icon-outline-width: 0px;
-  --icon-clip-path: none;
-  --strip-scale: 0.8;
-}
-#tinymce div.hover-strip.wound-strip.wound-critical .strip-name,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name {
-  text-transform: uppercase;
-  font-weight: 900;
-  font-family: var(--font-primary-caps);
-}
-#tinymce div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized),
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized) {
-  --K4-strip-main-color-fg: var(--K4-gRED);
-  --K4-strip-icon-color-fg: var(--K4-gRED);
-  --icon-scale: 1.2;
-}
-#tinymce div.hover-strip.wound-strip .icon-container,
-#tinymce .mce-content-body div.hover-strip.wound-strip .icon-container {
-  background: transparent;
-}
-#tinymce div.hover-strip.wound-strip.wound-stabilized,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized {
-  --K4-strip-main-color-fg: var(--K4-GOLD);
-  --icon-outline-color: transparent;
-}
-#tinymce div.hover-strip.wound-strip.wound-stabilized .icon-container, #tinymce div.hover-strip.wound-strip.wound-stabilized .icon-container .svg-container,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .icon-container,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .icon-container .svg-container {
-  --K4-svg-bg: transparent;
-  --K4-svg-fill: var(--K4-GOLD);
-  --K4-svg-clip-path: none;
-}
-#tinymce div.hover-strip.wound-strip.wound-stabilized .strip-name,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name {
-  font-style: italic;
-}
-#tinymce div.hover-strip.wound-strip.wound-stabilized .strip-bg,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-bg {
-  border-color: transparent;
 }
 #tinymce .result-entry,
 #tinymce .mce-content-body .result-entry {

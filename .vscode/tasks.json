@@ -6,10 +6,10 @@
       "type": "shell",
       "command": "node",
       "args": [
-        "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/main.js",
+        "C:/FoundryVTT/v11/Foundry Virtual Tabletop/resources/app/main.js",
         "--world=kult-dev",
         "--port=31000",
-        "--dataPath=D:/Projects/.CODING/FoundryVTT/FoundryV10DistData",
+        "--dataPath=D:/Projects/.CODING/FoundryVTT/FoundryV11DistData",
         "--hotReload"
       ],
       "presentation": {
@@ -19,6 +19,8 @@
         "panel": "dedicated",
         "clear": true
       },
+      "dependsOn": ["[Dep] Build TinyMCE"],
+      "dependsOrder": "sequence",
       "problemMatcher": [
         {
           "background": {
@@ -77,7 +79,7 @@
     {
       "label": "[Dep] Build TinyMCE",
       "type": "shell",
-      "command": "npx sass src/scss/tmce-editor.scss:public/tmce-editor.css",
+      "command": "npx sass src/scss/tmce-editor.scss:public/tmce-editor.css; npx sass src/scss/tmce-editor.scss:dist/tmce-editor.css",
       "group": "build",
       "presentation": {
         "echo": false,
@@ -118,8 +120,6 @@
         "panel": "shared",
         "clear": true
       },
-      "dependsOn": ["[Dep] Build TinyMCE"],
-      "dependsOrder": "sequence",
       "problemMatcher": []
     },
     {
