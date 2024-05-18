@@ -256,7 +256,7 @@
 
 	h1 {
 		color: var(--K4-color-header);
-		font-family: var(--font-heading);
+		font-family: var(--font-heading-1);
 		font-size: $rem-32;
 		font-weight: $font-weight-semi;
 		height: $rem-32;
@@ -274,7 +274,7 @@
 
 	h3 {
 		color: var(--K4-color-header);
-		font-family: var(--font-primary);
+    font-family: var(--font-primary-smallcaps);
 		font-size: $rem-16;
 		font-weight: $font-weight-bold;
 		font-variant: all-small-caps;
@@ -304,6 +304,7 @@
     scale: 0.8 1;
     width: calc(100% / 0.8);
 
+    font-family: var(--font-primary-smallcaps);
 		font-variant: all-small-caps;
 		margin: 10px 0;
 	}

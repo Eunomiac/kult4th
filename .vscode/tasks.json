@@ -6,10 +6,10 @@
       "type": "shell",
       "command": "node",
       "args": [
-        "C:/FoundryVTT/v11/Foundry Virtual Tabletop/resources/app/main.js",
+        "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/main.js",
         "--world=kult-dev",
         "--port=31000",
-        "--dataPath=D:/Projects/.CODING/FoundryVTT/FoundryV11DistData",
+        "--dataPath=D:/Projects/.CODING/FoundryVTT/FoundryV10DistData",
         "--hotReload"
       ],
       "presentation": {

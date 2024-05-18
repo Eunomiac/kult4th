@@ -1,25 +1,4 @@
 #tinymce {
-  /* SUPPORTED OPENTYPE FEATURES for ALVERATA LIGHT/MED/BOLD/BLACK
-
-  Automatically Enabled (Always)
-  	"kern" - kerning
-  	"liga" - standard ligatures
-  	"locl" - localized forms
-
-  Globally-Enabled
-  	"salt" - stylistic alternates
-
-  Small-Caps
-  	"c2sc" - capitals to small-caps
-  	"smcp" - non-capitals to small-caps
-
-  Number Display
-  	"frac" - show numbers separated by slash as fractions (ONLY use for fractions!)
-  	"onum" - most deviation from baseline
-  	"pnum" - (default) standard dev. from baseline
-  	"lnum" - line up with baseline
-  	"tnum" - monospace, line up with baseline
-  */
   /* OFFICIAL KULT COLORS
 
   KULT GOLD
@@ -75,106 +54,136 @@
   /* COLOR PALETTE & DEFAULT FOUNDRY OVERRIDES */
 }
 @font-face {
-  font-family: Alverata;
-  font-weight: 300; /* Light */
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-light.ttf") format("truetype");
-}
-@font-face {
-  font-family: Alverata;
-  font-weight: 400; /* Regular */
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg.ttf") format("truetype");
-}
-@font-face {
-  font-family: Alverata;
-  font-weight: 500; /* Medium */
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-med.ttf") format("truetype");
-}
-@font-face {
-  font-family: Alverata;
-  font-weight: 600; /* Semi-Bold */
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-semi.ttf") format("truetype");
-}
-@font-face {
-  font-family: Alverata;
-  font-weight: 700; /* Bold */
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-black.ttf") format("truetype");
-}
-@font-face {
-  font-family: Alverata;
-  font-weight: 900; /* Black */
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-irreg-black.ttf") format("truetype");
-}
-@font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 300; /* Light */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-light.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-light.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 400; /* Regular */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 500; /* Medium */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-med.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-medium.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-semi.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-semibold.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
-  font-weight: 700; /* Bold */
+  font-family: "Alverata";
+  font-weight: 700 800; /* Bold and 800 */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-bold.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-bold.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-black.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-black.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 300; /* Light */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-light-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic-light.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 400; /* Regular */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 500; /* Medium */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-med-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic-medium.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 600; /* Semi-Bold */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-semi-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic-semibold.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
-  font-weight: 700; /* Bold */
+  font-family: "Alverata";
+  font-weight: 700 800; /* Bold and 800 */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-bold-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic-bold.woff2") format("woff2");
 }
 @font-face {
-  font-family: AlverataRegular;
+  font-family: "Alverata";
   font-weight: 900; /* Black */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/alverata/alverata-reg-black-italic.ttf") format("truetype");
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic-black.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataHeader";
+  font-weight: 900; /* Black */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataHeader-black.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataHeader";
+  font-weight: 100 800; /* All Other Weights */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataHeader-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataHeader";
+  font-weight: 900; /* Black */
+  font-style: italic;
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic-black.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataHeader";
+  font-weight: 100 800; /* All Other Weights */
+  font-style: italic;
+  src: url("/systems/kult4th/assets/fonts/alverata/Alverata-italic-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataSC";
+  font-weight: 300; /* Light */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataSC-light.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataSC";
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataSC.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataSC";
+  font-weight: 500; /* Medium */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataSC-medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataSC";
+  font-weight: 600; /* Semi-Bold */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataSC-semibold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataSC";
+  font-weight: 700 800; /* Bold and 800 */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataSC-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "AlverataSC";
+  font-weight: 900; /* Black */
+  font-style: normal;
+  src: url("/systems/kult4th/assets/fonts/alverata/AlverataSC-black.woff2") format("woff2");
 }
 @font-face {
   font-family: Infidel;
@@ -195,7 +204,7 @@
 #tinymce * {
   /* FOUNDRY OVERRIDES */
   --font-primary: Alverata, serif;
-  --font-primary-italics: AlverataRegular, serif;
+  --font-primary-italics: Alverata, serif;
   --font-mono: monospace;
   --font-size-11: 11px;
   --font-size-12: 12px;
@@ -210,9 +219,11 @@
   --line-height-16: 16px;
   --line-height-20: 20px;
   --line-height-30: 30px;
-  --font-primary-caps: AlverataRegular, serif;
+  --font-primary-caps: AlverataHeader, serif;
   --font-icon: "Font Awesome 5 Free";
-  --font-heading: Infidel, sans-serif;
+  --font-heading-1: Infidel, sans-serif;
+  --font-heading-2: AlverataHeader, serif;
+  --font-primary-smallcaps: AlverataSC, serif;
   --font-decorative: Sokol, serif;
   --font-handwritten: GrandpaScript, serif;
 }
@@ -789,7 +800,7 @@
 #tinymce h1,
 #tinymce .mce-content-body h1 {
   color: var(--K4-color-header);
-  font-family: var(--font-heading);
+  font-family: var(--font-heading-1);
   font-size: 32px;
   font-weight: 600;
   height: 32px;
@@ -807,7 +818,7 @@
 #tinymce h3,
 #tinymce .mce-content-body h3 {
   color: var(--K4-color-header);
-  font-family: var(--font-primary);
+  font-family: var(--font-primary-smallcaps);
   font-size: 16px;
   font-weight: 700;
   font-variant: all-small-caps;
@@ -835,6 +846,7 @@
   transform-origin: 0% 50%;
   scale: 0.8 1;
   width: 125%;
+  font-family: var(--font-primary-smallcaps);
   font-variant: all-small-caps;
   margin: 10px 0;
 }
