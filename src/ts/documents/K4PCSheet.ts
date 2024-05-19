@@ -723,7 +723,7 @@ class K4PCSheet extends ActorSheet {
     // Add click listeners for wound-delete buttons to remove a specific wound
     html.find("button.wound-delete")
       .each(function() {
-        const woundID = $(this).data("woundId") as string;
+        const woundID = $(this).data("woundId") as IDString;
         $(this).on("click", () => {
           // kLog.log(`Deleting Wound ${woundID}. Button:`, this);
           self.actor.removeWound(woundID).catch(kLog.error);
@@ -733,7 +733,7 @@ class K4PCSheet extends ActorSheet {
     // Add click listeners for elements with data-action="toggle-wound-type" to toggle the wound type
     html.find("*[data-action=\"toggle-wound-type\"]")
       .each(function() {
-        const woundID = $(this).data("target") as string;
+        const woundID = $(this).data("target") as IDString;
         if (woundID) {
           $(this).on("click", () => self.actor.toggleWound(woundID, "type"));
         }
@@ -742,7 +742,7 @@ class K4PCSheet extends ActorSheet {
     // Add click listeners for elements with data-action="reset-wound-name" to reset the wound name
     html.find("*[data-action=\"reset-wound-name\"]")
       .each(function() {
-        const woundID = $(this).data("target") as string;
+        const woundID = $(this).data("target") as IDString;
         if (woundID) {
           $(this).on("click", () => self.actor.resetWoundName(woundID));
         }
@@ -751,7 +751,7 @@ class K4PCSheet extends ActorSheet {
     // Add click listeners for elements with data-action="toggle-wound-stabilize" to toggle wound stabilization
     html.find("*[data-action=\"toggle-wound-stabilize\"]")
       .each(function() {
-        const woundID = $(this).data("target") as string;
+        const woundID = $(this).data("target") as IDString;
         if (woundID) {
           $(this).on("click", () => self.actor.toggleWound(woundID, "stabilized"));
         }
@@ -760,7 +760,7 @@ class K4PCSheet extends ActorSheet {
     // Add click listeners for elements with data-action="drop-wound" to remove a specific wound
     html.find("*[data-action=\"drop-wound\"]")
       .each(function() {
-        const woundID: string = $(this).data("target") as string;
+        const woundID = $(this).data("target") as IDString;
         if (woundID) {
           $(this).on("click", () => self.actor.removeWound(woundID));
         }

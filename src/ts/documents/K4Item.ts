@@ -77,9 +77,13 @@ class K4Item extends Item {
   override prepareData() {
     super.prepareData();
     if (this.isOwnedItem() && this.isParentItem() && "subMoves" in this.system) {
-      this.system.subMoves = this.system.subItems.filter((subData): subData is K4SubItemSchema.subMove => subData.type === K4ItemType.move);
-      this.system.subAttacks = this.system.subItems.filter((subData): subData is K4SubItemSchema.subAttack => subData.type === K4ItemType.attack);
-      if (this.isRollableItem() && "results" in this.system) {
+      this.system.subMoves = this.system.subItems.filter((subData): subData is K4SubItemData<K4ItemType.move> => subData.type === K4ItemType.move);
+      this.system.subAttacks = this.system.subItems.filter((subData): subData is K4SubItemData<K4ItemType.attack> => subData.type === K4ItemType.attack);
+      if (
+        this.isRollableItem()
+        && "results" in this.system
+        && this.system.subItems[0].system.subType === K4ItemSubType.activeRolled
+      ) {
         this.system.results = this.system.subItems[0].system.results;
       }
     }
@@ -258,7 +262,7 @@ class K4Item extends Item {
           };
         }
         return subData;
-      }) as Array<K4SubItemSchema.subItem & Record<string, unknown>>;
+      }) as Array<K4SubItemData & Record<string, unknown>>;
   }
 
   applyOnCreateEffectFunctions() {

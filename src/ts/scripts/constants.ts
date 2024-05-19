@@ -21,54 +21,76 @@ export enum K4Attribute {
   soul = "soul"
 }
 
-export const ActorTypes = {
-  pc: "Player Character",
-  npc: "Non-Player Character"
-};
-export const ItemTypes = {
-  move: "Move",
-  attack: "Attack",
-  advantage: "Advantage",
-  disadvantage: "Disadvantage",
-  darksecret: "Dark Secret",
-  relation: "Relation",
-  weapon: "Weapon",
-  gear: "Gear"
-};
+export enum Archetype {
+  academic = "academic",
+  agent = "agent",
+  artist = "artist",
+  avenger = "avenger",
+  broken = "broken",
+  careerist = "careerist",
+  criminal = "criminal",
+  cursed = "cursed",
+  deceiver = "deceiver",
+  descendant = "descendant",
+  detective = "detective",
+  doll = "doll",
+  drifter = "drifter",
+  fixer = "fixer",
+  occultist = "occultist",
+  prophet = "prophet",
+  ronin = "ronin",
+  scientist = "scientist",
+  seeker = "seeker",
+  veteran = "veteran",
+  abomination = "abomination",
+  deathMagician = "deathMagician",
+  disciple = "disciple",
+  dreamMagician = "dreamMagician",
+  madnessMagician = "madnessMagician",
+  passionMagician = "passionMagician",
+  revenant = "revenant",
+  timeAndSpaceMagician = "timeAndSpaceMagician",
+  sleeper = "sleeper"
+}
 export const Archetypes = {
-  Aware: [
-    "academic",
-    "agent",
-    "artist",
-    "avenger",
-    "broken",
-    "careerist",
-    "criminal",
-    "cursed",
-    "deceiver",
-    "descendant",
-    "detective",
-    "doll",
-    "drifter",
-    "fixer",
-    "occultist",
-    "prophet",
-    "ronin",
-    "scientist",
-    "seeker",
-    "veteran"
-  ] as const,
-  Enlightened: [
-    "abomination",
-    "deathMagician",
-    "disciple",
-    "dreamMagician",
-    "madnessMagician",
-    "passionMagician",
-    "revenant",
-    "timeAndSpaceMagician"
-  ] as const
-};
+  Asleep: {
+    [Archetype.sleeper]: "Sleeper"
+  },
+  Aware: {
+    [Archetype.academic]: "Academic",
+    [Archetype.agent]: "Agent",
+    [Archetype.artist]: "Artist",
+    [Archetype.avenger]: "Avenger",
+    [Archetype.broken]: "Broken",
+    [Archetype.careerist]: "Careerist",
+    [Archetype.criminal]: "Criminal",
+    [Archetype.cursed]: "Cursed",
+    [Archetype.deceiver]: "Deceiver",
+    [Archetype.descendant]: "Descendant",
+    [Archetype.detective]: "Detective",
+    [Archetype.doll]: "Doll",
+    [Archetype.drifter]: "Drifter",
+    [Archetype.fixer]: "Fixer",
+    [Archetype.occultist]: "Occultist",
+    [Archetype.prophet]: "Prophet",
+    [Archetype.ronin]: "Ronin",
+    [Archetype.scientist]: "Scientist",
+    [Archetype.seeker]: "Seeker",
+    [Archetype.veteran]: "Veteran"
+  },
+  Enlightened: {
+    [Archetype.abomination]: "Abomination",
+    [Archetype.deathMagician]: "Death Magician",
+    [Archetype.disciple]: "Disciple",
+    [Archetype.dreamMagician]: "Dream Magician",
+    [Archetype.madnessMagician]: "Madness Magician",
+    [Archetype.passionMagician]: "Passion Magician",
+    [Archetype.revenant]: "Revenant",
+    [Archetype.timeAndSpaceMagician]: "Time and Space Magician"
+  }
+} as const;
+
+
 export const Attributes = {
   Active: {
     reason: {},
@@ -278,7 +300,6 @@ const C = {
     revenant: ["Bewitching", "Memories of Past Lives", "Commanding Voice", "Mind Manipulator", "Ethereal", "Telekinesis", "Invulnerability", "Bloodthirst", "Sensitivity", "Controlled by External Force", "Symbol Bondage"],
     timeAndSpaceMagician: []
   },
-  ActorTypes, ItemTypes,
   Attributes, AttributeButtons,
   AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
   Colors,

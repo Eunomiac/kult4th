@@ -68,7 +68,7 @@ const STYLES = {
   },
   display: {
     "color": C.Colors.gGOLD,
-    "font-family": "Alverata",
+    "font-family": "Kultrata",
     "font-size": "16px",
     "margin-left": "-100px",
     "padding": "0 100px"

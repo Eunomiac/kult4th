@@ -1,4 +1,5 @@
-import K4Item, {K4ItemType} from "../documents/K4Item";
+import {K4Attribute} from "../scripts/constants";
+import K4Item, {K4ItemType, K4ItemSubType, K4ItemResultType, K4ItemRange} from "../documents/K4Item";
 
 const KEYS_TO_PRUNE = ["_id", "folder", "sort", "permission", "flags"];
 
@@ -38,35 +39,58 @@ export async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
 }
 
 
-export const PACKS: Record<string, any[]> = {
+namespace PACKTypes {
+  export interface ByType {
+    [K4ItemType.advantage]: K4ItemData<K4ItemType.advantage>[];
+    [K4ItemType.disadvantage]: K4ItemData<K4ItemType.disadvantage>[];
+    [K4ItemType.move]: K4ItemData<K4ItemType.move>[];
+    [K4ItemType.attack]: K4ItemData<K4ItemType.attack>[];
+    [K4ItemType.darksecret]: K4ItemData<K4ItemType.darksecret>[];
+    [K4ItemType.relation]: K4ItemData<K4ItemType.relation>[];
+    [K4ItemType.gear]: K4ItemData<K4ItemType.gear>[];
+    [K4ItemType.weapon]: K4ItemData<K4ItemType.weapon>[];
+  }
+  export interface SubItems {
+    subItems: K4SubItemData<K4ItemType.move|K4ItemType.attack>[];
+    subMoves: K4SubItemData<K4ItemType.move>[];
+    subAttacks: K4SubItemData<K4ItemType.attack>[];
+  }
+  export interface ParentItems {
+    parentItems: K4ItemData<ParentItemTypes>[];
+  }
+  export interface All {
+    all: K4ItemData[];
+  }
+}
+
+export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItems & PACKTypes.All = {
   [K4ItemType.advantage]: [
     {
       "name": "Worldly",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
       "system": {
         "key": "worldly",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
             "system": {
               "sourceItem": {
                 "name": "Worldly",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you arrive at a new location in the mundane world,",
                 "outro": "decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "worldly"
             }
           }
@@ -79,15 +103,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": []
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Occult Studies",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
       "system": {
         "key": "occult-studies",
@@ -101,17 +124,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
             "system": {
               "sourceItem": {
                 "name": "Occult Studies",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -122,24 +145,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Take both options below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You have a hazy memory of something like this, but can't say for sure if it's true or not. The GM explains what it is you remember."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "occult-studies"
             }
           }
@@ -152,47 +175,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "1bxCoWQZjpHQADT1"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "To the Last Breath",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
       "system": {
         "key": "to-the-last-breath",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
             "system": {
               "sourceItem": {
                 "name": "To the Last Breath",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "When you refuse to give in even if the odds turn against you,",
                 "outro": "mark 1 Time to reroll the dice."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "to-the-last-breath"
             }
           }
@@ -207,23 +220,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "1n2tIyOecmL6pfmP"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Extortionist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/extortionist.svg",
       "system": {
         "key": "extortionist",
@@ -237,7 +241,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -253,23 +257,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "1vQfBgYdF1r0D0Qs"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Character Actor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
       "system": {
         "key": "character-actor",
@@ -285,17 +280,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
             "system": {
               "sourceItem": {
                 "name": "Character Actor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -306,27 +301,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below. You may save up to two for later.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below. You may save one for later.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but things don't go according to plan. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
               "key": "character-actor"
             }
           }
@@ -339,47 +334,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "intuition",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "2Ki167D1GZHUjnpM"
+        "attribute": K4Attribute.intuition,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Code of Honor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
       "system": {
         "key": "code-of-honor",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
             "system": {
               "sourceItem": {
                 "name": "Code of Honor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you take risks or make sacrifices for your code of honor,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "code-of-honor"
             }
           }
@@ -392,23 +377,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "2UDpldvi6gNXv8aa"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Prepared",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
       "system": {
         "key": "prepared",
@@ -423,17 +399,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
             "system": {
               "sourceItem": {
                 "name": "Prepared",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -445,28 +421,28 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but you have missed or overlooked something crucial: #>text-gmtext>The GM takes 1 Hold<#.",
                   "listRefs": [
                     "options"
                   ],
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "prepared"
             }
           }
@@ -479,47 +455,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move for the location."
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "3evrLadXmeMPtpfE"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Good Samaritan",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
       "system": {
         "key": "good-samaritan",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
             "system": {
               "sourceItem": {
                 "name": "Good Samaritan",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you help another at your own expense,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "good-samaritan"
             }
           }
@@ -532,23 +498,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "3sjDRHyModzxaEL6"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Artifact",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
       "system": {
         "key": "artifact",
@@ -571,17 +528,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
             "system": {
               "sourceItem": {
                 "name": "Artifact",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -592,24 +549,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose one power to invoke from the list below (the GM determines what happens).",
                   "listRefs": [
                     "powers"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one power to invoke from the list below (the GM determines what happens). However, the artifact also exacts an additional price (the GM determines what is required).",
                   "listRefs": [
                     "powers"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The artifact does something unexpected, possibly dangerous. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "artifact"
             }
           }
@@ -622,23 +579,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "43gZhfxiT9XT91wy"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Sixth Sense",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
       "system": {
         "key": "sixth-sense",
@@ -653,17 +601,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
             "system": {
               "sourceItem": {
                 "name": "Sixth Sense",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -674,24 +622,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below, useable any time during the session.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below, useable any time during the session.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your instincts will fail to trigger in a dangerous situation. #>text-gmtext>The GM makes a Move<# at some point during the session."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "sixth-sense"
             }
           }
@@ -704,23 +652,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "45dnsIhk0LUCO8A5"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Moles",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/moles.svg",
       "system": {
         "key": "moles",
@@ -734,17 +673,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/moles.svg",
             "system": {
               "sourceItem": {
                 "name": "Moles",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -755,24 +694,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You receive both options below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one of the options below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The mole's loyalties are questionable. Can you trust them? #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "moles"
             }
           }
@@ -785,39 +724,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "49r5eWpjTg0kUVPZ"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Impostor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
       "system": {
         "key": "impostor",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
             "system": {
               "sourceItem": {
                 "name": "Impostor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -825,18 +755,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "describe who they are and %insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "They can provide you with whatever you require."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "One of them might be able to help, but it will take some convincing."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You know someone who can help, but they have already seen through your game. If you want their assistance it will require threats or blackmail to get them to provide it."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "impostor"
             }
           }
@@ -849,47 +779,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "5LiqvHjg4SjbkG31"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Desperate",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
       "system": {
         "key": "desperate",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
             "system": {
               "sourceItem": {
                 "name": "Desperate",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you try to make it through overwhelming odds,",
                 "outro": "take #>text-keyword>+1 ongoing<# on all rolls until you're clear of the threat."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "desperate"
             }
           }
@@ -902,39 +822,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "5n8djsfdCFB4iuzy"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Awe-Inspiring",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
       "system": {
         "key": "awe-inspiring",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
             "system": {
               "sourceItem": {
                 "name": "Awe-Inspiring",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -942,18 +853,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "People around you accept you as their leader and listen to you. Take #>text-keyword>+1 ongoing<# against people in this scene."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "People feel you're leadership material and show you respect. Choose one of them, in particular, who goes along with what you think. You have #>text-keyword>+1 ongoing<# against them during this scene."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "People feel like you're the leader, but one of them tries to challenge you for it. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "awe-inspiring"
             }
           }
@@ -966,23 +877,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "6EDD1vctxzBi5kVq"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Watchers",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
       "system": {
         "key": "watchers",
@@ -998,17 +900,17 @@ export const PACKS: Record<string, any[]> = {
             "intro": "The GM determines the size of the gang that appears, based on the power of the threat you face."
           }
         },
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
             "system": {
               "sourceItem": {
                 "name": "Watchers",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1019,8 +921,7 @@ export const PACKS: Record<string, any[]> = {
                   "watchers"
                 ]
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "watchers"
             }
           }
@@ -1033,39 +934,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold on the Watchers' behalf to let them make a Move against you."
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "6k6DsPXEIjCxSiQd"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Academic Network",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
       "system": {
         "key": "academic-network",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
             "system": {
               "sourceItem": {
                 "name": "Academic Network",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1073,18 +965,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "provide the person's name, field of study, and how you got to know one another, then %insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The person is a friend (#>text-keyword>Relation +1<#)."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The person is an acquaintance (#>text-keyword>Relation +0<#)."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#)."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "academic-network"
             }
           }
@@ -1097,39 +989,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "7Frdiqer7Wbm2xZf"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Implanted Messages",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
       "system": {
         "key": "implanted-messages",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
             "system": {
               "sourceItem": {
                 "name": "Implanted Messages",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1137,18 +1020,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You hold 2 Power over them. For as long as you retain Power over them, they take 1 #>text-keyword>Serious Wound<# should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You hold 1 Power over them. For as long as you retain Power over them, they take 1 #>text-keyword>Serious Wound<# should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Something goes wrong, such as they get hurt in the process or the order's outcome is different than what you imagined. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "implanted-messages"
             }
           }
@@ -1161,23 +1044,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "7XY2KQFDKp75kZc8"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Forbidden Inspiration",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
       "system": {
         "key": "forbidden-inspiration",
@@ -1192,17 +1066,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
             "system": {
               "sourceItem": {
                 "name": "Forbidden Inspiration",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1213,27 +1087,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You have gazed too deeply into the abyss. Choose one option from the list below, but you also experience terrifying visions or encounter something horrible. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "forbidden-inspiration"
             }
           }
@@ -1246,23 +1120,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "7x1CaAJSEtF8fpGP"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Inventor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
       "system": {
         "key": "inventor",
@@ -1278,17 +1143,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
             "system": {
               "sourceItem": {
                 "name": "Inventor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1299,24 +1164,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The construction is successful and you may pick two options from below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The construction has minor flaws. You may choose one option from the list below from below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You complete the construction or repair, but it has significant flaws, some of which are hidden. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "inventor"
             }
           }
@@ -1329,47 +1194,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "819VIBg4k66E68pC"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "At Any Cost",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
       "system": {
         "key": "at-any-cost",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
             "system": {
               "sourceItem": {
                 "name": "At Any Cost",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you truly desire something,",
                 "outro": "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "at-any-cost"
             }
           }
@@ -1382,23 +1237,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "86RMb0CP0ABK0GmA"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Body Awareness",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
       "system": {
         "key": "body-awareness",
@@ -1413,17 +1259,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
             "system": {
               "sourceItem": {
                 "name": "Body Awareness",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1434,27 +1280,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below, but you expose yourself to danger or incur a cost.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but something goes very wrong. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "body-awareness"
             }
           }
@@ -1467,23 +1313,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "894bTPyP8VHcS4h6"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Crafty",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
       "system": {
         "key": "crafty",
@@ -1498,17 +1335,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
             "system": {
               "sourceItem": {
                 "name": "Crafty",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1519,24 +1356,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below. You may save one until later during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "They're on to you. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
               "key": "crafty"
             }
           }
@@ -1549,39 +1386,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "intuition",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "8G9Anurh9K938lPS"
+        "attribute": K4Attribute.intuition,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Enhanced Awareness",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
       "system": {
         "key": "enhanced-awareness",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
             "system": {
               "sourceItem": {
                 "name": "Enhanced Awareness",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1589,18 +1417,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You can discern clear details regarding the location, and may be able to speak to entities tied to it."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You get some basic impressions regarding the location."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The Illusion tears. The veil is lifted temporarily, revealing an alternate dimension—the GM determines which one. The PC could be sucked into it or something may cross over into our reality. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "enhanced-awareness"
             }
           }
@@ -1613,23 +1441,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "8bauWQfn7H1j46ok"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Daredevil",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
       "system": {
         "key": "daredevil",
@@ -1644,17 +1463,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "sourceItem": {
                 "name": "Daredevil",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1662,30 +1481,73 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but you are in over your head. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
+              "key": "daredevil"
+            }
+          },
+          {
+            "name": "On a Swivel",
+            "type": K4ItemType.move,
+            "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
+            "system": {
+              "sourceItem": {
+                "name": "Daredevil",
+                "type": K4ItemType.advantage
+              },
+              "isCustom": false,
+              "isEdge": true,
+              "rules": {
+                "trigger": "Whenever you're entering a dangerous situation,",
+                "outro": "%insert.rollPrompt%."
+              },
+              "results": {
+                [K4ItemResultType.completeSuccess]: {
+                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them anytime during the scene.",
+                  "listRefs": [
+                    "edges"
+                  ],
+                  "edges": 3 as PosInteger
+                },
+                [K4ItemResultType.partialSuccess]: {
+                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them anytime during the scene.",
+                  "listRefs": [
+                    "edges"
+                  ],
+                  "edges": 2 as PosInteger
+                },
+                [K4ItemResultType.failure]: {
+                  "result": "#>text-keyword>Gain 1 Edge<#, but you are in over your head. #>text-gmtext>The GM makes a Move<#.",
+                  "listRefs": [
+                    "edges"
+                  ],
+                  "edges": 1 as PosInteger
+                }
+              },
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "daredevil"
             }
           }
@@ -1700,23 +1562,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "95qJSM2BaiIPJZXt"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Ice Cold",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
       "system": {
         "key": "ice-cold",
@@ -1732,17 +1585,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "sourceItem": {
                 "name": "Ice Cold",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1750,30 +1603,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but you attract attention from the hostiles. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "ice-cold"
             }
           }
@@ -1788,23 +1641,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "A4J47wtDqiqvGx4z"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Dabbler in the Occult",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
       "system": {
         "key": "dabbler-in-the-occult",
@@ -1819,17 +1663,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
             "system": {
               "sourceItem": {
                 "name": "Dabbler in the Occult",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1837,18 +1681,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You perform every step correctly; the ritual works as intended."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You make a minor error. The GM chooses one: %list.gmoptions%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "dabbler-in-the-occult"
             }
           }
@@ -1861,23 +1705,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "AWT6yD1XYJj9Sdfq"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Bound",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/bound.svg",
       "system": {
         "key": "bound",
@@ -1892,17 +1727,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/bound.svg",
             "system": {
               "sourceItem": {
                 "name": "Bound",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1913,27 +1748,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You may choose three options from the list below at any time during the session.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You may choose one option from the list below at any time during the session.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You may choose one option from the list below at any time during the session, but #>text-gmtext>the GM makes a Move<# for the entity at some point during the session.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "bound"
             }
           }
@@ -1946,23 +1781,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "B8KOHgzZJl0T1fmY"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Animal Speaker",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
       "system": {
         "key": "animal-speaker",
@@ -1977,17 +1803,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
             "system": {
               "sourceItem": {
                 "name": "Animal Speaker",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -1998,27 +1824,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below. You may save up to two for later.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below. You may save one for later.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but the animal is affected by your memories and Disadvantages. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
               "key": "animal-speaker"
             }
           }
@@ -2031,23 +1857,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "intuition",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "BlZAZWyiqLz72VmD"
+        "attribute": K4Attribute.intuition,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Parkour",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
       "system": {
         "key": "parkour",
@@ -2062,17 +1879,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
             "system": {
               "sourceItem": {
                 "name": "Parkour",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2083,27 +1900,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below. You may save one until later.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but a complication, cost, or new threat emerges. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "parkour"
             }
           }
@@ -2116,23 +1933,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Bv76cdNcV4myP5cA"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Observant",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/observant.svg",
       "system": {
         "key": "observant",
@@ -2146,7 +1954,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -2160,23 +1968,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "C2PsXVidj5U9VMO7"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Expert",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/expert.svg",
       "system": {
         "key": "expert",
@@ -2196,7 +1995,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -2212,29 +2011,20 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "CahE1Onf63w8ri0n"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Interrogator",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/interrogator.svg",
       "system": {
         "key": "interrogator",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -2246,47 +2036,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "CsV1KJ5ND8Sr25eN"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Thirst for Knowledge",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
       "system": {
         "key": "thirst-for-knowledge",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
             "system": {
               "sourceItem": {
                 "name": "Thirst for Knowledge",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you learn new information about alternate planes of existence, a supernatural entity, or a Higher Power,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "thirst-for-knowledge"
             }
           }
@@ -2299,67 +2079,56 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "DvBk8wpLUlyHbRTu"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Sealed Fate",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
       "system": {
         "key": "sealed-fate",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
             "name": "Defy Wound",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
               "sourceItem": {
                 "name": "Sealed Fate",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are dealt a #>text-keyword>Critical Wound<#,",
                 "outro": "you may mark 1 Time from Condemned to immediately stabilize the #>text-keyword>Wound<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "sealed-fate"
             }
           },
           {
             "name": "Defy Death",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
               "sourceItem": {
                 "name": "Sealed Fate",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you die,",
                 "outro": "mark 2 Time from Condemned and reawaken, injured and weak, but alive, and with all of your #>text-keyword>Wounds<# stabilized."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "sealed-fate"
             }
           }
@@ -2374,23 +2143,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ETJjfph8CY3AYuOI"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Quick Thinker",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
       "system": {
         "key": "quick-thinker",
@@ -2405,17 +2165,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
             "system": {
               "sourceItem": {
                 "name": "Quick Thinker",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2426,27 +2186,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below, at any time during the mission.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below, at any time during the mission.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "At any time during the mission, choose one option from the list below, but you've failed to account for something. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "quick-thinker"
             }
           }
@@ -2459,23 +2219,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "EcCWsao7YIZpsswC"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Exorcist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
       "system": {
         "key": "exorcist",
@@ -2490,17 +2241,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
             "system": {
               "sourceItem": {
                 "name": "Exorcist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2511,24 +2262,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The creature is banished. Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The creature is banished. Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The creature resists banishment and something goes terribly wrong, such as the creature possessing you. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "exorcist"
             }
           }
@@ -2541,23 +2292,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Edvpk8uj06gfFilE"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Wanderer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
       "system": {
         "key": "wanderer",
@@ -2573,17 +2315,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
             "system": {
               "sourceItem": {
                 "name": "Wanderer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2594,27 +2336,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You have been here before. Choose two options from the list below any time during your visit.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You have heard of this place. Choose one option from the list below any time during your visit.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You have been here before, but something bad happened. Choose one option from the list below any time during your visit. The GM explains what kind of problem awaits you here. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "wanderer"
             }
           }
@@ -2627,29 +2369,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "EjAPJDCKtUROsMRd"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Hardened",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hardened.svg",
       "system": {
         "key": "hardened",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -2663,23 +2396,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "F0EzyYrdmnKaTg5N"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Hacker",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
       "system": {
         "key": "hacker",
@@ -2693,17 +2417,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
             "system": {
               "sourceItem": {
                 "name": "Hacker",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2711,18 +2435,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You accomplish your task without a problem."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Complications arise. Choose one option: %list.complications%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "hacker"
             }
           }
@@ -2735,23 +2459,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "FwUvPwMrodyagJXI"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Fascination",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
       "system": {
         "key": "fascination",
@@ -2773,17 +2488,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
             "system": {
               "sourceItem": {
                 "name": "Fascination",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2794,24 +2509,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below, but the GM also chooses one of the following: %list.gmoptions%",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "They are affected by you in a way you didn't anticipate, or the attraction is uncomfortably strong—you choose. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "fascination"
             }
           }
@@ -2824,23 +2539,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "GOTF1GKVYvwHqHqY"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Boss",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/boss.svg",
       "system": {
         "key": "boss",
@@ -2855,17 +2561,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/boss.svg",
             "system": {
               "sourceItem": {
                 "name": "Boss",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2873,18 +2579,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "They follow your orders and everything goes according to plan."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "They follow your orders, but GM picks one option: %list.gmoptions%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "boss"
             }
           }
@@ -2897,23 +2603,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "GzDOzyoWQJVKfXLD"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Fast Talk",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
       "system": {
         "key": "fast-talk",
@@ -2928,17 +2625,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
             "system": {
               "sourceItem": {
                 "name": "Fast Talk",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -2949,27 +2646,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but they grow suspicious of your motives. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "fast-talk"
             }
           }
@@ -2982,23 +2679,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "HG7CCHS46CzAxv7J"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Read a Crowd",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
       "system": {
         "key": "read-a-crowd",
@@ -3014,17 +2702,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
             "system": {
               "sourceItem": {
                 "name": "Read a Crowd",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3035,27 +2723,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask three questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask two questions from the list below, but you also draw unwanted attention to yourself.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but you've blown your cover. Those who have what you're looking for will be expecting you. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "read-a-crowd"
             }
           }
@@ -3068,47 +2756,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Hnd2kauvBEccid9G"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Workaholic",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
       "system": {
         "key": "workaholic",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
             "system": {
               "sourceItem": {
                 "name": "Workaholic",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you create something or carry out an experiment,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "workaholic"
             }
           }
@@ -3121,23 +2799,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "IoTRLgdtyJSbw7C5"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Stubborn",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
       "system": {
         "key": "stubborn",
@@ -3152,17 +2821,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "sourceItem": {
                 "name": "Stubborn",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3170,30 +2839,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but you push yourself past your breaking point. Decrease #>text-negmod>−2<# #>text-keyword>Stability<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "stubborn"
             }
           }
@@ -3208,23 +2877,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "IqcIOW1472lsPw4e"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Elite Sport (Fencing)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
       "system": {
         "key": "elite-sport-(fencing)",
@@ -3242,18 +2902,18 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
             "name": "Riposte",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
             "system": {
               "sourceItem": {
                 "name": "Elite Sport (Fencing)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3261,20 +2921,20 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You inflict #>text-keyword>3 Harm<# to your opponent(s) and avoid counterattacks."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You inflict #>text-keyword>3 Harm<#, but at a cost. The GM chooses one: %list.gmoptions%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 3,
               "key": "elite-sport-(fencing)"
@@ -3291,23 +2951,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "J2c2AyWOi9tFbLJq"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Eye for Detail",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
       "system": {
         "key": "eye-for-detail",
@@ -3324,17 +2975,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
             "system": {
               "sourceItem": {
                 "name": "Eye for Detail",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3345,27 +2996,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask three questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask two questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but you expose your inquisitiveness to the person you're observing. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "eye-for-detail"
             }
           }
@@ -3378,39 +3029,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "JCgB3B0XoJ9icF1a"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Escape Artist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/escape-artist.svg",
       "system": {
         "key": "escape-artist",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/escape-artist.svg",
             "system": {
               "sourceItem": {
                 "name": "Escape Artist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3418,18 +3060,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "outline your plan and %insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You escape without complications."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You can choose to stay or escape at a cost, such as leaving something important behind or take something traceable with you. The GM decides what it is."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You are only half out the door when you're caught in a really bad spot. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "escape-artist"
             }
           }
@@ -3442,23 +3084,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "L60p2vSEBHxTkagm"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Erotic",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/erotic.svg",
       "system": {
         "key": "erotic",
@@ -3474,17 +3107,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/erotic.svg",
             "system": {
               "sourceItem": {
                 "name": "Erotic",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3495,27 +3128,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below any time during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below any time during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below any time during this scene, but the nature of the attraction is different than you had hoped. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "erotic"
             }
           }
@@ -3528,39 +3161,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "M57bidUJjzwNeqXy"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Lay on Hands",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
       "system": {
         "key": "lay-on-hands",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
             "system": {
               "sourceItem": {
                 "name": "Lay on Hands",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3568,18 +3192,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You fully heal the injured person, channeling the #>text-keyword>Wound<# onto yourself or a selected target."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You stabilize the injured, channeling the #>text-keyword>Wound<# onto yourself or a selected target."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You may choose to stabilize the injured, but if you do, the powers break free from your control."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "lay-on-hands"
             }
           }
@@ -3592,23 +3216,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "N2kffFcLXkAc5maB"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Sneak",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sneak.svg",
       "system": {
         "key": "sneak",
@@ -3623,17 +3238,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sneak.svg",
             "system": {
               "sourceItem": {
                 "name": "Sneak",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3644,27 +3259,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below. You may spend them any time during the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below. You may spend them any time during the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but you manage to attract someone's attention. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "sneak"
             }
           }
@@ -3677,23 +3292,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "NBbhhOOGqgX5GceB"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Survival Instinct",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
       "system": {
         "key": "survival-instinct",
@@ -3707,17 +3313,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
             "system": {
               "sourceItem": {
                 "name": "Survival Instinct",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3725,18 +3331,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%.%insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You ignore your injuries until the conflict is over, and you may choose one option from the list below: %list.options%"
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You ignore your injuries until the conflict is over."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You overexert yourself and after a few moments your injuries cause you to pass out and collapse. After your next action, the GM decides when and how you pass out."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "survival-instinct"
             }
           }
@@ -3749,39 +3355,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "NEqPxe3urb9VxAq1"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Wayfinder",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/wayfinder.svg",
       "system": {
         "key": "wayfinder",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/wayfinder.svg",
             "system": {
               "sourceItem": {
                 "name": "Wayfinder",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3789,18 +3386,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You discover a shortcut through the alleys, which takes you to your destination within a few minutes, regardless of how far the distance actually is."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You discover a shortcut, but there is also some sort of obstacle you will need to get past."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You discover a shortcut, but it leads you into a dangerous situation, such as the lair of some creature or an ambush set by some gang. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "wayfinder"
             }
           }
@@ -3813,23 +3410,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "OWkAbkvxsFt4XG2n"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Street Contacts",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/street-contacts.svg",
       "system": {
         "key": "street-contacts",
@@ -3845,17 +3433,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/street-contacts.svg",
             "system": {
               "sourceItem": {
                 "name": "Street Contacts",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3866,27 +3454,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask three questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask one question from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but someone becomes suspicious or aggressive. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "street-contacts"
             }
           }
@@ -3899,23 +3487,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "OkgCCm5jve5QKrmB"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Weapon Master (Melee)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
       "system": {
         "key": "weapon-master-(melee)",
@@ -3933,18 +3512,18 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
             "name": "Launching Attack",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
               "sourceItem": {
                 "name": "Weapon Master (Melee)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3955,23 +3534,23 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You inflict #>text-keyword>2 Harm<# to your opponent(s) and avoid counterattacks."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You inflict #>text-keyword>2 Harm<#, but at a cost. The GM chooses one:",
                   "listRefs": [
                     "gmoptions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "room"
+                K4ItemRange.room
               ],
               "harm": 2,
               "key": "weapon-master-(melee)"
@@ -3979,12 +3558,12 @@ export const PACKS: Record<string, any[]> = {
           },
           {
             "name": "Precision Attack",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
               "sourceItem": {
                 "name": "Weapon Master (Melee)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -3995,23 +3574,23 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You inflict #>text-keyword>2 Harm<# to your opponent(s) and avoid counterattacks. This #>text-keyword>Harm<# ignores #>text-keyword>Armor<#."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You inflict #>text-keyword>2 Harm<#, ignoring armor, but at a cost. The GM chooses one:",
                   "listRefs": [
                     "gmoptions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 2,
               "key": "weapon-master-(melee)"
@@ -4019,12 +3598,12 @@ export const PACKS: Record<string, any[]> = {
           },
           {
             "name": "Tripping Attack",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
               "sourceItem": {
                 "name": "Weapon Master (Melee)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4032,20 +3611,20 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You inflict #>text-keyword>2 Harm<# to your opponent, who falls prone."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You inflict #>text-keyword>2 Harm<# to your opponent, intending to knock them prone, but at a cost. The GM chooses one: %list.gmoptions%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 2,
               "key": "weapon-master-(melee)"
@@ -4060,23 +3639,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "OxXAkjkyttDU6nYm"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Authority",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/authority.svg",
       "system": {
         "key": "authority",
@@ -4092,17 +3662,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/authority.svg",
             "system": {
               "sourceItem": {
                 "name": "Authority",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4113,27 +3683,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "During this game session, choose three options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "During this game session, choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "During this game session you may choose one option from the list below, but you also attract unwanted attention like stalkers, professional adversaries, competitors, or hostile forces. #>text-gmtext>The GM makes a Move<# for them at some point during the session.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "authority"
             }
           }
@@ -4146,23 +3716,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "P6poOfy3pmN514eW"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Genius",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/genius.svg",
       "system": {
         "key": "genius",
@@ -4177,17 +3738,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
               "sourceItem": {
                 "name": "Genius",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4195,30 +3756,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt% to see if you can discover a way out."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#, useable any time in the scene, while you're still in danger.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#, useable any time in the scene, while you're still in danger.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but you also attract unwanted attention. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "genius"
             }
           }
@@ -4233,23 +3794,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "PGs3C2AkUn9xmO32"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Driver",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/driver.svg",
       "system": {
         "key": "driver",
@@ -4265,17 +3817,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "sourceItem": {
                 "name": "Driver",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4283,30 +3835,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<# to spend any time during the scene, but the situation worsens somehow—maybe you speed past a police car, additional vehicles start pursuing you, or you or your vehicle is damaged. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "driver"
             }
           }
@@ -4321,23 +3873,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "QIiyYQhEZU88iCr9"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Tracer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/tracer.svg",
       "system": {
         "key": "tracer",
@@ -4353,17 +3896,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/tracer.svg",
             "system": {
               "sourceItem": {
                 "name": "Tracer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4374,27 +3917,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask three questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask two questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but someone notices you snooping around. It might be someone you'd rather not be known by, or a traitor inside your network.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "tracer"
             }
           }
@@ -4407,23 +3950,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "QR12lGYntYE7gH1l"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Battlefield Medicine",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
       "system": {
         "key": "battlefield-medicine",
@@ -4446,17 +3980,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
             "system": {
               "sourceItem": {
                 "name": "Battlefield Medicine",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4467,24 +4001,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You may choose one option from the list below, but you must also choose one complication: %list.complications%",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "battlefield-medicine"
             }
           }
@@ -4497,23 +4031,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "QWpnWcZy0b0hq94M"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Elite Education",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
       "system": {
         "key": "elite-education",
@@ -4529,17 +4054,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
             "system": {
               "sourceItem": {
                 "name": "Elite Education",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4550,27 +4075,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but you've become indebted to someone. The debt can be called in at any time during the story, at the GM's discretion.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "elite-education"
             }
           }
@@ -4583,23 +4108,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "QrBV7ObDGjwjmK1J"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Sniper",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sniper.svg",
       "system": {
         "key": "sniper",
@@ -4616,17 +4132,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sniper.svg",
             "system": {
               "sourceItem": {
                 "name": "Sniper",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4637,24 +4153,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The shot finds its target. Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The shot finds its target. Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The shot didn't go where you intended it to, or you reveal your position to the enemy—expect witnesses, opponents pursuing you as you leave the scene, or other problems. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "sniper"
             }
           }
@@ -4667,23 +4183,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "R8FoBSLmZrCQpVDu"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Streetfighter",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
       "system": {
         "key": "streetfighter",
@@ -4705,17 +4212,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "sourceItem": {
                 "name": "Streetfighter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4723,26 +4230,26 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#, but the GM also gets to pick one complication: %list.complications%",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You're unfocused and lose control. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "streetfighter"
             }
           }
@@ -4757,40 +4264,31 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Rn94KDET61Vqrbv7"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Shadow",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
       "system": {
         "key": "shadow",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
             "name": "Shadow Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
               "sourceItem": {
                 "name": "Shadow",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4798,29 +4296,29 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You avoid discovery, follow your target all the way to their final destination, and learn something about them you can use to your advantage later."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You avoid discovery and follow your target to their final destination."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You are spotted or encounter some sort of problem along the way. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "shadow"
             }
           },
           {
             "name": "Evade a Shadow",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
               "sourceItem": {
                 "name": "Shadow",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4828,18 +4326,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You shake your pursuers and can choose to try to shadow them instead."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You shake your pursuers."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your pursuers are still on your tail, and they can set up an ambush, disappear without a trace (only to show up when you least expect it), or refuse to go away. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "shadow"
             }
           }
@@ -4852,23 +4350,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "SF42Xq6z5HQhdjQG"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Burglar",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/burglar.svg",
       "system": {
         "key": "burglar",
@@ -4885,17 +4374,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/burglar.svg",
             "system": {
               "sourceItem": {
                 "name": "Burglar",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -4906,27 +4395,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below. You may spend them any time during the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below. You may spend them any time during the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but a problem arises. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "burglar"
             }
           }
@@ -4939,47 +4428,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "SPJuaE2Q83gZTQ1s"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Eye for an Eye",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
       "system": {
         "key": "eye-for-an-eye",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
             "system": {
               "sourceItem": {
                 "name": "Eye for an Eye",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you suffer a serious or critical injury, name the person you feel is responsible.",
                 "outro": "You get #>text-keyword>+2 ongoing<# to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "eye-for-an-eye"
             }
           }
@@ -4992,29 +4471,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "SfZm7VzfnZti4unV"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Gritted Teeth",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/gritted-teeth.svg",
       "system": {
         "key": "gritted-teeth",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -5033,23 +4503,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "SnNj5UlPc3185hKz"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Manipulative",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/manipulative.svg",
       "system": {
         "key": "manipulative",
@@ -5063,25 +4524,24 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/manipulative.svg",
             "system": {
               "sourceItem": {
                 "name": "Manipulative",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you do someone a favor or learn one of their secrets,",
                 "outro": "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %list.options%"
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "manipulative"
             }
           }
@@ -5094,23 +4554,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "SwDSGJql26iigW6w"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Death Drive",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
       "system": {
         "key": "death-drive",
@@ -5126,17 +4577,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "sourceItem": {
                 "name": "Death Drive",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5144,30 +4595,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but afterwards you discover you have been injured without noticing it (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "death-drive"
             }
           }
@@ -5182,23 +4633,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "T1Y7Ud9aD49NPJWR"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Analyst",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/analyst.svg",
       "system": {
         "key": "analyst",
@@ -5213,7 +4655,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -5227,23 +4669,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "T2fX92tdTkxyruLq"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Gang Leader",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
       "system": {
         "key": "gang-leader",
@@ -5257,17 +4690,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
             "system": {
               "sourceItem": {
                 "name": "Gang Leader",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5275,18 +4708,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "They enact your orders without question."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "They do as you want, but there is a complication (choose one): %list.complications%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "gang-leader"
             }
           }
@@ -5299,23 +4732,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "TgHMlpTuUGXMEGsJ"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Streetwise",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/streetwise.svg",
       "system": {
         "key": "streetwise",
@@ -5331,17 +4755,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetwise.svg",
             "system": {
               "sourceItem": {
                 "name": "Streetwise",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5349,18 +4773,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "No problem—you get what you're after. Someone will fix you right up."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The GM chooses one option from the list below: %list.gmoptions%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "streetwise"
             }
           }
@@ -5373,23 +4797,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "TvB1QEfFPtcoONWQ"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Manhunter",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/manhunter.svg",
       "system": {
         "key": "manhunter",
@@ -5406,17 +4821,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/manhunter.svg",
             "system": {
               "sourceItem": {
                 "name": "Manhunter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5427,27 +4842,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask three questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask two questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but someone figures out you've been snooping around.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "manhunter"
             }
           }
@@ -5460,29 +4875,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "UGeJywLdmHa8gSpo"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Elite Sport (Athletic)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(athletic).svg",
       "system": {
         "key": "elite-sport-(athletic)",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -5494,39 +4900,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "UPgMH0173xhlsLCT"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Deadly Stare",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
       "system": {
         "key": "deadly-stare",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
             "system": {
               "sourceItem": {
                 "name": "Deadly Stare",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5534,18 +4931,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact. You also get #>text-keyword>+2 ongoing<# against your target."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your opponents see you as their primary threat."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "deadly-stare"
             }
           }
@@ -5558,23 +4955,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "UaG2IESgPPuhAR9J"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Ace Up the Sleeve",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
       "system": {
         "key": "ace-up-the-sleeve",
@@ -5589,17 +4977,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "sourceItem": {
                 "name": "Ace Up the Sleeve",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5607,30 +4995,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 1 Edge<#. You may spend it at any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but the situation is worse than you imagined. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "ace-up-the-sleeve"
             }
           }
@@ -5645,39 +5033,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "V26vtM18zXddTiOi"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Inner Power",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/inner-power.svg",
       "system": {
         "key": "inner-power",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/inner-power.svg",
             "system": {
               "sourceItem": {
                 "name": "Inner Power",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5685,18 +5064,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The power attacks all opponents in your vicinity, causing #>text-keyword>2 Harm<#."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The power attacks your closest opponent, causing #>text-keyword>2 Harm<#."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The power attacks all living beings, including yourself, in the vicinity, causing #>text-keyword>2 Harm<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "inner-power"
             }
           }
@@ -5709,23 +5088,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "XVvev74KQ5ErwemH"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Network of Contacts",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
       "system": {
         "key": "network-of-contacts",
@@ -5742,17 +5112,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
             "system": {
               "sourceItem": {
                 "name": "Network of Contacts",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5763,27 +5133,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask three questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask two questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but the person you're inquiring about finds out you're snooping around. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "network-of-contacts"
             }
           }
@@ -5796,23 +5166,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "YKsBUtNqYeFpgSCq"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Survivalist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/survivalist.svg",
       "system": {
         "key": "survivalist",
@@ -5827,17 +5188,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/survivalist.svg",
             "system": {
               "sourceItem": {
                 "name": "Survivalist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5848,27 +5209,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below, useable while you remain in this situation.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below, useable while you remain in this situation.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below useable while you remain in this situation, but you've also overlooked something important. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "survivalist"
             }
           }
@@ -5881,23 +5242,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "YUraS0HXgCOKBvox"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Officer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/officer.svg",
       "system": {
         "key": "officer",
@@ -5913,17 +5265,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "sourceItem": {
                 "name": "Officer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -5931,26 +5283,26 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You misjudge the situation. Choose whether you have put yourself or one of your allies in harm's way. #>text-gmtext>The GM makes a Move<# for your opponent."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "officer"
             }
           }
@@ -5965,23 +5317,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Yf0L7XnFZYfVvbPw"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Exit Strategy",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
       "system": {
         "key": "exit-strategy",
@@ -5996,17 +5339,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
             "system": {
               "sourceItem": {
                 "name": "Exit Strategy",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6017,27 +5360,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You get all three options below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two of the options below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but you risk discovery or face unexpected obstacles. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "exit-strategy"
             }
           }
@@ -6050,39 +5393,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Z3l13r2HCl6LN7TD"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Puppeteer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/puppeteer.svg",
       "system": {
         "key": "puppeteer",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/puppeteer.svg",
             "system": {
               "sourceItem": {
                 "name": "Puppeteer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6090,18 +5424,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Everyone involved takes #>text-keyword>+1 ongoing<# to carry out the plan, and you get #>text-keyword>one Experience<# if the plan is successful."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You get #>text-keyword>one Experience<# if the plan is successful, but you have overlooked or miscalculated something."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your plan is inadequate, revealed, and/or misguided. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "puppeteer"
             }
           }
@@ -6114,23 +5448,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ZVxOssxnWcqe5WFT"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Forked Tongue",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
       "system": {
         "key": "forked-tongue",
@@ -6153,17 +5478,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
             "system": {
               "sourceItem": {
                 "name": "Forked Tongue",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6174,24 +5499,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below, but there is also a complication, chosen by the GM or the targeted PC: %list.complications%",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "They see right through you and will act as they please."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "forked-tongue"
             }
           }
@@ -6204,23 +5529,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ZbMtd4pIzZf2IOoS"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Cult Leader",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
       "system": {
         "key": "cult-leader",
@@ -6237,17 +5553,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
             "system": {
               "sourceItem": {
                 "name": "Cult Leader",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6258,24 +5574,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose to receive up to three visions from the list below.",
                   "listRefs": [
                     "visions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose to receive up to two visions from the list below.",
                   "listRefs": [
                     "visions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one vision, but the Illusion tears as a result. You may temporarily be transported into another dimension, attract a demonic being's attention, or receive a horrifying omen. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "cult-leader"
             }
           }
@@ -6288,23 +5604,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ZloUdG53RwzuHxpM"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "XXX Field Agent",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
       "system": {
         "key": "field-agent",
@@ -6331,18 +5638,18 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
             "name": "Surprise Strike",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "sourceItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6353,35 +5660,35 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You inflict #>text-keyword>3 Harm<# to your opponent(s) and avoid counterattacks."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You inflict #>text-keyword>3 Harm<#, but at a cost. The GM chooses one:",
                   "listRefs": [
                     "gmoptions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 2,
               "key": "field-agent"
             }
           },
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "sourceItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6389,30 +5696,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but you have made a bad call. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "field-agent"
             }
           }
@@ -6427,23 +5734,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "b4iQmfwySMgYQNFc"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Voice of Pain",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
       "system": {
         "key": "voice-of-pain",
@@ -6458,17 +5756,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
             "system": {
               "sourceItem": {
                 "name": "Voice of Pain",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6479,27 +5777,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but the pain will overwhelm you eventually and make you black out.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "voice-of-pain"
             }
           }
@@ -6512,39 +5810,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "bBQPDPYKEuQMFDQb"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Collector",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/collector.svg",
       "system": {
         "key": "collector",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/collector.svg",
             "system": {
               "sourceItem": {
                 "name": "Collector",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6552,18 +5841,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You know exactly where the item is, how to acquire it, and how to minimize hazards, obstacles, and/or costs."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You know roughly where it is and what hazards, obstacles, and/or costs are associated with acquiring it."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You know roughly where to start searching for it, but not the hazards or costs involved in pursuing it."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "collector"
             }
           }
@@ -6576,23 +5865,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "bPllj1xZDOac5T7I"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Snake Charmer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
       "system": {
         "key": "snake-charmer",
@@ -6606,17 +5886,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
             "system": {
               "sourceItem": {
                 "name": "Snake Charmer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6627,24 +5907,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose one option from the list below immediately, and you may choose two more any time in the future.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The desire is beyond the creature's ability to regulate. It cannot help but attempt to devour or imprison you."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "snake-charmer"
             }
           }
@@ -6657,23 +5937,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "cMkpxsnYwRuG7WqZ"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Data Retrieval",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
       "system": {
         "key": "data-retrieval",
@@ -6690,17 +5961,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
             "system": {
               "sourceItem": {
                 "name": "Data Retrieval",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6711,27 +5982,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask three questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask two questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but you also discover something unexpected. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "data-retrieval"
             }
           }
@@ -6744,23 +6015,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "cVBhkC092fF0ERQ2"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Divine",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/divine.svg",
       "system": {
         "key": "divine",
@@ -6774,17 +6036,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/divine.svg",
             "system": {
               "sourceItem": {
                 "name": "Divine",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6795,27 +6057,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The creature mistakes you for a god. Choose three options from the list below, useable any time during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You are fascinating to the creature. Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You may choose one option from the list below, but after using it the creature becomes determined to possess you. It might try to devour you or perhaps capture you. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "divine"
             }
           }
@@ -6828,23 +6090,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ct926dIthIXVP7Kq"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Keen-Eyed",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
       "system": {
         "key": "keen-eyed",
@@ -6858,7 +6111,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -6872,23 +6125,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "dD7UwbBHr5p7CiBt"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Occult Library",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/occult-library.svg",
       "system": {
         "key": "occult-library",
@@ -6904,17 +6148,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/occult-library.svg",
             "system": {
               "sourceItem": {
                 "name": "Occult Library",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -6926,28 +6170,28 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask two questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask one question from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but you have missed or overlooked something crucial. #>text-gmtext>The GM takes 1 Hold<#.",
                   "listRefs": [
                     "questions"
                   ],
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "occult-library"
             }
           }
@@ -6960,23 +6204,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move."
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "dINv28ExmV9HAkWM"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Chameleon",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/chameleon.svg",
       "system": {
         "key": "chameleon",
@@ -6990,17 +6225,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/chameleon.svg",
             "system": {
               "sourceItem": {
                 "name": "Chameleon",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7008,18 +6243,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Your disguise is convincing, as long as you keep the act going."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You manage to trick everyone who doesn't examine you in detail, but choose one complication: %list.complications%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your disguise is only effective at a distance. If you attract any attention to yourself, you will be exposed."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
               "key": "chameleon"
             }
           }
@@ -7032,39 +6267,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "intuition",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "f5UbUeV0qdoETTBv"
+        "attribute": K4Attribute.intuition,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Influential Friends",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/influential-friends.svg",
       "system": {
         "key": "influential-friends",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/influential-friends.svg",
             "system": {
               "sourceItem": {
                 "name": "Influential Friends",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7072,18 +6298,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Your friends can arrange for what you want."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "They can arrange for it, but you have to repay the favor later."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "They arrange for what you want, but you get on a powerful person's bad side or attract negative publicity. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "influential-friends"
             }
           }
@@ -7096,23 +6322,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "fR6TwKVHauJa2Px2"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Magical Intuition",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
       "system": {
         "key": "magical-intuition",
@@ -7127,17 +6344,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
             "system": {
               "sourceItem": {
                 "name": "Magical Intuition",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7148,27 +6365,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below. Up to two may be saved until later this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below. One may be saved until later this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but you also get an unexpected vision or attract attention. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "magical-intuition"
             }
           }
@@ -7181,29 +6398,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "fiWpd4HnpjDSquEo"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Intuitive",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intuitive.svg",
       "system": {
         "key": "intuitive",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -7217,23 +6425,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "hS4DgozBlLHEQKJ8"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Weapon Master (Firearms)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
       "system": {
         "key": "weapon-master-(firearms)",
@@ -7251,18 +6450,18 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
             "name": "Two In the Chest, One in the Head",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
             "system": {
               "sourceItem": {
                 "name": "Weapon Master (Firearms)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7273,23 +6472,23 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You inflict #>text-keyword>4 Harm<# to your opponent(s) and avoid counterattacks."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You inflict #>text-keyword>4 Harm<#, but at a cost. The GM chooses one:",
                   "listRefs": [
                     "gmoptions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "room"
+                K4ItemRange.room
               ],
               "harm": 4,
               "ammo": 2,
@@ -7298,12 +6497,12 @@ export const PACKS: Record<string, any[]> = {
           },
           {
             "name": "Disarming Shot",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
             "system": {
               "sourceItem": {
                 "name": "Weapon Master (Firearms)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7314,23 +6513,23 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You inflict #>text-keyword>1 Harm<# to your opponent(s) and avoid counterattacks."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You inflict #>text-keyword>1 Harm<#, but at a cost. The GM chooses one:",
                   "listRefs": [
                     "gmoptions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "room"
+                K4ItemRange.room
               ],
               "harm": 1,
               "ammo": 1,
@@ -7346,39 +6545,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "hbIjUbJOKO7YqdNC"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Dreamer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dreamer.svg",
       "system": {
         "key": "dreamer",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/dreamer.svg",
             "system": {
               "sourceItem": {
                 "name": "Dreamer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7386,18 +6576,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You meet the intended person or arrive at the specific place in the Dream."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You meet the intended person, or arrive at the specific place. However, some element has changed, or something followed you or the person in question."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You are lost in the Dream and cannot wake up until you find your way back."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "dreamer"
             }
           }
@@ -7410,47 +6600,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "iIDJF5czL9IUC1iD"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Divine Champion",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
       "system": {
         "key": "divine-champion",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
             "system": {
               "sourceItem": {
                 "name": "Divine Champion",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you fight your deity's enemies or fight to protect a sacred object,",
                 "outro": "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "divine-champion"
             }
           }
@@ -7463,29 +6643,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "iX4Gr1oaXnTaCyog"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Instinct",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/instinct.svg",
       "system": {
         "key": "instinct",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -7500,23 +6671,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "jKd6DuhV04avikyA"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Vigilant",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/vigilant.svg",
       "system": {
         "key": "vigilant",
@@ -7530,7 +6692,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -7544,23 +6706,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "jy4jVjLM1jTJVCZd"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Scientist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/scientist.svg",
       "system": {
         "key": "scientist",
@@ -7575,7 +6728,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -7587,23 +6740,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mP7qyowc4khJEOiY"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Crime Scene Investigator",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
       "system": {
         "key": "crime-scene-investigator",
@@ -7622,17 +6766,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
             "system": {
               "sourceItem": {
                 "name": "Crime Scene Investigator",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7643,27 +6787,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Ask two questions from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Ask one question from the list below.",
                   "listRefs": [
                     "questions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Ask one question from the list below, but your investigation leads you into danger or introduces additional problems later on.",
                   "listRefs": [
                     "questions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "crime-scene-investigator"
             }
           }
@@ -7676,23 +6820,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mjFXOzScj6yFbwou"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Magnetic Attraction",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
       "system": {
         "key": "magnetic-attraction",
@@ -7707,17 +6842,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
             "system": {
               "sourceItem": {
                 "name": "Magnetic Attraction",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7728,27 +6863,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below. You may save up to two until later in the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but someone present becomes obsessed, wanting to have you, keep you, and own you for themselves. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "magnetic-attraction"
             }
           }
@@ -7761,29 +6896,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mmO25pGU56uqv3b5"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Dead Shot",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dead-shot.svg",
       "system": {
         "key": "dead-shot",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -7797,23 +6923,14 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "moZ0abWL11AuSEDI"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Martial Arts Expert",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
       "system": {
         "key": "martial-arts-expert",
@@ -7829,17 +6946,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "sourceItem": {
                 "name": "Martial Arts Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7847,30 +6964,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 1 Edge<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but you underestimate your opponents, who may be more numerous or skilled than you first assumed. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "martial-arts-expert"
             }
           }
@@ -7885,23 +7002,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mpyCBttrfeQZtook"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Charismatic Aura",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
       "system": {
         "key": "charismatic-aura",
@@ -7916,17 +7024,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
             "system": {
               "sourceItem": {
                 "name": "Charismatic Aura",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -7937,27 +7045,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two separate options.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but you also attract unwanted attention. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "charismatic-aura"
             }
           }
@@ -7970,23 +7078,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mx4Ty4lxD9KIRrv4"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Lightning Fast",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
       "system": {
         "key": "lightning-fast",
@@ -8001,17 +7100,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "sourceItem": {
                 "name": "Lightning Fast",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8019,30 +7118,30 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-keyword>Gain 1 Edge<#, but you also end up in a bad spot or face unexpected resistance. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 1
+                  "edges": 1 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "lightning-fast"
             }
           }
@@ -8057,23 +7156,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "nMfg7Ifh52Vq6pGk"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Artistic Talent",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
       "system": {
         "key": "artistic-talent",
@@ -8089,17 +7179,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
             "system": {
               "sourceItem": {
                 "name": "Artistic Talent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8110,27 +7200,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below any time during the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below any time during the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but a complication/threat manifests. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "artistic-talent"
             }
           }
@@ -8143,29 +7233,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "nTxpe6djetrLEm7X"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Jaded",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/jaded.svg",
       "system": {
         "key": "jaded",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -8179,29 +7260,20 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "nbJxFwaSG1I3ggRG"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Elite Sport (Contact)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg",
       "system": {
         "key": "elite-sport-(contact)",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -8213,47 +7285,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "nx1UbgJVr4WCAAc3"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Arcane Researcher",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
       "system": {
         "key": "arcane-researcher",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
             "system": {
               "sourceItem": {
                 "name": "Arcane Researcher",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you venture into alternate planes of existence or meet entities from other dimensions,",
                 "outro": "you may declare that you have read about this dimension or creature before. Ask the GM what you learned from your past studies."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "arcane-researcher"
             }
           }
@@ -8266,23 +7328,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "oIZwSn2R3uYgQTPu"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Backstab",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/backstab.svg",
       "system": {
         "key": "backstab",
@@ -8297,17 +7350,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/backstab.svg",
             "system": {
               "sourceItem": {
                 "name": "Backstab",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8318,24 +7371,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You expose your betrayal and your target gets to react to your attack as usual. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "backstab"
             }
           }
@@ -8348,23 +7401,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "p5s64LC2sVSNG0bg"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Access the Dark Net",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
       "system": {
         "key": "access-the-dark-net",
@@ -8379,17 +7423,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
             "system": {
               "sourceItem": {
                 "name": "Access the Dark Net",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8397,18 +7441,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You discover what you're looking for, and may also choose one option: %list.options%"
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to see how it affects you."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "access-the-dark-net"
             }
           }
@@ -8421,40 +7465,31 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "pdJY3raUfw0VQr4S"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Explosives Expert",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
       "system": {
         "key": "explosives-expert",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
             "name": "Improvise Explosive",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
               "sourceItem": {
                 "name": "Explosives Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8462,29 +7497,29 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You construct a functional bomb."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The bomb's blast potential is lower than usual (decrease #>text-keyword>Harm<# dealt by #>text-negmod>−1<#)."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "explosives-expert"
             }
           },
           {
             "name": "Disarm Explosive",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
               "sourceItem": {
                 "name": "Explosives Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8492,18 +7527,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The bomb is deactivated."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Complications arise. Maybe you can't completely turn it off, just delay the timer, weaken the explosive effect, or something else turns up and makes thing worse."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Fuck, that's not good! The bomb may go off in your hands, the timer starts counting down from 10, 9, 8, 7…, or even bigger problems occur. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "key": "explosives-expert"
             }
           }
@@ -8516,23 +7551,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "rTOa9kIaYTTk5Vt1"
+        "attribute": K4Attribute.reason,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Perpetual Victim",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
       "system": {
         "key": "perpetual-victim",
@@ -8547,17 +7573,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
             "system": {
               "sourceItem": {
                 "name": "Perpetual Victim",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8568,24 +7594,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below. You may save up to two options for use later during the scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Someone tries to take advantage of you and your position. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "perpetual-victim"
             }
           }
@@ -8598,47 +7624,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "rg9Bh9cUUnz38PhA"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Opportunist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
       "system": {
         "key": "opportunist",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
             "system": {
               "sourceItem": {
                 "name": "Opportunist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you sacrifice someone else to further your own goals,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "opportunist"
             }
           }
@@ -8651,47 +7667,37 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "sTQtfMhPRWfJxrlN"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Grudge",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
       "system": {
         "key": "grudge",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
             "system": {
               "sourceItem": {
                 "name": "Grudge",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "When someone directly or indirectly ruins your plans,",
                 "outro": "you take #>text-keyword>+1 ongoing<# against them until you have taken revenge or received restitution of equal worth to what you lost."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "grudge"
             }
           }
@@ -8704,29 +7710,20 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "shNizE4JnpgAQCCN"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Endure Trauma",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/endure-trauma.svg",
       "system": {
         "key": "endure-trauma",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -8738,23 +7735,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "uBymPmjBuXAwQVEs"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Rage",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/rage.svg",
       "system": {
         "key": "rage",
@@ -8769,17 +7757,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "sourceItem": {
                 "name": "Rage",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8789,8 +7777,7 @@ export const PACKS: Record<string, any[]> = {
                   "edges"
                 ]
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "rage"
             }
           }
@@ -8805,23 +7792,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "uCt3vDc3V9cafSaB"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Enforcer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
       "system": {
         "key": "enforcer",
@@ -8837,17 +7815,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
             "system": {
               "sourceItem": {
                 "name": "Enforcer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8855,18 +7833,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "They must decide to either do what you want or defy you with the knowledge that you can execute your threat."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You must give them a third option. Choose one: %list.options%"
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Turns out you didn't have the advantage you thought you did. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "enforcer"
             }
           }
@@ -8879,23 +7857,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "uVNmcNG4cfebWubW"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Voice of Insanity",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
       "system": {
         "key": "voice-of-insanity",
@@ -8912,17 +7881,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
             "system": {
               "sourceItem": {
                 "name": "Voice of Insanity",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -8933,27 +7902,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below, useable any time during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below, useable any time during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, useable any time during this scene. However, the crowd becomes uncontrollable and volatile, and cannot be dispersed. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "voice-of-insanity"
             }
           }
@@ -8966,23 +7935,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "v7jlkkmncGKuyL6w"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Seducer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/seducer.svg",
       "system": {
         "key": "seducer",
@@ -8999,17 +7959,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/seducer.svg",
             "system": {
               "sourceItem": {
                 "name": "Seducer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -9020,27 +7980,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below, useable any time in the story.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below, useable any time in the story.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, useable any time in the story, but you also develop feelings for the person. Increase your #>text-keyword>Relation<# to them by #>text-posmod>+1<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "seducer"
             }
           }
@@ -9053,39 +8013,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "vXidznH5nRnE6tmK"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Notorious",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
       "system": {
         "key": "notorious",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
             "system": {
               "sourceItem": {
                 "name": "Notorious",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -9093,18 +8044,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence<# them."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "They know of your reputation; you can decide what they have heard."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "They know of your reputation; the GM decides what they have heard."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "key": "notorious"
             }
           }
@@ -9117,23 +8068,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "charisma",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "w6JsBaAYCGMiaumZ"
+        "attribute": K4Attribute.charisma,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Hunter",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hunter.svg",
       "system": {
         "key": "hunter",
@@ -9148,17 +8090,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/hunter.svg",
             "system": {
               "sourceItem": {
                 "name": "Hunter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -9169,27 +8111,27 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose three options from the list below. You may spend them anytime during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose two options from the list below. You may spend them anytime during this scene.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Choose one option from the list below, but you become the prey. #>text-gmtext>The GM makes a Move<#.",
                   "listRefs": [
                     "options"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
               "key": "hunter"
             }
           }
@@ -9202,23 +8144,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "perception",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "x81Qdn5XXTjFNa2p"
+        "attribute": K4Attribute.perception,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Contagious Insanity",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
       "system": {
         "key": "contagious-insanity",
@@ -9234,17 +8167,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
             "system": {
               "sourceItem": {
                 "name": "Contagious Insanity",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -9255,24 +8188,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "key": "contagious-insanity"
             }
           }
@@ -9285,39 +8218,30 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "soul",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "yFxiiKuPQWdXNyX7"
+        "attribute": K4Attribute.soul,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Intimidating",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
       "system": {
         "key": "intimidating",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
             "system": {
               "sourceItem": {
                 "name": "Intimidating",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -9325,18 +8249,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "They succumb to fear and give in to your demands."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "They run away from you or give in to you, GM's choice."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "They see you as their primary threat and act accordingly. #>text-gmtext>The GM makes a Move<# for them."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "intimidating"
             }
           }
@@ -9349,23 +8273,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "yNBMlRRApsgOIRY8"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Ruthless",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
       "system": {
         "key": "ruthless",
@@ -9380,17 +8295,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "sourceItem": {
                 "name": "Ruthless",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -9398,26 +8313,26 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 3
+                  "edges": 3 as PosInteger
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-keyword>Gain 2 Edges<#.",
                   "listRefs": [
                     "edges"
                   ],
-                  "edges": 2
+                  "edges": 2 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Things turns out in a bad way for you instead. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "key": "ruthless"
             }
           }
@@ -9432,23 +8347,14 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "violence",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "yYpzM145SFp2actg"
+        "attribute": K4Attribute.violence,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     },
     {
       "name": "Improviser",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/improviser.svg",
       "system": {
         "key": "improviser",
@@ -9464,17 +8370,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/improviser.svg",
             "system": {
               "sourceItem": {
                 "name": "Improviser",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
               "isCustom": false,
               "rules": {
@@ -9485,24 +8391,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Choose two options from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose one option from the list below.",
                   "listRefs": [
                     "options"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your improvisation makes the situation worse. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
               "key": "improviser"
             }
           }
@@ -9515,41 +8421,32 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "coolness",
-        "currentHold": 0,
-        "currentEdges": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "zByxHybftQsqthHF"
+        "attribute": K4Attribute.coolness,
+        "currentHold": 0 as PosInteger,
+        "currentEdges": 0 as PosInteger
+      }
     }
   ],
   [K4ItemType.disadvantage]: [
     {
       "name": "Competitor",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
       "system": {
         "key": "competitor",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
             "system": {
               "sourceItem": {
                 "name": "Competitor",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -9558,20 +8455,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You are safe from your competitor, for the moment."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You have been careless. Your competitor may strike against you. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You hand your competitor a golden opportunity, and they move against your interests. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "competitor"
             }
           }
@@ -9584,22 +8481,13 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "1DZfibKZVOfLvLHq"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Mental Compulsion",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
       "system": {
         "key": "mental-compulsion",
@@ -9622,17 +8510,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
             "system": {
               "sourceItem": {
                 "name": "Mental Compulsion",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -9640,18 +8528,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You control your compulsions and can focus on other things."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You become distracted and take #>text-negmod>−1<# #>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "mental-compulsion"
             }
           }
@@ -9666,22 +8554,13 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "9URKadb13t32Bgq1"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Sexual Neurosis",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
       "system": {
         "key": "sexual-neurosis",
@@ -9696,17 +8575,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
             "system": {
               "sourceItem": {
                 "name": "Sexual Neurosis",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -9714,18 +8593,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You can control your urges."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Choose between having sex with the person or reduce your #>text-negmod>−1<# #>text-keyword>Stability<#."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You cannot resist having sex with the person and the GM chooses one option from the list below: %list.gmoptions%"
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "sexual-neurosis"
             }
           }
@@ -9738,46 +8617,36 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "AcqkAOO30OolxA0l"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Phobia",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
       "system": {
         "key": "phobia",
         "description": "",
         "lists": {},
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
             "system": {
               "sourceItem": {
                 "name": "Phobia",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're confronted by the object of your phobia,",
                 "outro": "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "phobia"
             }
           }
@@ -9790,38 +8659,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "AlyKpOXzXFx4thIK"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Infirm",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
       "system": {
         "key": "infirm",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
             "system": {
               "sourceItem": {
                 "name": "Infirm",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -9829,18 +8689,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Your condition is under control."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Your condition triggers, causing pain and daze (#>text-negmod>−1<# to all rolls until the scene ends)."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your condition is aggravated with life threatening results (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "infirm"
             }
           }
@@ -9853,38 +8713,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "D2TS5wdlSehWIUtl"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Drug Addict",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
       "system": {
         "key": "drug-addict",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
             "system": {
               "sourceItem": {
                 "name": "Drug Addict",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -9893,20 +8744,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You are in control of the urge, for now."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "drug-addict"
             }
           }
@@ -9919,38 +8770,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "E0aZK5z3dDCSpOHL"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Victim of Passion",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
       "system": {
         "key": "victim-of-passion",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
             "system": {
               "sourceItem": {
                 "name": "Victim of Passion",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -9959,20 +8801,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You keep your passion in check."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The passion awakens within you. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You are completely in the passion's grip. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "victim-of-passion"
             }
           }
@@ -9985,38 +8827,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "H26AIMvKnqsIBIys"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Obsession",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
       "system": {
         "key": "obsession",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
             "system": {
               "sourceItem": {
                 "name": "Obsession",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10025,20 +8858,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You overcome your obsession for the moment."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Your obsession influences your behavior. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your obsession takes over completely. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "obsession"
             }
           }
@@ -10051,28 +8884,19 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "MdteXeG4LEyjZueV"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Broken",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/broken.svg",
       "system": {
         "key": "broken",
         "description": "",
         "lists": {},
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [],
@@ -10086,30 +8910,29 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": []
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Nightmares",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
       "system": {
         "key": "nightmares",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
             "system": {
               "sourceItem": {
                 "name": "Nightmares",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10117,18 +8940,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You sleep in peace."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#) when you wake up."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "nightmares"
             }
           }
@@ -10141,38 +8964,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "PWJbww72v6WFBzEd"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Experiment Gone Wrong",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
       "system": {
         "key": "experiment-gone-wrong",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
             "system": {
               "sourceItem": {
                 "name": "Experiment Gone Wrong",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10181,20 +8995,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Your experiment leaves you alone."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Your experiment is close on your heels. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your experiment is in your vicinity and acts against you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "experiment-gone-wrong"
             }
           }
@@ -10207,38 +9021,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "S1x32nJ5RxZfh6Qg"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Lost Identity",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
       "system": {
         "key": "lost-identity",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
             "system": {
               "sourceItem": {
                 "name": "Lost Identity",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10247,20 +9052,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You repress your true identity, remaining in the present."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Your true identity is catching up to you. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your true identity resurfaces. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "lost-identity"
             }
           }
@@ -10273,38 +9078,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Sd5icgTqqB4Oz3X7"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Guilt",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
       "system": {
         "key": "guilt",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
             "system": {
               "sourceItem": {
                 "name": "Guilt",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10313,20 +9109,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "Your guilt isn't on your mind at the moment."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You are reminded of your guilt. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your guilt catches up to you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "guilt"
             }
           }
@@ -10339,38 +9135,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "UWfP1mWzutahcJYu"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Haunted",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
       "system": {
         "key": "haunted",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
             "system": {
               "sourceItem": {
                 "name": "Haunted",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10379,20 +9166,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The entity leaves you alone."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "haunted"
             }
           }
@@ -10405,38 +9192,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "XcxPnFhPkII1G15Q"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Wanted",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
       "system": {
         "key": "wanted",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
             "system": {
               "sourceItem": {
                 "name": "Wanted",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10445,20 +9223,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You are safe, for now."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You have made a mistake. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "All eyes are on you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "wanted"
             }
           }
@@ -10471,38 +9249,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ZQ6AVElfg0JlcN4N"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Stalker",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
       "system": {
         "key": "stalker",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
             "system": {
               "sourceItem": {
                 "name": "Stalker",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10511,20 +9280,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You are safe for now."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Your enemies are on to you. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your enemies have caught up to you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "stalker"
             }
           }
@@ -10537,38 +9306,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "eKG4cYELMT0feVkG"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Oath of Revenge",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
       "system": {
         "key": "oath-of-revenge",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
             "system": {
               "sourceItem": {
                 "name": "Oath of Revenge",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10576,18 +9336,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You remain in control of your vengeful nature and can act rationally."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "oath-of-revenge"
             }
           }
@@ -10600,38 +9360,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ep0A7jzxR73ybFZ5"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Jealousy",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
       "system": {
         "key": "jealousy",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
             "system": {
               "sourceItem": {
                 "name": "Jealousy",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10639,18 +9390,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt% to see if you can keep your cool."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You maintain control over your jealousy."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You're afflicted by jealousy and take #>text-negmod>−1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your jealousy takes hold of you. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "jealousy"
             }
           }
@@ -10663,38 +9414,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "h8zDL8ADNZfTGsKD"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Harassed",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
       "system": {
         "key": "harassed",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
             "system": {
               "sourceItem": {
                 "name": "Harassed",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10703,20 +9445,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You've managed to keep clear of harassment."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "harassed"
             }
           }
@@ -10729,38 +9471,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "hV6exUEvjIjnushd"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Rival",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
       "system": {
         "key": "rival",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
             "system": {
               "sourceItem": {
                 "name": "Rival",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10769,20 +9502,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "All clear; your rival makes no moves against you."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You've given your rival an opportunity. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You've handed your rival whatever they needed to completely undermine you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "rival"
             }
           }
@@ -10795,22 +9528,13 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "hxjVOiUHz6FdJqKt"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Rationalist",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
       "system": {
         "key": "rationalist",
@@ -10826,17 +9550,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-static",
+        "subType": K4ItemSubType.activeStatic,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
             "system": {
               "sourceItem": {
                 "name": "Rationalist",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10847,8 +9571,7 @@ export const PACKS: Record<string, any[]> = {
                   "gmoptions"
                 ]
               },
-              "subType": "active-static",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeStatic,
               "key": "rationalist"
             }
           }
@@ -10861,38 +9584,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "iLDr4zXmvnxeomKW"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Fanatic",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
       "system": {
         "key": "fanatic",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
             "system": {
               "sourceItem": {
                 "name": "Fanatic",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10900,18 +9614,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You can keep your emotions in check."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You become angry, confused, or frustrated. You take #>text-negmod>−1<# to your next roll."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "fanatic"
             }
           }
@@ -10924,38 +9638,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "j0A9hfeUPMlAPQ4b"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Liar",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
       "system": {
         "key": "liar",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
             "system": {
               "sourceItem": {
                 "name": "Liar",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -10964,20 +9669,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You have kept your lies tangle-free."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You've told one too many lies. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your web of lies has come completely unraveled. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "liar"
             }
           }
@@ -10990,38 +9695,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "k8h3BExyy5LvE7dg"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Marked",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
       "system": {
         "key": "marked",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
             "system": {
               "sourceItem": {
                 "name": "Marked",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11030,20 +9726,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You are still in control."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You feed the darkness. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The darkness gains power over you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "marked"
             }
           }
@@ -11056,38 +9752,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "l2oAK6a95v5tPeNe"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Cursed",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
       "system": {
         "key": "cursed",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
             "system": {
               "sourceItem": {
                 "name": "Cursed",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11096,20 +9783,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You temporarily avoid the curse's influence."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "#>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "cursed"
             }
           }
@@ -11122,38 +9809,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mrJ5OXmrMOBpZIVY"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Nemesis",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
       "system": {
         "key": "nemesis",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
             "system": {
               "sourceItem": {
                 "name": "Nemesis",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11162,20 +9840,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You are safe from your nemesis for the moment."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You have been careless and your nemesis moves against you. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You have compromised your position and your nemesis strikes against you in full force. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "nemesis"
             }
           }
@@ -11188,22 +9866,13 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "o4Xie5PCgwNYigKQ"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Condemned",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
       "system": {
         "key": "condemned",
@@ -11220,17 +9889,17 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
             "system": {
               "sourceItem": {
                 "name": "Condemned",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11241,24 +9910,24 @@ export const PACKS: Record<string, any[]> = {
                 ]
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You still have some time remaining."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Your fate approaches. The GM chooses one option from the list below.",
                   "listRefs": [
                     "gmoptions"
                   ]
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your end approaches. The GM chooses two options from the list below, and may choose the same option twice.",
                   "listRefs": [
                     "gmoptions"
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "condemned"
             }
           }
@@ -11273,38 +9942,29 @@ export const PACKS: Record<string, any[]> = {
           ],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "oFyrQ7X4UH9qJaNE"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Depression",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
       "system": {
         "key": "depression",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
             "system": {
               "sourceItem": {
                 "name": "Depression",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11312,18 +9972,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt%."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You remain in control."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "depression"
             }
           }
@@ -11336,38 +9996,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "rFdO4oq2iMEXltOF"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Schizophrenia",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
       "system": {
         "key": "schizophrenia",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
             "system": {
               "sourceItem": {
                 "name": "Schizophrenia",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11376,20 +10027,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You maintain control of your insanity."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "#>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Schizophrenia overtakes you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "schizophrenia"
             }
           }
@@ -11402,38 +10053,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "rzKRvteJYMlxC1JI"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Bad Reputation",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
       "system": {
         "key": "bad-reputation",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
             "system": {
               "sourceItem": {
                 "name": "Bad Reputation",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11442,20 +10084,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You blend in. Nobody is out to get you."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "You have been recognized. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Several people have recognized you. Anger and fear control their actions. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "bad-reputation"
             }
           }
@@ -11468,38 +10110,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "trB3PbbQXMYf0e9f"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Greedy",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
       "system": {
         "key": "greedy",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
             "system": {
               "sourceItem": {
                 "name": "Greedy",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11507,18 +10140,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt% to see if you are in control of your desire."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You keep your greed in check."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>−1<# #>text-keyword>ongoing<# to any rolls you make."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "greedy"
             }
           }
@@ -11531,38 +10164,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "uh63yGYqPo6TiHkZ"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Involuntary Medium",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
       "system": {
         "key": "involuntary-medium",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
             "system": {
               "sourceItem": {
                 "name": "Involuntary Medium",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11571,20 +10195,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You resist the possession."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The entity gains influence over you. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "The entity gains control over you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "involuntary-medium"
             }
           }
@@ -11597,38 +10221,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "vIkXBEQYOWo2ohUM"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Repressed Memories",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
       "system": {
         "key": "repressed-memories",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
             "system": {
               "sourceItem": {
                 "name": "Repressed Memories",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11636,18 +10251,18 @@ export const PACKS: Record<string, any[]> = {
                 "outro": "%insert.rollPrompt% to determine if the memories resurface."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "You continue to suppress the memories."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "repressed-memories"
             }
           }
@@ -11660,38 +10275,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": ""
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "w24zxPP58PG43I1l"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Owned",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
       "system": {
         "key": "owned",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
             "system": {
               "sourceItem": {
                 "name": "Owned",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11700,20 +10306,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "For the moment, you are safe."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Your former owner picks up your scent. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "Your owner finds you. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "owned"
             }
           }
@@ -11726,38 +10332,29 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "wIUTDcDyHKcitGwp"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     },
     {
       "name": "Object of Desire",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
       "system": {
         "key": "object-of-desire",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
         "subItems": [
           {
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
             "system": {
               "sourceItem": {
                 "name": "Object of Desire",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
               "isCustom": false,
               "rules": {
@@ -11766,20 +10363,20 @@ export const PACKS: Record<string, any[]> = {
                 "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
               },
               "results": {
-                "completeSuccess": {
+                [K4ItemResultType.completeSuccess]: {
                   "result": "The desire is not awakened at this moment."
                 },
-                "partialSuccess": {
+                [K4ItemResultType.partialSuccess]: {
                   "result": "Someone becomes desirous of you. #>text-gmtext>The GM takes 1 Hold<#.",
-                  "hold": 1
+                  "hold": 1 as PosInteger
                 },
-                "failure": {
+                [K4ItemResultType.failure]: {
                   "result": "A strong desire is awakened in one or several people. #>text-gmtext>The GM takes 3 Hold<#.",
-                  "hold": 3
+                  "hold": 3 as PosInteger
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
               "key": "object-of-desire"
             }
           }
@@ -11792,24 +10389,15 @@ export const PACKS: Record<string, any[]> = {
           "effectFunctions": [],
           "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
         },
-        "attribute": "zero",
-        "currentHold": 0
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "wpzD4TGdNBgU6DzO"
+        "attribute": K4Attribute.zero,
+        "currentHold": 0 as PosInteger
+      }
     }
   ],
   [K4ItemType.darksecret]: [
     {
       "name": "Returned from the Other Side",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/returned-from-the-other-side.svg",
       "system": {
         "key": "returned-from-the-other-side",
@@ -11826,7 +10414,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -11840,23 +10428,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "6igSAzB4S4HV2N6n"
+      }
     },
     {
       "name": "Responsible for Medical Experiments",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/responsible-for-medical-experiments.svg",
       "system": {
         "key": "responsible-for-medical-experiments",
@@ -11874,7 +10453,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -11888,23 +10467,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "7DczawLbGuCnx6Vl"
+      }
     },
     {
       "name": "Heir",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/heir.svg",
       "system": {
         "key": "heir",
@@ -11920,7 +10490,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -11934,23 +10504,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "EJxYAaYuDKwsVKfP"
+      }
     },
     {
       "name": "Pact with Dark Forces",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/pact-with-dark-forces.svg",
       "system": {
         "key": "pact-with-dark-forces",
@@ -11967,7 +10528,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -11981,23 +10542,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "FNTJMBemlzY9EbLu"
+      }
     },
     {
       "name": "Victim of Medical Experiments",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/victim-of-medical-experiments.svg",
       "system": {
         "key": "victim-of-medical-experiments",
@@ -12015,7 +10567,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12029,23 +10581,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Lp8eqovMnZpkBozp"
+      }
     },
     {
       "name": "Rootless",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/rootless.svg",
       "system": {
         "key": "rootless",
@@ -12062,7 +10605,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12076,23 +10619,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Pi5Xs6Ma7U7rtYva"
+      }
     },
     {
       "name": "Occult Experience",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/occult-experience.svg",
       "system": {
         "key": "occult-experience",
@@ -12109,7 +10643,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12123,23 +10657,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "aUwYVFnFTis9TEGU"
+      }
     },
     {
       "name": "Curse",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/curse.svg",
       "system": {
         "key": "curse",
@@ -12156,7 +10681,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12170,23 +10695,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "hApZ05Fe01mVft2a"
+      }
     },
     {
       "name": "Mental Illness",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/mental-illness.svg",
       "system": {
         "key": "mental-illness",
@@ -12203,7 +10719,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12217,23 +10733,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "hEsIVrpRI5JilJqJ"
+      }
     },
     {
       "name": "Strange Disappearance",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/strange-disappearance.svg",
       "system": {
         "key": "strange-disappearance",
@@ -12250,7 +10757,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12264,23 +10771,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "hbcyerfqPeTxLi1R"
+      }
     },
     {
       "name": "Visitations",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/visitations.svg",
       "system": {
         "key": "visitations",
@@ -12297,7 +10795,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12311,23 +10809,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "ljFjRIfP37PXW3vC"
+      }
     },
     {
       "name": "Guilty of Crime",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/guilty-of-crime.svg",
       "system": {
         "key": "guilty-of-crime",
@@ -12345,7 +10834,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12359,23 +10848,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mYqoqbCrWEucl0nq"
+      }
     },
     {
       "name": "Victim of Crime",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/victim-of-crime.svg",
       "system": {
         "key": "victim-of-crime",
@@ -12392,7 +10872,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12406,23 +10886,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "mhhkFJhzTRZV0A0N"
+      }
     },
     {
       "name": "Forbidden Knowledge",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/forbidden-knowledge.svg",
       "system": {
         "key": "forbidden-knowledge",
@@ -12439,7 +10910,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12453,23 +10924,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "sscICE34cnhIaNAx"
+      }
     },
     {
       "name": "Family Secret",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/family-secret.svg",
       "system": {
         "key": "family-secret",
@@ -12486,7 +10948,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12500,23 +10962,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "wio3MQZlvIZPxLQb"
+      }
     },
     {
       "name": "Guardian",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/guardian.svg",
       "system": {
         "key": "guardian",
@@ -12532,7 +10985,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12546,23 +10999,14 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "xlaUe1ugi7Id2Usv"
+      }
     },
     {
       "name": "Chosen One",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/chosen-one.svg",
       "system": {
         "key": "chosen-one",
@@ -12579,7 +11023,7 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "passive",
+        "subType": K4ItemSubType.passive,
         "isCustom": false,
         "pdfLink": "",
         "rules": {
@@ -12593,19 +11037,10 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "drive": "",
-        "currentHold": 0,
+        "currentHold": 0 as PosInteger,
         "playerNotes": "",
         "gmNotes": ""
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "yWHPXJCuavJQVBdW"
+      }
     }
   ],
   [K4ItemType.weapon]: [],
@@ -12613,20 +11048,15 @@ export const PACKS: Record<string, any[]> = {
   [K4ItemType.move]: [
     {
       "name": "Help Other",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/help-other.svg",
       "system": {
         "key": "help-other",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you help another player character's Move,",
@@ -12636,44 +11066,34 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You may modify the subsequent roll by #>text-posmod>+2<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You may modify the subsequent roll by #>text-posmod>+1<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "ask"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "4ZbXEQ0nb1ggW5VU"
+        "attribute": K4Attribute.ask
+      }
     },
     {
       "name": "Keep It Together",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/keep-it-together.svg",
       "system": {
         "key": "keep-it-together",
@@ -12701,14 +11121,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you exercise self-control to keep from succumbing to stress, traumatic experiences, psychic influence, or supernatural forces,",
@@ -12718,44 +11133,34 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You grit your teeth and stay the course.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>−1<# in situations where this condition would be a hindrance to you. Choose one: %list.options%",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "The strain is too much for your mind to handle. The GM chooses your reaction: %list.gmoptions%",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "willpower"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "9I4OyxKtg8x8yloF"
+        "attribute": K4Attribute.willpower
+      }
     },
     {
       "name": "Investigate",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/investigate.svg",
       "system": {
         "key": "investigate",
@@ -12770,14 +11175,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you investigate something,",
@@ -12789,48 +11189,38 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You uncover all direct leads, and may additionally ask two questions from the list below.",
             "listRefs": [
               "questions"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You uncover all direct leads, and may additionally ask one question from the list below. The information comes at a cost, determined by the GM, such as requiring someone or something for the answer, exposing yourself to danger, or needing to expend extra time or resources. Will you do what it takes?",
             "listRefs": [
               "questions"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "You may get some information anyway, but you pay a price for it. You may expose yourself to dangers or costs. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "reason"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Af6yvy4XXk01MZGs"
+        "attribute": K4Attribute.reason
+      }
     },
     {
       "name": "Engage in Combat",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/engage-in-combat.svg",
       "system": {
         "key": "engage-in-combat",
@@ -12848,14 +11238,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you engage an able opponent in combat,",
@@ -12865,57 +11250,42 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You inflict damage to your opponent and avoid counterattacks.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You inflict damage, but at a cost. The GM chooses one: %list.gmoptions%",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "violence"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "DqkmiHoii2zq1n7J"
+        "attribute": K4Attribute.violence
+      }
     },
     {
       "name": "Hinder Other",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/hinder-other.svg",
       "system": {
         "key": "hinder-other",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you hinder another player character's Move,",
@@ -12925,44 +11295,34 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You may modify the subsequent roll by #>text-negmod>−2<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You may modify the subsequent roll by #>text-negmod>−1<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "ask"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "JCoXCozAk8FrNfak"
+        "attribute": K4Attribute.ask
+      }
     },
     {
       "name": "Influence Other NPC",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/influence-other-npc.svg",
       "system": {
         "key": "influence-other-npc",
@@ -12977,14 +11337,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you influence an NPC through negotiation, argument, or from a position of power,",
@@ -12994,44 +11349,34 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "She does what you ask.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "She does what you ask, but the GM chooses one: %list.gmoptions%",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "Your attempt has unintended repercussions. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "charisma"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "OmYpSkL3TdXkoCgx"
+        "attribute": K4Attribute.charisma
+      }
     },
     {
       "name": "Read a Person",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/read-a-person.svg",
       "system": {
         "key": "read-a-person",
@@ -13048,14 +11393,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you read a person,",
@@ -13067,48 +11407,38 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "Ask two questions from the list below any time you are in conversation with the subject of your scrutiny during this scene.",
             "listRefs": [
               "questions"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "Ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene.",
             "listRefs": [
               "questions"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "You accidentally reveal your own intentions to the person you're trying to read. Tell the GM/player what these intentions are. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "intuition"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Q9yQ9A3yQEDWuPtd"
+        "attribute": K4Attribute.intuition
+      }
     },
     {
       "name": "Influence Other PC",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/influence-other-pc.svg",
       "system": {
         "key": "influence-other-pc",
@@ -13122,14 +11452,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you influence another PC,",
@@ -13141,61 +11466,46 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "Gain the benefits of both options from the list below.",
             "listRefs": [
               "options"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "Choose one option from the list below.",
             "listRefs": [
               "options"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "The character gets #>text-posmod>+1<# on her next roll against you. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "charisma"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "QDo2L9xSfyN1GRV7"
+        "attribute": K4Attribute.charisma
+      }
     },
     {
       "name": "Act Under Pressure",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/act-under-pressure.svg",
       "system": {
         "key": "act-under-pressure",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you do something risky, under time pressure, or try to avoid danger,",
@@ -13205,44 +11515,34 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You do what you intended.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You do it, but hesitate, are delayed, or must deal with a complication—the GM reveals an unexpected outcome, a high price, or a difficult choice.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "There are serious consequences, you make a mistake, or you're exposed to the danger. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "coolness"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "R7ekgfVoH4h9ukX5"
+        "attribute": K4Attribute.coolness
+      }
     },
     {
       "name": "Observe a Situation",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/observe-a-situation.svg",
       "system": {
         "key": "observe-a-situation",
@@ -13260,14 +11560,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you observe a situation,",
@@ -13279,50 +11574,40 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "Ask two questions from the list below. When you act on these answers, gain #>text-posmod>+1<# to your rolls.",
             "listRefs": [
               "questions"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "Ask one question from the list below. When you act on the answer, gain #>text-posmod>+1<# to your rolls.",
             "listRefs": [
               "questions"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "Ask one question from the list below, but you get no bonus for it and miss something, attract unwanted attention or expose yourself to danger. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [
               "questions"
             ],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "perception"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "Ty1Ym0vyV1GUSeqF"
+        "attribute": K4Attribute.perception
+      }
     },
     {
       "name": "Endure Injury",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/endure-injury.svg",
       "system": {
         "key": "endure-injury",
@@ -13345,14 +11630,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When enduring an injury,",
@@ -13364,44 +11644,34 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You ride out the pain and keep going.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You are still standing, but the GM picks one condition: %list.gmoptions%",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "The injury is overwhelming. You choose if you... %list.options%",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "fortitude"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "YXOVQxDFkflei7UF"
+        "attribute": K4Attribute.fortitude
+      }
     },
     {
       "name": "See Through the Illusion",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/see-through-the-illusion.svg",
       "system": {
         "key": "see-through-the-illusion",
@@ -13415,14 +11685,9 @@ export const PACKS: Record<string, any[]> = {
             ]
           }
         },
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you suffer shock, injuries, or distort your perception through drugs or rituals,",
@@ -13432,57 +11697,42 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You perceive things as they truly are.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You see Reality, but you also affect the Illusion. The GM chooses one: %list.gmoptions%",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "The GM explains what you see. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "soul"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "dr8ra7OT1gpyovpq"
+        "attribute": K4Attribute.soul
+      }
     },
     {
       "name": "Avoid Harm",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/avoid-harm.svg",
       "system": {
         "key": "avoid-harm",
         "description": "",
         "lists": {},
-        "subType": "active-rolled",
+        "subType": K4ItemSubType.activeRolled,
         "isCustom": false,
         "pdfLink": "",
-        "sourceItem": {
-          "name": "",
-          "id": "",
-          "type": ""
-        },
         "rules": {
           "intro": "",
           "trigger": "When you dodge, parry, or block Harm,",
@@ -13492,43 +11742,35 @@ export const PACKS: Record<string, any[]> = {
           "holdText": ""
         },
         "results": {
-          "completeSuccess": {
+          [K4ItemResultType.completeSuccess]: {
             "result": "You emerge completely unharmed.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "partialSuccess": {
+          [K4ItemResultType.partialSuccess]: {
             "result": "You avoid the worst of it, but the GM decides if you end up in a bad spot, lose something, or partially sustain #>text-keyword>Harm<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
           },
-          "failure": {
+          [K4ItemResultType.failure]: {
             "result": "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any #>text-keyword>Harm<# at all, or you ended up in an even worse spot than before. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
             "effectFunctions": [],
-            "edges": 0,
-            "hold": 0
-          },
-          "listRefs": []
+            "edges": 0 as PosInteger,
+            "hold": 0 as PosInteger
+          }
         },
-        "attribute": "reflexes"
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "permission": {
-        "default": 0,
-        "6HIKi4Xz8CaHoizM": 3
-      },
-      "flags": {},
-      "_id": "kjlcW1z2puWqt6nF"
+        "attribute": K4Attribute.reflexes
+      }
     }
   ],
-  get parentItems(): K4Item<ParentItemTypes>[] {
+  [K4ItemType.relation]: [],
+  [K4ItemType.attack]: [],
+  get parentItems(): K4ItemData<ParentItemTypes>[] {
     return [
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -13536,7 +11778,7 @@ export const PACKS: Record<string, any[]> = {
       ...this[K4ItemType.gear]
     ];
   },
-  get subItems(): K4SubItemSchema.subItem[] {
+  get subItems(): K4SubItemData[] {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -13544,23 +11786,23 @@ export const PACKS: Record<string, any[]> = {
       ...this[K4ItemType.gear]
     ]);
   },
-  get subMoves(): K4SubItemSchema.subMove[] {
+  get subMoves(): K4SubItemData<K4ItemType.move>[] {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
       ...this[K4ItemType.weapon],
       ...this[K4ItemType.gear]
-    ], ["move"]) as K4SubItemSchema.subMove[];
+    ], [K4ItemType.move]) as K4SubItemData<K4ItemType.move>[];
   },
-  get subAttacks(): K4SubItemSchema.subAttack[] {
+  get subAttacks(): K4SubItemData<K4ItemType.attack>[] {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
       ...this[K4ItemType.weapon],
       ...this[K4ItemType.gear]
-    ], ["attack"]) as K4SubItemSchema.subAttack[];
+    ], [K4ItemType.attack]) as K4SubItemData<K4ItemType.attack>[];
   },
-  get all(): K4Item[] {
+  get all(): K4ItemData[] {
     return [
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -13678,7 +11920,7 @@ function getType(val: unknown): string {
 };
 
 
-export function getUniqueKeys(itemDataArray: Array<K4Item|K4SubItemSchema.subItem>, isExpanding = false): string[] {
+export function getUniqueKeys(itemDataArray: Array<K4ItemData|K4SubItemData>, isExpanding = false): string[] {
   const uniqueEntries: Array<Tuple<string, string[]>> = [];
   itemDataArray.forEach((item) => {
     const flatSystem = flattenObject(item.system);
@@ -13717,7 +11959,7 @@ const VAL_TYPES_TO_LIST = [
   "[word-string]"
 ];
 
-export function getItemReport(itemDataArray: K4Item[], isExpanding = false): Record<string, string> {
+export function getItemReport(itemDataArray: K4ItemData[], isExpanding = false): Record<string, string> {
   const keyTypeData = getUniqueKeys(itemDataArray);
 
   const reportObject = Object.fromEntries(
@@ -13732,7 +11974,7 @@ export function getItemReport(itemDataArray: K4Item[], isExpanding = false): Rec
   return isExpanding ? expandObject(reportObject) : reportObject;
 }
 
-export function getSubItemReport(itemDataArray: K4Item[], isExpanding = false): Record<string, string> {
+export function getSubItemReport(itemDataArray: K4ItemData[], isExpanding = false): Record<string, string> {
   const keyTypeData = getUniqueSubItemKeys(itemDataArray);
 
   const reportObject = Object.fromEntries(
@@ -13748,9 +11990,9 @@ export function getSubItemReport(itemDataArray: K4Item[], isExpanding = false): 
 }
 
 
-export function getUniqueValuesForKey(itemDataArray: K4Item[], key: string): unknown[]
-export function getUniqueValuesForKey(itemDataArray: K4Item[], key: string[]): Record<string, unknown>
-export function getUniqueValuesForKey(itemDataArray: K4Item[], key: string|string[]): Record<string, unknown>|unknown[] {
+export function getUniqueValuesForKey(itemDataArray: K4ItemData[], key: string): unknown[]
+export function getUniqueValuesForKey(itemDataArray: K4ItemData[], key: string[]): Record<string, unknown>
+export function getUniqueValuesForKey(itemDataArray: K4ItemData[], key: string|string[]): Record<string, unknown>|unknown[] {
   if (Array.isArray(key)) {
     const valsByKey: Record<string, unknown[]> = {};
     key.forEach((thisKey) => {
@@ -13775,9 +12017,9 @@ export function getUniqueValuesForKey(itemDataArray: K4Item[], key: string|strin
   return uniqueValues;
 }
 
-function extractSubItemSchemas(itemDataArray: K4Item[], subTypes: Array<"attack"|"move"> = ["attack", "move"]): Array<K4SubItemSchema.subAttack | K4SubItemSchema.subMove> {
+function extractSubItemSchemas(itemDataArray: K4ItemData[], subTypes: SubItemTypes[] = [K4ItemType.attack, K4ItemType.move]): Array<K4SubItemData> {
   return itemDataArray
-    .filter((item): item is K4Item<ParentItemTypes> =>
+    .filter((item): item is K4ItemData<ParentItemTypes> =>
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.weapon, K4ItemType.gear]
         .includes(item.type))
     .map((parentItem) => {
@@ -13794,15 +12036,15 @@ function extractSubItemSchemas(itemDataArray: K4Item[], subTypes: Array<"attack"
     .flat();
 }
 
-export function getUniqueSubItemKeys(itemDataArray: K4Item[], isExpanding = false): string[] {
+export function getUniqueSubItemKeys(itemDataArray: K4ItemData[], isExpanding = false): string[] {
   return getUniqueKeys(
     extractSubItemSchemas(itemDataArray),
     isExpanding
   );
 }
 
-export function getUniqueValuesForSubItemKey(itemDataArray: K4Item[], key: string): unknown[]
-export function getUniqueValuesForSubItemKey(itemDataArray: K4Item[], key: string[]): Record<string, unknown>
-export function getUniqueValuesForSubItemKey(itemDataArray: K4Item[], key: string|string[]): Record<string, unknown>|unknown[] {
+export function getUniqueValuesForSubItemKey(itemDataArray: K4ItemData[], key: string): unknown[]
+export function getUniqueValuesForSubItemKey(itemDataArray: K4ItemData[], key: string[]): Record<string, unknown>
+export function getUniqueValuesForSubItemKey(itemDataArray: K4ItemData[], key: string|string[]): Record<string, unknown>|unknown[] {
   return getUniqueValuesForKey(extractSubItemSchemas(itemDataArray) as any, key as any);
 }

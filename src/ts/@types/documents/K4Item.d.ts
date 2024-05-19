@@ -8,19 +8,6 @@ import {K4Attribute} from "../../scripts/constants";
 
 declare global {
 
-  interface ResultsData {
-    results: Record<
-        K4ItemResultType,
-        {
-          result: string,
-          listRefs?: string[],
-          effectFunctions?: string[],
-          edges?: PosInteger,
-          hold?: PosInteger
-        }
-      >
-  }
-
   type WeaponSubClass<T extends K4WeaponClass> =
     T extends K4WeaponClass.meleeUnarmed ? ("")
   : T extends K4WeaponClass.meleeCrush ? ("")
@@ -32,19 +19,89 @@ declare global {
 
   interface K4SourceItemData {
     name: string,
-    id?: string | null,
+    id?: IDString | null,
     type: K4ItemType
   }
-  interface K4Attack {
-    name: string,
-    range: RangeType[],
-    harm: PosInteger,
-    ammoCost?: PosInteger,
-    sourceItem?: K4SourceItemData,
-    costsEdge?: boolean,
-    effectDesc?: string,
-    effectFunc?: () => void
+
+
+  namespace K4SubItemComps {
+    export interface Base {
+      key: string,
+      description?: string,
+      lists?: Record<string, {
+        name: string,
+        items: string[],
+        intro?: string,
+        requiresEdit?: boolean
+      }>,
+      isCustom: boolean,
+      isEdge?: boolean,
+      subType: K4ItemSubType
+    }
+    export interface CanSubItem {
+      sourceItem?: K4SourceItemData
+    }
+    export interface IsSubItem {
+      sourceItem: K4SourceItemData
+    }
   }
+
+  namespace K4SubItemSystem {
+
+    export interface subItemPassive extends K4SubItemComps.Base, K4SubItemComps.IsSubItem, K4ItemComps.RulesData {
+      subType: K4ItemSubType.passive;
+    }
+
+    export interface subItemStatic extends subItemPassive {
+      subType: K4ItemSubType.activeStatic;
+    }
+
+    export interface subItemActive extends subItemStatic, K4ItemComps.ResultsData {
+      subType: K4ItemSubType.activeRolled;
+      attribute: K4Attribute;
+    }
+
+    export type subItem = subItemPassive | subItemStatic | subItemActive;
+
+    export type subMove = subItem;
+
+    export type subAttack = subMove & {
+      range: K4ItemRange[],
+      harm: number,
+      ammo: number
+    }
+
+    // type SubItemSystemSchema<T extends K4ItemSubType> =
+    //   T extends K4ItemSubType.passive ? subItemPassive :
+    //   T extends K4ItemSubType.activeStatic ? subItemStatic :
+    //   T extends K4ItemSubType.activeRolled ? subItemActive :
+    //   never;
+
+    // export interface subItem<S extends K4ItemSubType> extends K4SubItemComps.Base, K4SubItemComps.IsSubItem, K4ItemComps.RulesData {
+    //   subType: S;
+    //   attribute: S extends K4ItemSubType.activeRolled ? K4Attribute : never;
+    //   results: S extends K4ItemSubType.activeStatic ? never : K4ItemComps.ResultsData;
+    // }
+
+    // export interface subMove<S extends K4ItemSubType = K4ItemSubType> extends subItem<S> { }
+
+    // export interface subAttack<S extends K4ItemSubType = K4ItemSubType> extends subMove<S> {
+    //   range: RangeType[],
+    //   harm: PosInteger,
+    //   ammo: PosInteger
+    // }
+
+  }
+
+  interface K4SubItemData<T extends SubItemTypes = SubItemTypes, S extends K4ItemSubType = K4ItemSubType> {
+    name?: string,
+    type: T,
+    img: string,
+    system: T extends K4ItemType.move ? K4SubItemSystem.subMove :
+      T extends K4ItemType.attack ? K4SubItemSystem.subAttack :
+        K4SubItemSystem.move|K4SubItemSystem.attack
+  }
+
   namespace K4ItemComps {
     export interface Base {
       key: string,
@@ -61,15 +118,9 @@ declare global {
     }
 
     export interface HasSubItems {
-      subItems: Array<K4SubItemSchema.subAttack|K4SubItemSchema.subMove>
-    }
-
-    export interface CanSubItem {
-      sourceItem?: K4SourceItemData
-    }
-
-    export interface IsSubItem extends CanSubItem {
-      sourceItem: K4SourceItemData
+      subItems: K4SubItemData[],
+      subMoves?: K4SubItemData<K4ItemType.move>[],
+      subAttacks?: K4SubItemData<K4ItemType.attack>[]
     }
 
     export interface RulesData {
@@ -82,15 +133,37 @@ declare global {
         holdText?: string
       }
     }
-  }
-  namespace K4ItemSystemSchema {
-    interface HasSubItems {
-      subItems: K4ItemSystemSchema.subItem[]
-      subMoves: K4ItemSystemSchema.subMove[]
-      subAttacks: K4ItemSystemSchema.subAttack[]
+
+    export interface ResultsData {
+      results: Record<
+          K4ItemResultType,
+          {
+            result: string,
+            listRefs?: string[],
+            effectFunctions?: string[],
+            edges?: PosInteger,
+            hold?: PosInteger
+          }
+        >
     }
-    export interface move extends K4ItemComps.Base, K4ItemComps.CanSubItem, K4ItemComps.RulesData, ResultsData {
+  }
+
+  namespace K4ItemSystemComps {
+
+    export interface move extends K4ItemComps.Base, K4SubItemComps.CanSubItem, K4ItemComps.RulesData, K4ItemComps.ResultsData {
       attribute: K4Attribute
+    }
+
+    export interface attack extends move {
+      range: RangeType[],
+      harm: PosInteger,
+      ammoCost?: PosInteger
+    }
+
+    export interface advantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData, K4ItemComps.HasSubItems, Partial<K4ItemComps.ResultsData> {
+      attribute: K4Attribute,
+      currentHold: PosInteger,
+      currentEdges: PosInteger
     }
 
     export interface disadvantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
@@ -116,39 +189,11 @@ declare global {
 
     export interface weapon extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
     }
-    export interface attack extends K4ItemComps.Base, K4ItemComps.CanSubItem, K4ItemComps.RulesData, ResultsData {
-      attribute: K4Attribute
-      range: RangeType[],
-      harm: PosInteger,
-      ammo: PosInteger
-    }
-    export interface advantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData, HasSubItems, ResultsData {
-      attribute: K4Attribute,
-      currentHold: PosInteger,
-      currentEdges: PosInteger
-    }
-    export interface disadvantage extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData, HasSubItems, ResultsData {
-      attribute: K4Attribute,
-      currentHold: PosInteger
-    }
-    export interface darksecret extends K4ItemComps.Base, K4ItemComps.RulesData {
-      drive: string,
-      currentHold: PosInteger,
-      playerNotes: string,
-      gmNotes: string
-    }
-    export interface relation extends K4ItemComps.Base {
-      target: string,
-      strength: {
-        min: number,
-        max: number,
-        value: number
-      }
-    }
+
     export interface weapon extends K4ItemComps.Base, K4ItemComps.HasSubItems, K4ItemComps.RulesData {
       class: C,
       subClass: SC,
-      ammo: {
+      ammo?: {
         min: number,
         max: number,
         value: number
@@ -161,28 +206,22 @@ declare global {
     export type any = move|attack|advantage|disadvantage|darksecret|relation|weapon|gear
   }
 
-  type SubItemTypes = K4ItemType.move|K4ItemType.attack;
-  namespace K4SubItemSchema {
-    export interface subItem<T extends SubItemTypes = SubItemTypes> {
-      name?: string,
-      img?: string,
-      type: T,
-      system: K4ItemSystem<T> & K4ItemComps.IsSubItem
-    }
+  type K4ItemSystem<T extends K4ItemType = K4ItemType> = (T extends K4ItemType.move ? K4ItemSystemComps.move
+    : T extends K4ItemType.attack ? K4ItemSystemComps.attack
+    : T extends K4ItemType.advantage ? K4ItemSystemComps.advantage
+    : T extends K4ItemType.disadvantage ? K4ItemSystemComps.disadvantage
+    : T extends K4ItemType.darksecret ? K4ItemSystemComps.darksecret
+    : T extends K4ItemType.relation ? K4ItemSystemComps.relation
+    : T extends K4ItemType.weapon ? K4ItemSystemComps.weapon
+    : T extends K4ItemType.gear ? K4ItemSystemComps.gear
+    : K4ItemSystemComps.any)
 
-    export type subMove = subItem<K4ItemType.move>;
-    export type subAttack = subItem<K4ItemType.attack>;
+  type K4ItemData<T extends K4ItemType = K4ItemType> = {
+    name: string,
+    type: T,
+    img: string,
+    system: K4ItemSystem<T>
   }
-
-  type K4ItemSystem<T extends K4ItemType = K4ItemType> = (T extends K4ItemType.move ? K4ItemSystemSchema.move
-    : T extends K4ItemType.attack ? K4ItemSystemSchema.attack
-    : T extends K4ItemType.advantage ? K4ItemSystemSchema.advantage
-    : T extends K4ItemType.disadvantage ? K4ItemSystemSchema.disadvantage
-    : T extends K4ItemType.darksecret ? K4ItemSystemSchema.darksecret
-    : T extends K4ItemType.relation ? K4ItemSystemSchema.relation
-    : T extends K4ItemType.weapon ? K4ItemSystemSchema.weapon
-    : T extends K4ItemType.gear ? K4ItemSystemSchema.gear
-    : K4ItemSystem.any)
 
   type ParentItemTypes = K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.weapon|K4ItemType.gear;
   type SubItemTypes = K4ItemType.move|K4ItemType.attack;
@@ -193,9 +232,9 @@ declare global {
   type RulesTypes = K4ItemType.move|K4ItemType.attack|K4ItemType.advantage|K4ItemType.disadvantage|K4ItemType.darksecret|K4ItemType.weapon|K4ItemType.gear;
 
   type K4ParentItem<T extends ParentItemTypes = ParentItemTypes> = K4Item<T> & {type: ParentItemTypes}
-  type K4SubItem<T extends SubItemTypes = SubItemTypes> = K4Item<T> & {type: SubItemTypes, system: K4ItemComps.IsSubItem}
+  type K4SubItem<T extends K4ItemType.move|K4ItemType.attack = K4ItemType.move|K4ItemType.attack> = K4Item<T> & {type: K4ItemType.move|K4ItemType.attack, system: K4ItemComps.K4SubItemComps.IsSubItem}
   type K4RollableItem<T extends RollableItemTypes = RollableItemTypes> = K4Item<T> & {type: RollableItemTypes,
-                                                                                      system: ResultsData & {
+                                                                                      system: K4ItemComps.ResultsData & {
                                                                                                               attribute: K4Attribute
                                                                                                               subType: K4ItemSubType.activeRolled
                                                                                                             }}

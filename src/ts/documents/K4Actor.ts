@@ -158,7 +158,7 @@ class K4Actor extends Actor {
 
   get derivedItems() {return [...this.items].filter((item: K4Item): item is K4SubItem => item.isSubItem());}
 
-  get wounds(): Record<KeyOf<typeof this["system"]["wounds"]>, K4Wound> {
+  get wounds(): Record<IDString, K4Wound> {
     return this.system.wounds;
   }
   get wounds_serious() {return Object.values(this.wounds).filter((wound) => !wound.isCritical);}
@@ -339,7 +339,7 @@ class K4Actor extends Actor {
   async addWound(type?: K4WoundType, description?: string) {
     if (this.is(K4ActorType.pc)) {
       const woundData: K4Wound = {
-        id:           `wound_${U.randString(10)}`,
+        id:           U.getID(),
         description:  description ?? "",
         isCritical:   type === K4WoundType.critical,
         isStabilized: false
@@ -379,10 +379,10 @@ class K4Actor extends Actor {
 
   /**
    * Toggles the type or stabilization state of a wound.
-   * @param {string} id - The ID of the wound.
+   * @param {K4WoundType} id - The ID of the wound.
    * @param {"type"|"stabilized"} toggleSwitch - The property to toggle.
    */
-  async toggleWound(id: string, toggleSwitch: "type" | "stabilized") {
+  async toggleWound(id: IDString, toggleSwitch: "type" | "stabilized") {
     const woundData = this.wounds[id];
     if (woundData) {
       switch (toggleSwitch) {
@@ -402,7 +402,7 @@ class K4Actor extends Actor {
    * Resets the name of a wound.
    * @param {string} id - The ID of the wound.
    */
-  async resetWoundName(id: string) {
+  async resetWoundName(id: IDString) {
     const woundData = this.wounds[id];
     if (woundData) {
       await this.update({[`system.wounds.${id}.description`]: ""});
@@ -413,7 +413,7 @@ class K4Actor extends Actor {
    * Removes a wound from the actor.
    * @param {string} id - The ID of the wound.
    */
-  async removeWound(id: string) {
+  async removeWound(id: IDString) {
     if (this.is(K4ActorType.pc)) {
       kLog.log("Starting Wounds", U.objClone(this.system.wounds));
       await this.update({[`system.wounds.-=${id}`]: null});
@@ -693,7 +693,7 @@ class K4Actor extends Actor {
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: {
       cssClass: string,
-      result?: ValueOf<ResultsData["results"]>,
+      result?: ValueOf<K4ItemComps.ResultsData["results"]>,
       dice: [number, number],
       total: number,
       rollData: K4RollData,

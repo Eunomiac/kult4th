@@ -146,7 +146,7 @@ export function initCanvasStyles() {
       0,
       0.3
     ],
-    fontFamily: "Alverata",
+    fontFamily: "Kultrata",
     fontSize: 32,
     letterSpacing: 2,
     lineHeight: 32,
@@ -159,5 +159,5 @@ export function initCanvasStyles() {
     wordWrap: true,
     wordWrapWidth: 0.1
   });
-  CONFIG.defaultFontFamily = "Alverata";
+  CONFIG.defaultFontFamily = "Kultrata";
 }

@@ -6,6 +6,23 @@
     "data": {
       "subItems": [
         {
+          "effects": {
+            "acquaintance": {
+              "target": "actor",
+              "duration": "ongoing",
+              "source": "roll",
+              "isRepeatable": true,
+              "function": "AddItem",
+              "functionData": {
+                "type": "relation",
+                "name": "$0$",
+                "data": {
+                  "description": "A scholar of $1$ from your alma mater.$3? Unfortunately, there is a lingering enmity between you that will undoubtedly complicate your interactions.$",
+                  "strength.value": "$2$"
+                }
+              }
+            }
+          },
           "type": "move",
           "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
           "data": {
@@ -16,17 +33,46 @@
             "isCustom": false,
             "rules": {
               "trigger": "When it would be useful to know someone at a university,",
+              "prompt": {
+                "title": "Academic Contact",
+                "intro": "Enter the name and field of study of your academic contact.",
+                "fields": {
+                  "acquaintanceName": {
+                    "type": "text",
+                    "label": "Who is the person you know?",
+                    "placeholder": "Name"
+                  },
+                  "acquaintanceField": {
+                    "type": "text",
+                    "label": "What is their field of study?",
+                    "placeholder": "Field of Study"
+                  }
+                },
+                "outro": "Finally, describe how you got to know one another to the GM and the other players."
+              },
               "outro": "provide the person's name, field of study, and how you got to know one another, then %insert.rollPrompt%."
             },
             "results": {
               "completeSuccess": {
-                "result": "The person is a friend (#>text-keyword>Relation +1<#)."
+                "result": "The person is a friend (#>text-keyword>Relation +1<#).",
+                "effect": {
+                  "id": "acquaintance",
+                  "params": ["prompt:acquaintanceName", "prompt:acquaintanceField", 1]
+                }
               },
               "partialSuccess": {
-                "result": "The person is an acquaintance (#>text-keyword>Relation +0<#)."
+                "result": "The person is an acquaintance (#>text-keyword>Relation +0<#).",
+                "effect": {
+                  "id": "acquaintance",
+                  "params": ["prompt:acquaintanceName", "prompt:acquaintanceField", 0]
+                }
               },
               "failure": {
-                "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#)."
+                "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#).",
+                "effect": {
+                  "id": "acquaintance",
+                  "params": ["prompt:acquaintanceName", "prompt:acquaintanceField", 0, true]
+                }
               }
             },
             "subType": "active-rolled",
@@ -113,6 +159,83 @@
       },
       "subItems": [
         {
+          "name": "Reveal a Weapon",
+          "type": "move",
+          "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
+          "data": {
+            "sourceItem": {
+              "name": "Ace Up the Sleeve",
+              "type": "advantage"
+            },
+            "isCustom": false,
+            "rules": {
+              "trigger": "Whenever someone's got you up against the wall or in a tight spot,",
+              "outro": "%insert.rollPrompt%."
+            },
+            "results": {
+              "completeSuccess": {
+                "result": "Gain 2 Edges. You may spend them any time during the scene.",
+                "listRefs": [
+                  "edges"
+                ],
+                "edges": 2
+              },
+              "partialSuccess": {
+                "result": "Gain 1 Edge. You may spend it at any time during the scene.",
+                "listRefs": [
+                  "edges"
+                ],
+                "edges": 1
+              },
+              "failure": {
+                "result": "Gain 1 Edge, but the situation is worse than you imagined. #>text-gmtext>The GM makes a Move<#.",
+                "listRefs": [
+                  "edges"
+                ],
+                "edges": 1
+              }
+            },
+            "subType": "active-rolled",
+            "attribute": "coolness",
+            "key": "ace-up-the-sleeve"
+          }
+        },
+        {
+          "effects": {
+            "Reveal a Weapon": {
+              "target": "actor",
+              "duration": "scene",
+              "source": "edge",
+              "function": "AddItem",
+              "functionData": {
+                "type": "weapon",
+                "name": "Concealed Weapon",
+                "data": {}
+              }
+            },
+            "Spot a Weakness": {
+              "target": "roll:any",
+              "duration": "singleuse,scene",
+              "isDefaultDisabled": true,
+              "source": "edge",
+              "rollMod": {
+                "category": "edge",
+                "display": "Spot Weakness",
+                "value": 2
+              }
+            },
+            "Find an Exit": {
+              "target": "roll:any",
+              "duration": "singleuse,scene",
+              "isDefaultDisabled": true,
+              "source": "edge",
+              "rollMod": {
+                "category": "edge",
+                "display": "Find Exit",
+                "value": 2
+              }
+            }
+          },
           "type": "move",
           "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
           "data": {

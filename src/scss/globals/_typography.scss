@@ -1,176 +1,173 @@
-@font-face { // Alverata Light
-  font-family: "Alverata";
+@font-face { // Kultrata Light
+  font-family: "Kultrata";
   font-weight: 300; /* Light */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-light.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-Light.woff2") format("woff2");
 }
 
-@font-face { // Alverata Regular
-  font-family: "Alverata";
+@font-face { // Kultrata Regular
+  font-family: "Kultrata";
   font-weight: 400; /* Regular */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/Alverata.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-Regular.woff2") format("woff2");
 }
 
-@font-face { // Alverata Medium
-  font-family: "Alverata";
+@font-face { // Kultrata Medium
+  font-family: "Kultrata";
   font-weight: 500; /* Medium */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-medium.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-Medium.woff2") format("woff2");
 }
 
-@font-face { // Alverata Semi-Bold
-  font-family: "Alverata";
+@font-face { // Kultrata Semi-Bold
+  font-family: "Kultrata";
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-semibold.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-Semibold.woff2") format("woff2");
 }
 
-@font-face { // Alverata Bold
-  font-family: "Alverata";
+@font-face { // Kultrata Bold
+  font-family: "Kultrata";
   font-weight: 700 800; /* Bold and 800 */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-bold.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-Bold.woff2") format("woff2");
 }
 
-@font-face { // Alverata Black
-  font-family: "Alverata";
+@font-face { // Kultrata Black
+  font-family: "Kultrata";
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-black.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-Black.woff2") format("woff2");
 }
 
-@font-face { // Alverata Italic Light
-  font-family: "Alverata";
+@font-face { // Kultrata Italic Light
+  font-family: "Kultrata";
   font-weight: 300; /* Light */
   font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic-light.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-LightItalic.woff2") format("woff2");
 }
 
-@font-face { // Alverata Italic Regular
-  font-family: "Alverata";
+@font-face { // Kultrata Italic Regular
+  font-family: "Kultrata";
   font-weight: 400; /* Regular */
   font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-RegularItalic.woff2") format("woff2");
 }
 
-@font-face { // Alverata Italic Medium
-  font-family: "Alverata";
+@font-face { // Kultrata Italic Medium
+  font-family: "Kultrata";
   font-weight: 500; /* Medium */
   font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic-medium.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-MediumItalic.woff2") format("woff2");
 }
 
-@font-face { // Alverata Italic Semi-Bold
-  font-family: "Alverata";
+@font-face { // Kultrata Italic Semi-Bold
+  font-family: "Kultrata";
   font-weight: 600; /* Semi-Bold */
   font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic-semibold.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-SemiboldItalic.woff2") format("woff2");
 }
 
-@font-face { // Alverata Italic Bold
-  font-family: "Alverata";
+@font-face { // Kultrata Italic Bold
+  font-family: "Kultrata";
   font-weight: 700 800; /* Bold and 800 */
   font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic-bold.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-BoldItalic.woff2") format("woff2");
 }
 
-@font-face { // Alverata Italic Black
-  font-family: "Alverata";
+@font-face { // Kultrata Italic Black
+  font-family: "Kultrata";
   font-weight: 900; /* Black */
   font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic-black.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/Kultrata-BlackItalic.woff2") format("woff2");
 }
 
-@font-face { // AlverataHeader Black
-  font-family: "AlverataHeader";
+@font-face { // KultrataHeader Black
+  font-family: "KultrataHeader";
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataHeader-black.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataTitle-Black.woff2") format("woff2");
 }
 
-@font-face { // AlverataHeader Bold
-  font-family: "AlverataHeader";
+@font-face { // KultrataHeader Bold
+  font-family: "KultrataHeader";
   font-weight: 100 800; /* All Other Weights */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataHeader-bold.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataTitle-Regular.woff2") format("woff2");
 }
 
-@font-face { // AlverataHeader Italic Black
-  font-family: "AlverataHeader";
-  font-weight: 900; /* Black */
-  font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic-black.woff2") format("woff2");
-}
-
-@font-face { // AlverataHeader Italic Bold
-  font-family: "AlverataHeader";
-  font-weight: 100 800; /* All Other Weights */
-  font-style: italic;
-  src: url("#{$assetPath}/fonts/alverata/Alverata-italic-bold.woff2") format("woff2");
-}
-
-@font-face { // AlverataSC Light
-  font-family: "AlverataSC";
+@font-face { // KultrataSC Light
+  font-family: "KultrataSC";
   font-weight: 300; /* Light */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataSC-light.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataSC-Light.woff2") format("woff2");
 }
 
-@font-face { // AlverataSC Regular
-  font-family: "AlverataSC";
+@font-face { // KultrataSC Regular
+  font-family: "KultrataSC";
   font-weight: 400; /* Regular */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataSC.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataSC-Regular.woff2") format("woff2");
 }
 
-@font-face { // AlverataSC Medium
-  font-family: "AlverataSC";
+@font-face { // KultrataSC Medium
+  font-family: "KultrataSC";
   font-weight: 500; /* Medium */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataSC-medium.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataSC-medium.woff2") format("woff2");
 }
 
-@font-face { // AlverataSC Semi-Bold
-  font-family: "AlverataSC";
+@font-face { // KultrataSC Semi-Bold
+  font-family: "KultrataSC";
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataSC-semibold.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataSC-Semibold.woff2") format("woff2");
 }
 
-@font-face { // AlverataSC Bold
-  font-family: "AlverataSC";
+@font-face { // KultrataSC Bold
+  font-family: "KultrataSC";
   font-weight: 700 800; /* Bold and 800 */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataSC-bold.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataSC-Bold.woff2") format("woff2");
 }
 
-@font-face { // AlverataSC Black
-  font-family: "AlverataSC";
+@font-face { // KultrataSC Black
+  font-family: "KultrataSC";
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("#{$assetPath}/fonts/alverata/AlverataSC-black.woff2") format("woff2");
+  src: url("#{$assetPath}/fonts/KultrataSC-Black.woff2") format("woff2");
 }
 
 @font-face {
 	font-family: Infidel;
-	src: url("#{$assetPath}/fonts/infidel.ttf");
+	src: url("#{$assetPath}/fonts/Infidel.woff2") format("woff2");
 }
 
 @font-face {
 	font-family: Sokol;
-	src: url("#{$assetPath}/fonts/sokol/sokol.woff2") format('woff2'),
-			 url("#{$assetPath}/fonts/sokol/sokol.woff") format('woff');
-	font-weight: normal;
-	font-style: normal;
+	src: url("#{$assetPath}/fonts/Sokol.woff2") format('woff2');
 }
 
 @font-face {
 	font-family: GrandpasScript;
-	src: url("#{$assetPath}/fonts/ft-grandpas-script/ft-grandpas-script.woff2") format('woff2'),
-			 url("#{$assetPath}/fonts/ft-grandpas-script/ft-grandpas-script.woff") format('woff');
-	font-weight: normal;
-	font-style: normal;
+	src: url("#{$assetPath}/fonts/GrandpasScript-Regular.woff2") format('woff2');
+}
+
+@font-face {
+	font-family: Leviathan;
+	src: url("#{$assetPath}/fonts/Leviathan.woff2") format('woff2');
+}
+
+@font-face {
+	font-family: ManoNegra;
+	src: url("#{$assetPath}/fonts/ManoNegra-Regular.woff2") format('woff2');
+  font-weight: 100 600; /* All Sub-Bold Weights */
+}
+
+@font-face {
+	font-family: ManoNegra;
+	src: url("#{$assetPath}/fonts/ManoNegra-Bold.woff2") format('woff2');
+  font-weight: 700 900; /* Bold, Black */
 }
 
 $rem-8: 8px;
@@ -199,8 +196,8 @@ $font-weight-black: 900;
 
 * {
 	/* FOUNDRY OVERRIDES */
-  --font-primary: Alverata, serif; // "Signika", sans-serif;
-  --font-primary-italics: Alverata, serif;
+  --font-primary: Kultrata, serif; // "Signika", sans-serif;
+  --font-primary-italics: Kultrata, serif;
   --font-mono: monospace;
   --font-size-11: 11px;
   --font-size-12: 12px;
@@ -216,11 +213,11 @@ $font-weight-black: 900;
   --line-height-20: 20px;
   --line-height-30: 30px;
 
-	--font-primary-caps: AlverataHeader, serif;
+	--font-primary-caps: KultrataHeader, serif;
 	--font-icon: "Font Awesome 5 Free";
 	--font-heading-1: Infidel, sans-serif;
-  --font-heading-2: AlverataHeader, serif;
-  --font-primary-smallcaps: AlverataSC, serif;
+  --font-heading-2: KultrataHeader, serif;
+  --font-primary-smallcaps: KultrataSC, serif;
 	--font-decorative: Sokol, serif;
 	--font-handwritten: GrandpaScript, serif;
 }

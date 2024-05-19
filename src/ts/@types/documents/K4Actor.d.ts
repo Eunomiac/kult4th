@@ -1,6 +1,6 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C, {K4Attribute} from "../../scripts/constants";
+import C, {K4Attribute, Archetype} from "../../scripts/constants";
 import K4Actor, {K4ActorType, K4RollType, K4WoundType} from "../../documents/K4Actor";
 import K4Item, {K4ItemType} from "../../documents/K4Item.js";
 import {K4RollType} from "../../documents/K4Roll.js";
@@ -46,27 +46,32 @@ declare global {
     modifiers: K4RollMod[]
   }
   interface K4Wound {
-    id: string,
+    id: IDString,
     description: string,
     isCritical: boolean,
     isStabilized: boolean
   }
-  namespace Archetype {
-    export type Any = Sleeper | Custom | Aware | Awakened;
-    export type Sleeper = "sleeper";
-    export type Custom = "custom";
-    export type Aware = typeof C.awareArchetypes[number];
-    export type Awakened = typeof C.enlightenedArchetypes[number];
-  }
+  // namespace Archetype {
+  //   export type Any = Sleeper | Custom | Aware | Awakened;
+  //   export type Sleeper = "sleeper";
+  //   export type Custom = "custom";
+  //   export type Aware = typeof C.awareArchetypes[number];
+  //   export type Awakened = typeof C.enlightenedArchetypes[number];
+  // }
   namespace Attribute {
     export type Any = Active | Passive;
     export type Active = keyof typeof C.Attributes.Active;
     export type Passive = keyof typeof C.Attributes.Passive;
   }
   namespace K4ActorSourceSchema {
-    export interface pc {
-      archetype: Archetype.Any,
+
+    interface Base {
       description: string,
+      wounds: Record<IDString, K4Wound>,
+      penalties: Record<IDString, number>
+    }
+    export interface pc extends Base {
+      archetype: Archetype,
       history: string,
       dramaticHooks: [
         {
@@ -79,7 +84,6 @@ declare global {
         }
       ],
       attributes: Record<K4CharAttribute, ValueMax>,
-      wounds: Record<keyof typeof this["system"]["wounds"], K4Wound>,
       modifiers: {
         wounds_serious: K4ModTargets[],
         wounds_critical: K4ModTargets[],
@@ -92,11 +96,14 @@ declare global {
         value: Integer
       },
       edges: {
-        sourceName: string,
-        value: PosInteger
+        source: string, // Actual edges are subMoves of this item
+        value: PosInteger,
+        max: PosInteger,
+        min: 0
       }
     }
-    export interface npc extends Pick<pc, "description"|"wounds"|"penalties"> { }
+
+    export interface npc extends Base { }
   }
 
   namespace K4ActorSystemSchema {
@@ -118,13 +125,7 @@ declare global {
         total: Integer
       }
 
-      modifiersReport: string,
-
-      edges: {
-        sourceName: string,
-        value: PosInteger,
-        items: string[]
-      }
+      modifiersReport: string;
 
       stability: {
         min: Integer,
