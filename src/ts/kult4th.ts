@@ -26,11 +26,9 @@ registerDebugger();
 
 Hooks.once("init", async () => {
 
-  // Disable Compatibility Warnings
-  CONFIG.compatibility.mode = 0;
-
   registerSettings();
   kLog.display("Initializing 'Kult: Divinity Lost 4th Edition' for Foundry VTT", 0);
+  CONFIG.compatibility.mode = 0; // Disable Compatibility Warnings
   registerHooks();
   CONFIG.K4 = K4Config;
   registerHandlebarHelpers();
