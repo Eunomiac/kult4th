@@ -63,6 +63,49 @@ declare global {
     export type Active = keyof typeof C.Attributes.Active;
     export type Passive = keyof typeof C.Attributes.Passive;
   }
+
+
+
+  namespace PromptInput {
+    export type Type = "text"|"number"|"checkbox"|"select"|"button";
+
+    interface Base {
+      label: string,
+      key: string
+    }
+
+    interface InputText extends Base {
+      type: "text",
+      placeholder: string
+    }
+
+    interface InputNumber extends Base {
+      type: "number",
+      default: number,
+      min: number,
+      max: number
+    }
+
+    interface InputCheckbox extends Base {
+      type: "checkbox",
+      default: boolean
+    }
+
+    interface InputSelect extends Base {
+      type: "select",
+      choices: Record<string, string>,
+      default: keyof InputSelect["choices"]
+    }
+
+    interface InputButton extends Base {
+      type: "button"
+    }
+
+    export type Data = InputText|InputNumber|InputCheckbox|InputSelect|InputButton;
+  }
+
+
+
   namespace K4ActorSourceSchema {
 
     interface Base {

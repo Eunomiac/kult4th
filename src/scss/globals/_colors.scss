@@ -72,9 +72,9 @@ Kult White:  #FFFFFF */
 	--K4-font-weight-primary: #{$font-weight-normal};
 
 	--K4-list-indent: 12px;
-	--K4-bg: transparent #{to-url("backgrounds/dgold/item-bg.webp")} no-repeat no-repeat center center / 100% 100%;
-	--K4-bg-inset: var(--K4-BLACK);
-	--K4-chat-border-image: #{to-url("backgrounds/dgold/chat-border.svg")};
+	--K4-bg: transparent #{to-url("backgrounds/bg-item-gold.webp")} no-repeat no-repeat center center / 100% 100%;
+	--K4-bg-inset: transparent #{to-url("backgrounds/bg-gold.webp")} repeat repeat center center/1000px 1000px;
+	--K4-chat-border-image: #{to-url("chat/border-gold.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
 	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
@@ -166,7 +166,8 @@ Kult White:  #FFFFFF */
   &.k4-theme-bgold {
     --K4-color-primary: var(--K4-gGOLD);
     --K4-color-contrast: var(--K4-dBLACK);
-    --K4-bg-inset: var(--K4-dBLACK);
+    --K4-bg-inset: transparent #{to-url("backgrounds/bg-gold.webp")} repeat repeat center center/1000px 1000px;
+    --K4-chat-border-image: #{to-url("chat/border-bgold.svg")};
   }
 }
 
@@ -186,9 +187,9 @@ Kult White:  #FFFFFF */
 	--K4-color-header: var(--K4-RED);
 
 	--K4-list-indent: 12px;
-	--K4-bg: transparent #{to-url("backgrounds/white/item-bg.webp")} no-repeat no-repeat center center / 100% 100%;
-	--K4-bg-inset: transparent #{to-url("backgrounds/white/bg.webp")} repeat repeat center center/1000px 1000px;
-	--K4-chat-border-image: #{to-url("backgrounds/white/chat-border.svg")};
+	--K4-bg: transparent #{to-url("backgrounds/bg-item-white.webp")} no-repeat no-repeat center center / 100% 100%;
+	--K4-bg-inset: transparent #{to-url("backgrounds/bg-white.webp")} repeat repeat center center/1000px 1000px;
+	--K4-chat-border-image: #{to-url("chat/border-white.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
 	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
@@ -231,9 +232,9 @@ Kult White:  #FFFFFF */
 	--K4-color-header: var(--K4-bRED);
 
 	--K4-list-indent: 12px;
-	--K4-bg: transparent #{to-url("backgrounds/dark/item-bg.webp")} no-repeat no-repeat center center / 100% 100%;
-	--K4-bg-inset: var(--K4-BLACK);
-	--K4-chat-border-image: #{to-url("backgrounds/dark/chat-border.svg")};
+	--K4-bg: transparent #{to-url("backgrounds/bg-item-dark.webp")} no-repeat no-repeat center center / 100% 100%;
+	--K4-bg-inset: transparent #{to-url("backgrounds/bg-dark.webp")} repeat repeat center center/1000px 1000px;
+	--K4-chat-border-image: #{to-url("chat/border-dark.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
 	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
@@ -261,7 +262,7 @@ Kult White:  #FFFFFF */
   &.k4-theme-black {
     --K4-color-primary: var(--K4-bWHITE);
     --K4-color-contrast: var(--K4-dBLACK);
-    --K4-bg-inset: var(--K4-dBLACK);
+    --K4-bg-inset: transparent #{to-url("backgrounds/bg-black-leather.webp")} repeat repeat center center/1000px 1000px;
   }
 }
 
@@ -282,9 +283,9 @@ Kult White:  #FFFFFF */
 	--K4-color-header: var(--K4-bRED);
 
 	--K4-list-indent: 12px;
-	--K4-bg: transparent #{to-url("backgrounds/red/item-bg.webp")} no-repeat no-repeat center center / 100% 100%;
-	--K4-bg-inset: var(--K4-BLACK);
-	--K4-chat-border-image: #{to-url("backgrounds/red/chat-border.svg")};
+	--K4-bg: transparent #{to-url("backgrounds/bg-item-red.webp")} no-repeat no-repeat center center / 100% 100%;
+	--K4-bg-inset: transparent #{to-url("backgrounds/bg-red.webp")} repeat repeat center center/1000px 1000px;
+	--K4-chat-border-image: #{to-url("chat/border-red.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
 	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
@@ -302,51 +303,6 @@ Kult White:  #FFFFFF */
 	--K4-color-keyword-bright: var(--K4-bRED);
 	--K4-color-pos: var(--K4-RED);
 	--K4-color-neg: var(--K4-RED);
-
-	--K4-svg-fill: var(--K4-color-primary);
-	--K4-svg-bg: var(--K4-color-contrast);
-	--K4-svg-clip-path: circle(closest-side);
-	--K4-svg-outline-color: transparent;
-	--K4-svg-scale: 1;
-}
-
-.k4-theme-bright {
-	--K4-color-primary: var(--K4-BLACK);
-	--K4-color-primary-bright: var(--K4-dBLACK);
-	--K4-color-primary-glow: var(--K4-dBLACK);
-
-	--K4-color-contrast: var(--K4-bGOLD);
-	--K4-color-contrast-low: var(--K4-GOLD);
-	--K4-color-contrast-high: var(--K4-bGOLD);
-
-	--K4-font-primary: var(--font-primary);
-	--K4-font-weight-primary: #{$font-weight-semi};
-
-  --K4-color-title-fg: var(--K4-color-primary-bright);
-	--K4-color-title-bg: transparent;
-	--K4-color-header: var(--K4-dRED);
-
-	--K4-list-indent: 12px;
-	--K4-bg: transparent #{to-url("backgrounds/bgold/item-bg.webp")} no-repeat no-repeat center center / 100% 100%;
-	--K4-bg-inset: var(--K4-BLACK);
-	--K4-chat-border-image: #{to-url("backgrounds/bgold/chat-border.svg")};
-	--K4-bullet: transparent #{to-url("icons/bullets/bullet-black.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
-
-	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
-	--K4-strip-main-color-bg: var(--K4-color-contrast);
-	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
-	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
-	--K4-strip-button-color-fg: var(--K4-color-contrast);
-	--K4-strip-button-color-bg: var(--K4-color-primary);
-	--K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
-	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
-	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
-	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
-
-	--K4-color-keyword: var(--K4-dBLACK);
-	--K4-color-keyword-bright: var(--K4-dBLACK);
-	--K4-color-pos: var(--K4-dBLACK);
-	--K4-color-neg: var(--K4-dRED);
 
 	--K4-svg-fill: var(--K4-color-primary);
 	--K4-svg-bg: var(--K4-color-contrast);

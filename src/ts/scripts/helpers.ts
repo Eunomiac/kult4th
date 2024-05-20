@@ -31,6 +31,29 @@ export function registerHooks(): void {
 
     return true;
   });
+
+  Hooks.on("renderChatLog", async (_log: ChatLog, html: JQuery, _options: unknown) => {
+    const template = await getTemplate(U.getTemplatePath("sidebar", "chat-input-control-panel"));
+    const buttonHtml = $(template({}));
+    const chatForm = html.find("#chat-form");
+    chatForm.append(buttonHtml);
+
+    buttonHtml.find("#ic").on("click", (event: ClickEvent) => {
+      event.preventDefault();
+      ui.notifications.info("Message is In-Character");
+      chatForm.attr("data-type", "ic");
+    });
+    buttonHtml.find("#ooc").on("click", (event: ClickEvent) => {
+      event.preventDefault();
+      ui.notifications.info("Message is Out-of-Character");
+      chatForm.attr("data-type", "ooc");
+    });
+    buttonHtml.find("#gm").on("click", (event: ClickEvent) => {
+      event.preventDefault();
+      ui.notifications.info("Message will be Whispered to the GM");
+      chatForm.attr("data-type", "gm");
+    });
+  });
 }
 
 const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {

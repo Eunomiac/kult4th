@@ -1,5 +1,29 @@
-<form class=" autocomplete="off">
-  <div class="form-group">
-    <label for="text-input">{{localize "KULT4th.dialog.ask-for-text-input.label"}}</label>
-    <input type="text" class="form-control" id="text-input" placeholder="{{localize "KULT4th.dialog.ask-for-text-input.placeholder"}}">
-  </div>
+{{log "ask-for-text-input.hbs" this}}
+<h1 class="dialog-title">{{title}}</h1>
+<p>{{message}}</p>
+{{#each fields}}
+  {{log this}}
+  {{#if (test type "===" "text")}}
+    <label for="{{key}}">{{label}}</label>
+    <input type="text" name="{{key}}" class="form-control" placeholder="{{placeholder}}" />
+  {{/if}}
+  {{#if (test type "===" "number")}}
+    <label for="{{key}}">{{label}}</label>
+    <input type="number" name="{{key}}" class="form-control" value="{{default}}" min="{{min}}" max="{{max}}" />
+    {{/if}}
+  {{#if (test type "===" "select")}}
+    <label for="{{key}}">{{label}}</label>
+    <select name="{{key}}" class="form-control">
+      {{#each choices as |choiceDisplay choiceVal|}}
+        <option value="{{choiceVal}}" {{#if (eq choiceVal default)}}selected{{/if}}>{{choiceDisplay}}</option>
+      {{/each}}
+    </select>
+  {{/if}}
+  {{#if (test type "===" "checkbox")}}
+    <label for="{{key}}">{{label}}</label>
+    <input type="checkbox" name="{{key}}" class="form-control" {{#if default}}checked{{/if}} />
+  {{/if}}
+  {{#if (test type "===" "button")}}
+    <button type="button" name="{{key}}" class="btn btn-primary">{{label}}</button>
+  {{/if}}
+{{/each}}

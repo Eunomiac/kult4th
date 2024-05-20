@@ -386,13 +386,35 @@ class K4Item extends Item {
     return stripData;
   }
 
+  get chatTheme(): string {
+    switch (this.type) {
+      case K4ItemType.advantage:
+        return "k4-theme-bgold";
+      case K4ItemType.disadvantage:
+        return "k4-theme-red";
+      case K4ItemType.move:
+        return "k4-theme-gold";
+      case K4ItemType.darksecret:
+        return "k4-theme-dark";
+      case K4ItemType.relation:
+        return "k4-theme-gold";
+      case K4ItemType.gear:
+        return "k4-theme-white";
+      case K4ItemType.attack:
+        return "k4-theme-red";
+      case K4ItemType.weapon:
+        return "k4-theme-white";
+    }
+    throw new Error(`Unknown Item Type: ${this.type}`);
+  }
+
   get itemSummaryContext() {
     return {
       name:     this.name,
       img:      this.img,
       system:   this.system,
       item:     this,
-      cssClass: "kult4th-chat kult4th-item-display"
+      cssClass: `kult4th-chat kult4th-item-display ${this.chatTheme}`
     };
   }
 

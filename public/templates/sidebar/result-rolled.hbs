@@ -38,13 +38,13 @@
 	</div>
 
 	<div class="roll-dice-results">
-			<div class="roll-total">
+			<div class="roll-total {{~#if (gte total 20)}} narrow{{/if}}">
 				<span class="roll-total-gear">
 					<img class="gear-chagidiel-inner-ring" src="systems/kult4th/assets/gears/gear-chagidiel-inner-ring.svg">
 					<img class="gear-chagidiel-middle-ring" src="systems/kult4th/assets/gears/gear-chagidiel-middle-ring.svg">
 					<img class="gear-chagidiel-outer-ring" src="systems/kult4th/assets/gears/gear-chagidiel-outer-ring.svg">
 				</span>
-				<span class="roll-total-number {{~#if (gte total 20)}} narrow{{/if}}">{{total}}</span>
+				<span class="roll-total-number">{{total}}</span>
 			</div>
 			<div class="roll-modifiers">
 				{{#each rollData.modifiers}}

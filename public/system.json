@@ -26,43 +26,7 @@
 		"style.css",
     "tmce-editor.css"
 	],
-  "packs": [
-		{
-			"name": "k4-basic-player-moves",
-			"label": "[K4] Basic Player Moves",
-			"system": "kult4th",
-			"path": "packs/k4-basic-player-moves.db",
-			"type": "Item"
-		},
-		{
-			"name": "k4-advantages",
-			"label": "[K4] Advantages",
-			"system": "kult4th",
-			"path": "packs/k4-advantages.db",
-			"type": "Item"
-		},
-		{
-			"name": "k4-disadvantages",
-			"label": "[K4] Disadvantages",
-			"system": "kult4th",
-			"path": "packs/k4-disadvantages.db",
-			"type": "Item"
-		},
-		{
-			"name": "k4-dark-secrets",
-			"label": "[K4] Dark Secrets",
-			"system": "kult4th",
-			"path": "packs/k4-dark-secrets.db",
-			"type": "Item"
-		},
-		{
-			"name": "k4-weapons-and-gear",
-			"label": "[K4] Weapons & Gear",
-			"system": "kult4th",
-			"path": "packs/k4-weapons-and-gear.db",
-			"type": "Item"
-		}
-	],
+  "packs": [],
   "languages": [
      {
       "lang": "en",

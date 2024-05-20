@@ -265,6 +265,53 @@ class K4Actor extends Actor {
     return attributeMap;
   }
 
+  // async askUser(
+  //   title: string,
+  //   message: string,
+  //   inputs: Partial<Record<string, PromptInputData>>,
+  // )
+
+  static async TestDialog(title: string, message: string, fields: PromptInput.Data[]) {
+    const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-text-input"));
+    const content = template({
+      title,
+      message,
+      fields
+    });
+    const userReply = await new Promise((resolve) => {
+      new Dialog(
+        {
+          title: "Testing",
+          content,
+          buttons: {
+            "submit": {
+              label: "Submit",
+              callback: function(html: HTMLElement|JQuery) {
+                const formData = fields.reduce((acc: Record<string, string|number|boolean>, field) => {
+                  const val = $(html).find(`input[name=${field.key}]`).val() as Maybe<string|number|boolean>;
+                  if (field.type === "button") {
+                    acc[field.key] = true;
+                  } else if (field.type === "text") {
+                    acc[field.key] = val ?? "";
+                  } else {
+                    acc[field.key] = val ?? field.default ?? "";
+                  }
+                  return acc;
+                }, {} as Record<string, string | number | boolean>);
+                resolve(formData);
+                console.log("Submitted", formData);
+              }
+            }
+          }
+        },
+        {
+          classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
+        }
+      ).render(true);
+    });
+    console.log("User Reply", userReply);
+  }
+
   /**
    * Prompts the user to select an attribute using a dialog.
    * @param {string | undefined} message - Optional message to display in the dialog.

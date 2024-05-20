@@ -2,6 +2,7 @@ $assetPath: '/assets';
 
 @import 'globals/functions';
 @import 'globals/typography';
+@import 'globals/root';
 
 .vtt.game.system-kult4th {
 	@import 'globals/colors';
@@ -15,7 +16,6 @@ $assetPath: '/assets';
 	@import 'debug';
 	--scrollbar-width: 6px;
 
-	@import 'globals/root';
 
 	#ui-left,
 	#ui-middle,
@@ -60,38 +60,7 @@ $assetPath: '/assets';
 	}
 
 	#ui-right {
-		#sidebar {
-
-			/* FOUNDRY OVERRIDES */
-			--sidebar-width: 300px;
-			--sidebar-internal-width: calc(var(--sidebar-width) - var(--scrollbar-width));
-			--sidebar-header-height: 32px; // 0px; // 32px;
-			--sidebar-item-height: 48px; // 80px; // 48px;
-
-			border: none;
-			box-shadow: none;
-			overflow: visible;
-
-			@include set-default-theme();
-
-			#chat { @import 'sidebar/chat' }
-
-      #sidebar-tabs {
-        .item[data-tab="combat"],
-        .item[data-tab="tables"],
-        .item[data-tab="cards"] {
-          display: none;
-        }
-
-        &:not(.gm-user) {
-          .item[data-tab="scenes"],
-          .item[data-tab="compendium"] {
-            display: none;
-          }
-        }
-
-      }
-		}
+		#sidebar { @import 'sidebar/sidebar'; }
 	}
 
   #logo {
@@ -101,5 +70,26 @@ $assetPath: '/assets';
     max-height: 10px;
     margin: 0;
     padding: 0;
+  }
+
+  #interface.gm-user {
+    #ui-right {
+      #sidebar {
+        #sidebar-tabs {
+          .item[data-tab="scenes"],
+          .item[data-tab="compendium"] {
+            display: block;
+          }
+        }
+        #chat {
+          #chat-controls {
+            pointer-events: auto;
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
   }
 }

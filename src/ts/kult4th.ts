@@ -31,14 +31,13 @@ Hooks.once("init", async () => {
 
   registerSettings();
   kLog.display("Initializing 'Kult: Divinity Lost 4th Edition' for Foundry VTT", 0);
-
+  registerHooks();
   CONFIG.K4 = K4Config;
   registerHandlebarHelpers();
 
   CONFIG.Actor.documentClass = K4Actor;
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
-  // Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
   Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc] });
 
   CONFIG.Item.documentClass = K4Item;
@@ -252,19 +251,18 @@ Hooks.once("init", async () => {
 
 Hooks.once("ready", () => {
 
-  // If user is GM, add "gm-user" class to #sidebar-tabs
+  // If user is GM, add "gm-user" class to #interface
   if (game.user?.isGM) {
-    $("#sidebar-tabs").addClass("gm-user");
+    $("#interface").addClass("gm-user");
   }
 
   initCanvasStyles();
   initTinyMCEStyles();
-  registerHooks();
 
   /*DEVCODE*/
-  const ACTOR = game.actors?.values().next().value as K4Actor;
-  const ITEM = game.items?.values().next().value as K4Item;
-  const EMBED = ACTOR.items?.values().next().value as K4Item;
+  const ACTOR = game.actors?.values().next().value as Maybe<K4Actor>;
+  const ITEM = game.items?.values().next().value as Maybe<K4Item>;
+  const EMBED = ACTOR?.items?.values().next().value as Maybe<K4Item>;
   const ACTORSHEET = ACTOR?.sheet;
   const ITEMSHEET = ITEM?.itemSheet;
   const EMBEDSHEET = EMBED?.itemSheet;
@@ -274,6 +272,8 @@ Hooks.once("ready", () => {
     // MorphSVGPlugin,
     U,
     C,
+    K4Actor,
+    K4Item,
     ActorSheet,
     K4PCSheet,
     getContrastingColor,
@@ -327,10 +327,12 @@ async function preloadTemplates() {
       "item-display",
       "result-attribute",
       "result-rolled",
-      "result-static"
+      "result-static",
+      "chat-input-control-panel"
     ]),
     ...U.getTemplatePath("dialog", [
-      "ask-for-attribute"
+      "ask-for-attribute",
+      "ask-for-text-input"
     ])
   ];
 
