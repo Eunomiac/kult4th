@@ -21,9 +21,9 @@
     "paths": {
       "*": [
         "*",
-        "D:/Projects/.CODING/FoundryVTT/FoundryV11DistData/Data/modules/*",
-        "D:/Projects/.CODING/FoundryVTT/FoundryV11DevData/Data/modules/*",
-        "C:/FoundryVTT/v11/Foundry Virtual Tabletop/resources/app/*"
+        "D:/Projects/.CODING/FoundryVTT/FoundryV10DistData/Data/modules/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV10DevData/Data/modules/*",
+        "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/*"
       ]
     },
     "plugins": [
@@ -45,5 +45,8 @@
   "include": [
     "./src/ts/**/*.ts",
     "vite.config.ts"
+  ],
+  "exclude": [
+    "./.dev"
   ]
 }

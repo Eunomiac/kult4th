@@ -33,6 +33,20 @@ export enum K4WoundType {
  * Extends the base Actor class provided by Foundry VTT.
  */
 class K4Actor extends Actor {
+  // #region INITIALIZATION ~
+  /**
+   * Pre-Initialization of the K4Actor class. This method should be run during the "init" hook.
+   *
+   * - Registers the K4Actor class as the system's Actor document class.
+   *
+   * @returns {Promise<void>} A promise that resolves when the hook is registered.
+   */
+  static async PreInitialize(): Promise<void> {
+
+    // Register K4Actor as the system's Actor document class
+    CONFIG.Actor.documentClass = this;
+  }
+  // #endregion
 
   /**
    * Type guard to check if the actor is of a specific type.
@@ -72,9 +86,9 @@ class K4Actor extends Actor {
       this.system.relations = this.relations;
 
       this.system.maxWounds = {
-        serious:  this.system.modifiers.wounds_serious.length as Integer,
+        serious: this.system.modifiers.wounds_serious.length as Integer,
         critical: this.system.modifiers.wounds_critical.length as Integer,
-        total:    (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
+        total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
       };
       this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
 
@@ -177,20 +191,20 @@ class K4Actor extends Actor {
   get woundStrips(): HoverStripData[] {
     return Object.values(this.wounds).map((wound) => {
       const stripData: Partial<HoverStripData> = {
-        id:   wound.id,
+        id: wound.id,
         icon: "systems/kult4th/assets/icons/wounds/",
         type: [
           wound.isStabilized ? "stable" : "",
           wound.isCritical ? "critical" : "serious"
         ].join("") as K4WoundType,
-        display:      wound.description ?? "",
+        display: wound.description ?? "",
         // isGlowing:    (wound.isCritical && !wound.isStabilized) ? "red" : false,
         stripClasses: ["wound-strip"],
-        dataTarget:   `system.wounds.${wound.id}.description`,
-        placeholder:  "(description)  ",
-        buttons:      [
+        dataTarget: `system.wounds.${wound.id}.description`,
+        placeholder: "(description)  ",
+        buttons: [
           {
-            icon:    wound.isCritical ? "wound-critical" : "wound-serious",
+            icon: wound.isCritical ? "wound-critical" : "wound-serious",
             dataset: {
               target: wound.id,
               action: "toggle-wound-type"
@@ -198,7 +212,7 @@ class K4Actor extends Actor {
             tooltip: wound.isCritical ? "CRITICAL" : "SERIOUS"
           },
           {
-            icon:    "data-retrieval",
+            icon: "data-retrieval",
             dataset: {
               target: wound.id,
               action: "reset-wound-name"
@@ -206,7 +220,7 @@ class K4Actor extends Actor {
             tooltip: "EDIT"
           },
           {
-            icon:    "wound-serious-stabilized",
+            icon: "wound-serious-stabilized",
             dataset: {
               target: wound.id,
               action: "toggle-wound-stabilize"
@@ -214,7 +228,7 @@ class K4Actor extends Actor {
             tooltip: wound.isStabilized ? "STABLE" : "STABILIZE"
           },
           {
-            icon:    "hinder-other",
+            icon: "hinder-other",
             dataset: {
               target: wound.id,
               action: "drop-wound"
@@ -243,10 +257,10 @@ class K4Actor extends Actor {
       const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as K4CharAttribute[];
       const pcData: K4ActorSystem<K4ActorType.pc> = this.system;
       return attrList.map((attrName) => ({
-        name:  U.tCase(attrName),
-        key:   attrName,
-        min:   pcData.attributes[attrName].min,
-        max:   pcData.attributes[attrName].max,
+        name: U.tCase(attrName),
+        key: attrName,
+        min: pcData.attributes[attrName].min,
+        max: pcData.attributes[attrName].max,
         value: pcData.attributes[attrName].value
       }));
     }
@@ -286,9 +300,9 @@ class K4Actor extends Actor {
           buttons: {
             "submit": {
               label: "Submit",
-              callback: function(html: HTMLElement|JQuery) {
-                const formData = fields.reduce((acc: Record<string, string|number|boolean>, field) => {
-                  const val = $(html).find(`input[name=${field.key}]`).val() as Maybe<string|number|boolean>;
+              callback: function (html: HTMLElement | JQuery) {
+                const formData = fields.reduce((acc: Record<string, string | number | boolean>, field) => {
+                  const val = $(html).find(`input[name=${field.key}]`).val() as Maybe<string | number | boolean>;
                   if (field.type === "button") {
                     acc[field.key] = true;
                   } else if (field.type === "text") {
@@ -323,10 +337,10 @@ class K4Actor extends Actor {
       id: this.id,
       message
     });
-    const userOutput = await new Promise<{attribute: K4RollableAttribute}>((resolve) => {
+    const userOutput = await new Promise<{attribute: K4RollableAttribute;}>((resolve) => {
       new Dialog(
         {
-          title:   "Attribute Selection",
+          title: "Attribute Selection",
           content,
           default: K4Attribute.zero,
           buttons: C.AttributeButtons(resolve)
@@ -386,9 +400,9 @@ class K4Actor extends Actor {
   async addWound(type?: K4WoundType, description?: string) {
     if (this.is(K4ActorType.pc)) {
       const woundData: K4Wound = {
-        id:           U.getID(),
-        description:  description ?? "",
-        isCritical:   type === K4WoundType.critical,
+        id: U.getID(),
+        description: description ?? "",
+        isCritical: type === K4WoundType.critical,
         isStabilized: false
       };
       let isWoundUpgrading = false;
@@ -404,7 +418,7 @@ class K4Actor extends Actor {
         // If critical, check if actor already has a critical wound; if so, reject the wound and alert the players
         if (this.wounds_critical.length) {
           if (isWoundUpgrading) {
-            ui.notifications?.error(`${this.name} has already suffered ${U.verbalizeNum(this.wounds_serious.length)} serious wounds and a critical wound: They can withstand no further injury.`)
+            ui.notifications?.error(`${this.name} has already suffered ${U.verbalizeNum(this.wounds_serious.length)} serious wounds and a critical wound: They can withstand no further injury.`);
           } else {
             ui.notifications?.error(`${this.name} has already suffered a critical wound and cannot withstand another.`);
           }
@@ -492,8 +506,8 @@ class K4Actor extends Actor {
   get woundModData(): K4RollModData {
     const modData: K4RollModData = {
       category: "wound",
-      display:  U.loc("trait.wounds"),
-      targets:  {}
+      display: U.loc("trait.wounds"),
+      targets: {}
     };
     if (this.is(K4ActorType.pc)) {
       const [unstabSerious, unstabCritical] = [
@@ -521,8 +535,8 @@ class K4Actor extends Actor {
   get stabilityModData(): K4RollModData {
     const modData: K4RollModData = {
       category: "stability",
-      display:  U.loc("trait.stability"),
-      targets:  {}
+      display: U.loc("trait.stability"),
+      targets: {}
     };
     if (this.is(K4ActorType.pc)) {
       modData.targets = this.system.modifiers.stability[this.system.stability.value];
@@ -548,18 +562,18 @@ class K4Actor extends Actor {
     return [
       {
         category: "effect",
-        display:  "Test Effect One",
-        targets:  {"Keep It Together": 2}
+        display: "Test Effect One",
+        targets: {"Keep It Together": 2}
       },
       {
         category: "effect",
-        display:  "Test Effect Two",
-        targets:  {move: 4}
+        display: "Test Effect Two",
+        targets: {move: 4}
       },
       {
         category: "effect",
-        display:  "Test Effect Three",
-        targets:  {[K4Attribute.willpower]: -1}
+        display: "Test Effect Three",
+        targets: {[K4Attribute.willpower]: -1}
       }
     ];
   }
@@ -642,7 +656,7 @@ class K4Actor extends Actor {
     return true;
   }
 
-  async #getRoll(rollSourceRef: string | K4RollSource | K4Attribute): Promise<{roll: Roll, rollData: K4RollData} | false> {
+  async #getRoll(rollSourceRef: string | K4RollSource | K4Attribute): Promise<{roll: Roll, rollData: K4RollData;} | false> {
 
     let rollSource: K4RollSource | undefined;
     const rollData: Partial<K4RollData> = {};
@@ -653,7 +667,7 @@ class K4Actor extends Actor {
         rollSource = attrResponse;
       }
     } else if (rollSourceRef instanceof K4Item) {
-      if (rollSourceRef instanceof K4Item && rollSourceRef.isRollableItem()) {
+      if (rollSourceRef.isActiveItem()) {
         rollSource = rollSourceRef;
       }
     } else if ([
@@ -663,7 +677,7 @@ class K4Actor extends Actor {
       rollSource = rollSourceRef as K4RollableAttribute;
     } else if (typeof rollSourceRef === "string") {
       const item = this.getMoveByName(rollSourceRef) ?? this.getAttackByName(rollSourceRef);
-      if (item instanceof K4Item && item.isRollableItem()) {
+      if (item instanceof K4Item && item.isActiveItem()) {
         rollSource = item;
       }
     }
@@ -735,32 +749,32 @@ class K4Actor extends Actor {
 
   async #displayRollResult(roll: Roll, rollData: K4RollData, options: K4RollOptions) {
     if (U.isUndefined(roll.total)) {return;}
-    function isItem(ref: unknown): ref is K4RollableItem {return ref instanceof K4Item;}
+    function isItem(ref: unknown): ref is K4Items.Active {return ref instanceof K4Item;}
 
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: {
       cssClass: string,
-      result?: ValueOf<K4ItemComps.ResultsData["results"]>,
+      result?: ValueOf<K4Items.Components.ResultsData["results"]>,
       dice: [number, number],
       total: number,
       rollData: K4RollData,
-      rollerName: string
+      rollerName: string;
     } = {
-      cssClass:   "",
-      dice:       roll.dice[0].results.map((dResult) => dResult.result) as [number, number],
-      total:      roll.total,
+      cssClass: "",
+      dice: roll.dice[0].results.map((dResult) => dResult.result) as [number, number],
+      total: roll.total,
       rollData,
       rollerName: this.name ?? U.loc("roll.someone")
     };
     const cssClasses = ["chat-roll-result", `${rollData.sourceType}-roll`];
     if (roll.total >= 15) {
-      templateData.result = isItem(rollData.source) ? rollData.source.system.results.completeSuccess : {result: ""};
+      templateData.result = isItem(rollData.source) ? rollData.source.system.results?.completeSuccess : {result: ""};
       cssClasses.push("roll-success");
-    } else if (roll.total >= 9) {
-      templateData.result = isItem(rollData.source) ? rollData.source.system.results.partialSuccess : {result: ""};
+    } else if (roll.total > 9) {
+      templateData.result = isItem(rollData.source) ? rollData.source.system.results?.partialSuccess : {result: ""};
       cssClasses.push("roll-partial");
     } else {
-      templateData.result = isItem(rollData.source) ? rollData.source.system.results.failure : {result: ""};
+      templateData.result = isItem(rollData.source) ? rollData.source.system.results?.failure : {result: ""};
       cssClasses.push("roll-failure");
     }
     cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
@@ -774,7 +788,12 @@ class K4Actor extends Actor {
     const content = template(templateData);
     await K4ChatMessage.create({
       content,
-      speaker: K4ChatMessage.getSpeaker()
+      speaker: K4ChatMessage.getSpeaker(),
+      flags: {
+        kult4th: {
+          cssClasses: ["k4-theme-bgold"]
+        }
+      }
     });
   }
 

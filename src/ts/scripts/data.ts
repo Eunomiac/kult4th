@@ -41,25 +41,25 @@ export async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
 
 namespace PACKTypes {
   export interface ByType {
-    [K4ItemType.advantage]: K4ItemData<K4ItemType.advantage>[];
-    [K4ItemType.disadvantage]: K4ItemData<K4ItemType.disadvantage>[];
-    [K4ItemType.move]: K4ItemData<K4ItemType.move>[];
-    [K4ItemType.attack]: K4ItemData<K4ItemType.attack>[];
-    [K4ItemType.darksecret]: K4ItemData<K4ItemType.darksecret>[];
-    [K4ItemType.relation]: K4ItemData<K4ItemType.relation>[];
-    [K4ItemType.gear]: K4ItemData<K4ItemType.gear>[];
-    [K4ItemType.weapon]: K4ItemData<K4ItemType.weapon>[];
+    [K4ItemType.advantage]: K4Items.Schema<K4ItemType.advantage>[];
+    [K4ItemType.disadvantage]: K4Items.Schema<K4ItemType.disadvantage>[];
+    [K4ItemType.move]: K4Items.Schema<K4ItemType.move>[];
+    [K4ItemType.attack]: K4Items.Schema<K4ItemType.attack>[];
+    [K4ItemType.darksecret]: K4Items.Schema<K4ItemType.darksecret>[];
+    [K4ItemType.relation]: K4Items.Schema<K4ItemType.relation>[];
+    [K4ItemType.gear]: K4Items.Schema<K4ItemType.gear>[];
+    [K4ItemType.weapon]: K4Items.Schema<K4ItemType.weapon>[];
   }
   export interface SubItems {
-    subItems: K4SubItemData<K4ItemType.move|K4ItemType.attack>[];
-    subMoves: K4SubItemData<K4ItemType.move>[];
-    subAttacks: K4SubItemData<K4ItemType.attack>[];
+    subItems: K4SubItems.Schema[];
+    subMoves: K4SubItems.Schema<K4ItemType.move>[];
+    subAttacks: K4SubItems.Schema<K4ItemType.attack>[];
   }
   export interface ParentItems {
-    parentItems: K4ItemData<ParentItemTypes>[];
+    parentItems: Array<K4Items.Schema<K4Items.Types.Parent>>;
   }
   export interface All {
-    all: K4ItemData[];
+    all: K4Items.Schema[];
   }
 }
 
@@ -11770,7 +11770,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
   ],
   [K4ItemType.relation]: [],
   [K4ItemType.attack]: [],
-  get parentItems(): K4ItemData<ParentItemTypes>[] {
+  get parentItems(): K4Items.Schema<K4Items.Types.Parent>[] {
     return [
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -11778,7 +11778,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
       ...this[K4ItemType.gear]
     ];
   },
-  get subItems(): K4SubItemData[] {
+  get subItems(): K4SubItems.Schema[] {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -11786,23 +11786,23 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
       ...this[K4ItemType.gear]
     ]);
   },
-  get subMoves(): K4SubItemData<K4ItemType.move>[] {
+  get subMoves(): K4SubItems.Schema<K4ItemType.move>[] {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
       ...this[K4ItemType.weapon],
       ...this[K4ItemType.gear]
-    ], [K4ItemType.move]) as K4SubItemData<K4ItemType.move>[];
+    ], [K4ItemType.move]) as K4SubItems.Schema<K4ItemType.move>[];
   },
-  get subAttacks(): K4SubItemData<K4ItemType.attack>[] {
+  get subAttacks(): K4SubItems.Schema<K4ItemType.attack>[] {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
       ...this[K4ItemType.weapon],
       ...this[K4ItemType.gear]
-    ], [K4ItemType.attack]) as K4SubItemData<K4ItemType.attack>[];
+    ], [K4ItemType.attack]) as K4SubItems.Schema<K4ItemType.attack>[];
   },
-  get all(): K4ItemData[] {
+  get all(): K4Items.Schema[] {
     return [
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -11920,7 +11920,7 @@ function getType(val: unknown): string {
 };
 
 
-export function getUniqueKeys(itemDataArray: Array<K4ItemData|K4SubItemData>, isExpanding = false): string[] {
+export function getUniqueKeys(itemDataArray: Array<K4Items.Schema|K4SubItems.Schema>, isExpanding = false): string[] {
   const uniqueEntries: Array<Tuple<string, string[]>> = [];
   itemDataArray.forEach((item) => {
     const flatSystem = flattenObject(item.system);
@@ -11959,7 +11959,7 @@ const VAL_TYPES_TO_LIST = [
   "[word-string]"
 ];
 
-export function getItemReport(itemDataArray: K4ItemData[], isExpanding = false): Record<string, string> {
+export function getItemReport(itemDataArray: K4Items.Schema[], isExpanding = false): Record<string, string> {
   const keyTypeData = getUniqueKeys(itemDataArray);
 
   const reportObject = Object.fromEntries(
@@ -11974,7 +11974,7 @@ export function getItemReport(itemDataArray: K4ItemData[], isExpanding = false):
   return isExpanding ? expandObject(reportObject) : reportObject;
 }
 
-export function getSubItemReport(itemDataArray: K4ItemData[], isExpanding = false): Record<string, string> {
+export function getSubItemReport(itemDataArray: K4Items.Schema[], isExpanding = false): Record<string, string> {
   const keyTypeData = getUniqueSubItemKeys(itemDataArray);
 
   const reportObject = Object.fromEntries(
@@ -11990,9 +11990,9 @@ export function getSubItemReport(itemDataArray: K4ItemData[], isExpanding = fals
 }
 
 
-export function getUniqueValuesForKey(itemDataArray: K4ItemData[], key: string): unknown[]
-export function getUniqueValuesForKey(itemDataArray: K4ItemData[], key: string[]): Record<string, unknown>
-export function getUniqueValuesForKey(itemDataArray: K4ItemData[], key: string|string[]): Record<string, unknown>|unknown[] {
+export function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string): unknown[]
+export function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string[]): Record<string, unknown>
+export function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string|string[]): Record<string, unknown>|unknown[] {
   if (Array.isArray(key)) {
     const valsByKey: Record<string, unknown[]> = {};
     key.forEach((thisKey) => {
@@ -12017,9 +12017,9 @@ export function getUniqueValuesForKey(itemDataArray: K4ItemData[], key: string|s
   return uniqueValues;
 }
 
-function extractSubItemSchemas(itemDataArray: K4ItemData[], subTypes: SubItemTypes[] = [K4ItemType.attack, K4ItemType.move]): Array<K4SubItemData> {
+function extractSubItemSchemas(itemDataArray: K4Items.Schema[], subTypes: K4SubItems.Types[] = [K4ItemType.attack, K4ItemType.move]): Array<K4SubItems.Schema> {
   return itemDataArray
-    .filter((item): item is K4ItemData<ParentItemTypes> =>
+    .filter((item): item is K4Items.Schema<K4Items.Types.Parent> =>
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.weapon, K4ItemType.gear]
         .includes(item.type))
     .map((parentItem) => {
@@ -12036,15 +12036,15 @@ function extractSubItemSchemas(itemDataArray: K4ItemData[], subTypes: SubItemTyp
     .flat();
 }
 
-export function getUniqueSubItemKeys(itemDataArray: K4ItemData[], isExpanding = false): string[] {
+export function getUniqueSubItemKeys(itemDataArray: K4Items.Schema[], isExpanding = false): string[] {
   return getUniqueKeys(
     extractSubItemSchemas(itemDataArray),
     isExpanding
   );
 }
 
-export function getUniqueValuesForSubItemKey(itemDataArray: K4ItemData[], key: string): unknown[]
-export function getUniqueValuesForSubItemKey(itemDataArray: K4ItemData[], key: string[]): Record<string, unknown>
-export function getUniqueValuesForSubItemKey(itemDataArray: K4ItemData[], key: string|string[]): Record<string, unknown>|unknown[] {
+export function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string): unknown[]
+export function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string[]): Record<string, unknown>
+export function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string|string[]): Record<string, unknown>|unknown[] {
   return getUniqueValuesForKey(extractSubItemSchemas(itemDataArray) as any, key as any);
 }

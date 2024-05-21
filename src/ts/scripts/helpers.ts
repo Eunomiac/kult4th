@@ -3,57 +3,13 @@
 import U from "./utilities.js";
 import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
 import K4Item from "../documents/K4Item.js";
+import K4Modifier from "../documents/K4Modifier.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
 export function formatStringForKult(str: string) {
   // Apply spans around all hash-tag indicators
   return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
-}
-
-
-export function registerHooks(): void {
-  // Register the hook in your module or system initialization code
-  Hooks.on("preCreateItem", async (itemData: K4Item) => {
-    // Ensure the item is being created for an actor
-    if (!itemData.parent || itemData.parent.documentName !== "Actor") {
-      return true;
-    }
-
-    const actor = itemData.parent;
-    const existingItem = actor.items.find((i) => i.name === itemData.name);
-
-    // If an item with the same name already exists, prevent the creation
-    if (existingItem) {
-      ui.notifications.warn(`The item "${itemData.name}" already exists on this actor.`);
-      return false; // Returning false prevents the item from being created
-    }
-
-    return true;
-  });
-
-  Hooks.on("renderChatLog", async (_log: ChatLog, html: JQuery, _options: unknown) => {
-    const template = await getTemplate(U.getTemplatePath("sidebar", "chat-input-control-panel"));
-    const buttonHtml = $(template({}));
-    const chatForm = html.find("#chat-form");
-    chatForm.append(buttonHtml);
-
-    buttonHtml.find("#ic").on("click", (event: ClickEvent) => {
-      event.preventDefault();
-      ui.notifications.info("Message is In-Character");
-      chatForm.attr("data-type", "ic");
-    });
-    buttonHtml.find("#ooc").on("click", (event: ClickEvent) => {
-      event.preventDefault();
-      ui.notifications.info("Message is Out-of-Character");
-      chatForm.attr("data-type", "ooc");
-    });
-    buttonHtml.find("#gm").on("click", (event: ClickEvent) => {
-      event.preventDefault();
-      ui.notifications.info("Message will be Whispered to the GM");
-      chatForm.attr("data-type", "gm");
-    });
-  });
 }
 
 const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {

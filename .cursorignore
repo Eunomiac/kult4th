@@ -10,3 +10,4 @@ extensions.txt
 sonar-project.properties
 README.md
 LICENSE
+**/.dev/** */

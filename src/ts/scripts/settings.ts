@@ -106,25 +106,11 @@ export function initTinyMCEStyles() {
   CONFIG.TinyMCE.skin = "Kult4th";
   CONFIG.TinyMCE.skin_url = "systems/kult4th/tinymce/ui/Kult4th";
   CONFIG.TinyMCE.style_formats_merge = false;
-  // CONFIG.TinyMCE.template_selected_content_classes += " ws-contents";
-  // CONFIG.TinyMCE.templates = CONFIG.TinyMCE.templates ?? [];
-  // CONFIG.TinyMCE.templates.push(
-  //     {
-  //         title: 'Sidebar',
-  //         description: 'A World Smiths sidebar',
-  //         content: '<section class="ws-sidebar-group"><main><p></p></main><aside class="ws-block sidebar"><h3></h3><p class="ws-contents">{$contents}</p></aside></section>'
-  //     },
-  //     {
-  //         title: 'Note',
-  //         description: 'A World Smiths note',
-  //         content: `<section class="ws-block note"><img src="worlds/${game.world.data.name}/styles/ws.svg" width="48" /> <div class="contents"><h3></h3><p class="ws-contents">{$contents}</p></div></section>`
-  //     });
   if (typeof CONFIG.TinyMCE.content_css === "string") {
     CONFIG.TinyMCE.content_css = [CONFIG.TinyMCE.content_css];
   } else if (!Array.isArray(CONFIG.TinyMCE.content_css)) {
     CONFIG.TinyMCE.content_css = [];
   }
-  // CONFIG.TinyMCE.content_css.unshift("dark");
   CONFIG.TinyMCE.content_css.push("systems/kult4th/tmce-editor.css");
 
 }

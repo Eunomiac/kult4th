@@ -7,6 +7,8 @@ import {
 } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import {ItemData as _ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import {ConfiguredDocumentClass as _ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
+import {ChatMessageDataConstructorData as _ChatMessageDataConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
+import {Context as _Context} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs.d";
 
 
 declare global {
@@ -17,4 +19,6 @@ declare global {
   export type ItemDataSource = _ItemDataSource;
   export type ItemData = _ItemData;
   export type ConfiguredDocumentClass = _ConfiguredDocumentClass;
+  export type ChatMessageDataConstructorData = _ChatMessageDataConstructorData;
+  export type Context = _Context;
 }

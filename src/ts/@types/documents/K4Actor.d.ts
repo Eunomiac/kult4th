@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import C, {K4Attribute, Archetype} from "../../scripts/constants";
 import K4Actor, {K4ActorType, K4RollType, K4WoundType} from "../../documents/K4Actor";
-import K4Item, {K4ItemType} from "../../documents/K4Item.js";
+import K4Items, {K4ItemType} from "../../documents/K4Item.js";
 import {K4RollType} from "../../documents/K4Roll.js";
 
 import K4PCSheet from "../../documents/K4PCSheet";

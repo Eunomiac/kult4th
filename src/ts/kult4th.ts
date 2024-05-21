@@ -8,10 +8,10 @@ import K4Item, {K4ItemType} from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
-import K4ActiveEffect from "./documents/K4ActiveEffect.js";
+import K4Modifier from "./documents/K4Modifier.js";
 import C, {getContrastingColor} from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
-import {formatStringForKult, registerHandlebarHelpers, registerHooks} from "./scripts/helpers.js";
+import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
 
@@ -26,19 +26,31 @@ registerDebugger();
 
 Hooks.once("init", async () => {
 
+  // Register settings (including debug settings necessary for kLog)
   registerSettings();
+  // Announce initialization process in console
   kLog.display("Initializing 'Kult: Divinity Lost 4th Edition' for Foundry VTT", 0);
-  CONFIG.compatibility.mode = 0; // Disable Compatibility Warnings
-  registerHooks();
+  // Disable Compatibility Warnings
+  CONFIG.compatibility.mode = 0;
+
+  // PreInitialize all classes that have a PreInitialize method
+  [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4Modifier]
+    .filter((doc): doc is typeof doc & { PreInitialize: () => Promise<void> } => "PreInitialize" in doc)
+    .forEach((doc) => {
+      kLog.display(`PreInitializing ${doc.name}...`, 0);
+      doc.PreInitialize().then(() => kLog.display(`PreInitialized ${doc.name}.`)).catch(kLog.error);
+    });
+
+  // Define the "K4" namespace within the CONFIG object, and assign basic system configuration package.
   CONFIG.K4 = K4Config;
+
+  // Register Handlebar Helpers
   registerHandlebarHelpers();
 
-  CONFIG.Actor.documentClass = K4Actor;
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
   Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc] });
 
-  CONFIG.Item.documentClass = K4Item;
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
@@ -46,6 +58,7 @@ Hooks.once("init", async () => {
 
   CONFIG.ChatMessage.documentClass = K4ChatMessage;
   CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
+  CONFIG.ChatMessage.sidebarIcon = "fas fa-comment-dollar";
 
   await preloadTemplates().catch(kLog.error);
 
