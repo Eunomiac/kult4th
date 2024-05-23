@@ -1,15 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
-	<defs>
-		<linearGradient id="bg-gradient" x1="0" x2="1" y1="0" y2="1">
-			<stop offset="0%" stop-color="rgb(235, 219, 166)"></stop>
-			<stop offset="100%" stop-color="rgb(65, 61, 46)"></stop>
-		</linearGradient>
-		<linearGradient id="stroke-gradient" x1="0" x2="1" y1="0" y2="1">
-			<stop offset="0%" stop-color="rgb(236, 219, 166)"></stop>
-			<stop offset="100%" stop-color="rgb(66, 61, 46)"></stop>
-		</linearGradient>
-	</defs>
-	<g transform-origin="center" transform="">
-		<path d="M169 57v430h78V57h-78zM25 105v190h46V105H25zm158 23h18v320h-18V128zm128.725 7.69l-45.276 8.124 61.825 344.497 45.276-8.124-61.825-344.497zM89 153v270h62V153H89zm281.502 28.68l-27.594 11.773 5.494 12.877 27.594-11.773-5.494-12.877zm12.56 29.433l-27.597 11.772 5.494 12.877 27.593-11.772-5.492-12.877zm12.555 29.434l-27.594 11.77 99.674 233.628 27.594-11.773-99.673-233.625zM25 313v30h46v-30H25zm190 7h18v128h-18V320zM25 361v126h46V361H25zm64 80v46h62v-46H89z" fill="url(#bg-gradient)" stroke="url(#stroke-gradient)" stroke-width="0"></path>
-	</g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg id="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+</style>
+<linearGradient gradientUnits="userSpaceOnUse" x1="-38.6989" y1="97.2349" x2="436.4192" y2="572.353">
+	<stop  offset="0" style="stop-color:#EBDBA6"/>
+	<stop  offset="1" style="stop-color:#413D2E"/>
+</linearGradient>
+<path class="st0" d="M156.8,1.6V512h84.9V1.6H156.8z M0,58.5v225.5h50.1V58.5H0z M172,85.8h19.6v379.9H172V85.8z M312.2,95
+	l-49.3,9.6L329.8,512l49.3-9.6L312.2,95z M69.7,115.5V436h67.5V115.5H69.7z M376.1,149.6l-30,14l6,15.3l30-14L376.1,149.6z
+	 M389.8,184.5l-30,14l6,15.3l30-14L389.8,184.5L389.8,184.5z M403.5,219.4l-30,14L482,510.7l30-14L403.5,219.4L403.5,219.4z
+	 M0,305.4v35.6h50.1v-35.6H0z M206.9,313.8h19.6v151.9h-19.6V313.8z M0,362.4V512h50.1V362.4H0z M69.7,457.4V512h67.5v-54.6H69.7z"
+	/>
 </svg>
