@@ -1,8 +1,11 @@
 {{dbLog "{comp} form-header.hbs" this}}
 <aside class="header-icon header-{{docType}}">
-	<div class="icon-container">
-		<img src="{{item.img}}" />
-	</div>
+
+  {{> "systems/kult4th/templates/components/icon.hbs"
+    icon=item.img
+    type=docType
+    name=docName
+  }}
 </aside>
 <header class="sheet-header {{docType}}-header">
 	{{~#if isBullet}}

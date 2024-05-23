@@ -58,8 +58,13 @@
 	button {
 		color: var(--K4-color-contrast);
 		font-weight: $font-weight-bold;
-		border: 1px solid var(--K4-color-contrast-low);
-		background: linear-gradient(to bottom, var(--K4-color-primary) 0%, 15%, var(--K4-color-primary-bright) 50%, var(--K4-color-primary-bright) 51%, 85%, var(--K4-color-primary) 100%);
+		background: linear-gradient(to bottom,
+      var(--K4-color-primary) 0%,
+      var(--K4-color-primary-bright) 15%,
+      var(--K4-color-primary-bright) 50%,
+      var(--K4-color-primary) 85%,
+      var(--K4-color-primary) 100%
+    );
 		border-radius: 3px;
 
 		i, label {
@@ -147,21 +152,18 @@
 			margin:
 				calc(-1 * (var(--K4-subsection-padding-top)))
 				0
-				var(--K4-subsection-padding-top)
+				0
 				calc(-1 * var(--K4-subsection-padding-left));
 			padding-top: 1px;
 		}
 
 		&.item-title {
-			// height: calc(#{$rem-32} + 5px);
 			line-height: $rem-32;
 			margin-bottom: 10px;
-			text-align: center;
-			// margin: 0 0 0 22px;
+			// text-align: center;
 			font-weight: $font-weight-bold;
 			width: 100%;
 			display: block;
-			// padding: 5px 10px 0px 20px;
 		}
 	}
 
@@ -374,93 +376,65 @@
 		font-style: italic;
 	}
 
-
-	.icon-container {
-		--icon-size: 100%;
-		--icon-bg-color: var(--K4-color-contrast);
-		--icon-outline-color: var(--K4-color-primary);
-		--icon-outline-width: 3px;
-		--icon-clip-path: circle(closest-side);
-		--icon-scale: 1;
-
-		position: absolute;
-		display: inline-block;
-		background: var(--icon-outline-color);
-		clip-path: var(--icon-clip-path);
-		height: var(--icon-size);
-		width: var(--icon-size);
-		white-space: nowrap;
-		font-size: 0;
-		top: 0;
-		left: 0;
-
-		img {
-			position: absolute;
-			height: calc(100% - 2 * var(--icon-outline-width));
-			width: calc(100% - 2 * var(--icon-outline-width));
-			top: var(--icon-outline-width);
-			left: var(--icon-outline-width);
-			clip-path: var(--icon-clip-path);
-			background: var(--icon-bg-color);
-		}
-	}
-
 	div.hover-strip {
-		--strip-icon-size: 30px;
-		--strip-height: calc(var(--strip-icon-size) + 2px);
-		--strip-padding-vert: 5px;
-		--strip-underline-width: 1px;
-		--strip-font-size: #{$rem-16};
-		--strip-font-weight: #{$font-weight-semi};
-		--strip-scale: 1;
+    --K4-hoverstrip-height: 30px;
+		--K4-hoverstrip-padding-vert: 5px;
+    --K4-hoverstrip-inner-height: calc(var(--K4-hoverstrip-height) - 2 * var(--K4-hoverstrip-padding-vert));
+		--K4-hoverstrip-scale: 1;
+
+    // &:first-of-type {
+    //   outline: 1px dotted magenta;
+    //   .strip-name { outline: 1px dotted yellow; }
+    //   .strip-bg { background: rgba(255, 255, 0, 0.2); }
+    //   .button-strip { outline: 1px dotted lime; }
+    // }
 
 		position: relative;
-		height: var(--strip-height);
+		height: var(--K4-hoverstrip-height);
 		white-space: nowrap;
 		transform-origin: left center;
-		transform: scale(var(--strip-scale));
-		padding: var(--strip-padding-vert) 0;
+		transform: scale(var(--K4-hoverstrip-scale));
+		padding: var(--K4-hoverstrip-padding-vert) 0;
 
-		.icon-container {
-			--icon-size: var(--strip-icon-size);
-			--icon-outline-color: var(--K4-strip-button-color-bg);
-			--icon-bg-color: var(--K4-strip-icon-color-bg);
-			--icon-outline-width: 1px;
-		}
+		.strip-bg,
+    .button-strip {
+      --K4-icon-size: var(--K4-hoverstrip-inner-height);
+      --K4-icon-fill: var(--K4-strip-button-color-fg);
+      --K4-icon-bg-color: transparent;
+      --K4-icon-clip-path: none;
 
-		.strip-bg, .button-strip {
 			position: absolute;
 			display: block;
-			height: calc(100% - 2 * var(--strip-padding-vert));
-			width: calc(100% - 0.5 * var(--strip-icon-size));
-			top: var(--strip-padding-vert);
-			left: calc(0.5 * var(--strip-icon-size));
+
+			height: var(--K4-hoverstrip-inner-height);
+			width: calc(100% - 0.5 * var(--K4-hoverstrip-height));
 		}
+
+    .strip-bg {
+      background: var(--K4-color-primary);
+      filter: brightness(0.5);
+      opacity: 0;
+    }
 
 		.button-strip {
 			position: absolute;
 			display: inline-flex;
 			flex-direction: row;
-			width: calc(100% - 0.5 * var(--strip-icon-size));
-			left: calc(0.5 * var(--strip-icon-size));
+			width: calc(100% - 0.5 * var(--K4-icon-size));
+			left: calc(0.5 * var(--K4-icon-size));
 			opacity: 0;
-			outline: 0px solid var(--K4-strip-button-color-bg);
 			justify-content: space-between;
-			// overflow: hidden;
 
 			.button-spacer {
 				display: inline-block;
-				width: var(--strip-icon-size);
+				width: var(--K4-icon-size);
 				flex-grow: 0;
 				flex-shrink: 0;
 				position: relative;
 			}
 
-			.strip-button {
+  		.strip-button {
 				flex-grow: 0.2;
-				--K4-svg-fill: var(--K4-strip-button-color-fg);
-				--K4-svg-bg: transparent;
-				--K4-svg-clip-path: none;
 				background: var(--K4-strip-button-color-bg);
 				font-size: 0;
 				flex-basis: auto;
@@ -472,19 +446,11 @@
 				border-radius: 0;
 				transition: 0.25s;
 
-				.svg-container {
-					top: 0;
-					left: 0;
-					pointer-events: none;
-
-					.svg-def.svg-bg { opacity: 0 }
-				}
-
 				.button-tooltip {
 					opacity: 0;
 					color: var(--K4-strip-button-color-fg);
 					text-align: center;
-					line-height: var(--strip-icon-size);
+					line-height: var(--K4-icon-size);
 					font-size: $rem-16;
 					text-transform: uppercase;
 					font-family: var(--font-primary-caps);
@@ -504,21 +470,25 @@
 				}
 
 				&:hover {
-					--K4-svg-fill: var(--K4-strip-button-hover-color-fg);
+					--K4-icon-fill: var(--K4-strip-button-hover-color-fg);
 					background: var(--K4-strip-button-hover-color-bg);
 				}
 			}
 		}
 
+    .icon-container {
+      margin-top: calc(-1 * var(--K4-hoverstrip-padding-vert));
+    }
+
 		.strip-name {
 			position: absolute;
-			height: 100%;
-			color: var(--K4-strip-main-color-fg);
-			font-size: var(--strip-font-size);
-			font-weight: var(--strip-font-weight);
-			line-height: var(--strip-icon-size);
-			top: 0;
-			left: calc(var(--strip-icon-size) + 5px);
+			height: var(--K4-hoverstrip-inner-height);
+			color: var(--K4-hoverstrip-fg-color);
+			font-size: $rem-16;
+			font-weight: $font-weight-semi;
+			line-height: var(--K4-hoverstrip-inner-height);
+			top: var(--K4-hoverstrip-padding-vert);
+			left: calc(var(--K4-icon-size) + 5px);
 			white-space: nowrap;
 			z-index: 30;
 
@@ -540,7 +510,7 @@
 			color: var(--K4-strip-tooltip-color-fg);
 			background: var(--K4-strip-tooltip-color-bg);
 			opacity: 0;
-			bottom: calc(0.75 * var(--strip-height));
+			bottom: calc(0.75 * var(--K4-hoverstrip-height));
 			left: 0;
 			z-index: 40;
 			white-space: break-spaces;
@@ -552,7 +522,7 @@
 		&.move-strip {
 			--K4-strip-icon-color-bg: var(--K4-color-primary);
 			--K4-strip-icon-color-fg: var(--K4-color-contrast);
-			--icon-outline-color: var(--K4-color-primary);
+			--K4-icon-outline-color: var(--K4-color-primary);
 		}
 	}
 

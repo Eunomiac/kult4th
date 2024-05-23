@@ -77,9 +77,8 @@ Kult White:  #FFFFFF */
 	--K4-chat-border-image: #{to-url("chat/border-gold.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
-	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
 	--K4-strip-main-color-bg: var(--K4-color-contrast);
-	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
 	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
 	--K4-strip-button-color-fg: var(--K4-color-contrast);
 	--K4-strip-button-color-bg: var(--K4-color-primary);
@@ -88,11 +87,10 @@ Kult White:  #FFFFFF */
 	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
 	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
 
-	--K4-svg-fill: var(--K4-color-primary);
-	--K4-svg-bg: none;
-	--K4-svg-clip-path: none;
-	--K4-svg-outline-color: transparent;
-	--K4-svg-scale: 1;
+	// --K4-icon-fill: var(--K4-color-primary);
+	// --K4-icon-bg-color: none;
+	// --K4-icon-clip-path: none;
+	// --K4-icon-outline-color-color: transparent;
 }
 
 /* GRADIENTS */
@@ -192,9 +190,8 @@ Kult White:  #FFFFFF */
 	--K4-chat-border-image: #{to-url("chat/border-white.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
-	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
 	--K4-strip-main-color-bg: var(--K4-color-contrast);
-	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
 	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
 	--K4-strip-button-color-fg: var(--K4-color-contrast);
 	--K4-strip-button-color-bg: var(--K4-color-primary);
@@ -208,11 +205,10 @@ Kult White:  #FFFFFF */
 	--K4-color-pos: var(--K4-BLUE);
 	--K4-color-neg: var(--K4-RED);
 
-	--K4-svg-fill: var(--K4-color-primary);
-	--K4-svg-bg: var(--K4-color-contrast);
-	--K4-svg-clip-path: circle(closest-side);
-	--K4-svg-outline-color: transparent;
-	--K4-svg-scale: 1;
+	// --K4-icon-fill: var(--K4-color-primary);
+	// --K4-icon-bg-color: var(--K4-color-contrast);
+	// --K4-icon-clip-path: circle(closest-side);
+	// --K4-icon-outline-color-color: transparent;
 }
 
 .k4-theme-dark, .k4-theme-black {
@@ -237,9 +233,8 @@ Kult White:  #FFFFFF */
 	--K4-chat-border-image: #{to-url("chat/border-dark.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-white.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
-	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
 	--K4-strip-main-color-bg: var(--K4-color-contrast);
-	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
 	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
 	--K4-strip-button-color-fg: var(--K4-color-contrast);
 	--K4-strip-button-color-bg: var(--K4-color-primary);
@@ -253,11 +248,10 @@ Kult White:  #FFFFFF */
 	--K4-color-pos: var(--K4-bWHITE);
 	--K4-color-neg: var(--K4-bRED);
 
-	--K4-svg-fill: var(--K4-color-primary);
-	--K4-svg-bg: var(--K4-color-contrast);
-	--K4-svg-clip-path: circle(closest-side);
-	--K4-svg-outline-color: transparent;
-	--K4-svg-scale: 1;
+	// --K4-icon-fill: var(--K4-color-primary);
+	// --K4-icon-bg-color: var(--K4-color-contrast);
+	// --K4-icon-clip-path: circle(closest-side);
+	// --K4-icon-outline-color-color: transparent;
 
   &.k4-theme-black {
     --K4-color-primary: var(--K4-bWHITE);
@@ -288,9 +282,8 @@ Kult White:  #FFFFFF */
 	--K4-chat-border-image: #{to-url("chat/border-red.svg")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
-	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
+	--K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
 	--K4-strip-main-color-bg: var(--K4-color-contrast);
-	--K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
 	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
 	--K4-strip-button-color-fg: var(--K4-color-contrast);
 	--K4-strip-button-color-bg: var(--K4-color-primary);
@@ -304,9 +297,8 @@ Kult White:  #FFFFFF */
 	--K4-color-pos: var(--K4-RED);
 	--K4-color-neg: var(--K4-RED);
 
-	--K4-svg-fill: var(--K4-color-primary);
-	--K4-svg-bg: var(--K4-color-contrast);
-	--K4-svg-clip-path: circle(closest-side);
-	--K4-svg-outline-color: transparent;
-	--K4-svg-scale: 1;
+	// --K4-icon-fill: var(--K4-color-primary);
+	// --K4-icon-bg-color: var(--K4-color-contrast);
+	// --K4-icon-clip-path: circle(closest-side);
+	// --K4-icon-outline-color-color: transparent;
 }

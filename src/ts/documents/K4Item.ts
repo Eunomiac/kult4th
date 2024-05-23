@@ -376,20 +376,20 @@ class K4Item extends Item {
   // }
   // get masterType(): K4ItemType {return this.isSubItem() ? this.system.sourceItem?.type : this.type;}
   get masterName(): string {return this.isSubItem() ? this.system.sourceItem?.name : this.name;}
-  // get sourceItemData(): K4SubItems.Components.SourceItemReference | null {
-  //   if (!this.isSubItem()) {return null;}
-  //   return this.system.sourceItem;
-  // }
-  // get sourceItem(): K4Items.Parent | null {
-  //   if (!this.isOwnedSubItem()) {return null;}
-  //   const {id} = this.system.sourceItem;
-  //   if (!id) {
-  //     throw new Error(`SubItem ${this.name} is missing a sourceItem ID.`);
-  //   }
-  //   const sourceItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Items.Parent>;
-  //   if (!sourceItem) {return null;}
-  //   return sourceItem;
-  // }
+  get sourceItemData(): K4SubItems.Components.SourceItemReference | null {
+    if (!this.isSubItem()) {return null;}
+    return this.system.sourceItem;
+  }
+  get sourceItem(): K4Items.Parent | null {
+    if (!this.isOwnedSubItem()) {return null;}
+    const {id} = this.system.sourceItem;
+    if (!id) {
+      throw new Error(`SubItem ${this.name} is missing a sourceItem ID.`);
+    }
+    const sourceItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Items.Parent>;
+    if (!sourceItem) {return null;}
+    return sourceItem;
+  }
 
   get subItems(): K4SubItem[] {
     return (this.isOwnedItem() && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : [];
@@ -481,7 +481,7 @@ class K4Item extends Item {
         throw new Error(`Unimplemented Effect Function: ${funcName}`);
       }
       default: {
-        throw new Error(`Unknown Effect Function: ${funcName}`);
+        kLog.error(`Unknown Effect Function: ${funcName}`);
       }
     }
   }
@@ -513,7 +513,7 @@ class K4Item extends Item {
         throw new Error(`Unimplemented Effect Function: ${funcName}`);
       }
       default: {
-        throw new Error(`Unknown Effect Function: ${funcName}`);
+        kLog.error(`Unknown Effect Function: ${funcName}`);
       }
     }
   }
@@ -586,7 +586,7 @@ class K4Item extends Item {
     const theme = C.Themes[stripType];
     const stripData: HoverStripData = {
       id: this.id ?? `${this.type}-${U.randString(5)}`,
-      type: this.type,
+      type: stripType,
       icon: this.img ?? "",
       display: this.name ?? "(enter name)",
       ...this.isSubItem()
@@ -693,17 +693,45 @@ class K4Item extends Item {
     throw new Error(`Unknown Item Type: ${this.type}`);
   }
 
+  get chatCssClasses(): string[] {
+    const cssClasses: string[] = ["kult4th-chat"];
+    if (this.name.length > 22) {
+      cssClasses.push("ultra-condensed");
+    } else if (this.name.length > 18) {
+      cssClasses.push("condensed");
+    }
+    return cssClasses;
+  }
+
   get itemSummaryContext() {
+    const {name} = this;
+    const cssClasses: string[] = ["kult4th-chat"];
+
     return {
       name: this.name,
       img: this.img,
       system: this.system,
       item: this,
-      cssClass: `kult4th-chat kult4th-item-display ${this.chatTheme}`
+      sourceItem: this.sourceItem,
+      cssClass: [
+        ...this.chatCssClasses,
+        "kult4th-item-display"
+      ].join(" ")
     };
   }
 
+  get triggerSummaryContext() {
+    return {
+      ...this.itemSummaryContext,
+      cssClass: [
+        ...this.chatCssClasses,
+        "chat-move-result kult4th-result-static"
+      ].join(" ")
+    }
+  }
+
   chatTemplate = "systems/kult4th/templates/sidebar/item-display.hbs";
+  triggerTemplate = "systems/kult4th/templates/sidebar/result-static.hbs";
   async displayItemSummary(speaker?: string) {
     const template = await getTemplate(this.chatTemplate);
 
@@ -714,6 +742,22 @@ class K4Item extends Item {
       flags: {
         kult4th: {
           cssClasses: [this.chatTheme]
+        }
+      }
+    });
+  }
+
+  async triggerItem(speaker?: string) {
+    const template = await getTemplate(this.triggerTemplate);
+    const content = K4ChatMessage.CapitalizeFirstLetter(
+      template(this.triggerSummaryContext)
+    ).replace(/This Move threatens Hold/g, "This Move Generates Hold");
+    await K4ChatMessage.create({
+      content,
+      speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""}),
+      flags: {
+        kult4th: {
+          cssClasses: [this.sourceItem?.chatTheme ?? this.chatTheme]
         }
       }
     });

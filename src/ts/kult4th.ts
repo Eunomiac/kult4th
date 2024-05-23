@@ -17,7 +17,7 @@ import registerDebugger from "./scripts/logger.js";
 
 import {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
-import {PACKS, getUniqueSubItemKeys, getUniqueValuesForKey, getUniqueKeys, getItemReport, getSubItemReport, parseItemSchemasForCreation, BUILD_ITEMS_FROM_DATA} from "./scripts/data.js";
+import BUILD_ITEMS_FROM_DATA, {PACKS, getUniqueValuesForKey, getItemReport, getSubItemReport} from "./scripts/data.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -58,7 +58,10 @@ Hooks.once("init", async () => {
 
   CONFIG.ChatMessage.documentClass = K4ChatMessage;
   CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
-  CONFIG.ChatMessage.sidebarIcon = "fas fa-comment-dollar";
+  CONFIG.ChatMessage.sidebarIcon = "fa-regular fa-microphone-lines";
+
+  CONFIG.Item.sidebarIcon = "fa-regular fa-box-open";
+  CONFIG.Actor.sidebarIcon = "fa-regular fa-people-group";
 
   await preloadTemplates().catch(kLog.error);
 
@@ -130,16 +133,49 @@ Hooks.once("init", async () => {
   */
   interface GradientDef { fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>; }
 
-  // // Use mapFunc and valFunc with GradientDef as the argument type
-  // let myFunc: mapFunc<GradientDef, unknown, valFunc<GradientDef>>;
-
-  // myFunc = ({fill, stroke}: GradientDef, iType?: Key) => {
-  //   // ...
-  // };
-
   const svgDefs: Record<string, Array<Partial<SVGGradientDef>>> = {
     linearGradients: Object.values(U.objMap(
       {
+        gold: {
+          fill: {
+            stops: [C.Colors.bGOLD, C.Colors.dGOLD]
+          },
+          stroke: {
+            stops: [C.Colors.dGREY, C.Colors.dBLACK]
+          }
+        },
+        red: {
+          fill: {
+            stops: [C.Colors.bRED, C.Colors.dRED]
+          },
+          stroke: {
+            stops: [C.Colors.bGOLD, C.Colors.dGOLD]
+          }
+        },
+        grey: {
+          fill: {
+            stops: [C.Colors.bGREY, C.Colors.dGREY]
+          },
+          stroke: {
+            stops: [C.Colors.dBLACK, C.Colors.dBLACK]
+          }
+        },
+        blue: {
+          fill: {
+            stops: [C.Colors.bBLUE, C.Colors.dBLUE]
+          },
+          stroke: {
+            stops: [C.Colors.bGOLD, C.Colors.dGOLD]
+          }
+        },
+        black: {
+          fill: {
+            stops: [C.Colors.dBLACK, C.Colors.dBLACK],
+          },
+          stroke: {
+            stops: [C.Colors.BLACK, C.Colors.BLACK]
+          }
+        },
         [K4ItemType.advantage]: {
           fill: {
             stops: [C.Colors.bGOLD, C.Colors.dGOLD]
@@ -251,7 +287,7 @@ Hooks.once("init", async () => {
       }
     >).map((defs) => Object.values(defs)).flat()
   };
-  // kLog.log("SVG DEFS", svgDefs);
+  kLog.log("SVG DEFS", svgDefs);
   $(".vtt.game.system-kult4th").prepend(svgDefTemplate(svgDefs));
 
   const colorDefTemplate = await getTemplate(U.getTemplatePath("globals", "color-defs"));
@@ -294,12 +330,11 @@ Hooks.once("ready", () => {
     SHEETS:     [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
     DOCS:       [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET],
     PACKS,
-    getUniqueSubItemKeys,
-    getUniqueValuesForKey,
-    getUniqueKeys,
     getItemReport,
     getSubItemReport,
-    parseItemSchemasForCreation,
+    getUniqueEffects: () => {
+      return getUniqueValuesForKey(PACKS.all, "rules.effectFunctions")
+    },
     BUILD_ITEMS_FROM_DATA
   });
   /*!DEVCODE*/
@@ -327,6 +362,7 @@ async function preloadTemplates() {
       "pc-header",
       "pc-nav-menu",
       "svg",
+      "icon",
       "toggle-box"
     ]),
     ...U.getTemplatePath("partials", [

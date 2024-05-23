@@ -5,19 +5,19 @@
 	<div class="roll-intro-header">
 		<span class="roll-char-name">{{rollerName}}</span>
 		<span class="roll-intro-line">
-			{{#if (eq rollData.sourceType "move")}}
 			{{{localize "kult4th.roll.rollAttrTo" attrName=rollData.attrName}}}
-			{{else}}
-			{{{localize "kult4th.roll.rollAttrFor" attrName=rollData.attrName}}}
-			{{/if}}
 		</span>
 	</div>
 
 	<div class="roll-source-header">
-		<div class="icon-container">
-			<img src="{{rollData.sourceImg}}" />
-		</div>
+    {{> "systems/kult4th/templates/components/icon.hbs"
+      icon=rollData.sourceImg
+      type=rollData.sourceType
+      name=rollData.sourceName
+      isChat=true
+    }}
 		<span class="roll-source-name"><span class="roll-source-text">{{rollData.sourceName}}</span></span>
+    {{#if rollData.source.system.sourceItem}}{{#if rollData.source.system.sourceItem.name}}<span class="roll-source-source-name">from <span class="roll-source-text">{{rollData.source.system.sourceItem.name}}</span></span>{{/if}}{{/if}}
 	</div>
 
 	<div class="roll-dice-line">

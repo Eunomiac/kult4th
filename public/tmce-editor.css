@@ -246,9 +246,8 @@
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
   --K4-chat-border-image: url("/assets/chat/border-gold.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
-  --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+  --K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
-  --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
   --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
   --K4-strip-button-color-fg: var(--K4-color-contrast);
   --K4-strip-button-color-bg: var(--K4-color-primary);
@@ -256,11 +255,6 @@
   --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
   --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
   --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
-  --K4-svg-fill: var(--K4-color-primary);
-  --K4-svg-bg: none;
-  --K4-svg-clip-path: none;
-  --K4-svg-outline-color: transparent;
-  --K4-svg-scale: 1;
   --color-text-light-primary: var(--K4-color-primary);
   --color-text-light-highlight: var(--K4-color-primary-glow);
   --color-text-light-heading: var(--K4-color-primary-bright);
@@ -331,9 +325,8 @@
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
   --K4-chat-border-image: url("/assets/chat/border-gold.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
-  --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+  --K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
-  --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
   --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
   --K4-strip-button-color-fg: var(--K4-color-contrast);
   --K4-strip-button-color-bg: var(--K4-color-primary);
@@ -341,11 +334,6 @@
   --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
   --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
   --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
-  --K4-svg-fill: var(--K4-color-primary);
-  --K4-svg-bg: none;
-  --K4-svg-clip-path: none;
-  --K4-svg-outline-color: transparent;
-  --K4-svg-scale: 1;
 }
 #tinymce .k4-theme-gold.k4-theme-bgold, #tinymce .k4-theme-bgold.k4-theme-bgold {
   --K4-color-primary: var(--K4-gGOLD);
@@ -369,9 +357,8 @@
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-white.webp") repeat repeat center center/1000px 1000px;
   --K4-chat-border-image: url("/assets/chat/border-white.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
-  --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+  --K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
-  --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
   --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
   --K4-strip-button-color-fg: var(--K4-color-contrast);
   --K4-strip-button-color-bg: var(--K4-color-primary);
@@ -383,11 +370,6 @@
   --K4-color-keyword-bright: var(--K4-dBLUE);
   --K4-color-pos: var(--K4-BLUE);
   --K4-color-neg: var(--K4-RED);
-  --K4-svg-fill: var(--K4-color-primary);
-  --K4-svg-bg: var(--K4-color-contrast);
-  --K4-svg-clip-path: circle(closest-side);
-  --K4-svg-outline-color: transparent;
-  --K4-svg-scale: 1;
 }
 #tinymce .k4-theme-dark, #tinymce .k4-theme-black {
   --K4-color-primary: var(--K4-WHITE);
@@ -406,9 +388,8 @@
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-dark.webp") repeat repeat center center/1000px 1000px;
   --K4-chat-border-image: url("/assets/chat/border-dark.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-white.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
-  --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+  --K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
-  --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
   --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
   --K4-strip-button-color-fg: var(--K4-color-contrast);
   --K4-strip-button-color-bg: var(--K4-color-primary);
@@ -420,11 +401,6 @@
   --K4-color-keyword-bright: var(--K4-bWHITE);
   --K4-color-pos: var(--K4-bWHITE);
   --K4-color-neg: var(--K4-bRED);
-  --K4-svg-fill: var(--K4-color-primary);
-  --K4-svg-bg: var(--K4-color-contrast);
-  --K4-svg-clip-path: circle(closest-side);
-  --K4-svg-outline-color: transparent;
-  --K4-svg-scale: 1;
 }
 #tinymce .k4-theme-dark.k4-theme-black, #tinymce .k4-theme-black.k4-theme-black {
   --K4-color-primary: var(--K4-bWHITE);
@@ -448,9 +424,8 @@
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-red.webp") repeat repeat center center/1000px 1000px;
   --K4-chat-border-image: url("/assets/chat/border-red.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-red.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
-  --K4-strip-main-color-fg: var(--K4-color-primary-bright);
+  --K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
-  --K4-strip-icon-color-fg: var(--K4-strip-main-color-fg);
   --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
   --K4-strip-button-color-fg: var(--K4-color-contrast);
   --K4-strip-button-color-bg: var(--K4-color-primary);
@@ -459,14 +434,9 @@
   --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
   --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
   --K4-color-keyword: var(--K4-bRED);
-  --K4-color-keyword-bright: var(--K4-bRED);
+  --K4-color-keyword-bright: var(--K4-gRED);
   --K4-color-pos: var(--K4-RED);
   --K4-color-neg: var(--K4-RED);
-  --K4-svg-fill: var(--K4-color-primary);
-  --K4-svg-bg: var(--K4-color-contrast);
-  --K4-svg-clip-path: circle(closest-side);
-  --K4-svg-outline-color: transparent;
-  --K4-svg-scale: 1;
 }
 #tinymce,
 #tinymce *,
@@ -577,7 +547,6 @@
 #tinymce .mce-content-body button {
   color: var(--K4-color-contrast);
   font-weight: 700;
-  border: 1px solid var(--K4-color-contrast-low);
   background: linear-gradient(to bottom, var(--K4-color-primary) 0%, 15%, var(--K4-color-primary-bright) 50%, var(--K4-color-primary-bright) 51%, 85%, var(--K4-color-primary) 100%);
   border-radius: 3px;
 }
@@ -708,7 +677,7 @@
   text-transform: uppercase;
   font-weight: 700;
   font-family: var(--font-primary-caps);
-  margin: calc(-1 * (var(--K4-subsection-padding-top))) 0 var(--K4-subsection-padding-top) calc(-1 * var(--K4-subsection-padding-left));
+  margin: calc(-1 * (var(--K4-subsection-padding-top))) 0 0 calc(-1 * var(--K4-subsection-padding-left));
   padding-top: 1px;
 }
 #tinymce label.k4-title.item-title,
@@ -892,83 +861,46 @@
   font-family: var(--font-primary-italics);
   font-style: italic;
 }
-#tinymce .icon-container,
-#tinymce .mce-content-body .icon-container {
-  --icon-size: 100%;
-  --icon-bg-color: var(--K4-color-contrast);
-  --icon-outline-color: var(--K4-color-primary);
-  --icon-outline-width: 3px;
-  --icon-clip-path: circle(closest-side);
-  --icon-scale: 1;
-  position: absolute;
-  display: inline-block;
-  background: var(--icon-outline-color);
-  clip-path: var(--icon-clip-path);
-  height: var(--icon-size);
-  width: var(--icon-size);
-  white-space: nowrap;
-  font-size: 0;
-  top: 0;
-  left: 0;
-}
-#tinymce .icon-container img,
-#tinymce .mce-content-body .icon-container img {
-  position: absolute;
-  height: calc(100% - 2 * var(--icon-outline-width));
-  width: calc(100% - 2 * var(--icon-outline-width));
-  top: var(--icon-outline-width);
-  left: var(--icon-outline-width);
-  clip-path: var(--icon-clip-path);
-  background: var(--icon-bg-color);
-}
 #tinymce div.hover-strip,
 #tinymce .mce-content-body div.hover-strip {
-  --strip-icon-size: 30px;
-  --strip-height: calc(var(--strip-icon-size) + 2px);
-  --strip-padding-vert: 5px;
-  --strip-underline-width: 1px;
-  --strip-font-size: 16px;
-  --strip-font-weight: 600;
-  --strip-scale: 1;
+  --K4-hoverstrip-height: 30px;
+  --K4-hoverstrip-padding-vert: 5px;
+  --K4-hoverstrip-inner-height: calc(var(--K4-hoverstrip-height) - 2 * var(--K4-hoverstrip-padding-vert));
+  --K4-hoverstrip-scale: 1;
   position: relative;
-  height: var(--strip-height);
+  height: var(--K4-hoverstrip-height);
   white-space: nowrap;
   transform-origin: left center;
-  transform: scale(var(--strip-scale));
-  padding: var(--strip-padding-vert) 0;
+  transform: scale(var(--K4-hoverstrip-scale));
+  padding: var(--K4-hoverstrip-padding-vert) 0;
 }
-#tinymce div.hover-strip .icon-container,
-#tinymce .mce-content-body div.hover-strip .icon-container {
-  --icon-size: var(--strip-icon-size);
-  --icon-outline-color: var(--K4-strip-button-color-bg);
-  --icon-bg-color: var(--K4-strip-icon-color-bg);
-  --icon-outline-width: 1px;
-}
-#tinymce div.hover-strip .strip-bg, #tinymce div.hover-strip .button-strip,
+#tinymce div.hover-strip .strip-bg,
+#tinymce div.hover-strip .button-strip,
 #tinymce .mce-content-body div.hover-strip .strip-bg,
 #tinymce .mce-content-body div.hover-strip .button-strip {
+  --K4-icon-size: var(--K4-hoverstrip-inner-height);
+  --K4-icon-fill: var(--K4-strip-button-color-fg);
+  --K4-icon-bg-color: transparent;
+  --K4-icon-clip-path: none;
   position: absolute;
   display: block;
-  height: calc(100% - 2 * var(--strip-padding-vert));
-  width: calc(100% - 0.5 * var(--strip-icon-size));
-  top: var(--strip-padding-vert);
-  left: calc(0.5 * var(--strip-icon-size));
+  height: var(--K4-hoverstrip-inner-height);
+  width: calc(100% - 0.5 * var(--K4-hoverstrip-height));
 }
 #tinymce div.hover-strip .button-strip,
 #tinymce .mce-content-body div.hover-strip .button-strip {
   position: absolute;
   display: inline-flex;
   flex-direction: row;
-  width: calc(100% - 0.5 * var(--strip-icon-size));
-  left: calc(0.5 * var(--strip-icon-size));
+  width: calc(100% - 0.5 * var(--K4-icon-size));
+  left: calc(0.5 * var(--K4-icon-size));
   opacity: 0;
-  outline: 0px solid var(--K4-strip-button-color-bg);
   justify-content: space-between;
 }
 #tinymce div.hover-strip .button-strip .button-spacer,
 #tinymce .mce-content-body div.hover-strip .button-strip .button-spacer {
   display: inline-block;
-  width: var(--strip-icon-size);
+  width: var(--K4-icon-size);
   flex-grow: 0;
   flex-shrink: 0;
   position: relative;
@@ -976,9 +908,6 @@
 #tinymce div.hover-strip .button-strip .strip-button,
 #tinymce .mce-content-body div.hover-strip .button-strip .strip-button {
   flex-grow: 0.2;
-  --K4-svg-fill: var(--K4-strip-button-color-fg);
-  --K4-svg-bg: transparent;
-  --K4-svg-clip-path: none;
   background: var(--K4-strip-button-color-bg);
   font-size: 0;
   flex-basis: auto;
@@ -990,22 +919,12 @@
   border-radius: 0;
   transition: 0.25s;
 }
-#tinymce div.hover-strip .button-strip .strip-button .svg-container,
-#tinymce .mce-content-body div.hover-strip .button-strip .strip-button .svg-container {
-  top: 0;
-  left: 0;
-  pointer-events: none;
-}
-#tinymce div.hover-strip .button-strip .strip-button .svg-container .svg-def.svg-bg,
-#tinymce .mce-content-body div.hover-strip .button-strip .strip-button .svg-container .svg-def.svg-bg {
-  opacity: 0;
-}
 #tinymce div.hover-strip .button-strip .strip-button .button-tooltip,
 #tinymce .mce-content-body div.hover-strip .button-strip .strip-button .button-tooltip {
   opacity: 0;
   color: var(--K4-strip-button-color-fg);
   text-align: center;
-  line-height: var(--strip-icon-size);
+  line-height: var(--K4-icon-size);
   font-size: 16px;
   text-transform: uppercase;
   font-family: var(--font-primary-caps);
@@ -1025,19 +944,23 @@
 }
 #tinymce div.hover-strip .button-strip .strip-button:hover,
 #tinymce .mce-content-body div.hover-strip .button-strip .strip-button:hover {
-  --K4-svg-fill: var(--K4-strip-button-hover-color-fg);
+  --K4-icon-fill: var(--K4-strip-button-hover-color-fg);
   background: var(--K4-strip-button-hover-color-bg);
+}
+#tinymce div.hover-strip .icon-container,
+#tinymce .mce-content-body div.hover-strip .icon-container {
+  margin-top: calc(-1 * var(--K4-hoverstrip-padding-vert));
 }
 #tinymce div.hover-strip .strip-name,
 #tinymce .mce-content-body div.hover-strip .strip-name {
   position: absolute;
-  height: 100%;
-  color: var(--K4-strip-main-color-fg);
-  font-size: var(--strip-font-size);
-  font-weight: var(--strip-font-weight);
-  line-height: var(--strip-icon-size);
-  top: 0;
-  left: calc(var(--strip-icon-size) + 5px);
+  height: var(--K4-hoverstrip-inner-height);
+  color: var(--K4-hoverstrip-fg-color);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: var(--K4-hoverstrip-inner-height);
+  top: var(--K4-hoverstrip-padding-vert);
+  left: calc(var(--K4-icon-size) + 5px);
   white-space: nowrap;
   z-index: 30;
 }
@@ -1059,7 +982,7 @@
   color: var(--K4-strip-tooltip-color-fg);
   background: var(--K4-strip-tooltip-color-bg);
   opacity: 0;
-  bottom: calc(0.75 * var(--strip-height));
+  bottom: calc(0.75 * var(--K4-hoverstrip-height));
   left: 0;
   z-index: 40;
   white-space: break-spaces;
@@ -1070,7 +993,7 @@
 #tinymce .mce-content-body div.hover-strip.move-strip {
   --K4-strip-icon-color-bg: var(--K4-color-primary);
   --K4-strip-icon-color-fg: var(--K4-color-contrast);
-  --icon-outline-color: var(--K4-color-primary);
+  --K4-icon-outline-color: var(--K4-color-primary);
 }
 #tinymce .result-entry,
 #tinymce .mce-content-body .result-entry {

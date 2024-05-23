@@ -2,7 +2,7 @@
 
   /* SYSTEM-SPECIFIC CONFIG */
   --sidebar-horiz-gutter: 100px;
-  --sidebar-tabs-horiz-overhang: 40px;
+  --sidebar-tabs-horiz-overhang: 20px;
   --sidebar-chat-input-height: 150px;
 
   /* FOUNDRY OVERRIDES */
@@ -24,7 +24,9 @@
     transparent var(--gradient-stop-2)
   );
 
+  height: 100%;
   width: calc(var(--sidebar-width) + var(--sidebar-horiz-gutter));
+  padding-bottom: 10px;
 
   @include set-default-theme();
 
@@ -49,5 +51,9 @@
     }
   }
 
-  #chat { @import 'chat' }
+  section.tab.active {
+    padding-left: calc(var(--sidebar-horiz-gutter) - var(--scrollbar-width));
+    &#chat { @import 'chat' }
+  }
+
 }

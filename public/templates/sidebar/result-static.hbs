@@ -1,0 +1,31 @@
+{{log "{CHAT} result-static.hbs" this}}
+
+<div class="kult4th-chat {{cssClass}}">
+	<div class="roll-intro-header">
+		<span class="roll-char-name">{{item.parent.name}}</span>
+    <span class="roll-intro-line"> proceeds to ...</span>
+	</div>
+	<div class="roll-source-header">
+    {{> "systems/kult4th/templates/components/icon.hbs"
+      icon=img
+      type=sourceItem.type
+      name=name
+      isChat=true
+    }}
+		<span class="roll-source-name"><span class="roll-source-text">{{item.name}}</span></span>
+    <span class="roll-source-source-name">from <span class="roll-source-text">{{sourceItem.name}}</span></span>
+	</div>
+
+  {{#unless (areEmpty item.system.rules.intro item.system.rules.outro)}}
+		{{> "systems/kult4th/templates/components/rules-block.hbs" rules=item.system.rules isDisplayingTrigger=false}}
+	{{/unless}}
+
+  {{~#if item.system.rules.listRefs}}
+    {{> "systems/kult4th/templates/components/item-list.hbs" lists=item.system.lists listRefs=item.system.rules.listRefs type=item.type isDisplayingName=true}}
+  {{/if}}
+
+  {{#if item.system.rules.holdText}}
+    <label class="k4-header hold-header neon-glow-red">{{localize "kult4th.item.headings.risksHold" itemType=(case "title" item.type)}}</label>
+    <span class="hold-body">{{{formatForKult item.system.rules.holdText}}}</span>
+  {{/if}}
+</div>

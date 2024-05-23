@@ -34,7 +34,7 @@ class K4ChatMessage extends ChatMessage {
       // Convert the template into a jQuery object
       const buttonHtml = $(template({}));
       // Find the chat form in the rendered HTML
-      const chatForm = html.find("#chat-form");
+      const chatForm = html.find("#chat-form").attr("data-type", "ic");
       // Append the control panel to the chat form
       chatForm.append(buttonHtml);
 
@@ -59,9 +59,9 @@ class K4ChatMessage extends ChatMessage {
     });
 
     // Register a hook to run when a chat message is rendered
-    Hooks.on("renderChatMessage", (message, html) => {
+    Hooks.on("renderChatMessage", (message: ChatMessage, html) => {
       const cssClasses = message.getFlag("kult4th", "cssClasses") as Maybe<string[]>;
-      if (cssClasses) {
+      if (Array.isArray(cssClasses)) {
         html.addClass(cssClasses.join(" "));
       }
     });
@@ -80,10 +80,54 @@ class K4ChatMessage extends ChatMessage {
 
   // #endregion
 
+  // #region HTML PARSING
+  static CapitalizeFirstLetter(content: string): string {
+
+    // Parse the stringified HTML content into a DOM element
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, "text/html");
+
+    // Function to capitalize the first letter of a text node
+    const capitalizeTextNode = (textNode: Text) => {
+      if (textNode.textContent) {
+        textNode.textContent = textNode.textContent.charAt(0).toUpperCase() + textNode.textContent.slice(1);
+      }
+    };
+
+    // Find the element that immediately follows .roll-source-header
+    const rollSourceHeader = doc.querySelector(".roll-source-header");
+
+    if (rollSourceHeader) {
+      const nextElement = rollSourceHeader.nextElementSibling;
+
+      if (nextElement) {
+        // Traverse the child nodes to find the first text node with content
+        const walker = document.createTreeWalker(nextElement, NodeFilter.SHOW_TEXT, {
+          acceptNode: (node) => {
+            // Only accept text nodes with non-whitespace content
+            return node.nodeType === Node.TEXT_NODE && node.textContent?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+          }
+        });
+
+        const firstTextNode = walker.nextNode();
+
+        if (firstTextNode) {
+          capitalizeTextNode(firstTextNode as Text);
+        }
+      }
+    }
+
+    // Serialize the modified DOM back to a string
+    return doc.body.innerHTML;
+  }
+  // #endregion
+
 }
 
 // #region -- K4ChatMessage INTERFACE -- ~
-
+interface K4ChatMessage {
+  content: string;
+}
 // #endregion
 
 // #ENDREGION

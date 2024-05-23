@@ -1,0 +1,20 @@
+{{log "{ICON} icon.hbs" this}}
+{{log "... TESTING ICON" (test icon "in" ".svg")}}
+{{log "... TESTING ISCHAT" (test isChat "!=" true)}}
+{{log "... TESTING BOTH" (test (test icon "in" ".svg") "&&" (test isChat "!=" true))}}
+<div class="icon-container icon-{{type}}">
+  {{#if (test icon "in" ".svg")}}
+    {{#if (test isChat "==" true)}}
+      <img src="{{icon}}" />
+    {{else}}
+      <svg class="svg-container" title="{{name}}">
+        <use href="{{icon}}#icon"></use>
+      </svg>
+    {{/if}}
+  {{else}}
+    <img src="{{icon}}" />
+  {{/if}}
+</div>
+{{#if tooltip}}
+  <span class="tooltip strip-tooltip">{{{formatForKult tooltip}}}</span>
+{{/if}}

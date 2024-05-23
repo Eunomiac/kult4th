@@ -9,6 +9,7 @@
   position: relative;
   top: -32px;
   overflow: visible;
+  padding: 0;
 
   #chat-log {
 
@@ -113,10 +114,8 @@
           .hold-header {
             background: none;
             font-weight: $font-weight-semi;
-            transform: translate(-50%, 0%) scaleX(0.8);
-            width: 200%;
-            left: 50%;
-            position: relative;
+            transform: translate(-12.5%, 0) scaleX(1.25);
+            transform-origin: center center;
           }
           @import 'roll-result';
         }
@@ -124,13 +123,6 @@
       }
 
     }
-  }
-
-  #chat-controls, #chat-form {
-    width: calc(var(--sidebar-width) + var(--sidebar-tabs-horiz-overhang));
-    margin-left: calc(var(--sidebar-horiz-gutter) - var(--sidebar-tabs-horiz-overhang));
-    background: linear-gradient(to left, var(--K4-dBLACK) 100%, transparent);
-    background-clip: none;
   }
 
   #chat-controls {
@@ -146,6 +138,8 @@
     padding-right: 20px;
     border-radius: 30px;
     align-self: flex-end;
+    background: linear-gradient(to left, var(--K4-dBLACK) 100%, transparent);
+    background-clip: none;
 
     .chat-control-icon,
     .roll-type-select {
@@ -173,6 +167,10 @@
     top: 10px;
     border: 4px double var(--K4-dGOLD);
     margin-top: -6px;
+    width: var(--sidebar-width);
+    margin-left: var(--sidebar-horiz-gutter);
+    left: calc(-1 * var(--sidebar-chat-form-padding));
+    background: var(--K4-BLACK);
 
 
     &::before {
@@ -214,9 +212,15 @@
       #chat-message {
         box-shadow: inset 0 0 15px 5px var(--K4-dBLACK), inset 0 0 5px 150px rgba(0, 0, 0, 0.25);
       }
-      #chat-input-controls button {
-        left: calc((-1 * var(--button-width)) - 5px);
-        opacity: 0.75;
+      #chat-input-controls {
+        &::before {
+          visibility: visible;
+        }
+
+        button {
+          left: calc((-1 * var(--button-width)) - 5px);
+          opacity: 0.75;
+        }
       }
     }
 
@@ -233,11 +237,6 @@
       left: 3px;
       bottom: 3px;
       right: 3px;
-
-      &:focus {
-      }
-
-      // box-shadow: none !important;
     }
 
     #chat-input-controls {
@@ -288,18 +287,34 @@
         }
       }
 
+      &::before {
+        width: calc(var(--sidebar-width) - 2*var(--sidebar-chat-form-padding));
+        position: absolute;
+        z-index: 4;
+        text-align: center;
+        bottom: 3px;
+        font-size: 12px;
+        font-family: var(--font-primary-smallcaps);
+        visibility: hidden;
+        font-weight: $font-weight-black;
+      }
     }
 
     &[data-type='ic'] {
+      #chat-input-controls::before {
+        content: "( in-character )"
+      }
+
       #ic { filter: grayscale(1) brightness(1.5); }
     }
     &[data-type='ooc'] {
+      #chat-input-controls::before {
+        content: "( out-of-character )";
+        color: var(--K4-BLACK);
+      }
+
       #ooc { filter: grayscale(1) brightness(1.5); }
       border-color: var(--K4-BLUE);
-      &::before {
-        // background: transparent #{to-url("backgrounds/bg-white.webp")} repeat center/500px 500px;
-        // opacity: 1 !important;
-      }
       &::after {
         opacity: 1;
         filter: grayscale(100%) blur(5px) invert(1);
@@ -312,6 +327,10 @@
       }
     }
     &[data-type='gm'] {
+      #chat-input-controls::before {
+        content: "( private message to gamemaster )";
+        color: var(--K4-WHITE);
+      }
       #gm { filter: grayscale(1) brightness(1.5); }
       border-color: var(--K4-GREY);
       &::after {

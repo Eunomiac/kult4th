@@ -79,26 +79,26 @@
         transform: translate(-50%, -50%);
 
         &.outer-spikes {
-          --K4-svg-fill: var(--K4-color-contrast-low);
+          --K4-icon-fill: var(--K4-color-contrast-low);
           transform: translate(-50%, -50%) scale(0.95);
         }
 
         &.inner-spikes {
-          --K4-svg-fill: var(--K4-color-contrast-low);
+          --K4-icon-fill: var(--K4-color-contrast-low);
           transform: translate(-50%, -50%) scale(3);
           opacity: 0;
         }
 
         &.inner-mesh {
-          --K4-svg-fill: var(--K4-color-contrast-low);
+          --K4-icon-fill: var(--K4-color-contrast-low);
           transform: translate(-50%, -50%) scale(2);
           opacity: 0;
         }
 
         &.main-ring {
-          --K4-svg-fill: url("#nav-main-ring-bg-start-gradient");
-          --K4-svg-stroke: url("#nav-main-ring-stroke-gradient");
-          --K4-svg-stroke-width: 10px;
+          --K4-icon-fill: url("#nav-main-ring-bg-start-gradient");
+          --K4-icon-stroke: url("#nav-main-ring-stroke-gradient");
+          --K4-icon-stroke-width: 10px;
           transform: translate(-50%, -50%);
           filter: drop-shadow(2px 2px 1px var(--K4-BLACK));
         }
@@ -249,7 +249,7 @@
           left: 50%;
           overflow: hidden;
 
-          --K4-svg-fill: var(--K4-BLACK);
+          --K4-icon-fill: var(--K4-BLACK);
 
           .svg-def {
             top: calc(50% + #{0.5 * $svg-height});
@@ -613,12 +613,11 @@
 
                 .wound-strip {
                   --K4-strip-main-color-bg: transparent;
-                  --strip-underline-width: 0px;
-                  --K4-strip-icon-color-bg: transparent; // var(--K4-dRED);
-                  --icon-outline-color: transparent;
-                  --icon-outline-width: 0px;
-                  --icon-clip-path: none;
-                  --strip-scale: 0.8;
+                  --K4-hoverstrip-scale: 0.8;
+
+                  --K4-icon-outline-color: transparent;
+                  --K4-icon-outline-width: 0px;
+                  --K4-icon-clip-path: none;
 
                   .strip-button {
                     flex-grow: 1;
@@ -628,7 +627,7 @@
                   }
 
                   &.wound-critical {
-                    --strip-scale: 1;
+                    --K4-hoverstrip-scale: 1;
                     .strip-name {
                       text-transform: uppercase;
                       font-weight: 900;
@@ -636,26 +635,24 @@
                     }
 
                     &:not(.wound-stabilized) {
-                      --K4-strip-main-color-fg: var(--K4-gRED);
+                      --K4-hoverstrip-fg-color: var(--K4-gRED);
                       --K4-strip-icon-color-fg: var(--K4-gRED);
                       --icon-scale: 1.2;
                     }
                   }
 
-                  .icon-container {
-                    background: transparent;
-                  }
+                  // .icon-container {
+                  //   background: transparent;
+                  // }
 
                   &.wound-stabilized {
-                    // --icon-scale: 1;
-                    --K4-strip-main-color-fg: var(--K4-GOLD);
-                    --icon-outline-color: transparent;
-                    .icon-container, .icon-container .svg-container {
-                      --K4-svg-bg: transparent;
-                      --K4-svg-fill: var(--K4-GOLD);
-                      --K4-svg-clip-path: none;
-                      // --K4-svg-scale: 1;
-                    }
+                    --K4-icon-bg-color: transparent;
+                    --K4-icon-fill: var(--K4-GOLD);
+                    --K4-icon-clip-path: none;
+                    --K4-icon-outline-color: transparent;
+
+                    --K4-hoverstrip-fg-color: var(--K4-GOLD);
+
                     .strip-name {
                       font-style: italic;
                     }
@@ -913,7 +910,6 @@
 
             .basic-moves {
               grid-area: basic-moves;
-              padding-bottom: 0;
               justify-content: space-between;
               min-width: 232px;
             }

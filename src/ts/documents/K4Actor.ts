@@ -6,6 +6,7 @@ import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
+import {PACKS} from "../scripts/data.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -629,7 +630,13 @@ class K4Actor extends Actor {
     }
   }
 
-  public async trigger(rollSource: string) {await this.getItemByName(rollSource)?.displayItemSummary();}
+  public async trigger(rollSource: string) {
+    const item = this.getItemByName(rollSource);
+    if (!item) {
+      throw new Error(`No item found with name '${rollSource}'`);
+    }
+    await item.triggerItem();
+  }
 
   async #parseItemRollSource(item: K4Item & K4RollSource, rollData: Partial<K4RollData>) {
     rollData.type = K4RollType.move;
@@ -751,6 +758,7 @@ class K4Actor extends Actor {
     if (U.isUndefined(roll.total)) {return;}
     function isItem(ref: unknown): ref is K4Items.Active {return ref instanceof K4Item;}
 
+    let themeClass: string;
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: {
       cssClass: string,
@@ -766,16 +774,19 @@ class K4Actor extends Actor {
       rollData,
       rollerName: this.name ?? U.loc("roll.someone")
     };
-    const cssClasses = ["chat-roll-result", `${rollData.sourceType}-roll`];
+    const cssClasses = ["chat-move-result", `${rollData.sourceType}-roll`];
     if (roll.total >= 15) {
       templateData.result = isItem(rollData.source) ? rollData.source.system.results?.completeSuccess : {result: ""};
       cssClasses.push("roll-success");
+      themeClass = "k4-theme-bgold";
     } else if (roll.total > 9) {
       templateData.result = isItem(rollData.source) ? rollData.source.system.results?.partialSuccess : {result: ""};
       cssClasses.push("roll-partial");
+      themeClass = "k4-theme-gold";
     } else {
       templateData.result = isItem(rollData.source) ? rollData.source.system.results?.failure : {result: ""};
       cssClasses.push("roll-failure");
+      themeClass = "k4-theme-red";
     }
     cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
     if (rollData.sourceName.length > 22) {
@@ -791,35 +802,17 @@ class K4Actor extends Actor {
       speaker: K4ChatMessage.getSpeaker(),
       flags: {
         kult4th: {
-          cssClasses: ["k4-theme-bgold"]
+          cssClasses: [themeClass]
         }
       }
     });
   }
 
   override async _onCreate(...params: Parameters<Actor["_onCreate"]>) {
-    super._onCreate(...params);
-    if (this.type === K4ActorType.pc) {
-      const pack = game.packs.get("kult4th.k4-basic-player-moves");
-      if (pack) {
-        const index = await pack.getIndex();
-        // Convert the index to an array
-        const moveArray = Array.from(index);
-        // Fetch all move documents and extract their data, ensuring type safety
-        const newItems = await Promise.all(moveArray.map(async (move) => {
-          // Explicitly type the result of getDocument to avoid 'any' type issues
-          const moveData = await pack.getDocument(move._id) as Maybe<K4Item<K4ItemType.move>>;
-          // Safely return the data or an empty object if undefined
-          return moveData?.data ?? {};
-        }));
-        // Check if newItems array is not empty before creating embedded documents
-        if (newItems.length > 0) {
-          // Create embedded documents for each new item
-          await this.createEmbeddedDocuments("Item", newItems);
-        }
-      }
-      await this.setFlag("kult4th", "sheetTab", "front");
-    }
+    await super._onCreate(...params);
+    if (this.type !== K4ActorType.pc) { return; }
+    this.setFlag("kult4th", "sheetTab", "front");
+    await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
   }
 }
 

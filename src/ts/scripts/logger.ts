@@ -18,7 +18,7 @@ const getStackTrace = (regExpFilters: RegExp[] = []) => {
 };
 const k4Logger = (type: KeyOf<typeof STYLES> = "base", ...content: [string, ...any[]]) => {
   const [message, ...data] = content;
-  const dbLevel: 0|1|2|3|4|5 = [0,1,2,3,4,5].includes(U.getLast(data))
+  const dbLevel: 0|1|2|3|4|5 = (data.length > 0 && [0,1,2,3,4,5].includes(U.getLast(data)))
     ? data.pop()
     : 3;
   if (U.getSetting("debug") as 0|1|2|3|4|5 < dbLevel) { return }

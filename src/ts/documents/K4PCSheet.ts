@@ -156,8 +156,8 @@ const ANIMATIONS = {
         ease:     "sine.out"
       }, 0)
       .to($(target).find(".svg-def:not(.main-ring)"), {
-        "--K4-svg-fill": C.Colors.BLACK,
-        "duration":      0.6,
+        "--K4-icon-fill": C.Colors.BLACK,
+        duration:      0.6,
         "ease":          "sine"
       }, 0)
       .set($(target).find(".svg-def.main-ring"), {
@@ -236,21 +236,10 @@ const ANIMATIONS = {
         ease:     "sine"
       }, 0)
       .to(buttonContainer$, {
-      //   scale: 1,
-      //   opacity: 1,
         zIndex:   1,
         ease:     "power3",
         duration: 0.01
       });
-      /* .to(
-        svgs.container,
-        {
-          filter: "drop-shadow(0 0 15px #FF0000)",
-          duration: 0.95,
-          ease: "power3"
-        },
-        0.05
-      ) */
 
     if (U.getSetting("blur")) {
       navTL
@@ -312,9 +301,10 @@ const ANIMATIONS = {
     const FULL_DURATION = 0.5;
 
     const hoverTarget$ = $(context).find($(target).data("hover-target"));
-    const stripIcon$ = $(target).find(".icon-container");
+    const stripIcon$ = $(target).children(".icon-container");
     const stripName$ = $(target).find(".strip-name");
     const buttonStrip$ = $(target).find(".button-strip");
+    const stripBG$ = $(target).find(".strip-bg");
 
     if (!buttonStrip$[0]) { return gsap.timeline({reversed: true}); }
 
@@ -324,7 +314,7 @@ const ANIMATIONS = {
     // const colorFG = $(target).css("--K4-strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
     // const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--K4-strip-color-bg")?.trim()) ?? C.Colors.BLACK);
     const colorFG = stripName$.css("color");
-    const colorBG = buttonStrip$.css("background-color");
+    const colorBG = "rgb(0, 0, 0)";
     const nameShift = U.get(target, "height", "px");
 
     // kLog.log(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
@@ -333,6 +323,11 @@ const ANIMATIONS = {
       .timeline({reversed: true})
       .to(stripIcon$, {
         scale:    "+=1",
+        duration: FULL_DURATION,
+        ease:     "sine"
+      }, 0)
+      .to(stripBG$, {
+        opacity:  1,
         duration: FULL_DURATION,
         ease:     "sine"
       }, 0)

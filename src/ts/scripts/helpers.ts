@@ -27,6 +27,9 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     case "==":
     case "===":
       return param1 === param2;
+    case "!=":
+    case "!==":
+      return param1 !== param2;
     case ">":
       return U.isNumber(param1) && U.isNumber(param2) && param1 > param2;
     case "<":

@@ -1,8 +1,17 @@
-import {K4Attribute} from "../scripts/constants";
-import K4Item, {K4ItemType, K4ItemSubType, K4ItemResultType, K4ItemRange} from "../documents/K4Item";
+/**
+ * @file data.ts
+ * @description This file contains functions and constants for managing and manipulating K4Item data schemas. It includes functions for migrating data, extracting unique keys and values, generating reports, and building items from data.
+ */
 
+import { K4Attribute } from "../scripts/constants";
+import { K4ItemType, K4ItemSubType, K4ItemResultType, K4ItemRange } from "../documents/K4Item";
+
+//#region Constants
+
+/** Keys to be pruned from item data */
 const KEYS_TO_PRUNE = ["_id", "folder", "sort", "permission", "flags"];
 
+/** Mapping of folder names based on item type */
 const FOLDER_NAME_MAP = {
   [K4ItemType.attack]: null,
   [K4ItemType.advantage]: "Advantages",
@@ -12,33 +21,13 @@ const FOLDER_NAME_MAP = {
   [K4ItemType.weapon]: "Weapons & Gear",
   [K4ItemType.gear]: "Weapons & Gear",
   [K4ItemType.move]: "Basic Player Moves"
-}
+};
 
-export function parseItemSchemasForCreation(itemDataArray: any[]): any[] {
-  return itemDataArray.map((itemData) => {
-    const newItemData = duplicate(itemData);
-    KEYS_TO_PRUNE.forEach((key) => delete newItemData[key]);
-    if (FOLDER_NAME_MAP[itemData.type as K4ItemType]) {
-      newItemData.folder = game.folders?.getName(FOLDER_NAME_MAP[itemData.type as K4ItemType] as string)?.id ?? null;
-    }
-    return newItemData;
-  });
-}
+//#endregion
 
-export async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
-  const itemSchemas = parseItemSchemasForCreation(PACKS.all);
+//#region Data
 
-  // Filter the list of existing items in game.items to list all items that are duplicates of the items we're about to create
-  const existingItems = game.items.filter((item) => itemSchemas.some((itemSchema) => itemSchema.name === item.name));
-
-  // Await a Promise.all that deletes all the existing items
-  await Promise.all(existingItems.map((item) => item.delete()));
-
-  // Create all the new items
-  return Item.create(itemSchemas as unknown as ItemDataConstructorData);
-}
-
-
+/** Namespace for PACK types */
 namespace PACKTypes {
   export interface ByType {
     [K4ItemType.advantage]: K4Items.Schema<K4ItemType.advantage>[];
@@ -56,14 +45,25 @@ namespace PACKTypes {
     subAttacks: K4SubItems.Schema<K4ItemType.attack>[];
   }
   export interface ParentItems {
-    parentItems: Array<K4Items.Schema<K4Items.Types.Parent>>;
+    parentItems: K4Items.Schema<K4Items.Types.Parent>[];
+  }
+  export interface BasicPlayerMoves {
+    basicPlayerMoves: Array<K4Items.Schema<K4ItemType.move> & Record<string, unknown>>;
   }
   export interface All {
     all: K4Items.Schema[];
   }
 }
 
-export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItems & PACKTypes.All = {
+/** PACKS object containing various item schemas */
+const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItems & PACKTypes.BasicPlayerMoves & PACKTypes.All = {
+  /** SUBITEM NAMING CONVENTIONS
+   *
+   * activeRolled -- these moves are rolled, and their name should complete the sentence "X rolls Y to <subItem.name>"
+   * activeStatic -- these moves are triggered, and their name should complete the sentence "X <subItem.name>"
+   * passive -- there should be no passive subItems (they should be parent items)
+   *
+   * */
   [K4ItemType.advantage]: [
     {
       "name": "Worldly",
@@ -78,6 +78,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Recalls this Place",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
             "system": {
@@ -129,6 +130,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Encounter the Occult",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
             "system": {
@@ -193,6 +195,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Refuses to Give In",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
             "system": {
@@ -285,6 +288,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Blend In",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
             "system": {
@@ -352,6 +356,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Follows Their Code",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
             "system": {
@@ -404,6 +409,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Scout a Location",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
             "system": {
@@ -473,6 +479,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Sacrifices for Another",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
             "system": {
@@ -533,6 +540,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Activate Artifact",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
             "system": {
@@ -606,6 +614,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Hone Their Instincts",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
             "system": {
@@ -678,6 +687,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Contact a Mole",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/moles.svg",
             "system": {
@@ -742,6 +752,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Exploit a Rube",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
             "system": {
@@ -797,6 +808,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Beat the Odds",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
             "system": {
@@ -840,6 +852,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Project Authority",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
             "system": {
@@ -905,6 +918,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Invokes the Watchers",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
             "system": {
@@ -952,6 +966,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Contact an Academic",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
             "system": {
@@ -1007,6 +1022,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Implant an Order",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
             "system": {
@@ -1071,6 +1087,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Seek Inspiration",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
             "system": {
@@ -1148,6 +1165,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Create or Repair",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
             "system": {
@@ -1212,6 +1230,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Pay Any Price",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
             "system": {
@@ -1264,6 +1283,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Perform Acrobatics",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
             "system": {
@@ -1340,6 +1360,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Manipulate Someone",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
             "system": {
@@ -1404,6 +1425,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Focus",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
             "system": {
@@ -1468,6 +1490,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Confront Danger",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
@@ -1590,6 +1613,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Stay Cool",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
@@ -1668,6 +1692,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Perform Ritual",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
             "system": {
@@ -1732,6 +1757,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Commune",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/bound.svg",
             "system": {
@@ -1808,6 +1834,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Control an Animal",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
             "system": {
@@ -1884,6 +1911,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Free-Run",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
             "system": {
@@ -2054,6 +2082,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Learn Something New",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
             "system": {
@@ -2170,6 +2199,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Plan Ahead",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
             "system": {
@@ -2246,6 +2276,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Perform an Exorcism",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
             "system": {
@@ -2320,6 +2351,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Wander",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
             "system": {
@@ -2422,6 +2454,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Hack Something",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
             "system": {
@@ -2493,6 +2526,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Seduce Someone",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
             "system": {
@@ -2566,6 +2600,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Deploy Henchmen",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/boss.svg",
             "system": {
@@ -2630,6 +2665,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Fast-Talk Someone",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
             "system": {
@@ -2774,6 +2810,7 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
         "pdfLink": "",
         "subItems": [
           {
+            "name": "Create Something",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
             "system": {
@@ -11770,6 +11807,9 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
   ],
   [K4ItemType.relation]: [],
   [K4ItemType.attack]: [],
+  get basicPlayerMoves() {
+    return this[K4ItemType.move].toSorted((a, b) => a.name.localeCompare(b.name)) as Array<K4Items.Schema<K4ItemType.move> & Record<string, unknown>>;
+  },
   get parentItems(): K4Items.Schema<K4Items.Types.Parent>[] {
     return [
       ...this[K4ItemType.advantage],
@@ -11814,39 +11854,54 @@ export const PACKS: PACKTypes.ByType & PACKTypes.SubItems & PACKTypes.ParentItem
   }
 };
 
-export async function migrateDataToSystem(item: any, isForcing = false): Promise<void> {
-  if (!("system" in item)) {
+//#endregion
+
+//#region Functions
+
+/**
+ * Migrates item data to the system format.
+ * @param {any} item - The item to migrate.
+ * @param {boolean} [isForcing=false] - Whether to force the migration.
+ * @returns {Promise<void>}
+ */
+async function migrateDataToSystem(item: any, isForcing = false): Promise<void> {
+  if (!("data" in item)) {
     if (!("system" in item)) {
-      console.error(`No "system" or "system" found for ${item.name}`, item);
+      console.error(`No "data" or "system" found for ${item.name}`, item);
     }
     return;
   }
   const systemData = item.data;
   if ("subItems" in systemData) {
     systemData.subItems = systemData.subItems.map((subItem: any) => {
-      if (!("system" in subItem)) {
+      if (!("data" in subItem)) {
         if (!("system" in subItem)) {
-          console.error(`No "system" or "system" found for ${subItem.name} of ${item.name}`, {item, subItem});
+          console.error(`No "data" or "system" found for ${subItem.name} of ${item.name}`, { item, subItem });
         }
         return subItem;
       }
-      subItem.system = {...subItem.data};
+      subItem.system = { ...subItem.data };
       delete subItem.data;
       return subItem;
     });
   }
   if ("system" in item) {
     if (isForcing) {
-      await item.update({"-=system": null});
+      await item.update({ "-=system": null });
     } else {
       console.error(`"system"/"System" Conflict: System data already exists for ${item.name}`, item);
       return;
     }
   }
-  await item.update({system: systemData});
-  await item.update({"-=data": null});
+  await item.update({ system: systemData });
+  await item.update({ "-=data": null });
 }
 
+/**
+ * Determines the type of a given value.
+ * @param {unknown} val - The value to determine the type of.
+ * @returns {string} - The type of the value.
+ */
 function getType(val: unknown): string {
   if (val === null) { return "null"; }
   if (val === undefined) { return "undefined"; }
@@ -11917,10 +11972,15 @@ function getType(val: unknown): string {
       return typeParts.join("");
   }
   return "???";
-};
+}
 
-
-export function getUniqueKeys(itemDataArray: Array<K4Items.Schema|K4SubItems.Schema>, isExpanding = false): string[] {
+/**
+ * Extracts unique keys from an array of item data.
+ * @param {Array<K4Items.Schema|K4SubItems.Schema>} itemDataArray - The array of item data.
+ * @param {boolean} [isExpanding=false] - Whether to expand the keys.
+ * @returns {Record<string, unknown>} - The unique keys.
+ */
+function getUniqueKeys(itemDataArray: Array<K4Items.Schema | K4SubItems.Schema>, isExpanding = false): Record<string, unknown> {
   const uniqueEntries: Array<Tuple<string, string[]>> = [];
   itemDataArray.forEach((item) => {
     const flatSystem = flattenObject(item.system);
@@ -11952,6 +12012,8 @@ export function getUniqueKeys(itemDataArray: Array<K4Items.Schema|K4SubItems.Sch
 
   return isExpanding ? expandObject(dataObject) : dataObject;
 }
+
+/** Value types to list */
 const VAL_TYPES_TO_LIST = [
   "small-posInt",
   "boolean",
@@ -11959,40 +12021,21 @@ const VAL_TYPES_TO_LIST = [
   "[word-string]"
 ];
 
-export function getItemReport(itemDataArray: K4Items.Schema[], isExpanding = false): Record<string, string> {
-  const keyTypeData = getUniqueKeys(itemDataArray);
-
-  const reportObject = Object.fromEntries(
-    Object.entries(keyTypeData)
-      .map(([key, val]) => [
-        key,
-        VAL_TYPES_TO_LIST.includes(val)
-          ? getUniqueValuesForKey(itemDataArray, key).join(", ")
-          : val
-      ])
-  );
-  return isExpanding ? expandObject(reportObject) : reportObject;
-}
-
-export function getSubItemReport(itemDataArray: K4Items.Schema[], isExpanding = false): Record<string, string> {
-  const keyTypeData = getUniqueSubItemKeys(itemDataArray);
-
-  const reportObject = Object.fromEntries(
-    Object.entries(keyTypeData)
-      .map(([key, val]) => [
-        key,
-        VAL_TYPES_TO_LIST.includes(val)
-          ? getUniqueValuesForSubItemKey(itemDataArray, key).join(", ")
-          : val
-      ])
-  );
-  return isExpanding ? expandObject(reportObject) : reportObject;
-}
-
-
-export function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string): unknown[]
-export function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string[]): Record<string, unknown>
-export function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string|string[]): Record<string, unknown>|unknown[] {
+/**
+ * Gets unique values for a given key from an array of item data.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {string} key - The key to get unique values for.
+ * @returns {unknown[]}
+ */
+function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string): unknown[]
+/**
+ * Gets unique values for a given array of keys from an array of item data.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {string[]} key - The array of keys to get unique values for.
+ * @returns {Record<string, unknown>}
+ */
+function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string[]): Record<string, unknown>
+function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: string | string[]): Record<string, unknown> | unknown[] {
   if (Array.isArray(key)) {
     const valsByKey: Record<string, unknown[]> = {};
     key.forEach((thisKey) => {
@@ -12017,6 +12060,33 @@ export function getUniqueValuesForKey(itemDataArray: K4Items.Schema[], key: stri
   return uniqueValues;
 }
 
+/**
+ * Generates a report of unique keys and their types/values from an array of item data.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {boolean} [isExpanding=false] - Whether to expand the keys.
+ * @returns {Record<string, string>} - The report object.
+ */
+function getItemReport(itemDataArray: K4Items.Schema[], isExpanding = false): Record<string, string> {
+  const keyTypeData = getUniqueKeys(itemDataArray);
+
+  const reportObject = Object.fromEntries(
+    Object.entries(keyTypeData)
+      .map(([key, val]) => [
+        key,
+        VAL_TYPES_TO_LIST.includes(`${val}`)
+          ? getUniqueValuesForKey(itemDataArray, key).join(", ")
+          : val
+      ])
+  );
+  return isExpanding ? expandObject(reportObject) : reportObject;
+}
+
+/**
+ * Extracts sub-item schemas from an array of item data.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {K4SubItems.Types[]} [subTypes=[K4ItemType.attack, K4ItemType.move]] - The sub-item types to extract.
+ * @returns {Array<K4SubItems.Schema>} - The extracted sub-item schemas.
+ */
 function extractSubItemSchemas(itemDataArray: K4Items.Schema[], subTypes: K4SubItems.Types[] = [K4ItemType.attack, K4ItemType.move]): Array<K4SubItems.Schema> {
   return itemDataArray
     .filter((item): item is K4Items.Schema<K4Items.Types.Parent> =>
@@ -12036,15 +12106,99 @@ function extractSubItemSchemas(itemDataArray: K4Items.Schema[], subTypes: K4SubI
     .flat();
 }
 
-export function getUniqueSubItemKeys(itemDataArray: K4Items.Schema[], isExpanding = false): string[] {
+/**
+ * Extracts unique keys from sub-item schemas.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {boolean} [isExpanding=false] - Whether to expand the keys.
+ * @returns {Record<string, unknown>} - The unique keys.
+ */
+function getUniqueSubItemKeys(itemDataArray: K4Items.Schema[], isExpanding = false): Record<string, unknown> {
   return getUniqueKeys(
     extractSubItemSchemas(itemDataArray),
     isExpanding
   );
 }
 
-export function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string): unknown[]
-export function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string[]): Record<string, unknown>
-export function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string|string[]): Record<string, unknown>|unknown[] {
+/**
+ * Gets unique values for a given key from sub-item schemas.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {string} key - The key to get unique values for.
+ * @returns {unknown[]}
+ */
+function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string): unknown[]
+/**
+ * Gets unique values for a given array of keys from sub-item schemas.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {string[]} key - The array of keys to get unique values for.
+ * @returns {Record<string, unknown>}
+ */
+function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string[]): Record<string, unknown>
+function getUniqueValuesForSubItemKey(itemDataArray: K4Items.Schema[], key: string | string[]): Record<string, unknown> | unknown[] {
   return getUniqueValuesForKey(extractSubItemSchemas(itemDataArray) as any, key as any);
+}
+
+/**
+ * Generates a report of unique keys and their types/values from sub-item schemas.
+ * @param {K4Items.Schema[]} itemDataArray - The array of item data.
+ * @param {boolean} [isExpanding=false] - Whether to expand the keys.
+ * @returns {Record<string, string>} - The report object.
+ */
+function getSubItemReport(itemDataArray: K4Items.Schema[], isExpanding = false): Record<string, string> {
+  const keyTypeData = getUniqueSubItemKeys(itemDataArray);
+
+  const reportObject = Object.fromEntries(
+    Object.entries(keyTypeData)
+      .map(([key, val]) => [
+        key,
+        VAL_TYPES_TO_LIST.includes(`${val}`)
+          ? getUniqueValuesForSubItemKey(itemDataArray, key).join(", ")
+          : val
+      ])
+  );
+  return isExpanding ? expandObject(reportObject) : reportObject;
+}
+
+/**
+ * Parses item schemas for creation by pruning keys and setting folder names.
+ * @param {any[]} itemDataArray - The array of item data.
+ * @returns {any[]} - The parsed item schemas.
+ */
+function parseItemSchemasForCreation(itemDataArray: any[]): any[] {
+  return itemDataArray.map((itemData) => {
+    const newItemData = duplicate(itemData);
+    KEYS_TO_PRUNE.forEach((key) => delete newItemData[key]);
+    if (FOLDER_NAME_MAP[itemData.type as K4ItemType]) {
+      newItemData.folder = game.folders?.getName(FOLDER_NAME_MAP[itemData.type as K4ItemType] as string)?.id ?? null;
+    }
+    return newItemData;
+  });
+}
+
+/**
+ * Builds items from data by deleting existing items and creating new ones.
+ * @returns {Promise<void>}
+ */
+async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
+  const itemSchemas = parseItemSchemasForCreation(PACKS.all);
+
+  // Filter the list of existing items in game.items to list all items that are duplicates of the items we're about to create
+  const existingItems = game.items.filter((item) => itemSchemas.some((itemSchema) => itemSchema.name === item.name));
+
+  // Await a Promise.all that deletes all the existing items
+  await Promise.all(existingItems.map((item) => item.delete()));
+
+  // Create all the new items
+  return Item.create(itemSchemas as unknown as ItemDataConstructorData);
+}
+
+//#endregion
+
+export default BUILD_ITEMS_FROM_DATA;
+
+export {
+  PACKS,
+  migrateDataToSystem,
+  getUniqueValuesForKey,
+  getItemReport,
+  getSubItemReport
 }

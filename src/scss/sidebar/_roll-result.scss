@@ -1,4 +1,4 @@
-&.chat-roll-result {
+&.chat-move-result {
 
   --roll-header-fg: var(--K4-color-primary);
   --roll-header-bg: var(--K4-color-contrast);
@@ -15,13 +15,22 @@
   --roll-total-vert-scale: 1;
   --roll-dice-terms-vert-shift: -15px;
 
+  --source-item-vert-shift: 32px;
+
+  &.kult4th-result-static {
+    .roll-source-header {
+      margin-top: 10px;
+      // margin-bottom: -50px;
+    }
+  }
+
   &.move-roll {
     --roll-header-fg: var(--K4-color-contrast);
     --roll-header-bg: var(--K4-color-primary);
     --roll-header-border: var(--K4-color-primary);
 
     .roll-source-header .icon-container {
-      --icon-outline-color: var(--roll-header-bg);
+      --K4-icon-outline-color: var(--roll-header-bg);
     }
   }
 
@@ -105,14 +114,23 @@
     margin-bottom: -40px;
 
     .icon-container {
-      --icon-size: 60px;
-      --icon-outline-color: var(--roll-header-fg);
-      --icon-bg-color: var(--roll-header-bg);
-      --icon-outline-width: 2px;
+      --K4-icon-size: 60px;
+      --K4-icon-outline-color: var(--roll-header-fg);
+      // --icon-bg-color: var(--roll-header-bg);
+      // --K4-icon-outline-width: 2px;
       position: relative;
       z-index: 1;
       top: -12px;
       left: calc(-1 * var(--chat-horiz-padding) - 30px);
+      background: var(--K4-color-contrast-low);
+
+      img {
+        background: var(--K4-color-primary);
+        transform: scale(0.9);
+        transform-origin: center;
+        clip-path: inherit;
+        filter: blur(1px);
+      }
     }
 
     .roll-source-name {
@@ -124,12 +142,12 @@
       top: -60px;
       left: calc(-1 * var(--chat-horiz-padding));
     	padding: 5px 0px;
-			width: calc(100% + 2 * var(--chat-horiz-padding) + 10px);
+			width: calc(100% + 2 * var(--chat-horiz-padding) + 5px);
 
 			.roll-source-text {
 				position: relative;
 				display: block;
-				transform-origin: left;
+				transform-origin: center;
 				color: var(--roll-header-fg);
 				font-size: $rem-20;
 				font-family: var(--font-primary-caps);
@@ -137,10 +155,28 @@
 				font-weight: $font-weight-black;
 				text-align: center;
 				white-space: nowrap;
-				width: calc(100% - 30px);
-				left: 30px;
+				width: calc(100% - var(--K4-icon-size));
+				left: calc(0.5 * var(--K4-icon-size));
 			}
 		}
+
+    .roll-source-source-name {
+      position: absolute;
+      top: var(--source-item-vert-shift);
+      right: calc(-1 * var(--chat-horiz-padding) + 3px);
+      font-size: $rem-10;
+      font-style: italic;
+
+
+      .roll-source-text {
+        color: var(--K4-color-primary-glow);
+        font-family: var(--font-primary-smallcaps);
+        text-transform: lowercase;
+        font-weight: 600;
+        font-style: normal;
+        font-size: $rem-14;
+      }
+    }
 	}
 	.roll-dice-line {
 		display: flex;

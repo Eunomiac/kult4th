@@ -155,8 +155,8 @@
 			--card-height: 30px;
 			--name-vert-padding: 5px;
 			--border-width: 1px;
-			--icon-size: 30px;
-			--icon-margin: calc((var(--card-height) - var(--icon-size)) / 2);
+			--K4-icon-size: 30px;
+			--icon-margin: calc((var(--card-height) - var(--K4-icon-size)) / 2);
 			--icon-background: var(--K4-color-contrast);
 			--icon-filter: none;
 			--popout-background: var(--K4-color-primary);
@@ -169,18 +169,18 @@
 				position: relative;
 				display: inline-block;
 				background: var(--icon-background);
-				height: var(--icon-size);
-				width: var(--icon-size);
+				height: var(--K4-icon-size);
+				width: var(--K4-icon-size);
 				margin: var(--icon-margin);
 				border: var(--border-width) solid var(--K4-color-primary);
-				border-radius: calc(var(--icon-size) / 2);
+				border-radius: calc(var(--K4-icon-size) / 2);
 				overflow: hidden;
 				white-space: nowrap;
 				z-index: 1;
 				font-size: 0;
 
 				img {
-					height: calc(var(--icon-size) + 2px);
+					height: calc(var(--K4-icon-size) + 2px);
 					max-width: unset;
 					position: relative;
 					top: calc(-1 * var(--border-width) - 1px);
@@ -190,8 +190,8 @@
 
 				.item-button {
 					display: inline-block;
-					height: var(--icon-size);
-					width: calc((100% - var(--icon-size)) / 4);
+					height: var(--K4-icon-size);
+					width: calc((100% - var(--K4-icon-size)) / 4);
 					background: linear-gradient(
 						to right,
 						var(--popout-spacer-color) 15%,
@@ -203,7 +203,7 @@
 					color: var(--K4-color-contrast);
 					font-family: var(--font-primary-caps);
 					font-weight: $font-weight-bold;
-					line-height: var(--icon-size);
+					line-height: var(--K4-icon-size);
 					font-size: $rem-12;
 					text-align: center;
 					vertical-align: top;
@@ -221,8 +221,8 @@
 				.item-bg {
 					display: block;
 					height: 100%;
-					width: calc(100% - 0.5 * var(--icon-size));
-					margin-left: calc(0.5 * var(--icon-size));
+					width: calc(100% - 0.5 * var(--K4-icon-size));
+					margin-left: calc(0.5 * var(--K4-icon-size));
 					background: var(--K4-color-contrast);
 					border-bottom: 1px solid var(--K4-color-primary);
 				}
@@ -232,8 +232,8 @@
 					font-size: $rem-16;
 					font-weight: $font-weight-semi;
 					height: 24px;
-					top: calc((var(--icon-size) - 24px) / 2);
-					left: calc(var(--icon-size) + 5px);
+					top: calc((var(--K4-icon-size) - 24px) / 2);
+					left: calc(var(--K4-icon-size) + 5px);
 					z-index: 5;
 					white-space: nowrap;
 				}
