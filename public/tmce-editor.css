@@ -234,11 +234,12 @@
   --K4-color-contrast-high: var(--K4-dBLACK);
   --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-title-bg: transparent;
-  --K4-color-header: var(--K4-RED);
+  --K4-color-header: var(--K4-bRED);
   --K4-color-keyword: var(--K4-gGOLD);
   --K4-color-keyword-bright: var(--K4-gGOLD);
   --K4-color-pos: var(--K4-gGOLD);
   --K4-color-neg: var(--K4-bRED);
+  --K4-neon-text-color: var(--K4-bWHITE);
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 400;
   --K4-list-indent: 12px;
@@ -313,11 +314,12 @@
   --K4-color-contrast-high: var(--K4-dBLACK);
   --K4-color-title-fg: var(--K4-color-primary-bright);
   --K4-color-title-bg: transparent;
-  --K4-color-header: var(--K4-RED);
+  --K4-color-header: var(--K4-bRED);
   --K4-color-keyword: var(--K4-gGOLD);
   --K4-color-keyword-bright: var(--K4-gGOLD);
   --K4-color-pos: var(--K4-gGOLD);
   --K4-color-neg: var(--K4-bRED);
+  --K4-neon-text-color: var(--K4-bWHITE);
   --K4-font-primary: var(--font-primary);
   --K4-font-weight-primary: 400;
   --K4-list-indent: 12px;
@@ -408,7 +410,7 @@
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-black-leather.webp") repeat repeat center center/1000px 1000px;
 }
 #tinymce .k4-theme-red {
-  --K4-color-primary: var(--K4-RED);
+  --K4-color-primary: var(--K4-WHITE);
   --K4-color-primary-bright: var(--K4-bRED);
   --K4-color-primary-glow: var(--K4-gRED);
   --K4-color-contrast: var(--K4-BLACK);
@@ -434,7 +436,7 @@
   --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
   --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
   --K4-color-keyword: var(--K4-bRED);
-  --K4-color-keyword-bright: var(--K4-gRED);
+  --K4-color-keyword-bright: var(--K4-bRED);
   --K4-color-pos: var(--K4-RED);
   --K4-color-neg: var(--K4-RED);
 }
@@ -547,7 +549,7 @@
 #tinymce .mce-content-body button {
   color: var(--K4-color-contrast);
   font-weight: 700;
-  background: linear-gradient(to bottom, var(--K4-color-primary) 0%, 15%, var(--K4-color-primary-bright) 50%, var(--K4-color-primary-bright) 51%, 85%, var(--K4-color-primary) 100%);
+  background: linear-gradient(to bottom, var(--K4-color-primary) 0%, var(--K4-color-primary-bright) 15%, var(--K4-color-primary-bright) 50%, var(--K4-color-primary) 85%, var(--K4-color-primary) 100%);
   border-radius: 3px;
 }
 #tinymce button i, #tinymce button label,
@@ -684,10 +686,21 @@
 #tinymce .mce-content-body label.k4-title.item-title {
   line-height: 32px;
   margin-bottom: 10px;
-  text-align: center;
   font-weight: 700;
   width: 100%;
   display: block;
+}
+#tinymce label.k4-header,
+#tinymce .mce-content-body label.k4-header {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  height: 32px;
+  line-height: 28px;
+  white-space: nowrap;
+  font-family: var(--font-primary-smallcaps);
+  font-variant: all-small-caps;
+  margin: 10px 0;
 }
 @keyframes neonGlow-blue {
   0% {
@@ -715,17 +728,17 @@
 }
 #tinymce .neon-glow-blue,
 #tinymce .mce-content-body .neon-glow-blue {
-  color: var(--K4-bWHITE);
+  color: var(--K4-neon-text-color);
   animation: neonGlow-blue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce .neon-glow-red,
 #tinymce .mce-content-body .neon-glow-red {
-  color: var(--K4-bWHITE);
+  color: var(--K4-neon-text-color);
   animation: neonGlow-red 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce .neon-glow-gold,
 #tinymce .mce-content-body .neon-glow-gold {
-  color: var(--K4-bWHITE);
+  color: var(--K4-neon-text-color);
   animation: neonGlow-gold 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce h1,
@@ -740,11 +753,12 @@
 #tinymce h2,
 #tinymce .mce-content-body h2 {
   color: var(--K4-color-header);
-  font-family: var(--font-primary);
-  font-size: 24px;
+  font-family: var(--font-heading-2);
+  font-size: 20px;
   font-weight: 700;
   height: 24px;
   margin: 10px 0;
+  line-height: 24px;
 }
 #tinymce h3,
 #tinymce .mce-content-body h3 {
@@ -764,22 +778,6 @@
   font-style: italic;
   height: 12px;
   margin: 5px 0 -5px;
-}
-#tinymce label.k4-header,
-#tinymce .mce-content-body label.k4-header {
-  display: block;
-  font-size: 24px;
-  font-weight: 700;
-  text-align: center;
-  height: 32px;
-  line-height: 28px;
-  white-space: nowrap;
-  transform-origin: 0% 50%;
-  scale: 0.8 1;
-  width: 125%;
-  font-family: var(--font-primary-smallcaps);
-  font-variant: all-small-caps;
-  margin: 10px 0;
 }
 #tinymce .text-center,
 #tinymce .mce-content-body .text-center {
@@ -826,7 +824,7 @@
 }
 #tinymce .text-edgename,
 #tinymce .mce-content-body .text-edgename {
-  color: var(--K4-bWHITE);
+  color: var(--K4-neon-text-color);
   animation: neonGlow-blue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce .text-posmod,
@@ -847,7 +845,7 @@
 }
 #tinymce .text-gmtext,
 #tinymce .mce-content-body .text-gmtext {
-  color: var(--K4-bWHITE);
+  color: var(--K4-neon-text-color);
   animation: neonGlow-red 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 #tinymce .text-resultlabel,
@@ -886,6 +884,12 @@
   display: block;
   height: var(--K4-hoverstrip-inner-height);
   width: calc(100% - 0.5 * var(--K4-hoverstrip-height));
+}
+#tinymce div.hover-strip .strip-bg,
+#tinymce .mce-content-body div.hover-strip .strip-bg {
+  background: var(--K4-color-primary);
+  filter: brightness(0.5);
+  opacity: 0;
 }
 #tinymce div.hover-strip .button-strip,
 #tinymce .mce-content-body div.hover-strip .button-strip {

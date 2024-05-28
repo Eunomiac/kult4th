@@ -61,12 +61,13 @@ Kult White:  #FFFFFF */
 
 	--K4-color-title-fg: var(--K4-color-primary-bright);
 	--K4-color-title-bg: transparent;
-	--K4-color-header: var(--K4-RED);
+	--K4-color-header: var(--K4-bRED);
 
 	--K4-color-keyword: var(--K4-gGOLD); // var(--K4-bGOLD);
 	--K4-color-keyword-bright: var(--K4-gGOLD); // var(--K4-bGOLD);
 	--K4-color-pos: var(--K4-gGOLD); // var(--K4-bGOLD);
 	--K4-color-neg: var(--K4-bRED); // var(--K4-RED);
+  --K4-neon-text-color: var(--K4-bWHITE);
 
 	--K4-font-primary: var(--font-primary);
 	--K4-font-weight-primary: #{$font-weight-normal};
@@ -261,7 +262,7 @@ Kult White:  #FFFFFF */
 }
 
 .k4-theme-red {
-	--K4-color-primary: var(--K4-RED);
+	--K4-color-primary: var(--K4-WHITE);
 	--K4-color-primary-bright: var(--K4-bRED);
 	--K4-color-primary-glow: var(--K4-gRED);
 

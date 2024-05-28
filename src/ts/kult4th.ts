@@ -17,12 +17,11 @@ import registerDebugger from "./scripts/logger.js";
 
 import {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
-import BUILD_ITEMS_FROM_DATA, {PACKS, getUniqueValuesForKey, getItemReport, getSubItemReport} from "./scripts/data.js";
+import BUILD_ITEMS_FROM_DATA, {PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, getMutationDiffReport} from "./scripts/data.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
 registerDebugger();
-// gsap.registerPlugin(MorphSVGPlugin);
 
 Hooks.once("init", async () => {
 
@@ -54,15 +53,6 @@ Hooks.once("init", async () => {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
-  // CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
-
-  CONFIG.ChatMessage.documentClass = K4ChatMessage;
-  CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
-  CONFIG.ChatMessage.sidebarIcon = "fa-regular fa-microphone-lines";
-
-  CONFIG.Item.sidebarIcon = "fa-regular fa-box-open";
-  CONFIG.Actor.sidebarIcon = "fa-regular fa-people-group";
-
   await preloadTemplates().catch(kLog.error);
 
   // #region ████████ STYLING: Create Style Definitions for SVG Files & Color Palette ████████ ~
@@ -79,58 +69,6 @@ Hooks.once("init", async () => {
     y: [number, number],
     stops: Array<SVGGradientStop | string>
   }
-  /*
-<defs>
-    <linearGradient id="fill-advantage" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(235, 219, 166)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(65, 61, 46)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="stroke-advantage" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(150, 140, 106)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(65, 61, 46)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="fill-attack" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(240, 50, 50)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="stroke-attack" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(155, 32, 32)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="fill-darksecret" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="stroke-darksecret" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(240, 50, 50)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(155, 32, 32)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="fill-disadvantage" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(128, 128, 128)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(29, 29, 29)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="stroke-disadvantage" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(226, 226, 226)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(177, 177, 177)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="fill-move" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(150, 140, 106)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(65, 61, 46)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="stroke-move" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(235, 219, 166)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(235, 219, 166)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="fill-weapon" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(240, 50, 50)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
-    </linearGradient>
-    <linearGradient id="stroke-weapon" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="rgb(155, 32, 32)" stop-opacity="1"></stop>
-      <stop offset="100%" stop-color="rgb(70, 14, 14)" stop-opacity="1"></stop>
-    </linearGradient>
-  </defs>
-  */
   interface GradientDef { fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>; }
 
   const svgDefs: Record<string, Array<Partial<SVGGradientDef>>> = {
@@ -138,7 +76,7 @@ Hooks.once("init", async () => {
       {
         gold: {
           fill: {
-            stops: [C.Colors.bGOLD, C.Colors.dGOLD]
+            stops: [C.Colors.gGOLD, C.Colors.GOLD]
           },
           stroke: {
             stops: [C.Colors.dGREY, C.Colors.dBLACK]
@@ -326,15 +264,22 @@ Hooks.once("ready", () => {
     getContrastingColor,
     formatStringForKult,
     ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
+    clearActorItems: (actor = ACTOR) => {
+      if (!ACTOR) { return; }
+      const basicMoveNames = ACTOR.basicMoves.map((m) => m.name);
+      ACTOR.items.contents.filter((i) => !basicMoveNames.includes(i.name)).forEach((i) => i.delete())
+    },
     ENTITIES:   [ACTOR, ITEM, EMBED],
     SHEETS:     [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
     DOCS:       [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET],
     PACKS,
-    getItemReport,
-    getSubItemReport,
+    getItemSystemReport,
+    getSubItemSystemReport,
+    getUniqueValuesForSystemKey,
     getUniqueEffects: () => {
-      return getUniqueValuesForKey(PACKS.all, "rules.effectFunctions")
+      return getUniqueValuesForSystemKey(PACKS.all, "rules.effectFunctions")
     },
+    getMutationDiffReport,
     BUILD_ITEMS_FROM_DATA
   });
   /*!DEVCODE*/

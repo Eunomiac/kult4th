@@ -6,9 +6,9 @@ import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor from "./K4Actor.js";
 // #endregion
 
-// #region TYPES & ENUMS ~
+// #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
 // #region -- ENUMS ~
-export enum K4ItemType {
+enum K4ItemType {
   advantage = "advantage",
   disadvantage = "disadvantage",
   move = "move",
@@ -19,18 +19,18 @@ export enum K4ItemType {
   weapon = "weapon"
 }
 
-export enum K4ItemSubType {
+enum K4ItemSubType {
   activeRolled = "active-rolled",
   activeStatic = "active-static",
   passive = "passive"
 }
-export enum K4ItemRange {
+enum K4ItemRange {
   arm = "arm",
   room = "room",
   field = "field",
   horizon = "horizon"
 }
-export enum K4WeaponClass {
+enum K4WeaponClass {
   meleeUnarmed = "melee-unarmed",
   meleeCrush = "melee-crush",
   meleeSlash = "melee-slash",
@@ -38,7 +38,7 @@ export enum K4WeaponClass {
   firearm = "firearm",
   bomb = "bomb"
 }
-export enum K4ItemResultType {
+enum K4ItemResultType {
   completeSuccess = "completeSuccess",
   partialSuccess = "partialSuccess",
   failure = "failure"
@@ -46,7 +46,7 @@ export enum K4ItemResultType {
 // #endregion
 // #region -- TYPES ~
 declare global {
-  namespace K4SubItems {
+  namespace K4SubItem {
     export type Types = K4ItemType.move | K4ItemType.attack;
     export type SubTypes = K4ItemSubType.activeRolled | K4ItemSubType.activeStatic | K4ItemSubType.passive;
 
@@ -73,6 +73,7 @@ declare global {
         sourceItem?: SourceItemReference;
       }
       export interface IsSubItem {
+        chatName?: string;
         sourceItem: SourceItemReference;
       }
     }
@@ -80,20 +81,20 @@ declare global {
     export namespace SystemSchema {
       export interface Passive extends Components.Base,
         Components.IsSubItem,
-        K4Items.Components.RulesData {
+        K4Item.Components.RulesData {
         subType: K4ItemSubType.passive;
       }
 
       export interface Static extends Components.Base,
         Components.IsSubItem,
-        K4Items.Components.RulesData {
+        K4Item.Components.RulesData {
         subType: K4ItemSubType.activeStatic;
       }
 
       export interface Active extends Components.Base,
         Components.IsSubItem,
-        K4Items.Components.RulesData,
-        K4Items.Components.ResultsData {
+        K4Item.Components.RulesData,
+        K4Item.Components.ResultsData {
         subType: K4ItemSubType.activeRolled;
         attribute: K4Attribute;
       }
@@ -112,19 +113,20 @@ declare global {
       T extends K4ItemType.attack ? SystemSchema.SubAttack :
       SystemSchema.Any;
 
-    export interface Schema<T extends K4SubItems.Types = K4SubItems.Types> {
+    export interface Schema<T extends K4SubItem.Types = K4SubItem.Types> {
+      id?: IDString,
       name?: string,
       type: T,
       img: string,
-      system: K4SubItems.System<T>;
+      system: K4SubItem.System<T>;
     }
   }
-  interface K4SubItem<T extends K4SubItems.Types = K4SubItems.Types> extends K4Item<T> {
+  interface K4SubItem<T extends K4SubItem.Types = K4SubItem.Types> extends K4Item<T> {
     type: T,
-    system: K4Items.System<T> & K4SubItems.Components.IsSubItem;
+    system: K4Item.System<T> & K4SubItem.Components.IsSubItem;
   }
 
-  namespace K4Items {
+  namespace K4Item {
     export namespace Types {
       export type Parent = K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear;
       export type Rollable = K4ItemType.move | K4ItemType.attack | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
@@ -150,9 +152,9 @@ declare global {
       }
 
       export interface HasSubItems {
-        subItems: K4SubItems.Schema[],
-        subMoves?: K4SubItems.Schema<K4ItemType.move>[],
-        subAttacks?: K4SubItems.Schema<K4ItemType.attack>[];
+        subItems: K4SubItem.Schema[],
+        subMoves?: K4SubItem.Schema<K4ItemType.move>[],
+        subAttacks?: K4SubItem.Schema<K4ItemType.attack>[];
       }
 
       export interface RulesData {
@@ -188,49 +190,52 @@ declare global {
       : T extends K4WeaponClass.bomb ? ("")
       : "";
 
-    export namespace SystemSchema {
-      export interface Move extends K4Items.Components.Base,
-        K4SubItems.Components.CanSubItem,
-        K4Items.Components.RulesData,
-        K4Items.Components.ResultsData {
+    /**
+     * Describes the data structure as defined in template.json for each item type
+     */
+    export namespace SourceSchema {
+      export interface Move extends K4Item.Components.Base,
+        K4SubItem.Components.CanSubItem,
+        K4Item.Components.RulesData,
+        K4Item.Components.ResultsData {
         attribute: K4Attribute;
       }
 
-      export interface Attack extends K4Items.Components.Base,
-        K4SubItems.Components.CanSubItem,
-        K4Items.Components.RulesData,
-        K4Items.Components.ResultsData {
+      export interface Attack extends K4Item.Components.Base,
+        K4SubItem.Components.CanSubItem,
+        K4Item.Components.RulesData,
+        K4Item.Components.ResultsData {
         range: K4ItemRange[],
         harm: PosInteger,
         ammoCost?: PosInteger;
       }
 
-      export interface Advantage extends K4Items.Components.Base,
-        K4Items.Components.HasSubItems,
-        K4Items.Components.RulesData,
-        Partial<K4Items.Components.ResultsData> {
+      export interface Advantage extends K4Item.Components.Base,
+        K4Item.Components.HasSubItems,
+        K4Item.Components.RulesData,
+        Partial<K4Item.Components.ResultsData> {
         attribute: K4Attribute,
         currentHold: PosInteger,
         currentEdges: PosInteger;
       }
 
-      export interface Disadvantage extends K4Items.Components.Base,
-        K4Items.Components.HasSubItems,
-        K4Items.Components.RulesData,
-        Partial<K4Items.Components.ResultsData> {
+      export interface Disadvantage extends K4Item.Components.Base,
+        K4Item.Components.HasSubItems,
+        K4Item.Components.RulesData,
+        Partial<K4Item.Components.ResultsData> {
         attribute: K4Attribute,
         currentHold: PosInteger;
       }
 
-      export interface DarkSecret extends K4Items.Components.Base,
-        K4Items.Components.RulesData {
+      export interface DarkSecret extends K4Item.Components.Base,
+        K4Item.Components.RulesData {
         drive: string,
         currentHold: PosInteger,
         playerNotes: string,
         gmNotes: string;
       }
 
-      export interface Relation extends K4Items.Components.Base {
+      export interface Relation extends K4Item.Components.Base {
         target: string,
         strength: {
           min: number,
@@ -238,10 +243,10 @@ declare global {
           value: number;
         };
       }
-      export interface Weapon<C extends K4WeaponClass = K4WeaponClass> extends K4Items.Components.Base,
-        K4Items.Components.HasSubItems,
-        K4Items.Components.RulesData,
-        Partial<K4Items.Components.ResultsData> {
+      export interface Weapon<C extends K4WeaponClass = K4WeaponClass> extends K4Item.Components.Base,
+        K4Item.Components.HasSubItems,
+        K4Item.Components.RulesData,
+        Partial<K4Item.Components.ResultsData> {
         class: C,
         subClass: WeaponSubClass<C>,
         ammo: C extends K4WeaponClass.firearm ? {
@@ -250,15 +255,32 @@ declare global {
           value: number;
         } : undefined;
       }
-      export interface Gear extends K4Items.Components.Base,
-        K4Items.Components.HasSubItems,
-        K4Items.Components.RulesData,
-        Partial<K4Items.Components.ResultsData> {
+      export interface Gear extends K4Item.Components.Base,
+        K4Item.Components.HasSubItems,
+        K4Item.Components.RulesData,
+        Partial<K4Item.Components.ResultsData> {
         armor: number;
       }
+    }
 
+    /**
+     * Describes the functional .system property after derivation methods in K4Item.
+     */
+    export namespace SystemSchema {
+      export interface Move extends K4Item.SourceSchema.Move { }
+      export interface Attack extends K4Item.SourceSchema.Attack { }
+      export interface Advantage extends K4Item.SourceSchema.Advantage { }
+      export interface Disadvantage extends K4Item.SourceSchema.Disadvantage { }
+      export interface DarkSecret extends K4Item.SourceSchema.DarkSecret { }
+      export interface Relation extends K4Item.SourceSchema.Relation { }
+      export interface Weapon extends K4Item.SourceSchema.Weapon { }
+      export interface Gear extends K4Item.SourceSchema.Gear { }
       export type Any = Move | Attack | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
     }
+
+    /**
+     * Discriminated union of all item system schemas
+     *  */
     export type System<T extends K4ItemType = K4ItemType> =
       T extends K4ItemType.move ? SystemSchema.Move
       : T extends K4ItemType.attack ? SystemSchema.Attack
@@ -269,15 +291,22 @@ declare global {
       : T extends K4ItemType.weapon ? SystemSchema.Weapon
       : T extends K4ItemType.gear ? SystemSchema.Gear
       : SystemSchema.Any;
+    /**
+     * The top-level schema for an Item
+     */
     export interface Schema<T extends K4ItemType = K4ItemType> {
       name: string,
       type: T,
       img: string,
-      system: K4Items.System<T>;
+      system: K4Item.System<T>;
     }
+
+    /**
+     * Discriminated unions of item types by subType or other criteria
+     */
     export type Parent<T extends Types.Parent = Types.Parent> = K4Item<T> & {
-      system: K4Items.System<T> & {
-        subItems: K4SubItems.Schema[];
+      system: K4Item.System<T> & {
+        subItems: K4SubItem.Schema[];
       };
     };
     export type Static<T extends Types.Static = Types.Static> = K4Item<T> & {
@@ -300,15 +329,18 @@ declare global {
     export type HaveModifiers<T extends Types.HaveModifiers = Types.HaveModifiers> = K4Item<T>;
   }
 }
+// #endregion
+// #region -- AUGMENTED INTERFACE ~
 interface K4Item<T extends K4ItemType = K4ItemType> {
   get id(): IDString;
   get name(): string;
   get type(): T;
   get sheet(): K4Item["_sheet"] & K4ItemSheet;
-  system: K4Items.System<T>;
+  system: K4Item.System<T>;
   parent: Maybe<K4Item | K4Actor>;
 }
 // #endregion
+// #ENDREGION
 
 // #REGION === K4ITEM CLASS ===
 class K4Item extends Item {
@@ -317,6 +349,7 @@ class K4Item extends Item {
    * Pre-Initialization of the K4Item class. This method should be run during the "init" hook.
    *
    * - Registers the K4Item class as the system's Item document class.
+   * - Customizes the sidebar icon for the Item directory.
    * - Registers a "preCreateItem" hook to prevent the creation of an item with the same name as an existing item on the same actor.
    * - Registers a "renderChatMessage" hook to add the appropriate theme class to the chat message.
    *
@@ -327,6 +360,9 @@ class K4Item extends Item {
     // Register K4Item as the system's Item document class
     CONFIG.Item.documentClass = K4Item;
 
+    // Customize the sidebar icon for the Item directory
+    CONFIG.Item.sidebarIcon = "fa-regular fa-box-open";
+
     // Register the hook in your module or system initialization code
     Hooks.on("preCreateItem", async (itemData: K4Item): Promise<boolean> => {
       // Ensure the item is being created for an actor
@@ -336,9 +372,9 @@ class K4Item extends Item {
 
       const actor: K4Actor = itemData.parent;
       const existingItem: Maybe<K4Item> = actor.items
-        .find((i: K4Item): boolean => i.name === itemData.name && i.id !== itemData.id);
+        .find((i: K4Item): boolean => i.name === itemData.name && i.type === itemData.type && i.id !== itemData.id);
 
-      // If an item with the same name already exists, other than the one being created, prevent the creation
+      // If an item with the same name and type already exists, other than the one being created, prevent the creation
       if (existingItem) {
         ui.notifications.warn(`The item "${itemData.name}" already exists on this actor.`);
         return false; // Returning false prevents the item from being created
@@ -352,16 +388,16 @@ class K4Item extends Item {
   is<T extends K4ItemType = K4ItemType>(...types: T[]): this is K4Item<T> {
     const isType = (type: K4ItemType): type is T => types.includes(type as T);
     return isType(this.type);
-  } isParentItem(): this is K4Items.Parent {return Boolean("subItems" in this.system && Array.isArray(this.system.subItems) && this.system.subItems.length > 0);}
-  hasSubMoves(): this is K4Items.Parent {return "subMoves" in this.system && Array.isArray(this.system.subMoves) && this.system.subMoves.length > 0;}
-  hasSubAttacks(): this is K4Items.Parent {return "subAttacks" in this.system && Array.isArray(this.system.subAttacks) && this.system.subAttacks.length > 0;}
+  } isParentItem(): this is K4Item.Parent {return Boolean("subItems" in this.system && Array.isArray(this.system.subItems) && this.system.subItems.length > 0);}
+  hasSubMoves(): this is K4Item.Parent {return "subMoves" in this.system && Array.isArray(this.system.subMoves) && this.system.subMoves.length > 0;}
+  hasSubAttacks(): this is K4Item.Parent {return "subAttacks" in this.system && Array.isArray(this.system.subAttacks) && this.system.subAttacks.length > 0;}
   isSubItem(): this is K4SubItem {return Boolean("sourceItem" in this.system && this.system.sourceItem?.name);}
   isOwnedItem(): this is K4Item & {parent: K4Actor;/* , itemSheet: K4ItemSheet */} {return this.isEmbedded && this.parent instanceof Actor;}
   isOwnedSubItem(): this is K4SubItem & {parent: K4Actor;/* , itemSheet: K4ItemSheet */} {return this.isSubItem() && this.isOwnedItem();}
-  isActiveItem(): this is K4Items.Active {return this.system.subType === K4ItemSubType.activeRolled;}
-  isStaticItem(): this is K4Items.Static {return this.system.subType === K4ItemSubType.activeStatic;}
-  isPassiveItem(): this is K4Items.Passive {return this.system.subType === K4ItemSubType.passive;}
-  hasRules(): this is K4Items.HaveRules {return "rules" in this.system;}
+  isActiveItem(): this is K4Item.Active {return this.system.subType === K4ItemSubType.activeRolled;}
+  isStaticItem(): this is K4Item.Static {return this.system.subType === K4ItemSubType.activeStatic;}
+  isPassiveItem(): this is K4Item.Passive {return this.system.subType === K4ItemSubType.passive;}
+  hasRules(): this is K4Item.HaveRules {return "rules" in this.system;}
   // #endregion
 
   // #region GETTERS & SETTERS ~
@@ -374,19 +410,19 @@ class K4Item extends Item {
   //   if (keyItem?.key) {return keyItem.key;}
   //   return this.key;
   // }
-  // get masterType(): K4ItemType {return this.isSubItem() ? this.system.sourceItem?.type : this.type;}
+  get masterType(): K4ItemType {return this.isSubItem() ? this.system.sourceItem?.type : this.type;}
   get masterName(): string {return this.isSubItem() ? this.system.sourceItem?.name : this.name;}
-  get sourceItemData(): K4SubItems.Components.SourceItemReference | null {
+  get sourceItemData(): K4SubItem.Components.SourceItemReference | null {
     if (!this.isSubItem()) {return null;}
     return this.system.sourceItem;
   }
-  get sourceItem(): K4Items.Parent | null {
+  get sourceItem(): K4Item.Parent | null {
     if (!this.isOwnedSubItem()) {return null;}
     const {id} = this.system.sourceItem;
     if (!id) {
       throw new Error(`SubItem ${this.name} is missing a sourceItem ID.`);
     }
-    const sourceItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Items.Parent>;
+    const sourceItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Item.Parent>;
     if (!sourceItem) {return null;}
     return sourceItem;
   }
@@ -517,9 +553,6 @@ class K4Item extends Item {
       }
     }
   }
-
-
-
   applyOnCreateEffectFunctions() {
     if ("rules" in this.system && this.system.rules.effectFunctions) {
       this.system.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
@@ -545,7 +578,7 @@ class K4Item extends Item {
           };
         }
         return subData;
-      }) as Array<K4SubItems.Schema & Record<string, unknown>>;
+      }) as Array<K4SubItem.Schema & Record<string, unknown>>;
   }
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     super._onCreate(...args);
@@ -559,9 +592,9 @@ class K4Item extends Item {
     super.prepareData();
     if (this.isOwnedItem() && this.isParentItem()) {
       this.system.subMoves = this.system.subItems
-        .filter((subData): subData is K4SubItems.Schema<K4ItemType.move> => subData.type === K4ItemType.move);
+        .filter((subData): subData is K4SubItem.Schema<K4ItemType.move> => subData.type === K4ItemType.move);
       this.system.subAttacks = this.system.subItems
-        .filter((subData): subData is K4SubItems.Schema<K4ItemType.attack> => subData.type === K4ItemType.attack);
+        .filter((subData): subData is K4SubItem.Schema<K4ItemType.attack> => subData.type === K4ItemType.attack);
 
       // Set the default roll for this item to the results of the first activeRolled subItem.
       const firstSubItem = this.system.subItems
@@ -721,13 +754,17 @@ class K4Item extends Item {
   }
 
   get triggerSummaryContext() {
-    return {
-      ...this.itemSummaryContext,
-      cssClass: [
-        ...this.chatCssClasses,
-        "chat-move-result kult4th-result-static"
-      ].join(" ")
+    if ("chatName" in this.system) {
+      return {
+        ...this.itemSummaryContext,
+        name: this.system.chatName ?? this.name,
+        cssClass: [
+          ...this.chatCssClasses,
+          "chat-move-result kult4th-result-static"
+        ].join(" ")
+      };
     }
+    return this.itemSummaryContext;
   }
 
   chatTemplate = "systems/kult4th/templates/sidebar/item-display.hbs";
@@ -767,4 +804,12 @@ class K4Item extends Item {
 
 // #region EXPORTS ~
 export default K4Item;
+
+export {
+  K4ItemType,
+  K4ItemSubType,
+  K4ItemRange,
+  K4WeaponClass,
+  K4ItemResultType
+};
 // #endregion

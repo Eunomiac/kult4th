@@ -3,7 +3,6 @@
 import C from "../scripts/constants";
 import K4Config from "../scripts/config";
 import K4Actor from "../documents/K4Actor.js";
-import K4Items from "../documents/K4Item.js";
 import K4PCSheet from "../documents/K4PCSheet.js";
 import K4NPCSheet from "../documents/K4NPCSheet.js";
 import K4ItemSheet from "../documents/K4ItemSheet.js";

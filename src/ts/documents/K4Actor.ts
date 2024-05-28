@@ -1,44 +1,160 @@
 // #region IMPORTS ~
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
-import C, {K4Attribute} from "../scripts/constants.js";
+import C, {K4Attribute, Archetype} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {PACKS} from "../scripts/data.js";
-/* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
-export enum K4ActorType {
+// #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
+// #region -- ENUMS ~
+enum K4ActorType {
   pc = "pc",
   npc = "npc"
 }
-
-export {K4Attribute};
-
-export enum K4RollType {
+enum K4RollType {
   zero = "zero",
   attribute = "attribute",
   move = "move"
 }
-export enum K4WoundType {
+enum K4WoundType {
   serious = "serious",
   critical = "critical",
   stableserious = "stableserious",
   stablecritical = "stablecritical"
 }
+// #endregion
+// #region -- TYPES ~
+declare global {
+  type K4CharAttribute = Exclude<K4Attribute, K4Attribute.ask|K4Attribute.zero>;
 
-/**
- * Represents an actor in the KULT: Divinity Lost game system.
- * Extends the base Actor class provided by Foundry VTT.
- */
+  namespace K4Actor {
+
+    export namespace Components {
+      export interface Wound {
+        id: IDString,
+        description: string,
+        isCritical: boolean,
+        isStabilized: boolean
+      }
+      export interface Base {
+        description: string,
+        wounds: Record<IDString, Wound>,
+        penalties: Record<IDString, number>
+      }
+    }
+
+    /**
+    * Describes the data structure as defined in template.json for each actor type
+    */
+    export namespace SourceSchema {
+      export interface PC extends K4Actor.Components.Base {
+        archetype: Archetype,
+        history: string,
+        dramaticHooks: [
+          {
+            value: string,
+            isChecked: boolean
+          },
+          {
+            value: string,
+            isChecked: boolean
+          }
+        ],
+        attributes: Record<K4CharAttribute, ValueMax>,
+        modifiers: {
+          wounds_serious: K4ModTargets[],
+          wounds_critical: K4ModTargets[],
+          wounds_seriouscritical: K4ModTargets[],
+          stability: K4ModTargets[]
+        },
+        stability: {
+          min: Integer,
+          max: Integer,
+          value: Integer
+        }
+      }
+
+      export interface NPC extends K4Actor.Components.Base { }
+    }
+
+    /**
+     * Describes the functional .system property after derivation methods in K4Actor.
+     */
+    export namespace SystemSchema {
+      export interface PC extends SourceSchema.PC {
+        moves: Array<K4Item<K4ItemType.move>>;
+        basicMoves: Array<K4Item<K4ItemType.move>>;
+        derivedMoves: Array<K4Item<K4ItemType.move>>;
+        attacks: Array<K4Item<K4ItemType.attack>>;
+        advantages: Array<K4Item<K4ItemType.advantage>>;
+        disadvantages: Array<K4Item<K4ItemType.disadvantage>>;
+        darkSecrets: Array<K4Item<K4ItemType.darksecret>>;
+        weapons: Array<K4Item<K4ItemType.weapon>>;
+        gear: Array<K4Item<K4ItemType.gear>>;
+        relations: Array<K4Item<K4ItemType.relation>>;
+
+        maxWounds: {
+          serious: Integer,
+          critical: Integer,
+          total: Integer
+        }
+
+        modifiersReport: string;
+
+        stability: SourceSchema.PC["stability"] & {
+          statusOptions: string[]
+        }
+      }
+
+      export interface NPC extends SourceSchema.NPC {
+        moves: Array<K4Item<K4ItemType.move>>;
+      }
+      export type Any = PC|NPC
+    }
+
+    /**
+     * Discriminated union of all actor system schemas
+     *  */
+    export type System<T extends K4ActorType = K4ActorType> =
+      T extends K4ActorType.pc ? SystemSchema.PC
+      : T extends K4ActorType.npc ? SystemSchema.NPC
+      : SystemSchema.Any;
+
+    /**
+     * The top-level schema for an Actor
+     */
+    export interface Schema<T extends K4ActorType = K4ActorType> {
+      name: string,
+      type: T,
+      img: string,
+      system: K4Actor.System<T>;
+    }
+  }
+}
+// #endregion
+// #region -- AUGMENTED INTERFACE ~
+interface K4Actor<Type extends K4ActorType = K4ActorType> {
+  get id(): IDString;
+  get name(): string;
+  get type(): Type;
+  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
+  get items(): Actor["items"] & Collection<K4Item>;
+  system: K4Actor.System<Type>;
+}
+// #ENDREGION
+// #ENDREGION
+
+// #REGION === K4ACTOR CLASS ===
 class K4Actor extends Actor {
   // #region INITIALIZATION ~
   /**
    * Pre-Initialization of the K4Actor class. This method should be run during the "init" hook.
    *
    * - Registers the K4Actor class as the system's Actor document class.
+   * - Customizes the sidebar icon for the Actor directory
    *
    * @returns {Promise<void>} A promise that resolves when the hook is registered.
    */
@@ -46,9 +162,12 @@ class K4Actor extends Actor {
 
     // Register K4Actor as the system's Actor document class
     CONFIG.Actor.documentClass = this;
+
+    // Customize the sidebar icon for the Actor directory
+    CONFIG.Actor.sidebarIcon = "fa-regular fa-people-group";
   }
   // #endregion
-
+  // #region Type Guards ~
   /**
    * Type guard to check if the actor is of a specific type.
    * @param {T} type - The type to check against.
@@ -58,46 +177,9 @@ class K4Actor extends Actor {
     // @ts-expect-error -- Unable to resolve 'this.type' and 'type' to the same type.
     return this.type === type;
   }
+  // #endregion
 
-  /**
-   * Prepares the actor's data.
-   * Overrides the base method to include additional preparation for player characters.
-   */
-  override prepareData() {
-    super.prepareData();
-    if (this.is(K4ActorType.pc)) {
-      this.preparePCData();
-    }
-  }
-
-  /**
-   * Prepares data specific to player characters.
-   */
-  preparePCData() {
-    if (this.is(K4ActorType.pc)) {
-      this.system.moves = this.moves;
-      this.system.basicMoves = this.basicMoves;
-      this.system.derivedMoves = this.derivedMoves;
-      this.system.attacks = this.attacks;
-      this.system.advantages = this.advantages;
-      this.system.disadvantages = this.disadvantages;
-      this.system.darkSecrets = this.darkSecrets;
-      this.system.weapons = this.weapons;
-      this.system.gear = this.gear;
-      this.system.relations = this.relations;
-
-      this.system.maxWounds = {
-        serious: this.system.modifiers.wounds_serious.length as Integer,
-        critical: this.system.modifiers.wounds_critical.length as Integer,
-        total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
-      };
-      this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
-
-      // this.validateStability();
-    }
-  }
-
-  // #region GETTERS ~
+  // #region GETTERS & SETTERS ~
   /**
    * Retrieves items of a specific type.
    * @param {Type} type - The type of items to retrieve.
@@ -106,7 +188,6 @@ class K4Actor extends Actor {
   getItemsOfType<Type extends K4ItemType>(type: Type): Array<K4Item<Type>> {
     return [...this.items].filter((item: K4Item): item is K4Item<Type> => item.is(type));
   }
-
   /**
    * Retrieves an item by its name.
    * @param {string} iName - The name of the item.
@@ -115,7 +196,6 @@ class K4Actor extends Actor {
   getItemByName(iName: string): K4Item | undefined {
     return this.items.find((item: K4Item) => item.name === iName);
   }
-
   /**
    * Retrieves a move by its name.
    * @param {string} mName - The name of the move.
@@ -124,7 +204,6 @@ class K4Actor extends Actor {
   getMoveByName(mName: string) {
     return this.moves.find((move: K4Item) => move.name === mName);
   }
-
   /**
    * Retrieves an attack by its name.
    * @param {string} aName - The name of the attack.
@@ -133,7 +212,6 @@ class K4Actor extends Actor {
   getAttackByName(aName: string) {
     return this.attacks.find((attack: K4Item) => attack.name === aName);
   }
-
   /**
    * Retrieves items by their source ID.
    * @param {string} sourceID - The source ID of the items.
@@ -146,34 +224,20 @@ class K4Actor extends Actor {
       return item.isSubItem() && sourceItem?.id === sourceID;
     });
   }
-
-  /**
-   * Deletes an item by its name.
-   * @param {string} iName - The name of the item.
-   * @returns {Promise<void>} A promise that resolves when the item is deleted.
-   */
-  async dropItemByName(iName: string) {
-    return [...this.items].find((item: K4Item): item is K4Item => item.name === iName)?.delete();
-  }
-
   get moves() {return this.getItemsOfType(K4ItemType.move);}
   get basicMoves() {return this.moves.filter((move) => !move.isSubItem());}
   get derivedMoves() {return this.moves.filter((move): move is K4SubItem<K4ItemType.move> => move.isSubItem());}
-
   get attacks() {return this.getItemsOfType(K4ItemType.attack);}
   get basicAttacks() {return this.attacks.filter((attack) => !attack.isSubItem());}
   get derivedAttacks() {return this.attacks.filter((attack): attack is K4SubItem<K4ItemType.attack> => attack.isSubItem());}
-
   get advantages() {return this.getItemsOfType(K4ItemType.advantage);}
   get disadvantages() {return this.getItemsOfType(K4ItemType.disadvantage);}
   get darkSecrets() {return this.getItemsOfType(K4ItemType.darksecret);}
   get weapons() {return this.getItemsOfType(K4ItemType.weapon);}
   get gear() {return this.getItemsOfType(K4ItemType.gear);}
   get relations() {return this.getItemsOfType(K4ItemType.relation);}
-
   get derivedItems() {return [...this.items].filter((item: K4Item): item is K4SubItem => item.isSubItem());}
-
-  get wounds(): Record<IDString, K4Wound> {
+  get wounds(): Record<IDString, K4Actor.Components.Wound> {
     return this.system.wounds;
   }
   get wounds_serious() {return Object.values(this.wounds).filter((wound) => !wound.isCritical);}
@@ -182,13 +246,6 @@ class K4Actor extends Actor {
   get wounds_critical_unstabilized() {return this.wounds_critical.filter((wound) => !wound.isStabilized);}
   get wounds_serious_stabilized() {return this.wounds_serious.filter((wound) => wound.isStabilized);}
   get wounds_critical_stabilized() {return this.wounds_critical.filter((wound) => wound.isStabilized);}
-  // #endregion
-
-
-
-
-
-
   get woundStrips(): HoverStripData[] {
     return Object.values(this.wounds).map((wound) => {
       const stripData: Partial<HoverStripData> = {
@@ -252,11 +309,10 @@ class K4Actor extends Actor {
       return stripData as HoverStripData;
     });
   }
-
   get attributeData() {
     if (this.is(K4ActorType.pc)) {
       const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as K4CharAttribute[];
-      const pcData: K4ActorSystem<K4ActorType.pc> = this.system;
+      const pcData: K4Actor.System<K4ActorType.pc> = this.system;
       return attrList.map((attrName) => ({
         name: U.tCase(attrName),
         key: attrName,
@@ -267,7 +323,117 @@ class K4Actor extends Actor {
     }
     return [];
   }
+    /**
+   * Retrieves wound modifier data.
+   * @returns {K4RollModData} The wound modifier data.
+   */
+  get woundModData(): K4RollModData {
+    const modData: K4RollModData = {
+      category: "wound",
+      display: U.loc("trait.wounds"),
+      targets: {}
+    };
+    if (this.is(K4ActorType.pc)) {
+      const [unstabSerious, unstabCritical] = [
+        Object.values(this.wounds).filter((wound) => !wound.isCritical && !wound.isStabilized).length,
+        Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
+      ];
+      if (unstabSerious && unstabCritical) {
+        modData.targets = this.system.modifiers.wounds_seriouscritical[Math.min(
+          unstabSerious,
+          unstabCritical
+        )];
+      } else if (unstabCritical) {
+        modData.targets = this.system.modifiers.wounds_critical[unstabCritical];
+      } else if (unstabSerious) {
+        modData.targets = this.system.modifiers.wounds_serious[unstabSerious];
+      }
+    }
+    return modData;
+  }
+  /**
+   * Retrieves stability modifier data.
+   * @returns {K4RollModData} The stability modifier data.
+   */
+  get stabilityModData(): K4RollModData {
+    const modData: K4RollModData = {
+      category: "stability",
+      display: U.loc("trait.stability"),
+      targets: {}
+    };
+    if (this.is(K4ActorType.pc)) {
+      modData.targets = this.system.modifiers.stability[this.system.stability.value];
+    }
+    return modData;
+  }
+  /**
+   * Retrieves condition modifier data.
+   * @returns {K4RollModData[]} An array of condition modifier data.
+   */
+  get conditionModData(): K4RollModData[] {
+    const modData: K4RollModData[] = [];
 
+    return modData;
+  }
+  /**
+   * Retrieves effect modifier data.
+   * @returns {K4RollModData[]} An array of effect modifier data.
+   */
+  get effectModData(): K4RollModData[] {
+    return [
+      {
+        category: "effect",
+        display: "Test Effect One",
+        targets: {"Keep It Together": 2}
+      },
+      {
+        category: "effect",
+        display: "Test Effect Two",
+        targets: {move: 4}
+      },
+      {
+        category: "effect",
+        display: "Test Effect Three",
+        targets: {[K4Attribute.willpower]: -1}
+      }
+    ];
+  }
+  /**
+   * Retrieves all modifier targets.
+   * @returns {K4RollModData[]} An array of all modifier targets.
+   */
+  get modTargets(): K4RollModData[] {
+    return [
+      this.woundModData,
+      this.stabilityModData,
+      ...this.conditionModData,
+      ...this.effectModData
+    ];
+  }
+  get flatModTargets(): K4ModTargets {
+
+    // Flatten all modifiers by combining total modifiers for each target
+    const flatTargets: K4ModTargets = {};
+    this.modTargets
+      .forEach(({targets}) => {
+        Object.entries(targets)
+          .filter(([_, modNum]) => modNum !== 0)
+          .forEach(([modSource, modNum]) => {
+            flatTargets[modSource] ??= 0;
+            flatTargets[modSource] += modNum;
+          });
+      });
+
+    // Remove any targets with a modifier of 0
+    for (const [key, value] of Object.entries(flatTargets)) {
+      if (value === 0) {
+        delete flatTargets[key];
+      }
+    }
+
+    // Sort the targets by modifier value
+    return Object.fromEntries(Object.entries(flatTargets).sort((a, b) => b[1] - a[1]));
+  }
   /**
    * Retrieves a record of character attributes with their corresponding values.
    * @returns {Record<K4CharAttribute, number>} A record mapping each attribute to its integer value.
@@ -279,53 +445,7 @@ class K4Actor extends Actor {
     });
     return attributeMap;
   }
-
-  // async askUser(
-  //   title: string,
-  //   message: string,
-  //   inputs: Partial<Record<string, PromptInputData>>,
-  // )
-
-  static async TestDialog(title: string, message: string, fields: PromptInput.Data[]) {
-    const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-text-input"));
-    const content = template({
-      title,
-      message,
-      fields
-    });
-    const userReply = await new Promise((resolve) => {
-      new Dialog(
-        {
-          title: "Testing",
-          content,
-          buttons: {
-            "submit": {
-              label: "Submit",
-              callback: function (html: HTMLElement | JQuery) {
-                const formData = fields.reduce((acc: Record<string, string | number | boolean>, field) => {
-                  const val = $(html).find(`input[name=${field.key}]`).val() as Maybe<string | number | boolean>;
-                  if (field.type === "button") {
-                    acc[field.key] = true;
-                  } else if (field.type === "text") {
-                    acc[field.key] = val ?? "";
-                  } else {
-                    acc[field.key] = val ?? field.default ?? "";
-                  }
-                  return acc;
-                }, {} as Record<string, string | number | boolean>);
-                resolve(formData);
-                console.log("Submitted", formData);
-              }
-            }
-          }
-        },
-        {
-          classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
-        }
-      ).render(true);
-    });
-    console.log("User Reply", userReply);
-  }
+  // #endregion
 
   /**
    * Prompts the user to select an attribute using a dialog.
@@ -357,15 +477,6 @@ class K4Actor extends Actor {
       return null;
     }
   }
-
-  // async askForTextInput(prompt: string, placeholder?: string): Promise<string | null> {
-  //   const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-text-input"));
-  //   const content = template({
-  //     id: this.id,
-  //     prompt,
-  //     placeholder
-  //   });
-  // }
 
   /**
    * Validates the stability of the actor.
@@ -400,7 +511,7 @@ class K4Actor extends Actor {
    */
   async addWound(type?: K4WoundType, description?: string) {
     if (this.is(K4ActorType.pc)) {
-      const woundData: K4Wound = {
+      const woundData: K4Actor.Components.Wound = {
         id: U.getID(),
         description: description ?? "",
         isCritical: type === K4WoundType.critical,
@@ -484,6 +595,14 @@ class K4Actor extends Actor {
   }
 
   /**
+   * Deletes an item by its name.
+   * @param {string} iName - The name of the item.
+   * @returns {Promise<void>} A promise that resolves when the item is deleted.
+   */
+  async dropItemByName(iName: string) {
+    return [...this.items].find((item: K4Item): item is K4Item => item.name === iName)?.delete();
+  }
+  /**
    *
    * @param {K4ModTargets} [modData=this.flatModTargets] - The modifiers to parse.
    * @returns {string[]} An array of strings representing the modifiers.
@@ -498,122 +617,6 @@ class K4Actor extends Actor {
       }
     }
     return returnStrings.join("<span class='k4-theme-black no-flex'>&#9670;</span>");
-  }
-
-  /**
-   * Retrieves wound modifier data.
-   * @returns {K4RollModData} The wound modifier data.
-   */
-  get woundModData(): K4RollModData {
-    const modData: K4RollModData = {
-      category: "wound",
-      display: U.loc("trait.wounds"),
-      targets: {}
-    };
-    if (this.is(K4ActorType.pc)) {
-      const [unstabSerious, unstabCritical] = [
-        Object.values(this.wounds).filter((wound) => !wound.isCritical && !wound.isStabilized).length,
-        Object.values(this.wounds).filter((wound) => wound.isCritical && !wound.isStabilized).length
-      ];
-      if (unstabSerious && unstabCritical) {
-        modData.targets = this.system.modifiers.wounds_seriouscritical[Math.min(
-          unstabSerious,
-          unstabCritical
-        )];
-      } else if (unstabCritical) {
-        modData.targets = this.system.modifiers.wounds_critical[unstabCritical];
-      } else if (unstabSerious) {
-        modData.targets = this.system.modifiers.wounds_serious[unstabSerious];
-      }
-    }
-    return modData;
-  }
-
-  /**
-   * Retrieves stability modifier data.
-   * @returns {K4RollModData} The stability modifier data.
-   */
-  get stabilityModData(): K4RollModData {
-    const modData: K4RollModData = {
-      category: "stability",
-      display: U.loc("trait.stability"),
-      targets: {}
-    };
-    if (this.is(K4ActorType.pc)) {
-      modData.targets = this.system.modifiers.stability[this.system.stability.value];
-    }
-    return modData;
-  }
-
-  /**
-   * Retrieves condition modifier data.
-   * @returns {K4RollModData[]} An array of condition modifier data.
-   */
-  get conditionModData(): K4RollModData[] {
-    const modData: K4RollModData[] = [];
-
-    return modData;
-  }
-
-  /**
-   * Retrieves effect modifier data.
-   * @returns {K4RollModData[]} An array of effect modifier data.
-   */
-  get effectModData(): K4RollModData[] {
-    return [
-      {
-        category: "effect",
-        display: "Test Effect One",
-        targets: {"Keep It Together": 2}
-      },
-      {
-        category: "effect",
-        display: "Test Effect Two",
-        targets: {move: 4}
-      },
-      {
-        category: "effect",
-        display: "Test Effect Three",
-        targets: {[K4Attribute.willpower]: -1}
-      }
-    ];
-  }
-
-  /**
-   * Retrieves all modifier targets.
-   * @returns {K4RollModData[]} An array of all modifier targets.
-   */
-  get modTargets(): K4RollModData[] {
-    return [
-      this.woundModData,
-      this.stabilityModData,
-      ...this.conditionModData,
-      ...this.effectModData
-    ];
-  }
-  get flatModTargets(): K4ModTargets {
-
-    // Flatten all modifiers by combining total modifiers for each target
-    const flatTargets: K4ModTargets = {};
-    this.modTargets
-      .forEach(({targets}) => {
-        Object.entries(targets)
-          .filter(([_, modNum]) => modNum !== 0)
-          .forEach(([modSource, modNum]) => {
-            flatTargets[modSource] ??= 0;
-            flatTargets[modSource] += modNum;
-          });
-      });
-
-    // Remove any targets with a modifier of 0
-    for (const [key, value] of Object.entries(flatTargets)) {
-      if (value === 0) {
-        delete flatTargets[key];
-      }
-    }
-
-    // Sort the targets by modifier value
-    return Object.fromEntries(Object.entries(flatTargets).sort((a, b) => b[1] - a[1]));
   }
 
   public async roll(rollSource: string, options: Partial<K4RollOptions> = {}) {
@@ -727,7 +730,7 @@ class K4Actor extends Actor {
     return ["all", rollData.sourceType, rollData.sourceName, rollData.attribute].includes(target);
   }
 
-  #checkMod(modData: K4RollModData, rollData: Omit<K4RollData, "modifiers">): K4RollMod | null {
+  #checkMod(modData: K4RollModData, rollData: Omit<K4RollData, "modifiers">): Maybe<K4RollMod> {
     const mod: K4RollMod = {category: modData.category, display: modData.display, value: 0};
     for (const [target, value] of Object.entries(modData.targets)) {
       if (this.#checkModTarget(target, rollData)) {
@@ -735,7 +738,7 @@ class K4Actor extends Actor {
       }
     }
     if (mod.value === 0) {
-      return null;
+      return undefined;
     }
     return mod;
   }
@@ -750,19 +753,19 @@ class K4Actor extends Actor {
         ...this.effectModData
       ]
         .map((modData) => this.#checkMod(modData, rollData))
-        .filter((mod): mod is K4RollMod => mod !== null)
+        .filter((mod): mod is K4RollMod => mod !== undefined)
     };
   }
 
   async #displayRollResult(roll: Roll, rollData: K4RollData, options: K4RollOptions) {
     if (U.isUndefined(roll.total)) {return;}
-    function isItem(ref: unknown): ref is K4Items.Active {return ref instanceof K4Item;}
+    function isItem(ref: unknown): ref is K4Item.Active {return ref instanceof K4Item;}
 
     let themeClass: string;
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: {
       cssClass: string,
-      result?: ValueOf<K4Items.Components.ResultsData["results"]>,
+      result?: ValueOf<K4Item.Components.ResultsData["results"]>,
       dice: [number, number],
       total: number,
       rollData: K4RollData,
@@ -808,21 +811,60 @@ class K4Actor extends Actor {
     });
   }
 
+  // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
+  /**
+ * Prepares data specific to player characters.
+ */
+  preparePCData() {
+    if (this.is(K4ActorType.pc)) {
+      this.system.moves = this.moves;
+      this.system.basicMoves = this.basicMoves;
+      this.system.derivedMoves = this.derivedMoves;
+      this.system.attacks = this.attacks;
+      this.system.advantages = this.advantages;
+      this.system.disadvantages = this.disadvantages;
+      this.system.darkSecrets = this.darkSecrets;
+      this.system.weapons = this.weapons;
+      this.system.gear = this.gear;
+      this.system.relations = this.relations;
+
+      this.system.maxWounds = {
+        serious: this.system.modifiers.wounds_serious.length as Integer,
+        critical: this.system.modifiers.wounds_critical.length as Integer,
+        total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
+      };
+      this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
+
+      // this.validateStability();
+    }
+  }
+  /**
+   * Prepares the actor's data.
+   * Overrides the base method to include additional preparation for player characters.
+   */
+  override prepareData() {
+    super.prepareData();
+    if (this.is(K4ActorType.pc)) {
+      this.preparePCData();
+    }
+  }
+
   override async _onCreate(...params: Parameters<Actor["_onCreate"]>) {
     await super._onCreate(...params);
     if (this.type !== K4ActorType.pc) { return; }
     this.setFlag("kult4th", "sheetTab", "front");
     await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
   }
+  // #endregion
 }
+// #ENDREGION
 
-interface K4Actor<Type extends K4ActorType = K4ActorType> {
-  get id(): IDString;
-  get name(): string;
-  get type(): Type;
-  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
-  get items(): Actor["items"] & Collection<K4Item>;
-  system: K4ActorSystem<Type>;
-}
-
+// #region EXPORTS ~
 export default K4Actor;
+
+export {
+  K4ActorType,
+  K4RollType,
+  K4WoundType
+}
+// #endregion

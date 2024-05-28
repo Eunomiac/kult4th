@@ -16,8 +16,12 @@
     @include set-default-theme();
 
     --color-text-dark-primary: var(--color-body-text);
-    --chat-vert-padding: 10px;
-    --chat-horiz-padding: 10px;
+    --chat-vert-padding-external: 10px;
+    --chat-vert-padding-internal: 10px;
+    --chat-vert-padding-total: calc(var(--chat-vert-padding-external) + var(--chat-vert-padding-internal));
+    --chat-horiz-padding-external: 5px;
+    --chat-horiz-padding-internal: 10px;
+    --chat-horiz-padding-total: calc(var(--chat-horiz-padding-external) + var(--chat-horiz-padding-internal));
 
     .chat-message {
       width: var(--sidebar-width);
@@ -54,7 +58,7 @@
       }
 
       .message-content {
-        padding: var(--chat-vert-padding) 5px;
+        padding: var(--chat-vert-padding-external) var(--chat-horiz-padding-external);
         width: var(--sidebar-width);
         min-height: 42px;
 
@@ -75,7 +79,7 @@
           z-index: 2;
           font-size: $rem-14;
           line-height: $rem-18;
-          padding: 0 var(--chat-horiz-padding) 15px var(--chat-horiz-padding);
+          padding: var(--chat-vert-padding-internal) var(--chat-horiz-padding-internal) var(--chat-vert-padding-internal) var(--chat-horiz-padding-internal);
 
           ul,
           ul.rules-list,
@@ -84,9 +88,8 @@
           }
 
           .sheet-header {
-            .header-filler {
-              display: none;
-            }
+            width: calc(100% + 2 * var(--chat-horiz-padding-total));
+            margin-left: calc(-1 * var(--chat-horiz-padding-total));
 
             .item-title {
               font-size: $rem-18;
@@ -103,20 +106,36 @@
               text-shadow: -1px -1px 0px var(--K4-color-primary-bright), 1px 1px 0px var(--K4-color-primary);
               text-transform: uppercase;
               text-align: center;
-              margin-top: calc(-1 * var(--chat-vert-padding));
-              margin-left: calc(-1 * var(--chat-horiz-padding));
-              width: calc(100% + 2 * var(--chat-horiz-padding) + var(--scrollbar-width));
+              margin-top: calc(-1 * var(--chat-vert-padding-total));
+              // margin-left: calc(-1 * var(--chat-horiz-padding-internal));
+              width: calc(100% + 2 * var(--chat-horiz-padding-internal) + var(--scrollbar-width));
+              width: 100%;
               padding: 3px 0 0;
             }
           }
+          --hold-scale: 1;
 
           .edges-header,
           .hold-header {
+            position: relative;
             background: none;
             font-weight: $font-weight-semi;
-            transform: translate(-12.5%, 0) scaleX(1.25);
+            transform: translate(-50%, 0%) scaleX(var(--hold-scale));
+            left: 50%;
+            width: 200%;
             transform-origin: center center;
           }
+
+          &.kult-advantage-container,
+          &.kult-disadvantage-container {
+            --hold-scale: 0.85;
+          }
+
+          .hold-body {
+            display: block;
+            margin-bottom: 10px;
+          }
+
           @import 'roll-result';
         }
 

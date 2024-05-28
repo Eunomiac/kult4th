@@ -167,6 +167,22 @@
 		}
 	}
 
+	label.k4-header {
+		font-size: $rem-24;
+		font-weight: $font-weight-bold;
+		text-align: center;
+		height: $rem-32;
+		line-height: $rem-28;
+    white-space: nowrap;
+    // transform-origin: 0% 50%;
+    // scale: 0.8 1;
+    // width: calc(100% / 0.8);
+
+    font-family: var(--font-primary-smallcaps);
+		font-variant: all-small-caps;
+		margin: 10px 0;
+	}
+
   @keyframes neonGlow-blue {
     0% {
       text-shadow: 0 0 2px rgba(255,255,255,.8),
@@ -240,7 +256,7 @@
   }
 
   @mixin neon-glow($color) {
-    color: var(--K4-bWHITE);
+    color: var(--K4-neon-text-color);
     animation: neonGlow-#{$color} 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
   }
 
@@ -267,11 +283,12 @@
 
 	h2 {
 		color: var(--K4-color-header);
-		font-family: var(--font-primary);
-		font-size: $rem-24;
+		font-family: var(--font-heading-2);
+		font-size: $rem-20;
 		font-weight: $font-weight-bold;
 		height: $rem-24;
 		margin: 10px 0;
+    line-height: $rem-24;
 	}
 
 	h3 {
@@ -292,23 +309,6 @@
 		font-style: italic;
 		height: $rem-12;
 		margin: 5px 0 -5px;
-	}
-
-	label.k4-header {
-		display: block;
-		font-size: $rem-24;
-		font-weight: $font-weight-bold;
-		text-align: center;
-		height: $rem-32;
-		line-height: $rem-28;
-    white-space: nowrap;
-    transform-origin: 0% 50%;
-    scale: 0.8 1;
-    width: calc(100% / 0.8);
-
-    font-family: var(--font-primary-smallcaps);
-		font-variant: all-small-caps;
-		margin: 10px 0;
 	}
 
 	.text-center {

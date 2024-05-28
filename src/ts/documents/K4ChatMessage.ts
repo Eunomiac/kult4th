@@ -18,7 +18,10 @@ class K4ChatMessage extends ChatMessage {
   * Pre-Initialization of the K4ChatMessage class. This method should be run during the "init" hook.
   *
   * - Registers the K4ChatMessage class as the system's ChatMessage document class.
+  * - Sets the sidebar icon for the Chat tab to a microphone icon.
+  * - Sets the default template for system chat messages to the "sidebar/chat-message" template.
   * - Registers a "renderChatLog" hook to add a control panel to the chat input panel for players to select the message type.
+  * - Registers a "renderChatMessage" hook to apply custom CSS classes to chat messages based on their flags.
   *
   * @returns {Promise<void>} A promise that resolves when the hook is registered.
   */
@@ -26,6 +29,12 @@ class K4ChatMessage extends ChatMessage {
 
     // Register the K4ChatMessage class as the document type for ChatMessage
     CONFIG.ChatMessage.documentClass = K4ChatMessage;
+
+    // Customize the sidebar icon for the Chat tab
+    CONFIG.ChatMessage.sidebarIcon = "fa-regular fa-microphone-lines";
+
+    // Set the default template for system chat messages
+    CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
 
     // Register a hook to run when the chat log is rendered
     Hooks.on("renderChatLog", async (_log: ChatLog, html: JQuery, _options: unknown) => {

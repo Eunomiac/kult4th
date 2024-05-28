@@ -137,6 +137,7 @@
 				"subItems": []
 			},
 			"canSubItem": {
+        "chatName": "",
 				"sourceItem": {
 					"name": "",
 					"id": "",

@@ -3,7 +3,6 @@
 <div class="kult4th-chat {{cssClass}}">
 	<div class="roll-intro-header">
 		<span class="roll-char-name">{{item.parent.name}}</span>
-    <span class="roll-intro-line"> proceeds to ...</span>
 	</div>
 	<div class="roll-source-header">
     {{> "systems/kult4th/templates/components/icon.hbs"
@@ -12,7 +11,7 @@
       name=name
       isChat=true
     }}
-		<span class="roll-source-name"><span class="roll-source-text">{{item.name}}</span></span>
+		<span class="roll-source-name"><span class="roll-source-text">{{name}}</span></span>
     <span class="roll-source-source-name">from <span class="roll-source-text">{{sourceItem.name}}</span></span>
 	</div>
 
