@@ -8,32 +8,33 @@ import K4Item, {K4ItemType} from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
-import K4Modifier from "./documents/K4Modifier.js";
+import K4ActiveEffect from "./documents/K4ActiveEffect.js";
 import C, {getContrastingColor} from "./scripts/constants.js";
 import U from "./scripts/utilities.js";
 import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
 
-import {gsap} from "./libraries.js";
+import InitializeLibraries, {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
-import BUILD_ITEMS_FROM_DATA, {PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, getMutationDiffReport} from "./scripts/data.js";
+import BUILD_ITEMS_FROM_DATA, {PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, getMutationDiffReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} from "./scripts/data.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
 registerDebugger();
 
 Hooks.once("init", async () => {
-
   // Register settings (including debug settings necessary for kLog)
   registerSettings();
   // Announce initialization process in console
   kLog.display("Initializing 'Kult: Divinity Lost 4th Edition' for Foundry VTT", 0);
   // Disable Compatibility Warnings
   CONFIG.compatibility.mode = 0;
+  // Initialize Libraries
+  InitializeLibraries();
 
   // PreInitialize all classes that have a PreInitialize method
-  [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4Modifier]
+  [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
     .filter((doc): doc is typeof doc & { PreInitialize: () => Promise<void> } => "PreInitialize" in doc)
     .forEach((doc) => {
       kLog.display(`PreInitializing ${doc.name}...`, 0);
@@ -112,6 +113,14 @@ Hooks.once("init", async () => {
           },
           stroke: {
             stops: [C.Colors.BLACK, C.Colors.BLACK]
+          }
+        },
+        white: {
+          fill: {
+            stops: [C.Colors.bWHITE, C.Colors.WHITE],
+          },
+          stroke: {
+            stops: [C.Colors.BLACK, C.Colors.dBLACK]
           }
         },
         [K4ItemType.advantage]: {
@@ -235,6 +244,7 @@ Hooks.once("init", async () => {
 
 
 Hooks.once("ready", () => {
+  // $("body").removeClass("system-kult4th");
 
   // If user is GM, add "gm-user" class to #interface
   if (game.user?.isGM) {
@@ -264,11 +274,6 @@ Hooks.once("ready", () => {
     getContrastingColor,
     formatStringForKult,
     ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
-    clearActorItems: (actor = ACTOR) => {
-      if (!ACTOR) { return; }
-      const basicMoveNames = ACTOR.basicMoves.map((m) => m.name);
-      ACTOR.items.contents.filter((i) => !basicMoveNames.includes(i.name)).forEach((i) => i.delete())
-    },
     ENTITIES:   [ACTOR, ITEM, EMBED],
     SHEETS:     [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
     DOCS:       [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET],
@@ -277,9 +282,12 @@ Hooks.once("ready", () => {
     getSubItemSystemReport,
     getUniqueValuesForSystemKey,
     getUniqueEffects: () => {
-      return getUniqueValuesForSystemKey(PACKS.all, "rules.effectFunctions")
+      return getUniqueValuesForSystemKey(PACKS.all, "rules.effects")
     },
     getMutationDiffReport,
+    findRepresentativeSubset,
+    checkSubsetCoverage,
+    findUniqueKeys,
     BUILD_ITEMS_FROM_DATA
   });
   /*!DEVCODE*/
@@ -295,11 +303,11 @@ async function preloadTemplates() {
       "pc-sheet",
       "npc-sheet",
       "item-sheet",
-      "attack-sheet"
+      "attack-sheet",
+      "active-effect-sheet"
     ]),
     ...U.getTemplatePath("components", [
       "hover-strip",
-      "hover-strip-editable",
       "item-list",
       "rules-block",
       "roll-result",
@@ -316,7 +324,6 @@ async function preloadTemplates() {
     ]),
     ...U.getTemplatePath("sidebar", [
       "chat-message",
-      "item-display",
       "result-attribute",
       "result-rolled",
       "result-static",
@@ -324,6 +331,7 @@ async function preloadTemplates() {
     ]),
     ...U.getTemplatePath("dialog", [
       "ask-for-attribute",
+      "ask-for-harm",
       "ask-for-text-input"
     ])
   ];

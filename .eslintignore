@@ -8,3 +8,4 @@ emu*.js
 module/
 module_staging_1/
 .eslintrc.js
+.dev/

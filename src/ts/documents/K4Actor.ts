@@ -1,8 +1,9 @@
 // #region IMPORTS ~
-import K4Item, {K4ItemType} from "./K4Item.js";
+import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
+import {K4RollResult} from "./K4Roll.js";
 import C, {K4Attribute, Archetype} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {PACKS} from "../scripts/data.js";
@@ -28,7 +29,7 @@ enum K4WoundType {
 // #endregion
 // #region -- TYPES ~
 declare global {
-  type K4CharAttribute = Exclude<K4Attribute, K4Attribute.ask|K4Attribute.zero>;
+  type K4CharAttribute = Exclude<K4Attribute, K4Attribute.ask | K4Attribute.zero>;
 
   namespace K4Actor {
 
@@ -37,12 +38,12 @@ declare global {
         id: IDString,
         description: string,
         isCritical: boolean,
-        isStabilized: boolean
+        isStabilized: boolean;
       }
       export interface Base {
         description: string,
         wounds: Record<IDString, Wound>,
-        penalties: Record<IDString, number>
+        penalties: Record<IDString, number>;
       }
     }
 
@@ -56,11 +57,11 @@ declare global {
         dramaticHooks: [
           {
             value: string,
-            isChecked: boolean
+            isChecked: boolean;
           },
           {
             value: string,
-            isChecked: boolean
+            isChecked: boolean;
           }
         ],
         attributes: Record<K4CharAttribute, ValueMax>,
@@ -68,13 +69,17 @@ declare global {
           wounds_serious: K4ModTargets[],
           wounds_critical: K4ModTargets[],
           wounds_seriouscritical: K4ModTargets[],
-          stability: K4ModTargets[]
+          stability: K4ModTargets[];
         },
         stability: {
           min: Integer,
           max: Integer,
-          value: Integer
-        }
+          value: Integer;
+        },
+        edges: {
+          sourceName: string,
+          value: SmallInt;
+        };
       }
 
       export interface NPC extends K4Actor.Components.Base { }
@@ -88,6 +93,7 @@ declare global {
         moves: Array<K4Item<K4ItemType.move>>;
         basicMoves: Array<K4Item<K4ItemType.move>>;
         derivedMoves: Array<K4Item<K4ItemType.move>>;
+        activeEdges: Array<K4Item<K4ItemType.move>>;
         attacks: Array<K4Item<K4ItemType.attack>>;
         advantages: Array<K4Item<K4ItemType.advantage>>;
         disadvantages: Array<K4Item<K4ItemType.disadvantage>>;
@@ -95,24 +101,22 @@ declare global {
         weapons: Array<K4Item<K4ItemType.weapon>>;
         gear: Array<K4Item<K4ItemType.gear>>;
         relations: Array<K4Item<K4ItemType.relation>>;
-
         maxWounds: {
           serious: Integer,
           critical: Integer,
-          total: Integer
-        }
-
+          total: Integer;
+        };
         modifiersReport: string;
-
         stability: SourceSchema.PC["stability"] & {
-          statusOptions: string[]
-        }
+          statusOptions: string[];
+        };
+        armor: Integer;
       }
 
       export interface NPC extends SourceSchema.NPC {
         moves: Array<K4Item<K4ItemType.move>>;
       }
-      export type Any = PC|NPC
+      export type Any = PC | NPC;
     }
 
     /**
@@ -205,38 +209,90 @@ class K4Actor extends Actor {
     return this.moves.find((move: K4Item) => move.name === mName);
   }
   /**
-   * Retrieves an attack by its name.
-   * @param {string} aName - The name of the attack.
-   * @returns {K4Item | undefined} The attack if found, otherwise undefined.
-   */
-  getAttackByName(aName: string) {
-    return this.attacks.find((attack: K4Item) => attack.name === aName);
-  }
-  /**
    * Retrieves items by their source ID.
    * @param {string} sourceID - The source ID of the items.
    * @returns {K4SubItem[]} An array of sub-items with the specified source ID.
    */
-  getItemsBySource(sourceID: string): K4SubItem[] {
-    return this.items.filter((item: K4Item): item is K4SubItem => {
-      if (!("sourceItem" in item.system)) {return false;}
-      const {sourceItem} = item.system;
-      return item.isSubItem() && sourceItem?.id === sourceID;
+  getItemsBySource(sourceID: string): Array<K4Item & K4SubItem> {
+    return this.items.filter((item: K4Item): item is K4Item & K4SubItem => {
+      if (!("parentItem" in item.system)) {return false;}
+      const {parentItem} = item.system;
+      return item.isSubItem() && parentItem?.id === sourceID;
     });
   }
+
+  /**
+   * Retrieves items by a variety of filters.
+   * If any item is found with a name or id that matches the filter string, it is returned alone as a 'perfect match'.
+   * Otherwise, all items matching the type, subType, or id of the parent item are returned in an array.
+   *
+   * @param {K4ItemType} [type] - The type of items to filter. If not provided, all items are considered.
+   * @param {string} filter - The filter to apply to the items.
+   * @returns {K4Item[]} - An array of matching items.
+   */
+  getItemsByFilter(filter: string): Array<K4Item>;
+  getItemsByFilter<Type extends K4ItemType>(type: Type, filter: string): Array<K4Item<Type>>;
+  getItemsByFilter<Type extends K4ItemType>(arg1: Type | string, arg2?: string): Array<K4Item | K4Item<Type>> {
+    /**
+     * Filters items based on a provided filter string.
+     *
+     * @param {string} filterString - The filter string to match against item properties.
+     * @param {K4Item[]} itemPool - The pool of items to filter.
+     * @returns {K4Item[]} - An array of matched items. If no matches are found, an empty array is returned.
+     */
+    function filterItems(filterString: string, itemPool: K4Item[]): K4Item[] {
+      const filteredItems: K4Item[] = [];
+      for (const item of itemPool) {
+        if ([
+          item.name,
+          item.id
+        ].includes(filterString)) {
+          return [item];
+        }
+        if ([
+          item.type,
+          item.system.subType,
+          item.parentID ?? ""
+        ].includes(filterString)) {
+          filteredItems.push(item);
+        }
+      };
+      return filteredItems;
+    }
+
+    return filterItems(
+      arg2 ?? arg1,
+      arg2 ? this.getItemsOfType(arg1 as Type) : [...this.items]
+    );
+  }
+
+  async createBasicMoves() {
+    if (this.basicMoves.length) {return;}
+    // Create the basic moves for the character
+    await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
+  }
+
   get moves() {return this.getItemsOfType(K4ItemType.move);}
   get basicMoves() {return this.moves.filter((move) => !move.isSubItem());}
-  get derivedMoves() {return this.moves.filter((move): move is K4SubItem<K4ItemType.move> => move.isSubItem());}
+  get derivedMoves() {return this.moves.filter((move): move is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => move.isSubItem() && !move.isEdge());}
+  get derivedEdges() {return this.moves.filter((move): move is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => move.isEdge());}
+  get activeEdges() {
+    if (!this.is(K4ActorType.pc)) {return [];}
+    if (!this.system.edges.sourceName) {return [];}
+    if (!this.system.edges.value) {return [];}
+    return this.derivedEdges
+      .filter((edge): this is K4Actor<K4ActorType.pc> => edge.system.parentItem.name === this.system.edges.sourceName);
+  }
   get attacks() {return this.getItemsOfType(K4ItemType.attack);}
   get basicAttacks() {return this.attacks.filter((attack) => !attack.isSubItem());}
-  get derivedAttacks() {return this.attacks.filter((attack): attack is K4SubItem<K4ItemType.attack> => attack.isSubItem());}
+  get derivedAttacks() {return this.attacks.filter((attack): attack is K4Item<K4ItemType.attack> & K4SubItem<K4ItemType.attack> => attack.isSubItem());}
   get advantages() {return this.getItemsOfType(K4ItemType.advantage);}
   get disadvantages() {return this.getItemsOfType(K4ItemType.disadvantage);}
   get darkSecrets() {return this.getItemsOfType(K4ItemType.darksecret);}
   get weapons() {return this.getItemsOfType(K4ItemType.weapon);}
   get gear() {return this.getItemsOfType(K4ItemType.gear);}
   get relations() {return this.getItemsOfType(K4ItemType.relation);}
-  get derivedItems() {return [...this.items].filter((item: K4Item): item is K4SubItem => item.isSubItem());}
+  get derivedItems() {return [...this.items].filter((item: K4Item): item is K4Item & K4SubItem => item.isSubItem());}
   get wounds(): Record<IDString, K4Actor.Components.Wound> {
     return this.system.wounds;
   }
@@ -323,10 +379,10 @@ class K4Actor extends Actor {
     }
     return [];
   }
-    /**
-   * Retrieves wound modifier data.
-   * @returns {K4RollModData} The wound modifier data.
-   */
+  /**
+ * Retrieves wound modifier data.
+ * @returns {K4RollModData} The wound modifier data.
+ */
   get woundModData(): K4RollModData {
     const modData: K4RollModData = {
       category: "wound",
@@ -447,37 +503,7 @@ class K4Actor extends Actor {
   }
   // #endregion
 
-  /**
-   * Prompts the user to select an attribute using a dialog.
-   * @param {string | undefined} message - Optional message to display in the dialog.
-   * @returns {Promise<K4RollableAttribute | null>} The selected attribute or null if no selection is made.
-   */
-  async askForAttribute(message?: string): Promise<K4RollableAttribute | null> {
-    const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-attribute"));
-    const content = template({
-      id: this.id,
-      message
-    });
-    const userOutput = await new Promise<{attribute: K4RollableAttribute;}>((resolve) => {
-      new Dialog(
-        {
-          title: "Attribute Selection",
-          content,
-          default: K4Attribute.zero,
-          buttons: C.AttributeButtons(resolve)
-        },
-        {
-          classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
-        }
-      ).render(true);
-    });
-    if (userOutput.attribute in K4Attribute) {
-      return userOutput.attribute;
-    } else {
-      return null;
-    }
-  }
-
+  // #region Stability & Wounds ~
   /**
    * Validates the stability of the actor.
    * Ensures the stability value is within the defined range.
@@ -593,6 +619,46 @@ class K4Actor extends Actor {
       kLog.log("Updated Wounds", this.system.wounds);
     }
   }
+  // #endregion
+
+  // #region EDGES ~
+  async updateEdges(edges: PosInteger, source?: K4Item) {
+    if (!this.is(K4ActorType.pc)) { return; }
+    const sourceName = source ? source.parentName : this.system.edges.sourceName;
+    if (this.sheet.rendered) {
+      const html = this.sheet.element;
+      await new Promise((resolve) => {
+        gsap.to(
+          html.find(".edges-blade-container svg"),
+          {autoAlpha: 1, rotation: 175 + (20 * edges), duration: 1.5, ease: "back", onComplete: resolve}
+        );
+        if (edges === 0) {
+          gsap.to(html.find(".edges-header"), {autoAlpha: 0, duration: 1});
+          gsap.to(html.find(".edges-count"), {autoAlpha: 0, duration: 1});
+          gsap.to(html.find(".edges-source"), {autoAlpha: 0, duration: 1});
+          gsap.to(html.find(".edges .hover-strip"), {autoAlpha: 0, duration: 1});
+          gsap.to(html.find(".edges-blade-container"), {autoAlpha: 0, duration: 1});
+        }
+      });
+    }
+    await this.update({
+      "system.edges.sourceName": sourceName,
+      "system.edges.value": edges
+    });
+  }
+  async spendEdge() {
+    if (!this.is(K4ActorType.pc) || !this.system.edges.value) {return;}
+    await this.updateEdges(this.system.edges.value - 1 as PosInteger);
+  }
+  async gainEdge() {
+    if (!this.is(K4ActorType.pc) || !this.system.edges.sourceName) {return;}
+    await this.updateEdges(this.system.edges.value + 1 as PosInteger);
+  }
+  async clearEdges(): Promise<void> {
+    if (!this.is(K4ActorType.pc)) {return;}
+    await this.updateEdges(0 as PosInteger);
+  }
+  // #endregion
 
   /**
    * Deletes an item by its name.
@@ -602,6 +668,66 @@ class K4Actor extends Actor {
   async dropItemByName(iName: string) {
     return [...this.items].find((item: K4Item): item is K4Item => item.name === iName)?.delete();
   }
+  // #region -- ROLLS --
+  /**
+   * Prompts the user to select an attribute using a dialog.
+   * @param {string | undefined} message - Optional message to display in the dialog.
+   * @returns {Promise<K4RollableAttribute | null>} The selected attribute or null if no selection is made.
+   */
+  async askForAttribute(message?: string): Promise<K4RollableAttribute | null> {
+    const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-attribute"));
+    const content = template({
+      id: this.id,
+      message
+    });
+    const userOutput = await new Promise<{attribute: K4RollableAttribute;}>((resolve) => {
+      new Dialog(
+        {
+          title: "Attribute Selection",
+          content,
+          default: K4Attribute.zero,
+          buttons: C.AttributeButtons(resolve)
+        },
+        {
+          classes: [C.SYSTEM_ID, "dialog", "attribute-selection"]
+        }
+      ).render(true);
+    });
+    if (userOutput.attribute in K4Attribute) {
+      return userOutput.attribute;
+    } else {
+      return null;
+    }
+  }
+  /**
+   * Prompts the user to select a value for incoming Harm.
+   * @param {string | undefined} message - Optional message to display in the dialog.
+   * @returns {Promise<K4RollableAttribute | null>} The selected Harm value or null if no selection is made.
+   */
+    async askForHarm(message?: string): Promise<number | null> {
+      const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-attribute"));
+      const content = template({
+        id: this.id,
+        message
+      });
+      const userOutput = await new Promise<{harm: number;}>((resolve) => {
+        new Dialog(
+          {
+            title: "Incoming Harm",
+            content,
+            default: "0",
+            buttons: C.HarmButtons(resolve)
+          },
+          {
+            classes: [C.SYSTEM_ID, "dialog", "harm-selection"]
+          }
+        ).render(true);
+      });
+      if (U.isNumString(String(userOutput.harm))) {
+        return Number(userOutput.harm);
+      }
+      return null;
+    }
   /**
    *
    * @param {K4ModTargets} [modData=this.flatModTargets] - The modifiers to parse.
@@ -618,33 +744,10 @@ class K4Actor extends Actor {
     }
     return returnStrings.join("<span class='k4-theme-black no-flex'>&#9670;</span>");
   }
-
-  public async roll(rollSource: string, options: Partial<K4RollOptions> = {}) {
-    const rollResults = await this.#getRoll(rollSource);
-    if (rollResults) {
-      await rollResults.roll.evaluate({async: true});
-      if (game.dice3d) {
-        await game.dice3d.showForRoll(rollResults.roll);
-      }
-      if (rollResults.roll.total) {
-        kLog.log("Roll Successful", {roll: rollResults.roll, rollData: rollResults.rollData, options});
-        await this.#displayRollResult(rollResults.roll, rollResults.rollData, options as K4RollOptions);
-      }
-    }
-  }
-
-  public async trigger(rollSource: string) {
-    const item = this.getItemByName(rollSource);
-    if (!item) {
-      throw new Error(`No item found with name '${rollSource}'`);
-    }
-    await item.triggerItem();
-  }
-
   async #parseItemRollSource(item: K4Item & K4RollSource, rollData: Partial<K4RollData>) {
     rollData.type = K4RollType.move;
     rollData.source = item;
-    rollData.sourceType = item.masterType;
+    rollData.sourceType = item.parentType;
     rollData.sourceName = item.name;
     rollData.sourceImg = item.img ?? "";
 
@@ -666,7 +769,7 @@ class K4Actor extends Actor {
     return true;
   }
 
-  async #getRoll(rollSourceRef: string | K4RollSource | K4Attribute): Promise<{roll: Roll, rollData: K4RollData;} | false> {
+  async #getRollData(rollSourceRef: string | K4RollSource | K4Attribute): Promise<{roll: Roll, rollData: K4RollData;} | false> {
 
     let rollSource: K4RollSource | undefined;
     const rollData: Partial<K4RollData> = {};
@@ -686,7 +789,7 @@ class K4Actor extends Actor {
     ].includes(rollSourceRef)) {
       rollSource = rollSourceRef as K4RollableAttribute;
     } else if (typeof rollSourceRef === "string") {
-      const item = this.getMoveByName(rollSourceRef) ?? this.getAttackByName(rollSourceRef);
+      const item = this.getMoveByName(rollSourceRef);
       if (item instanceof K4Item && item.isActiveItem()) {
         rollSource = item;
       }
@@ -757,10 +860,31 @@ class K4Actor extends Actor {
     };
   }
 
-  async #displayRollResult(roll: Roll, rollData: K4RollData, options: K4RollOptions) {
+  #getRollResult(roll: Roll): K4RollResult | undefined {
     if (U.isUndefined(roll.total)) {return;}
-    function isItem(ref: unknown): ref is K4Item.Active {return ref instanceof K4Item;}
+    if (roll.total >= 15) {
+      return K4RollResult.completeSuccess;
+    }
+    if (roll.total > 9) {
+      return K4RollResult.partialSuccess;
+    }
+    return K4RollResult.failure;
+  }
 
+  #getRollResultData(roll: Roll, rollData: K4RollData): ValueOf<K4Item.Components.ResultsData["results"]> {
+    const {source} = rollData;
+    if (!(source instanceof K4Item) || source.system.subType !== K4ItemSubType.activeRolled) {
+      throw new Error(`Invalid source for roll result data: ${source}`);
+    }
+    const {results} = source.system;
+    if (!results) {
+      throw new Error(`No results data found for source: ${source.name}`);
+    }
+    return results[this.#getRollResult(roll)!];
+  }
+
+  async #displayRollResult(roll: Roll, rollData: K4RollData, options: Partial<K4RollOptions>) {
+    if (U.isUndefined(roll.total)) {return;}
     let themeClass: string;
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: {
@@ -775,21 +899,27 @@ class K4Actor extends Actor {
       dice: roll.dice[0].results.map((dResult) => dResult.result) as [number, number],
       total: roll.total,
       rollData,
-      rollerName: this.name ?? U.loc("roll.someone")
+      rollerName: this.name ?? U.loc("roll.someone"),
+      result: this.#getRollResultData(roll, rollData)
     };
     const cssClasses = ["chat-move-result", `${rollData.sourceType}-roll`];
-    if (roll.total >= 15) {
-      templateData.result = isItem(rollData.source) ? rollData.source.system.results?.completeSuccess : {result: ""};
-      cssClasses.push("roll-success");
-      themeClass = "k4-theme-bgold";
-    } else if (roll.total > 9) {
-      templateData.result = isItem(rollData.source) ? rollData.source.system.results?.partialSuccess : {result: ""};
-      cssClasses.push("roll-partial");
-      themeClass = "k4-theme-gold";
-    } else {
-      templateData.result = isItem(rollData.source) ? rollData.source.system.results?.failure : {result: ""};
-      cssClasses.push("roll-failure");
-      themeClass = "k4-theme-red";
+    switch (this.#getRollResult(roll)) {
+      case K4RollResult.completeSuccess: {
+        cssClasses.push("roll-success");
+        themeClass = "k4-theme-gold";
+        break;
+      }
+      case K4RollResult.partialSuccess: {
+        cssClasses.push("roll-partial");
+        themeClass = "k4-theme-gold";
+        break;
+      }
+      case K4RollResult.failure: {
+        cssClasses.push("roll-failure");
+        themeClass = "k4-theme-gold";
+        break;
+      }
+      default: throw new Error("Invalid roll result");
     }
     cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
     if (rollData.sourceName.length > 22) {
@@ -800,6 +930,8 @@ class K4Actor extends Actor {
     templateData.cssClass = cssClasses.join(" ");
     kLog.log("DISPLAYING ROLL RESULT", {roll, templateData, rollData, options});
     const content = template(templateData);
+
+
     await K4ChatMessage.create({
       content,
       speaker: K4ChatMessage.getSpeaker(),
@@ -810,6 +942,39 @@ class K4Actor extends Actor {
       }
     });
   }
+  public async roll(rollSource: string, options: Partial<K4RollOptions> = {}) {
+    const {roll, rollData} = await this.#getRollData(rollSource) || {};
+    if (!roll || !rollData) {return;}
+    await roll.evaluate({async: true});
+    if (U.isUndefined(roll.total)) {return;}
+
+    const rollPromises: Promise<void>[] = [];
+    if (game.dice3d) {
+      rollPromises.push(game.dice3d.showForRoll(roll));
+    }
+    rollPromises.push(this.#displayRollResult(roll, rollData, options));
+
+    const rollResultData = this.#getRollResultData(roll, rollData);
+    if (rollResultData?.edges && rollData.source instanceof K4Item) {
+      rollPromises.push(this.updateEdges(rollResultData.edges, rollData.source));
+    }
+  }
+
+  // #endregion
+  public async trigger(rollSource: string) {
+    const item = this.getItemByName(rollSource);
+    if (!item) {
+      throw new Error(`No item found with name '${rollSource}'`);
+    }
+    if (item.isEdge()) {
+      this.spendEdge();
+    }
+    await item.triggerItem();
+  }
+
+  // #region EDGES: Enabling, Triggering, Disabling ~
+
+  // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
   /**
@@ -820,6 +985,7 @@ class K4Actor extends Actor {
       this.system.moves = this.moves;
       this.system.basicMoves = this.basicMoves;
       this.system.derivedMoves = this.derivedMoves;
+      this.system.activeEdges = this.activeEdges;
       this.system.attacks = this.attacks;
       this.system.advantages = this.advantages;
       this.system.disadvantages = this.disadvantages;
@@ -834,6 +1000,7 @@ class K4Actor extends Actor {
         total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
       };
       this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
+      this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0) as Integer;
 
       // this.validateStability();
     }
@@ -849,11 +1016,50 @@ class K4Actor extends Actor {
     }
   }
 
+  async _onEndScene() {
+    await this.update({
+      // Clear all edges
+      "system.edges.sourceName": "",
+      "system.edges.value": 0
+    });
+  }
+
   override async _onCreate(...params: Parameters<Actor["_onCreate"]>) {
     await super._onCreate(...params);
-    if (this.type !== K4ActorType.pc) { return; }
+    if (this.type !== K4ActorType.pc) {return;}
+
+    // Set the default tab for the character sheet
     this.setFlag("kult4th", "sheetTab", "front");
+
+    // Create the basic moves for the character
     await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
+
+    // Register a custom end-of-scene hook
+    Hooks.on("endScene", this._onEndScene.bind(this));
+  }
+
+  /**
+   * Overrides the update method to handle a closing animation that should not be interrupted.
+   * If closing animation provided, and sheet is rendered, update will proceed silently and sheet
+   * will be rerendered once the animation completes.
+   *  - as options.updateAnim   *
+   **/
+  override async update(data: Record<string, unknown>, options: DocumentModificationContext & {updateAnim?: GsapAnimation} = {}): Promise<Maybe<this>> {
+
+    const {updateAnim, ...updateOptions} = options;
+    if (updateAnim && this.sheet.rendered) {
+      let updatePromise = super.update(data, {
+        ...updateOptions,
+        render: false
+      });
+      await Promise.all([
+        updatePromise,
+        new Promise(resolve => updateAnim.then(resolve))
+      ]);
+      this.sheet.render();
+      return updatePromise;
+    }
+    return super.update(data, updateOptions);
   }
   // #endregion
 }
@@ -866,5 +1072,5 @@ export {
   K4ActorType,
   K4RollType,
   K4WoundType
-}
+};
 // #endregion

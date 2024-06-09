@@ -350,6 +350,7 @@ declare global {
 
   // Simplified JQuery Events
   type ClickEvent = JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
+  type DoubleClickEvent = JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type ContextMenuEvent = JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type TriggerEvent = JQuery.TriggeredEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type InputChangeEvent = JQuery.ChangeEvent<HTMLInputElement, undefined, HTMLInputElement, HTMLInputElement>;

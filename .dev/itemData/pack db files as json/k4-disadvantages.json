@@ -49,7 +49,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
       },
       "attribute": "zero",
@@ -131,7 +131,7 @@
         "listRefs": [
           "options"
         ],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -203,7 +203,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -255,7 +255,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -318,7 +318,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -384,7 +384,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
       },
       "attribute": "zero",
@@ -450,7 +450,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
       },
       "attribute": "zero",
@@ -516,7 +516,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
       },
       "attribute": "zero",
@@ -549,7 +549,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [
+        "effects": [
           "SetTrait:actor/data.stability.max,6"
         ],
         "holdText": ""
@@ -614,7 +614,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -680,7 +680,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
       },
       "attribute": "zero",
@@ -746,7 +746,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
       },
       "attribute": "zero",
@@ -812,7 +812,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
       },
       "attribute": "zero",
@@ -878,7 +878,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
       },
       "attribute": "zero",
@@ -944,7 +944,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
       },
       "attribute": "zero",
@@ -1010,7 +1010,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
       },
       "attribute": "zero",
@@ -1073,7 +1073,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -1136,7 +1136,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -1202,7 +1202,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
       },
       "attribute": "zero",
@@ -1268,7 +1268,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
       },
       "attribute": "zero",
@@ -1334,7 +1334,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -1397,7 +1397,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -1463,7 +1463,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
       },
       "attribute": "zero",
@@ -1529,7 +1529,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
       },
       "attribute": "zero",
@@ -1595,7 +1595,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
       },
       "attribute": "zero",
@@ -1661,7 +1661,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
       },
       "attribute": "zero",
@@ -1744,7 +1744,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [
+        "effects": [
           ">CreateTracker:Time,10"
         ],
         "holdText": ""
@@ -1809,7 +1809,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -1875,7 +1875,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
       },
       "attribute": "zero",
@@ -1941,7 +1941,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
       },
       "attribute": "zero",
@@ -2004,7 +2004,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -2070,7 +2070,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
       },
       "attribute": "zero",
@@ -2133,7 +2133,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": ""
       },
       "attribute": "zero",
@@ -2199,7 +2199,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
       },
       "attribute": "zero",
@@ -2265,7 +2265,7 @@
         "trigger": "",
         "outro": "",
         "listRefs": [],
-        "effectFunctions": [],
+        "effects": [],
         "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
       },
       "attribute": "zero",

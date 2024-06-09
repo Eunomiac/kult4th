@@ -36,6 +36,7 @@ $assetPath: '/assets';
   }
 
 	.app.window-app {
+    // @import 'globals/colors';
 		@import 'globals/app';
 
 		&.k4-sheet {

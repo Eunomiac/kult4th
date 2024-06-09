@@ -3,9 +3,11 @@
  * @description This file contains functions and constants for managing and manipulating K4Item data schemas. It includes functions for migrating data, extracting unique keys and values, generating reports, and building items from data.
  */
 import U from "../scripts/utilities.js";
-import { K4Attribute } from "../scripts/constants";
-import { K4ItemType, K4ItemSubType, K4ItemResultType, K4ItemRange } from "../documents/K4Item";
-import ITEM_DATA, {PREV_DATA} from "./item-data.js";
+import C, { K4Attribute } from "../scripts/constants";
+import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
+import { K4ItemType, K4ItemSubType, K4RollResult, K4ItemRange } from "../documents/K4Item";
+import ITEM_DATA from "./item-data.js";
+import PREV_DATA from "./item-data-prev.js";
 
 // #region TYPES & ENUMS ~
 /** Namespace for PACK types */
@@ -63,7 +65,7 @@ namespace REPORTS {
 type AnySchema = K4Item.Schema | K4SubItem.Schema;
 // #endregion
 
-// #REGION === DATA ===
+// #REGION === DATA === ~
 
 // #region PACKS Object ~
 /** PACKS object containing various item schemas */
@@ -408,19 +410,6 @@ function getUniqueSubItemSystemKeys(itemDataArray: K4Item.Schema[] = PACKS.all, 
   );
 }
 
-function getTypeInitials(type: K4ItemType) {
-  return {
-    [K4ItemType.advantage]: "Av",
-    [K4ItemType.disadvantage]: "D",
-    [K4ItemType.darksecret]: "DS",
-    [K4ItemType.weapon]: "W",
-    [K4ItemType.attack]: "Ak",
-    [K4ItemType.move]: "M",
-    [K4ItemType.gear]: "G",
-    [K4ItemType.relation]: "R"
-  }[type];
-}
-
 function countSchemasWithSystemKey(schemaArray: AnySchema[], key: string): REPORTS.CountReport {
   const schemasWith: string[] = [];
   const schemasWithout: string[] = [];
@@ -428,7 +417,7 @@ function countSchemasWithSystemKey(schemaArray: AnySchema[], key: string): REPOR
 
   schemaArray.forEach((schema) => {
     const flatSchema = flattenObject(schema.system);
-    const schemaName = `[${getTypeInitials(schema.type)}] ${schema.name
+    const schemaName = `[${C.Abbreviations.ItemType[schema.type]}] ${schema.name
       ?? ("chatName" in schema.system && schema.system.chatName || null)
       ?? ("id" in schema && schema.id || null)
       ?? `Unknown_${U.randInt(100, 999)}`}`;
@@ -542,7 +531,7 @@ function getMutationDiffReport() {
 }
 // #endregion
 
-// #REGION BUILDING ITEMS FROM DATA
+// #REGION BUILDING ITEMS FROM DATA ~
 /**
  * Parses item schemas for creation by pruning keys and setting folder names.
  * @param {any[]} itemDataArray - The array of item data.
@@ -579,18 +568,170 @@ function parseItemSchemasForCreation(itemDataArray: K4Item.Schema[] = PACKS.all)
  */
 async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   const itemSchemas = parseItemSchemasForCreation(PACKS.all);
+  function clearActorItems(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
+    if (!actor) { return new Promise((resolve) => resolve(true as unknown)); }
+    // Filter actor's items to exclude K4SubItems, as their removal is taken care of by their parent item
+    const mainItems = actor.items.contents.filter((i) => !i.isSubItem());
+    // Delete all the remaining items
+    return Promise.all(mainItems.map((item) => item.delete()));
+  }
 
-  // Filter the list of existing items in game.items to list all items that are duplicates of the items we're about to create
-  const existingItems = game.items.filter((item) => itemSchemas.some((itemSchema) => itemSchema.name === item.name));
+  function clearAllActorItems(): Promise<unknown> {
+    return Promise.all(game.actors.contents.map((actor) => clearActorItems(actor as K4Actor<K4ActorType.pc>)));
+  }
 
   // Await a Promise.all that deletes all the existing items
-  await Promise.all(existingItems.map((item) => item.delete()));
+  await Promise.all([
+    clearAllActorItems(),
+    Promise.all(game.items.map((item) => item.delete()))
+  ]);
 
   // Create all the new items
-  return Item.create(itemSchemas as unknown as ItemDataConstructorData);
+  await Item.create(itemSchemas as unknown as ItemDataConstructorData);
+
+  // Initialize each actor with a new set of basic moves
+  await Promise.all(game.actors.contents.map((actor) => actor.createBasicMoves()));
 }
 
 //#endregion
+
+// #REGION === ANALYSIS ===
+/**
+ * Analyzes items to find a subset where each key used by any item has at least one non-empty value across the subset.
+ * @param items Array of items to analyze.
+ * @returns Array of items forming the representative subset.
+ */
+function findRepresentativeSubset(items: Record<string, unknown>[]): Record<string, unknown>[] {
+  /**
+   * Helper function to determine if a value is non-empty.
+   * @param value The value to check.
+   * @returns True if the value is non-empty, false otherwise.
+   */
+  function isNonEmpty(value: unknown): boolean {
+      return value !== "" && value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0) && value !== 0;
+  }
+
+  // Object to store the reason each item was included in the representative set
+  const inclusionReasons: Record<string, string> = {};
+
+  // Flatten each item and collect keys with non-empty values
+  const keyMap = new Map<string, Record<string, unknown>>();
+
+  items.forEach(item => {
+      const flatItem = flattenObject(item);
+      Object.entries(flatItem).forEach(([key, value]) => {
+          if (isNonEmpty(value)) {
+              if (!keyMap.has(key)) {
+                  keyMap.set(key, item);
+                  inclusionReasons[item.name as string] = key;
+              }
+          }
+      });
+  });
+
+  // Collect unique items that together cover all non-empty keys
+  const representativeSubset = Array.from(new Set(keyMap.values()));
+
+  // Log the inclusion reasons to the console
+  console.log("Inclusion Reasons:", inclusionReasons);
+
+  return representativeSubset;
+}
+
+/**
+ * Checks if a subset of items covers all keys with non-empty values in the master set.
+ * @param subset Array of items forming the representative subset.
+ * @param masterSet Array of all items to analyze.
+ * @returns True if the subset covers all keys with non-empty values in the master set, false otherwise.
+ */
+function checkSubsetCoverage(subset: Record<string, unknown>[], masterSet: Record<string, unknown>[]): boolean {
+  /**
+   * Helper function to determine if a value is non-empty.
+   * @param value The value to check.
+   * @returns True if the value is non-empty, false otherwise.
+   */
+  function isNonEmpty(value: unknown): boolean {
+      return value !== "" && value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0) && value !== 0;
+  }
+
+  // Flatten each item in the subset
+  const flattenedSubset = subset.map(item => flattenObject(item));
+
+  // Iterate through each item in the master set
+  for (const masterItem of masterSet) {
+      const flatMasterItem = flattenObject(masterItem);
+
+      // Check if every key with a non-empty value in the master item is covered by at least one item in the subset
+      for (const [key, value] of Object.entries(flatMasterItem)) {
+          if (isNonEmpty(value)) {
+              const isCovered = flattenedSubset.some(flatSubsetItem => isNonEmpty(flatSubsetItem[key]));
+              if (!isCovered) {
+                  console.log(`Key "${key}" with value "${value}" in master item "${masterItem.name}" is not covered by the subset.`);
+                  return false;
+              }
+          }
+      }
+  }
+
+  return true;
+}
+
+/**
+ * Finds unique keys for each item in the subset.
+ * @param subset Array of items forming the representative subset.
+ * @param allItems Array of all items to analyze.
+ * @returns Object where each key is an item name and the value is an array of keys that no other items share.
+ */
+function findUniqueKeys(subset: Record<string, unknown>[], allItems: Record<string, unknown>[]): Record<string, string[]> {
+  /**
+   * Helper function to determine if a value is non-empty.
+   * @param value The value to check.
+   * @returns True if the value is non-empty, false otherwise.
+   */
+  function isNonEmpty(value: unknown): boolean {
+      return value !== "" && value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0) && value !== 0;
+  }
+
+  // Flatten each item in the entire dataset
+  const flattenedAllItems = allItems.map(item => flattenObject(item));
+
+  // Collect all keys and their occurrences across the entire dataset
+  const keyOccurrences = new Map<string, number>();
+
+  flattenedAllItems.forEach(flatItem => {
+      Object.entries(flatItem).forEach(([key, value]) => {
+          if (isNonEmpty(value)) {
+              if (!keyOccurrences.has(key)) {
+                  keyOccurrences.set(key, 0);
+              }
+              keyOccurrences.set(key, keyOccurrences.get(key)! + 1);
+          }
+      });
+  });
+
+  // Flatten each item in the subset
+  const flattenedSubset = subset.map(item => flattenObject(item));
+
+  // Find unique keys for each item in the subset
+  const uniqueKeysRecord: Record<string, string[]> = {};
+
+  subset.forEach((item, index) => {
+      const itemName = item.name as string;
+      const flatItem = flattenedSubset[index];
+      const uniqueKeys: string[] = [];
+
+      Object.entries(flatItem).forEach(([key, value]) => {
+          if (isNonEmpty(value) && keyOccurrences.get(key) === 1) {
+              uniqueKeys.push(key);
+          }
+      });
+
+      uniqueKeysRecord[itemName] = uniqueKeys;
+  });
+
+  return uniqueKeysRecord;
+}
+// #ENDREGION
 
 export default BUILD_ITEMS_FROM_DATA;
 
@@ -599,5 +740,8 @@ export {
   getUniqueValuesForSystemKey,
   getItemSystemReport,
   getSubItemSystemReport,
-  getMutationDiffReport
+  getMutationDiffReport,
+  findRepresentativeSubset,
+  checkSubsetCoverage,
+  findUniqueKeys
 }

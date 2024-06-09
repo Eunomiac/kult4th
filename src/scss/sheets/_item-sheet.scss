@@ -84,6 +84,10 @@
 				--K4-color-primary-glow: var(--K4-bWHITE);
 				--K4-color-header: var(--K4-bWHITE);
 				--K4-color-neg: var(--K4-gRED);
+        --K4-section-padding-top: 10px;
+        --K4-section-padding-left: 10px;
+        --K4-section-padding-right: 10px;
+        --K4-section-padding-bottom: 10px;
 
         &.kult-move-container {
           text-shadow: none;
@@ -95,16 +99,55 @@
 
 				background: var(--K4-bg-inset);
 				margin: 15px;
-				padding: 0 10px;
+				// padding: 0 10px;
 				border-radius: 25px;
 				filter: none;
-				overflow-x: hidden;
-				overflow-y: auto;
+				overflow: hidden;
 				text-shadow: 0 0 3px var(--K4-dBLACK), 0 0 3px var(--K4-dBLACK), 0 0 3px var(--K4-dBLACK);
 
-				> p:first-child {
-					// text-indent: 25px;
-				}
+        .icon-container {
+          position: absolute;
+          --K4-icon-size: 300px;
+          // --K4-icon-size: 160px;
+          filter: none;
+          pointer-events: none;
+          z-index: 0;
+          transform-origin: 50% 50%;
+          top: 0%;
+          background: transparent;
+          clip-path: none;
+          mask: url(#fade-mask-top-bottom);
+          // max-height: var(--K4-icon-size);
+          // width: var(--K4-icon-size);
+          // transform: translate(-50%, -50%);
+          // top: 50%;
+          // left: 50%;
+          top: -20px;
+          left: -20px;
+          opacity: 0.5;
+
+          .svg-container {
+            // background: blue;
+            background: transparent;
+            filter: url(#inset-shadow);
+            stroke: transparent;
+            clip-path: none;
+            mask: url(#fade-mask-left-right);
+
+          }
+
+          ~ * {
+            position: relative;
+            z-index: 1;
+            // opacity: 0;
+          }
+        }
+
+
+
+
+
+
 
 				&.kult-darksecret-container {
 					--K4-section-padding-left: 20px;
@@ -117,7 +160,7 @@
 				}
 
 				.result-entry {
-					--label-width: 38px;
+					--label-width: 45px;
 					--label-gap: 5px;
 					--result-entry-horiz-padding: -5px;
 				}

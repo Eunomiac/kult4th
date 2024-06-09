@@ -1,20 +1,30 @@
-<div class="hover-strip item {{~#if isGlowing}} neon-glow-{{isGlowing}}{{/if}} {{~#each stripClasses}} {{this}}{{/each}}"
+<div
+  class="hover-strip item {{~#if isGlowing}} neon-glow-strong-{{isGlowing}}{{/if}} {{~#each stripClasses}} {{this}}{{/each}}"
   data-type={{type}}
-  {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}" {{/each}}{{/if}}
+  {{~#if dataset}}{{#each dataset as |val key|}}
+    data-{{key}}="{{val}}"
+  {{/each}}{{/if}}
 >
-
   <span class="strip-bg"></span>
 
-  <div class="strip-name"
+{{#if display}}
+
+  <div
+    class="strip-name"
     data-clamplines="1"
-    {{~#if dataset}}{{#each dataset as |val key|}} data-{{key}}="{{val}}" {{/each}}{{/if}}
+    {{~#if dataset}}{{#each dataset as |val key|}}
+      data-{{key}}="{{val}}"
+    {{/each}}{{/if}}
   >{{display}}</div>
 
-  <span class="button-strip">
-    <span class="button-spacer"></span>
+  <span class="button-strip"><span class="button-spacer"></span>
+
     {{#each buttons as |bdata|}}
-      <button class="strip-button icon-container {{~#if bdata.buttonClasses}}{{#each bdata.buttonClasses}} {{this}}{{/each}}{{/if}}"
-        {{~#each bdata.dataset as |val key|}} data-{{key}}="{{val}}" {{/each}}
+      <button
+        class="strip-button icon-container {{~#if bdata.buttonClasses}}{{#each bdata.buttonClasses}} {{this}}{{/each}}{{/if}}"
+        {{~#each bdata.dataset as |val key|}}
+          data-{{key}}="{{val}}"
+        {{/each}}
       >
         {{> "systems/kult4th/templates/components/svg.hbs" key=(getImgName bdata.icon)}}
         {{#if bdata.tooltip}}
@@ -23,6 +33,7 @@
         {{/if}}
       </button>
     {{/each}}
+
   </span>
 
   {{> "systems/kult4th/templates/components/icon.hbs"
@@ -31,4 +42,26 @@
     name=name
     tooltip=tooltip
   }}
+
+{{else}}
+
+	<div
+    id="{{id}}"
+    class="strip-name content-editable clamp-text"
+    data-field="{{dataTarget}}"
+    data-placeholder="{{placeholder}}"
+    data-clamplines="1"
+    {{~#if dataset}}{{#each dataset as |val key|}}
+      data-{{key}}="{{val}}"
+    {{/each}}{{/if}}
+  ></div>
+
+  {{> "systems/kult4th/templates/components/icon.hbs"
+    icon=icon
+    type=type
+    name=name
+  }}
+
+{{/if}}
+
 </div>

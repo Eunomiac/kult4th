@@ -4,6 +4,8 @@ import K4ItemSheet from "./K4ItemSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor from "./K4Actor.js";
+import {K4RollResult} from "./K4Roll.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -30,6 +32,15 @@ enum K4ItemRange {
   field = "field",
   horizon = "horizon"
 }
+enum K4WeaponType {
+  unarmed = "unarmed",
+  edged = "edged",
+  crushing = "crushing",
+  chopping = "chopping",
+  handgun = "handgun",
+  magnum = "magnum",
+
+}
 enum K4WeaponClass {
   meleeUnarmed = "melee-unarmed",
   meleeCrush = "melee-crush",
@@ -38,11 +49,7 @@ enum K4WeaponClass {
   firearm = "firearm",
   bomb = "bomb"
 }
-enum K4ItemResultType {
-  completeSuccess = "completeSuccess",
-  partialSuccess = "partialSuccess",
-  failure = "failure"
-}
+
 // #endregion
 // #region -- TYPES ~
 declare global {
@@ -64,17 +71,19 @@ declare global {
         isEdge?: boolean,
         subType: K4ItemSubType;
       }
-      export interface SourceItemReference {
+      export interface ParentItemReference {
         name: string,
         id?: IDString | null,
         type: K4ItemType;
       }
       export interface CanSubItem {
-        sourceItem?: SourceItemReference;
+        parentItem?: ParentItemReference;
+        parentType?: K4ItemType;
       }
       export interface IsSubItem {
         chatName?: string;
-        sourceItem: SourceItemReference;
+        parentItem: ParentItemReference;
+        parentType: K4ItemType;
       }
     }
 
@@ -121,9 +130,9 @@ declare global {
       system: K4SubItem.System<T>;
     }
   }
-  interface K4SubItem<T extends K4SubItem.Types = K4SubItem.Types> extends K4Item<T> {
+  interface K4SubItem<T extends K4SubItem.Types = K4SubItem.Types> {
     type: T,
-    system: K4Item.System<T> & K4SubItem.Components.IsSubItem;
+    system: K4SubItem.System<T> & K4SubItem.Components.IsSubItem;
   }
 
   namespace K4Item {
@@ -163,18 +172,18 @@ declare global {
           trigger?: string,
           outro?: string,
           listRefs?: string[],
-          effectFunctions?: string[],
+          effects?: string[],
           holdText?: string;
         };
       }
 
       export interface ResultsData {
         results: Record<
-          K4ItemResultType,
+          K4RollResult,
           {
             result: string,
             listRefs?: string[],
-            effectFunctions?: string[],
+            effects?: string[],
             edges?: PosInteger,
             hold?: PosInteger;
           }
@@ -259,7 +268,7 @@ declare global {
         K4Item.Components.HasSubItems,
         K4Item.Components.RulesData,
         Partial<K4Item.Components.ResultsData> {
-        armor: number;
+        armor: Integer;
       }
     }
 
@@ -363,7 +372,7 @@ class K4Item extends Item {
     // Customize the sidebar icon for the Item directory
     CONFIG.Item.sidebarIcon = "fa-regular fa-box-open";
 
-    // Register the hook in your module or system initialization code
+    // Register creation hook
     Hooks.on("preCreateItem", async (itemData: K4Item): Promise<boolean> => {
       // Ensure the item is being created for an actor
       if (!itemData.parent || itemData.parent.documentName !== "Actor") {
@@ -391,9 +400,10 @@ class K4Item extends Item {
   } isParentItem(): this is K4Item.Parent {return Boolean("subItems" in this.system && Array.isArray(this.system.subItems) && this.system.subItems.length > 0);}
   hasSubMoves(): this is K4Item.Parent {return "subMoves" in this.system && Array.isArray(this.system.subMoves) && this.system.subMoves.length > 0;}
   hasSubAttacks(): this is K4Item.Parent {return "subAttacks" in this.system && Array.isArray(this.system.subAttacks) && this.system.subAttacks.length > 0;}
-  isSubItem(): this is K4SubItem {return Boolean("sourceItem" in this.system && this.system.sourceItem?.name);}
-  isOwnedItem(): this is K4Item & {parent: K4Actor;/* , itemSheet: K4ItemSheet */} {return this.isEmbedded && this.parent instanceof Actor;}
-  isOwnedSubItem(): this is K4SubItem & {parent: K4Actor;/* , itemSheet: K4ItemSheet */} {return this.isSubItem() && this.isOwnedItem();}
+  isSubItem(): this is K4Item & K4SubItem {return Boolean("parentItem" in this.system && this.system.parentItem?.name);}
+  isEdge(): this is K4SubItem<K4ItemType.move> {return this.isSubItem() && Boolean(this.system.isEdge);}
+  isOwnedItem(): this is K4Item & {parent: K4Actor;} {return this.isEmbedded && this.parent instanceof Actor;}
+  isOwnedSubItem(): this is K4Item & K4SubItem & {parent: K4Actor;} {return this.isSubItem() && this.isOwnedItem();}
   isActiveItem(): this is K4Item.Active {return this.system.subType === K4ItemSubType.activeRolled;}
   isStaticItem(): this is K4Item.Static {return this.system.subType === K4ItemSubType.activeStatic;}
   isPassiveItem(): this is K4Item.Passive {return this.system.subType === K4ItemSubType.passive;}
@@ -406,44 +416,52 @@ class K4Item extends Item {
   // get masterKey(): string {
   //   if (!this.isSubItem()) {return this.key;}
   //   if (!this.isOwnedSubItem()) {return this.key;}
-  //   const keyItem = game.items?.getName(this.system.sourceItem.name) as Maybe<K4Item>;
+  //   const keyItem = game.items?.getName(this.system.parentItem.name) as Maybe<K4Item>;
   //   if (keyItem?.key) {return keyItem.key;}
   //   return this.key;
   // }
-  get masterType(): K4ItemType {return this.isSubItem() ? this.system.sourceItem?.type : this.type;}
-  get masterName(): string {return this.isSubItem() ? this.system.sourceItem?.name : this.name;}
-  get sourceItemData(): K4SubItem.Components.SourceItemReference | null {
-    if (!this.isSubItem()) {return null;}
-    return this.system.sourceItem;
-  }
-  get sourceItem(): K4Item.Parent | null {
+  get parentID(): IDString | undefined {return this.isSubItem() ? this.parentItem?.id : undefined;}
+  get parentType(): K4ItemType {return this.isSubItem() ? this.system.parentItem?.type : this.type;}
+  get parentName(): string {return this.isSubItem() ? this.system.parentItem?.name : this.name;}
+  get parentItem(): K4Item.Parent | null {
     if (!this.isOwnedSubItem()) {return null;}
-    const {id} = this.system.sourceItem;
+    const {id} = this.system.parentItem;
     if (!id) {
-      throw new Error(`SubItem ${this.name} is missing a sourceItem ID.`);
+      throw new Error(`SubItem ${this.name} is missing a parentItem ID.`);
     }
-    const sourceItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Item.Parent>;
-    if (!sourceItem) {return null;}
-    return sourceItem;
+    const parentItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Item.Parent>;
+
+    // Extracting results from parentItem's system if available, otherwise defaulting to empty objects
+    const {
+      completeSuccess: { result: resComplete } = { result: undefined },
+      partialSuccess: { result: resPartial } = { result: undefined },
+      failure: { result: resFail } = { result: undefined }
+    } = parentItem?.system.results ?? {};
+    if (!parentItem) {return null;}
+    return parentItem;
   }
 
-  get subItems(): K4SubItem[] {
+  get subItems(): Array<K4Item & K4SubItem> {
     return (this.isOwnedItem() && this.isParentItem()) ? this.parent.getItemsBySource(this.id) : [];
   }
 
   get subMoves(): Array<K4SubItem<K4ItemType.move>> {
-    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move);
+    return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move && !subItem.isEdge());
   }
-
+  get edges(): Array<K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move>> {
+    return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.isEdge());
+  }
   get subAttacks(): Array<K4SubItem<K4ItemType.attack>> {
-    return this.subItems.filter((subItem): subItem is K4SubItem<K4ItemType.attack> => subItem.type === K4ItemType.attack);
+    return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.attack> & K4SubItem<K4ItemType.attack> => subItem.type === K4ItemType.attack);
   }
   // #endregion
+
+  // #region EFFECT FUNCTIONS ~
   async applyEffectFunction(functionStr: string) {
     if (!this.isOwnedItem()) {return;}
     const [funcName, ...params] = functionStr.split(/,/);
 
-    /* Run 'getUniqueValuesForKey(PACKS.all, "rules.effectFunctions")' in the console to get a list of all effect functions,
+    /* Run 'getUniqueValuesForKey(PACKS.all, "rules.effects")' in the console to get a list of all effect functions,
        as they are defined in the .db JSON data manually copied into data.ts.
 
        Currently:
@@ -488,7 +506,7 @@ class K4Item extends Item {
         kLog.log("Found Target Item", targetItem);
         if (targetItem?.system.lists[targetList]) {
           const sourceListItems = this.system.lists[sourceList].items
-            .map((listItem: string) => `${listItem} #>text-list-note:data-item-name='${this.masterName}':data-action='open'>(from ${this.masterName})<#`);
+            .map((listItem: string) => `${listItem} #>text-list-note:data-item-name='${this.parentName}':data-action='open'>(from ${this.parentName})<#`);
           const updateData = [
             {
               _id: targetItem.id,
@@ -531,7 +549,7 @@ class K4Item extends Item {
         kLog.log("Found Target Move", targetItem);
         if (targetItem?.system.lists[targetList]) {
           const prunedListItems = this.system.lists[sourceList].items
-            .filter((listItem) => !(new RegExp(`data-item-name=.?${this.masterName}.?`)).test(listItem));
+            .filter((listItem) => !(new RegExp(`data-item-name=.?${this.parentName}.?`)).test(listItem));
           const updateData = [
             {
               _id: targetItem.id,
@@ -553,16 +571,17 @@ class K4Item extends Item {
       }
     }
   }
-  applyOnCreateEffectFunctions() {
-    if ("rules" in this.system && this.system.rules.effectFunctions) {
-      this.system.rules.effectFunctions.forEach((funcString) => this.applyEffectFunction(funcString));
+  applyOnCreateeffects() {
+    if ("rules" in this.system && this.system.rules.effects) {
+      this.system.rules.effects.forEach((funcString) => this.applyEffectFunction(funcString));
     }
   }
-  unapplyOnCreateEffectFunctions() {
-    if ("rules" in this.system && this.system.rules.effectFunctions) {
-      this.system.rules.effectFunctions.forEach((funcString) => this.unapplyEffectFunction(funcString));
+  unapplyOnCreateeffects() {
+    if ("rules" in this.system && this.system.rules.effects) {
+      this.system.rules.effects.forEach((funcString) => this.unapplyEffectFunction(funcString));
     }
   }
+  // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete
   prepareSubItemData() {
@@ -570,7 +589,8 @@ class K4Item extends Item {
     return this.system.subItems
       .map((subData) => {
         subData.name ??= this.name;
-        subData.system.sourceItem.id = this.id;
+        subData.system.parentItem.id = this.id;
+        subData.system.parentType = this.type;
         if ("lists" in this.system) {
           subData.system.lists = {
             ...this.system.lists,
@@ -581,12 +601,29 @@ class K4Item extends Item {
       }) as Array<K4SubItem.Schema & Record<string, unknown>>;
   }
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
-    super._onCreate(...args);
+    await super._onCreate(...args);
     if (!this.isOwnedItem()) {return;}
+    this.applyOnCreateeffects();
     if (this.isParentItem()) {
-      await this.parent.createEmbeddedDocuments("Item", this.prepareSubItemData());
+      // Item has subItem schemas, create them now as independent K4Items.
+      const subItemData = this.prepareSubItemData();
+      kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating ${subItemData.length} SubItems`, {
+        ITEM: this,
+        subItemData: foundry.utils.deepClone(subItemData)
+      });
+      await this.parent.createEmbeddedDocuments("Item", subItemData);
+    } else if (this.isSubItem()) {
+      const [parentName, parentType] = [this.parentName, this.parentType];
+      const parentDisplay = `${C.Abbreviations.ItemType[parentType]}.${U.uCase(parentName)}`;
+      kLog.display(`... #${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Created by #${this.parentID ?? ""}[[${parentDisplay}]]`, {
+        ITEM: this,
+        parent: this.parentItem
+      });
+    } else {
+      kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Created`, {
+        ITEM: this
+      });
     }
-    this.applyOnCreateEffectFunctions();
   }
   override prepareData() {
     super.prepareData();
@@ -603,6 +640,8 @@ class K4Item extends Item {
         this.system.results = firstSubItem.system.results;
       }
     }
+
+    // if (this.isOwnedItem() && this.isSubI)
   }
   override _onDelete(...args: Parameters<Item["_onDelete"]>) {
     super._onDelete(...args);
@@ -610,12 +649,13 @@ class K4Item extends Item {
     if (this.isParentItem()) {
       this.subItems.forEach((item) => item.delete());
     }
-    this.unapplyOnCreateEffectFunctions();
+    this.unapplyOnCreateeffects();
   }
   // #endregion
 
+  // #region CONTEXTUAL HTML CONSTRUCTION ~
   get hoverStrip(): HoverStripData {
-    const stripType: K4ItemType = this.isSubItem() ? this.system.sourceItem.type : this.type;
+    const stripType: K4ItemType | "edge" = this.isEdge() ? "edge" : (this.isSubItem() ? this.system.parentItem.type : this.type);
     const theme = C.Themes[stripType];
     const stripData: HoverStripData = {
       id: this.id ?? `${this.type}-${U.randString(5)}`,
@@ -705,7 +745,7 @@ class K4Item extends Item {
   }
 
   get chatTheme(): string {
-    switch (this.type) {
+    switch (this.parentType) {
       case K4ItemType.advantage:
         return "k4-theme-gold";
       case K4ItemType.disadvantage:
@@ -737,18 +777,16 @@ class K4Item extends Item {
   }
 
   get itemSummaryContext() {
-    const {name} = this;
-    const cssClasses: string[] = ["kult4th-chat"];
-
     return {
       name: this.name,
       img: this.img,
       system: this.system,
       item: this,
-      sourceItem: this.sourceItem,
+      parentItem: this.parentItem,
+      parentName: this.parentName,
+      parentType: this.parentType,
       cssClass: [
-        ...this.chatCssClasses,
-        "kult4th-item-display"
+        ...this.chatCssClasses
       ].join(" ")
     };
   }
@@ -767,7 +805,7 @@ class K4Item extends Item {
     return this.itemSummaryContext;
   }
 
-  chatTemplate = "systems/kult4th/templates/sidebar/item-display.hbs";
+  chatTemplate = "systems/kult4th/templates/partials/item-block.hbs";
   triggerTemplate = "systems/kult4th/templates/sidebar/result-static.hbs";
   async displayItemSummary(speaker?: string) {
     const template = await getTemplate(this.chatTemplate);
@@ -794,7 +832,7 @@ class K4Item extends Item {
       speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""}),
       flags: {
         kult4th: {
-          cssClasses: [this.sourceItem?.chatTheme ?? this.chatTheme]
+          cssClasses: [this.parentItem?.chatTheme ?? this.chatTheme]
         }
       }
     });
@@ -810,6 +848,6 @@ export {
   K4ItemSubType,
   K4ItemRange,
   K4WeaponClass,
-  K4ItemResultType
+  K4RollResult
 };
 // #endregion

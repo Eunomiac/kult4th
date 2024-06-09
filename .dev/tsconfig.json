@@ -1,3 +1,11 @@
 {
-  "include": ["tsconfig_dummy.ts"]
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./types",
+    "strict": true,
+    "checkJs": true
+  },
+  "include": ["./item-data.ts"]
 }

@@ -12,7 +12,7 @@ declare global {
   }
   interface HoverStripData {
     id: string,
-    type: K4ItemType | K4WoundType,
+    type: K4ItemType | K4WoundType | "edge",
     display: string,
     icon: string,
     isGlowing?: "red"|"blue"|"gold"|false,

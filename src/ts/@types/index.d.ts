@@ -5,6 +5,7 @@ import "./scripts";
 import "./general-types";
 import "./system-types";
 import "./league-types";
+import "./field-types";
 
 type SceneDoc = Scene;
 type ActorDoc = K4Actor;
@@ -52,7 +53,17 @@ declare global {
   namespace foundry {
     namespace data {
       namespace fields {
+        class AlphaField extends AlphaField { }
+        class ArrayField extends ArrayField { }
+        class DataField extends foundry.data.fields.OBJECT_FIELD { }
+        class SchemaField extends DataField { }
+        class NumberField extends foundry.data.fields.INTEGER_FIELD { }
+        class FilePathField extends foundry.data.fields.STRING_FIELD { }
+        class ColorField extends foundry.data.fields.COLOR_FIELD { }
+        class StringField extends foundry.data.fields.STRING_FIELD { }
+        class BooleanField extends foundry.data.fields.BOOLEAN_FIELD { }
         class ObjectField extends foundry.data.fields.OBJECT_FIELD { }
+        class DocumentIdField extends foundry.data.fields.DOCUMENT_ID { }
       }
     }
   }

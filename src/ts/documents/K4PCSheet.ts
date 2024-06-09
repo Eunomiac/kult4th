@@ -7,8 +7,6 @@ import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
-// gsap.registerPlugin(MorphSVGPlugin);
-
 const ANIMATIONS = {
   _glitchText(_target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
 
@@ -259,6 +257,8 @@ const ANIMATIONS = {
         }, 0);
     }
 
+    kLog.log("NAV TL", {navTL, target, svgs});
+
     return navTL;
   },
   hoverNavTab(target: HTMLElement): GsapAnimation {
@@ -420,6 +420,269 @@ const ANIMATIONS = {
 };
 
 class K4PCSheet extends ActorSheet {
+  static async PreInitialize() {
+    gsap.registerEffect({
+      name: "breakShard",
+      effect: (_: unknown, config: {stability: Integer}) => {
+        const shardsMap = {
+          7: [
+            [13, 4],
+            [12, 2, 3, 5, 1]
+          ],
+          6: [[1, 11], [10]],
+          5: [[5], [6]],
+          4: [
+            [8, 6],
+            [9, 7]
+          ],
+          3: [[10], [0]],
+          2: [[3, 12, 2], [0]],
+          1: [[7, 9], [0]]
+        };
+        const getFadingShards = (stabilityNum: Integer) => {
+          const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][0] ?? [];
+          return $(shardNums.map((num) => `#shard-${num}`).join(", "));
+        };
+        const getShrinkingShards = (stabilityNum: Integer) => {
+          const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][1] ?? [];
+          return $(shardNums.map((num) => `#shard-${num}`).join(", "));
+        };
+        const fullDuration = 0.5;
+        const fadingShardsScaleFullDuration = fullDuration / 5;
+        const fadingShardsShiftFullDuration = fullDuration - fadingShardsScaleFullDuration;
+
+        const fadingShards$ = getFadingShards(config.stability);
+        console.log({config, fadingShards$})
+        const fadingShardsNum = Array.from(fadingShards$).length;
+        const fadingShardsScaleStagger = fadingShardsNum <= 1
+          ? 0
+          : (0.5 * fadingShardsScaleFullDuration) / (fadingShardsNum - 1);
+        const fadingShardsShiftStagger = fadingShardsNum <= 1
+          ? 0
+          : (0.5 * fadingShardsShiftFullDuration) / (fadingShardsNum - 1);
+        const fadingShardsScaleDur = fadingShardsScaleFullDuration - (fadingShardsScaleStagger * (fadingShardsNum - 1));
+        const fadingShardsShiftDur = fadingShardsShiftFullDuration - (fadingShardsShiftStagger * (fadingShardsNum - 1));
+        const fadingShardsAnimDuration = fadingShardsScaleDur +
+              fadingShardsShiftDur +
+              (fadingShardsScaleStagger * (fadingShardsNum - 1)) +
+              (fadingShardsShiftStagger * (fadingShardsNum - 1));
+
+        // console.log("FADING SHARDS DATA", {
+        //   fullDuration,
+        //   fadingShards$,
+        //   fadingShardsNum,
+        //   fadingShardsScaleFullDuration,
+        //   fadingShardsScaleStagger,
+        //   fadingShardsScaleDur,
+        //   fadingShardsShiftFullDuration,
+        //   fadingShardsShiftStagger,
+        //   fadingShardsShiftDur,
+        //   fadingShardsAnimDuration
+        // });
+
+        return gsap.timeline({})
+          .to(getShrinkingShards(config.stability), { transformOrigin: "center center", scale: 1, duration: 0.25, ease: "none" }, 0)
+          .set(fadingShards$, {transformOrigin: "right center"}, 0)
+          .to(fadingShards$, {
+            scaleX: -1,
+            duration: 0.5,
+            ease: "rough({ strength: 2, points: 10, template: power4.in, taper: out, randomize: true, clamp: false })", // "power2.inOut",
+            stagger: 0.1
+          })
+          .to(fadingShards$, {
+            xPercent: 700,
+            duration: 0.4,
+            ease: "power2.in",
+            stagger: 0.1
+          })
+          // ">-0.75")
+      },
+      defaults: {duration: 0.5},
+      extendTimeline: true
+    });
+  }
+
+  #buildStabilityShardsTimeline(html: JQuery) {
+    return gsap.timeline({ paused: true })
+      .set(html.find("#stability-shards"), {fill: C.Colors.GOLD})
+      .set(html.find("#stability-frame"), {fill: C.Colors.GOLD, stroke: C.Colors.GOLD})
+    .addLabel("stability10")
+      .to(html.find("#stability-cracks-path"), {
+        morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-9")[0],
+        duration: 0.5,
+        ease: "power4"
+      }, 0)
+    .addLabel("stability9")
+      .to(html.find("#stability-cracks-path"), {
+        morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-8")[0],
+        duration: 0.5,
+        ease: "power4"
+      })
+    .addLabel("stability8")
+      .to(html.find("#stability-cracks-path"), {
+        morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-7")[0],
+        duration: 0.5,
+        ease: "power4"
+      })
+      .breakShard([], {stability: 7}, "<")
+      .to(html.find("#glitch"), {opacity: 1, duration: 0.5, ease: "power4"}, "<")
+    .addLabel("stability7")
+      .breakShard([], {stability: 6})
+    .addLabel("stability6")
+      .breakShard([], {stability: 5})
+    .addLabel("stability5")
+      .breakShard([], {stability: 4})
+      .to(html.find("#stability-gear-geburah, #stability-gear-binah"), {opacity: 1, duration: 0.5, ease: "power4"}, "<")
+      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0.95, duration: 0.5, ease: "sine"}, "<")
+    .addLabel("stability4")
+      .breakShard([], {stability: 3})
+      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0.85, duration: 0.5, ease: "sine"}, "<")
+    .addLabel("stability3")
+      .breakShard([], {stability: 2})
+      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0.75, duration: 0.5, ease: "sine"}, "<")
+    .addLabel("stability2")
+      .breakShard([], {stability: 1})
+      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0, duration: 0.5, ease: "sine"}, "<")
+    .addLabel("stability1")
+      .fromTo(html.find("#stability-shards, #stability-frame"), {
+        fill: C.Colors.GOLD,
+        stroke: C.Colors.GOLD
+      },
+      {
+        fill: C.Colors.dRED,
+        stroke: C.Colors.GOLD,
+        duration: 5,
+        ease: "power2"
+      }, 0)
+      .to(html.find("#stability-shards, #stability-frame"), {
+        fill: C.Colors.bRED,
+        stroke: C.Colors.dBLACK,
+        duration: 5,
+        ease: "power2"
+      }, 5)
+      ;
+  }
+  _stabilityShardsTimeline: gsap.core.Timeline|undefined = undefined;
+  get stabilityShardsTimeline(): gsap.core.Timeline {
+    if (!this._stabilityShardsTimeline) {
+      throw new Error("Attempt to get stabilityShardsTimeline before html context sent in activateListeners.");
+    }
+    return this._stabilityShardsTimeline as gsap.core.Timeline;
+  }
+  getGlitchRepeatDelay(stability: Integer = this.actor.system.stability.value): number {
+    const delayDistributor = gsap.utils.distribute({
+      amount: 20,
+      ease: "sine.inOut"
+    });
+    const distVals = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((target, i, arr) =>
+      delayDistributor(i, arr[i], arr)
+    );
+    // console.log(`[${stability}] ${distVals[stability]}s`);
+    return distVals[stability];
+  }
+  refreshGlitchRepeatDelay(stability: Integer = this.actor.system.stability.value) {
+  }
+  #buildGlitchTimeline(html: JQuery) {
+    const glitch$ = html.find("#shards-svg #glitch");
+    const glitchText$ = html.find("#shards-svg .glitch-text");
+    const glitchTop$ = html.find("#shards-svg .glitch-top");
+    const glitchBottom$ = html.find("#shards-svg .glitch-bottom");
+
+    // gsap.fromTo(glitchText$, {skewX: "random(-15, 5, 1)"}, {skewX: "random(5, 15, 1)", repeatRefresh: true, ease: "rough({strength: 3, points: 250, taper: none, randomize: true, clamp: false})", repeat: -1, yoyo: true, duration: 5});
+    return gsap
+      .timeline({
+        repeat: -1,
+        repeatRefresh: true,
+        repeatDelay: this.getGlitchRepeatDelay(),
+        // onRepeat: setGlitchRepeatDelay
+      })
+      .to(glitchText$, {
+        duration: 0.1,
+        skewX: "random([20,-20])",
+        ease: "power4.inOut"
+      })
+      .to(glitchText$, { duration: 0.04, skewX: 0, ease: "power4.inOut" })
+
+      .to(glitchText$, { duration: 0.04, opacity: 0 })
+      .to(glitchText$, { duration: 0.04, opacity: 1 })
+
+      .to(glitchText$, { duration: 0.04, x: "random([20,-20])" })
+      .to(glitchText$, { duration: 0.04, x: 0 })
+
+      .add("split", 0)
+
+      .to(glitchTop$, { duration: 0.5, x: -30, ease: "power4.inOut" }, "split")
+      .to(glitchBottom$, { duration: 0.5, x: 30, ease: "power4.inOut" }, "split")
+      .to(
+        glitchText$,
+        { duration: 0.08, textShadow: "-13px -13px 0px #460e0e" },
+        "split"
+      )
+      .to(glitch$, { duration: 0, scale: 1.2 }, "split")
+      .to(glitch$, { duration: 0, scale: 1 }, "+=0.02")
+      .to(
+        glitchText$,
+        { duration: 0.08, textShadow: "0px 0px 0px #460e0e" },
+        "+=0.09"
+      )
+      .to(
+        glitchText$,
+        { duration: 0.03, textShadow: "13px 13px 0px #FFF" },
+        "split"
+      )
+      .to(
+        glitchText$,
+        { duration: 0.08, textShadow: "0px 0px 0px transparent" },
+        "+=0.01"
+      )
+      .to(glitchTop$, { duration: 0.2, x: 0, ease: "power4.inOut" })
+      .to(glitchBottom$, { duration: 0.2, x: 0, ease: "power4.inOut" })
+      .to(glitchText$, { duration: 0.02, scaleY: 1.1, ease: "power4.inOut" })
+      .to(glitchText$, { duration: 0.04, scaleY: 1, ease: "power4.inOut" });
+  }
+
+
+  _glitchTimeline: gsap.core.Timeline|undefined = undefined;
+  get glitchTimeline() {
+    if (!this._glitchTimeline) {
+      throw new Error("Attempt to get glitchTimeline before html context sent in activateListeners.");
+    }
+    return this._glitchTimeline;
+  }
+
+
+
+  async changeStability(stabilityDelta: Integer): Promise<unknown> {
+    const newStability = U.clampNum(this.actor.system.stability.value + stabilityDelta, [1, 10]) as Integer;
+    if (newStability === this.actor.system.stability.value) { return; }
+    let updateAnim: Maybe<GsapAnimation> = undefined;
+    if (this.rendered) {
+      this.glitchTimeline.repeatDelay(this.getGlitchRepeatDelay(newStability));
+      this.glitchTimeline.restart();
+      gsap.set(this.element.find(".stability-count"),  {
+        text: `${newStability}`
+      });
+      updateAnim = this.stabilityShardsTimeline.tweenTo(`stability${newStability}`);
+    }
+    return this.actor.update(
+      {"system.stability.value": newStability},
+      {updateAnim}
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-actor-sheet", "k4-theme-dgold"],
@@ -590,6 +853,81 @@ class K4PCSheet extends ActorSheet {
       gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.BLACK});
     }
 
+    // Handle stability animations & stability glitch
+    this._glitchTimeline = this.#buildGlitchTimeline(html);
+    this._stabilityShardsTimeline = this.#buildStabilityShardsTimeline(html);
+    this.stabilityShardsTimeline.seek(`stability${this.actor.system.stability.value}`);
+    gsap.set(html.find("#stability-shards-clip path"), {
+      transformOrigin: "center center",
+      scale: 1.1,
+      display: "block"
+    });
+    gsap.set(html.find("#shard-11"), {
+      transformOrigin: "left center",
+      display: "block",
+      scale: 1.2,
+    });
+    gsap.set(html.find("#stability-shards-clip path"), {
+      transformOrigin: "center center"
+    });
+
+    gsap.set(html.find("#stability-gear-geburah"), {x: 700, y: 180, scale: 2, transformOrigin: "center center"});
+    gsap.set(html.find("#stability-gear-binah"), {x: -200, y: -200, scale: 2, transformOrigin: "center center"});
+    gsap.to(html.find("#stability-gear-geburah"), {rotation: "+=360", duration: 10, repeat: -1, ease: "none"});
+    gsap.to(html.find("#stability-gear-binah"), {rotation: "-=360", duration: 10, repeat: -1, ease: "rough({strength: 0.2, points: 25, template: sine, taper: out, randomize: true, clamp: false})"});
+    gsap.set(html.find("#stability-animation-bg img, .stability-count, #stability-frame"), { opacity: 1 });
+
+    if (this.actor.activeEdges.length) {
+      gsap.to(html.find(".edges-header"), {autoAlpha: 1, duration: 0});
+      gsap.to(html.find(".edges-count"), {autoAlpha: 1, duration: 0});
+      gsap.to(html.find(".edges-source"), {autoAlpha: 1, duration: 0});
+      gsap.to(html.find(".edges .hover-strip"), {autoAlpha: 1, duration: 0});
+      gsap.to(html.find(".edges-blade-container"), {autoAlpha: 1, duration: 0});
+
+      const numEdges = this.actor.system.edges.value;
+      gsap.to(
+        html.find(".edges-blade-container svg"),
+        {autoAlpha: 1, rotation: 175 + (20 * numEdges), duration: 0}
+      )
+    }
+
+    let clickStatus = false;
+    const dblClickCheck = (event: DoubleClickEvent) => {
+      event.preventDefault();
+      if (clickStatus) { return }
+      clickStatus = true;
+      $(".button-container").off("dblclick");
+      this.changeStability(-1 as Integer);
+    }
+    const clickCheck = (event: DoubleClickEvent) => {
+      event.preventDefault();
+      if (clickStatus) { return }
+      console.log("CLICK");
+      $(".button-container").off("click");
+      $(".button-container").on("dblclick", dblClickCheck.bind(this));
+      setTimeout(() => {
+        if (!clickStatus) {
+          // gsap.effects.splashBannerText(labelChars);
+          console.warn("WOULD DRAW A TOOLTIP HERE!");
+          // gsap.effects.drawToolTip(".tooltip-container"); // .paused(false);
+        }
+        $(".button-container").off("dblclick");
+        clickStatus = false;
+        $(".button-container").on({
+          click: clickCheck.bind(this)}
+        );
+      }, 250)
+    }
+
+    $(".button-container").on({
+      click: clickCheck.bind(this),
+      contextmenu: (event) => {
+        event.preventDefault();
+        this.changeStability(1 as Integer);
+      }
+    });
+
+
     // Add click listeners for elements with data-action="open" to open item sheets
     html.find("*[data-action=\"open\"]")
       .each(function() {
@@ -694,17 +1032,17 @@ class K4PCSheet extends ActorSheet {
         }
       });
 
-    // Add click listeners for stability-add buttons to increase stability
-    html.find("button.stability-add")
-      .each(function() {
-        $(this).on("click", () => self.actor.changeStability(1));
-      });
+    // // Add click listeners for stability-add buttons to increase stability
+    // html.find("button.stability-add")
+    //   .each(function() {
+    //     $(this).on("click", () => self.actor.changeStability(1));
+    //   });
 
-    // Add click listeners for stability-remove buttons to decrease stability
-    html.find("button.stability-remove")
-      .each(function() {
-        $(this).on("click", () => self.actor.changeStability(-1));
-      });
+    // // Add click listeners for stability-remove buttons to decrease stability
+    // html.find("button.stability-remove")
+    //   .each(function() {
+    //     $(this).on("click", () => self.actor.changeStability(-1));
+    //   });
 
     // Add click listeners for wound-add buttons to add a new wound
     html.find("button.wound-add")
@@ -807,7 +1145,6 @@ class K4PCSheet extends ActorSheet {
         .on("focus", (focusEvent) => {
           self.unClamp(focusEvent.currentTarget);
           const element = focusEvent.currentTarget;
-
           if (element) {
             const range = document.createRange(); // Create a new range
             const selection = window.getSelection(); // Get the current selection

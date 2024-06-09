@@ -1,4 +1,5 @@
-export default const ITEM_DATA = {
+
+export default {
   "advantage": [
     {
       "name": "Worldly",
@@ -18,7 +19,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
             "system": {
               "chatName": "Recalls this Place",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Worldly",
                 "type": "advantage"
               },
@@ -69,7 +70,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Occult Studies",
                 "type": "advantage"
               },
@@ -136,7 +137,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
             "system": {
               "chatName": "Refuses to Give In",
-              "sourceItem": {
+              "parentItem": {
                 "name": "To the Last Breath",
                 "type": "advantage"
               },
@@ -227,7 +228,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Character Actor",
                 "type": "advantage"
               },
@@ -297,7 +298,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
             "system": {
               "chatName": "Follows the Code",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Code of Honor",
                 "type": "advantage"
               },
@@ -349,7 +350,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Prepared",
                 "type": "advantage"
               },
@@ -421,7 +422,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
             "system": {
               "chatName": "Sacrifices for Another",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Good Samaritan",
                 "type": "advantage"
               },
@@ -481,7 +482,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Artifact",
                 "type": "advantage"
               },
@@ -556,7 +557,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Sixth Sense",
                 "type": "advantage"
               },
@@ -630,7 +631,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/moles.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Moles",
                 "type": "advantage"
               },
@@ -696,7 +697,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Impostor",
                 "type": "advantage"
               },
@@ -754,7 +755,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
             "system": {
               "chatName": "Goes Against the Odds",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Desperate",
                 "type": "advantage"
               },
@@ -797,7 +798,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Awe-Inspiring",
                 "type": "advantage"
               },
@@ -865,7 +866,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
             "system": {
               "chatName": "Invokes the Watchers",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Watchers",
                 "type": "advantage"
               },
@@ -912,7 +913,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Academic Network",
                 "type": "advantage"
               },
@@ -968,7 +969,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Implanted Messages",
                 "type": "advantage"
               },
@@ -1033,7 +1034,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Forbidden Inspiration",
                 "type": "advantage"
               },
@@ -1111,7 +1112,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Inventor",
                 "type": "advantage"
               },
@@ -1177,7 +1178,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
             "system": {
               "chatName": "Will Pay Any Price",
-              "sourceItem": {
+              "parentItem": {
                 "name": "At Any Cost",
                 "type": "advantage"
               },
@@ -1229,7 +1230,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Body Awareness",
                 "type": "advantage"
               },
@@ -1306,7 +1307,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Crafty",
                 "type": "advantage"
               },
@@ -1371,7 +1372,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Enhanced Awareness",
                 "type": "advantage"
               },
@@ -1436,7 +1437,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Daredevil",
                 "type": "advantage"
               },
@@ -1479,7 +1480,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "chatName": "On a Swivel",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Daredevil",
                 "type": "advantage"
               },
@@ -1498,7 +1499,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "chatName": "Not Today",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Daredevil",
                 "type": "advantage"
               },
@@ -1517,7 +1518,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "chatName": "Sucker Punch",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Daredevil",
                 "type": "advantage"
               },
@@ -1573,7 +1574,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ice Cold",
                 "type": "advantage"
               },
@@ -1616,7 +1617,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Easy Dodge",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ice Cold",
                 "type": "advantage"
               },
@@ -1635,7 +1636,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Opportunity Calls",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ice Cold",
                 "type": "advantage"
               },
@@ -1654,7 +1655,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Patience, Patience",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ice Cold",
                 "type": "advantage"
               },
@@ -1673,7 +1674,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Clever Trick",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ice Cold",
                 "type": "advantage"
               },
@@ -1728,7 +1729,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Dabbler in the Occult",
                 "type": "advantage"
               },
@@ -1793,7 +1794,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/bound.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Bound",
                 "type": "advantage"
               },
@@ -1870,7 +1871,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Animal Speaker",
                 "type": "advantage"
               },
@@ -1947,7 +1948,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Parkour",
                 "type": "advantage"
               },
@@ -2116,7 +2117,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
             "system": {
               "chatName": "Learns Something New",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Thirst for Knowledge",
                 "type": "advantage"
               },
@@ -2160,7 +2161,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
               "chatName": "Defies Injury",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Sealed Fate",
                 "type": "advantage"
               },
@@ -2179,7 +2180,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
               "chatName": "Defies Death",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Sealed Fate",
                 "type": "advantage"
               },
@@ -2233,7 +2234,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Quick Thinker",
                 "type": "advantage"
               },
@@ -2310,7 +2311,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Exorcist",
                 "type": "advantage"
               },
@@ -2385,7 +2386,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Wanderer",
                 "type": "advantage"
               },
@@ -2487,7 +2488,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Hacker",
                 "type": "advantage"
               },
@@ -2559,7 +2560,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Fascination",
                 "type": "advantage"
               },
@@ -2633,7 +2634,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/boss.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Boss",
                 "type": "advantage"
               },
@@ -2698,7 +2699,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Fast Talk",
                 "type": "advantage"
               },
@@ -2776,7 +2777,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Read a Crowd",
                 "type": "advantage"
               },
@@ -2845,7 +2846,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
             "system": {
               "chatName": "Innovates",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Workaholic",
                 "type": "advantage"
               },
@@ -2897,7 +2898,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Stubborn",
                 "type": "advantage"
               },
@@ -2940,7 +2941,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "chatName": "Refuse to Give Up",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Stubborn",
                 "type": "advantage"
               },
@@ -2959,7 +2960,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "chatName": "Will Over Skill",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Stubborn",
                 "type": "advantage"
               },
@@ -2978,7 +2979,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "chatName": "Steel Yourself",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Stubborn",
                 "type": "advantage"
               },
@@ -3036,7 +3037,7 @@ export default const ITEM_DATA = {
             "type": "attack",
             "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Elite Sport (Fencing)",
                 "type": "advantage"
               },
@@ -3108,7 +3109,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Eye for Detail",
                 "type": "advantage"
               },
@@ -3176,7 +3177,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/escape-artist.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Escape Artist",
                 "type": "advantage"
               },
@@ -3242,7 +3243,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/erotic.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Erotic",
                 "type": "advantage"
               },
@@ -3306,11 +3307,10 @@ export default const ITEM_DATA = {
         "pdfLink": "",
         "subItems": [
           {
-            "name": "Lay on Hands",
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Lay on Hands",
                 "type": "advantage"
               },
@@ -3375,7 +3375,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/sneak.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Sneak",
                 "type": "advantage"
               },
@@ -3451,7 +3451,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Survival Instinct",
                 "type": "advantage"
               },
@@ -3507,7 +3507,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/wayfinder.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Wayfinder",
                 "type": "advantage"
               },
@@ -3573,7 +3573,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/street-contacts.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Street Contacts",
                 "type": "advantage"
               },
@@ -3653,7 +3653,7 @@ export default const ITEM_DATA = {
             "type": "attack",
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Weapon Master (Melee)",
                 "type": "advantage"
               },
@@ -3693,7 +3693,7 @@ export default const ITEM_DATA = {
             "type": "attack",
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Weapon Master (Melee)",
                 "type": "advantage"
               },
@@ -3733,7 +3733,7 @@ export default const ITEM_DATA = {
             "type": "attack",
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Weapon Master (Melee)",
                 "type": "advantage"
               },
@@ -3802,7 +3802,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/authority.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Authority",
                 "type": "advantage"
               },
@@ -3865,7 +3865,7 @@ export default const ITEM_DATA = {
             "name": "Edges",
             "items": [
               "#>text-edgename>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-              "#>text-edgename>Quick Thinker<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
+              "#>text-edgename>Quick Thinking<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
               "#>text-edgename>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
             ]
           }
@@ -3880,7 +3880,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Genius",
                 "type": "advantage"
               },
@@ -3923,7 +3923,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
               "chatName": "Logical",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Genius",
                 "type": "advantage"
               },
@@ -3937,12 +3937,12 @@ export default const ITEM_DATA = {
             }
           },
           {
-            "name": "Quick Thinker",
+            "name": "Quick Thinking",
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
-              "chatName": "Quick Thinker",
-              "sourceItem": {
+              "chatName": "Quick Thinking",
+              "parentItem": {
                 "name": "Genius",
                 "type": "advantage"
               },
@@ -3961,7 +3961,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
               "chatName": "Rational",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Genius",
                 "type": "advantage"
               },
@@ -4017,7 +4017,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Driver",
                 "type": "advantage"
               },
@@ -4060,7 +4060,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Defensive Driving",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Driver",
                 "type": "advantage"
               },
@@ -4079,7 +4079,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Evasive Driving",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Driver",
                 "type": "advantage"
               },
@@ -4098,7 +4098,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Deadly Driving",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Driver",
                 "type": "advantage"
               },
@@ -4117,7 +4117,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Reckless Driving",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Driver",
                 "type": "advantage"
               },
@@ -4173,7 +4173,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/tracer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Tracer",
                 "type": "advantage"
               },
@@ -4258,7 +4258,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Battlefield Medicine",
                 "type": "advantage"
               },
@@ -4333,7 +4333,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Elite Education",
                 "type": "advantage"
               },
@@ -4412,7 +4412,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/sniper.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Sniper",
                 "type": "advantage"
               },
@@ -4493,7 +4493,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Streetfighter",
                 "type": "advantage"
               },
@@ -4532,7 +4532,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "chatName": "Dodge",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Streetfighter",
                 "type": "advantage"
               },
@@ -4551,7 +4551,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "chatName": "Flurry of Blows",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Streetfighter",
                 "type": "advantage"
               },
@@ -4570,7 +4570,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "chatName": "Dirty Strike",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Streetfighter",
                 "type": "advantage"
               },
@@ -4616,7 +4616,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Shadow",
                 "type": "advantage"
               },
@@ -4646,7 +4646,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Shadow",
                 "type": "advantage"
               },
@@ -4713,7 +4713,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/burglar.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Burglar",
                 "type": "advantage"
               },
@@ -4782,7 +4782,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
             "system": {
               "chatName": "Swears Vengeance",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Eye for an Eye",
                 "type": "advantage"
               },
@@ -4865,7 +4865,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/manipulative.svg",
             "system": {
               "chatName": "Takes Account",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Manipulative",
                 "type": "advantage"
               },
@@ -4918,7 +4918,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Death Drive",
                 "type": "advantage"
               },
@@ -4961,7 +4961,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Bring 'Em On",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Death Drive",
                 "type": "advantage"
               },
@@ -4980,7 +4980,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Savagery",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Death Drive",
                 "type": "advantage"
               },
@@ -4999,7 +4999,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Charge",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Death Drive",
                 "type": "advantage"
               },
@@ -5018,7 +5018,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Go Crazy",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Death Drive",
                 "type": "advantage"
               },
@@ -5107,7 +5107,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Gang Leader",
                 "type": "advantage"
               },
@@ -5173,7 +5173,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/streetwise.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Streetwise",
                 "type": "advantage"
               },
@@ -5240,7 +5240,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/manhunter.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Manhunter",
                 "type": "advantage"
               },
@@ -5332,7 +5332,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Deadly Stare",
                 "type": "advantage"
               },
@@ -5397,7 +5397,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ace Up the Sleeve",
                 "type": "advantage"
               },
@@ -5440,7 +5440,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "chatName": "Reveal a Weapon",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ace Up the Sleeve",
                 "type": "advantage"
               },
@@ -5459,7 +5459,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "chatName": "Spot a Weakness",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ace Up the Sleeve",
                 "type": "advantage"
               },
@@ -5478,7 +5478,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "chatName": "Find an Exit",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ace Up the Sleeve",
                 "type": "advantage"
               },
@@ -5524,7 +5524,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/inner-power.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Inner Power",
                 "type": "advantage"
               },
@@ -5591,7 +5591,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Network of Contacts",
                 "type": "advantage"
               },
@@ -5668,7 +5668,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/survivalist.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Survivalist",
                 "type": "advantage"
               },
@@ -5746,7 +5746,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Officer",
                 "type": "advantage"
               },
@@ -5785,7 +5785,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Attack!\"",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Officer",
                 "type": "advantage"
               },
@@ -5804,7 +5804,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Coordinate Fire!\"",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Officer",
                 "type": "advantage"
               },
@@ -5823,7 +5823,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Go For The Head!\"",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Officer",
                 "type": "advantage"
               },
@@ -5842,7 +5842,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Take Cover!\"",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Officer",
                 "type": "advantage"
               },
@@ -5897,7 +5897,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Exit Strategy",
                 "type": "advantage"
               },
@@ -5965,7 +5965,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/puppeteer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Puppeteer",
                 "type": "advantage"
               },
@@ -6038,7 +6038,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Forked Tongue",
                 "type": "advantage"
               },
@@ -6114,7 +6114,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Cult Leader",
                 "type": "advantage"
               },
@@ -6200,7 +6200,7 @@ export default const ITEM_DATA = {
             "type": "attack",
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "XXX Field Agent",
                 "type": "advantage"
               },
@@ -6240,7 +6240,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "XXX Field Agent",
                 "type": "advantage"
               },
@@ -6283,7 +6283,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Take Cover",
-              "sourceItem": {
+              "parentItem": {
                 "name": "XXX Field Agent",
                 "type": "advantage"
               },
@@ -6302,7 +6302,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Choke Hold",
-              "sourceItem": {
+              "parentItem": {
                 "name": "XXX Field Agent",
                 "type": "advantage"
               },
@@ -6321,7 +6321,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Disarm",
-              "sourceItem": {
+              "parentItem": {
                 "name": "XXX Field Agent",
                 "type": "advantage"
               },
@@ -6340,7 +6340,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Improvised Weapon",
-              "sourceItem": {
+              "parentItem": {
                 "name": "XXX Field Agent",
                 "type": "advantage"
               },
@@ -6395,7 +6395,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Voice of Pain",
                 "type": "advantage"
               },
@@ -6463,7 +6463,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/collector.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Collector",
                 "type": "advantage"
               },
@@ -6527,7 +6527,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Snake Charmer",
                 "type": "advantage"
               },
@@ -6603,7 +6603,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
             "system": {
               "name": "Search the Archives",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Data Retrieval",
                 "type": "advantage"
               },
@@ -6679,7 +6679,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/divine.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Divine",
                 "type": "advantage"
               },
@@ -6791,7 +6791,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/occult-library.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Occult Library",
                 "type": "advantage"
               },
@@ -6869,7 +6869,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/chameleon.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Chameleon",
                 "type": "advantage"
               },
@@ -6925,7 +6925,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/influential-friends.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Influential Friends",
                 "type": "advantage"
               },
@@ -6990,7 +6990,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Magical Intuition",
                 "type": "advantage"
               },
@@ -7096,7 +7096,7 @@ export default const ITEM_DATA = {
             "type": "attack",
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Weapon Master (Firearms)",
                 "type": "advantage"
               },
@@ -7137,7 +7137,7 @@ export default const ITEM_DATA = {
             "type": "attack",
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Weapon Master (Firearms)",
                 "type": "advantage"
               },
@@ -7203,7 +7203,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/dreamer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Dreamer",
                 "type": "advantage"
               },
@@ -7260,7 +7260,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
             "system": {
               "chatName": "Champions the Divine",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Divine Champion",
                 "type": "advantage"
               },
@@ -7410,7 +7410,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Crime Scene Investigator",
                 "type": "advantage"
               },
@@ -7487,7 +7487,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Magnetic Attraction",
                 "type": "advantage"
               },
@@ -7591,7 +7591,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Martial Arts Expert",
                 "type": "advantage"
               },
@@ -7634,7 +7634,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Block",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Martial Arts Expert",
                 "type": "advantage"
               },
@@ -7653,7 +7653,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Roundhouse Strike",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Martial Arts Expert",
                 "type": "advantage"
               },
@@ -7672,7 +7672,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Disarm",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Martial Arts Expert",
                 "type": "advantage"
               },
@@ -7691,7 +7691,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Throw",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Martial Arts Expert",
                 "type": "advantage"
               },
@@ -7746,7 +7746,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Charismatic Aura",
                 "type": "advantage"
               },
@@ -7823,7 +7823,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Lightning Fast",
                 "type": "advantage"
               },
@@ -7866,7 +7866,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "chatName": "Dodge",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Lightning Fast",
                 "type": "advantage"
               },
@@ -7885,7 +7885,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "chatName": "Blinding Speed",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Lightning Fast",
                 "type": "advantage"
               },
@@ -7904,7 +7904,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "chatName": "Uncanny Precision",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Lightning Fast",
                 "type": "advantage"
               },
@@ -7960,7 +7960,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Artistic Talent",
                 "type": "advantage"
               },
@@ -8079,7 +8079,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
             "system": {
               "chatName": "Ventures Beyond",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Arcane Researcher",
                 "type": "advantage"
               },
@@ -8131,7 +8131,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/backstab.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Backstab",
                 "type": "advantage"
               },
@@ -8205,7 +8205,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Access the Dark Net",
                 "type": "advantage"
               },
@@ -8261,7 +8261,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Explosives Expert",
                 "type": "advantage"
               },
@@ -8291,7 +8291,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Explosives Expert",
                 "type": "advantage"
               },
@@ -8356,7 +8356,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Perpetual Victim",
                 "type": "advantage"
               },
@@ -8422,7 +8422,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
             "system": {
               "chatName": "Exploits Someone",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Opportunist",
                 "type": "advantage"
               },
@@ -8466,7 +8466,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
             "system": {
               "chatName": "Will Remember That",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Grudge",
                 "type": "advantage"
               },
@@ -8543,7 +8543,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "Is Enraged",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Rage",
                 "type": "advantage"
               },
@@ -8565,7 +8565,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "Brutal Assault",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Rage",
                 "type": "advantage"
               },
@@ -8584,7 +8584,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "What Pain?",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Rage",
                 "type": "advantage"
               },
@@ -8603,7 +8603,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "See Only Red",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Rage",
                 "type": "advantage"
               },
@@ -8658,7 +8658,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Enforcer",
                 "type": "advantage"
               },
@@ -8725,7 +8725,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Voice of Insanity",
                 "type": "advantage"
               },
@@ -8804,7 +8804,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/seducer.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Seducer",
                 "type": "advantage"
               },
@@ -8872,7 +8872,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Notorious",
                 "type": "advantage"
               },
@@ -8937,7 +8937,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/hunter.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Hunter",
                 "type": "advantage"
               },
@@ -9015,7 +9015,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Contagious Insanity",
                 "type": "advantage"
               },
@@ -9080,7 +9080,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Intimidating",
                 "type": "advantage"
               },
@@ -9145,7 +9145,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ruthless",
                 "type": "advantage"
               },
@@ -9184,7 +9184,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "chatName": "Meat Shield",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ruthless",
                 "type": "advantage"
               },
@@ -9203,7 +9203,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "chatName": "Nothing But Bait",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ruthless",
                 "type": "advantage"
               },
@@ -9222,7 +9222,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "chatName": "Leave Them Behind",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Ruthless",
                 "type": "advantage"
               },
@@ -9278,7 +9278,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/advantage/improviser.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Improviser",
                 "type": "advantage"
               },
@@ -9345,7 +9345,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Competitor",
                 "type": "disadvantage"
               },
@@ -9420,7 +9420,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Mental Compulsion",
                 "type": "disadvantage"
               },
@@ -9486,7 +9486,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Sexual Neurosis",
                 "type": "disadvantage"
               },
@@ -9542,7 +9542,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
             "system": {
               "chatName": "Faces Their Fear",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Phobia",
                 "type": "disadvantage"
               },
@@ -9584,7 +9584,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Infirm",
                 "type": "disadvantage"
               },
@@ -9639,7 +9639,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Drug Addict",
                 "type": "disadvantage"
               },
@@ -9697,7 +9697,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Victim of Passion",
                 "type": "disadvantage"
               },
@@ -9755,7 +9755,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Obsession",
                 "type": "disadvantage"
               },
@@ -9838,7 +9838,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Nightmares",
                 "type": "disadvantage"
               },
@@ -9893,7 +9893,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Experiment Gone Wrong",
                 "type": "disadvantage"
               },
@@ -9951,7 +9951,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Lost Identity",
                 "type": "disadvantage"
               },
@@ -10009,7 +10009,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Guilt",
                 "type": "disadvantage"
               },
@@ -10067,7 +10067,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Haunted",
                 "type": "disadvantage"
               },
@@ -10125,7 +10125,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Wanted",
                 "type": "disadvantage"
               },
@@ -10183,7 +10183,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Stalker",
                 "type": "disadvantage"
               },
@@ -10241,7 +10241,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Oath of Revenge",
                 "type": "disadvantage"
               },
@@ -10296,7 +10296,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Jealousy",
                 "type": "disadvantage"
               },
@@ -10351,7 +10351,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Harassed",
                 "type": "disadvantage"
               },
@@ -10409,7 +10409,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Rival",
                 "type": "disadvantage"
               },
@@ -10478,7 +10478,7 @@ export default const ITEM_DATA = {
             "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
             "system": {
               "chatName": "Faces the Impossible",
-              "sourceItem": {
+              "parentItem": {
                 "name": "Rationalist",
                 "type": "disadvantage"
               },
@@ -10524,7 +10524,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Fanatic",
                 "type": "disadvantage"
               },
@@ -10579,7 +10579,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Liar",
                 "type": "disadvantage"
               },
@@ -10637,7 +10637,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Marked",
                 "type": "disadvantage"
               },
@@ -10695,7 +10695,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Cursed",
                 "type": "disadvantage"
               },
@@ -10753,7 +10753,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Nemesis",
                 "type": "disadvantage"
               },
@@ -10822,7 +10822,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Condemned",
                 "type": "disadvantage"
               },
@@ -10888,7 +10888,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Depression",
                 "type": "disadvantage"
               },
@@ -10943,7 +10943,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Schizophrenia",
                 "type": "disadvantage"
               },
@@ -11001,7 +11001,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Bad Reputation",
                 "type": "disadvantage"
               },
@@ -11059,7 +11059,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Greedy",
                 "type": "disadvantage"
               },
@@ -11114,7 +11114,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Involuntary Medium",
                 "type": "disadvantage"
               },
@@ -11172,7 +11172,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Repressed Memories",
                 "type": "disadvantage"
               },
@@ -11227,7 +11227,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Owned",
                 "type": "disadvantage"
               },
@@ -11285,7 +11285,7 @@ export default const ITEM_DATA = {
             "type": "move",
             "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
             "system": {
-              "sourceItem": {
+              "parentItem": {
                 "name": "Object of Desire",
                 "type": "disadvantage"
               },
@@ -12703,4 +12703,4 @@ export default const ITEM_DATA = {
   ],
   "relation": [],
   "attack": []
-}
+};

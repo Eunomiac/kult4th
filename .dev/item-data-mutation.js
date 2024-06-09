@@ -79,6 +79,40 @@ function MutateItemData() {
 /**
  * Processes the item data by mutating it and then writing the mutated data to a new JSON file.
  */
+
+/**
+ * Processes the item data by mutating it and then writing the mutated data to a new TypeScript file in /src/ as well as an item.data.js file in this directory.
+ */
+function processAndSaveItemData() {
+  // Paths for the output files
+  const jsFilePath = "./item-data.js";
+  const jsBackupPath = `./item-data-backups/item-data-backup-${new Date().toISOString().replace(/:/g, "-")}.js`;
+  const tsFilePath = "../src/ts/scripts/item-data.ts";
+  const tsPrevFilePath = "../src/ts/scripts/item-data-prev.ts";
+
+  // Check if the item-data.ts file exists
+  if (fs.existsSync(tsFilePath)) {
+    // If it exists, read the current content
+    const currentTsFileContent = fs.readFileSync(tsFilePath, "utf8");
+    // Write the current content to item-data-prev.ts, overwriting any existing file
+    fs.writeFileSync(tsPrevFilePath, currentTsFileContent, "utf8");
+  }
+
+  // Backup the existing item data to a new item-data-backup file
+  fs.writeFileSync(jsBackupPath, `export default ${JSON.stringify(ITEM_DATA, null, 2)};`, "utf8");
+
+  // Call the function to mutate the item data based on custom logic
+  MutateItemData();
+
+  // Convert the mutated data back to a JSON string and prepare it for TypeScript export
+  const mutatedDataJs = `export default ${JSON.stringify(ITEM_DATA, null, 2)};`;
+
+  // Write the data both to the js file and the ts file.
+  fs.writeFileSync(jsFilePath, mutatedDataJs, "utf8");
+  fs.writeFileSync(tsFilePath, mutatedDataJs, "utf8");
+}
+
+
 function processAndSaveItemData() {
   // Stringify the existing data
   const existingDataJSON = JSON.stringify(ITEM_DATA, null, 2);
@@ -98,11 +132,7 @@ function processAndSaveItemData() {
   const mutatedDataJs = `
   const ITEM_DATA = ${JSON.stringify(ITEM_DATA, null, 2)};
 
-  const PREV_DATA = ${existingDataJSON};
-
   export default ITEM_DATA;
-
-  export { PREV_DATA };
   `;
 
   // Write the mutated data to both a .js and .ts file for use within Foundry
@@ -124,4 +154,87 @@ const __dirname = dirname(__filename);
 // Check if the script is being run directly from the command line
 if (process.argv[1] === __filename) {
   processAndSaveItemData();
+}
+
+
+
+
+
+const Artifact = {
+    "key": "artifact",
+    "description": "",
+    "lists": {
+        "powers": {
+            "name": "Powers",
+            "requiresEdit": true,
+            "items": [
+                "Configure your artifact's powers with the help of the GM."
+            ]
+        },
+        "examplepowers": {
+            "name": "Example Powers",
+            "items": [
+                "See the true form of a creature or location.",
+                "Receive a vision of what threatens you.",
+                "Get yourself out of a bind.",
+                "Call on the entity bound to the artifact and bargain with them."
+            ]
+        }
+    },
+    "subType": "active-rolled",
+    "isCustom": false,
+    "pdfLink": "",
+    "subItems": [
+        {
+            "name": "Activate Artifact",
+            "type": "move",
+            "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
+            "system": {
+                "parentItem": {
+                    "name": "Artifact",
+                    "type": "advantage"
+                },
+                "isCustom": false,
+                "rules": {
+                    "trigger": "Whenever you activate the object,",
+                    "outro": "%insert.rollPrompt%.",
+                    "listRefs": [
+                        "powers"
+                    ]
+                },
+                "results": {
+                    "completeSuccess": {
+                        "result": "Choose one power to invoke from the list below (the GM determines what happens).",
+                        "listRefs": [
+                            "powers"
+                        ]
+                    },
+                    "partialSuccess": {
+                        "result": "Choose one power to invoke from the list below (the GM determines what happens). However, the artifact also exacts an additional price (the GM determines what is required).",
+                        "listRefs": [
+                            "powers"
+                        ]
+                    },
+                    "failure": {
+                        "result": "The artifact does something unexpected, possibly dangerous. #>text-gmtext>The GM makes a Move<#."
+                    }
+                },
+                "subType": "active-rolled",
+                "attribute": "soul",
+                "key": "artifact",
+                "chatName": "Activate the Artifact"
+            }
+        }
+    ],
+    "rules": {
+        "intro": "You own a seemingly mundane item, which actually possesses mystical powers.%insert.break%Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).%insert.break%Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: %list.examplepowers%",
+        "trigger": "",
+        "outro": "",
+        "listRefs": [],
+        "effects": [],
+        "holdText": ""
+    },
+    "attribute": "soul",
+    "currentHold": 0,
+    "currentEdges": 0
 }

@@ -37,7 +37,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -110,7 +110,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -155,7 +155,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "Requires the Disadvantage Condemned"
           ],
           "holdText": ""
@@ -191,7 +191,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "questions"
           ],
-          "effectFunctions": [
+          "effects": [
             "AppendList,Read a Person,questions,questions"
           ],
           "holdText": ""
@@ -271,7 +271,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "intuition",
@@ -316,7 +316,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -395,7 +395,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move for the location."
         },
         "attribute": "reason",
@@ -440,7 +440,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -522,7 +522,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -597,7 +597,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -671,7 +671,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -728,7 +728,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -773,7 +773,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -829,7 +829,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -888,7 +888,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold on the Watchers' behalf to let them make a Move against you."
         },
         "currentHold": 0,
@@ -944,7 +944,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -1001,7 +1001,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -1079,7 +1079,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -1155,7 +1155,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -1200,7 +1200,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1277,7 +1277,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -1352,7 +1352,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "intuition",
@@ -1409,7 +1409,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -1533,7 +1533,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -1614,7 +1614,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -1680,7 +1680,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -1758,7 +1758,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -1836,7 +1836,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "intuition",
@@ -1914,7 +1914,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -1947,7 +1947,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AppendList,Read a Person,questions,questions"
           ],
           "holdText": ""
@@ -1987,7 +1987,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
             "StoreInput: text=Field of Expertise #1>flags.field_1",
             "StoreInput: text=Field of Expertise #2>flags.field_2"
@@ -2015,7 +2015,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2059,7 +2059,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2122,7 +2122,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "Requires the Disadvantage Condemned"
           ],
           "holdText": ""
@@ -2201,7 +2201,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -2276,7 +2276,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -2355,7 +2355,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -2380,7 +2380,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1"
           ],
           "holdText": ""
@@ -2446,7 +2446,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -2528,7 +2528,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -2594,7 +2594,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -2672,7 +2672,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -2750,7 +2750,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -2795,7 +2795,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2873,7 +2873,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -2946,7 +2946,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AppendList,weapon/sword,attacks,attacks"
           ],
           "holdText": ""
@@ -3026,7 +3026,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -3082,7 +3082,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -3160,7 +3160,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -3216,7 +3216,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -3293,7 +3293,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -3357,7 +3357,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -3413,7 +3413,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -3491,7 +3491,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -3646,7 +3646,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3723,7 +3723,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -3802,7 +3802,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -3882,7 +3882,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -3960,7 +3960,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -4042,7 +4042,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -4120,7 +4120,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -4196,7 +4196,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -4278,7 +4278,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -4366,7 +4366,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -4445,7 +4445,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -4490,7 +4490,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4514,7 +4514,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "SetTrait:actor/system.modifiers.wounds_critical.1.all,0",
             "SetTrait:actor/system.modifiers.wounds_serious.1.all,0",
             "SetTrait:actor/system.modifiers.wounds_serious.2.all,0",
@@ -4573,7 +4573,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4652,7 +4652,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -4686,7 +4686,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AppendList,Investigate,questions,questions"
           ],
           "holdText": ""
@@ -4751,7 +4751,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -4817,7 +4817,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -4896,7 +4896,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -4921,7 +4921,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4976,7 +4976,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -5055,7 +5055,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -5111,7 +5111,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -5190,7 +5190,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -5267,7 +5267,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -5343,7 +5343,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -5420,7 +5420,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -5476,7 +5476,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -5558,7 +5558,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -5634,7 +5634,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -5766,7 +5766,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -5843,7 +5843,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -5899,7 +5899,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -5972,7 +5972,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -6051,7 +6051,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -6127,7 +6127,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -6160,7 +6160,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AppendList,Observe a Situation,questions,questions"
           ],
           "holdText": ""
@@ -6241,7 +6241,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move."
         },
         "attribute": "reason",
@@ -6305,7 +6305,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "intuition",
@@ -6361,7 +6361,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -6438,7 +6438,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -6463,7 +6463,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
           ],
           "holdText": ""
@@ -6586,7 +6586,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6641,7 +6641,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -6686,7 +6686,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6710,7 +6710,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
             "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
           ],
@@ -6745,7 +6745,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AppendList,Read a Person,questions,questions"
           ],
           "holdText": ""
@@ -6780,7 +6780,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6860,7 +6860,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -6937,7 +6937,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -6962,7 +6962,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             ">ModValue:weapon/firearm,harm,1"
           ],
           "holdText": ""
@@ -7043,7 +7043,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -7120,7 +7120,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -7199,7 +7199,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -7277,7 +7277,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -7302,7 +7302,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
           ],
           "holdText": ""
@@ -7328,7 +7328,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7372,7 +7372,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7445,7 +7445,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -7510,7 +7510,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -7598,7 +7598,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "reason",
@@ -7672,7 +7672,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -7717,7 +7717,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7761,7 +7761,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7785,7 +7785,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7843,7 +7843,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7908,7 +7908,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -7987,7 +7987,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -8066,7 +8066,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -8122,7 +8122,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "charisma",
@@ -8199,7 +8199,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "perception",
@@ -8274,7 +8274,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "soul",
@@ -8330,7 +8330,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -8405,7 +8405,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "edges"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "violence",
@@ -8480,7 +8480,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "coolness",
@@ -8541,7 +8541,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
         },
         "attribute": "zero",
@@ -8615,7 +8615,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "options"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -8679,7 +8679,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -8723,7 +8723,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -8777,7 +8777,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -8835,7 +8835,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
         },
         "attribute": "zero",
@@ -8893,7 +8893,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
         "attribute": "zero",
@@ -8951,7 +8951,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
         },
         "attribute": "zero",
@@ -8975,7 +8975,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "SetTrait:actor/system.stability.max,6"
           ],
           "holdText": ""
@@ -9031,7 +9031,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -9089,7 +9089,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
         },
         "attribute": "zero",
@@ -9147,7 +9147,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
         },
         "attribute": "zero",
@@ -9205,7 +9205,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
         },
         "attribute": "zero",
@@ -9263,7 +9263,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
         },
         "attribute": "zero",
@@ -9321,7 +9321,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
         },
         "attribute": "zero",
@@ -9379,7 +9379,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
         },
         "attribute": "zero",
@@ -9434,7 +9434,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -9489,7 +9489,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -9547,7 +9547,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
         },
         "attribute": "zero",
@@ -9605,7 +9605,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
         },
         "attribute": "zero",
@@ -9663,7 +9663,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -9717,7 +9717,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -9775,7 +9775,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
         },
         "attribute": "zero",
@@ -9833,7 +9833,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
         },
         "attribute": "zero",
@@ -9891,7 +9891,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
         },
         "attribute": "zero",
@@ -9949,7 +9949,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
         },
         "attribute": "zero",
@@ -10024,7 +10024,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             ">CreateTracker:Time,10"
           ],
           "holdText": ""
@@ -10081,7 +10081,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -10139,7 +10139,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
         },
         "attribute": "zero",
@@ -10197,7 +10197,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
         },
         "attribute": "zero",
@@ -10252,7 +10252,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -10310,7 +10310,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
         },
         "attribute": "zero",
@@ -10365,7 +10365,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "attribute": "zero",
@@ -10423,7 +10423,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
         },
         "attribute": "zero",
@@ -10481,7 +10481,7 @@ export default const ITEM_DATA = {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
         },
         "attribute": "zero",
@@ -10519,7 +10519,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10558,7 +10558,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10595,7 +10595,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10633,7 +10633,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10672,7 +10672,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10710,7 +10710,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10748,7 +10748,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10786,7 +10786,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10824,7 +10824,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10862,7 +10862,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10900,7 +10900,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10939,7 +10939,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10977,7 +10977,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -11015,7 +11015,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -11053,7 +11053,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -11090,7 +11090,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -11128,7 +11128,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "drives"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -11157,28 +11157,28 @@ export default const ITEM_DATA = {
           "trigger": "When you help another player character's Move,",
           "outro": "explain how before their roll and roll #>text-rolltrait>+Attribute<#, where the #>text-rolltrait>Attribute<# is the same as the other player is rolling.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You may modify the subsequent roll by #>text-posmod>+2<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You may modify the subsequent roll by #>text-posmod>+1<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11224,28 +11224,28 @@ export default const ITEM_DATA = {
           "trigger": "When you exercise self-control to keep from succumbing to stress, traumatic experiences, psychic influence, or supernatural forces,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You grit your teeth and stay the course.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>−1<# in situations where this condition would be a hindrance to you. Choose one: %list.options%",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The strain is too much for your mind to handle. The GM chooses your reaction: %list.gmoptions%",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11280,7 +11280,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "questions"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -11289,7 +11289,7 @@ export default const ITEM_DATA = {
             "listRefs": [
               "questions"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -11298,14 +11298,14 @@ export default const ITEM_DATA = {
             "listRefs": [
               "questions"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "You may get some information anyway, but you pay a price for it. You may expose yourself to dangers or costs. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11341,28 +11341,28 @@ export default const ITEM_DATA = {
           "trigger": "When you engage an able opponent in combat,",
           "outro": "explain how and %insert.rollPrompt%.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You inflict damage to your opponent and avoid counterattacks.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You inflict damage, but at a cost. The GM chooses one: %list.gmoptions%",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11386,28 +11386,28 @@ export default const ITEM_DATA = {
           "trigger": "When you hinder another player character's Move,",
           "outro": "explain how before their roll and roll #>text-rolltrait>+Attribute<#, where the #>text-rolltrait>Attribute<# is the same as the other player is rolling.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You may modify the subsequent roll by #>text-negmod>−2<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You may modify the subsequent roll by #>text-negmod>−1<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11440,28 +11440,28 @@ export default const ITEM_DATA = {
           "trigger": "When you influence an NPC through negotiation, argument, or from a position of power,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "She does what you ask.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "She does what you ask, but the GM chooses one: %list.gmoptions%",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your attempt has unintended repercussions. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11498,7 +11498,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "questions"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -11507,7 +11507,7 @@ export default const ITEM_DATA = {
             "listRefs": [
               "questions"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -11516,14 +11516,14 @@ export default const ITEM_DATA = {
             "listRefs": [
               "questions"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "You accidentally reveal your own intentions to the person you're trying to read. Tell the GM/player what these intentions are. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11557,7 +11557,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "options"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -11566,7 +11566,7 @@ export default const ITEM_DATA = {
             "listRefs": [
               "options"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -11575,14 +11575,14 @@ export default const ITEM_DATA = {
             "listRefs": [
               "options"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The character gets #>text-posmod>+1<# on her next roll against you. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11606,28 +11606,28 @@ export default const ITEM_DATA = {
           "trigger": "When you do something risky, under time pressure, or try to avoid danger,",
           "outro": "the GM will explain what the consequences for failure are and you %insert.rollPrompt%.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You do what you intended.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You do it, but hesitate, are delayed, or must deal with a complication—the GM reveals an unexpected outcome, a high price, or a difficult choice.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "There are serious consequences, you make a mistake, or you're exposed to the danger. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11665,7 +11665,7 @@ export default const ITEM_DATA = {
           "listRefs": [
             "questions"
           ],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -11674,7 +11674,7 @@ export default const ITEM_DATA = {
             "listRefs": [
               "questions"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -11683,7 +11683,7 @@ export default const ITEM_DATA = {
             "listRefs": [
               "questions"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -11692,7 +11692,7 @@ export default const ITEM_DATA = {
             "listRefs": [
               "questions"
             ],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11733,7 +11733,7 @@ export default const ITEM_DATA = {
           "trigger": "When enduring an injury,",
           "outro": "%insert.rollPrompt% #>item-button text-keyword:data-item-name='Endure Injury':data-action='roll'>+Armor<# #>item-button text-negmod text-keyword:data-item-name='Endure Injury':data-action='roll'>−Harm<#.",
           "listRefs": [],
-          "effectFunctions": [
+          "effects": [
             "Add Armor, subtract Harm from roll"
           ],
           "holdText": ""
@@ -11742,21 +11742,21 @@ export default const ITEM_DATA = {
           "completeSuccess": {
             "result": "You ride out the pain and keep going.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You are still standing, but the GM picks one condition: %list.gmoptions%",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The injury is overwhelming. You choose if you... %list.options%",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11788,28 +11788,28 @@ export default const ITEM_DATA = {
           "trigger": "When you suffer shock, injuries, or distort your perception through drugs or rituals,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You perceive things as they truly are.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You see Reality, but you also affect the Illusion. The GM chooses one: %list.gmoptions%",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The GM explains what you see. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11833,28 +11833,28 @@ export default const ITEM_DATA = {
           "trigger": "When you dodge, parry, or block Harm,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effectFunctions": [],
+          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You emerge completely unharmed.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You avoid the worst of it, but the GM decides if you end up in a bad spot, lose something, or partially sustain #>text-keyword>Harm<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any #>text-keyword>Harm<# at all, or you ended up in an even worse spot than before. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effectFunctions": [],
+            "effects": [],
             "edges": 0,
             "hold": 0
           }

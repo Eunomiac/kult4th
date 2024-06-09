@@ -1,10 +1,7 @@
 // #region IMPORTS ~
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import U from "./utilities.js";
 import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
 import K4Item from "../documents/K4Item.js";
-import K4Modifier from "../documents/K4Modifier.js";
-/* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
 export function formatStringForKult(str: string) {
@@ -23,7 +20,15 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
 "test"(param1: unknown, operator: string, param2: unknown): boolean {
   const isStringOrNumber = (a: unknown): a is string | number => typeof a === "number" || typeof a === "string";
 
+  if (["!", "!!", "not"].includes(param1 as string)) {
+    ([param1, operator] = [operator, param1 as string]);
+  }
+
   switch (operator) {
+    case "!":
+    case "!!":
+    case "not":
+      return !param1;
     case "==":
     case "===":
       return param1 === param2;
@@ -111,11 +116,13 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
               } else {
                 return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
               }
-              return [
+              const returnData = [
                 `<ul class='inline-list list-${dataKey}'>`,
                 ...listItems.map((item) => `<li>${item}</li>`),
                 "</ul>"
               ].join("");
+              kLog.log("[formatForKult: 'list-results']", returnData, 3);
+              return returnData;
             }
           }
         }

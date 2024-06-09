@@ -34,7 +34,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -115,7 +115,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -168,7 +168,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "Requires the Disadvantage Condemned"
       ],
       "holdText": ""
@@ -214,7 +214,7 @@
       "listRefs": [
         "questions"
       ],
-      "effectFunctions": [
+      "effects": [
         "AppendList,Read a Person,questions,questions"
       ],
       "holdText": ""
@@ -302,7 +302,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "intuition",
@@ -355,7 +355,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -442,7 +442,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": "The GM can spend Hold at any time to make a hard or soft Move for the location."
     },
     "attribute": "reason",
@@ -495,7 +495,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -585,7 +585,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -667,7 +667,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -748,7 +748,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -812,7 +812,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -865,7 +865,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -929,7 +929,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -996,7 +996,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": "The GM can spend Hold on the Watchers' behalf to let them make a Move against you."
     },
     "attribute": "zero",
@@ -1060,7 +1060,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -1124,7 +1124,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -1209,7 +1209,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -1292,7 +1292,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -1345,7 +1345,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -1430,7 +1430,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -1512,7 +1512,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "intuition",
@@ -1576,7 +1576,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -1663,7 +1663,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -1751,7 +1751,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -1824,7 +1824,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -1909,7 +1909,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -1994,7 +1994,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "intuition",
@@ -2079,7 +2079,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -2121,7 +2121,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AppendList,Read a Person,questions,questions"
       ],
       "holdText": ""
@@ -2171,7 +2171,7 @@
       "trigger": "",
       "outro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
         "StoreInput: text=Field of Expertise #1>flags.field_1",
         "StoreInput: text=Field of Expertise #2>flags.field_2"
@@ -2209,7 +2209,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -2262,7 +2262,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -2335,7 +2335,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "Requires the Disadvantage Condemned"
       ],
       "holdText": ""
@@ -2422,7 +2422,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -2504,7 +2504,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -2590,7 +2590,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -2624,7 +2624,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1"
       ],
       "holdText": ""
@@ -2698,7 +2698,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -2787,7 +2787,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -2860,7 +2860,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -2945,7 +2945,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -3031,7 +3031,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -3084,7 +3084,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -3171,7 +3171,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -3252,7 +3252,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AppendList,weapon/sword,attacks,attacks"
       ],
       "holdText": ""
@@ -3341,7 +3341,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -3405,7 +3405,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -3491,7 +3491,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -3555,7 +3555,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -3640,7 +3640,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -3712,7 +3712,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -3776,7 +3776,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -3862,7 +3862,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -4023,7 +4023,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -4109,7 +4109,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -4196,7 +4196,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -4284,7 +4284,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -4370,7 +4370,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -4460,7 +4460,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -4546,7 +4546,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -4630,7 +4630,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -4720,7 +4720,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -4815,7 +4815,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -4902,7 +4902,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -4955,7 +4955,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -4989,7 +4989,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "SetPenalty:SeriousWound,0",
         "SetPenalty:CriticalWound,0"
       ],
@@ -5053,7 +5053,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -5141,7 +5141,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -5184,7 +5184,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AppendList,Investigate,questions,questions"
       ],
       "holdText": ""
@@ -5258,7 +5258,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -5332,7 +5332,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -5419,7 +5419,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -5453,7 +5453,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -5517,7 +5517,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -5604,7 +5604,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -5668,7 +5668,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -5755,7 +5755,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -5840,7 +5840,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -5924,7 +5924,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -6009,7 +6009,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -6073,7 +6073,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -6163,7 +6163,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -6247,7 +6247,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -6386,7 +6386,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -6471,7 +6471,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -6535,7 +6535,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -6616,7 +6616,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -6703,7 +6703,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -6787,7 +6787,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -6829,7 +6829,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AppendList,Observe a Situation,questions,questions"
       ],
       "holdText": ""
@@ -6919,7 +6919,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": "The GM can spend Hold at any time to make a hard or soft Move."
     },
     "attribute": "reason",
@@ -6991,7 +6991,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "intuition",
@@ -7055,7 +7055,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -7140,7 +7140,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -7174,7 +7174,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
       ],
       "holdText": ""
@@ -7305,7 +7305,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -7369,7 +7369,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -7422,7 +7422,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -7456,7 +7456,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
         "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
       ],
@@ -7501,7 +7501,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AppendList,Read a Person,questions,questions"
       ],
       "holdText": ""
@@ -7546,7 +7546,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -7635,7 +7635,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -7720,7 +7720,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -7754,7 +7754,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         ">ModValue:weapon/firearm,harm,1"
       ],
       "holdText": ""
@@ -7844,7 +7844,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -7929,7 +7929,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -8016,7 +8016,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -8102,7 +8102,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -8136,7 +8136,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [
+      "effects": [
         "AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
       ],
       "holdText": ""
@@ -8172,7 +8172,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -8225,7 +8225,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -8307,7 +8307,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",
@@ -8380,7 +8380,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -8475,7 +8475,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "reason",
@@ -8557,7 +8557,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -8610,7 +8610,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -8663,7 +8663,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -8697,7 +8697,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -8764,7 +8764,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "zero",
@@ -8838,7 +8838,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -8925,7 +8925,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -9012,7 +9012,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -9076,7 +9076,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "charisma",
@@ -9161,7 +9161,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "perception",
@@ -9244,7 +9244,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "soul",
@@ -9308,7 +9308,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -9391,7 +9391,7 @@
       "listRefs": [
         "edges"
       ],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "violence",
@@ -9474,7 +9474,7 @@
       "trigger": "",
       "outro": "",
       "listRefs": [],
-      "effectFunctions": [],
+      "effects": [],
       "holdText": ""
     },
     "attribute": "coolness",

@@ -107,6 +107,16 @@ export const Attributes = {
     reflexes: {}
   }
 } as const;
+export const HarmButtons = (resolve: (value: {harm: number}) => void) => {
+  const harmButtons: Record<string,Dialog.Button> = {};
+  for (let harm = 1; harm <= 5; harm++) {
+    harmButtons[harm] = {
+      label: `${harm} Harm`,
+      callback: () => resolve({harm})
+    };
+  }
+  return harmButtons;
+}
 export const AttributeButtons = (resolve: (value: {attribute: K4RollableAttribute}) => void) => {
   const attrButtons: Record<string,Dialog.Button> = {};
   [
@@ -300,8 +310,20 @@ const C = {
     revenant: ["Bewitching", "Memories of Past Lives", "Commanding Voice", "Mind Manipulator", "Ethereal", "Telekinesis", "Invulnerability", "Bloodthirst", "Sensitivity", "Controlled by External Force", "Symbol Bondage"],
     timeAndSpaceMagician: []
   },
-  Attributes, AttributeButtons,
+  Attributes, AttributeButtons, HarmButtons,
   AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
+  Abbreviations: {
+    ItemType: {
+      [K4ItemType.advantage]: "Av",
+      [K4ItemType.disadvantage]: "D",
+      [K4ItemType.darksecret]: "DS",
+      [K4ItemType.weapon]: "W",
+      [K4ItemType.attack]: "Ak",
+      [K4ItemType.move]: "M",
+      [K4ItemType.gear]: "G",
+      [K4ItemType.relation]: "R"
+    }
+  },
   Colors,
   Ranges,
   RegExpPatterns,
@@ -315,8 +337,9 @@ const C = {
     [K4ItemType.relation]: "k4-theme-gold",
     [K4ItemType.weapon]: "k4-theme-gold",
     [K4ItemType.gear]: "k4-theme-gold",
-    [K4ItemType.move]: "k4-theme-bgold",
-    [K4ItemType.attack]: "k4-theme-gold"
+    [K4ItemType.move]: "k4-theme-black",
+    [K4ItemType.attack]: "k4-theme-gold",
+    edge: "k4-theme-blue neon-glow-strong-blue"
   }
 };
 

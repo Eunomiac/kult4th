@@ -1,10 +1,11 @@
-{{log "{comp} item-list.hbs" this}}
+{{log "... (Item List) this" this}}
 {{#with this as |iData|}}
 {{~#each iData.listRefs as |listKey|}}
 	{{~#with (lookup iData.lists listKey) as |listData|}}
+    {{#if iData.type}}
 		{{~#if iData.isDisplayingName}}
 			{{#if (test listKey "==" "edges")}}
-				<label class="k4-header edges-header neon-glow-blue">
+				<label class="k4-header edges-header neon-glow-strong-blue">
 					{{localize "kult4th.item.headings.suppliesEdges" itemType=iData.type}}
 				</label>
 			{{else}}
@@ -19,6 +20,7 @@
 				<li>{{{formatForKult item}}}</li>
 			{{/each}}
 		</ul>
+    {{/if}}
 	{{/with}}
 {{/each}}
 {{/with}}

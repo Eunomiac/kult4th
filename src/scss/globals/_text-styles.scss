@@ -180,7 +180,7 @@
 
     font-family: var(--font-primary-smallcaps);
 		font-variant: all-small-caps;
-		margin: 10px 0;
+		margin: 10px 0 5px 0;
 	}
 
   @keyframes neonGlow-blue {
@@ -255,21 +255,42 @@
     }
   }
 
-  @mixin neon-glow($color) {
+  @mixin neon-glow-strong($color) {
     color: var(--K4-neon-text-color);
     animation: neonGlow-#{$color} 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
   }
 
-  .neon-glow-blue {
-    @include neon-glow(blue);
+  @mixin neon-glow-soft($textColor, $glowColor) {
+    color: $textColor;
+    text-shadow:
+      0 0 2px #000,
+      0 0 10px $glowColor,
+      0 0 5px $glowColor,
+      0 0 25px $glowColor,;
   }
 
-  .neon-glow-red {
-    @include neon-glow(red);
+  .neon-glow-strong-blue {
+    @include neon-glow-strong(blue);
   }
 
-  .neon-glow-gold {
-    @include neon-glow(gold);
+  .neon-glow-strong-red {
+    @include neon-glow-strong(red);
+  }
+
+  .neon-glow-strong-gold {
+    @include neon-glow-strong(gold);
+  }
+
+  .neon-glow-soft-blue {
+    @include neon-glow-soft(rgba(253, 253, 253), rgba(3, 247, 249, 0.561));
+  }
+
+  .neon-glow-soft-red {
+    @include neon-glow-soft(rgb(255, 159, 159), rgba(252, 31, 31, 0.5));
+  }
+
+  .neon-glow-soft-gold {
+    @include neon-glow-soft(rgb(244, 238, 228), rgba(255, 189, 65, 0.35));
   }
 
 	h1 {
@@ -346,23 +367,20 @@
 		font-style: italic;
 	}
 	.text-edgename {
-    @include neon-glow(blue);
+    @include neon-glow-soft(rgba(253, 253, 253), rgba(3, 247, 249, 0.561));
 		// color: var(--K4-color-pos);
 	}
 	.text-posmod,
 	.text-posmod+.text-keyword,
 	.text-posmod+.text-attributename {
-		color: var(--K4-color-pos);
+    @include neon-glow-soft(rgb(244, 238, 228), rgba(255, 189, 65, 0.35));
 	}
 
 	.text-negmod,
 	.text-negmod+.text-keyword,
-	.text-negmod+.text-attributename {
-		color: var(--K4-color-neg);
-	}
-
-	.text-gmtext {
-		@include neon-glow(red);
+	.text-negmod+.text-attributename,
+  .text-gmtext {
+    @include neon-glow-soft(rgb(255, 50, 50), rgba(252, 31, 31, 0.5));
 	}
 
 	.text-resultlabel {

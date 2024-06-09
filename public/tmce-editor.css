@@ -338,7 +338,7 @@
   --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
 }
 #tinymce .k4-theme-gold.k4-theme-bgold, #tinymce .k4-theme-bgold.k4-theme-bgold {
-  --K4-color-primary: var(--K4-gGOLD);
+  --K4-color-primary: var(--K4-bGOLD);
   --K4-color-contrast: var(--K4-dBLACK);
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
   --K4-chat-border-image: url("/assets/chat/border-bgold.svg");
@@ -347,6 +347,47 @@
   --K4-color-primary: var(--K4-BLACK);
   --K4-color-primary-bright: var(--K4-dBLACK);
   --K4-color-primary-glow: var(--K4-dBLACK);
+  --K4-color-contrast: var(--K4-WHITE);
+  --K4-color-contrast-low: var(--K4-bGREY);
+  --K4-color-contrast-high: var(--K4-bWHITE);
+  --K4-font-primary: var(--font-primary);
+  --K4-font-weight-primary: 400;
+  --K4-color-title-fg: var(--K4-color-primary-bright);
+  --K4-color-header: var(--K4-RED);
+  --K4-list-indent: 12px;
+  --K4-bg: transparent url("/assets/backgrounds/bg-item-white.webp") no-repeat no-repeat center center / 100% 100%;
+  --K4-bg-inset: transparent url("/assets/backgrounds/bg-white.webp") repeat repeat center center/1000px 1000px;
+  --K4-chat-border-image: url("/assets/chat/border-white.svg");
+  --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
+  --K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
+  --K4-strip-main-color-bg: var(--K4-color-contrast);
+  --K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+  --K4-strip-button-color-fg: var(--K4-color-contrast);
+  --K4-strip-button-color-bg: var(--K4-color-primary);
+  --K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+  --K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+  --K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+  --K4-strip-tooltip-color-bg: var(--K4-dBLACK);
+  --K4-color-keyword: var(--K4-BLUE);
+  --K4-color-keyword-bright: var(--K4-dBLUE);
+  --K4-color-pos: var(--K4-BLUE);
+  --K4-color-neg: var(--K4-RED);
+}
+#tinymce .k4-theme-white .icon-container .chat-icon {
+  background: var(--K4-GREY) !important;
+}
+#tinymce .k4-theme-white .text-negmod, #tinymce .k4-theme-white .text-gmtext, #tinymce .k4-theme-white .text-negmod + .text-keyword {
+  color: var(--K4-RED) !important;
+  text-shadow: none !important;
+}
+#tinymce .k4-theme-white .text-posmod, #tinymce .k4-theme-white .text-posmod + .text-keyword {
+  color: var(--K4-bBLUE) !important;
+  text-shadow: none !important;
+}
+#tinymce .k4-theme-blue {
+  --K4-color-primary: var(--K4-bWHITE);
+  --K4-color-primary-bright: var(--K4-bWHITE);
+  --K4-color-primary-glow: var(--K4-bBLUE);
   --K4-color-contrast: var(--K4-WHITE);
   --K4-color-contrast-low: var(--K4-bGOLD);
   --K4-color-contrast-high: var(--K4-bWHITE);
@@ -700,7 +741,7 @@
   white-space: nowrap;
   font-family: var(--font-primary-smallcaps);
   font-variant: all-small-caps;
-  margin: 10px 0;
+  margin: 10px 0 5px 0;
 }
 @keyframes neonGlow-blue {
   0% {
@@ -726,20 +767,35 @@
     text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8), 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(220, 220, 65, 0.8), 0 0 6px rgba(220, 220, 65, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 10.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.8);
   }
 }
-#tinymce .neon-glow-blue,
-#tinymce .mce-content-body .neon-glow-blue {
+#tinymce .neon-glow-strong-blue,
+#tinymce .mce-content-body .neon-glow-strong-blue {
   color: var(--K4-neon-text-color);
   animation: neonGlow-blue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
-#tinymce .neon-glow-red,
-#tinymce .mce-content-body .neon-glow-red {
+#tinymce .neon-glow-strong-red,
+#tinymce .mce-content-body .neon-glow-strong-red {
   color: var(--K4-neon-text-color);
   animation: neonGlow-red 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
-#tinymce .neon-glow-gold,
-#tinymce .mce-content-body .neon-glow-gold {
+#tinymce .neon-glow-strong-gold,
+#tinymce .mce-content-body .neon-glow-strong-gold {
   color: var(--K4-neon-text-color);
   animation: neonGlow-gold 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+#tinymce .neon-glow-soft-blue,
+#tinymce .mce-content-body .neon-glow-soft-blue {
+  color: rgb(253, 253, 253);
+  text-shadow: 0 0 2px #000, 0 0 10px rgba(3, 247, 249, 0.561), 0 0 5px rgba(3, 247, 249, 0.561), 0 0 25px rgba(3, 247, 249, 0.561);
+}
+#tinymce .neon-glow-soft-red,
+#tinymce .mce-content-body .neon-glow-soft-red {
+  color: rgb(255, 159, 159);
+  text-shadow: 0 0 2px #000, 0 0 10px rgba(252, 31, 31, 0.5), 0 0 5px rgba(252, 31, 31, 0.5), 0 0 25px rgba(252, 31, 31, 0.5);
+}
+#tinymce .neon-glow-soft-gold,
+#tinymce .mce-content-body .neon-glow-soft-gold {
+  color: rgb(244, 238, 228);
+  text-shadow: 0 0 2px #000, 0 0 10px rgba(255, 189, 65, 0.35), 0 0 5px rgba(255, 189, 65, 0.35), 0 0 25px rgba(255, 189, 65, 0.35);
 }
 #tinymce h1,
 #tinymce .mce-content-body h1 {
@@ -824,8 +880,8 @@
 }
 #tinymce .text-edgename,
 #tinymce .mce-content-body .text-edgename {
-  color: var(--K4-neon-text-color);
-  animation: neonGlow-blue 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  color: rgb(253, 253, 253);
+  text-shadow: 0 0 2px #000, 0 0 10px rgba(3, 247, 249, 0.561), 0 0 5px rgba(3, 247, 249, 0.561), 0 0 25px rgba(3, 247, 249, 0.561);
 }
 #tinymce .text-posmod,
 #tinymce .text-posmod + .text-keyword,
@@ -833,20 +889,19 @@
 #tinymce .mce-content-body .text-posmod,
 #tinymce .mce-content-body .text-posmod + .text-keyword,
 #tinymce .mce-content-body .text-posmod + .text-attributename {
-  color: var(--K4-color-pos);
+  color: rgb(244, 238, 228);
+  text-shadow: 0 0 2px #000, 0 0 10px rgba(255, 189, 65, 0.35), 0 0 5px rgba(255, 189, 65, 0.35), 0 0 25px rgba(255, 189, 65, 0.35);
 }
 #tinymce .text-negmod,
 #tinymce .text-negmod + .text-keyword,
 #tinymce .text-negmod + .text-attributename,
+#tinymce .text-gmtext,
 #tinymce .mce-content-body .text-negmod,
 #tinymce .mce-content-body .text-negmod + .text-keyword,
-#tinymce .mce-content-body .text-negmod + .text-attributename {
-  color: var(--K4-color-neg);
-}
-#tinymce .text-gmtext,
+#tinymce .mce-content-body .text-negmod + .text-attributename,
 #tinymce .mce-content-body .text-gmtext {
-  color: var(--K4-neon-text-color);
-  animation: neonGlow-red 1.5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  color: rgb(255, 50, 50);
+  text-shadow: 0 0 2px #000, 0 0 10px rgba(252, 31, 31, 0.5), 0 0 5px rgba(252, 31, 31, 0.5), 0 0 25px rgba(252, 31, 31, 0.5);
 }
 #tinymce .text-resultlabel,
 #tinymce .mce-content-body .text-resultlabel {

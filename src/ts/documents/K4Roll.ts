@@ -6,6 +6,11 @@ import {K4ItemType} from "./K4Item.js";
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
 // #region -- ENUMS ~
+enum K4RollResult {
+  completeSuccess = "completeSuccess",
+  partialSuccess = "partialSuccess",
+  failure = "failure"
+}
 enum K4RollType {
   zero = "zero",
   attribute = "attribute",
@@ -59,5 +64,5 @@ class K4Roll extends Roll { }
 // #region EXPORTS ~
 export default K4Roll;
 
-export {K4RollType}
+export {K4RollType, K4RollResult}
 // #endregion

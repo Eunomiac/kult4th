@@ -6089,7 +6089,7 @@
       ],
       "isCustom": false,
       "rules": {
-        "effectFunctions": [
+        "effects": [
           "Requires the Disadvantage Condemned"
         ]
       },
@@ -6156,7 +6156,7 @@
       ],
       "isCustom": false,
       "rules": {
-        "effectFunctions": [
+        "effects": [
           "Requires the Disadvantage Condemned"
         ]
       },
@@ -6295,7 +6295,7 @@
       "isCustom": false,
       "rules": {
         "intro": "When you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, you may also choose from these additional questions: %list.questions%",
-        "effectFunctions": [
+        "effects": [
           "AppendList,Investigate,questions,questions"
         ]
       },
@@ -6312,7 +6312,7 @@
       "isCustom": false,
       "rules": {
         "intro": "#>text-center>You are a seasoned marksman.<# #>text-center>You deal #>text-keyword>+1 Harm<# with firearms.<#",
-        "effectFunctions": [
+        "effects": [
           ">ModValue:weapon/firearm,harm,1"
         ]
       },
@@ -6393,7 +6393,7 @@
       "isCustom": false,
       "rules": {
         "intro": "#>text-center>You've competed professionally in fencing.<#%insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
-        "effectFunctions": [
+        "effects": [
           "AppendList,weapon/sword,attacks,attacks"
         ]
       },
@@ -6453,7 +6453,7 @@
       "rules": {
         "intro": "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%",
         "outro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
-        "effectFunctions": [
+        "effects": [
           "GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
           "StoreInput: text=Field of Expertise #1>flags.field_1",
           "StoreInput: text=Field of Expertise #2>flags.field_2"
@@ -6484,7 +6484,7 @@
         "listRefs": [
           "questions"
         ],
-        "effectFunctions": [
+        "effects": [
           "AppendList,Read a Person,questions,questions"
         ]
       },
@@ -6501,7 +6501,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.%insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
-        "effectFunctions": [
+        "effects": [
           "SetPenalty:SeriousWound,0",
           "SetPenalty:CriticalWound,0"
         ]
@@ -6519,7 +6519,7 @@
       "isCustom": false,
       "rules": {
         "intro": "You take #>text-keyword>+1 ongoing<# to all #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls.",
-        "effectFunctions": [
+        "effects": [
           "BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1"
         ]
       },
@@ -6536,7 +6536,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
-        "effectFunctions": [
+        "effects": [
           "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
           "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
         ]
@@ -6568,7 +6568,7 @@
       "isCustom": false,
       "rules": {
         "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
-        "effectFunctions": [
+        "effects": [
           "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
         ]
       },
@@ -6585,7 +6585,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Whenever you #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
-        "effectFunctions": [
+        "effects": [
           "AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
         ]
       },
@@ -6611,7 +6611,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
-        "effectFunctions": [
+        "effects": [
           "AppendList,Observe a Situation,questions,questions"
         ]
       },
@@ -6637,7 +6637,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
-        "effectFunctions": [
+        "effects": [
           "AppendList,Read a Person,questions,questions"
         ]
       },
@@ -6687,7 +6687,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
-        "effectFunctions": [
+        "effects": [
           "AppendList,Read a Person,questions,questions"
         ]
       },
@@ -7096,7 +7096,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Your fate has already been sealed. Perhaps you're dying from a disease, been promised as the sacrificial offering to a forgotten god, or you've sold your soul to some entity, waiting to drag you off to hell when your time is up. When you finally run out of Time, you meet your ultimate fate.",
-        "effectFunctions": [
+        "effects": [
           ">CreateTracker:Time,10"
         ]
       },
@@ -8571,7 +8571,7 @@
       "isCustom": false,
       "rules": {
         "intro": "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.%insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
-        "effectFunctions": [
+        "effects": [
           "SetTrait:actor/data.stability.max,6"
         ]
       },
@@ -8708,7 +8708,7 @@
       "rules": {
         "trigger": "When enduring an injury,",
         "outro": "%insert.rollPrompt% #>item-button text-keyword:data-item-name='Endure Injury':data-action='roll'>+Armor<# #>item-button text-negmod text-keyword:data-item-name='Endure Injury':data-action='roll'>−Harm<#.",
-        "effectFunctions": [
+        "effects": [
           "Add Armor, subtract Harm from roll"
         ]
       },

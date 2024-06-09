@@ -24,12 +24,13 @@
       --K4-icon-fill: url(#fill-gold);
       --K4-icon-stroke: url(#stroke-gold);
       --K4-icon-outline-color: var(--K4-gGOLD);
+      --K4-icon-bg-color: var(--K4-BLACK);
     }
 
     &.icon-move {
-      --K4-icon-fill: url(#fill-gold);
-      --K4-icon-stroke: url(#stroke-gold);
-      --K4-icon-outline-color: transparent;
+      --K4-icon-fill: url(#fill-white);
+      --K4-icon-stroke: url(#stroke-black);
+      --K4-icon-outline-color: var(--K4-BLACK);
     }
 
     &.icon-red,
@@ -76,9 +77,11 @@
       }
     }
 
+    img.chat-icon { display: none; }
+
     .svg-container {
-      height: calc(var(--K4-icon-size) - 2px);
-      width: calc(var(--K4-icon-size) - 2px);
+      height: calc(var(--K4-icon-size) - 2 * var(--K4-icon-outline-width));
+      width: calc(var(--K4-icon-size) - 2 * var(--K4-icon-outline-width));
       display: block;
       position: relative;
       transform-origin: center center;

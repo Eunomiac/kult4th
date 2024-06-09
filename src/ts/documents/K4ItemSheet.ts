@@ -1,10 +1,9 @@
 // #region IMPORTS ~
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
 import K4Actor from "./K4Actor.js";
 import {K4ItemType} from "./K4Item";
-/* eslint-enable @typescript-eslint/no-unused-vars */
+import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
 type K4ItemSheetOptions = DocumentSheetOptions & {
@@ -68,6 +67,96 @@ export default class K4ItemSheet extends ItemSheet {
       if (height > 450 || html.find(".k4-header").length > 0) {
         html.parent().addClass("wide-content");
       }
+
+      // Function to get the text alignment of an element
+      function getTextAlignment(element: JQuery): "left"|"center"|"right" {
+        if (element.css("text-align") === "justify") {
+          return "left";
+        }
+        if (["left", "center", "right"].includes(element.css("text-align") ?? "")) {
+          return element.css("text-align") as "left"|"center"|"right";
+        }
+        throw new Error(`Invalid text alignment: ${element.css("text-align")}`);
+      }
+
+      // Function to set the transform origin based on text alignment
+      function getTransformOrigin(element: JQuery): string {
+        switch (getTextAlignment(element)) {
+          case "left": return "0% 50%";
+          case "right": return "100% 50%";
+          case "center": return "50% 50%";
+        }
+      }
+
+      // Function to squeeze text to fit within its container
+      function squeezeText(element: JQuery): void {
+        // Temporarily set width to auto and white-space to nowrap to measure natural width
+        element.css({
+          "width": "max-content",
+          "white-space": "nowrap"
+        });
+
+        const naturalWidth = element.width() ?? 0;
+        const containerWidth = element.parent().width() ?? 0;
+        const padding = 5; // Allow for 5px padding
+
+        // Calculate the scaleX factor
+        const scaleX = Math.min(1, (containerWidth) / (naturalWidth + 5));
+
+        // Reset the width and white-space properties
+        element.css({
+          "width": "",
+          "white-space": ""
+        });
+
+        // Apply the scaleX transformation
+        element.css({
+          "transform": `scaleX(${scaleX})`,
+          "transform-origin": "0% 50%"
+        });
+      }
+
+      // Search for title element, edge notices, hold notices
+      html.find(".k4-title.item-title, .k4-header.hold-header, .k4-header.edges-header").each(function() {
+        const element = $(this);
+        getTransformOrigin(element);
+        squeezeText(element);
+      });
+
+      // Function to check if the text in the element wraps
+      function doesTextWrap(element: JQuery): boolean {
+        const lineHeight = parseInt(element.css("line-height"), 10);
+        const elementHeight = element.height() ?? 0;
+        return elementHeight > lineHeight;
+      }
+
+      // Search for any elements with "conditional-center" class. Check if the text contents wrap to another line.
+      html.find(".conditional-center").each(function() {
+        const element = $(this);
+        if (!doesTextWrap(element)) {
+          element.addClass("center");
+        }
+      });
+
+      // Search for any elements with "conditional-center" class. Check if the text contents wrap to another line.
+      html.find(".conditional-center").each(function() {
+        const element = $(this);
+        // Check if the scroll height is greater than the client height, indicating text wrapping.
+        if (element.prop("scrollHeight") > element.prop("clientHeight")) {
+          element.addClass("center");
+        }
+      });
+
+      // Quick active effects control for dev purposes
+      html.find(".effect-control").on("click", (ev) => {
+        if ( self.item.isOwned ) {
+          ui.notifications?.warn(game.i18n.localize("BITD.EffectWarning"));
+          return;
+        }
+        K4ActiveEffect.onManageActiveEffect(ev, self.item);
+      });
+
+
 
       function createOpenLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {

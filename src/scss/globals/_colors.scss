@@ -163,7 +163,7 @@ Kult White:  #FFFFFF */
 	@include set-default-theme();
 
   &.k4-theme-bgold {
-    --K4-color-primary: var(--K4-gGOLD);
+    --K4-color-primary: var(--K4-bGOLD);
     --K4-color-contrast: var(--K4-dBLACK);
     --K4-bg-inset: transparent #{to-url("backgrounds/bg-gold.webp")} repeat repeat center center/1000px 1000px;
     --K4-chat-border-image: #{to-url("chat/border-bgold.svg")};
@@ -174,6 +174,63 @@ Kult White:  #FFFFFF */
 	--K4-color-primary: var(--K4-BLACK);
 	--K4-color-primary-bright: var(--K4-dBLACK);
 	--K4-color-primary-glow: var(--K4-dBLACK);
+
+	--K4-color-contrast: var(--K4-WHITE);
+	--K4-color-contrast-low: var(--K4-bGREY);
+	--K4-color-contrast-high: var(--K4-bWHITE);
+
+	--K4-font-primary: var(--font-primary);
+	--K4-font-weight-primary: #{$font-weight-normal};
+
+	--K4-color-title-fg: var(--K4-color-primary-bright);
+	--K4-color-header: var(--K4-RED);
+
+	--K4-list-indent: 12px;
+	--K4-bg: transparent #{to-url("backgrounds/bg-item-white.webp")} no-repeat no-repeat center center / 100% 100%;
+	--K4-bg-inset: transparent #{to-url("backgrounds/bg-white.webp")} repeat repeat center center/1000px 1000px;
+	--K4-chat-border-image: #{to-url("chat/border-white.svg")};
+	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
+
+	--K4-hoverstrip-fg-color: var(--K4-color-primary-bright);
+	--K4-strip-main-color-bg: var(--K4-color-contrast);
+	--K4-strip-icon-color-bg: var(--K4-strip-main-color-bg);
+	--K4-strip-button-color-fg: var(--K4-color-contrast);
+	--K4-strip-button-color-bg: var(--K4-color-primary);
+	--K4-strip-button-hover-color-fg: var(--K4-color-contrast-high);
+	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
+	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
+	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
+
+	--K4-color-keyword: var(--K4-BLUE);
+	--K4-color-keyword-bright: var(--K4-dBLUE);
+	--K4-color-pos: var(--K4-BLUE);
+	--K4-color-neg: var(--K4-RED);
+
+  .icon-container .chat-icon {
+    background: var(--K4-GREY) !important;
+  }
+
+  .text-negmod, .text-gmtext, .text-negmod + .text-keyword {
+    color: var(--K4-RED) !important;
+    text-shadow: none !important;
+  }
+
+  .text-posmod, .text-posmod + .text-keyword {
+    color: var(--K4-bBLUE) !important;
+    text-shadow: none !important;
+  }
+
+	// --K4-icon-fill: var(--K4-color-primary);
+	// --K4-icon-bg-color: var(--K4-color-contrast);
+	// --K4-icon-clip-path: circle(closest-side);
+	// --K4-icon-outline-color-color: transparent;
+}
+
+
+.k4-theme-blue {
+	--K4-color-primary: var(--K4-bWHITE);
+	--K4-color-primary-bright: var(--K4-bWHITE);
+	--K4-color-primary-glow: var(--K4-bBLUE);
 
 	--K4-color-contrast: var(--K4-WHITE);
 	--K4-color-contrast-low: var(--K4-bGOLD);

@@ -1,3 +1,16 @@
+.vtt.game.system-kult4th #ui-right #sidebar section.tab.active#chat #chat-log .chat-message .message-content .kult4th-chat.chat-move-result .roll-intro-header .roll-char-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--K4-color-primary);
+  display: block;
+  text-transform: uppercase;
+  padding-top: 5px;
+  background: var(--K4-BLACK);
+  margin-bottom: -25px;
+  margin-top: -20px;
+  margin-left: 15px;
+}
+
 &.chat-move-result {
 
   --roll-header-fg: var(--K4-color-primary);
@@ -16,6 +29,9 @@
   --roll-dice-terms-vert-shift: -15px;
 
   --source-item-vert-shift: 32px;
+
+  font-size: $rem-14;
+  line-height: $rem-18;
 
   &.kult4th-result-static {
     .roll-source-header {
@@ -97,11 +113,28 @@
 
 
   .roll-intro-header {
+    margin-top: -10px;
 
     .roll-char-name {
       font-size: $rem-18;
       font-weight: $font-weight-bold;
-      color: var(--K4-color-primary-bright);
+      color: var(--K4-color-primary);
+      display: block;
+      padding-top: 5px;
+      background: var(--K4-BLACK);
+      margin-bottom: -25px;
+      margin-top: -20px;
+      margin-left: 15px;
+
+      &:first-letter {
+        display: block;
+        vertical-align: text-top;
+        line-height: $rem-56;
+        font-size: $rem-80;
+        font-family: var(--font-decorative);
+        font-weight: $font-weight-normal;
+
+      }
     }
     .roll-intro-line {
       display: block;
@@ -112,26 +145,16 @@
   }
   .roll-source-header {
     margin-bottom: -40px;
+    margin-top: 0px;
+    z-index: 2;
 
     .icon-container {
-      --K4-icon-size: 60px;
-      --K4-icon-outline-color: var(--roll-header-fg);
-      // --icon-bg-color: var(--roll-header-bg);
-      // --K4-icon-outline-width: 2px;
       position: relative;
-      z-index: 1;
       top: -12px;
       left: calc(-1 * var(--chat-horiz-padding-internal) - 30px);
-      background: var(--K4-color-contrast-low);
-
-      img {
-        background: var(--K4-color-primary);
-        transform: scale(0.9);
-        transform-origin: center;
-        clip-path: inherit;
-        filter: blur(1px);
-      }
     }
+
+
 
     .roll-source-name {
       border-top: solid 2px var(--roll-header-fg);
@@ -143,6 +166,7 @@
       left: calc(-1 * var(--chat-horiz-padding-internal));
     	padding: 5px 0px;
 			width: calc(100% + 2 * var(--chat-horiz-padding-internal) + 5px);
+      // z-index: 10;
 
 			.roll-source-text {
 				position: relative;
@@ -157,6 +181,7 @@
 				white-space: nowrap;
 				width: calc(100% - var(--K4-icon-size));
 				left: calc(0.5 * var(--K4-icon-size));
+        margin-top: 4px;
 			}
 		}
 

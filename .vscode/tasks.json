@@ -113,18 +113,10 @@
       "label": "[MULTI] Build to Dist",
       "type": "shell",
       "command": "npx vite build",
-      "isBackground": true,
       "group": {
         "kind": "build",
         "isDefault": true
-      },
-      "presentation": {
-        "close": true,
-        "echo": false,
-        "focus": true
-      },
-      "dependsOn": [],
-      "dependsOrder": "sequence"
+      }
     },
     {
       "label": "[MULTI] Run Vite Dev Server",

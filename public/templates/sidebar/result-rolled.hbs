@@ -17,8 +17,12 @@
       isChat=true
     }}
 		<span class="roll-source-name"><span class="roll-source-text">{{rollData.sourceName}}</span></span>
-    {{#if rollData.source.system.sourceItem}}{{#if rollData.source.system.sourceItem.name}}<span class="roll-source-source-name">from <span class="roll-source-text">{{rollData.source.system.sourceItem.name}}</span></span>{{/if}}{{/if}}
+    {{#if rollData.source.system.parentItem}}{{#if rollData.source.system.parentItem.name}}<span class="roll-source-source-name">from <span class="roll-source-text">{{rollData.source.system.parentItem.name}}</span></span>{{/if}}{{/if}}
 	</div>
+
+
+
+
 
 	<div class="roll-dice-line">
 		<div class="roll-term-container roll-d10">
