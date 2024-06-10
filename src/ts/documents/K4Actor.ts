@@ -273,7 +273,7 @@ class K4Actor extends Actor {
   }
 
   get moves() {return this.getItemsOfType(K4ItemType.move);}
-  get basicMoves() {return this.moves.filter((move) => !move.isSubItem());}
+  get basicMoves() {return this.moves.filter((move) => move.isBasicMove());}
   get derivedMoves() {return this.moves.filter((move): move is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => move.isSubItem() && !move.isEdge());}
   get derivedEdges() {return this.moves.filter((move): move is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => move.isEdge());}
   get activeEdges() {

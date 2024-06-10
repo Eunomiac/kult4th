@@ -259,8 +259,6 @@ Hooks.once("ready", () => {
   const ITEM = game.items?.values().next().value as Maybe<K4Item>;
   const EMBED = ACTOR?.items?.values().next().value as Maybe<K4Item>;
   const ACTORSHEET = ACTOR?.sheet;
-  const ITEMSHEET = ITEM?.itemSheet;
-  const EMBEDSHEET = EMBED?.itemSheet;
 
   Object.assign(globalThis, {
     gsap,
@@ -273,10 +271,8 @@ Hooks.once("ready", () => {
     K4PCSheet,
     getContrastingColor,
     formatStringForKult,
-    ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET,
+    ACTOR, ITEM, EMBED, ACTORSHEET,
     ENTITIES:   [ACTOR, ITEM, EMBED],
-    SHEETS:     [ACTORSHEET, ITEMSHEET, EMBEDSHEET],
-    DOCS:       [ACTOR, ITEM, EMBED, ACTORSHEET, ITEMSHEET, EMBEDSHEET],
     PACKS,
     getItemSystemReport,
     getSubItemSystemReport,
@@ -303,7 +299,6 @@ async function preloadTemplates() {
       "pc-sheet",
       "npc-sheet",
       "item-sheet",
-      "attack-sheet",
       "active-effect-sheet"
     ]),
     ...U.getTemplatePath("components", [

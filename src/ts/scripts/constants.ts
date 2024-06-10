@@ -312,6 +312,21 @@ const C = {
   },
   Attributes, AttributeButtons, HarmButtons,
   AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
+  BasicMoves: [
+    "Act Under Pressure",
+    "Avoid Harm",
+    "Endure Injury",
+    "Engage in Combat",
+    "Help Other",
+    "Hinder Other",
+    "Influence Other NPC",
+    "Influence Other PC",
+    "Investigate",
+    "Keep It Together",
+    "Observe a Situation",
+    "Read a Person",
+    "See Through the Illusion"
+  ],
   Abbreviations: {
     ItemType: {
       [K4ItemType.advantage]: "Av",

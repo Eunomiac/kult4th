@@ -59,15 +59,11 @@ declare global {
 
     export namespace Components {
       export interface Base {
-        key: string,
-        description?: string,
         lists?: Record<string, {
           name: string,
           items: string[],
-          intro?: string,
-          requiresEdit?: boolean;
+          intro?: string
         }>,
-        isCustom: boolean,
         isEdge?: boolean,
         subType: K4ItemSubType;
       }
@@ -82,7 +78,7 @@ declare global {
       }
       export interface IsSubItem {
         chatName?: string;
-        parentItem: ParentItemReference;
+        parentItem: ParentItemReference & {id: IDString};
         parentType: K4ItemType;
       }
     }
@@ -147,16 +143,11 @@ declare global {
     }
     export namespace Components {
       export interface Base {
-        key: string,
-        description: string,
         lists: Record<string, {
           name: string,
           items: string[],
-          intro?: string,
-          requiresEdit?: boolean;
+          intro?: string
         }>,
-        isCustom: boolean,
-        pdfLink: string,
         subType: K4ItemSubType;
       }
 
@@ -401,25 +392,19 @@ class K4Item extends Item {
   hasSubMoves(): this is K4Item.Parent {return "subMoves" in this.system && Array.isArray(this.system.subMoves) && this.system.subMoves.length > 0;}
   hasSubAttacks(): this is K4Item.Parent {return "subAttacks" in this.system && Array.isArray(this.system.subAttacks) && this.system.subAttacks.length > 0;}
   isSubItem(): this is K4Item & K4SubItem {return Boolean("parentItem" in this.system && this.system.parentItem?.name);}
+  isBasicMove(): this is K4Item<K4ItemType.move> {return C.BasicMoves.includes(this.name);}
   isEdge(): this is K4SubItem<K4ItemType.move> {return this.isSubItem() && Boolean(this.system.isEdge);}
   isOwnedItem(): this is K4Item & {parent: K4Actor;} {return this.isEmbedded && this.parent instanceof Actor;}
   isOwnedSubItem(): this is K4Item & K4SubItem & {parent: K4Actor;} {return this.isSubItem() && this.isOwnedItem();}
+  isOwnedByUser(): this is K4Item & {parent: K4Actor;} {return this.isOwnedItem() && this.parent.isOwner;}
   isActiveItem(): this is K4Item.Active {return this.system.subType === K4ItemSubType.activeRolled;}
   isStaticItem(): this is K4Item.Static {return this.system.subType === K4ItemSubType.activeStatic;}
   isPassiveItem(): this is K4Item.Passive {return this.system.subType === K4ItemSubType.passive;}
   hasRules(): this is K4Item.HaveRules {return "rules" in this.system;}
   // #endregion
 
-  // #region GETTERS & SETTERS ~
-  get key() {return this.system.key;}
-  get itemSheet(): typeof this._sheet & K4ItemSheet | null {return this._sheet as typeof this._sheet & K4ItemSheet ?? null;}
-  // get masterKey(): string {
-  //   if (!this.isSubItem()) {return this.key;}
-  //   if (!this.isOwnedSubItem()) {return this.key;}
-  //   const keyItem = game.items?.getName(this.system.parentItem.name) as Maybe<K4Item>;
-  //   if (keyItem?.key) {return keyItem.key;}
-  //   return this.key;
-  // }
+  // #region GETTERS & SETTERS ~  get itemSheet(): typeof this._sheet & K4ItemSheet | null {return this._sheet as typeof this._sheet & K4ItemSheet ?? null;}
+
   get parentID(): IDString | undefined {return this.isSubItem() ? this.parentItem?.id : undefined;}
   get parentType(): K4ItemType {return this.isSubItem() ? this.system.parentItem?.type : this.type;}
   get parentName(): string {return this.isSubItem() ? this.system.parentItem?.name : this.name;}
@@ -688,24 +673,35 @@ class K4Item extends Item {
     }
 
     // Roll Button or Trigger Button?
-    if (this.isOwnedItem() && this.isActiveItem()) {
-      stripData.buttons.push({
-        icon: "hover-strip-button-roll",
-        dataset: {
-          "item-name": this.name ?? "",
-          "action": "roll"
-        },
-        tooltip: "ROLL"
-      });
-    } else if (this.isStaticItem()) {
-      stripData.buttons.push({
-        icon: "hover-strip-button-trigger",
-        dataset: {
-          "item-name": this.name ?? "",
-          "action": "trigger"
-        },
-        tooltip: "TRIGGER"
-      });
+    if (this.isOwnedItem() && this.type === K4ItemType.move) {
+      if (this.isActiveItem()) {
+        stripData.buttons.push({
+          icon: "hover-strip-button-roll",
+          dataset: {
+            "item-name": this.name ?? "",
+            "action": "roll"
+          },
+          tooltip: "ROLL"
+        });
+      } else if (this.isEdge()) {
+        stripData.buttons.push({
+          icon: "hover-strip-button-trigger",
+          dataset: {
+            "item-name": this.name ?? "",
+            "action": "trigger"
+          },
+          tooltip: "USE"
+        });
+      } else if (this.isStaticItem()) {
+        stripData.buttons.push({
+          icon: "hover-strip-button-trigger",
+          dataset: {
+            "item-name": this.name ?? "",
+            "action": "trigger"
+          },
+          tooltip: "TRIGGER"
+        });
+      }
     }
 
     // Chat & View Buttons
@@ -728,8 +724,8 @@ class K4Item extends Item {
       }
     );
 
-    // Drop Button IF Sheet Unlocked AND Owner AND NOT SubItem
-    if (this.isOwnedItem() && !this.isSubItem() && this.itemSheet?.isUnlocked /* && check for user permissions */) {
+    // Drop Button IF User has write permissions AND item isn't a SubItem AND item isn't a Basic Move
+    if (this.isOwnedByUser() && !this.isSubItem() && !this.isBasicMove()) {
       stripData.buttons.push({
         icon: "hover-strip-button-drop",
         dataset: {
@@ -740,7 +736,6 @@ class K4Item extends Item {
       });
     }
 
-    // kLog.log("Hover Strip Data", stripData);
     return stripData;
   }
 

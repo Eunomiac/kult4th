@@ -127,9 +127,10 @@ namespace K4ActiveEffect {
 
     export type Data = CustomData | NonCustomData;
 
-    export interface FunctionData {
-      [key: string]: string | number | boolean;
+    export interface GenerationData {
+      [key: keyof typeof CUSTOM_FUNCTIONS]: string;
     }
+
   }
 
   export type CustomFunction = (
@@ -228,78 +229,13 @@ namespace K4ActiveEffect {
   }
 
   export type ConstructorData = Partial<Data> & ActiveEffectDataConstructorData;
+
+  export type GenerationData = Change.GenerationData[];
 }
 // #endregion
 // #endregion --
 
 // #region === CUSTOM FUNCTIONS FOR MODE EffectMode.Custom ===
-/**
- * Parses a function data string into an object literal.
- *
- * == FUNCTION DATA STRING ==
- * A string definition of a data object that will be passed to the function. Each function must define how to handle this data object.
- *  - String is comma-delimited with key-value pairs separated by colons.
- *  - The last key-value pair may contain commas, as long as there are no colons after the last comma.
- *
- * @param {string} dataString - The function data string to parse.
- * @returns {Record<string, string>} - The parsed object literal.
- */
-function parseFunctionDataString(dataString: string): Record<string, string|number|boolean> {
-  const pairs = dataString.match(/([^,]+:[^,]+(?:,[^,]+)*?)(?=(?:,[^:]+:)|$)/g);
-  if (!pairs) {
-    throw new Error(`Invalid function data string format: "${dataString}"`);
-  }
-  return pairs.reduce((acc, pair) => {
-    let [key, value]: [string, string|number|boolean] = pair.split(/:(.+)/) // Split only at the first colon
-      .map(str => str.trim()) as [string, string];
-
-    // Convert the value to the appropriate type
-    if (/^\d+$/.test(value)) {
-      value = U.pInt(value); // Integer
-    } else if (/^\d*\.\d$/.test(value)) {
-      value = U.pFloat(value); // Float
-    } else if (/^(true|false)$/i.test(value)) {
-      value = value.toLowerCase() === "true"; // Boolean
-    }
-
-    acc[key] = value;
-    return acc;
-  }, {} as Record<string,string|number|boolean>);
-}
-
-function hasPrompt<baseType extends K4ActiveEffect.CustomFunction.AnyData>(data: baseType): data is baseType & K4ActiveEffect.CustomFunction.Data.HasPrompt<baseType> {
-  if (!("value" in data)) { return false; }
-  return data.value === "prompt";
-}
-
-async function promptUserForData<ResponseType extends string|number|boolean>(data: K4ActiveEffect.CustomFunction.Data.Prompt): Promise<Maybe<ResponseType>> {
-  const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${data.input}`));
-  const context: Record<string, string|number|boolean> = {
-    title: data.title,
-    bodyText: data.bodyText ?? ""
-  }
-  const dialogData: Dialog.Data = {
-    title: data.title,
-    content: template(context),
-    buttons: {}
-  };
-
-  const userOutput = await new Promise<ResponseType>((resolve) => {
-    if (data.input === PromptInputType.numberButtons) {
-      const {inputMin, inputMax} = data;
-      for (let i = inputMin; i <= inputMax; i++) {
-        dialogData.buttons[i] = {
-          label: String(i),
-          callback: () => resolve(i as ResponseType)
-        }
-      }
-    }
-    new Dialog(dialogData, {classes: [C.SYSTEM_ID, "dialog"]}).render(true);
-  });
-
-  return userOutput;
-}
-
 const CUSTOM_FUNCTIONS: Record<
   string,
   K4ActiveEffect.CustomFunction
@@ -310,8 +246,8 @@ const CUSTOM_FUNCTIONS: Record<
     if (!filter || !effect) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
     }
-    if (hasPrompt(moveData)) {
-      value = await promptUserForData(moveData);
+    if (activeEffect.hasPrompt(moveData)) {
+      value = await activeEffect.promptUserForData(moveData);
     }
     actor.getItemsByFilter(K4ItemType.move, filter)
       .forEach((move) => {
@@ -347,6 +283,18 @@ const CUSTOM_FUNCTIONS: Record<
 // #endregion
 
 // #region === K4ACTIVEEFFECT CLASS ===
+/**
+ * The active effect itself can be applied using Foundry's standard logic, resulting in changes
+ * arrays that contain mode:0 custom functions where key is the function name, and value is the
+ * function string.
+ *
+ * The changes arrays of enabled active effects should be iterated through during the actor's
+ *  prepareData method, filtered for custom functions, and their function data strings parsed and
+ *  applied then.
+ * (Roll-effect changes should instead be run during the roll process.)
+ *
+ * See "applyToActor" and "applyToRoll" methods below
+ */
 class K4ActiveEffect extends ActiveEffect {
 
   // #region INITIALIZATION ~
@@ -354,22 +302,6 @@ class K4ActiveEffect extends ActiveEffect {
     CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
     DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
     DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, { makeDefault: true });
-
-    Hooks.on("applyActiveEffect", async (actor: K4Actor, changeData: K4ActiveEffect.Change.Data & {effect: K4ActiveEffect}) => {
-
-      const {effect} = changeData;
-      const {parent} = effect;
-      if (!(parent instanceof K4Actor)) { return }
-
-      effect.changes.forEach(({key, mode, value}) => {
-        if (mode === EffectMode.Custom) {
-          if (!(key in CUSTOM_FUNCTIONS)) { throw new Error(`Unrecognized Custom Function: '${key}'`); }
-          const funcData = parseFunctionDataString(value);
-
-          // BladesActiveEffect.ThrottleCustomFunc(effect.parent as BladesActor, funcData);
-        }
-      })
-    });
   }
   // #endregion
 
@@ -400,32 +332,87 @@ class K4ActiveEffect extends ActiveEffect {
     }
   }
 
-  // #region DATA PREPARATION ~
-
-  override prepareData(): void {
-    super.prepareData();
-
-
-  }
-
-
-  // #endregion
-
   // #region GETTERS & SETTERS ~
 
 
   // #endregion
 
   // #region PRIVATE METHODS ~
+  /**
+   * Parses a function data string into an object literal.
+   *
+   * == FUNCTION DATA STRING ==
+   * A string definition of a data object that will be passed to the function. Each function must define how to handle this data object.
+   *  - String is comma-delimited with key-value pairs separated by colons.
+   *  - The last key-value pair may contain commas, as long as there are no colons after the last comma.
+   *
+   * @param {string} dataString - The function data string to parse.
+   * @returns {Record<string, string>} - The parsed object literal.
+   */
+  parseFunctionDataString(dataString: string): Record<string, string|number|boolean> {
+    const pairs = dataString.match(/([^,]+:[^,]+(?:,[^,]+)*?)(?=(?:,[^:]+:)|$)/g);
+    if (!pairs) {
+      throw new Error(`Invalid function data string format: "${dataString}"`);
+    }
+    return pairs.reduce((acc, pair) => {
+      let [key, value]: [string, string|number|boolean] = pair.split(/:(.+)/) // Split only at the first colon
+        .map(str => str.trim()) as [string, string];
 
+      // Convert the value to the appropriate type
+      if (/^\d+$/.test(value)) {
+        value = U.pInt(value); // Integer
+      } else if (/^\d*\.\d$/.test(value)) {
+        value = U.pFloat(value); // Float
+      } else if (/^(true|false)$/i.test(value)) {
+        value = value.toLowerCase() === "true"; // Boolean
+      }
+
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string,string|number|boolean>);
+  }
+  hasPrompt<baseType extends K4ActiveEffect.CustomFunction.AnyData>(data: baseType): data is baseType & K4ActiveEffect.CustomFunction.Data.HasPrompt<baseType> {
+    if (!("value" in data)) { return false; }
+    return data.value === "prompt";
+  }
+  async promptUserForData<ResponseType extends string|number|boolean>(data: K4ActiveEffect.CustomFunction.Data.Prompt): Promise<Maybe<ResponseType>> {
+    const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${data.input}`));
+    const context: Record<string, string|number|boolean> = {
+      title: data.title,
+      bodyText: data.bodyText ?? ""
+    }
+    const dialogData: Dialog.Data = {
+      title: data.title,
+      content: template(context),
+      buttons: {}
+    };
+
+    const userOutput = await new Promise<ResponseType>((resolve) => {
+      if (data.input === PromptInputType.numberButtons) {
+        const {inputMin, inputMax} = data;
+        for (let i = inputMin; i <= inputMax; i++) {
+          dialogData.buttons[i] = {
+            label: String(i),
+            callback: () => resolve(i as ResponseType)
+          }
+        }
+      }
+      new Dialog(dialogData, {classes: [C.SYSTEM_ID, "dialog"]}).render(true);
+    });
+
+    return userOutput;
+  }
   // #endregion
 
   // #REGION === PUBLIC METHODS ===
+  applyToActor(actor?: K4Actor) {
+    actor ??= this.parent;
+    if (!(actor instanceof K4Actor)) { return; }
+  }
 
-  // #ENDREGION
+  applyToRoll(roll: Roll) {
 
-  // #REGION === HTML APPLICATION ===
-
+  }
   // #ENDREGION
 }
 

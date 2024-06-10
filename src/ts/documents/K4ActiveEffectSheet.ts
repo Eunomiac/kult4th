@@ -62,10 +62,10 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyMove: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:What could a plausible motive be? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"},
   ],
   "Condemned": [
-    {CreateTracker: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.disadvantage.condemned.tracker,value:0,min:0,max:10,fromText:#>text-keyword>Condemned<#"}
+    {CreateTracker: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.tracker,value:0,min:0,max:10,fromText:#>text-keyword>Condemned<#"}
   ],
   "Rage": [
-    {CreateTracker: "name:Rage,imgFolder:systems/kult4th/assets/icons/trackers/rage/,key:flags.kult4th.advantage.rage.tracker,value:0,min:0,max:3,fromText:#>text-keyword>Rage<#"}
+    {CreateTracker: "name:Rage,imgFolder:systems/kult4th/assets/icons/trackers/rage/,key:flags.kult4th.tracker,value:0,min:0,max:3,fromText:#>text-keyword>Rage<#"}
   ],
   "Dead Shot": [
     {ModifyAttack: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>text-keyword>Dead Shot<#"}
@@ -84,11 +84,11 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyRoll: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputMin:1,inputMax:4,inStatusBar:false"},
   ],
   "Expert": [
-    {PromptForData: "title:What is your first Field of Expertise?,key:flags.kult4th.advantage.expert.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
-    {PromptForData: "title:What is your second Field of Expertise?,key:flags.kult4th.advantage.expert.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
-    {ModifyMove: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.advantage.expert.field_1field_1%<# or #>text-keyword>%insert.flags.kult4th.advantage.expert.field_1field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
-    {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.advantage.expert.field_1field_1%<# or #>text-keyword>%insert.flags.kult4th.advantage.expert.field_1field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
-    {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.advantage.expert.field_1field_1%<# or #>text-keyword>%insert.flags.kult4th.advantage.expert.field_1field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
+    {PromptForData: "title:What is your first Field of Expertise?,key:flags.kult4th.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
+    {PromptForData: "title:What is your second Field of Expertise?,key:flags.kult4th.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
+    {ModifyMove: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
+    {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
+    {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
   ],
   "Jaded": [
     {ModifyMove: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>text-keyword>Jaded<##>text-sourceref>)<#"}
@@ -121,7 +121,7 @@ const CUSTOMFUNCEXAMPLES = {
   ]
 }
 
-/** ROLL-SOURCE EFFECTS -- These are applied as the result of a roll, and are transferred to the rolling Actor. They must define their own removal logic. Schema-wise, they go into the effectFunctions array within each roll result, and are created as ActiveEffects on the rolling actor after a roll has been made. */
+/** ROLL-SOURCE EFFECTS -- These are applied as the result of a roll OR a triggered static effect (like an edge), and are transferred to the rolling Actor. They must define their own removal logic. Schema-wise, they go into the effectFunctions array within each roll result, and are created as ActiveEffects on the rolling actor after a roll has been made. */
 const CUSTOMROLLFUNCEXAMPLES = {
   "Observe a Situation/completeSuccess": [
     {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
@@ -129,4 +129,14 @@ const CUSTOMROLLFUNCEXAMPLES = {
   "Observe a Situation/partialSuccess": [
     {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
   ]
+}
+
+const CUSTOMTRIGGERFUNCEXAMPLES = {
+  "Draw an Ace/Reveal a Weapon": [
+    {PromptForData: "... name of weapon ..."},
+    {PromptForData: "... class of weapon - select, stab/slash/crush/..."},
+    {CreateWeapon: "name:flags.kult4th.weaponName,range:arm,harm:1,class:flags.kult4th.weaponClass,duration:scene,fromText:#>text-keyword>Draw an Ace<#"},
+  ],
+  "Draw an Ace/Spot a Weakness": [],
+  "Draw an Ace/Find an Exit": []
 }

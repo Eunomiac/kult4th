@@ -1,7 +1,5 @@
 import K4Config from "../scripts/config";
 
-import "./documents";
-import "./scripts";
 import "./general-types";
 import "./system-types";
 import "./league-types";
