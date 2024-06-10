@@ -70,6 +70,10 @@ const CUSTOMFUNCEXAMPLES = {
   "Dead Shot": [
     {ModifyAttack: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>text-keyword>Dead Shot<#"}
   ],
+  "Extortionist": [
+    {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What are you afraid of? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"},
+    {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"}
+  ],
   "Elite Sport (Athletics)": [
     {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:false,canToggle:true,icon:systems/kult4th/assets/icons/advantage/elite-sport-(athletics).svg,shortLabel:Run/Catch/Throw,fromText:#>text-keyword>Elite Sport (Athletics)<#,tooltip:Applies to all rolls relevant to running, throwing, or catching objects. #>text-sourceref>(from <##>text-keyword>Elite Sport (Athletics)<##>text-sourceref>)<#"}
   ],
@@ -90,12 +94,30 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
     {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
   ],
+  "Gritted Teeth": [
+    {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_critical.1.all,value:0"},
+    {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.1.all,value:0"},
+    {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.2.all,value:0"},
+    {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.3.all,value:0"},
+    {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.4.all,value:0"},
+    {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_seriouscritical.1.all,value:0"}
+  ],
+  "Broken": [
+    {ModifyProperty: "filter:actor,effect:Set,target:system.stability.max,value:6"}
+  ],
+  "Hardened": [
+    {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"}
+  ],
   "Jaded": [
     {ModifyMove: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>text-keyword>Jaded<##>text-sourceref>)<#"}
   ],
   "Keen-Eyed": [
     {ModifyMove: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What weaknesses do they have I can use to my advantage? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"},
     {ModifyMove: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What strengths do they have I should watch out for? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"}
+  ],
+  "Observant": [
+    {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What sort of person are you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"},
+    {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Is there anything odd about you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"}
   ],
   "Instinct": [
     {ModifyMove: "filter:Observe a Situation,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#"},

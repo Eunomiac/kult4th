@@ -126,12 +126,9 @@
 		],
 		"templates": {
 			"base": {
-				"key": "",
-				"description": "",
 				"lists": {},
 				"subType": "",
-				"isCustom": true,
-				"pdfLink": ""
+        "gmNotes": ""
 			},
 			"hasSubItems": {
 				"subItems": []
@@ -176,8 +173,7 @@
 						"effects": [],
 						"edges": 0,
 						"hold": 0
-					},
-					"listRefs": []
+					}
 				}
 			}
 		},
@@ -193,21 +189,17 @@
 		},
 		"advantage": {
 			"templates": ["base", "hasSubItems", "rulesData"],
-			"attribute": "",
-			"currentHold": 0,
-			"currentEdges": 0
+			"currentHold": 0
 		},
 		"disadvantage": {
 			"templates": ["base", "hasSubItems", "rulesData"],
-			"attribute": "",
 			"currentHold": 0
 		},
 		"darksecret": {
 			"templates": ["base", "rulesData"],
 			"drive": "",
 			"currentHold": 0,
-			"playerNotes": "",
-			"gmNotes": ""
+			"playerNotes": ""
 		},
 		"relation": {
 			"templates": ["base"],
@@ -229,7 +221,7 @@
 			}
 		},
 		"gear": {
-			"templates": ["base", "rulesData"],
+			"templates": ["base", "hasSubItems", "rulesData"],
 			"armor": 0
 		}
 	}

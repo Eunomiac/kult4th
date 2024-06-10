@@ -3,7 +3,7 @@ import U from "../scripts/utilities.js";
 import K4ItemSheet from "./K4ItemSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
-import K4Actor from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
@@ -74,12 +74,10 @@ declare global {
       }
       export interface CanSubItem {
         parentItem?: ParentItemReference;
-        parentType?: K4ItemType;
       }
       export interface IsSubItem {
         chatName?: string;
-        parentItem: ParentItemReference & {id: IDString};
-        parentType: K4ItemType;
+        parentItem: ParentItemReference;
       }
     }
 
@@ -149,6 +147,7 @@ declare global {
           intro?: string
         }>,
         subType: K4ItemSubType;
+        gmNotes?: string
       }
 
       export interface HasSubItems {
@@ -163,7 +162,7 @@ declare global {
           trigger?: string,
           outro?: string,
           listRefs?: string[],
-          effects?: string[],
+          effects?: K4ActiveEffect.GenerationData,
           holdText?: string;
         };
       }
@@ -175,8 +174,8 @@ declare global {
             result: string,
             listRefs?: string[],
             effects?: string[],
-            edges?: PosInteger,
-            hold?: PosInteger;
+            edges?: number,
+            hold?: number;
           }
         >;
       }
@@ -206,47 +205,36 @@ declare global {
         K4Item.Components.RulesData,
         K4Item.Components.ResultsData {
         range: K4ItemRange[],
-        harm: PosInteger,
-        ammoCost?: PosInteger;
+        harm: number,
+        ammo?: number;
       }
 
       export interface Advantage extends K4Item.Components.Base,
         K4Item.Components.HasSubItems,
-        K4Item.Components.RulesData,
-        Partial<K4Item.Components.ResultsData> {
-        attribute: K4Attribute,
-        currentHold: PosInteger,
-        currentEdges: PosInteger;
+        K4Item.Components.RulesData {
+        currentHold: number;
       }
 
       export interface Disadvantage extends K4Item.Components.Base,
         K4Item.Components.HasSubItems,
-        K4Item.Components.RulesData,
-        Partial<K4Item.Components.ResultsData> {
-        attribute: K4Attribute,
-        currentHold: PosInteger;
+        K4Item.Components.RulesData {
+        currentHold: number;
       }
 
       export interface DarkSecret extends K4Item.Components.Base,
         K4Item.Components.RulesData {
         drive: string,
-        currentHold: PosInteger,
-        playerNotes: string,
-        gmNotes: string;
+        currentHold: number,
+        playerNotes: string
       }
 
       export interface Relation extends K4Item.Components.Base {
         target: string,
-        strength: {
-          min: number,
-          max: number,
-          value: number;
-        };
+        strength: ValueMax;
       }
       export interface Weapon<C extends K4WeaponClass = K4WeaponClass> extends K4Item.Components.Base,
         K4Item.Components.HasSubItems,
-        K4Item.Components.RulesData,
-        Partial<K4Item.Components.ResultsData> {
+        K4Item.Components.RulesData {
         class: C,
         subClass: WeaponSubClass<C>,
         ammo: C extends K4WeaponClass.firearm ? {
@@ -257,11 +245,24 @@ declare global {
       }
       export interface Gear extends K4Item.Components.Base,
         K4Item.Components.HasSubItems,
-        K4Item.Components.RulesData,
-        Partial<K4Item.Components.ResultsData> {
-        armor: Integer;
+        K4Item.Components.RulesData {
+        armor: number;
       }
+      export type Any = Move | Attack | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
     }
+    /**
+     * Discriminated union of all item source schemas
+     *  */
+    export type Source<T extends K4ItemType = K4ItemType> =
+      T extends K4ItemType.move ? SourceSchema.Move
+      : T extends K4ItemType.attack ? SourceSchema.Attack
+      : T extends K4ItemType.advantage ? SourceSchema.Advantage
+      : T extends K4ItemType.disadvantage ? SourceSchema.Disadvantage
+      : T extends K4ItemType.darksecret ? SourceSchema.DarkSecret
+      : T extends K4ItemType.relation ? SourceSchema.Relation
+      : T extends K4ItemType.weapon ? SourceSchema.Weapon
+      : T extends K4ItemType.gear ? SourceSchema.Gear
+      : SourceSchema.Any;
 
     /**
      * Describes the functional .system property after derivation methods in K4Item.
@@ -269,12 +270,12 @@ declare global {
     export namespace SystemSchema {
       export interface Move extends K4Item.SourceSchema.Move { }
       export interface Attack extends K4Item.SourceSchema.Attack { }
-      export interface Advantage extends K4Item.SourceSchema.Advantage { }
-      export interface Disadvantage extends K4Item.SourceSchema.Disadvantage { }
+      export interface Advantage extends K4Item.SourceSchema.Advantage, K4Item.Components.ResultsData { }
+      export interface Disadvantage extends K4Item.SourceSchema.Disadvantage, K4Item.Components.ResultsData { }
       export interface DarkSecret extends K4Item.SourceSchema.DarkSecret { }
       export interface Relation extends K4Item.SourceSchema.Relation { }
-      export interface Weapon extends K4Item.SourceSchema.Weapon { }
-      export interface Gear extends K4Item.SourceSchema.Gear { }
+      export interface Weapon extends K4Item.SourceSchema.Weapon, K4Item.Components.ResultsData { }
+      export interface Gear extends K4Item.SourceSchema.Gear, K4Item.Components.ResultsData { }
       export type Any = Move | Attack | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
     }
 
@@ -416,14 +417,7 @@ class K4Item extends Item {
     }
     const parentItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Item.Parent>;
 
-    // Extracting results from parentItem's system if available, otherwise defaulting to empty objects
-    const {
-      completeSuccess: { result: resComplete } = { result: undefined },
-      partialSuccess: { result: resPartial } = { result: undefined },
-      failure: { result: resFail } = { result: undefined }
-    } = parentItem?.system.results ?? {};
-    if (!parentItem) {return null;}
-    return parentItem;
+    return parentItem ?? null;
   }
 
   get subItems(): Array<K4Item & K4SubItem> {
@@ -556,16 +550,6 @@ class K4Item extends Item {
       }
     }
   }
-  applyOnCreateeffects() {
-    if ("rules" in this.system && this.system.rules.effects) {
-      this.system.rules.effects.forEach((funcString) => this.applyEffectFunction(funcString));
-    }
-  }
-  unapplyOnCreateeffects() {
-    if ("rules" in this.system && this.system.rules.effects) {
-      this.system.rules.effects.forEach((funcString) => this.unapplyEffectFunction(funcString));
-    }
-  }
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete
@@ -575,7 +559,7 @@ class K4Item extends Item {
       .map((subData) => {
         subData.name ??= this.name;
         subData.system.parentItem.id = this.id;
-        subData.system.parentType = this.type;
+        subData.system.parentItem.type = this.type;
         if ("lists" in this.system) {
           subData.system.lists = {
             ...this.system.lists,
@@ -588,7 +572,7 @@ class K4Item extends Item {
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     await super._onCreate(...args);
     if (!this.isOwnedItem()) {return;}
-    this.applyOnCreateeffects();
+    // this.applyOnCreateeffects();
     if (this.isParentItem()) {
       // Item has subItem schemas, create them now as independent K4Items.
       const subItemData = this.prepareSubItemData();
@@ -612,29 +596,36 @@ class K4Item extends Item {
   }
   override prepareData() {
     super.prepareData();
+
+    // If this is a parent item, extract attribute and results data for display on item sheet from the first rollable subItem
+    if (this.isParentItem() && this.isActiveItem()) {
+      const firstSubItem = this.system.subItems
+        .find((subItem): subItem is K4SubItem.Schema<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.system.subType === K4ItemSubType.activeRolled);
+      if (firstSubItem && firstSubItem.system.subType === K4ItemSubType.activeRolled) {
+        this.system.attribute = firstSubItem.system.attribute;
+        this.system.results = firstSubItem.system.results;
+      }
+    }
+
+    /** CAN REMOVE THIS SECTION SINCE WE WON'T BE CREATING ITEMS FOR ATTACKS */
     if (this.isOwnedItem() && this.isParentItem()) {
       this.system.subMoves = this.system.subItems
         .filter((subData): subData is K4SubItem.Schema<K4ItemType.move> => subData.type === K4ItemType.move);
       this.system.subAttacks = this.system.subItems
         .filter((subData): subData is K4SubItem.Schema<K4ItemType.attack> => subData.type === K4ItemType.attack);
-
-      // Set the default roll for this item to the results of the first activeRolled subItem.
-      const firstSubItem = this.system.subItems
-        .find((subItem) => subItem.system.subType === K4ItemSubType.activeRolled);
-      if (firstSubItem && this.isActiveItem() && "results" in firstSubItem.system) {
-        this.system.results = firstSubItem.system.results;
-      }
     }
-
-    // if (this.isOwnedItem() && this.isSubI)
   }
   override _onDelete(...args: Parameters<Item["_onDelete"]>) {
     super._onDelete(...args);
     if (!this.isOwnedItem()) {return;}
     if (this.isParentItem()) {
       this.subItems.forEach((item) => item.delete());
+      const {parent} = this;
+      if (parent.is(K4ActorType.pc) && parent.system.edges.sourceName === this.name) {
+        this.parent.clearEdges();
+      }
     }
-    this.unapplyOnCreateeffects();
+    // this.unapplyOnCreateeffects();
   }
   // #endregion
 

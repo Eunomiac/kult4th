@@ -423,7 +423,7 @@ class K4PCSheet extends ActorSheet {
   static async PreInitialize() {
     gsap.registerEffect({
       name: "breakShard",
-      effect: (_: unknown, config: {stability: Integer}) => {
+      effect: (_: unknown, config: {stability: number}) => {
         const shardsMap = {
           7: [
             [13, 4],
@@ -439,11 +439,11 @@ class K4PCSheet extends ActorSheet {
           2: [[3, 12, 2], [0]],
           1: [[7, 9], [0]]
         };
-        const getFadingShards = (stabilityNum: Integer) => {
+        const getFadingShards = (stabilityNum: number) => {
           const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][0] ?? [];
           return $(shardNums.map((num) => `#shard-${num}`).join(", "));
         };
-        const getShrinkingShards = (stabilityNum: Integer) => {
+        const getShrinkingShards = (stabilityNum: number) => {
           const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][1] ?? [];
           return $(shardNums.map((num) => `#shard-${num}`).join(", "));
         };
@@ -569,7 +569,7 @@ class K4PCSheet extends ActorSheet {
     }
     return this._stabilityShardsTimeline as gsap.core.Timeline;
   }
-  getGlitchRepeatDelay(stability: Integer = this.actor.system.stability.value): number {
+  getGlitchRepeatDelay(stability: number = this.actor.system.stability.value): number {
     const delayDistributor = gsap.utils.distribute({
       amount: 20,
       ease: "sine.inOut"
@@ -580,7 +580,7 @@ class K4PCSheet extends ActorSheet {
     // console.log(`[${stability}] ${distVals[stability]}s`);
     return distVals[stability];
   }
-  refreshGlitchRepeatDelay(stability: Integer = this.actor.system.stability.value) {
+  refreshGlitchRepeatDelay(stability: number = this.actor.system.stability.value) {
   }
   #buildGlitchTimeline(html: JQuery) {
     const glitch$ = html.find("#shards-svg #glitch");
@@ -652,8 +652,8 @@ class K4PCSheet extends ActorSheet {
 
 
 
-  async changeStability(stabilityDelta: Integer): Promise<unknown> {
-    const newStability = U.clampNum(this.actor.system.stability.value + stabilityDelta, [1, 10]) as Integer;
+  async changeStability(stabilityDelta: number): Promise<unknown> {
+    const newStability = U.clampNum(this.actor.system.stability.value + stabilityDelta, [1, 10]) as number;
     if (newStability === this.actor.system.stability.value) { return; }
     let updateAnim: Maybe<GsapAnimation> = undefined;
     if (this.rendered) {
@@ -897,7 +897,7 @@ class K4PCSheet extends ActorSheet {
       if (clickStatus) { return }
       clickStatus = true;
       $(".button-container").off("dblclick");
-      this.changeStability(-1 as Integer);
+      this.changeStability(-1 as number);
     }
     const clickCheck = (event: DoubleClickEvent) => {
       event.preventDefault();
@@ -923,7 +923,7 @@ class K4PCSheet extends ActorSheet {
       click: clickCheck.bind(this),
       contextmenu: (event) => {
         event.preventDefault();
-        this.changeStability(1 as Integer);
+        this.changeStability(1 as number);
       }
     });
 

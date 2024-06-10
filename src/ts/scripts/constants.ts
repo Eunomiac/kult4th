@@ -174,7 +174,7 @@ export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
   }
   return false;
 }
-export function getContrastingColor(colorVal: string, contrastLevel = 1 as PosInteger, bgShade: "light"|"dark" = "dark") {
+export function getContrastingColor(colorVal: string, contrastLevel = 1 as number, bgShade: "light"|"dark" = "dark") {
   let colorName = getColorName(colorVal);
   if (!colorName) {
     console.error(`Unable to find official contrast for ${colorVal}: Generating one instead.`);

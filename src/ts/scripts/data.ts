@@ -3,24 +3,59 @@
  * @description This file contains functions and constants for managing and manipulating K4Item data schemas. It includes functions for migrating data, extracting unique keys and values, generating reports, and building items from data.
  */
 import U from "../scripts/utilities.js";
-import C, { K4Attribute } from "../scripts/constants";
+import C from "../scripts/constants";
 import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
-import { K4ItemType, K4ItemSubType, K4RollResult, K4ItemRange } from "../documents/K4Item";
-import ITEM_DATA from "./item-data.js";
+import ITEM_DATA, {PackSchema} from "./item-data.js";
 import PREV_DATA from "./item-data-prev.js";
+
+enum K4Attribute {
+  ask = "ask",
+  zero = "zero",
+  fortitude = "fortitude",
+  reflexes = "reflexes",
+  willpower = "willpower",
+  reason = "reason",
+  intuition = "intuition",
+  perception = "perception",
+  coolness = "coolness",
+  violence = "violence",
+  charisma = "charisma",
+  soul = "soul"
+}
+enum K4ItemType {
+  advantage = "advantage",
+  disadvantage = "disadvantage",
+  move = "move",
+  darksecret = "darksecret",
+  relation = "relation",
+  gear = "gear",
+  attack = "attack",
+  weapon = "weapon"
+}
+enum K4ItemSubType {
+  activeRolled = "active-rolled",
+  activeStatic = "active-static",
+  passive = "passive"
+}
+enum K4ItemRange {
+  arm = "arm",
+  room = "room",
+  field = "field",
+  horizon = "horizon"
+}
 
 // #region TYPES & ENUMS ~
 /** Namespace for PACK types */
 namespace PACKS {
   export interface ByType {
-    [K4ItemType.advantage]: K4Item.Schema<K4ItemType.advantage>[];
-    [K4ItemType.disadvantage]: K4Item.Schema<K4ItemType.disadvantage>[];
-    [K4ItemType.move]: K4Item.Schema<K4ItemType.move>[];
-    [K4ItemType.attack]: K4Item.Schema<K4ItemType.attack>[];
-    [K4ItemType.darksecret]: K4Item.Schema<K4ItemType.darksecret>[];
-    [K4ItemType.relation]: K4Item.Schema<K4ItemType.relation>[];
-    [K4ItemType.gear]: K4Item.Schema<K4ItemType.gear>[];
-    [K4ItemType.weapon]: K4Item.Schema<K4ItemType.weapon>[];
+    [K4ItemType.advantage]: PackSchema<K4ItemType.advantage>[];
+    [K4ItemType.disadvantage]: PackSchema<K4ItemType.disadvantage>[];
+    [K4ItemType.move]: PackSchema<K4ItemType.move>[];
+    [K4ItemType.attack]: PackSchema<K4ItemType.attack>[];
+    [K4ItemType.darksecret]: PackSchema<K4ItemType.darksecret>[];
+    [K4ItemType.relation]: PackSchema<K4ItemType.relation>[];
+    [K4ItemType.gear]: PackSchema<K4ItemType.gear>[];
+    [K4ItemType.weapon]: PackSchema<K4ItemType.weapon>[];
   }
   export interface SubItems {
     subItems: K4SubItem.Schema[];
@@ -28,18 +63,18 @@ namespace PACKS {
     subAttacks: K4SubItem.Schema<K4ItemType.attack>[];
   }
   export interface ParentItems {
-    parentItems: K4Item.Schema<K4Item.Types.Parent>[];
+    parentItems: PackSchema<K4Item.Types.Parent>[];
   }
   export interface BasicPlayerMoves {
-    basicPlayerMoves: Array<K4Item.Schema<K4ItemType.move> & Record<string, unknown>>;
+    basicPlayerMoves: Array<PackSchema<K4ItemType.move> & Record<string, unknown>>;
   }
   export interface BySubType {
     [K4ItemSubType.activeRolled]: K4SubItem.Schema[];
     [K4ItemSubType.activeStatic]: K4SubItem.Schema[];
-    [K4ItemSubType.passive]: K4Item.Schema[];
+    [K4ItemSubType.passive]: PackSchema[];
   }
   export interface All {
-    all: K4Item.Schema[];
+    all: PackSchema[];
   }
 }
 
@@ -62,7 +97,7 @@ namespace REPORTS {
   }
 }
 
-type AnySchema = K4Item.Schema | K4SubItem.Schema;
+type AnySchema = PackSchema | K4SubItem.Schema;
 // #endregion
 
 // #REGION === DATA === ~
@@ -77,18 +112,18 @@ const PACKS: PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems
    * passive -- there should be no passive subItems (they should be parent items)
    *
    * */
-  [K4ItemType.advantage]: ITEM_DATA[K4ItemType.advantage] as unknown as K4Item.Schema<K4ItemType.advantage>[],
-  [K4ItemType.disadvantage]: ITEM_DATA[K4ItemType.disadvantage] as unknown as K4Item.Schema<K4ItemType.disadvantage>[],
-  [K4ItemType.darksecret]: ITEM_DATA[K4ItemType.darksecret] as unknown as K4Item.Schema<K4ItemType.darksecret>[],
-  [K4ItemType.weapon]: ITEM_DATA[K4ItemType.weapon] as unknown as K4Item.Schema<K4ItemType.weapon>[],
-  [K4ItemType.gear]: ITEM_DATA[K4ItemType.gear] as unknown as K4Item.Schema<K4ItemType.gear>[],
-  [K4ItemType.move]: ITEM_DATA[K4ItemType.move] as unknown as K4Item.Schema<K4ItemType.move>[],
-  [K4ItemType.relation]: ITEM_DATA[K4ItemType.relation] as unknown as K4Item.Schema<K4ItemType.relation>[],
-  [K4ItemType.attack]: ITEM_DATA[K4ItemType.attack] as unknown as K4Item.Schema<K4ItemType.attack>[],
+  [K4ItemType.advantage]: ITEM_DATA[K4ItemType.advantage],
+  [K4ItemType.disadvantage]: ITEM_DATA[K4ItemType.disadvantage],
+  [K4ItemType.darksecret]: ITEM_DATA[K4ItemType.darksecret],
+  [K4ItemType.weapon]: ITEM_DATA[K4ItemType.weapon],
+  [K4ItemType.gear]: ITEM_DATA[K4ItemType.gear],
+  [K4ItemType.move]: ITEM_DATA[K4ItemType.move],
+  [K4ItemType.relation]: ITEM_DATA[K4ItemType.relation],
+  [K4ItemType.attack]: ITEM_DATA[K4ItemType.attack],
   get basicPlayerMoves() {
-    return this[K4ItemType.move].toSorted((a, b) => a.name.localeCompare(b.name)) as Array<K4Item.Schema<K4ItemType.move> & Record<string, unknown>>;
+    return this[K4ItemType.move].toSorted((a, b) => a.name.localeCompare(b.name)) as Array<PackSchema<K4ItemType.move> & Record<string, unknown>>;
   },
-  get parentItems(): K4Item.Schema<K4Item.Types.Parent>[] {
+  get parentItems() {
     return [
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -120,7 +155,7 @@ const PACKS: PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems
       ...this[K4ItemType.gear]
     ], [K4ItemType.attack]) as K4SubItem.Schema<K4ItemType.attack>[];
   },
-  get all(): K4Item.Schema[] {
+  get all(): PackSchema[] {
     return [
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -138,7 +173,7 @@ const PACKS: PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems
     return this.subMoves
       .filter((move) => move.system.subType === K4ItemSubType.activeStatic);
   },
-  get [K4ItemSubType.passive](): K4Item.Schema[] {
+  get [K4ItemSubType.passive](): PackSchema[] {
     return this.all
       .filter((move) => move.system.subType === K4ItemSubType.passive);
   }
@@ -228,11 +263,11 @@ function getType(val: unknown): string {
 
 /**
  * Extracts unique keys from an array of item data.
- * @param {Array<K4Item.Schema|K4SubItem.Schema>} itemDataArray - The array of item data.
+ * @param {Array<PackSchema|K4SubItem.Schema>} itemDataArray - The array of item data.
  * @param {boolean} [isExpanding=false] - Whether to expand the keys.
  * @returns {Record<string, unknown>} - The unique keys.
  */
-function getUniqueSystemKeys(itemDataArray: Array<K4Item.Schema | K4SubItem.Schema>, isExpanding = false): Record<string, unknown> {
+function getUniqueSystemKeys(itemDataArray: Array<PackSchema | K4SubItem.Schema>, isExpanding = false): Record<string, unknown> {
   const uniqueEntries: Array<Tuple<string, string[]>> = [];
   itemDataArray.forEach((item) => {
     const flatSystem = flattenObject(item.system);
@@ -269,19 +304,19 @@ function getUniqueSystemKeys(itemDataArray: Array<K4Item.Schema | K4SubItem.Sche
 
 /**
  * Gets unique values for a given key from an array of item data.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {string} key - The key to get unique values for.
  * @returns {unknown[]}
  */
-function getUniqueValuesForSystemKey(itemDataArray: K4Item.Schema[], key: string): unknown[]
+function getUniqueValuesForSystemKey(itemDataArray: PackSchema[], key: string): unknown[]
 /**
  * Gets unique values for a given array of keys from an array of item data.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {string[]} key - The array of keys to get unique values for.
  * @returns {Record<string, unknown>}
  */
-function getUniqueValuesForSystemKey(itemDataArray: K4Item.Schema[], key: string[]): Record<string, unknown>
-function getUniqueValuesForSystemKey(itemDataArray: K4Item.Schema[], key: string | string[]): Record<string, unknown> | unknown[] {
+function getUniqueValuesForSystemKey(itemDataArray: PackSchema[], key: string[]): Record<string, unknown>
+function getUniqueValuesForSystemKey(itemDataArray: PackSchema[], key: string | string[]): Record<string, unknown> | unknown[] {
   if (Array.isArray(key)) {
     const valsByKey: Record<string, unknown[]> = {};
     key.forEach((thisKey) => {
@@ -308,11 +343,11 @@ function getUniqueValuesForSystemKey(itemDataArray: K4Item.Schema[], key: string
 
 /**
  * Generates a report of unique keys and their types/values from an array of item data.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {boolean} [isExpanding=false] - Whether to expand the keys.
  * @returns {Record<string, string>} - The report object.
  */
-function getItemSystemReport(itemDataArray: K4Item.Schema[] = PACKS.all, options: REPORTS.Config = {}): Record<string, string> {
+function getItemSystemReport(itemDataArray: PackSchema[] = PACKS.all, options: REPORTS.Config = {}): Record<string, string> {
 
   const VAL_TYPES_TO_LIST = [
     "small-posInt",
@@ -374,13 +409,13 @@ function getItemSystemReport(itemDataArray: K4Item.Schema[] = PACKS.all, options
 
 /**
  * Extracts sub-item schemas from an array of item data.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {K4SubItem.Types[]} [subTypes=[K4ItemType.attack, K4ItemType.move]] - The sub-item types to extract.
  * @returns {Array<K4SubItem.Schema>} - The extracted sub-item schemas.
  */
-function extractSubItemSchemas(itemDataArray: K4Item.Schema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.attack, K4ItemType.move]): Array<K4SubItem.Schema> {
+function extractSubItemSchemas(itemDataArray: PackSchema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.attack, K4ItemType.move]): Array<K4SubItem.Schema> {
   return itemDataArray
-    .filter((item): item is K4Item.Schema<K4Item.Types.Parent> =>
+    .filter((item): item is PackSchema<K4Item.Types.Parent> =>
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.weapon, K4ItemType.gear]
         .includes(item.type))
     .map((parentItem) => {
@@ -399,11 +434,11 @@ function extractSubItemSchemas(itemDataArray: K4Item.Schema[] = PACKS.all, subTy
 
 /**
  * Extracts unique keys from sub-item schemas.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {boolean} [isExpanding=false] - Whether to expand the keys.
  * @returns {Record<string, unknown>} - The unique keys.
  */
-function getUniqueSubItemSystemKeys(itemDataArray: K4Item.Schema[] = PACKS.all, isExpanding = false): Record<string, unknown> {
+function getUniqueSubItemSystemKeys(itemDataArray: PackSchema[] = PACKS.all, isExpanding = false): Record<string, unknown> {
   return getUniqueSystemKeys(
     extractSubItemSchemas(itemDataArray),
     isExpanding
@@ -439,21 +474,21 @@ function countSchemasWithSystemKey(schemaArray: AnySchema[], key: string): REPOR
 
 /**
  * Gets unique values for a given key from sub-item schemas.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {string} key - The key to get unique values for.
  * @returns {unknown[]}
  */
-function getUniqueValuesForSubItemKey(itemDataArray: K4Item.Schema[], key: string): unknown[]
+function getUniqueValuesForSubItemKey(itemDataArray: PackSchema[], key: string): unknown[]
 /**
  * Gets unique values for a given array of keys from sub-item schemas.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {string[]} key - The array of keys to get unique values for.
  * @returns {Record<string, unknown>}
  */
-function getUniqueValuesForSubItemKey(itemDataArray: K4Item.Schema[], key: string[]): Record<string, unknown[]>
+function getUniqueValuesForSubItemKey(itemDataArray: PackSchema[], key: string[]): Record<string, unknown[]>
 function getUniqueValuesForSubItemKey(key: string): unknown[]
 function getUniqueValuesForSubItemKey(keys: string[]): Record<string, unknown[]>
-function getUniqueValuesForSubItemKey(itemDataArray: string|string[]|K4Item.Schema[], key?: string | string[]): Record<string, unknown[]> | unknown[] {
+function getUniqueValuesForSubItemKey(itemDataArray: string|string[]|PackSchema[], key?: string | string[]): Record<string, unknown[]> | unknown[] {
   if (typeof itemDataArray === "string") {
     key = itemDataArray;
     itemDataArray = PACKS.all;
@@ -461,16 +496,16 @@ function getUniqueValuesForSubItemKey(itemDataArray: string|string[]|K4Item.Sche
     key = itemDataArray as string[];
     itemDataArray = PACKS.all;
   }
-  return getUniqueValuesForSystemKey(extractSubItemSchemas(itemDataArray as K4Item.Schema[]) as any, key as any);
+  return getUniqueValuesForSystemKey(extractSubItemSchemas(itemDataArray as PackSchema[]) as any, key as any);
 }
 
 /**
  * Generates a report of unique keys and their types/values from sub-item schemas.
- * @param {K4Item.Schema[]} itemDataArray - The array of item data.
+ * @param {PackSchema[]} itemDataArray - The array of item data.
  * @param {boolean} [isExpanding=false] - Whether to expand the keys.
  * @returns {Record<string, string>} - The report object.
  */
-function getSubItemSystemReport(itemDataArray: K4Item.Schema[] = PACKS.all, options: REPORTS.Config = {}): Record<string, unknown> {
+function getSubItemSystemReport(itemDataArray: PackSchema[] = PACKS.all, options: REPORTS.Config = {}): Record<string, unknown> {
   const VAL_TYPES_TO_LIST = [
     "small-posInt",
     "boolean",
@@ -537,7 +572,7 @@ function getMutationDiffReport() {
  * @param {any[]} itemDataArray - The array of item data.
  * @returns {any[]} - The parsed item schemas.
  */
-function parseItemSchemasForCreation(itemDataArray: K4Item.Schema[] = PACKS.all): K4Item.Schema[] {
+function parseItemSchemasForCreation(itemDataArray: PackSchema[] = PACKS.all): PackSchema[] {
   const FOLDER_NAME_MAP = {
     [K4ItemType.attack]: null,
     [K4ItemType.advantage]: "Advantages",
@@ -550,7 +585,7 @@ function parseItemSchemasForCreation(itemDataArray: K4Item.Schema[] = PACKS.all)
   };
   return itemDataArray
     .map((itemData) => {
-      const newItemData = duplicate(itemData) as K4Item.Schema & {folder: string|null};
+      const newItemData = duplicate(itemData) as PackSchema & {folder: string|null};
       ["_id", "folder", "sort", "permission", "flags"]
         .forEach((key) => {
           delete newItemData[key as keyof typeof newItemData]

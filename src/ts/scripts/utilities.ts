@@ -15,7 +15,7 @@ const _capWords = [
 // _loremIpsumText -- Boilerplate lorem ipsum
 const _loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies
 nibh sed massa euismod lacinia. Aliquam nec est ac nunc ultricies scelerisque porta vulputate odio.
-Integer gravida mattis odio, semper volutpat tellus. Ut elit leo, auctor eget fermentum hendrerit,
+number gravida mattis odio, semper volutpat tellus. Ut elit leo, auctor eget fermentum hendrerit,
 aliquet ac nunc. Suspendisse porta turpis vitae mi posuere molestie. Cras lectus lacus, vulputate a
 vestibulum in, mattis vel mi. Mauris quis semper mauris. Praesent blandit nec diam eget tincidunt. Nunc
 aliquet consequat massa ac lacinia. Ut posuere velit sagittis, vehicula nisl eget, fringilla nibh. Duis
@@ -154,9 +154,9 @@ const isBooleanString = <T>(ref: T): ref is T & BoolString => typeof ref === "st
 const isArray = <T>(ref: T): ref is T & Array<ValOf<T>> => Array.isArray(ref);
 const isSimpleObj = <T>(ref: T): ref is T & Record<Key, unknown> => ref === Object(ref) && !isArray(ref);
 const isNumber = <T>(ref: T): ref is T & number => typeof ref === "number" && !isNaN(ref);
-const isInt = <T>(ref: T): ref is T & Integer => isNumber(ref) && ref % 1 === 0;
+const isInt = <T>(ref: T): ref is T & number => isNumber(ref) && ref % 1 === 0;
 const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && /\./.test(`${ref}`);
-const isPosInt = <T>(ref: T): ref is T & PosInteger => isInt(ref) && ref >= 0;
+const isPosInt = <T>(ref: T): ref is T & number => isInt(ref) && ref >= 0;
 const isPosFloat = <T>(ref: T): ref is T & PosFloat => isFloat(ref) && ref >= 0;
 
 const isList = <T>(ref: T): ref is T & List => ref === Object(ref) && !isArray(ref);
@@ -318,14 +318,14 @@ const pFloat = <IsStrict extends boolean>(
 const pInt: {
   (ref: unknown, isStrict?: boolean): number;
   (ref: unknown, index: number, array: unknown[]): number;
-} = (ref: unknown, isStrictOrIndex?: boolean | number, _arr?: unknown[]): typeof NaN|Integer => {
+} = (ref: unknown, isStrictOrIndex?: boolean | number, _arr?: unknown[]): typeof NaN|number => {
   let isStrict = false;
   if (typeof isStrictOrIndex === "boolean") {
     isStrict = isStrictOrIndex;
   }
   return isNaN(pFloat(ref, 0, isStrict))
     ? NaN
-    : Math.round(pFloat(ref, 0, isStrict)) as Integer;
+    : Math.round(pFloat(ref, 0, isStrict)) as number;
 };
 
 const pBool = (

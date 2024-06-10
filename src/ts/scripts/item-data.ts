@@ -1,34 +1,82 @@
-export default {
-  "advantage": [
+
+// #region Types & Enums ~
+enum K4Attribute {
+  ask = "ask",
+  zero = "zero",
+  fortitude = "fortitude",
+  reflexes = "reflexes",
+  willpower = "willpower",
+  reason = "reason",
+  intuition = "intuition",
+  perception = "perception",
+  coolness = "coolness",
+  violence = "violence",
+  charisma = "charisma",
+  soul = "soul"
+}
+enum K4ItemType {
+  advantage = "advantage",
+  disadvantage = "disadvantage",
+  move = "move",
+  darksecret = "darksecret",
+  relation = "relation",
+  gear = "gear",
+  attack = "attack",
+  weapon = "weapon"
+}
+enum K4ItemSubType {
+  activeRolled = "active-rolled",
+  activeStatic = "active-static",
+  passive = "passive"
+}
+enum K4ItemRange {
+  arm = "arm",
+  room = "room",
+  field = "field",
+  horizon = "horizon"
+}
+export interface PackSchema<T extends K4ItemType = K4ItemType> {
+  name: string;
+  type: T;
+  img: string;
+  system: K4Item.Source<T>;
+}
+// #endregion
+
+const ITEM_DATA: {
+  advantage: PackSchema<K4ItemType.advantage>[],
+  disadvantage: PackSchema<K4ItemType.disadvantage>[],
+  darksecret: PackSchema<K4ItemType.darksecret>[],
+  weapon: PackSchema<K4ItemType.weapon>[],
+  gear: PackSchema<K4ItemType.gear>[],
+  move: PackSchema<K4ItemType.move>[],
+  relation: PackSchema<K4ItemType.relation>[],
+  attack: PackSchema<K4ItemType.attack>[];
+} = {
+  advantage: [
     {
       "name": "Worldly",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
       "system": {
-        "key": "worldly",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Recall this Place",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
             "system": {
               "chatName": "Recalls this Place",
               "parentItem": {
                 "name": "Worldly",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you arrive at a new location in the mundane world,",
                 "outro": "decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then."
               },
-              "subType": "active-static",
-              "key": "worldly"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -41,16 +89,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Occult Studies",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
       "system": {
-        "key": "occult-studies",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -60,20 +105,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Encounter the Occult",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
             "system": {
               "parentItem": {
                 "name": "Occult Studies",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Upon coming in contact with a magical discipline, entity, or phenomenon for the first time,",
                 "outro": "%insert.rollPrompt%.",
@@ -98,9 +140,8 @@ export default {
                   "result": "You have a hazy memory of something like this, but can't say for sure if it's true or not. The GM explains what it is you remember."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "occult-studies",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "chatName": "Encounter the Occult"
             }
           }
@@ -113,40 +154,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
-        "currentHold": 0,
-        "currentEdges": 0
+        "currentHold": 0
       }
     },
     {
       "name": "To the Last Breath",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
       "system": {
-        "key": "to-the-last-breath",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Refuse to Give In",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
             "system": {
               "chatName": "Refuses to Give In",
               "parentItem": {
                 "name": "To the Last Breath",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you refuse to give in even if the odds turn against you,",
                 "outro": "mark 1 Time to reroll the dice."
               },
-              "subType": "active-static",
-              "key": "to-the-last-breath"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -156,21 +189,18 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "Requires the Disadvantage Condemned"
+            {RequireItem: "filter:Condemned"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Extortionist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/extortionist.svg",
       "system": {
-        "key": "extortionist",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -180,9 +210,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones:",
@@ -192,21 +220,19 @@ export default {
             "questions"
           ],
           "effects": [
-            "AppendList,Read a Person,questions,questions"
+            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What are you afraid of? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Character Actor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
       "system": {
-        "key": "character-actor",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -218,20 +244,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Blend In",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
             "system": {
               "parentItem": {
                 "name": "Character Actor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you try to blend into a place or crowd by adapting your appearance and behavior to the others present,",
                 "outro": "%insert.rollPrompt%.",
@@ -259,9 +282,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
-              "key": "character-actor",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
               "chatName": "Blend In"
             }
           }
@@ -274,40 +296,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "intuition",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Code of Honor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
       "system": {
-        "key": "code-of-honor",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Follow the Code",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
             "system": {
               "chatName": "Follows the Code",
               "parentItem": {
                 "name": "Code of Honor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you take risks or make sacrifices for your code of honor,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "key": "code-of-honor"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -320,16 +334,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Prepared",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
       "system": {
-        "key": "prepared",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -340,20 +351,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Scout a Location",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
             "system": {
               "parentItem": {
                 "name": "Prepared",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you investigate a location prior to visiting it,",
                 "outro": "%insert.rollPrompt%.",
@@ -383,9 +391,8 @@ export default {
                   "hold": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "prepared",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
               "chatName": "Scout a Location"
             }
           }
@@ -398,40 +405,32 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move for the location."
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Good Samaritan",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
       "system": {
-        "key": "good-samaritan",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Sacrifice for Another",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
             "system": {
               "chatName": "Sacrifices for Another",
               "parentItem": {
                 "name": "Good Samaritan",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you help another at your own expense,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "key": "good-samaritan"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -444,20 +443,16 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Artifact",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
       "system": {
-        "key": "artifact",
-        "description": "",
         "lists": {
           "powers": {
             "name": "Powers",
-            "requiresEdit": true,
             "items": [
               "Configure your artifact's powers with the help of the GM."
             ]
@@ -472,20 +467,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Activate Artifact",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
             "system": {
               "parentItem": {
                 "name": "Artifact",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you activate the object,",
                 "outro": "%insert.rollPrompt%.",
@@ -510,9 +502,8 @@ export default {
                   "result": "The artifact does something unexpected, possibly dangerous. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "artifact",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "chatName": "Activate the Artifact"
             }
           }
@@ -525,18 +516,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Sixth Sense",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
       "system": {
-        "key": "sixth-sense",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -547,20 +534,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Hone Their Instincts",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
             "system": {
               "parentItem": {
                 "name": "Sixth Sense",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "At the start of each game session,",
                 "outro": "%insert.rollPrompt%.",
@@ -585,9 +569,8 @@ export default {
                   "result": "Your instincts will fail to trigger in a dangerous situation. #>text-gmtext>The GM makes a Move<# at some point during the session."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "sixth-sense",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
               "chatName": "Hone Their Instincts"
             }
           }
@@ -600,18 +583,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Moles",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/moles.svg",
       "system": {
-        "key": "moles",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -621,20 +600,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Contact a Mole",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/moles.svg",
             "system": {
               "parentItem": {
                 "name": "Moles",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you make contact with one of your moles to acquire info or services,",
                 "outro": "explain what group or organization the mole belongs to, name them, and then %insert.rollPrompt%.",
@@ -659,9 +635,8 @@ export default {
                   "result": "The mole's loyalties are questionable. Can you trust them? #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "moles",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "chatName": "Contact a Mole"
             }
           }
@@ -674,33 +649,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Impostor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
       "system": {
-        "key": "impostor",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Exploit a Rube",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
             "system": {
               "parentItem": {
                 "name": "Impostor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you need money, a safehouse, protection, or other help one of your victims can provide,",
                 "outro": "describe who they are and %insert.rollPrompt%."
@@ -716,9 +684,8 @@ export default {
                   "result": "You know someone who can help, but they have already seen through your game. If you want their assistance it will require threats or blackmail to get them to provide it."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "impostor",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "chatName": "Exploit a Rube"
             }
           }
@@ -731,40 +698,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Desperate",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
       "system": {
-        "key": "desperate",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Go Against the Odds",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
             "system": {
               "chatName": "Goes Against the Odds",
               "parentItem": {
                 "name": "Desperate",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you try to make it through overwhelming odds,",
                 "outro": "take #>text-keyword>+1 ongoing<# on all rolls until you're clear of the threat."
               },
-              "subType": "active-static",
-              "key": "desperate"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -777,31 +736,25 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Awe-Inspiring",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
       "system": {
-        "key": "awe-inspiring",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Project Authority",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
             "system": {
               "parentItem": {
                 "name": "Awe-Inspiring",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you make a show of being the boss,",
                 "outro": "%insert.rollPrompt%."
@@ -817,9 +770,8 @@ export default {
                   "result": "People feel like you're the leader, but one of them tries to challenge you for it. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "awe-inspiring",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
               "chatName": "Project Authority"
             }
           }
@@ -832,18 +784,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Watchers",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
       "system": {
-        "key": "watchers",
-        "description": "",
         "lists": {
           "watchers": {
             "name": "Watchers Gang",
@@ -855,21 +803,18 @@ export default {
             "intro": "The GM determines the size of the gang that appears, based on the power of the threat you face."
           }
         },
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Invoke the Watchers",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
             "system": {
               "chatName": "Invokes the Watchers",
               "parentItem": {
                 "name": "Watchers",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are in mortal danger and choose to activate your Watchers,",
                 "outro": "#>text-gmtext>the GM takes 1 Hold<# and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
@@ -878,8 +823,7 @@ export default {
                   "watchers"
                 ]
               },
-              "subType": "active-static",
-              "key": "watchers"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -892,31 +836,25 @@ export default {
           "holdText": "The GM can spend Hold on the Watchers' behalf to let them make a Move against you."
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Academic Network",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
       "system": {
-        "key": "academic-network",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Contact an Academic",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
             "system": {
               "parentItem": {
                 "name": "Academic Network",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When it would be useful to know someone at a university,",
                 "outro": "provide the person's name, field of study, and how you got to know one another, then %insert.rollPrompt%."
@@ -932,9 +870,8 @@ export default {
                   "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#)."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "academic-network"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -946,33 +883,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Implanted Messages",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
       "system": {
-        "key": "implanted-messages",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Implant an Order",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
             "system": {
               "parentItem": {
                 "name": "Implanted Messages",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you experiment on a human and wish to implant an order into them,",
                 "outro": "%insert.rollPrompt%."
@@ -988,9 +918,8 @@ export default {
                   "result": "Something goes wrong, such as they get hurt in the process or the order's outcome is different than what you imagined. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "implanted-messages"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -1002,18 +931,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Forbidden Inspiration",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
       "system": {
-        "key": "forbidden-inspiration",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -1024,20 +949,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Seek Inspiration",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
             "system": {
               "parentItem": {
                 "name": "Forbidden Inspiration",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you dive deep into your art and allow yourself to be inspired by the Truth,",
                 "outro": "%insert.rollPrompt%.",
@@ -1065,9 +987,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "forbidden-inspiration"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -1079,18 +1000,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Inventor",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
       "system": {
-        "key": "inventor",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -1102,20 +1019,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Create or Repair",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
             "system": {
               "parentItem": {
                 "name": "Inventor",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are about to create or repair something,",
                 "outro": "explain what you are about to do. The GM will tell you what you need to succeed, and once you have collected these materials, you may %insert.rollPrompt%.",
@@ -1140,9 +1054,8 @@ export default {
                   "result": "You complete the construction or repair, but it has significant flaws, some of which are hidden. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "inventor"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -1154,40 +1067,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "At Any Cost",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
       "system": {
-        "key": "at-any-cost",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Pay the Price",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
             "system": {
               "chatName": "Will Pay Any Price",
               "parentItem": {
                 "name": "At Any Cost",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you truly desire something,",
                 "outro": "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "key": "at-any-cost"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -1200,16 +1105,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Body Awareness",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
       "system": {
-        "key": "body-awareness",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -1220,20 +1122,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Perform Acrobatics",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
             "system": {
               "parentItem": {
                 "name": "Body Awareness",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you perform acrobatic or agile feats,",
                 "outro": "%insert.rollPrompt%.",
@@ -1261,9 +1160,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "body-awareness"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -1275,18 +1173,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Crafty",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
       "system": {
-        "key": "crafty",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -1297,20 +1191,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Manipulate Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
             "system": {
               "parentItem": {
                 "name": "Crafty",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you manipulate an NPC in a longer conversation,",
                 "outro": "%insert.rollPrompt%.",
@@ -1335,9 +1226,8 @@ export default {
                   "result": "They're on to you. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
-              "key": "crafty"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
             }
           }
         ],
@@ -1349,33 +1239,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "intuition",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Enhanced Awareness",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
       "system": {
-        "key": "enhanced-awareness",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Focus Awareness",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
             "system": {
               "parentItem": {
                 "name": "Enhanced Awareness",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you focus your senses at a location where the Illusion is weak,",
                 "outro": "%insert.rollPrompt%."
@@ -1391,9 +1274,8 @@ export default {
                   "result": "The Illusion tears. The veil is lifted temporarily, revealing an alternate dimension—the GM determines which one. The PC could be sucked into it or something may cross over into our reality. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "enhanced-awareness"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -1405,18 +1287,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Daredevil",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
       "system": {
-        "key": "daredevil",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -1427,20 +1305,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Confront Danger",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "parentItem": {
                 "name": "Daredevil",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're entering a dangerous situation,",
                 "outro": "%insert.rollPrompt%.",
@@ -1469,66 +1344,59 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "daredevil"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           },
           {
             "name": "On a Swivel",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "chatName": "On a Swivel",
               "parentItem": {
                 "name": "Daredevil",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to discover a threat before it discovers you."
               },
-              "subType": "active-static",
-              "key": "daredevil"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Not Today",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "chatName": "Not Today",
               "parentItem": {
                 "name": "Daredevil",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to avoid an attack."
               },
-              "subType": "active-static",
-              "key": "daredevil"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Sucker Punch",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
               "chatName": "Sucker Punch",
               "parentItem": {
                 "name": "Daredevil",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to get the jump on them: Harm your opponent before they can react."
               },
-              "subType": "active-static",
-              "key": "daredevil"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -1542,18 +1410,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Ice Cold",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
       "system": {
-        "key": "ice-cold",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -1565,20 +1429,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Stay Cool",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "parentItem": {
                 "name": "Ice Cold",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are in a violent conflict,",
                 "outro": "%insert.rollPrompt%.",
@@ -1607,85 +1468,76 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "ice-cold"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           },
           {
             "name": "Easy Dodge",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Easy Dodge",
               "parentItem": {
                 "name": "Ice Cold",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to avoid an attack."
               },
-              "subType": "active-static",
-              "key": "ice-cold"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Opportunity Calls",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Opportunity Calls",
               "parentItem": {
                 "name": "Ice Cold",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to manage to snatch something."
               },
-              "subType": "active-static",
-              "key": "ice-cold"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Patience, Patience",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Patience, Patience",
               "parentItem": {
                 "name": "Ice Cold",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to maneuver into a better position."
               },
-              "subType": "active-static",
-              "key": "ice-cold"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Clever Trick",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
               "chatName": "Clever Trick",
               "parentItem": {
                 "name": "Ice Cold",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to put someone in a bad position (everyone gets #>text-posmod>+2<# to any attack Moves)."
               },
-              "subType": "active-static",
-              "key": "ice-cold"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -1699,18 +1551,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Dabbler in the Occult",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
       "system": {
-        "key": "dabbler-in-the-occult",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -1721,20 +1569,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Perform Ritual",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
             "system": {
               "parentItem": {
                 "name": "Dabbler in the Occult",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you attempt to perform a magical ritual from a set of instructions,",
                 "outro": "%insert.rollPrompt%."
@@ -1750,9 +1595,8 @@ export default {
                   "result": "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "dabbler-in-the-occult"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -1764,18 +1608,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Bound",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/bound.svg",
       "system": {
-        "key": "bound",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -1786,20 +1626,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Commune",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/bound.svg",
             "system": {
               "parentItem": {
                 "name": "Bound",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "At the start of each game session,",
                 "outro": "%insert.rollPrompt%.",
@@ -1827,9 +1664,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "bound"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -1841,18 +1677,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Animal Speaker",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
       "system": {
-        "key": "animal-speaker",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -1863,20 +1695,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Control an Animal",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
             "system": {
               "parentItem": {
                 "name": "Animal Speaker",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you attempt to control an animal,",
                 "outro": "%insert.rollPrompt%.",
@@ -1904,9 +1733,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
-              "key": "animal-speaker"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
             }
           }
         ],
@@ -1918,18 +1746,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "intuition",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Parkour",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
       "system": {
-        "key": "parkour",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -1940,20 +1764,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Free-Run",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
             "system": {
               "parentItem": {
                 "name": "Parkour",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you execute acrobatic maneuvers,",
                 "outro": "%insert.rollPrompt%.",
@@ -1981,9 +1802,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "parkour"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -1995,18 +1815,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Observant",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/observant.svg",
       "system": {
-        "key": "observant",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -2016,9 +1832,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
@@ -2026,21 +1840,19 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AppendList,Read a Person,questions,questions"
+            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What sort of person are you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Is there anything odd about you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Expert",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/expert.svg",
       "system": {
-        "key": "expert",
-        "description": "",
         "lists": {
           "expertise": {
             "name": "Fields of Expertise",
@@ -2056,9 +1868,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%",
@@ -2066,27 +1876,24 @@ export default {
           "outro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
           "effects": [
-            "GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
-            "StoreInput: text=Field of Expertise #1>flags.field_1",
-            "StoreInput: text=Field of Expertise #2>flags.field_2"
+            {PromptForData: "title:What is your first Field of Expertise?,key:flags.kult4th.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
+            {PromptForData: "title:What is your second Field of Expertise?,key:flags.kult4th.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
+            {ModifyMove: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Interrogator",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/interrogator.svg",
       "system": {
-        "key": "interrogator",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask.",
@@ -2097,38 +1904,31 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Thirst for Knowledge",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
       "system": {
-        "key": "thirst-for-knowledge",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Learn Something New",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
             "system": {
               "chatName": "Learns Something New",
               "parentItem": {
                 "name": "Thirst for Knowledge",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you learn new information about alternate planes of existence, a supernatural entity, or a Higher Power,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "key": "thirst-for-knowledge"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -2141,57 +1941,48 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Sealed Fate",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
       "system": {
-        "key": "sealed-fate",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Defy Wound",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
               "chatName": "Defies Injury",
               "parentItem": {
                 "name": "Sealed Fate",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are dealt a #>text-keyword>Critical Wound<#,",
                 "outro": "you may mark 1 Time from Condemned to immediately stabilize the #>text-keyword>Wound<#."
               },
-              "subType": "active-static",
-              "key": "sealed-fate"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Defy Death",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
               "chatName": "Defies Death",
               "parentItem": {
                 "name": "Sealed Fate",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you die,",
                 "outro": "mark 2 Time from Condemned and reawaken, injured and weak, but alive, and with all of your #>text-keyword>Wounds<# stabilized."
               },
-              "subType": "active-static",
-              "key": "sealed-fate"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -2201,21 +1992,18 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "Requires the Disadvantage Condemned"
+            {RequireItem: "filter:Condemned"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Quick Thinker",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
       "system": {
-        "key": "quick-thinker",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -2226,20 +2014,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Plan Ahead",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
             "system": {
               "parentItem": {
                 "name": "Quick Thinker",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you commence a dangerous mission,",
                 "outro": "%insert.rollPrompt%.",
@@ -2267,9 +2052,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "quick-thinker"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -2281,18 +2065,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Exorcist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
       "system": {
-        "key": "exorcist",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -2303,20 +2083,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Perform an Exorcism",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
             "system": {
               "parentItem": {
                 "name": "Exorcist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you perform an exorcism to banish a spirit or extradimensional creature,",
                 "outro": "explain what the ritual looks like and %insert.rollPrompt%.",
@@ -2341,9 +2118,8 @@ export default {
                   "result": "The creature resists banishment and something goes terribly wrong, such as the creature possessing you. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "exorcist"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -2355,18 +2131,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Wanderer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
       "system": {
-        "key": "wanderer",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -2378,20 +2150,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Wander",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
             "system": {
               "parentItem": {
                 "name": "Wanderer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are heading out to a community or another part of the city,",
                 "outro": "%insert.rollPrompt%.",
@@ -2419,9 +2188,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "wanderer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -2433,22 +2201,16 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Hardened",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hardened.svg",
       "system": {
-        "key": "hardened",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "You take #>text-keyword>+1 ongoing<# to all #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls.",
@@ -2456,21 +2218,18 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1"
+            {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Hacker",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
       "system": {
-        "key": "hacker",
-        "description": "",
         "lists": {
           "complications": {
             "name": "Complications",
@@ -2480,20 +2239,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Hack Something",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
             "system": {
               "parentItem": {
                 "name": "Hacker",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you penetrate digital networks in the pursuit of confidential data, crack software, or disable security systems,",
                 "outro": "%insert.rollPrompt%."
@@ -2509,9 +2265,8 @@ export default {
                   "result": "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "hacker"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -2523,18 +2278,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Fascination",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
       "system": {
-        "key": "fascination",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -2552,20 +2303,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Seduce Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
             "system": {
               "parentItem": {
                 "name": "Fascination",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you use your art to seduce an NPC,",
                 "outro": "%insert.rollPrompt%.",
@@ -2590,9 +2338,8 @@ export default {
                   "result": "They are affected by you in a way you didn't anticipate, or the attraction is uncomfortably strong—you choose. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "fascination"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -2604,18 +2351,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Boss",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/boss.svg",
       "system": {
-        "key": "boss",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -2626,20 +2369,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Deploy Henchmen",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/boss.svg",
             "system": {
               "parentItem": {
                 "name": "Boss",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you send your henchmen to do a risky job,",
                 "outro": "%insert.rollPrompt%."
@@ -2655,9 +2395,8 @@ export default {
                   "result": "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "boss"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -2669,18 +2408,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Fast Talk",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
       "system": {
-        "key": "fast-talk",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -2691,20 +2426,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Fast-Talk Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
             "system": {
               "parentItem": {
                 "name": "Fast Talk",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you talk to an NPC to get their attention,",
                 "outro": "%insert.rollPrompt%.",
@@ -2732,9 +2464,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "fast-talk"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -2746,18 +2477,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Read a Crowd",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
       "system": {
-        "key": "read-a-crowd",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -2769,20 +2496,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Mingle",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
             "system": {
               "parentItem": {
                 "name": "Read a Crowd",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you move through a small crowd to gather information,",
                 "outro": "%insert.rollPrompt%.%insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office.%insert.break%You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information.",
@@ -2810,9 +2534,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "read-a-crowd"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -2824,40 +2547,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Workaholic",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
       "system": {
-        "key": "workaholic",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Innovate",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
             "system": {
               "chatName": "Innovates",
               "parentItem": {
                 "name": "Workaholic",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you create something or carry out an experiment,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "key": "workaholic"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -2870,16 +2585,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Stubborn",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
       "system": {
-        "key": "stubborn",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -2890,20 +2602,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Push the Limits",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "parentItem": {
                 "name": "Stubborn",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you push yourself to the limit to overcome a threat,",
                 "outro": "%insert.rollPrompt%.",
@@ -2932,66 +2641,59 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "stubborn"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           },
           {
             "name": "Refuse to Give Up",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "chatName": "Refuse to Give Up",
               "parentItem": {
                 "name": "Stubborn",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to postpone the effects of a critical injury until you have made it out of the threat's reach."
               },
-              "subType": "active-static",
-              "key": "stubborn"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Will Over Skill",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "chatName": "Will Over Skill",
               "parentItem": {
                 "name": "Stubborn",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to roll #>text-rolltrait>+Willpower<# instead of the normal attribute whenever you avoid or fight whatever is threatening you."
               },
-              "subType": "active-static",
-              "key": "stubborn"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Steel Yourself",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
               "chatName": "Steel Yourself",
               "parentItem": {
                 "name": "Stubborn",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to break free from a supernatural effect."
               },
-              "subType": "active-static",
-              "key": "stubborn"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -3005,18 +2707,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Elite Sport (Fencing)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
       "system": {
-        "key": "elite-sport-(fencing)",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -3030,20 +2728,17 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [
           {
             "name": "Riposte",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
             "system": {
               "parentItem": {
                 "name": "Elite Sport (Fencing)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent within arm's reach in close combat, including immediately after a successful parry,",
                 "outro": "%insert.rollPrompt%."
@@ -3059,13 +2754,12 @@ export default {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 3,
-              "key": "elite-sport-(fencing)"
             }
           }
         ],
@@ -3075,21 +2769,18 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AppendList,weapon/sword,attacks,attacks"
+            {CreateAttack: "filter:sword,name:Riposte,range:arm,harm:3,fromText:#>text-keyword>Elite Sport (Fencing)<#,special:You can make this attack immediately after parrying."}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Eye for Detail",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
       "system": {
-        "key": "eye-for-detail",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -3102,20 +2793,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Study Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
             "system": {
               "parentItem": {
                 "name": "Eye for Detail",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you have had time to study somebody for a while,",
                 "outro": "%insert.rollPrompt%.",
@@ -3143,9 +2831,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "eye-for-detail"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -3157,33 +2844,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Escape Artist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/escape-artist.svg",
       "system": {
-        "key": "escape-artist",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Escape",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/escape-artist.svg",
             "system": {
               "parentItem": {
                 "name": "Escape Artist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you need to escape a dangerous situation,",
                 "outro": "outline your plan and %insert.rollPrompt%."
@@ -3199,9 +2879,8 @@ export default {
                   "result": "You are only half out the door when you're caught in a really bad spot. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "escape-artist"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -3213,18 +2892,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Erotic",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/erotic.svg",
       "system": {
-        "key": "erotic",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -3236,20 +2911,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Attract an NPC",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/erotic.svg",
             "system": {
               "parentItem": {
                 "name": "Erotic",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you make moves to attract an NPC to you,",
                 "outro": "%insert.rollPrompt%.",
@@ -3277,9 +2949,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "erotic"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -3291,33 +2962,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Lay on Hands",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
       "system": {
-        "key": "lay-on-hands",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Heal Another",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
             "system": {
               "parentItem": {
                 "name": "Lay on Hands",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you lay your hands on a seriously or critically wounded person and pray,",
                 "outro": "%insert.rollPrompt%."
@@ -3333,9 +2997,8 @@ export default {
                   "result": "You may choose to stabilize the injured, but if you do, the powers break free from your control."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "lay-on-hands"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -3347,18 +3010,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Sneak",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sneak.svg",
       "system": {
-        "key": "sneak",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -3369,20 +3028,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Stay Hidden",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sneak.svg",
             "system": {
               "parentItem": {
                 "name": "Sneak",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you keep hidden and try to avoid drawing attention to yourself,",
                 "outro": "%insert.rollPrompt%.",
@@ -3410,9 +3066,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "sneak"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -3424,18 +3079,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Survival Instinct",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
       "system": {
-        "key": "survival-instinct",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -3445,20 +3096,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Refuse to Yield",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
             "system": {
               "parentItem": {
                 "name": "Survival Instinct",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you suffer a serious or critical injury yet refuse to yield,",
                 "outro": "%insert.rollPrompt%.%insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
@@ -3474,9 +3122,8 @@ export default {
                   "result": "You overexert yourself and after a few moments your injuries cause you to pass out and collapse. After your next action, the GM decides when and how you pass out."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "survival-instinct"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           }
         ],
@@ -3488,33 +3135,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Wayfinder",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/wayfinder.svg",
       "system": {
-        "key": "wayfinder",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Find a Way",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/wayfinder.svg",
             "system": {
               "parentItem": {
                 "name": "Wayfinder",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you travel between two places in the city and allow your madness to guide you through the alleys,",
                 "outro": "%insert.rollPrompt%."
@@ -3530,9 +3170,8 @@ export default {
                   "result": "You discover a shortcut, but it leads you into a dangerous situation, such as the lair of some creature or an ambush set by some gang. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "wayfinder"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -3544,18 +3183,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Street Contacts",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/street-contacts.svg",
       "system": {
-        "key": "street-contacts",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -3567,20 +3202,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Ask Street Contacts",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/street-contacts.svg",
             "system": {
               "parentItem": {
                 "name": "Street Contacts",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you need to know something and check in with your contacts,",
                 "outro": "%insert.rollPrompt%.",
@@ -3608,9 +3240,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "street-contacts"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -3622,18 +3253,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Weapon Master (Melee)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
       "system": {
-        "key": "weapon-master-(melee)",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -3647,20 +3274,17 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [
           {
             "name": "Launching Attack",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
               "parentItem": {
                 "name": "Weapon Master (Melee)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
                 "outro": "%insert.rollPrompt%.",
@@ -3682,25 +3306,23 @@ export default {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "room"
+                K4ItemRange.room
               ],
               "harm": 2,
-              "key": "weapon-master-(melee)"
             }
           },
           {
             "name": "Precision Attack",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
               "parentItem": {
                 "name": "Weapon Master (Melee)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent within arm's reach in close combat,",
                 "outro": "%insert.rollPrompt%.",
@@ -3722,25 +3344,23 @@ export default {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 2,
-              "key": "weapon-master-(melee)"
             }
           },
           {
             "name": "Tripping Attack",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
             "system": {
               "parentItem": {
                 "name": "Weapon Master (Melee)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent within arm's reach in close combat,",
                 "outro": "%insert.rollPrompt%."
@@ -3756,13 +3376,12 @@ export default {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 2,
-              "key": "weapon-master-(melee)"
             }
           }
         ],
@@ -3775,16 +3394,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Authority",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/authority.svg",
       "system": {
-        "key": "authority",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -3796,20 +3412,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Establish Authority",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/authority.svg",
             "system": {
               "parentItem": {
                 "name": "Authority",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "At the beginning of each game session,",
                 "outro": "%insert.rollPrompt%.",
@@ -3837,9 +3450,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "authority"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -3851,18 +3463,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Genius",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/genius.svg",
       "system": {
-        "key": "genius",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -3873,21 +3481,18 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Use Your Brain",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
               "chatName": "Use their Brain",
               "parentItem": {
                 "name": "Genius",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you find yourself in a life-threatening situation,",
                 "outro": "%insert.rollPrompt% to see if you can discover a way out.",
@@ -3916,66 +3521,59 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "genius"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           },
           {
             "name": "Logical",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
               "chatName": "Logical",
               "parentItem": {
                 "name": "Genius",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it."
               },
-              "subType": "active-static",
-              "key": "genius"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Quick Thinking",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
               "chatName": "Quick Thinking",
               "parentItem": {
                 "name": "Genius",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it."
               },
-              "subType": "active-static",
-              "key": "genius"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Rational",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
               "chatName": "Rational",
               "parentItem": {
                 "name": "Genius",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
               },
-              "subType": "active-static",
-              "key": "genius"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -3989,18 +3587,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Driver",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/driver.svg",
       "system": {
-        "key": "driver",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -4012,20 +3606,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Drive Dangerously",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "parentItem": {
                 "name": "Driver",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you drive your vehicle under pressure and in dangerous situations,",
                 "outro": "%insert.rollPrompt%.",
@@ -4054,85 +3645,76 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "driver"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           },
           {
             "name": "Defensive Driving",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Defensive Driving",
               "parentItem": {
                 "name": "Driver",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to make a risky maneuver to get out of the way."
               },
-              "subType": "active-static",
-              "key": "driver"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Evasive Driving",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Evasive Driving",
               "parentItem": {
                 "name": "Driver",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to shake off one pursuing vehicle."
               },
-              "subType": "active-static",
-              "key": "driver"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Deadly Driving",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Deadly Driving",
               "parentItem": {
                 "name": "Driver",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to use your vehicle as a weapon against a pedestrian (#>text-keyword>2-4 Harm<# depending on speed)."
               },
-              "subType": "active-static",
-              "key": "driver"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Reckless Driving",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
               "chatName": "Reckless Driving",
               "parentItem": {
                 "name": "Driver",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to sideswipe another vehicle off the road."
               },
-              "subType": "active-static",
-              "key": "driver"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -4146,18 +3728,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Tracer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/tracer.svg",
       "system": {
-        "key": "tracer",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -4169,20 +3747,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Trace",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/tracer.svg",
             "system": {
               "parentItem": {
                 "name": "Tracer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you utilize your intelligence networks to trace someone or something,",
                 "outro": "%insert.rollPrompt%.",
@@ -4210,9 +3785,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "tracer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -4224,18 +3798,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Battlefield Medicine",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
       "system": {
-        "key": "battlefield-medicine",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -4254,20 +3824,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Stabilize Wound",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
             "system": {
               "parentItem": {
                 "name": "Battlefield Medicine",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you stabilize an injured person's wounds, even if you don't have access to medical equipment,",
                 "outro": "%insert.rollPrompt%.",
@@ -4292,9 +3859,8 @@ export default {
                   "result": "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "battlefield-medicine"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -4306,18 +3872,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Elite Education",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
       "system": {
-        "key": "elite-education",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -4329,20 +3891,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Request a Favor",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
             "system": {
               "parentItem": {
                 "name": "Elite Education",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you ask your contacts for a favor,",
                 "outro": "%insert.rollPrompt%.",
@@ -4370,9 +3929,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "elite-education"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -4384,18 +3942,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Sniper",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sniper.svg",
       "system": {
-        "key": "sniper",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -4408,20 +3962,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Take a Shot",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sniper.svg",
             "system": {
               "parentItem": {
                 "name": "Sniper",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you fire at a distant target utilizing a scoped rifle,",
                 "outro": "%insert.rollPrompt%.",
@@ -4446,9 +3997,8 @@ export default {
                   "result": "The shot didn't go where you intended it to, or you reveal your position to the enemy—expect witnesses, opponents pursuing you as you leave the scene, or other problems. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "sniper"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           }
         ],
@@ -4460,18 +4010,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Streetfighter",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
       "system": {
-        "key": "streetfighter",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -4489,20 +4035,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Fight in Close Combat",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "parentItem": {
                 "name": "Streetfighter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you fight in close combat,",
                 "outro": "%insert.rollPrompt%.",
@@ -4527,66 +4070,59 @@ export default {
                   "result": "You're unfocused and lose control. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "streetfighter"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           },
           {
             "name": "Dodge",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "chatName": "Dodge",
               "parentItem": {
                 "name": "Streetfighter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to avoid an attack."
               },
-              "subType": "active-static",
-              "key": "streetfighter"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Flurry of Blows",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "chatName": "Flurry of Blows",
               "parentItem": {
                 "name": "Streetfighter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to take #>text-posmod>+2<# on your roll to attack an opponent."
               },
-              "subType": "active-static",
-              "key": "streetfighter"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Dirty Strike",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
               "chatName": "Dirty Strike",
               "parentItem": {
                 "name": "Streetfighter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to momentarily stun an opponent by striking them where it hurts."
               },
-              "subType": "active-static",
-              "key": "streetfighter"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -4600,33 +4136,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Shadow",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
       "system": {
-        "key": "shadow",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Shadow Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
               "parentItem": {
                 "name": "Shadow",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When shadowing someone,",
                 "outro": "%insert.rollPrompt%."
@@ -4642,21 +4171,19 @@ export default {
                   "result": "You are spotted or encounter some sort of problem along the way. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "shadow"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           },
           {
             "name": "Evade a Shadow",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
               "parentItem": {
                 "name": "Shadow",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you want to lose someone shadowing you,",
                 "outro": "%insert.rollPrompt%."
@@ -4672,9 +4199,8 @@ export default {
                   "result": "Your pursuers are still on your tail, and they can set up an ambush, disappear without a trace (only to show up when you least expect it), or refuse to go away. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "shadow"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -4686,18 +4212,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Burglar",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/burglar.svg",
       "system": {
-        "key": "burglar",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -4710,20 +4232,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Break & Enter",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/burglar.svg",
             "system": {
               "parentItem": {
                 "name": "Burglar",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you make use of your expertise in breaking and entering,",
                 "outro": "%insert.rollPrompt%.",
@@ -4751,9 +4270,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "burglar"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -4765,40 +4283,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Eye for an Eye",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
       "system": {
-        "key": "eye-for-an-eye",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Swear Vengeance",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
             "system": {
               "chatName": "Swears Vengeance",
               "parentItem": {
                 "name": "Eye for an Eye",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you suffer a serious or critical injury, name the person you feel is responsible.",
                 "outro": "You get #>text-keyword>+2 ongoing<# to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
               },
-              "subType": "active-static",
-              "key": "eye-for-an-eye"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -4811,20 +4321,15 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Gritted Teeth",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/gritted-teeth.svg",
       "system": {
-        "key": "gritted-teeth",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.%insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
@@ -4832,26 +4337,23 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "SetTrait:actor/system.modifiers.wounds_critical.1.all,0",
-            "SetTrait:actor/system.modifiers.wounds_serious.1.all,0",
-            "SetTrait:actor/system.modifiers.wounds_serious.2.all,0",
-            "SetTrait:actor/system.modifiers.wounds_serious.3.all,0",
-            "SetTrait:actor/system.modifiers.wounds_serious.4.all,0",
-            "SetTrait:actor/system.modifiers.wounds_seriouscritical.1.all,0"
+            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_critical.1.all,value:0"},
+            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.1.all,value:0"},
+            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.2.all,value:0"},
+            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.3.all,value:0"},
+            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.4.all,value:0"},
+            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_seriouscritical.1.all,value:0"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Manipulative",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/manipulative.svg",
       "system": {
-        "key": "manipulative",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -4861,27 +4363,23 @@ export default {
             ]
           }
         },
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Take Account",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/manipulative.svg",
             "system": {
               "chatName": "Takes Account",
               "parentItem": {
                 "name": "Manipulative",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you do someone a favor or learn one of their secrets,",
                 "outro": "you may later choose one of the options below, by reminding them of your prior services or hint at the secret you know: %list.options%"
               },
-              "subType": "active-static",
-              "key": "manipulative"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -4894,16 +4392,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Death Drive",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
       "system": {
-        "key": "death-drive",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -4915,20 +4410,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Fight Recklessly",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "parentItem": {
                 "name": "Death Drive",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you fight with no regard for your personal safety,",
                 "outro": "%insert.rollPrompt%.",
@@ -4957,85 +4449,76 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "death-drive"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           },
           {
             "name": "Bring 'Em On",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Bring 'Em On",
               "parentItem": {
                 "name": "Death Drive",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to engage an additional hostile in Combat."
               },
-              "subType": "active-static",
-              "key": "death-drive"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Savagery",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Savagery",
               "parentItem": {
                 "name": "Death Drive",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to deal #>text-keyword>+2 Harm<# with one attack."
               },
-              "subType": "active-static",
-              "key": "death-drive"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Charge",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Charge",
               "parentItem": {
                 "name": "Death Drive",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to get within reach to attack a hostile."
               },
-              "subType": "active-static",
-              "key": "death-drive"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Go Crazy",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
               "chatName": "Go Crazy",
               "parentItem": {
                 "name": "Death Drive",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to frighten your opponents by laughing into the face of death (#>text-keyword>+1 ongoing<# during the fight)."
               },
-              "subType": "active-static",
-              "key": "death-drive"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -5049,18 +4532,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Analyst",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/analyst.svg",
       "system": {
-        "key": "analyst",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -5071,9 +4550,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "When you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, you may also choose from these additional questions: %list.questions%",
@@ -5081,21 +4558,20 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AppendList,Investigate,questions,questions"
+            {ModifyMove: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Which organizations, groups, or people of interest may be connected to this? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Is there a connection between this and another event? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:What could a plausible motive be? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Gang Leader",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
       "system": {
-        "key": "gang-leader",
-        "description": "",
         "lists": {
           "complications": {
             "name": "Complications",
@@ -5105,20 +4581,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Give Orders",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
             "system": {
               "parentItem": {
                 "name": "Gang Leader",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you give your gang orders that are risky and/ or may result in them paying a high price,",
                 "outro": "%insert.rollPrompt%."
@@ -5134,9 +4607,8 @@ export default {
                   "result": "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "gang-leader"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           }
         ],
@@ -5148,18 +4620,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Streetwise",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/streetwise.svg",
       "system": {
-        "key": "streetwise",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -5171,20 +4639,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Tap the Underworld",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetwise.svg",
             "system": {
               "parentItem": {
                 "name": "Streetwise",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you want to acquire items or services from the criminal underworld,",
                 "outro": "%insert.rollPrompt%."
@@ -5200,9 +4665,8 @@ export default {
                   "result": "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "streetwise"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -5214,18 +4678,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Manhunter",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/manhunter.svg",
       "system": {
-        "key": "manhunter",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -5238,20 +4698,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Hunt Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/manhunter.svg",
             "system": {
               "parentItem": {
                 "name": "Manhunter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're out to get information about someone,",
                 "outro": "%insert.rollPrompt%.",
@@ -5279,9 +4736,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "manhunter"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -5293,22 +4749,16 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Elite Sport (Athletic)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(athletic).svg",
       "system": {
-        "key": "elite-sport-(athletic)",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.%insert.break%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects.",
@@ -5319,31 +4769,25 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Deadly Stare",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
       "system": {
-        "key": "deadly-stare",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Unleash Stare",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
             "system": {
               "parentItem": {
                 "name": "Deadly Stare",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you find yourself in a charged situation,",
                 "outro": "%insert.rollPrompt%."
@@ -5359,9 +4803,8 @@ export default {
                   "result": "Your opponents see you as their primary threat."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "deadly-stare"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           }
         ],
@@ -5373,18 +4816,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Ace Up the Sleeve",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
       "system": {
-        "key": "ace-up-the-sleeve",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -5395,20 +4834,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Draw an Ace",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "parentItem": {
                 "name": "Ace Up the Sleeve",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever someone's got you up against the wall or in a tight spot,",
                 "outro": "%insert.rollPrompt%.",
@@ -5437,66 +4873,59 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "ace-up-the-sleeve"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           },
           {
             "name": "Reveal a Weapon",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "chatName": "Reveal a Weapon",
               "parentItem": {
                 "name": "Ace Up the Sleeve",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed."
               },
-              "subType": "active-static",
-              "key": "ace-up-the-sleeve"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Spot a Weakness",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "chatName": "Spot a Weakness",
               "parentItem": {
                 "name": "Ace Up the Sleeve",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to realize your opponent has a weakness you can exploit (take #>text-posmod>+2<# to your next roll, if it involves exploiting the weakness). Ask the GM what it is."
               },
-              "subType": "active-static",
-              "key": "ace-up-the-sleeve"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Find an Exit",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
               "chatName": "Find an Exit",
               "parentItem": {
                 "name": "Ace Up the Sleeve",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to spot a way out. Ask the GM what it is. Take #>text-posmod>+2<# to your next roll to make use of it."
               },
-              "subType": "active-static",
-              "key": "ace-up-the-sleeve"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -5510,33 +4939,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Inner Power",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/inner-power.svg",
       "system": {
-        "key": "inner-power",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Release Their Power",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/inner-power.svg",
             "system": {
               "parentItem": {
                 "name": "Inner Power",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you release your inner power,",
                 "outro": "%insert.rollPrompt%."
@@ -5552,9 +4974,8 @@ export default {
                   "result": "The power attacks all living beings, including yourself, in the vicinity, causing #>text-keyword>2 Harm<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "inner-power"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -5566,18 +4987,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Network of Contacts",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
       "system": {
-        "key": "network-of-contacts",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -5590,20 +5007,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Check In with Contacts",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
             "system": {
               "parentItem": {
                 "name": "Network of Contacts",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you check in with your contacts regarding an individual of your choosing,",
                 "outro": "%insert.rollPrompt%.",
@@ -5631,9 +5045,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "network-of-contacts"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -5645,18 +5058,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Survivalist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/survivalist.svg",
       "system": {
-        "key": "survivalist",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -5667,20 +5076,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Survive",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/survivalist.svg",
             "system": {
               "parentItem": {
                 "name": "Survivalist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you utilize your survivalist skills,",
                 "outro": "%insert.rollPrompt%.",
@@ -5708,9 +5114,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "survivalist"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -5722,18 +5127,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Officer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/officer.svg",
       "system": {
-        "key": "officer",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -5745,20 +5146,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Take Command",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "parentItem": {
                 "name": "Officer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are in combat with at least one ally by your side,",
                 "outro": "%insert.rollPrompt%.",
@@ -5783,85 +5181,76 @@ export default {
                   "result": "You misjudge the situation. Choose whether you have put yourself or one of your allies in harm's way. #>text-gmtext>The GM makes a Move<# for your opponent."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "officer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           },
           {
             "name": "\"Attack!\"",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Attack!\"",
               "parentItem": {
                 "name": "Officer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to one ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#."
               },
-              "subType": "active-static",
-              "key": "officer"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "\"Coordinate Fire!\"",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Coordinate Fire!\"",
               "parentItem": {
                 "name": "Officer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to give all allies #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight."
               },
-              "subType": "active-static",
-              "key": "officer"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "\"Go For The Head!\"",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Go For The Head!\"",
               "parentItem": {
                 "name": "Officer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to have you or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#."
               },
-              "subType": "active-static",
-              "key": "officer"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "\"Take Cover!\"",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
               "chatName": "\"Take Cover!\"",
               "parentItem": {
                 "name": "Officer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to have you or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
               },
-              "subType": "active-static",
-              "key": "officer"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -5875,18 +5264,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Exit Strategy",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
       "system": {
-        "key": "exit-strategy",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -5897,20 +5282,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Flee the Scene",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
             "system": {
               "parentItem": {
                 "name": "Exit Strategy",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you have killed someone covertly and leave the scene of the murder,",
                 "outro": "%insert.rollPrompt%.",
@@ -5938,9 +5320,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "exit-strategy"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -5952,33 +5333,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Puppeteer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/puppeteer.svg",
       "system": {
-        "key": "puppeteer",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Execute a Plan",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/puppeteer.svg",
             "system": {
               "parentItem": {
                 "name": "Puppeteer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you execute a plan using other people as pawns,",
                 "outro": "%insert.rollPrompt%."
@@ -5994,9 +5368,8 @@ export default {
                   "result": "Your plan is inadequate, revealed, and/or misguided. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "puppeteer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -6008,18 +5381,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Forked Tongue",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
       "system": {
-        "key": "forked-tongue",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -6038,20 +5407,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Manipulate Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
             "system": {
               "parentItem": {
                 "name": "Forked Tongue",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you manipulate someone,",
                 "outro": "%insert.rollPrompt%.",
@@ -6076,9 +5442,8 @@ export default {
                   "result": "They see right through you and will act as they please."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "forked-tongue"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -6090,18 +5455,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Cult Leader",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
       "system": {
-        "key": "cult-leader",
-        "description": "",
         "lists": {
           "visions": {
             "name": "Visions",
@@ -6114,20 +5475,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Lead a Ritual",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
             "system": {
               "parentItem": {
                 "name": "Cult Leader",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you and your followers perform a ritual,",
                 "outro": "%insert.rollPrompt%.",
@@ -6152,9 +5510,8 @@ export default {
                   "result": "Choose one vision, but the Illusion tears as a result. You may temporarily be transported into another dimension, attract a demonic being's attention, or receive a horrifying omen. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "cult-leader"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -6166,18 +5523,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "XXX Field Agent",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
       "system": {
-        "key": "field-agent",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -6200,20 +5553,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Surprise Strike",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "parentItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent within arm's reach in close combat,",
                 "outro": "%insert.rollPrompt%.",
@@ -6235,25 +5585,23 @@ export default {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "arm"
+                K4ItemRange.arm
               ],
               "harm": 2,
-              "key": "field-agent"
             }
           },
           {
             "name": "Enter Combat",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "parentItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you enter combat,",
                 "outro": "%insert.rollPrompt%."
@@ -6281,85 +5629,76 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "field-agent"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           },
           {
             "name": "Take Cover",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Take Cover",
               "parentItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to avoid a ranged attack by diving behind an object or a person."
               },
-              "subType": "active-static",
-              "key": "field-agent"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Choke Hold",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Choke Hold",
               "parentItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#."
               },
-              "subType": "active-static",
-              "key": "field-agent"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Disarm",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Disarm",
               "parentItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to remove an opponent's weapon in close combat."
               },
-              "subType": "active-static",
-              "key": "field-agent"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Improvised Weapon",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "chatName": "Improvised Weapon",
               "parentItem": {
                 "name": "XXX Field Agent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to make a lethal, close-combat attack with a seemingly-innocuous object: %list.parent-attacks%"
               },
-              "subType": "active-static",
-              "key": "field-agent"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -6373,18 +5712,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Voice of Pain",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
       "system": {
-        "key": "voice-of-pain",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -6395,20 +5730,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Learn from Pain",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
             "system": {
               "parentItem": {
                 "name": "Voice of Pain",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When an opponent seriously or critically wounds you for the first time,",
                 "outro": "%insert.rollPrompt%.",
@@ -6436,9 +5768,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "voice-of-pain"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -6450,33 +5781,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Collector",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/collector.svg",
       "system": {
-        "key": "collector",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Seek Rare item",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/collector.svg",
             "system": {
               "parentItem": {
                 "name": "Collector",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you search for an unusual or rare item,",
                 "outro": "%insert.rollPrompt%."
@@ -6492,9 +5816,8 @@ export default {
                   "result": "You know roughly where to start searching for it, but not the hazards or costs involved in pursuing it."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "collector"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -6506,18 +5829,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Snake Charmer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
       "system": {
-        "key": "snake-charmer",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -6527,20 +5846,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Charm a Monster",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
             "system": {
               "parentItem": {
                 "name": "Snake Charmer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you perform your chosen art form for an intelligent, monstrous creature,",
                 "outro": "%insert.rollPrompt% to awaken a desire within them.",
@@ -6565,9 +5881,8 @@ export default {
                   "result": "The desire is beyond the creature's ability to regulate. It cannot help but attempt to devour or imprison you."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "snake-charmer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -6579,18 +5894,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Data Retrieval",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
       "system": {
-        "key": "data-retrieval",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6603,21 +5914,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
-            "name": "Study the Data",
-            "type": "move",
+            "name": "Search the Archives",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
             "system": {
-              "name": "Search the Archives",
               "parentItem": {
                 "name": "Data Retrieval",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you look for information on a subject in a library, research archive, or on the Internet,",
                 "outro": "%insert.rollPrompt%.%insert.break%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized.",
@@ -6645,9 +5952,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "data-retrieval"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -6659,18 +5965,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Divine",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/divine.svg",
       "system": {
-        "key": "divine",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -6680,20 +5982,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Encounter a Monster",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/divine.svg",
             "system": {
               "parentItem": {
                 "name": "Divine",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you encounter a monstrous creature,",
                 "outro": "%insert.rollPrompt%.",
@@ -6721,9 +6020,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "divine"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -6735,18 +6033,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Keen-Eyed",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
       "system": {
-        "key": "keen-eyed",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6756,9 +6050,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
@@ -6766,21 +6058,19 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AppendList,Observe a Situation,questions,questions"
+            {ModifyMove: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What weaknesses do they have I can use to my advantage? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What strengths do they have I should watch out for? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Occult Library",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/occult-library.svg",
       "system": {
-        "key": "occult-library",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6792,20 +6082,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Research the Supernatural",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/occult-library.svg",
             "system": {
               "parentItem": {
                 "name": "Occult Library",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are in your library researching the supernatural,",
                 "outro": "%insert.rollPrompt%.",
@@ -6835,9 +6122,8 @@ export default {
                   "hold": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "occult-library"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -6849,18 +6135,14 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move."
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Chameleon",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/chameleon.svg",
       "system": {
-        "key": "chameleon",
-        "description": "",
         "lists": {
           "complications": {
             "name": "Complications",
@@ -6870,20 +6152,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Change Appearance",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/chameleon.svg",
             "system": {
               "parentItem": {
                 "name": "Chameleon",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you imitate another's appearance or conceal your own identity to trick someone,",
                 "outro": "%insert.rollPrompt%."
@@ -6899,9 +6178,8 @@ export default {
                   "result": "Your disguise is only effective at a distance. If you attract any attention to yourself, you will be exposed."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "intuition",
-              "key": "chameleon"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.intuition,
             }
           }
         ],
@@ -6913,33 +6191,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "intuition",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Influential Friends",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/influential-friends.svg",
       "system": {
-        "key": "influential-friends",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Ask Friends",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/influential-friends.svg",
             "system": {
               "parentItem": {
                 "name": "Influential Friends",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you need to acquire an object, gain access to a restricted location, or meet a specific person,",
                 "outro": "%insert.rollPrompt%."
@@ -6955,9 +6226,8 @@ export default {
                   "result": "They arrange for what you want, but you get on a powerful person's bad side or attract negative publicity. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "influential-friends"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -6969,18 +6239,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Magical Intuition",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
       "system": {
-        "key": "magical-intuition",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -6991,20 +6257,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Focus Magical Intuition",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
             "system": {
               "parentItem": {
                 "name": "Magical Intuition",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you utilize your magical intuition,",
                 "outro": "%insert.rollPrompt%.",
@@ -7032,9 +6295,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "magical-intuition"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -7046,22 +6308,16 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Intuitive",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intuitive.svg",
       "system": {
-        "key": "intuitive",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
@@ -7069,21 +6325,21 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect"
+            {ModifyMove: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (3 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (2 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene. #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.results.failure.listRefs,effect:PushElement,value:questions"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Weapon Master (Firearms)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
       "system": {
-        "key": "weapon-master-(firearms)",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -7097,20 +6353,17 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [
           {
             "name": "Two In the Chest, One in the Head",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
             "system": {
               "parentItem": {
                 "name": "Weapon Master (Firearms)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
                 "outro": "expend 2 Ammo and %insert.rollPrompt%.",
@@ -7132,26 +6385,24 @@ export default {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "room"
+                K4ItemRange.room
               ],
               "harm": 4,
               "ammo": 2,
-              "key": "weapon-master-(firearms)"
             }
           },
           {
             "name": "Disarming Shot",
-            "type": "attack",
+            "type": K4ItemType.attack,
             "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
             "system": {
               "parentItem": {
                 "name": "Weapon Master (Firearms)",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
                 "outro": "expend 1 Ammo and %insert.rollPrompt%. A targeted PC must #>item-button text-movename:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<#.",
@@ -7173,14 +6424,13 @@ export default {
                   "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
               "range": [
-                "room"
+                K4ItemRange.room
               ],
               "harm": 1,
               "ammo": 1,
-              "key": "weapon-master-(firearms)"
             }
           }
         ],
@@ -7193,31 +6443,25 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Dreamer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dreamer.svg",
       "system": {
-        "key": "dreamer",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Navigate the Dream",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/dreamer.svg",
             "system": {
               "parentItem": {
                 "name": "Dreamer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you want to meet someone or find out the truth about something in the Dream,",
                 "outro": "%insert.rollPrompt%."
@@ -7233,9 +6477,8 @@ export default {
                   "result": "You are lost in the Dream and cannot wake up until you find your way back."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "dreamer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -7247,40 +6490,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Divine Champion",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
       "system": {
-        "key": "divine-champion",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Champion the Divine",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
             "system": {
               "chatName": "Champions the Divine",
               "parentItem": {
                 "name": "Divine Champion",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you fight your deity's enemies or fight to protect a sacred object,",
                 "outro": "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
               },
-              "subType": "active-static",
-              "key": "divine-champion"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -7293,20 +6528,15 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Instinct",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/instinct.svg",
       "system": {
-        "key": "instinct",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
@@ -7314,22 +6544,21 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
-            "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
+            {ModifyMove: "filter:Observe a Situation,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Observe a Situation,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Observe a Situation,target:system.results.completeSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#"},
+            {ModifyMove: "filter:Observe a Situation,target:system.results.partialSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Vigilant",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/vigilant.svg",
       "system": {
-        "key": "vigilant",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -7339,9 +6568,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
@@ -7349,21 +6576,19 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AppendList,Read a Person,questions,questions"
+            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Are you hiding anything from me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#"},
+            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:How do you really feel about me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Scientist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/scientist.svg",
       "system": {
-        "key": "scientist",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -7374,9 +6599,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%",
@@ -7387,16 +6610,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Crime Scene Investigator",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
       "system": {
-        "key": "crime-scene-investigator",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -7411,20 +6631,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Investigate Crime Scene",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
             "system": {
               "parentItem": {
                 "name": "Crime Scene Investigator",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you investigate a crime scene,",
                 "outro": "%insert.rollPrompt%.",
@@ -7452,9 +6669,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "crime-scene-investigator"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -7466,18 +6682,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Magnetic Attraction",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
       "system": {
-        "key": "magnetic-attraction",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -7488,20 +6700,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Attract Attention",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
             "system": {
               "parentItem": {
                 "name": "Magnetic Attraction",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you attract everyone's attention,",
                 "outro": "%insert.rollPrompt%.",
@@ -7529,9 +6738,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "magnetic-attraction"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -7543,22 +6751,16 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Dead Shot",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dead-shot.svg",
       "system": {
-        "key": "dead-shot",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "#>text-center>You are a seasoned marksman.<# #>text-center>You deal #>text-keyword>+1 Harm<# with firearms.<#",
@@ -7566,21 +6768,18 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            ">ModValue:weapon/firearm,harm,1"
+            {ModifyAttack: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>text-keyword>Dead Shot<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Martial Arts Expert",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
       "system": {
-        "key": "martial-arts-expert",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -7592,20 +6791,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Use Martial Arts",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "parentItem": {
                 "name": "Martial Arts Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're fighting in close quarters,",
                 "outro": "%insert.rollPrompt%.",
@@ -7634,85 +6830,76 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "martial-arts-expert"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           },
           {
             "name": "Block",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Block",
               "parentItem": {
                 "name": "Martial Arts Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to avoid a melee attack."
               },
-              "subType": "active-static",
-              "key": "martial-arts-expert"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Roundhouse Strike",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Roundhouse Strike",
               "parentItem": {
                 "name": "Martial Arts Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack."
               },
-              "subType": "active-static",
-              "key": "martial-arts-expert"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Disarm",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Disarm",
               "parentItem": {
                 "name": "Martial Arts Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to remove an opponent's weapon."
               },
-              "subType": "active-static",
-              "key": "martial-arts-expert"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Throw",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
               "chatName": "Throw",
               "parentItem": {
                 "name": "Martial Arts Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to reposition an opponent or drop them to the ground."
               },
-              "subType": "active-static",
-              "key": "martial-arts-expert"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -7726,18 +6913,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Charismatic Aura",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
       "system": {
-        "key": "charismatic-aura",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -7748,20 +6931,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Radiate Charisma",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
             "system": {
               "parentItem": {
                 "name": "Charismatic Aura",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever your aura is truly noticeable,",
                 "outro": "%insert.rollPrompt%.",
@@ -7789,9 +6969,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "charismatic-aura"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -7803,18 +6982,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Lightning Fast",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
       "system": {
-        "key": "lightning-fast",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -7825,20 +7000,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Move Fast",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "parentItem": {
                 "name": "Lightning Fast",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you move unexpectedly fast in combat,",
                 "outro": "%insert.rollPrompt%.",
@@ -7867,66 +7039,59 @@ export default {
                   "edges": 1
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "lightning-fast"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           },
           {
             "name": "Dodge",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "chatName": "Dodge",
               "parentItem": {
                 "name": "Lightning Fast",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to avoid an attack."
               },
-              "subType": "active-static",
-              "key": "lightning-fast"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Blinding Speed",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "chatName": "Blinding Speed",
               "parentItem": {
                 "name": "Lightning Fast",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo."
               },
-              "subType": "active-static",
-              "key": "lightning-fast"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Uncanny Precision",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
               "chatName": "Uncanny Precision",
               "parentItem": {
                 "name": "Lightning Fast",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
               },
-              "subType": "active-static",
-              "key": "lightning-fast"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -7940,18 +7105,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Artistic Talent",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
       "system": {
-        "key": "artistic-talent",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -7963,20 +7124,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Perform",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
             "system": {
               "parentItem": {
                 "name": "Artistic Talent",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you perform your chosen art form or show your works to an audience,",
                 "outro": "%insert.rollPrompt% to influence your audience at any time during the scene.",
@@ -8004,9 +7162,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "artistic-talent"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -8018,22 +7175,16 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Jaded",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/jaded.svg",
       "system": {
-        "key": "jaded",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Whenever you #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
@@ -8041,25 +7192,20 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
+            {ModifyMove: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>text-keyword>Jaded<##>text-sourceref>)<#"}
           ],
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Elite Sport (Contact)",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg",
       "system": {
-        "key": "elite-sport-(contact)",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks.",
@@ -8070,38 +7216,31 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Arcane Researcher",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
       "system": {
-        "key": "arcane-researcher",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Venture Beyond",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
             "system": {
               "chatName": "Ventures Beyond",
               "parentItem": {
                 "name": "Arcane Researcher",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you venture into alternate planes of existence or meet entities from other dimensions,",
                 "outro": "you may declare that you have read about this dimension or creature before. Ask the GM what you learned from your past studies."
               },
-              "subType": "active-static",
-              "key": "arcane-researcher"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -8114,16 +7253,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Backstab",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/backstab.svg",
       "system": {
-        "key": "backstab",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -8134,20 +7270,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Backstab Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/backstab.svg",
             "system": {
               "parentItem": {
                 "name": "Backstab",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you attack someone who's unprepared for it,",
                 "outro": "%insert.rollPrompt%.",
@@ -8172,9 +7305,8 @@ export default {
                   "result": "You expose your betrayal and your target gets to react to your attack as usual. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "backstab"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -8186,18 +7318,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Access the Dark Net",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
       "system": {
-        "key": "access-the-dark-net",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -8208,20 +7336,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Surf the Dark Net",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
             "system": {
               "parentItem": {
                 "name": "Access the Dark Net",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you search the Dark Net for forbidden information, rare items, or myths,",
                 "outro": "%insert.rollPrompt%."
@@ -8237,9 +7362,8 @@ export default {
                   "result": "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "access-the-dark-net"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -8251,33 +7375,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Explosives Expert",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
       "system": {
-        "key": "explosives-expert",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Improvise Explosive",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
               "parentItem": {
                 "name": "Explosives Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're building an improvised bomb under time pressure,",
                 "outro": "%insert.rollPrompt%."
@@ -8293,21 +7410,19 @@ export default {
                   "result": "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "explosives-expert"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           },
           {
             "name": "Disarm Explosive",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
               "parentItem": {
                 "name": "Explosives Expert",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you are disarming a bomb,",
                 "outro": "%insert.rollPrompt%."
@@ -8323,9 +7438,8 @@ export default {
                   "result": "Fuck, that's not good! The bomb may go off in your hands, the timer starts counting down from 10, 9, 8, 7…, or even bigger problems occur. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "reason",
-              "key": "explosives-expert"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.reason,
             }
           }
         ],
@@ -8337,18 +7451,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "reason",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Perpetual Victim",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
       "system": {
-        "key": "perpetual-victim",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -8359,20 +7469,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Appear Defenseless",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
             "system": {
               "parentItem": {
                 "name": "Perpetual Victim",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you appear defenseless during a dangerous experience,",
                 "outro": "%insert.rollPrompt%.",
@@ -8397,9 +7504,8 @@ export default {
                   "result": "Someone tries to take advantage of you and your position. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "perpetual-victim"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -8411,40 +7517,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Opportunist",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
       "system": {
-        "key": "opportunist",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Exploit Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
             "system": {
               "chatName": "Exploits Someone",
               "parentItem": {
                 "name": "Opportunist",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you sacrifice someone else to further your own goals,",
                 "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
               },
-              "subType": "active-static",
-              "key": "opportunist"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -8457,38 +7555,31 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Grudge",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
       "system": {
-        "key": "grudge",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Bear a Grudge",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
             "system": {
               "chatName": "Will Remember That",
               "parentItem": {
                 "name": "Grudge",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When someone directly or indirectly ruins your plans,",
                 "outro": "you take #>text-keyword>+1 ongoing<# against them until you have taken revenge or received restitution of equal worth to what you lost."
               },
-              "subType": "active-static",
-              "key": "grudge"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -8501,20 +7592,15 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Endure Trauma",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/endure-trauma.svg",
       "system": {
-        "key": "endure-trauma",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "#>text-center>You are not as easily affected by trauma as others.<#%insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal.",
@@ -8525,16 +7611,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Rage",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/rage.svg",
       "system": {
-        "key": "rage",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -8545,21 +7628,18 @@ export default {
             ]
           }
         },
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Unleash Rage",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "Is Enraged",
               "parentItem": {
                 "name": "Rage",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When you choose to awaken your inner rage in combat,",
                 "outro": "lose #>text-negmod>−1<# #>text-keyword>Stability<# and mark 1 Rage.%insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#).%insert.break%Rage lasts until the end of the combat.%insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
@@ -8567,65 +7647,58 @@ export default {
                   "edges"
                 ]
               },
-              "subType": "active-static",
-              "key": "rage"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Brutal Assault",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "Brutal Assault",
               "parentItem": {
                 "name": "Rage",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to add #>text-keyword>+1 Harm<# to your attack."
               },
-              "subType": "active-static",
-              "key": "rage"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "What Pain?",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "What Pain?",
               "parentItem": {
                 "name": "Rage",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#."
               },
-              "subType": "active-static",
-              "key": "rage"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "See Only Red",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
               "chatName": "See Only Red",
               "parentItem": {
                 "name": "Rage",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to shake off and ignore psychological or supernatural influence."
               },
-              "subType": "active-static",
-              "key": "rage"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -8638,16 +7711,13 @@ export default {
           "holdText": ""
         },
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Enforcer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
       "system": {
-        "key": "enforcer",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -8659,20 +7729,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Threaten Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
             "system": {
               "parentItem": {
                 "name": "Enforcer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you credibly threaten someone directly or suggestively,",
                 "outro": "%insert.rollPrompt%."
@@ -8688,9 +7755,8 @@ export default {
                   "result": "Turns out you didn't have the advantage you thought you did. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "enforcer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           }
         ],
@@ -8702,18 +7768,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Voice of Insanity",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
       "system": {
-        "key": "voice-of-insanity",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -8726,20 +7788,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Manipulate a Crowd",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
             "system": {
               "parentItem": {
                 "name": "Voice of Insanity",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you manipulate a crowd,",
                 "outro": "%insert.rollPrompt%.",
@@ -8767,9 +7826,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "voice-of-insanity"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -8781,18 +7839,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Seducer",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/seducer.svg",
       "system": {
-        "key": "seducer",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -8805,20 +7859,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Seduce Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/seducer.svg",
             "system": {
               "parentItem": {
                 "name": "Seducer",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you have an intimate moment with someone,",
                 "outro": "%insert.rollPrompt%.",
@@ -8846,9 +7897,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "seducer"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -8860,33 +7910,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Notorious",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
       "system": {
-        "key": "notorious",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Leverage Reputation",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
             "system": {
               "parentItem": {
                 "name": "Notorious",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you encounter someone who has likely heard about you,",
                 "outro": "%insert.rollPrompt%."
@@ -8902,9 +7945,8 @@ export default {
                   "result": "They know of your reputation; the GM decides what they have heard."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "charisma",
-              "key": "notorious"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.charisma,
             }
           }
         ],
@@ -8916,18 +7958,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "charisma",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Hunter",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hunter.svg",
       "system": {
-        "key": "hunter",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -8938,20 +7976,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Hunt",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/hunter.svg",
             "system": {
               "parentItem": {
                 "name": "Hunter",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are hunting someone or something,",
                 "outro": "%insert.rollPrompt%.",
@@ -8979,9 +8014,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "perception",
-              "key": "hunter"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.perception,
             }
           }
         ],
@@ -8993,18 +8027,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "perception",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Contagious Insanity",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
       "system": {
-        "key": "contagious-insanity",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -9016,20 +8046,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Unleash Madness",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
             "system": {
               "parentItem": {
                 "name": "Contagious Insanity",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you allow your madness to infect someone you're speaking with,",
                 "outro": "%insert.rollPrompt%.",
@@ -9054,9 +8081,8 @@ export default {
                   "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "soul",
-              "key": "contagious-insanity"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.soul,
             }
           }
         ],
@@ -9068,33 +8094,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "soul",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Intimidating",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
       "system": {
-        "key": "intimidating",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Frighten Someone",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
             "system": {
               "parentItem": {
                 "name": "Intimidating",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're trying to frighten another person,",
                 "outro": "%insert.rollPrompt%."
@@ -9110,9 +8129,8 @@ export default {
                   "result": "They see you as their primary threat and act accordingly. #>text-gmtext>The GM makes a Move<# for them."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "intimidating"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           }
         ],
@@ -9124,18 +8142,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Ruthless",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
       "system": {
-        "key": "ruthless",
-        "description": "",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -9146,20 +8160,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Sacrifice Another",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "parentItem": {
                 "name": "Ruthless",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you sacrifice another to save your own skin,",
                 "outro": "%insert.rollPrompt%.",
@@ -9184,66 +8195,59 @@ export default {
                   "result": "Things turns out in a bad way for you instead. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "violence",
-              "key": "ruthless"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.violence,
             }
           },
           {
             "name": "Meat Shield",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "chatName": "Meat Shield",
               "parentItem": {
                 "name": "Ruthless",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to force them to take all the #>text-keyword>Harm<# from one attack for you."
               },
-              "subType": "active-static",
-              "key": "ruthless"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Nothing But Bait",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "chatName": "Nothing But Bait",
               "parentItem": {
                 "name": "Ruthless",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to expose someone to danger so you can flank an enemy (deal #>text-keyword>+1 Harm<#)."
               },
-              "subType": "active-static",
-              "key": "ruthless"
+              "subType": K4ItemSubType.activeStatic,
             }
           },
           {
             "name": "Leave Them Behind",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
               "chatName": "Leave Them Behind",
               "parentItem": {
                 "name": "Ruthless",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "isEdge": true,
               "rules": {
                 "outro": "... to abandon them to the enemy while you slip away."
               },
-              "subType": "active-static",
-              "key": "ruthless"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -9257,18 +8261,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "violence",
         "currentHold": 0,
-        "currentEdges": 0
       }
     },
     {
       "name": "Improviser",
-      "type": "advantage",
+      "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/improviser.svg",
       "system": {
-        "key": "improviser",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -9280,20 +8280,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Wing It",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/improviser.svg",
             "system": {
               "parentItem": {
                 "name": "Improviser",
-                "type": "advantage"
+                "type": K4ItemType.advantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you attempt to get out of a dangerous situation by winging it,",
                 "outro": "%insert.rollPrompt%.",
@@ -9318,9 +8315,8 @@ export default {
                   "result": "Your improvisation makes the situation worse. #>text-gmtext>The GM makes a Move<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "coolness",
-              "key": "improviser"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.coolness,
             }
           }
         ],
@@ -9332,35 +8328,28 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "coolness",
         "currentHold": 0,
-        "currentEdges": 0
       }
     }
   ],
-  "disadvantage": [
+  disadvantage: [
     {
       "name": "Competitor",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
       "system": {
-        "key": "competitor",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Oppose Competitor",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
             "system": {
               "parentItem": {
                 "name": "Competitor",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you neglect to protect your interests or are distracted elsewhere,",
                 "outro": "%insert.rollPrompt% to see if your competitor managed to damage your business.",
@@ -9379,9 +8368,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "competitor"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9393,17 +8381,14 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Mental Compulsion",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
       "system": {
-        "key": "mental-compulsion",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -9422,20 +8407,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Compulsion",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
             "system": {
               "parentItem": {
                 "name": "Mental Compulsion",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In situations where you could be distracted by your compulsion,",
                 "outro": "%insert.rollPrompt%."
@@ -9451,9 +8433,8 @@ export default {
                   "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "mental-compulsion"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9467,17 +8448,14 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Sexual Neurosis",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
       "system": {
-        "key": "sexual-neurosis",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -9488,20 +8466,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Libido",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
             "system": {
               "parentItem": {
                 "name": "Sexual Neurosis",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you have the opportunity to have consensual sex or take advantage of someone vulnerable to your advances,",
                 "outro": "%insert.rollPrompt%."
@@ -9517,9 +8492,8 @@ export default {
                   "result": "You cannot resist having sex with the person and the GM chooses one option from the list below: %list.gmoptions%"
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "sexual-neurosis"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9531,39 +8505,32 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Phobia",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
       "system": {
-        "key": "phobia",
-        "description": "",
         "lists": {},
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Face Your Fear",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
             "system": {
               "chatName": "Faces Their Fear",
               "parentItem": {
                 "name": "Phobia",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're confronted by the object of your phobia,",
                 "outro": "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
               },
-              "subType": "active-static",
-              "key": "phobia"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -9580,26 +8547,21 @@ export default {
     },
     {
       "name": "Infirm",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
       "system": {
-        "key": "infirm",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Infirmity",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
             "system": {
               "parentItem": {
                 "name": "Infirm",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you are subjected to major physical or psychological stress,",
                 "outro": "%insert.rollPrompt%."
@@ -9615,9 +8577,8 @@ export default {
                   "result": "Your condition is aggravated with life threatening results (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "infirm"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9629,32 +8590,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Drug Addict",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
       "system": {
-        "key": "drug-addict",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Addiction",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
             "system": {
               "parentItem": {
                 "name": "Drug Addict",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you have been using, or have the opportunity to use,",
                 "outro": "%insert.rollPrompt%.",
@@ -9673,9 +8628,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "drug-addict"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9687,32 +8641,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Victim of Passion",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
       "system": {
-        "key": "victim-of-passion",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Passion",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
             "system": {
               "parentItem": {
                 "name": "Victim of Passion",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
                 "outro": "%insert.rollPrompt%.",
@@ -9731,9 +8679,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "victim-of-passion"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9745,32 +8692,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Obsession",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
       "system": {
-        "key": "obsession",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Obsession",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
             "system": {
               "parentItem": {
                 "name": "Obsession",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "At the first game session and whenever you encounter something associated with your obsession,",
                 "outro": "%insert.rollPrompt%.",
@@ -9789,9 +8730,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "obsession"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9803,21 +8743,16 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Broken",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/broken.svg",
       "system": {
-        "key": "broken",
-        "description": "",
         "lists": {},
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
           "intro": "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.%insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
@@ -9825,7 +8760,7 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            "SetTrait:actor/system.stability.max,6"
+            {ModifyProperty: "filter:actor,effect:Set,target:system.stability.max,value:6"}
           ],
           "holdText": ""
         },
@@ -9834,26 +8769,21 @@ export default {
     },
     {
       "name": "Nightmares",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
       "system": {
-        "key": "nightmares",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Sleep",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
             "system": {
               "parentItem": {
                 "name": "Nightmares",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "During any scene when you sleep,",
                 "outro": "%insert.rollPrompt%."
@@ -9869,9 +8799,8 @@ export default {
                   "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "nightmares"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9883,32 +8812,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Experiment Gone Wrong",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
       "system": {
-        "key": "experiment-gone-wrong",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Track Experiment",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
             "system": {
               "parentItem": {
                 "name": "Experiment Gone Wrong",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first session and whenever things seem in control,",
                 "outro": "%insert.rollPrompt%.",
@@ -9927,9 +8850,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "experiment-gone-wrong"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9941,32 +8863,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Lost Identity",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
       "system": {
-        "key": "lost-identity",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Face Identity Crisis",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
             "system": {
               "parentItem": {
                 "name": "Lost Identity",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you encounter something from your repressed past,",
                 "outro": "%insert.rollPrompt%.",
@@ -9985,9 +8901,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "lost-identity"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -9999,32 +8914,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Guilt",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
       "system": {
-        "key": "guilt",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Manage Guilt",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
             "system": {
               "parentItem": {
                 "name": "Guilt",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever everything appears okay,",
                 "outro": "%insert.rollPrompt%.",
@@ -10043,9 +8952,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "guilt"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10057,32 +8965,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Haunted",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
       "system": {
-        "key": "haunted",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Face the Entity",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
             "system": {
               "parentItem": {
                 "name": "Haunted",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first session and whenever you are distracted or weakened,",
                 "outro": "%insert.rollPrompt% to see if the entity gains power over you.",
@@ -10101,9 +9003,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "haunted"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10115,32 +9016,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Wanted",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
       "system": {
-        "key": "wanted",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Risk Attention",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
             "system": {
               "parentItem": {
                 "name": "Wanted",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you attract attention to yourself or forget to keep your head down,",
                 "outro": "%insert.rollPrompt% to see if you've been discovered.",
@@ -10159,9 +9054,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "wanted"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10173,32 +9067,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Stalker",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
       "system": {
-        "key": "stalker",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Evade Stalkers",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
             "system": {
               "parentItem": {
                 "name": "Stalker",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you expose your current location,",
                 "outro": "%insert.rollPrompt%.",
@@ -10217,9 +9105,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "stalker"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10231,32 +9118,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Oath of Revenge",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
       "system": {
-        "key": "oath-of-revenge",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Vengeful Urges",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
             "system": {
               "parentItem": {
                 "name": "Oath of Revenge",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever the target of your vengeance (or someone/something associated with them) appears,",
                 "outro": "%insert.rollPrompt%."
@@ -10272,9 +9153,8 @@ export default {
                   "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "oath-of-revenge"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10286,32 +9166,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Jealousy",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
       "system": {
-        "key": "jealousy",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Jealousy",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
             "system": {
               "parentItem": {
                 "name": "Jealousy",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you encounter the subject of your jealousy or their life's trappings (possessions, family, friends, etc),",
                 "outro": "%insert.rollPrompt% to see if you can keep your cool."
@@ -10327,9 +9201,8 @@ export default {
                   "result": "Your jealousy takes hold of you. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "jealousy"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10341,32 +9214,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Harassed",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
       "system": {
-        "key": "harassed",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Avoid Harassment",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
             "system": {
               "parentItem": {
                 "name": "Harassed",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you draw attention to yourself,",
                 "outro": "%insert.rollPrompt% to see if you're harassed.",
@@ -10385,9 +9252,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "harassed"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10399,32 +9265,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Rival",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
       "system": {
-        "key": "rival",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Face Your Rival",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
             "system": {
               "parentItem": {
                 "name": "Rival",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you make a mistake or let down your guard,",
                 "outro": "%insert.rollPrompt%.",
@@ -10443,9 +9303,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "rival"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10457,17 +9316,14 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Rationalist",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
       "system": {
-        "key": "rationalist",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -10479,21 +9335,18 @@ export default {
             ]
           }
         },
-        "subType": "active-static",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeStatic,
         "subItems": [
           {
             "name": "Face the Impossible",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
             "system": {
               "chatName": "Faces the Impossible",
               "parentItem": {
                 "name": "Rationalist",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "intro": "In addition to the standard effects,",
                 "trigger": "Whenever you #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
@@ -10502,8 +9355,7 @@ export default {
                   "gmoptions"
                 ]
               },
-              "subType": "active-static",
-              "key": "rationalist"
+              "subType": K4ItemSubType.activeStatic,
             }
           }
         ],
@@ -10520,26 +9372,21 @@ export default {
     },
     {
       "name": "Fanatic",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
       "system": {
-        "key": "fanatic",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Fanaticism",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
             "system": {
               "parentItem": {
                 "name": "Fanatic",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever someone questions your ideology,",
                 "outro": "%insert.rollPrompt%."
@@ -10555,9 +9402,8 @@ export default {
                   "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "fanatic"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10569,32 +9415,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Liar",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
       "system": {
-        "key": "liar",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Weave Lies",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
             "system": {
               "parentItem": {
                 "name": "Liar",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "At the start of every session,",
                 "outro": "%insert.rollPrompt% to see what trouble your lies have gotten you into this time.",
@@ -10613,9 +9453,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "liar"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10627,32 +9466,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Marked",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
       "system": {
-        "key": "marked",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Tempt the Darkness",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
             "system": {
               "parentItem": {
                 "name": "Marked",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you consciously #>text-keyword>Harm<# someone,",
                 "outro": "%insert.rollPrompt%.",
@@ -10671,9 +9504,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "marked"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10685,32 +9517,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Cursed",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
       "system": {
-        "key": "cursed",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Curse",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
             "system": {
               "parentItem": {
                 "name": "Cursed",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first session and whenever you're confronted by the supernatural,",
                 "outro": "%insert.rollPrompt% to see how strongly the curse influences you.",
@@ -10729,9 +9555,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "cursed"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10743,32 +9568,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Nemesis",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
       "system": {
-        "key": "nemesis",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Face Nemesis",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
             "system": {
               "parentItem": {
                 "name": "Nemesis",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you let your guard down,",
                 "outro": "%insert.rollPrompt% to see if your nemesis moves against you.",
@@ -10787,9 +9606,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "nemesis"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10801,17 +9619,14 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Condemned",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
       "system": {
-        "key": "condemned",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -10824,20 +9639,17 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Check the Clock",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
             "system": {
               "parentItem": {
                 "name": "Condemned",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "At the start of every game session,",
                 "outro": "%insert.rollPrompt%.",
@@ -10862,9 +9674,8 @@ export default {
                   ]
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "condemned"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10874,36 +9685,30 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [
-            ">CreateTracker:Time,10"
+            {CreateTracker: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.tracker,value:0,min:0,max:10,fromText:#>text-keyword>Condemned<#"}
           ],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Depression",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
       "system": {
-        "key": "depression",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Manage Depression",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
             "system": {
               "parentItem": {
                 "name": "Depression",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever facing personal setbacks,",
                 "outro": "%insert.rollPrompt%."
@@ -10919,9 +9724,8 @@ export default {
                   "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "depression"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10933,32 +9737,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Schizophrenia",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
       "system": {
-        "key": "schizophrenia",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Manage Schizophrenia",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
             "system": {
               "parentItem": {
                 "name": "Schizophrenia",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you go through difficult experiences,",
                 "outro": "%insert.rollPrompt%.",
@@ -10977,9 +9775,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "schizophrenia"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -10991,32 +9788,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Bad Reputation",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
       "system": {
-        "key": "bad-reputation",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Manage Reputation",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
             "system": {
               "parentItem": {
                 "name": "Bad Reputation",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you attract the public's attention,",
                 "outro": "%insert.rollPrompt%.",
@@ -11035,9 +9826,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "bad-reputation"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -11049,32 +9839,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Greedy",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
       "system": {
-        "key": "greedy",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Greed",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
             "system": {
               "parentItem": {
                 "name": "Greedy",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "When an opportunity to increase your wealth arises,",
                 "outro": "%insert.rollPrompt% to see if you are in control of your desire."
@@ -11090,9 +9874,8 @@ export default {
                   "result": "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "greedy"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -11104,32 +9887,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Involuntary Medium",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
       "system": {
-        "key": "involuntary-medium",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Possession",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
             "system": {
               "parentItem": {
                 "name": "Involuntary Medium",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "Whenever you encounter spiritual entities or haunted places,",
                 "outro": "%insert.rollPrompt%.",
@@ -11148,9 +9925,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "involuntary-medium"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -11162,32 +9938,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Repressed Memories",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
       "system": {
-        "key": "repressed-memories",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Resist Memories",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
             "system": {
               "parentItem": {
                 "name": "Repressed Memories",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In situations associated with your repressed memories,",
                 "outro": "%insert.rollPrompt% to determine if the memories resurface."
@@ -11203,9 +9973,8 @@ export default {
                   "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "repressed-memories"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -11217,32 +9986,26 @@ export default {
           "effects": [],
           "holdText": ""
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Owned",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
       "system": {
-        "key": "owned",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Evade Former Owner",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
             "system": {
               "parentItem": {
                 "name": "Owned",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "In the first game session and whenever you draw attention to yourself in public,",
                 "outro": "%insert.rollPrompt%.",
@@ -11261,9 +10024,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "owned"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -11275,32 +10037,26 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     },
     {
       "name": "Object of Desire",
-      "type": "disadvantage",
+      "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
       "system": {
-        "key": "object-of-desire",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
             "name": "Avoid Desire",
-            "type": "move",
+            "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
             "system": {
               "parentItem": {
                 "name": "Object of Desire",
-                "type": "disadvantage"
+                "type": K4ItemType.disadvantage
               },
-              "isCustom": false,
               "rules": {
                 "trigger": "At the first game session and whenever you meet one or more new people,",
                 "outro": "%insert.rollPrompt%.",
@@ -11319,9 +10075,8 @@ export default {
                   "hold": 3
                 }
               },
-              "subType": "active-rolled",
-              "attribute": "zero",
-              "key": "object-of-desire"
+              "subType": K4ItemSubType.activeRolled,
+              "attribute": K4Attribute.zero,
             }
           }
         ],
@@ -11333,19 +10088,16 @@ export default {
           "effects": [],
           "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
         },
-        "attribute": "zero",
         "currentHold": 0
       }
     }
   ],
-  "darksecret": [
+  darksecret: [
     {
       "name": "Returned from the Other Side",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/returned-from-the-other-side.svg",
       "system": {
-        "key": "returned-from-the-other-side",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11358,9 +10110,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You experienced an event where the Illusion shattered completely, and you were the only one who returned.",
           "trigger": "",
@@ -11379,11 +10129,9 @@ export default {
     },
     {
       "name": "Responsible for Medical Experiments",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/responsible-for-medical-experiments.svg",
       "system": {
-        "key": "responsible-for-medical-experiments",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11397,9 +10145,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You were responsible for or assisted in shady medical experiments, which ended in horrifying results.",
           "trigger": "",
@@ -11418,11 +10164,9 @@ export default {
     },
     {
       "name": "Heir",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/heir.svg",
       "system": {
-        "key": "heir",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11434,9 +10178,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have been granted a unique inheritance from relatives or friends.",
           "trigger": "",
@@ -11455,11 +10197,9 @@ export default {
     },
     {
       "name": "Pact with Dark Forces",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/pact-with-dark-forces.svg",
       "system": {
-        "key": "pact-with-dark-forces",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11472,9 +10212,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have sealed a pact with a powerful entity.",
           "trigger": "",
@@ -11493,11 +10231,9 @@ export default {
     },
     {
       "name": "Victim of Medical Experiments",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/victim-of-medical-experiments.svg",
       "system": {
-        "key": "victim-of-medical-experiments",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11511,9 +10247,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge.",
           "trigger": "",
@@ -11532,11 +10266,9 @@ export default {
     },
     {
       "name": "Rootless",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/rootless.svg",
       "system": {
-        "key": "rootless",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11549,9 +10281,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "Your family always moved around.",
           "trigger": "",
@@ -11570,11 +10300,9 @@ export default {
     },
     {
       "name": "Occult Experience",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/occult-experience.svg",
       "system": {
-        "key": "occult-experience",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11587,9 +10315,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have witnessed occult proceedings, which changed your view of reality.",
           "trigger": "",
@@ -11608,11 +10334,9 @@ export default {
     },
     {
       "name": "Curse",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/curse.svg",
       "system": {
-        "key": "curse",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11625,9 +10349,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You are afflicted by a curse, knowingly or not.",
           "trigger": "",
@@ -11646,11 +10368,9 @@ export default {
     },
     {
       "name": "Mental Illness",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/mental-illness.svg",
       "system": {
-        "key": "mental-illness",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11663,9 +10383,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You or one of your close relations suffer from mental illness.",
           "trigger": "",
@@ -11684,11 +10402,9 @@ export default {
     },
     {
       "name": "Strange Disappearance",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/strange-disappearance.svg",
       "system": {
-        "key": "strange-disappearance",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11701,9 +10417,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "Someone close to you disappeared after getting too close to the truth while investigating something.",
           "trigger": "",
@@ -11722,11 +10436,9 @@ export default {
     },
     {
       "name": "Visitations",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/visitations.svg",
       "system": {
-        "key": "visitations",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11739,9 +10451,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have a history of encounters with beings from the other side.",
           "trigger": "",
@@ -11760,11 +10470,9 @@ export default {
     },
     {
       "name": "Guilty of Crime",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/guilty-of-crime.svg",
       "system": {
-        "key": "guilty-of-crime",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11778,9 +10486,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You feel constant remorse for a crime you have committed.",
           "trigger": "",
@@ -11799,11 +10505,9 @@ export default {
     },
     {
       "name": "Victim of Crime",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/victim-of-crime.svg",
       "system": {
-        "key": "victim-of-crime",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11816,9 +10520,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have endured a terrible crime.",
           "trigger": "",
@@ -11837,11 +10539,9 @@ export default {
     },
     {
       "name": "Forbidden Knowledge",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/forbidden-knowledge.svg",
       "system": {
-        "key": "forbidden-knowledge",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11854,9 +10554,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have uncovered some horrid truth, which brings reality's very nature into question.",
           "trigger": "",
@@ -11875,11 +10573,9 @@ export default {
     },
     {
       "name": "Family Secret",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/family-secret.svg",
       "system": {
-        "key": "family-secret",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11892,9 +10588,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "Your family has a well-kept secret, which has haunted you for your entire life.",
           "trigger": "",
@@ -11913,11 +10607,9 @@ export default {
     },
     {
       "name": "Guardian",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/guardian.svg",
       "system": {
-        "key": "guardian",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11929,9 +10621,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have been chosen to protect an important object, place, or person.",
           "trigger": "",
@@ -11950,11 +10640,9 @@ export default {
     },
     {
       "name": "Chosen One",
-      "type": "darksecret",
+      "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/chosen-one.svg",
       "system": {
-        "key": "chosen-one",
-        "description": "",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -11967,9 +10655,7 @@ export default {
             ]
           }
         },
-        "subType": "passive",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.passive,
         "rules": {
           "intro": "You have been chosen by a god to become its advocate or sacrificial lamb.",
           "trigger": "",
@@ -11987,20 +10673,16 @@ export default {
       }
     }
   ],
-  "weapon": [],
-  "gear": [],
-  "move": [
+  weapon: [],
+  gear: [],
+  move: [
     {
       "name": "Help Other",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/help-other.svg",
       "system": {
-        "key": "help-other",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you help another player character's Move,",
@@ -12032,16 +10714,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "ask"
+        "attribute": K4Attribute.ask
       }
     },
     {
       "name": "Keep It Together",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/keep-it-together.svg",
       "system": {
-        "key": "keep-it-together",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -12065,9 +10745,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you exercise self-control to keep from succumbing to stress, traumatic experiences, psychic influence, or supernatural forces,",
@@ -12099,16 +10777,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "willpower"
+        "attribute": K4Attribute.willpower
       }
     },
     {
       "name": "Investigate",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/investigate.svg",
       "system": {
-        "key": "investigate",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -12119,9 +10795,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you investigate something,",
@@ -12159,16 +10833,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "reason"
+        "attribute": K4Attribute.reason
       }
     },
     {
       "name": "Engage in Combat",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/engage-in-combat.svg",
       "system": {
-        "key": "engage-in-combat",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -12182,9 +10854,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you engage an able opponent in combat,",
@@ -12216,20 +10886,16 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "violence"
+        "attribute": K4Attribute.violence
       }
     },
     {
       "name": "Hinder Other",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/hinder-other.svg",
       "system": {
-        "key": "hinder-other",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you hinder another player character's Move,",
@@ -12261,16 +10927,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "ask"
+        "attribute": K4Attribute.ask
       }
     },
     {
       "name": "Influence Other NPC",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/influence-other-npc.svg",
       "system": {
-        "key": "influence-other-npc",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -12281,9 +10945,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you influence an NPC through negotiation, argument, or from a position of power,",
@@ -12315,16 +10977,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "charisma"
+        "attribute": K4Attribute.charisma
       }
     },
     {
       "name": "Read a Person",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/read-a-person.svg",
       "system": {
-        "key": "read-a-person",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -12337,9 +10997,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you read a person,",
@@ -12377,16 +11035,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "intuition"
+        "attribute": K4Attribute.intuition
       }
     },
     {
       "name": "Influence Other PC",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/influence-other-pc.svg",
       "system": {
-        "key": "influence-other-pc",
-        "description": "",
         "lists": {
           "options": {
             "name": "Options",
@@ -12396,9 +11052,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you influence another PC,",
@@ -12436,20 +11090,16 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "charisma"
+        "attribute": K4Attribute.charisma
       }
     },
     {
       "name": "Act Under Pressure",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/act-under-pressure.svg",
       "system": {
-        "key": "act-under-pressure",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you do something risky, under time pressure, or try to avoid danger,",
@@ -12481,16 +11131,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "coolness"
+        "attribute": K4Attribute.coolness
       }
     },
     {
       "name": "Observe a Situation",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/observe-a-situation.svg",
       "system": {
-        "key": "observe-a-situation",
-        "description": "",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -12504,9 +11152,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you observe a situation,",
@@ -12546,16 +11192,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "perception"
+        "attribute": K4Attribute.perception
       }
     },
     {
       "name": "Endure Injury",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/endure-injury.svg",
       "system": {
-        "key": "endure-injury",
-        "description": "",
         "lists": {
           "options": {
             "name": "Consequences",
@@ -12574,16 +11218,15 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When enduring an injury,",
           "outro": "%insert.rollPrompt% #>item-button text-keyword:data-item-name='Endure Injury':data-action='roll'>+Armor<# #>item-button text-negmod text-keyword:data-item-name='Endure Injury':data-action='roll'>−Harm<#.",
           "listRefs": [],
           "effects": [
-            "Add Armor, subtract Harm from roll"
+            {ModifyRoll: "filter:Endure Injury,effect:Add,value:actor.armor,inStatusBar:false"},
+            {ModifyRoll: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputMin:1,inputMax:4,inStatusBar:false"}
           ],
           "holdText": ""
         },
@@ -12610,16 +11253,14 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "fortitude"
+        "attribute": K4Attribute.fortitude
       }
     },
     {
       "name": "See Through the Illusion",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/see-through-the-illusion.svg",
       "system": {
-        "key": "see-through-the-illusion",
-        "description": "",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -12629,9 +11270,7 @@ export default {
             ]
           }
         },
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you suffer shock, injuries, or distort your perception through drugs or rituals,",
@@ -12663,20 +11302,16 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "soul"
+        "attribute": K4Attribute.soul
       }
     },
     {
       "name": "Avoid Harm",
-      "type": "move",
+      "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/avoid-harm.svg",
       "system": {
-        "key": "avoid-harm",
-        "description": "",
         "lists": {},
-        "subType": "active-rolled",
-        "isCustom": false,
-        "pdfLink": "",
+        "subType": K4ItemSubType.activeRolled,
         "rules": {
           "intro": "",
           "trigger": "When you dodge, parry, or block Harm,",
@@ -12708,10 +11343,12 @@ export default {
             "hold": 0
           }
         },
-        "attribute": "reflexes"
+        "attribute": K4Attribute.reflexes
       }
     }
   ],
-  "relation": [],
-  "attack": []
+  relation: [],
+  attack: []
 };
+
+export default ITEM_DATA;

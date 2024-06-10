@@ -147,11 +147,11 @@ declare global {
   // #endregion
 
   // #region BRANDED TYPES ~
-  // number === Integer type guard
-  type Integer = number & { __intBrand: never };
+  // number === number type guard
+  // type number = number & { __intBrand: never };
 
   // number === Positive integer type guard
-  type PosInteger = number & { __posIntBrand: never };
+  // type PosInteger = number & { __posIntBrand: never };
 
   // number === Float type guard
   type Float = number & { __floatBrand: never };

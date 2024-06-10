@@ -360,7 +360,7 @@ class K4ActiveEffect extends ActiveEffect {
 
       // Convert the value to the appropriate type
       if (/^\d+$/.test(value)) {
-        value = U.pInt(value); // Integer
+        value = U.pInt(value); // number
       } else if (/^\d*\.\d$/.test(value)) {
         value = U.pFloat(value); // Float
       } else if (/^(true|false)$/i.test(value)) {

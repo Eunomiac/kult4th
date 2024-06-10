@@ -72,9 +72,9 @@ declare global {
           stability: K4ModTargets[];
         },
         stability: {
-          min: Integer,
-          max: Integer,
-          value: Integer;
+          min: number,
+          max: number,
+          value: number;
         },
         edges: {
           sourceName: string,
@@ -102,15 +102,15 @@ declare global {
         gear: Array<K4Item<K4ItemType.gear>>;
         relations: Array<K4Item<K4ItemType.relation>>;
         maxWounds: {
-          serious: Integer,
-          critical: Integer,
-          total: Integer;
+          serious: number,
+          critical: number,
+          total: number;
         };
         modifiersReport: string;
         stability: SourceSchema.PC["stability"] & {
           statusOptions: string[];
         };
-        armor: Integer;
+        armor: number;
       }
 
       export interface NPC extends SourceSchema.NPC {
@@ -622,7 +622,7 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region EDGES ~
-  async updateEdges(edges: PosInteger, source?: K4Item) {
+  async updateEdges(edges: number, source?: K4Item) {
     if (!this.is(K4ActorType.pc)) { return; }
     const sourceName = source ? source.parentName : this.system.edges.sourceName;
     if (this.sheet.rendered) {
@@ -648,15 +648,15 @@ class K4Actor extends Actor {
   }
   async spendEdge() {
     if (!this.is(K4ActorType.pc) || !this.system.edges.value) {return;}
-    await this.updateEdges(this.system.edges.value - 1 as PosInteger);
+    await this.updateEdges(this.system.edges.value - 1 as number);
   }
   async gainEdge() {
     if (!this.is(K4ActorType.pc) || !this.system.edges.sourceName) {return;}
-    await this.updateEdges(this.system.edges.value + 1 as PosInteger);
+    await this.updateEdges(this.system.edges.value + 1 as number);
   }
   async clearEdges(): Promise<void> {
     if (!this.is(K4ActorType.pc)) {return;}
-    await this.updateEdges(0 as PosInteger);
+    await this.updateEdges(0 as number);
   }
   // #endregion
 
@@ -873,10 +873,13 @@ class K4Actor extends Actor {
 
   #getRollResultData(roll: Roll, rollData: K4RollData): ValueOf<K4Item.Components.ResultsData["results"]> {
     const {source} = rollData;
-    if (!(source instanceof K4Item) || source.system.subType !== K4ItemSubType.activeRolled) {
-      throw new Error(`Invalid source for roll result data: ${source}`);
+    if (!(source instanceof K4Item)) {
+      throw new Error(`Roll source must be an instance of K4Item: ${source}`);
     }
-    const {results} = source.system;
+    if (source.type !== K4ItemType.move || source.system.subType !== K4ItemSubType.activeRolled) {
+      throw new Error(`Roll source must be of type move and subType activeRolled: ${source.name} is of type ${source.type} and subType ${source.system.subType}`);
+    }
+    const {results} = source.system as K4Item.System<K4ItemType.move>;
     if (!results) {
       throw new Error(`No results data found for source: ${source.name}`);
     }
@@ -995,12 +998,12 @@ class K4Actor extends Actor {
       this.system.relations = this.relations;
 
       this.system.maxWounds = {
-        serious: this.system.modifiers.wounds_serious.length as Integer,
-        critical: this.system.modifiers.wounds_critical.length as Integer,
-        total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as Integer
+        serious: this.system.modifiers.wounds_serious.length as number,
+        critical: this.system.modifiers.wounds_critical.length as number,
+        total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as number
       };
       this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
-      this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0) as Integer;
+      this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0) as number;
 
       // this.validateStability();
     }
