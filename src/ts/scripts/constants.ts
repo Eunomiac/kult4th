@@ -117,7 +117,7 @@ export const HarmButtons = (resolve: (value: {harm: number}) => void) => {
   }
   return harmButtons;
 }
-export const AttributeButtons = (resolve: (value: {attribute: K4RollableAttribute}) => void) => {
+export const AttributeButtons = (resolve: (value: {attribute: K4Roll.Attribute}) => void) => {
   const attrButtons: Record<string,Dialog.Button> = {};
   [
     K4Attribute.zero,
@@ -134,7 +134,7 @@ export const AttributeButtons = (resolve: (value: {attribute: K4RollableAttribut
   ].forEach((attr) => {
     attrButtons[attr] = {
       label: U.loc(`trait.${attr}`),
-      callback: () => resolve({attribute: attr as K4RollableAttribute})
+      callback: () => resolve({attribute: attr as K4Roll.Attribute})
     };
   });
   return attrButtons;

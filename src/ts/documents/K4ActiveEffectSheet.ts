@@ -143,22 +143,17 @@ const CUSTOMFUNCEXAMPLES = {
   ]
 }
 
-/** ROLL-SOURCE EFFECTS -- These are applied as the result of a roll OR a triggered static effect (like an edge), and are transferred to the rolling Actor. They must define their own removal logic. Schema-wise, they go into the effectFunctions array within each roll result, and are created as ActiveEffects on the rolling actor after a roll has been made. */
+/** RESULT-SOURCE EFFECTS -- These are created as the result of a roll OR a triggered static effect (like an edge), and are created directly on the rolling Actor. They must define their own removal logic. Schema-wise, they go into the effectFunctions array within each roll result, and are created as ActiveEffects on the rolling actor after a roll has been made. */
 const CUSTOMROLLFUNCEXAMPLES = {
   "Observe a Situation/completeSuccess": [
     {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
   ],
   "Observe a Situation/partialSuccess": [
     {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
-  ]
-}
-
-const CUSTOMTRIGGERFUNCEXAMPLES = {
-  "Draw an Ace/Reveal a Weapon": [
+  ],
+  "Draw an Ace:Reveal a Weapon/triggered": [
     {PromptForData: "... name of weapon ..."},
     {PromptForData: "... class of weapon - select, stab/slash/crush/..."},
     {CreateWeapon: "name:flags.kult4th.weaponName,range:arm,harm:1,class:flags.kult4th.weaponClass,duration:scene,fromText:#>text-keyword>Draw an Ace<#"},
-  ],
-  "Draw an Ace/Spot a Weakness": [],
-  "Draw an Ace/Find an Exit": []
+  ]
 }

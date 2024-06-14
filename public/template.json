@@ -173,6 +173,13 @@
 						"effects": [],
 						"edges": 0,
 						"hold": 0
+					},
+					"triggered": {
+						"result": "",
+						"listRefs": [],
+						"effects": [],
+						"edges": 0,
+						"hold": 0
 					}
 				}
 			}

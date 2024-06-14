@@ -179,6 +179,20 @@ const ITEM_DATA: {
                 "trigger": "When you refuse to give in even if the odds turn against you,",
                 "outro": "mark 1 Time to reroll the dice."
               },
+              "results": {
+                "triggered": {
+                  "result": "",
+                  "edges": 0,
+                  "hold": 0,
+                  "effects": [
+                    {
+                      key: "ChangeCounter",
+                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+                      value: "filter:Time,value:1"
+                    }
+                  ]
+                }
+              },
               "subType": K4ItemSubType.activeStatic,
             }
           }
@@ -189,7 +203,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {RequireItem: "filter:Condemned"}
+            {
+              key: "RequireItem",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Condemned"
+            }
           ],
           "holdText": ""
         },
@@ -220,8 +238,16 @@ const ITEM_DATA: {
             "questions"
           ],
           "effects": [
-            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What are you afraid of? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What are you afraid of? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -822,6 +848,13 @@ const ITEM_DATA: {
                 "listRefs": [
                   "watchers"
                 ]
+              },
+              "results": {
+                "triggered": {
+                  "result": "",
+                  "edges": 0,
+                  "hold": 1
+                }
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -1840,8 +1873,16 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What sort of person are you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Is there anything odd about you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What sort of person are you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Is there anything odd about you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -1876,11 +1917,31 @@ const ITEM_DATA: {
           "outro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
           "effects": [
-            {PromptForData: "title:What is your first Field of Expertise?,key:flags.kult4th.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
-            {PromptForData: "title:What is your second Field of Expertise?,key:flags.kult4th.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
-            {ModifyMove: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
+            {
+              key: "PromptForData",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "title:What is your first Field of Expertise?,key:flags.kult4th.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"
+            },
+            {
+              key: "PromptForData",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "title:What is your second Field of Expertise?,key:flags.kult4th.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -1992,7 +2053,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {RequireItem: "filter:Condemned"}
+            {
+              key: "RequireItem",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Condemned"
+            }
           ],
           "holdText": ""
         },
@@ -2218,7 +2283,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"}
+            {
+              key: "ModifyRoll",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -2769,7 +2838,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {CreateAttack: "filter:sword,name:Riposte,range:arm,harm:3,fromText:#>text-keyword>Elite Sport (Fencing)<#,special:You can make this attack immediately after parrying."}
+            {
+              key: "CreateAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:sword,name:Riposte,range:arm,harm:3,fromText:#>text-keyword>Elite Sport (Fencing)<#,special:You can make this attack immediately after parrying."
+            }
           ],
           "holdText": ""
         },
@@ -4337,12 +4410,36 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_critical.1.all,value:0"},
-            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.1.all,value:0"},
-            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.2.all,value:0"},
-            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.3.all,value:0"},
-            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.4.all,value:0"},
-            {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_seriouscritical.1.all,value:0"}
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Set,target:system.modifiers.wounds_critical.1.all,value:0"
+            },
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.1.all,value:0"
+            },
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.2.all,value:0"
+            },
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.3.all,value:0"
+            },
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.4.all,value:0"
+            },
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Set,target:system.modifiers.wounds_seriouscritical.1.all,value:0"
+            }
           ],
           "holdText": ""
         },
@@ -4558,9 +4655,21 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyMove: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Which organizations, groups, or people of interest may be connected to this? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Is there a connection between this and another event? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:What could a plausible motive be? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Which organizations, groups, or people of interest may be connected to this? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Is there a connection between this and another event? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:What could a plausible motive be? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -6058,8 +6167,16 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyMove: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What weaknesses do they have I can use to my advantage? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What strengths do they have I should watch out for? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What weaknesses do they have I can use to my advantage? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What strengths do they have I should watch out for? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -6325,10 +6442,26 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyMove: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (3 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (2 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene. #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.results.failure.listRefs,effect:PushElement,value:questions"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (3 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (2 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene. #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.results.failure.listRefs,effect:PushElement,value:questions"
+            }
           ],
           "holdText": ""
         },
@@ -6544,10 +6677,26 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyMove: "filter:Observe a Situation,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Observe a Situation,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Observe a Situation,target:system.results.completeSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#"},
-            {ModifyMove: "filter:Observe a Situation,target:system.results.partialSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Observe a Situation,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Observe a Situation,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Observe a Situation,target:system.results.completeSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Observe a Situation,target:system.results.partialSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#"
+            }
           ],
           "holdText": ""
         },
@@ -6576,8 +6725,16 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Are you hiding anything from me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#"},
-            {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:How do you really feel about me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Are you hiding anything from me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#"
+            },
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:How do you really feel about me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -6768,7 +6925,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyAttack: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>text-keyword>Dead Shot<#"}
+            {
+              key: "ModifyAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>text-keyword>Dead Shot<#"
+            }
           ],
           "holdText": ""
         },
@@ -7192,7 +7353,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyMove: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>text-keyword>Jaded<##>text-sourceref>)<#"}
+            {
+              key: "ModifyMove",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>text-keyword>Jaded<##>text-sourceref>)<#"
+            }
           ],
           "holdText": ""
         },
@@ -8760,7 +8925,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {ModifyProperty: "filter:actor,effect:Set,target:system.stability.max,value:6"}
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Set,target:system.stability.max,value:6"
+            }
           ],
           "holdText": ""
         },
@@ -9685,7 +9854,11 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [
-            {CreateTracker: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.tracker,value:0,min:0,max:10,fromText:#>text-keyword>Condemned<#"}
+            {
+              key: "CreateTracker",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.tracker,value:0,min:0,max:10,fromText:#>text-keyword>Condemned<#"
+            }
           ],
           "holdText": ""
         },
@@ -11169,7 +11342,13 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [],
+            "effects": [
+              {
+                key: "ModifyRoll",
+                mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"
+              }
+            ],
             "edges": 0,
             "hold": 0
           },
@@ -11178,7 +11357,13 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [],
+            "effects": [
+              {
+                key: "ModifyRoll",
+                mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"
+              }
+            ],
             "edges": 0,
             "hold": 0
           },
@@ -11225,8 +11410,16 @@ const ITEM_DATA: {
           "outro": "%insert.rollPrompt% #>item-button text-keyword:data-item-name='Endure Injury':data-action='roll'>+Armor<# #>item-button text-negmod text-keyword:data-item-name='Endure Injury':data-action='roll'>−Harm<#.",
           "listRefs": [],
           "effects": [
-            {ModifyRoll: "filter:Endure Injury,effect:Add,value:actor.armor,inStatusBar:false"},
-            {ModifyRoll: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputMin:1,inputMax:4,inStatusBar:false"}
+            {
+              key: "ModifyRoll",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Endure Injury,effect:Add,value:actor.armor,inStatusBar:false"
+            },
+            {
+              key: "ModifyRoll",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputMin:1,inputMax:4,inStatusBar:false"
+            }
           ],
           "holdText": ""
         },

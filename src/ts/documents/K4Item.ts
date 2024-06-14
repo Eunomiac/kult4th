@@ -4,7 +4,7 @@ import K4ItemSheet from "./K4ItemSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
-import {K4RollResult} from "./K4Roll.js";
+import K4Roll, {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
@@ -90,7 +90,8 @@ declare global {
 
       export interface Static extends Components.Base,
         Components.IsSubItem,
-        K4Item.Components.RulesData {
+        K4Item.Components.RulesData,
+        Partial<K4Item.Components.ResultsData> {
         subType: K4ItemSubType.activeStatic;
       }
 
@@ -137,7 +138,8 @@ declare global {
       export type Passive = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | K4ItemType.relation | K4ItemType.weapon | K4ItemType.gear;
       export type Active = K4ItemType.move | K4ItemType.attack | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
       export type HaveRules = K4ItemType.move | K4ItemType.attack | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | K4ItemType.weapon | K4ItemType.gear;
-      export type HaveModifiers = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear;
+      export type HaveResults = K4ItemType.move | K4ItemType.attack;
+      export type HaveEffects = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear;
     }
     export namespace Components {
       export interface Base {
@@ -162,22 +164,24 @@ declare global {
           trigger?: string,
           outro?: string,
           listRefs?: string[],
-          effects?: K4ActiveEffect.GenerationData,
+          effects?: K4ActiveEffect.Change.Data[],
           holdText?: string;
         };
       }
 
+      export interface ResultData {
+        result: string,
+        listRefs?: string[],
+        effects?: K4ActiveEffect.Change.Data[],
+        edges?: number,
+        hold?: number;
+      }
+
       export interface ResultsData {
-        results: Record<
-          K4RollResult,
-          {
-            result: string,
-            listRefs?: string[],
-            effects?: string[],
-            edges?: number,
-            hold?: number;
-          }
-        >;
+        results: Partial<Record<
+          K4RollResult|"triggered",
+          ResultData
+        >>;
       }
     }
     type WeaponSubClass<T extends K4WeaponClass> =
@@ -327,7 +331,8 @@ declare global {
       };
     };
     export type HaveRules<T extends Types.HaveRules = Types.HaveRules> = K4Item<T>;
-    export type HaveModifiers<T extends Types.HaveModifiers = Types.HaveModifiers> = K4Item<T>;
+    export type HaveResults<T extends Types.HaveResults = Types.HaveResults> = K4Item<T>;
+    export type HaveEffects<T extends Types.HaveEffects = Types.HaveEffects> = K4Item<T>;
   }
 }
 // #endregion
@@ -402,6 +407,9 @@ class K4Item extends Item {
   isStaticItem(): this is K4Item.Static {return this.system.subType === K4ItemSubType.activeStatic;}
   isPassiveItem(): this is K4Item.Passive {return this.system.subType === K4ItemSubType.passive;}
   hasRules(): this is K4Item.HaveRules {return "rules" in this.system;}
+  hasResults(): this is K4Item.HaveResults { return "results" in this.system;}
+  hasMainEffects(): this is K4Item.HaveEffects { return Boolean(this.hasRules() && this.system.rules.effects?.length); }
+  hasRollEffects(): this is K4Item.HaveResults {return this.hasResults() && Object.values(this.system.results).some((result) => result.effects?.length);}
   // #endregion
 
   // #region GETTERS & SETTERS ~  get itemSheet(): typeof this._sheet & K4ItemSheet | null {return this._sheet as typeof this._sheet & K4ItemSheet ?? null;}
@@ -571,10 +579,29 @@ class K4Item extends Item {
   }
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     await super._onCreate(...args);
+
+    // If this is a primary Document and has Change data in its system.rules schema, create a K4ActiveEffect for them that transfers to any actor owner.
+    if (!this.parent && this.hasMainEffects()) {
+      const effectData: Array<K4ActiveEffect.ConstructorData & Record<string, unknown>> = [{
+        changes: this.system.rules.effects!,
+        disabled: false,
+        icon: this.img,
+        label: `[MAIN] ${this.name}`,
+        origin: this.uuid,
+        transfer: true
+      }];
+      kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating ActiveEffect`, {
+        ITEM: this,
+        effectData: foundry.utils.deepClone(effectData)
+      });
+      await this.createEmbeddedDocuments("ActiveEffect", effectData);
+    }
+
+    // If this isn't an item embedded on an actor, no additional functionality is necessary
     if (!this.isOwnedItem()) {return;}
-    // this.applyOnCreateeffects();
+
+    // If item has subItem schemas, create them now as independent K4Items.
     if (this.isParentItem()) {
-      // Item has subItem schemas, create them now as independent K4Items.
       const subItemData = this.prepareSubItemData();
       kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating ${subItemData.length} SubItems`, {
         ITEM: this,
@@ -795,7 +822,6 @@ class K4Item extends Item {
   triggerTemplate = "systems/kult4th/templates/sidebar/result-static.hbs";
   async displayItemSummary(speaker?: string) {
     const template = await getTemplate(this.chatTemplate);
-
     const content = template(this.itemSummaryContext);
     await K4ChatMessage.create({
       content,
@@ -808,7 +834,30 @@ class K4Item extends Item {
     });
   }
 
+  async applyResult(result: K4Item.Components.ResultData) {
+    const {edges, hold, effects} = result;
+    /* Apply Hold, add Edges, and create Effects Here */
+    if ((edges ?? 0) > 0) {
+
+    }
+    if ((hold ?? 0) > 0) {
+
+    }
+    if ((effects ?? []).length > 0) {
+
+    }
+  }
+
   async triggerItem(speaker?: string) {
+    if (!this.hasResults()) {return;}
+    if (!this.isOwnedItem()) {return;}
+    if (this.isEdge()) {
+      this.parent.spendEdge();
+    }
+    const {triggered} = this.system.results;
+    if (triggered) {
+      this.applyResult(triggered);
+    }
     const template = await getTemplate(this.triggerTemplate);
     const content = K4ChatMessage.CapitalizeFirstLetter(
       template(this.triggerSummaryContext)

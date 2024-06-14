@@ -228,7 +228,7 @@ namespace K4ActiveEffect {
     // Limited-use scene or session effects are comparatively rare.
   }
 
-  export type ConstructorData = Partial<Data> & ActiveEffectDataConstructorData;
+  export type ConstructorData = DeepPartial<Data> & ActiveEffectDataConstructorData;
 
   export type GenerationData = Change.GenerationData[];
 }
@@ -288,12 +288,18 @@ const CUSTOM_FUNCTIONS: Record<
  * arrays that contain mode:0 custom functions where key is the function name, and value is the
  * function string.
  *
- * The changes arrays of enabled active effects should be iterated through during the actor's
- *  prepareData method, filtered for custom functions, and their function data strings parsed and
- *  applied then.
- * (Roll-effect changes should instead be run during the roll process.)
+ * Effects defined in the system.rules schema of an item are created as embedded
+ * effects on the item, and set to be transferrable to any owning actor.
  *
- * See "applyToActor" and "applyToRoll" methods below
+ * Effects defined in the system.results schema of an item are instead created as embedded effects
+ * directly on the actor when the associated result is triggered.
+ *
+ * Changes are generally parsed and applied during the owning actor's prepareData() method, ensuring
+ * all changes do not make permanent changes to the actor's data, simplifying the process of removal.
+ * This includes changes made to other items owned by the actor. Changes that apply modifiers to dice
+ * rolls determine whether they should be displayed in the status bar of the actor's sheet and/or whether
+ * the actor can toggle them on and off at this step. When the actor makes a roll, these changes are
+ * iterated through and applied during the roll process.
  */
 class K4ActiveEffect extends ActiveEffect {
 
