@@ -4,6 +4,7 @@ import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import {K4RollResult} from "./K4Roll.js";
+import K4ActiveEffect, {CUSTOM_FUNCTIONS} from "./K4ActiveEffect.js";
 import C, {K4Attribute, Archetype} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {PACKS} from "../scripts/data.js";
@@ -66,10 +67,10 @@ declare global {
         ],
         attributes: Record<K4CharAttribute, ValueMax>,
         modifiers: {
-          wounds_serious: K4Roll.ModTargets[],
-          wounds_critical: K4Roll.ModTargets[],
-          wounds_seriouscritical: K4Roll.ModTargets[],
-          stability: K4Roll.ModTargets[];
+          wounds_serious: K4Roll.ModDefinition[],
+          wounds_critical: K4Roll.ModDefinition[],
+          wounds_seriouscritical: K4Roll.ModDefinition[],
+          stability: K4Roll.ModDefinition[];
         },
         stability: {
           min: number,
@@ -94,7 +95,6 @@ declare global {
         basicMoves: Array<K4Item<K4ItemType.move>>;
         derivedMoves: Array<K4Item<K4ItemType.move>>;
         activeEdges: Array<K4Item<K4ItemType.move>>;
-        attacks: Array<K4Item<K4ItemType.attack>>;
         advantages: Array<K4Item<K4ItemType.advantage>>;
         disadvantages: Array<K4Item<K4ItemType.disadvantage>>;
         darkSecrets: Array<K4Item<K4ItemType.darksecret>>;
@@ -139,16 +139,6 @@ declare global {
   }
 }
 // #endregion
-// #region -- AUGMENTED INTERFACE ~
-interface K4Actor<Type extends K4ActorType = K4ActorType> {
-  get id(): IDString;
-  get name(): string;
-  get type(): Type;
-  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
-  get items(): Actor["items"] & Collection<K4Item>;
-  system: K4Actor.System<Type>;
-}
-// #ENDREGION
 // #ENDREGION
 
 // #REGION === K4ACTOR CLASS ===
@@ -272,8 +262,12 @@ class K4Actor extends Actor {
     await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
   }
 
-  get moves() {return this.getItemsOfType(K4ItemType.move);}
-  get basicMoves() {return this.moves.filter((move) => move.isBasicMove());}
+  get moves() {return this.getItemsOfType(K4ItemType.move)
+      .sort((a, b) => a.name.localeCompare(b.name));}
+  get basicMoves() {
+    return this.moves
+      .filter((move) => move.isBasicMove());
+  }
   get derivedMoves() {return this.moves.filter((move): move is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => move.isSubItem() && !move.isEdge());}
   get derivedEdges() {return this.moves.filter((move): move is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => move.isEdge());}
   get activeEdges() {
@@ -283,9 +277,6 @@ class K4Actor extends Actor {
     return this.derivedEdges
       .filter((edge): this is K4Actor<K4ActorType.pc> => edge.system.parentItem.name === this.system.edges.sourceName);
   }
-  get attacks() {return this.getItemsOfType(K4ItemType.attack);}
-  get basicAttacks() {return this.attacks.filter((attack) => !attack.isSubItem());}
-  get derivedAttacks() {return this.attacks.filter((attack): attack is K4Item<K4ItemType.attack> & K4SubItem<K4ItemType.attack> => attack.isSubItem());}
   get advantages() {return this.getItemsOfType(K4ItemType.advantage);}
   get disadvantages() {return this.getItemsOfType(K4ItemType.disadvantage);}
   get darkSecrets() {return this.getItemsOfType(K4ItemType.darksecret);}
@@ -548,15 +539,15 @@ class K4Actor extends Actor {
   /**
    * Prompts the user to select an attribute using a dialog.
    * @param {string | undefined} message - Optional message to display in the dialog.
-   * @returns {Promise<K4Roll.Attribute | null>} The selected attribute or null if no selection is made.
+   * @returns {Promise<K4Roll.RollableAttribute | null>} The selected attribute or null if no selection is made.
    */
-  async askForAttribute(message?: string): Promise<K4Roll.Attribute | null> {
+  async askForAttribute(message?: string): Promise<K4Roll.RollableAttribute | null> {
     const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-attribute"));
     const content = template({
       id: this.id,
       message
     });
-    const userOutput = await new Promise<{attribute: K4Roll.Attribute;}>((resolve) => {
+    const userOutput = await new Promise<{attribute: K4Roll.RollableAttribute;}>((resolve) => {
       new Dialog(
         {
           title: "Attribute Selection",
@@ -577,6 +568,13 @@ class K4Actor extends Actor {
   }
 
   // #endregion
+  public async roll(rollSource: string) {
+    const item = this.getItemByName(rollSource);
+    if (!item) {
+      throw new Error(`No item found with name '${rollSource}'`);
+    }
+    await item.rollItem();
+  }
   public async trigger(rollSource: string) {
     const item = this.getItemByName(rollSource);
     if (!item) {
@@ -590,6 +588,24 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
+  get promptChanges(): Array<K4ActiveEffect.Change.Data> {
+    return this.enabledEffects
+      .map((effect) => effect.changes)
+      .flat()
+      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM && change.key === "PromptForData");
+  }
+  get mainChanges(): Array<K4ActiveEffect.Change.Data> {
+    return this.enabledEffects
+      .map((effect) => effect.changes)
+      .flat()
+      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM && !["ModifyRoll", "PromptForData"].includes(change.key));
+  }
+
+  get enabledEffects(): K4ActiveEffect[] {
+    return Array.from(this.effects as Collection<K4ActiveEffect>)
+      .filter((effect) => !effect.disabled);
+  }
+
   /**
  * Prepares data specific to player characters.
  */
@@ -599,7 +615,6 @@ class K4Actor extends Actor {
       this.system.basicMoves = this.basicMoves;
       this.system.derivedMoves = this.derivedMoves;
       this.system.activeEdges = this.activeEdges;
-      this.system.attacks = this.attacks;
       this.system.advantages = this.advantages;
       this.system.disadvantages = this.disadvantages;
       this.system.darkSecrets = this.darkSecrets;
@@ -614,6 +629,16 @@ class K4Actor extends Actor {
       };
       // this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
       this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0) as number;
+
+      // Call all 'main effect' custom functions.
+      this.mainChanges.forEach((change) => {
+        const {key, value} = change;
+        if (key in CUSTOM_FUNCTIONS) {
+          CUSTOM_FUNCTIONS[key](this, K4ActiveEffect.ParseFunctionDataString(value));
+        }
+      })
+
+
     }
   }
   /**
@@ -676,6 +701,17 @@ class K4Actor extends Actor {
 }
 // #ENDREGION
 
+// #region -- AUGMENTED INTERFACE ~
+interface K4Actor<Type extends K4ActorType = K4ActorType> {
+  get id(): IDString;
+  get name(): string;
+  get type(): Type;
+  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
+  get items(): Actor["items"] & Collection<K4Item>;
+  get effects(): Actor["effects"] & Collection<K4ActiveEffect>;
+  system: K4Actor.System<Type>;
+}
+// #endregion
 // #region EXPORTS ~
 export default K4Actor;
 

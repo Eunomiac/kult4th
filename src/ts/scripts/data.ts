@@ -29,7 +29,6 @@ enum K4ItemType {
   darksecret = "darksecret",
   relation = "relation",
   gear = "gear",
-  attack = "attack",
   weapon = "weapon"
 }
 enum K4ItemSubType {
@@ -51,7 +50,6 @@ namespace PACKS {
     [K4ItemType.advantage]: PackSchema<K4ItemType.advantage>[];
     [K4ItemType.disadvantage]: PackSchema<K4ItemType.disadvantage>[];
     [K4ItemType.move]: PackSchema<K4ItemType.move>[];
-    [K4ItemType.attack]: PackSchema<K4ItemType.attack>[];
     [K4ItemType.darksecret]: PackSchema<K4ItemType.darksecret>[];
     [K4ItemType.relation]: PackSchema<K4ItemType.relation>[];
     [K4ItemType.gear]: PackSchema<K4ItemType.gear>[];
@@ -60,7 +58,6 @@ namespace PACKS {
   export interface SubItems {
     subItems: K4SubItem.Schema[];
     subMoves: K4SubItem.Schema<K4ItemType.move>[];
-    subAttacks: K4SubItem.Schema<K4ItemType.attack>[];
   }
   export interface ParentItems {
     parentItems: PackSchema<K4Item.Types.Parent>[];
@@ -119,7 +116,6 @@ const PACKS: PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems
   [K4ItemType.gear]: ITEM_DATA[K4ItemType.gear],
   [K4ItemType.move]: ITEM_DATA[K4ItemType.move],
   [K4ItemType.relation]: ITEM_DATA[K4ItemType.relation],
-  [K4ItemType.attack]: ITEM_DATA[K4ItemType.attack],
   get basicPlayerMoves() {
     return this[K4ItemType.move].toSorted((a, b) => a.name.localeCompare(b.name)) as Array<PackSchema<K4ItemType.move> & Record<string, unknown>>;
   },
@@ -146,14 +142,6 @@ const PACKS: PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems
       ...this[K4ItemType.weapon],
       ...this[K4ItemType.gear]
     ], [K4ItemType.move]) as K4SubItem.Schema<K4ItemType.move>[];
-  },
-  get subAttacks(): K4SubItem.Schema<K4ItemType.attack>[] {
-    return extractSubItemSchemas([
-      ...this[K4ItemType.advantage],
-      ...this[K4ItemType.disadvantage],
-      ...this[K4ItemType.weapon],
-      ...this[K4ItemType.gear]
-    ], [K4ItemType.attack]) as K4SubItem.Schema<K4ItemType.attack>[];
   },
   get all(): PackSchema[] {
     return [
@@ -410,10 +398,10 @@ function getItemSystemReport(itemDataArray: PackSchema[] = PACKS.all, options: R
 /**
  * Extracts sub-item schemas from an array of item data.
  * @param {PackSchema[]} itemDataArray - The array of item data.
- * @param {K4SubItem.Types[]} [subTypes=[K4ItemType.attack, K4ItemType.move]] - The sub-item types to extract.
+ * @param {K4SubItem.Types[]} [subTypes=[K4ItemType.move]] - The sub-item types to extract.
  * @returns {Array<K4SubItem.Schema>} - The extracted sub-item schemas.
  */
-function extractSubItemSchemas(itemDataArray: PackSchema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.attack, K4ItemType.move]): Array<K4SubItem.Schema> {
+function extractSubItemSchemas(itemDataArray: PackSchema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.move]): Array<K4SubItem.Schema> {
   return itemDataArray
     .filter((item): item is PackSchema<K4Item.Types.Parent> =>
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.weapon, K4ItemType.gear]
@@ -574,7 +562,6 @@ function getMutationDiffReport() {
  */
 function parseItemSchemasForCreation(itemDataArray: PackSchema[] = PACKS.all): PackSchema[] {
   const FOLDER_NAME_MAP = {
-    [K4ItemType.attack]: null,
     [K4ItemType.advantage]: "Advantages",
     [K4ItemType.disadvantage]: "Disadvantages",
     [K4ItemType.darksecret]: "Dark Secrets",

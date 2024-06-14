@@ -21,7 +21,6 @@ enum K4ItemType {
   darksecret = "darksecret",
   relation = "relation",
   gear = "gear",
-  attack = "attack",
   weapon = "weapon"
 }
 enum K4ItemSubType {
@@ -50,8 +49,7 @@ const ITEM_DATA: {
   weapon: PackSchema<K4ItemType.weapon>[],
   gear: PackSchema<K4ItemType.gear>[],
   move: PackSchema<K4ItemType.move>[],
-  relation: PackSchema<K4ItemType.relation>[],
-  attack: PackSchema<K4ItemType.attack>[];
+  relation: PackSchema<K4ItemType.relation>[]
 } = {
   advantage: [
     {
@@ -1935,12 +1933,12 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+              value: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+              value: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
             }
           ],
           "holdText": ""
@@ -2784,56 +2782,11 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
       "system": {
-        "lists": {
-          "gmoptions": {
-            "name": "GM Options",
-            "items": [
-              "You're subjected to a counterattack.",
-              "You do less damage than intended.",
-              "You lose something important.",
-              "You expend all your ammo.",
-              "You're beset by a new threat.",
-              "You'll be in trouble later on."
-            ]
-          }
-        },
+        "lists": {},
         "subType": K4ItemSubType.passive,
-        "subItems": [
-          {
-            "name": "Riposte",
-            "type": K4ItemType.attack,
-            "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
-            "system": {
-              "parentItem": {
-                "name": "Elite Sport (Fencing)",
-                "type": K4ItemType.advantage
-              },
-              "rules": {
-                "trigger": "When you engage an able opponent within arm's reach in close combat, including immediately after a successful parry,",
-                "outro": "%insert.rollPrompt%."
-              },
-              "results": {
-                "completeSuccess": {
-                  "result": "You inflict #>text-keyword>3 Harm<# to your opponent(s) and avoid counterattacks."
-                },
-                "partialSuccess": {
-                  "result": "You inflict #>text-keyword>3 Harm<#, but at a cost. The GM chooses one: %list.gmoptions%"
-                },
-                "failure": {
-                  "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                }
-              },
-              "subType": K4ItemSubType.activeRolled,
-              "attribute": K4Attribute.violence,
-              "range": [
-                K4ItemRange.arm
-              ],
-              "harm": 3,
-            }
-          }
-        ],
+        "subItems": [],
         "rules": {
-          "intro": "#>text-center>You've competed professionally in fencing.<#%insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: %list.inline-attacks%",
+          "intro": "#>text-center>You've competed professionally in fencing.<#%insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: #>text-negmod><strong>Riposte</strong> [<strong>3</strong>] [Distance: <strong>arm</strong>] You can make this attack immediately after parrying.<#",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -3335,135 +3288,44 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
       "system": {
         "lists": {
-          "gmoptions": {
-            "name": "GM Options",
+          "attacks": {
+            "name": "Attacks (Melee)",
             "items": [
-              "You're subjected to a counterattack.",
-              "You do less damage than intended.",
-              "You lose something important.",
-              "You expend all your ammo.",
-              "You're beset by a new threat.",
-              "You'll be in trouble later on."
+              "#>text-negmod><strong>Launching Attack</strong> [<strong>2</strong>] [Distance: <strong>room</strong>]<#",
+              "#>text-negmod><strong>Precision Attack</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>] Ignores armor<#",
+              "#>text-negmod><strong>Tripping Attack</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>] Target falls prone<#",
             ]
           }
         },
         "subType": K4ItemSubType.passive,
-        "subItems": [
-          {
-            "name": "Launching Attack",
-            "type": K4ItemType.attack,
-            "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
-            "system": {
-              "parentItem": {
-                "name": "Weapon Master (Melee)",
-                "type": K4ItemType.advantage
-              },
-              "rules": {
-                "trigger": "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                "outro": "%insert.rollPrompt%.",
-                "listRefs": [
-                  "gmoptions"
-                ]
-              },
-              "results": {
-                "completeSuccess": {
-                  "result": "You inflict #>text-keyword>2 Harm<# to your opponent(s) and avoid counterattacks."
-                },
-                "partialSuccess": {
-                  "result": "You inflict #>text-keyword>2 Harm<#, but at a cost. The GM chooses one:",
-                  "listRefs": [
-                    "gmoptions"
-                  ]
-                },
-                "failure": {
-                  "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                }
-              },
-              "subType": K4ItemSubType.activeRolled,
-              "attribute": K4Attribute.violence,
-              "range": [
-                K4ItemRange.room
-              ],
-              "harm": 2,
-            }
-          },
-          {
-            "name": "Precision Attack",
-            "type": K4ItemType.attack,
-            "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
-            "system": {
-              "parentItem": {
-                "name": "Weapon Master (Melee)",
-                "type": K4ItemType.advantage
-              },
-              "rules": {
-                "trigger": "When you engage an able opponent within arm's reach in close combat,",
-                "outro": "%insert.rollPrompt%.",
-                "listRefs": [
-                  "gmoptions"
-                ]
-              },
-              "results": {
-                "completeSuccess": {
-                  "result": "You inflict #>text-keyword>2 Harm<# to your opponent(s) and avoid counterattacks. This #>text-keyword>Harm<# ignores #>text-keyword>Armor<#."
-                },
-                "partialSuccess": {
-                  "result": "You inflict #>text-keyword>2 Harm<#, ignoring armor, but at a cost. The GM chooses one:",
-                  "listRefs": [
-                    "gmoptions"
-                  ]
-                },
-                "failure": {
-                  "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                }
-              },
-              "subType": K4ItemSubType.activeRolled,
-              "attribute": K4Attribute.violence,
-              "range": [
-                K4ItemRange.arm
-              ],
-              "harm": 2,
-            }
-          },
-          {
-            "name": "Tripping Attack",
-            "type": K4ItemType.attack,
-            "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
-            "system": {
-              "parentItem": {
-                "name": "Weapon Master (Melee)",
-                "type": K4ItemType.advantage
-              },
-              "rules": {
-                "trigger": "When you engage an able opponent within arm's reach in close combat,",
-                "outro": "%insert.rollPrompt%."
-              },
-              "results": {
-                "completeSuccess": {
-                  "result": "You inflict #>text-keyword>2 Harm<# to your opponent, who falls prone."
-                },
-                "partialSuccess": {
-                  "result": "You inflict #>text-keyword>2 Harm<# to your opponent, intending to knock them prone, but at a cost. The GM chooses one: %list.gmoptions%"
-                },
-                "failure": {
-                  "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                }
-              },
-              "subType": K4ItemSubType.activeRolled,
-              "attribute": K4Attribute.violence,
-              "range": [
-                K4ItemRange.arm
-              ],
-              "harm": 2,
-            }
-          }
-        ],
+        "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%",
+          "intro": "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
+          "effects": [
+            {
+              key: "ModifyAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:close_combat,effect:ChangeAttribute,value:coolness"
+            },
+            {
+              key: "CreateAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:close_combat,name:Launching Attack,range:room,harm:2,fromText:#>text-keyword>Weapon Master (Melee)<#"
+            },
+            {
+              key: "CreateAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:close_combat,name:Precision Attack,range:arm,harm:2,fromText:#>text-keyword>Weapon Master (Melee)<#,special:Ignores armor."
+            },
+            {
+              key: "CreateAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:close_combat,name:Tripping Attack,range:arm,harm:2,fromText:#>text-keyword>Weapon Master (Melee)<#,special:Target falls prone."
+            }
+          ],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5636,7 +5498,7 @@ const ITEM_DATA: {
       }
     },
     {
-      "name": "XXX Field Agent",
+      "name": "Field Agent",
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
       "system": {
@@ -5647,68 +5509,19 @@ const ITEM_DATA: {
               "#>text-edgename>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
               "#>text-edgename>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
               "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
-              "#>text-edgename>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object: %list.parent-attacks%"
-            ]
-          },
-          "gmoptions": {
-            "name": "GM Options",
-            "items": [
-              "You're subjected to a counterattack.",
-              "You do less damage than intended.",
-              "You lose something important.",
-              "You expend all your ammo.",
-              "You're beset by a new threat.",
-              "You'll be in trouble later on."
+              "#>text-edgename>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object #>text-negmod>(<strong>Surprise Strike</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>])<#."
             ]
           }
         },
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
           {
-            "name": "Surprise Strike",
-            "type": K4ItemType.attack,
-            "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
-            "system": {
-              "parentItem": {
-                "name": "XXX Field Agent",
-                "type": K4ItemType.advantage
-              },
-              "rules": {
-                "trigger": "When you engage an able opponent within arm's reach in close combat,",
-                "outro": "%insert.rollPrompt%.",
-                "listRefs": [
-                  "gmoptions", "edges"
-                ]
-              },
-              "results": {
-                "completeSuccess": {
-                  "result": "You inflict #>text-keyword>3 Harm<# to your opponent(s) and avoid counterattacks."
-                },
-                "partialSuccess": {
-                  "result": "You inflict #>text-keyword>3 Harm<#, but at a cost. The GM chooses one:",
-                  "listRefs": [
-                    "gmoptions"
-                  ]
-                },
-                "failure": {
-                  "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                }
-              },
-              "subType": K4ItemSubType.activeRolled,
-              "attribute": K4Attribute.violence,
-              "range": [
-                K4ItemRange.arm
-              ],
-              "harm": 2,
-            }
-          },
-          {
             "name": "Enter Combat",
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
               "parentItem": {
-                "name": "XXX Field Agent",
+                "name": "Field Agent",
                 "type": K4ItemType.advantage
               },
               "rules": {
@@ -5749,7 +5562,7 @@ const ITEM_DATA: {
             "system": {
               "chatName": "Take Cover",
               "parentItem": {
-                "name": "XXX Field Agent",
+                "name": "Field Agent",
                 "type": K4ItemType.advantage
               },
               "isEdge": true,
@@ -5766,7 +5579,7 @@ const ITEM_DATA: {
             "system": {
               "chatName": "Choke Hold",
               "parentItem": {
-                "name": "XXX Field Agent",
+                "name": "Field Agent",
                 "type": K4ItemType.advantage
               },
               "isEdge": true,
@@ -5783,7 +5596,7 @@ const ITEM_DATA: {
             "system": {
               "chatName": "Disarm",
               "parentItem": {
-                "name": "XXX Field Agent",
+                "name": "Field Agent",
                 "type": K4ItemType.advantage
               },
               "isEdge": true,
@@ -5800,12 +5613,24 @@ const ITEM_DATA: {
             "system": {
               "chatName": "Improvised Weapon",
               "parentItem": {
-                "name": "XXX Field Agent",
+                "name": "Field Agent",
                 "type": K4ItemType.advantage
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to make a lethal, close-combat attack with a seemingly-innocuous object: %list.parent-attacks%"
+                "outro": "... to make a lethal, close-combat attack with a seemingly-innocuous object #>text-negmod>(<strong>Surprise Strike</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>])<#."
+              },
+              "results": {
+                "triggered": {
+                  "result": "",
+                  "effects": [
+                    {
+                      key: "CreateAttack",
+                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+                      value: "filter:close_combat,name:Surprise Strike,range:arm,harm:2,fromText:#>text-keyword>Field Agent<#,uses:1"
+                    }
+                  ]
+                }
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -6474,105 +6299,38 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
       "system": {
         "lists": {
-          "gmoptions": {
-            "name": "GM Options",
+          "attacks": {
+            "name": "Attacks (Firearms)",
             "items": [
-              "You're subjected to a counterattack.",
-              "You do less damage than intended.",
-              "You lose something important.",
-              "You expend all your ammo.",
-              "You're beset by a new threat.",
-              "You'll be in trouble later on."
+              "#>text-negmod><strong>Two in the Chest, One in the Head</strong> [<strong>4</strong>] [Distance: <strong>room</strong>] [Ammo: <strong>●●</strong>]<#",
+              "#>text-negmod><strong>Disarming Shot</strong> [<strong>1</strong>] [Distance: <strong>room</strong>] [Ammo: <strong>●</strong>] Disarm target on success. A targeted PC must<# #>text-movename>Act Under Pressure<#"
             ]
           }
         },
         "subType": K4ItemSubType.passive,
-        "subItems": [
-          {
-            "name": "Two In the Chest, One in the Head",
-            "type": K4ItemType.attack,
-            "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
-            "system": {
-              "parentItem": {
-                "name": "Weapon Master (Firearms)",
-                "type": K4ItemType.advantage
-              },
-              "rules": {
-                "trigger": "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                "outro": "expend 2 Ammo and %insert.rollPrompt%.",
-                "listRefs": [
-                  "gmoptions"
-                ]
-              },
-              "results": {
-                "completeSuccess": {
-                  "result": "You inflict #>text-keyword>4 Harm<# to your opponent(s) and avoid counterattacks."
-                },
-                "partialSuccess": {
-                  "result": "You inflict #>text-keyword>4 Harm<#, but at a cost. The GM chooses one:",
-                  "listRefs": [
-                    "gmoptions"
-                  ]
-                },
-                "failure": {
-                  "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                }
-              },
-              "subType": K4ItemSubType.activeRolled,
-              "attribute": K4Attribute.violence,
-              "range": [
-                K4ItemRange.room
-              ],
-              "harm": 4,
-              "ammo": 2,
-            }
-          },
-          {
-            "name": "Disarming Shot",
-            "type": K4ItemType.attack,
-            "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
-            "system": {
-              "parentItem": {
-                "name": "Weapon Master (Firearms)",
-                "type": K4ItemType.advantage
-              },
-              "rules": {
-                "trigger": "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                "outro": "expend 1 Ammo and %insert.rollPrompt%. A targeted PC must #>item-button text-movename:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<#.",
-                "listRefs": [
-                  "gmoptions"
-                ]
-              },
-              "results": {
-                "completeSuccess": {
-                  "result": "You inflict #>text-keyword>1 Harm<# to your opponent(s) and avoid counterattacks."
-                },
-                "partialSuccess": {
-                  "result": "You inflict #>text-keyword>1 Harm<#, but at a cost. The GM chooses one:",
-                  "listRefs": [
-                    "gmoptions"
-                  ]
-                },
-                "failure": {
-                  "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#."
-                }
-              },
-              "subType": K4ItemSubType.activeRolled,
-              "attribute": K4Attribute.violence,
-              "range": [
-                K4ItemRange.room
-              ],
-              "harm": 1,
-              "ammo": 1,
-            }
-          }
-        ],
+        "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%",
+          "intro": "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
+          "effects": [
+            {
+              key: "ModifyAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:firearm,effect:ChangeAttribute,value:coolness"
+            },
+            {
+              key: "CreateAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:firearm,range:room,harm:4,ammo:-2,fromText:#>text-keyword>Weapon Master (Firearms)<#,name:Two in the Chest, One in the Head"
+            },
+            {
+              key: "CreateAttack",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:firearm,range:room,harm:4,ammo:-1,fromText:#>text-keyword>Weapon Master (Firearms)<#,name:Disarm,special:Disarm target; a targeted PC must Act Under Pressure."
+            }
+          ],
           "holdText": ""
         },
         "currentHold": 0,
@@ -11540,8 +11298,7 @@ const ITEM_DATA: {
       }
     }
   ],
-  relation: [],
-  attack: []
+  relation: []
 };
 
 export default ITEM_DATA;

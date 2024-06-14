@@ -94,6 +94,7 @@
 			"success": "Success",
 			"withComplications": "with Complications",
 			"failure": "Failure",
+			"rollAttr": "rolls <span class='text-attributename'>+{attrName}</span>",
 			"rollAttrTo": "rolls <span class='text-attributename'>+{attrName}</span> to …",
 			"rollAttrFor": "rolls <span class='text-attributename'>+{attrName}</span> for …",
 			"triggers": "triggers …"

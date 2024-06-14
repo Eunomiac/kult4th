@@ -709,7 +709,6 @@ class K4PCSheet extends ActorSheet {
       relations:     this.actor.relations,
       weapons:       this.actor.weapons,
       gear:          this.actor.gear,
-      attacks:       this.actor.attacks,
       attributes:    this.actor.attributeData,
       curTab:        this.actor.getFlag("kult4th", "sheetTab") as string,
       wounds:        this.actor.woundStrips

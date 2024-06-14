@@ -12701,6 +12701,5 @@ export default {
       }
     }
   ],
-  "relation": [],
-  "attack": []
+  "relation": []
 };

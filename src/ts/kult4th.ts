@@ -131,14 +131,6 @@ Hooks.once("init", async () => {
             stops: [C.Colors.GOLD, C.Colors.dGOLD]
           }
         },
-        [K4ItemType.attack]: {
-          fill: {
-            stops: [C.Colors.bRED, C.Colors.dRED]
-          },
-          stroke: {
-            stops: [C.Colors.RED, C.Colors.dRED]
-          }
-        },
         [K4ItemType.darksecret]: {
           fill: {
             stops: [C.Colors.dRED, C.Colors.dRED]

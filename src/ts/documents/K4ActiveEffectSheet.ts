@@ -54,6 +54,7 @@ export default K4ActiveEffectSheet;
     The last key-value pair may contain commas, as long as there are no colons after the last comma.
    */
 
+
 /** ITEM-SOURCE EFFECTS -- These effects are attached to items, and transferred to Actor owners. They generally apply a permanent effect that persists until the item is removed. Schema-wise, they go into the item's system.rules.effectFunctions array, and are generated as ActiveEffects when the item is embedded into an Actor. */
 const CUSTOMFUNCEXAMPLES = {
   "Analyst": [
@@ -91,8 +92,8 @@ const CUSTOMFUNCEXAMPLES = {
     {PromptForData: "title:What is your first Field of Expertise?,key:flags.kult4th.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
     {PromptForData: "title:What is your second Field of Expertise?,key:flags.kult4th.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
     {ModifyMove: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
-    {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
-    {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
+    {ModifyMove: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
+    {ModifyMove: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
   ],
   "Gritted Teeth": [
     {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_critical.1.all,value:0"},
@@ -155,5 +156,14 @@ const CUSTOMROLLFUNCEXAMPLES = {
     {PromptForData: "... name of weapon ..."},
     {PromptForData: "... class of weapon - select, stab/slash/crush/..."},
     {CreateWeapon: "name:flags.kult4th.weaponName,range:arm,harm:1,class:flags.kult4th.weaponClass,duration:scene,fromText:#>text-keyword>Draw an Ace<#"},
+  ]
+}
+
+const WOUNDANDSTABILITY_FUNCS = {
+  "Wounds": [
+    {ApplyWounds: ""}
+  ],
+  "Stability": [
+    {ApplyStability: ""}
   ]
 }

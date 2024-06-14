@@ -104,27 +104,21 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
         }
         case "list": {
           kLog.log("[formatForKult: 'list']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
-          switch (dataKey) {
-            case "inline-attacks": { return "<span style='color: red;'>Inline Attacks TBD...</span>" }
-            case "parent-attacks": { return "<span style='color: red;'>Inline PARENT Attacks TBD...</span>" }
-            default: {
-              const listItems: string[] = [];
-              if (dataKey && (dataKey in iData.system.lists)) {
-                listItems.push(...iData.system.lists[dataKey].items);
-              // } else if (dataKey && (dataKey in iData.lists)) {
-              //   listItems.push(...iData.lists[dataKey].items);
-              } else {
-                return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
-              }
-              const returnData = [
-                `<ul class='inline-list list-${dataKey}'>`,
-                ...listItems.map((item) => `<li>${item}</li>`),
-                "</ul>"
-              ].join("");
-              kLog.log("[formatForKult: 'list-results']", returnData, 3);
-              return returnData;
-            }
+          const listItems: string[] = [];
+          if (dataKey && (dataKey in iData.system.lists)) {
+            listItems.push(...iData.system.lists[dataKey].items);
+          // } else if (dataKey && (dataKey in iData.lists)) {
+          //   listItems.push(...iData.lists[dataKey].items);
+          } else {
+            return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
           }
+          const returnData = [
+            `<ul class='inline-list list-${dataKey}'>`,
+            ...listItems.map((item) => `<li>${item}</li>`),
+            "</ul>"
+          ].join("");
+          kLog.log("[formatForKult: 'list-results']", returnData, 3);
+          return returnData;
         }
         case "insert": {
           kLog.log("[formatForKult: 'insert']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
@@ -133,7 +127,6 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
               return "<br /><br />"; // <p></p>";
             }
             case "rollPrompt": {
-              // if ([K4ItemType.attack, K4ItemType.move].includes(iData.type)) {
               return [
                 "#>",
                 "item-button text-attributename",

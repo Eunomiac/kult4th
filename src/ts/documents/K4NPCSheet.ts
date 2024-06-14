@@ -224,7 +224,6 @@ class K4NPCSheet extends ActorSheet {
       relations:     this.actor.relations,
       weapons:       this.actor.weapons,
       gear:          this.actor.gear,
-      attacks:       this.actor.attacks,
       attributes:    this.actor.attributeData
     };
     /*DEVCODE*/kLog.log("Final Context", context);/*!DEVCODE*/

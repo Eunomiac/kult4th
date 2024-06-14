@@ -1,8 +1,9 @@
 // #region IMPORTS ~
+import U from "../scripts/utilities.js";
 import {K4Attribute} from "../scripts/constants.js";
-import K4Item, {K4ItemType} from "./K4Item.js";
+import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
-
+import K4ChatMessage from "./K4ChatMessage.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -13,7 +14,6 @@ enum K4RollResult {
   failure = "failure"
 }
 enum K4RollType {
-  zero = "zero",
   attribute = "attribute",
   move = "move"
 }
@@ -23,24 +23,67 @@ enum K4RollType {
 declare global {
 
   namespace K4Roll {
-    export interface Options {
-      type: K4RollType|K4ItemType.move|K4ItemType.attack,
-      isAssisting?: boolean
-    }
-    export type Attribute = K4CharAttribute|K4Attribute.zero;
+    export type Attribute = K4Attribute;
+    export type RollableAttribute = K4CharAttribute|K4Attribute.zero;
     export type Source = K4Item.Active|K4Roll.Attribute;
-    export type ModTargets = Record<string, number>;
-    interface Data {
-      type: K4RollType,
-      source: K4Roll.Source,
-      sourceType: K4ItemType|K4RollType.attribute,
-      sourceName: string,
-      sourceImg: string,
-      attribute: Exclude<K4Attribute, K4Attribute.ask>,
-      attrName: string,
-      attrVal: number
+    export type ModFilter = "all"|"basic_move"|K4Item.Types.Active|K4CharAttribute|string;
+    export type ModDefinition = Record<ModFilter, number>;
+
+    export interface ModData {
+      name: string,
+      tooltip?: string,
+      linkToItem?: K4Item,
+      value: number
     }
 
+    interface ConstructorData_Base {
+      source: K4Roll.Source|string
+    }
+    interface ConstructorData_ItemSource extends ConstructorData_Base {
+      source: K4Item.Active|string
+    }
+    interface ConstructorData_AttrSource extends ConstructorData_Base {
+      source: K4Roll.Attribute
+      img: string
+    }
+
+    export type ConstructorData = ConstructorData_ItemSource | ConstructorData_AttrSource;
+
+    interface Data_Base extends ConstructorData_Base {
+      attribute: K4Roll.RollableAttribute,
+      attrVal: number,
+      modifiers: Array<K4Roll.ModData>
+    }
+
+    interface Data_ItemSource extends Data_Base {
+      source: K4Item.Active
+    }
+    interface Data_AttrSource extends Data_Base {
+      source: K4Roll.RollableAttribute,
+      img: string
+    }
+    export type Data = Data_ItemSource | Data_AttrSource;
+    interface Context_Base {
+      cssClass: string,
+      dice: [number, number],
+      total: number,
+      source: K4Roll.RollableAttribute|K4Item.Active,
+      attribute: K4Roll.RollableAttribute,
+      attrVal: number,
+      modifiers: ModData[],
+      rollerName: string,
+      result: K4Item.Components.ResultData
+    }
+    interface Context_ItemSource extends Context_Base {
+      source: K4Item.Active,
+      sourceType: K4ItemType,
+      sourceName: string,
+      sourceImg: string
+    }
+    interface Context_AttrSource extends Context_Base {
+      source: K4Roll.RollableAttribute
+    }
+    export type Context = Context_ItemSource | Context_AttrSource;
   }
 }
 // #endregion
@@ -50,130 +93,230 @@ declare global {
 // #ENDREGION
 
 class K4Roll extends Roll {
-
-  async #getRollData(rollSourceRef: string | K4Roll.Source | K4Attribute): Promise<{roll: Roll, rollData: K4Roll.Data;} | false> {
-
-    let rollSource: K4Roll.Source | undefined;
-    const rollData: Partial<K4Roll.Data> = {};
-
-    if (rollSourceRef === K4Attribute.ask) {
-      const attrResponse = await this.askForAttribute();
-      if (attrResponse) {
-        rollSource = attrResponse;
-      }
-    } else if (rollSourceRef instanceof K4Item) {
-      if (rollSourceRef.isActiveItem()) {
-        rollSource = rollSourceRef;
-      }
-    } else if ([
-      ...Object.keys(CONFIG.K4.attributes),
-      K4Attribute.zero
-    ].includes(rollSourceRef)) {
-      rollSource = rollSourceRef as K4Roll.Attribute;
-    } else if (typeof rollSourceRef === "string") {
-      const item = this.getMoveByName(rollSourceRef);
-      if (item instanceof K4Item && item.isActiveItem()) {
-        rollSource = item;
-      }
-    }
-
-    if (!rollSource) {return false;}
-
-    if (rollSource instanceof K4Item) {
-      rollData.type = K4RollType.move;
-      rollData.source = rollSource;
-      rollData.sourceType = rollSource.parentType;
-      rollData.sourceName = rollSource.name;
-      rollData.sourceImg = rollSource.img ?? "";
-      if ("attribute" in rollSource.system) {
-        if (rollSource.system.attribute === K4Attribute.ask) {
-          const attrResponse = await this.askForAttribute();
-          if (!attrResponse) {
-            return false; // User cancelled: Abort roll.
-          }
-          rollData.attribute = attrResponse;
-        } else {
-          rollData.attribute = rollSource.system.attribute as K4Roll.Attribute;
-        }
-        rollData.attrName = U.loc(`trait.${rollData.attribute}`);
-        rollData.attrVal = rollData.attribute === K4Attribute.zero
-          ? 0
-          : this.attributes[rollData.attribute];
-      }
-    } else if (rollSource in K4Attribute) {
-      rollData.type = rollSource === K4Attribute.zero ? K4RollType.zero : K4RollType.attribute;
-      rollData.source = rollSource;
-      rollData.sourceType = K4RollType.attribute;
-      rollData.sourceName = "";
-      rollData.sourceImg = "";
-      rollData.attribute = rollSource;
-      rollData.attrName = U.loc(`trait.${rollSource}`);
-      rollData.attrVal = rollSource === K4Attribute.zero ? 0 : this.attributes[rollSource as K4CharAttribute];
-    } else {
-      throw new Error(`Unable to compile roll data for rollRef '${String(rollSourceRef)}'`);
-    }
-
-    // const finalData: K4Roll.Data = this.#applyRollModifiers(rollData as Omit<K4Roll.Data, "modifiers">);
-
-    kLog.log("RETRIEVED ROLL DATA", rollData);
-    return {
-      roll: new Roll([
-        "2d10",
-        U.signNum(rollData.attrVal ?? 0, " "),
-        // ...Object.values(finalData.modifiers)
-        //   .map(({value}) => U.signNum(value, " "))
-        //   .filter((elem) => elem !== "")
-      ].join(" ")),
-      rollData: rollData as K4Roll.Data
-    };
+  // #region INITIALIZATION ~
+  /**
+   * Pre-Initialization of the K4Roll class. This method should be run during the "init" hook.
+   *
+   * @returns {Promise<void>} A promise that resolves when the hook is registered.
+   */
+  static async PreInitialize(): Promise<void> {
+    /* Insert PreInitiailize Steps Here */
   }
-  #getRollResult(roll: Roll): K4RollResult | undefined {
-    if (U.isUndefined(roll.total)) {return;}
-    if (roll.total >= 15) {
+  // #endregion
+  // #region Type Guards ~
+  /**
+   * Type guard to check if the actor is of a specific type.
+   * @param {T} type - The type to check against.
+   * @returns {boolean} True if the actor is of the specified type.
+   */
+  is<T extends K4ActorType = K4ActorType>(type: T): this is K4Actor<T> {
+    // @ts-expect-error -- Unable to resolve 'this.type' and 'type' to the same type.
+    return this.type === type;
+  }
+  // #endregion
+
+  // #region GETTERS & SETTERS ~
+  override get formula(): string {
+    return `2d10`;
+  }
+  public actor: K4Actor<K4ActorType.pc>;
+  public img: string;
+  public _attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute;
+  public type: K4RollType;
+  public source: K4Roll.Attribute|K4Item.Active;
+  public get sourceName(): string {
+    if (this.type === K4RollType.attribute) {
+      return U.tCase(this.attribute);
+    }
+    return (this.source as K4Item.Active).name;
+  }
+  public get attribute(): K4Roll.RollableAttribute|null {
+    if (this._attribute instanceof Promise) {
+      throw new Error("Attribute promise is not yet resolved.");
+    }
+    return this._attribute;
+  }
+  _attrVal?: number;
+  public get attrVal(): number {
+    if (this._attrVal === undefined) {
+      if (this.attribute === null) {
+        throw new Error("Attempt to derive attribute value of a cancelled (prompt return === null) roll.");
+      }
+      if (this.attribute === K4Attribute.zero) {
+        this._attrVal = 0;
+      } else {
+        this._attrVal = this.actor.attributes[this.attribute];
+      }
+    }
+    return this._attrVal;
+  }
+  public get attrName(): string {
+    if (this.attribute === null) {
+      throw new Error("Attempt to derive attribute name of a cancelled (prompt return === null) roll.");
+    }
+    return U.tCase(this.attribute);
+  }
+  public get parentType(): Maybe<K4Item.Types.Active> {
+    if (this.source instanceof K4Item) {
+      if (this.source.isSubItem()) {
+        return this.source.parentType as K4Item.Types.Active;
+      }
+    }
+    return undefined;
+  }
+  public get outcome(): K4RollResult {
+    if (!this._evaluated) {
+      throw new Error("Cannot get result of a roll that has not been evaluated.");
+    }
+    const total = this.total!;
+    if (total >= 15) {
       return K4RollResult.completeSuccess;
     }
-    if (roll.total > 9) {
+    if (total > 9) {
       return K4RollResult.partialSuccess;
     }
     return K4RollResult.failure;
   }
 
-  #getRollResultData(roll: Roll, rollData: K4Roll.Data): ValueOf<K4Item.Components.ResultsData["results"]> {
-    const {source} = rollData;
-    if (!(source instanceof K4Item)) {
-      throw new Error(`Roll source must be an instance of K4Item: ${source}`);
-    }
-    if (source.type !== K4ItemType.move || source.system.subType !== K4ItemSubType.activeRolled) {
-      throw new Error(`Roll source must be of type move and subType activeRolled: ${source.name} is of type ${source.type} and subType ${source.system.subType}`);
-    }
-    const {results} = source.system as K4Item.System<K4ItemType.move>;
-    if (!results) {
-      throw new Error(`No results data found for source: ${source.name}`);
-    }
-    return results[this.#getRollResult(roll)!];
+  get modifierFilterData(): K4Roll.ModFilter[] {
+    const filters: K4Roll.ModFilter[] = [
+      "all",
+
+    ];
+    return filters;
   }
 
-  async #displayRollResult(roll: Roll, rollData: K4Roll.Data) {
-    if (U.isUndefined(roll.total)) {return;}
+  get modifiers(): K4Roll.ModData[] {
+    const mods: K4Roll.ModData[] = [];
+
+
+    return mods;
+  }
+
+  // #endregion
+
+  // #region === CONSTRUCTOR ===
+  #checkSource(rollData: K4Roll.ConstructorData): {
+    type: K4RollType,
+    img: string,
+    _attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute,
+    source: K4Roll.Source
+  } {
+    if (typeof rollData.source === "string") {
+      switch (rollData.source) {
+        case K4Attribute.ask: {
+          return {
+            type: K4RollType.attribute,
+            img: (rollData as K4Roll.ConstructorData_AttrSource).img,
+            _attribute: this.actor.askForAttribute(),
+            source: rollData.source
+          };
+        }
+        case K4Attribute.zero:
+        case K4Attribute.charisma:
+        case K4Attribute.coolness:
+        case K4Attribute.fortitude:
+        case K4Attribute.intuition:
+        case K4Attribute.perception:
+        case K4Attribute.reason:
+        case K4Attribute.reflexes:
+        case K4Attribute.soul:
+        case K4Attribute.violence:
+        case K4Attribute.willpower: {
+          return {
+            type: K4RollType.attribute,
+            img: (rollData as K4Roll.ConstructorData_AttrSource).img,
+            _attribute: rollData.source,
+            source: rollData.source
+          };
+        }
+        default: {
+          // Assume an item reference by UUID, ID or name
+          const item = fromUuidSync(rollData.source) as Maybe<K4Item>
+            ?? this.actor.items.get(rollData.source) as Maybe<K4Item>
+            ?? this.actor.getItemByName(rollData.source) as Maybe<K4Item>
+          if (!item?.isActiveItem()) {
+            throw new Error(`Unrecognized rollData.source: ${rollData.source}`);
+          }
+          rollData.source = item;
+        }
+      }
+    }
+
+    if (rollData.source instanceof K4Item && rollData.source.isActiveItem()) {
+      return {
+        type: K4RollType.move,
+        img: rollData.source.img ?? "",
+        _attribute: rollData.source.system.attribute === K4Attribute.ask
+          ? this.actor.askForAttribute()
+          : rollData.source.system.attribute,
+        source: rollData.source
+      }
+    }
+    throw new Error(`Unable to parse attribute from rollData.source: ${JSON.stringify(2, null, rollData.source)}`);
+  }
+  constructor(rollData: K4Roll.ConstructorData, actor: K4Actor<K4ActorType.pc>) {
+    super("2d10");
+    this.actor = actor;
+    const {img, type, _attribute, source} = this.#checkSource(rollData);
+    this.img = img;
+    this.type = type;
+    this._attribute = _attribute;
+    this.source = source;
+  }
+
+  // #ENDREGION
+
+  // #region PRIVATE METHODS ~=
+
+
+  // #endregion
+
+  // #REGION === PUBLIC METHODS ===
+
+
+  // #ENDREGION
+  getOutcomeData(): K4Item.Components.ResultData {
+    if (this.source instanceof K4Item) {
+      if (this.source.system.subType !== K4ItemSubType.activeRolled) {
+        throw new Error(`Roll source must be of subType activeRolled: ${this.source.name} is of subType ${this.source.system.subType}`);
+      }
+      const {results} = (this.source as K4Item.Active).system;
+      return results[this.outcome];
+    }
+    return {
+      result: ""
+    }
+  }
+
+  public async displayToChat() {
+    if (!this._evaluated) {
+      throw new Error("Cannot display a roll that has not been evaluated.");
+    }
     let themeClass: string;
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
-    const templateData: {
-      cssClass: string,
-      result?: ValueOf<K4Item.Components.ResultsData["results"]>,
-      dice: [number, number],
-      total: number,
-      rollData: K4Roll.Data,
-      rollerName: string;
-    } = {
+    const templateData: K4Roll.Context = {
       cssClass: "",
-      dice: roll.dice[0].results.map((dResult) => dResult.result) as [number, number],
-      total: roll.total,
-      rollData,
-      rollerName: this.name ?? U.loc("roll.someone"),
-      result: this.#getRollResultData(roll, rollData)
+      dice: this.dice[0].results.map((dResult) => dResult.result) as [number, number],
+      total: this.total!,
+      attribute: this.attribute!,
+      attrVal: this.attrVal,
+      modifiers: this.modifiers,
+      rollerName: this.actor.name ?? U.loc("roll.someone"),
+      result: this.getOutcomeData(),
+      ...(this.source instanceof K4Item && this.source.isActiveItem())
+      ? {
+        source: this.source as K4Item.Active,
+        sourceType: this.source.parentType,
+        sourceName: this.source.name,
+        sourceImg: this.source.img ?? ""
+      }
+      : {
+        source: this.source as K4Roll.RollableAttribute
+      }
     };
-    const cssClasses = ["chat-move-result", `${rollData.sourceType}-roll`];
-    switch (this.#getRollResult(roll)) {
+    const cssClasses = ["chat-move-result", `${this.parentType}-roll`];
+    switch (this.outcome) {
       case K4RollResult.completeSuccess: {
         cssClasses.push("roll-success");
         themeClass = "k4-theme-gold";
@@ -192,9 +335,9 @@ class K4Roll extends Roll {
       default: throw new Error("Invalid roll result");
     }
     // cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
-    if (rollData.sourceName.length > 22) {
+    if (this.sourceName.length > 22) {
       cssClasses.push("ultra-condensed");
-    } else if (rollData.sourceName.length > 18) {
+    } else if (this.sourceName.length > 18) {
       cssClasses.push("condensed");
     }
     templateData.cssClass = cssClasses.join(" ");
@@ -211,28 +354,24 @@ class K4Roll extends Roll {
         }
       }
     });
+
   }
-  public async roll(rollSource: string) {
-    const {roll, rollData} = await this.#getRollData(rollSource) || {};
-    if (!roll || !rollData) {return;}
-    await roll.evaluate({async: true});
-    if (U.isUndefined(roll.total)) {return;}
+  public override evaluate(options?: InexactPartial<RollTerm.Options> & { async: true }): Promise<Evaluated<this>>;
+  public override evaluate(options: InexactPartial<RollTerm.Options & { async: false }>): Evaluated<this>;
+  public override evaluate(options?: InexactPartial<RollTerm.Options>): Evaluated<this> | Promise<Evaluated<this>> {
+    const returnData = super.evaluate({async: false});
 
-    const rollPromises: Promise<void>[] = [];
-    if (game.dice3d) {
-      rollPromises.push(game.dice3d.showForRoll(roll));
-    }
-    rollPromises.push(this.#displayRollResult(roll, rollData));
-
-    const rollResultData = this.#getRollResultData(roll, rollData);
-    if (rollResultData?.edges && rollData.source instanceof K4Item) {
-      rollPromises.push(this.updateEdges(rollResultData.edges, rollData.source));
-    }
+    // const rollPromises: Promise<void>[] = [];
+    // if (game.dice3d) {
+      // rollPromises.push(game.dice3d.showForRoll(this));
+    game.dice3d?.showForRoll(this);
+    // }
+    // rollPromises.push(this.#displayRollResult());
+    // await Promise.all(rollPromises);
+    return returnData;
   }
+}
 
-
-
- }
 
 // #region EXPORTS ~
 export default K4Roll;

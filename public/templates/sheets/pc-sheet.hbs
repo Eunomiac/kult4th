@@ -519,12 +519,6 @@
         {{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
         {{/each}}
       </section>
-      <section class="subsection flex-item-list item-list attacks k4-theme-red">
-        <label class="k4-title section-title">{{case "upper" (localize "kult4th.item.type.attacks")}}</label>
-        {{#each attacks}}
-        {{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
-        {{/each}}
-      </section>
     </section>
 
     <section class="tab bio {{~#if (eq curTab "bio")}} active{{/if}}" data-group="primary" data-tab="bio">

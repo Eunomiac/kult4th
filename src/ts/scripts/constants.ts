@@ -117,7 +117,7 @@ export const HarmButtons = (resolve: (value: {harm: number}) => void) => {
   }
   return harmButtons;
 }
-export const AttributeButtons = (resolve: (value: {attribute: K4Roll.Attribute}) => void) => {
+export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAttribute}) => void) => {
   const attrButtons: Record<string,Dialog.Button> = {};
   [
     K4Attribute.zero,
@@ -134,7 +134,7 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.Attribute})
   ].forEach((attr) => {
     attrButtons[attr] = {
       label: U.loc(`trait.${attr}`),
-      callback: () => resolve({attribute: attr as K4Roll.Attribute})
+      callback: () => resolve({attribute: attr as K4Roll.RollableAttribute})
     };
   });
   return attrButtons;
@@ -333,7 +333,6 @@ const C = {
       [K4ItemType.disadvantage]: "D",
       [K4ItemType.darksecret]: "DS",
       [K4ItemType.weapon]: "W",
-      [K4ItemType.attack]: "Ak",
       [K4ItemType.move]: "M",
       [K4ItemType.gear]: "G",
       [K4ItemType.relation]: "R"
@@ -353,7 +352,6 @@ const C = {
     [K4ItemType.weapon]: "k4-theme-gold",
     [K4ItemType.gear]: "k4-theme-gold",
     [K4ItemType.move]: "k4-theme-black",
-    [K4ItemType.attack]: "k4-theme-gold",
     edge: "k4-theme-blue neon-glow-strong-blue"
   }
 };

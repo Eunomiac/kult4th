@@ -21,4 +21,6 @@ declare global {
   export type ConfiguredDocumentClass = _ConfiguredDocumentClass;
   export type ChatMessageDataConstructorData = _ChatMessageDataConstructorData;
   export type Context = _Context;
+
+  export type Evaluated<T extends Roll> = T & { _evaluated: true; _total: number; get total(): number };
 }

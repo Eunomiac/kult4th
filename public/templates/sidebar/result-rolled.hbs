@@ -5,34 +5,36 @@
 	<div class="roll-intro-header">
 		<span class="roll-char-name">{{rollerName}}</span>
 		<span class="roll-intro-line">
-			{{{localize "kult4th.roll.rollAttrTo" attrName=rollData.attrName}}}
+      {{#if sourceName}}
+        {{{localize "kult4th.roll.rollAttrTo" attrName=(case "title" attribute)}}}
+      {{else}}
+        {{{localize "kult4th.roll.rollAttr" attrName=(case "title" attribute)}}}
+      {{/if}}
 		</span>
 	</div>
 
+  {{#if sourceName}}
 	<div class="roll-source-header">
     {{> "systems/kult4th/templates/components/icon.hbs"
-      icon=rollData.sourceImg
-      type=rollData.sourceType
-      name=rollData.sourceName
+      icon=sourceImg
+      type=sourceType
+      name=sourceName
       isChat=true
     }}
-		<span class="roll-source-name"><span class="roll-source-text">{{rollData.sourceName}}</span></span>
-    {{#if rollData.source.system.parentItem}}{{#if rollData.source.system.parentItem.name}}<span class="roll-source-source-name">from <span class="roll-source-text">{{rollData.source.system.parentItem.name}}</span></span>{{/if}}{{/if}}
+		<span class="roll-source-name"><span class="roll-source-text">{{sourceName}}</span></span>
+    {{#if source.system.parentItem}}{{#if source.system.parentItem.name}}<span class="roll-source-source-name">from <span class="roll-source-text">{{source.system.parentItem.name}}</span></span>{{/if}}{{/if}}
 	</div>
-
-
-
-
+  {{/if}}
 
 	<div class="roll-dice-line">
 		<div class="roll-term-container roll-d10">
 			<img src="systems/kult4th/assets/icons/roll-terms/ten-sided-die.svg" />
 			<span class="roll-d10-value">{{dice.[0]}}</span>
 		</div>
-		{{#unless (eq rollData.attribute "zero")}}
-		<div class="roll-term-container attribute-{{rollData.attribute}}">
-			<img src="systems/kult4th/assets/icons/roll-terms/{{rollData.attribute}}.svg" />
-			<span class="roll-d10-value" data-attrVal="{{rollData.attrVal}}">{{signNum rollData.attrVal}}</span>
+		{{#unless (eq attribute "zero")}}
+		<div class="roll-term-container attribute-{{attribute}}">
+			<img src="systems/kult4th/assets/icons/roll-terms/{{attribute}}.svg" />
+			<span class="roll-d10-value" data-attrVal="{{attrVal}}">{{signNum attrVal}}</span>
 		</div>
 		{{/unless}}
 		<div class="roll-term-container roll-d10">
@@ -51,10 +53,10 @@
 				<span class="roll-total-number">{{total}}</span>
 			</div>
 			<div class="roll-modifiers">
-				{{#each rollData.modifiers}}
+				{{#each modifiers}}
 				<div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}}">
 					<span class="roll-mod-val">{{signNum value}}</span>
-					<span class="roll-mod-desc">({{display}})</span>
+					<span class="roll-mod-desc">({{name}})</span>
 				</div>
 				{{/each}}
 			</div>
@@ -68,10 +70,10 @@
 			{{/if}}{{/if}}
 	</div>
 
-	{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=rollData.source}}
+	{{> "systems/kult4th/templates/components/roll-result.hbs" type="active-rolled" diceRange="" result=result context=source}}
 
 	{{~#if result.listRefs}}
-		{{> "systems/kult4th/templates/components/item-list.hbs" lists=rollData.source.system.lists listRefs=result.listRefs type=rollData.source.type isDisplayingName=true}}
+		{{> "systems/kult4th/templates/components/item-list.hbs" lists=source.system.lists listRefs=result.listRefs type=source.type isDisplayingName=true}}
 	{{/if}}
 
 </div>

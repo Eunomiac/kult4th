@@ -27,7 +27,6 @@ export default class K4ItemSheet extends ItemSheet {
   get subType() { return this.item.system.subType; }
   get subItems() { return this.item.subItems; }
   get subMoves() { return this.item.subMoves; }
-  get attacks() { return this.item.subAttacks; }
 
   constructor(item: K4Item, options: Partial<ItemSheet.Options> = {}) {
     super(item, options);
@@ -164,7 +163,7 @@ export default class K4ItemSheet extends ItemSheet {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
             $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
-              .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type) && item.name === iName)
+              .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet?.render(true));
           }
         }
@@ -176,7 +175,7 @@ export default class K4ItemSheet extends ItemSheet {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
             $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
-              .find((item) => [K4ItemType.move, K4ItemType.attack].includes(item.type) && item.name === iName)
+              .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet?.render(true));
           }
         }

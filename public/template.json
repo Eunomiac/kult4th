@@ -116,7 +116,6 @@
 	"Item": {
 		"types": [
 			"move",
-			"attack",
 			"advantage",
 			"disadvantage",
 			"darksecret",

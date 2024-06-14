@@ -5,7 +5,7 @@ import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
+import K4ActiveEffect, {EffectSource} from "./K4ActiveEffect.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -17,7 +17,6 @@ enum K4ItemType {
   darksecret = "darksecret",
   relation = "relation",
   gear = "gear",
-  attack = "attack",
   weapon = "weapon"
 }
 
@@ -54,8 +53,8 @@ enum K4WeaponClass {
 // #region -- TYPES ~
 declare global {
   namespace K4SubItem {
-    export type Types = K4ItemType.move | K4ItemType.attack;
-    export type SubTypes = K4ItemSubType.activeRolled | K4ItemSubType.activeStatic | K4ItemSubType.passive;
+    export type Types = K4ItemType.move;
+    export type SubTypes = K4ItemSubType.activeRolled | K4ItemSubType.activeStatic;
 
     export namespace Components {
       export interface Base {
@@ -82,12 +81,6 @@ declare global {
     }
 
     export namespace SystemSchema {
-      export interface Passive extends Components.Base,
-        Components.IsSubItem,
-        K4Item.Components.RulesData {
-        subType: K4ItemSubType.passive;
-      }
-
       export interface Static extends Components.Base,
         Components.IsSubItem,
         K4Item.Components.RulesData,
@@ -102,20 +95,12 @@ declare global {
         subType: K4ItemSubType.activeRolled;
         attribute: K4Attribute;
       }
-
-      export type Any = Passive | Static | Active;
       export type SubMove = Static | Active;
-      export type SubAttack = Active & {
-        range: K4ItemRange[],
-        harm: number,
-        ammo: number;
-      };
     }
 
     export type System<T extends Types = Types> =
-      T extends K4ItemType.move ? SystemSchema.SubMove :
-      T extends K4ItemType.attack ? SystemSchema.SubAttack :
-      SystemSchema.Any;
+      T extends K4ItemType.move ? SystemSchema.SubMove
+      : never;
 
     export interface Schema<T extends K4SubItem.Types = K4SubItem.Types> {
       id?: IDString,
@@ -133,12 +118,12 @@ declare global {
   namespace K4Item {
     export namespace Types {
       export type Parent = K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear;
-      export type Rollable = K4ItemType.move | K4ItemType.attack | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
+      export type Rollable = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
       export type Static = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
       export type Passive = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | K4ItemType.relation | K4ItemType.weapon | K4ItemType.gear;
-      export type Active = K4ItemType.move | K4ItemType.attack | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
-      export type HaveRules = K4ItemType.move | K4ItemType.attack | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | K4ItemType.weapon | K4ItemType.gear;
-      export type HaveResults = K4ItemType.move | K4ItemType.attack;
+      export type Active = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
+      export type HaveRules = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | K4ItemType.weapon | K4ItemType.gear;
+      export type HaveResults = K4ItemType.move;
       export type HaveEffects = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear;
     }
     export namespace Components {
@@ -154,8 +139,7 @@ declare global {
 
       export interface HasSubItems {
         subItems: K4SubItem.Schema[],
-        subMoves?: K4SubItem.Schema<K4ItemType.move>[],
-        subAttacks?: K4SubItem.Schema<K4ItemType.attack>[];
+        subMoves?: K4SubItem.Schema<K4ItemType.move>[]
       }
 
       export interface RulesData {
@@ -204,15 +188,6 @@ declare global {
         attribute: K4Attribute;
       }
 
-      export interface Attack extends K4Item.Components.Base,
-        K4SubItem.Components.CanSubItem,
-        K4Item.Components.RulesData,
-        K4Item.Components.ResultsData {
-        range: K4ItemRange[],
-        harm: number,
-        ammo?: number;
-      }
-
       export interface Advantage extends K4Item.Components.Base,
         K4Item.Components.HasSubItems,
         K4Item.Components.RulesData {
@@ -252,14 +227,13 @@ declare global {
         K4Item.Components.RulesData {
         armor: number;
       }
-      export type Any = Move | Attack | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
+      export type Any = Move | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
     }
     /**
      * Discriminated union of all item source schemas
      *  */
     export type Source<T extends K4ItemType = K4ItemType> =
       T extends K4ItemType.move ? SourceSchema.Move
-      : T extends K4ItemType.attack ? SourceSchema.Attack
       : T extends K4ItemType.advantage ? SourceSchema.Advantage
       : T extends K4ItemType.disadvantage ? SourceSchema.Disadvantage
       : T extends K4ItemType.darksecret ? SourceSchema.DarkSecret
@@ -273,14 +247,13 @@ declare global {
      */
     export namespace SystemSchema {
       export interface Move extends K4Item.SourceSchema.Move { }
-      export interface Attack extends K4Item.SourceSchema.Attack { }
       export interface Advantage extends K4Item.SourceSchema.Advantage, K4Item.Components.ResultsData { }
       export interface Disadvantage extends K4Item.SourceSchema.Disadvantage, K4Item.Components.ResultsData { }
       export interface DarkSecret extends K4Item.SourceSchema.DarkSecret { }
       export interface Relation extends K4Item.SourceSchema.Relation { }
       export interface Weapon extends K4Item.SourceSchema.Weapon, K4Item.Components.ResultsData { }
       export interface Gear extends K4Item.SourceSchema.Gear, K4Item.Components.ResultsData { }
-      export type Any = Move | Attack | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
+      export type Any = Move | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
     }
 
     /**
@@ -288,7 +261,6 @@ declare global {
      *  */
     export type System<T extends K4ItemType = K4ItemType> =
       T extends K4ItemType.move ? SystemSchema.Move
-      : T extends K4ItemType.attack ? SystemSchema.Attack
       : T extends K4ItemType.advantage ? SystemSchema.Advantage
       : T extends K4ItemType.disadvantage ? SystemSchema.Disadvantage
       : T extends K4ItemType.darksecret ? SystemSchema.DarkSecret
@@ -328,6 +300,7 @@ declare global {
       system: System<T> & {
         attribute: K4Attribute,
         subType: K4ItemSubType.activeRolled;
+        results: Record<K4RollResult, K4Item.Components.ResultData>;
       };
     };
     export type HaveRules<T extends Types.HaveRules = Types.HaveRules> = K4Item<T>;
@@ -342,6 +315,7 @@ interface K4Item<T extends K4ItemType = K4ItemType> {
   get name(): string;
   get type(): T;
   get sheet(): K4Item["_sheet"] & K4ItemSheet;
+  get effects(): EmbeddedCollection & Collection<K4ActiveEffect>[];
   system: K4Item.System<T>;
   parent: Maybe<K4Item | K4Actor>;
 }
@@ -438,126 +412,6 @@ class K4Item extends Item {
   get edges(): Array<K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move>> {
     return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.isEdge());
   }
-  get subAttacks(): Array<K4SubItem<K4ItemType.attack>> {
-    return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.attack> & K4SubItem<K4ItemType.attack> => subItem.type === K4ItemType.attack);
-  }
-  // #endregion
-
-  // #region EFFECT FUNCTIONS ~
-  async applyEffectFunction(functionStr: string) {
-    if (!this.isOwnedItem()) {return;}
-    const [funcName, ...params] = functionStr.split(/,/);
-
-    /* Run 'getUniqueValuesForKey(PACKS.all, "rules.effects")' in the console to get a list of all effect functions,
-       as they are defined in the .db JSON data manually copied into data.ts.
-
-       Currently:
-
-       [
-        "[>CreateTracker:Time,10]",
-        "[>ModValue:weapon/firearm,harm,1]",
-        "[Add Armor, subtract Harm from roll]"
-
-        "[AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.']",
-        "[
-          AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.,
-          AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.
-        ]",
-        "[AddNote:completeSuccess,effect|AddNote:partialSuccess,effect|AddNote:failure,effect]",
-
-        "[AppendList,Investigate,questions,questions]",
-        "[AppendList,Observe a Situation,questions,questions]",
-        "[AppendList,Read a Person,questions,questions]",
-        "[AppendList,weapon/sword,attacks,attacks]",
-
-        "[BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1]",
-        "[GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions), StoreInput: text=Field of Expertise #1>flags.field_1, StoreInput: text=Field of Expertise #2>flags.field_2]",
-        "[Requires the Disadvantage Condemned]",
-        "[
-          SetTrait:actor/data.stability.max,6,
-
-          // NEED TO HANDLE ARRAY VALUES LIKE: //
-          SetTrait:actor/system.modifiers.wounds_critical.1.all,0,
-          SetTrait:actor/system.modifiers.wounds_serious.1.all,0,
-          SetTrait:actor/system.modifiers.wounds_serious.2.all,0,
-          SetTrait:actor/system.modifiers.wounds_serious.3.all,0,
-          SetTrait:actor/system.modifiers.wounds_serious.4.all,0,
-          SetTrait:actor/system.modifiers.wounds_seriouscritical.1.all,0
-        ]",
-      ]
-*/
-    switch (funcName) {
-      case "AppendList": {
-        const [targetItemName, targetList, sourceList] = params;
-        const targetItem: Maybe<K4Item> = this.parent.getItemByName(targetItemName);
-        kLog.log("Found Target Item", targetItem);
-        if (targetItem?.system.lists[targetList]) {
-          const sourceListItems = this.system.lists[sourceList].items
-            .map((listItem: string) => `${listItem} #>text-list-note:data-item-name='${this.parentName}':data-action='open'>(from ${this.parentName})<#`);
-          const updateData = [
-            {
-              _id: targetItem.id,
-              [`system.lists.${targetList}.items`]: [
-                ...targetItem.system.lists[targetList].items,
-                ...sourceListItems
-              ]
-            }
-          ];
-          await this.parent.updateEmbeddedDocuments("Item", updateData);
-        }
-        break;
-      }
-      case "SetTrait": {
-        console.error("'SetTrait' is unimplemented.");
-        break;
-      }
-      case "AddNote": {
-        console.error("'AddNote' is unimplemented.");
-        break;
-      }
-      case "_Unimplemented_1": {
-        throw new Error(`Unimplemented Effect Function: ${funcName}`);
-      }
-      case "_Unimplemented_2": {
-        throw new Error(`Unimplemented Effect Function: ${funcName}`);
-      }
-      default: {
-        kLog.error(`Unknown Effect Function: ${funcName}`);
-      }
-    }
-  }
-  async unapplyEffectFunction(functionStr: string) {
-    if (!this.isOwnedItem()) {return;}
-    const [funcName, ...params] = functionStr.split(/,/);
-    switch (funcName) {
-      case "AppendList": {
-        const [targetItemName, targetList, sourceList] = params;
-        const targetItem: K4Item | undefined = this.parent.getItemByName(targetItemName);
-        kLog.log("Found Target Move", targetItem);
-        if (targetItem?.system.lists[targetList]) {
-          const prunedListItems = this.system.lists[sourceList].items
-            .filter((listItem) => !(new RegExp(`data-item-name=.?${this.parentName}.?`)).test(listItem));
-          const updateData = [
-            {
-              _id: targetItem.id,
-              [`system.lists.${targetList}.items`]: prunedListItems
-            }
-          ];
-          await this.parent.updateEmbeddedDocuments("Item", updateData);
-        }
-        break;
-      }
-      case "_Unimplemented_1": {
-        throw new Error(`Unimplemented Effect Function: ${funcName}`);
-      }
-      case "_Unimplemented_2": {
-        throw new Error(`Unimplemented Effect Function: ${funcName}`);
-      }
-      default: {
-        kLog.error(`Unknown Effect Function: ${funcName}`);
-      }
-    }
-  }
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete
@@ -580,9 +434,9 @@ class K4Item extends Item {
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     await super._onCreate(...args);
 
-    // If this is a primary Document and has Change data in its system.rules schema, create a K4ActiveEffect for them that transfers to any actor owner.
-    if (!this.parent && this.hasMainEffects()) {
-      const effectData: Array<K4ActiveEffect.ConstructorData & Record<string, unknown>> = [{
+    // If this has Change data in its system.rules schema,
+    if (this.hasMainEffects()) {
+      const effectData: Array<K4ActiveEffect.ConstructorData> = [{
         changes: this.system.rules.effects!,
         disabled: false,
         icon: this.img,
@@ -594,7 +448,15 @@ class K4Item extends Item {
         ITEM: this,
         effectData: foundry.utils.deepClone(effectData)
       });
-      await this.createEmbeddedDocuments("ActiveEffect", effectData);
+      // ... and this is a Primary document (i.e. not owned), create a K4ActiveEffect for the change data that will transfer to any future actor owner.
+      if (!this.parent) {
+        await this.createEmbeddedDocuments("ActiveEffect", effectData as Array<K4ActiveEffect.ConstructorData & Record<string, unknown>>);
+      } else {
+        // Otherwise, if this is an owned item, confirm the existence of a transferrable K4ActiveEffect on this item; otherwise, create one directly on the actor.
+        if (this.effects.length === 0) {
+          await this.parent.createEmbeddedDocuments("ActiveEffect", effectData as Array<K4ActiveEffect.ConstructorData & Record<string, unknown>>);
+        }
+      }
     }
 
     // If this isn't an item embedded on an actor, no additional functionality is necessary
@@ -630,7 +492,7 @@ class K4Item extends Item {
         .find((subItem): subItem is K4SubItem.Schema<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.system.subType === K4ItemSubType.activeRolled);
       if (firstSubItem && firstSubItem.system.subType === K4ItemSubType.activeRolled) {
         this.system.attribute = firstSubItem.system.attribute;
-        this.system.results = firstSubItem.system.results;
+        this.system.results = (firstSubItem as K4Item.Active).system.results;
       }
     }
 
@@ -638,8 +500,6 @@ class K4Item extends Item {
     if (this.isOwnedItem() && this.isParentItem()) {
       this.system.subMoves = this.system.subItems
         .filter((subData): subData is K4SubItem.Schema<K4ItemType.move> => subData.type === K4ItemType.move);
-      this.system.subAttacks = this.system.subItems
-        .filter((subData): subData is K4SubItem.Schema<K4ItemType.attack> => subData.type === K4ItemType.attack);
     }
   }
   override _onDelete(...args: Parameters<Item["_onDelete"]>) {
@@ -652,8 +512,29 @@ class K4Item extends Item {
         this.parent.clearEdges();
       }
     }
+    if (this.hasMainEffects()) {
+      // If this item has effect change data, usually can rely on transfers logic to remove the effect.
+      // However, removing the effect manually is necessary if the effect had to be created directly on the actor (because, e.g., the item source was itself created directly as an embedded entity)
+    }
     // this.unapplyOnCreateeffects();
   }
+  // #endregion
+
+  // #region PUBLIC METHODS
+  async updateHold(delta: number): Promise<void> {
+    if (!this.isOwnedItem()) { return; }
+    if (this.isOwnedSubItem()) {
+      return this.parentItem?.updateHold(delta);
+    }
+    if (this.is(K4ItemType.advantage, K4ItemType.disadvantage)) {
+      const newHold = Math.max(this.system.currentHold + delta, 0);
+      if (newHold !== this.system.currentHold) {
+        this.update({"system.currentHold": newHold});
+      }
+    }
+    return;
+  }
+
   // #endregion
 
   // #region CONTEXTUAL HTML CONSTRUCTION ~
@@ -771,8 +652,6 @@ class K4Item extends Item {
         return "k4-theme-gold";
       case K4ItemType.gear:
         return "k4-theme-white";
-      case K4ItemType.attack:
-        return "k4-theme-red";
       case K4ItemType.weapon:
         return "k4-theme-white";
     }
@@ -834,17 +713,47 @@ class K4Item extends Item {
     });
   }
 
-  async applyResult(result: K4Item.Components.ResultData) {
+  async applyResult(result: Maybe<K4Item.Components.ResultData>) {
+    if (!result) { return; }
+    if (!this.isOwnedItem()) { return; }
     const {edges, hold, effects} = result;
     /* Apply Hold, add Edges, and create Effects Here */
     if ((edges ?? 0) > 0) {
-
+      this.actor.updateEdges(edges!, this);
     }
     if ((hold ?? 0) > 0) {
-
+      this.updateHold(hold!);
     }
     if ((effects ?? []).length > 0) {
+      const effectData: Array<K4ActiveEffect.ConstructorData> = [{
+        changes: effects!,
+        disabled: false,
+        icon: this.img,
+        label: `[ROLL] ${this.name}`,
+        origin: this.uuid,
+        transfer: true
+      }];
+        kLog.display(`#${this.id} [K4Item.applyResult] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating Roll Result ActiveEffect`, {
+          ITEM: this,
+          effectData: foundry.utils.deepClone(effectData)
+        });
+      await this.parent.createEmbeddedDocuments("ActiveEffect", effectData as Array<K4ActiveEffect.ConstructorData & Record<string, unknown>>);
+    }
+  }
 
+  async rollItem(speaker?: string) {
+    if (!this.hasResults()) {return;}
+    if (!this.isOwnedItem()) {return;}
+    if (this.isEdge()) {
+      this.parent.spendEdge();
+    }
+    if (this.is(K4ItemType.move) && this.parent.is(K4ActorType.pc)) {
+      const roll = new K4Roll({source: this as K4Item.Active}, this.parent);
+      await roll._attribute;
+      roll.evaluate();
+      roll.displayToChat();
+      const outcomeData = roll.getOutcomeData();
+      this.applyResult(outcomeData);
     }
   }
 
@@ -854,10 +763,7 @@ class K4Item extends Item {
     if (this.isEdge()) {
       this.parent.spendEdge();
     }
-    const {triggered} = this.system.results;
-    if (triggered) {
-      this.applyResult(triggered);
-    }
+    this.applyResult(this.system.results.triggered);
     const template = await getTemplate(this.triggerTemplate);
     const content = K4ChatMessage.CapitalizeFirstLetter(
       template(this.triggerSummaryContext)

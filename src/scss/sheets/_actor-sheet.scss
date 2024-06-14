@@ -484,7 +484,7 @@
               "status status status status"
               "modifiers modifiers modifiers modifiers"
               "attributes attributes basic-moves special-moves"
-              "attributes attributes basic-moves attacks"
+              "attributes attributes basic-moves special-moves"
               "footer footer footer footer";
             grid-template-columns: #{$nav-buffer} #{$attributes-width - $nav-buffer - $grid-gap} 1fr 1fr;
             grid-template-rows: #{$header-height} #{$status-height} calc(var(--num-modifier-rows) * #{$modifiers-height}) #{$main-panel-height - $attack-height} #{$attack-height} #{$footer-height};
@@ -1213,10 +1213,6 @@
 
             .session-checks {
               grid-area: session-checks
-            }
-
-            .attacks {
-              grid-area: attacks
             }
           }
 
