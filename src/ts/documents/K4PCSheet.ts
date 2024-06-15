@@ -116,6 +116,9 @@ const ANIMATIONS = {
     const closeButton$ = $(target).find(".header-button.close");
     const minimizeButton$ = $(target).find(".header-button.minimize");
     const flare$ = $(target).find(".nav-flare");
+    const form$ = $(target).closest("form");
+    const formSiblings$ = form$.siblings();
+    const sheetContent$ = form$.find("main");
 
     const svgs = {
       container:           $(target).find(".nav-svg"),
@@ -241,7 +244,7 @@ const ANIMATIONS = {
 
     if (U.getSetting("blur")) {
       navTL
-        .to(U.getSiblings(target), {
+        .to([U.getSiblings(target),sheetContent$, formSiblings$], {
           filter:   "blur(5px)",
           duration: 0.5,
           ease:     "back"

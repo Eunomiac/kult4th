@@ -319,7 +319,9 @@ async function preloadTemplates() {
     ...U.getTemplatePath("dialog", [
       "ask-for-attribute",
       "ask-for-harm",
-      "ask-for-text-input"
+      "ask-for-text",
+      "ask-for-buttons",
+      "ask-for-confirm"
     ])
   ];
 

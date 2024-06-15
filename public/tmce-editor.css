@@ -1088,5 +1088,14 @@
 #tinymce .mce-content-body .result-entry:last-of-type > span {
   border-bottom: none;
 }
+#tinymce p.break-elem,
+#tinymce .mce-content-body p.break-elem {
+  margin: 0 !important;
+  line-height: var(--break-height, 10px) !important;
+  max-height: var(--break-height, 10px) !important;
+  height: var(--break-height, 10px) !important;
+  display: block !important;
+  min-height: unset !important;
+}
 
 /*# sourceMappingURL=tmce-editor.css.map */

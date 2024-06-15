@@ -15,14 +15,20 @@
 
   {{#if sourceName}}
 	<div class="roll-source-header">
-    {{> "systems/kult4th/templates/components/icon.hbs"
-      icon=sourceImg
-      type=sourceType
-      name=sourceName
-      isChat=true
-    }}
-		<span class="roll-source-name"><span class="roll-source-text">{{sourceName}}</span></span>
-    {{#if source.system.parentItem}}{{#if source.system.parentItem.name}}<span class="roll-source-source-name">from <span class="roll-source-text">{{source.system.parentItem.name}}</span></span>{{/if}}{{/if}}
+		<span class="roll-source-name">
+      {{> "systems/kult4th/templates/components/icon.hbs"
+        icon=sourceImg
+        type=sourceType
+        name=sourceName
+        isChat=true
+      }}
+      <span class="roll-source-text">{{sourceName}}</span>
+    </span>
+    {{#if source.system.parentItem}}{{#if source.system.parentItem.name}}
+      <span class="roll-source-source-name">
+        from <span class="roll-source-text">{{source.system.parentItem.name}}</span>
+      </span>
+    {{/if}}{{/if}}
 	</div>
   {{/if}}
 

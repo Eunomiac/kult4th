@@ -5,7 +5,7 @@ import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect, {EffectSource} from "./K4ActiveEffect.js";
+import K4ActiveEffect, {CUSTOM_FUNCTIONS, EffectSource} from "./K4ActiveEffect.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -51,6 +51,7 @@ enum K4WeaponClass {
 
 // #endregion
 // #region -- TYPES ~
+
 declare global {
   namespace K4SubItem {
     export type Types = K4ItemType.move;
@@ -308,18 +309,6 @@ declare global {
     export type HaveEffects<T extends Types.HaveEffects = Types.HaveEffects> = K4Item<T>;
   }
 }
-// #endregion
-// #region -- AUGMENTED INTERFACE ~
-interface K4Item<T extends K4ItemType = K4ItemType> {
-  get id(): IDString;
-  get name(): string;
-  get type(): T;
-  get sheet(): K4Item["_sheet"] & K4ItemSheet;
-  get effects(): EmbeddedCollection & Collection<K4ActiveEffect>[];
-  system: K4Item.System<T>;
-  parent: Maybe<K4Item | K4Actor>;
-}
-// #endregion
 // #ENDREGION
 
 // #REGION === K4ITEM CLASS ===
@@ -344,22 +333,39 @@ class K4Item extends Item {
     CONFIG.Item.sidebarIcon = "fa-regular fa-box-open";
 
     // Register creation hook
-    Hooks.on("preCreateItem", async (itemData: K4Item): Promise<boolean> => {
+    Hooks.on("preCreateItem", (itemData: K4Item): boolean => {
       // Ensure the item is being created for an actor
       if (!itemData.parent || itemData.parent.documentName !== "Actor") {
         return true;
       }
-
       const actor: K4Actor = itemData.parent;
-      const existingItem: Maybe<K4Item> = actor.items
-        .find((i: K4Item): boolean => i.name === itemData.name && i.type === itemData.type && i.id !== itemData.id);
 
       // If an item with the same name and type already exists, other than the one being created, prevent the creation
+      const existingItem: Maybe<K4Item> = actor.items
+      .find((i: K4Item): boolean => i.name === itemData.name && i.type === itemData.type && i.id !== itemData.id);
       if (existingItem) {
         ui.notifications.warn(`The item "${itemData.name}" already exists on this actor.`);
         return false; // Returning false prevents the item from being created
       }
 
+      kLog.display(`#${itemData.id} [K4Item._preCreate] [[${C.Abbreviations.ItemType[itemData.type]}.${U.uCase(itemData.name)}]]`, {
+        ITEM: itemData,
+        isOwned: itemData.isOwnedItem(),
+        requireItemChanges: itemData.requireItemChanges
+      });
+
+      /* === PROCESS ACTIVE EFFECT CHANGES: STEP 1 - RequireItem Prerequisite Check === */
+      // Check for any "RequireItem" changes and reject creation if the requirement isn't met.
+      for (const change of itemData.requireItemChanges) {
+        if (!CUSTOM_FUNCTIONS.RequireItem(
+          actor as K4Actor,
+          K4ActiveEffect.ParseFunctionDataString(change.value)
+        )) {
+          return false;
+        }
+      }
+
+      // Return true by default.
       return true;
     });
   }
@@ -382,6 +388,7 @@ class K4Item extends Item {
   isPassiveItem(): this is K4Item.Passive {return this.system.subType === K4ItemSubType.passive;}
   hasRules(): this is K4Item.HaveRules {return "rules" in this.system;}
   hasResults(): this is K4Item.HaveResults { return "results" in this.system;}
+  hasCreateEffects(): this is K4Item.HaveEffects { return Boolean(this.hasRules() && this.system.rules.effects?.some((change) => change.key === "PromptForData"));}
   hasMainEffects(): this is K4Item.HaveEffects { return Boolean(this.hasRules() && this.system.rules.effects?.length); }
   hasRollEffects(): this is K4Item.HaveResults {return this.hasResults() && Object.values(this.system.results).some((result) => result.effects?.length);}
   // #endregion
@@ -412,6 +419,23 @@ class K4Item extends Item {
   get edges(): Array<K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move>> {
     return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.isEdge());
   }
+  get allRulesChanges(): K4ActiveEffect.Change.Data[] {
+    if (!this.hasMainEffects()) { return []; }
+    return this.system.rules.effects ?? [];
+  }
+  get requireItemChanges(): K4ActiveEffect.Change.Data[] {
+    if (!this.hasMainEffects()) { return []; }
+    return this.system.rules.effects?.filter((change) => change.key === "RequireItem") ?? [];
+  }
+  get promptForDataChanges(): K4ActiveEffect.Change.Data[] {
+    if (!this.hasMainEffects()) { return []; }
+    return this.system.rules.effects?.filter((change) => change.key === "PromptForData") ?? [];
+  }
+  get systemChanges(): K4ActiveEffect.Change.Data[] {
+    if (!this.hasMainEffects()) { return []; }
+    return this.system.rules.effects?.filter((change) => !["PromptForData", "RequireItem"].includes(change.key)) ?? [];
+  }
+
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete
@@ -431,36 +455,57 @@ class K4Item extends Item {
         return subData;
       }) as Array<K4SubItem.Schema & Record<string, unknown>>;
   }
+
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     await super._onCreate(...args);
 
-    // If this has Change data in its system.rules schema,
+    // If this has Change data in its system.rules schema, prepare a K4ActiveEffect to carry those Changes
     if (this.hasMainEffects()) {
-      const effectData: Array<K4ActiveEffect.ConstructorData> = [{
-        changes: this.system.rules.effects!,
+      const {parent} = this;
+      const effectData = {
+        changes: this.allRulesChanges,
         disabled: false,
         icon: this.img,
         label: `[MAIN] ${this.name}`,
         origin: this.uuid,
         transfer: true
-      }];
-      kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating ActiveEffect`, {
-        ITEM: this,
-        effectData: foundry.utils.deepClone(effectData)
-      });
-      // ... and this is a Primary document (i.e. not owned), create a K4ActiveEffect for the change data that will transfer to any future actor owner.
-      if (!this.parent) {
-        await this.createEmbeddedDocuments("ActiveEffect", effectData as Array<K4ActiveEffect.ConstructorData & Record<string, unknown>>);
-      } else {
-        // Otherwise, if this is an owned item, confirm the existence of a transferrable K4ActiveEffect on this item; otherwise, create one directly on the actor.
-        if (this.effects.length === 0) {
-          await this.parent.createEmbeddedDocuments("ActiveEffect", effectData as Array<K4ActiveEffect.ConstructorData & Record<string, unknown>>);
-        }
+      }
+      // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).
+      if (!parent) {
+        kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] PRIMARY: Creating Embedded Documents on ITEM`, {
+          ITEM: this,
+          effectData
+        });
+        await this.createEmbeddedDocuments("ActiveEffect", [effectData]);
+      } else if (this.effects.size === 0) {
+        // If this is an owned item, there are two possible cases:
+        // - (1) this item is being created by embedding an existing Primary item onto an actor, which will have transferred all of the K4ActiveEffects it created during its own _onCreate step. In this case, we don't need to do anything, as the effects will have already transferred to the Actor.
+        // - (2) this item is being created directly as an embedded item on an actor, and will not have previously-created K4ActiveEffects to transfer. Because of Foundry limitations on creating ActiveEffects on already-embedded items, we must manually transfer the effects to the Actor by creating them on the Actor directly.
+        // We know we are in case (2) if this item has no K4ActiveEffects (despite having effects defined in its system.rules.effects array).
+        kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] CREATED-AS-EMBEDDED: Creating Embedded Documents on ACTOR directly`, {
+          ITEM: this,
+          actor: parent,
+          effectData
+        });
+        await parent.createEmbeddedDocuments("ActiveEffect", [effectData]);
       }
     }
 
     // If this isn't an item embedded on an actor, no additional functionality is necessary
     if (!this.isOwnedItem()) {return;}
+
+    /* === PROCESS ACTIVE EFFECT CHANGES: STEP 2 - PromptForData Check === */
+    // PromptForData changes are resolved by querying the User for input when they are embedded within an Actor owned by that User -- i.e. right now.
+    // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
+    for (const change of this.promptForDataChanges) {
+      const { key, value } = change;
+      if (key in CUSTOM_FUNCTIONS) {
+        await CUSTOM_FUNCTIONS[key](
+          this.parent,
+          K4ActiveEffect.ParseFunctionDataString(value)
+        );
+      }
+    }
 
     // If item has subItem schemas, create them now as independent K4Items.
     if (this.isParentItem()) {
@@ -780,6 +825,19 @@ class K4Item extends Item {
   }
 }
 // #ENDREGION
+
+// #endregion
+// #region -- AUGMENTED INTERFACE ~
+interface K4Item<T extends K4ItemType = K4ItemType> {
+  get id(): IDString;
+  get name(): string;
+  get type(): T;
+  get sheet(): K4Item["_sheet"] & K4ItemSheet;
+  get effects(): EmbeddedCollection & Collection<K4ActiveEffect>[];
+  system: K4Item.System<T>;
+  parent: Maybe<K4Item | K4Actor>;
+}
+// #endregion
 
 // #region EXPORTS ~
 export default K4Item;

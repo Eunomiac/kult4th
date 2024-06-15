@@ -89,8 +89,8 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyRoll: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputMin:1,inputMax:4,inStatusBar:false"},
   ],
   "Expert": [
-    {PromptForData: "title:What is your first Field of Expertise?,key:flags.kult4th.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
-    {PromptForData: "title:What is your second Field of Expertise?,key:flags.kult4th.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
+    {PromptForData: "title:What is your first Field of Expertise?,key:flags.Expert.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
+    {PromptForData: "title:What is your second Field of Expertise?,key:flags.Expert.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"},
     {ModifyMove: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
     {ModifyMove: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"},
     {ModifyMove: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"}
@@ -104,7 +104,8 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_seriouscritical.1.all,value:0"}
   ],
   "Broken": [
-    {ModifyProperty: "filter:actor,effect:Set,target:system.stability.max,value:6"}
+    {ModifyProperty: "filter:actor,effect:Set,target:system.stability.max,value:6"},
+    {ModifyProperty: "filter:actor,effect:Downgrade,target:system.stability.value,value:6,permanent:true"}
   ],
   "Hardened": [
     {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"}
@@ -161,7 +162,7 @@ const CUSTOMROLLFUNCEXAMPLES = {
 
 const WOUNDANDSTABILITY_FUNCS = {
   "Wounds": [
-    {ApplyWounds: ""}
+    {ModifyRoll: ""}
   ],
   "Stability": [
     {ApplyStability: ""}

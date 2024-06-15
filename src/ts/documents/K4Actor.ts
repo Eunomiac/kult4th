@@ -256,10 +256,35 @@ class K4Actor extends Actor {
     );
   }
 
-  async createBasicMoves() {
+  async initMovesAndEffects() {
     if (this.basicMoves.length) {return;}
     // Create the basic moves for the character
     await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
+    // Create the singleton "Wounds" and "Stability" K4ActiveEffects
+    await this.createEmbeddedDocuments("ActiveEffect", [
+      {
+        label: "Wounds",
+        icon: "systems/kult4th/assets/icons/wounds/wound-serious.svg",
+        changes: [
+          {
+            key: "ApplyWounds",
+            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+            value: "source:wounds"
+          }
+        ]
+      },
+      {
+        label: "Stability",
+        icon: "systems/kult4th/assets/icons/stability.svg",
+        changes: [
+          {
+            key: "ApplyStability",
+            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+            value: "source:stability"
+          }
+        ]
+      }
+    ]);
   }
 
   get moves() {return this.getItemsOfType(K4ItemType.move)
@@ -588,12 +613,6 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
-  get promptChanges(): Array<K4ActiveEffect.Change.Data> {
-    return this.enabledEffects
-      .map((effect) => effect.changes)
-      .flat()
-      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM && change.key === "PromptForData");
-  }
   get mainChanges(): Array<K4ActiveEffect.Change.Data> {
     return this.enabledEffects
       .map((effect) => effect.changes)
@@ -667,8 +686,7 @@ class K4Actor extends Actor {
     // Set the default tab for the character sheet
     this.setFlag("kult4th", "sheetTab", "front");
 
-    // Create the basic moves for the character
-    await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
+    await this.initMovesAndEffects();
 
     // Register a custom end-of-scene hook
     Hooks.on("endScene", this._onEndScene.bind(this));

@@ -577,4 +577,13 @@
 			border-bottom: none;
 		}
 	}
+
+  p.break-elem {
+    margin: 0 !important;
+    line-height: var(--break-height, 10px) !important;
+    max-height: var(--break-height, 10px) !important;
+    height: var(--break-height, 10px) !important;
+    display: block !important;
+    min-height: unset !important;
+  }
 }

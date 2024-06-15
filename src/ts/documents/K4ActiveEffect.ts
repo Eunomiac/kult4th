@@ -101,10 +101,9 @@ enum EffectTarget {
 }
 
 enum PromptInputType {
-  numberButtons = "numberButtons",
+  buttons = "buttons",
   text = "text",
-  confirm = "confirm",
-  select = "select"
+  confirm = "confirm"
 }
 // #endregion
 
@@ -137,7 +136,14 @@ const CUSTOM_FUNCTIONS: Record<
 
   },
   ModifyMove: async (actor, data) => {
-    let {filter, target, effect, value, text, fromText} = data;
+    let {filter, target, effect, value, text, fromText} = data as Partial<{
+      filter: string,
+      effect: string,
+      target?: string,
+      value?: string|number|boolean,
+      text?: string,
+      fromText?: string
+    }>;
     if (!filter || !effect) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
     }
@@ -162,7 +168,7 @@ const CUSTOM_FUNCTIONS: Record<
             break;
           }
           case "ModifyEffect": {
-            console.warn("ModifyMove > ModifyEffect is not yet implemented.");
+            console.warn(`ModifyMove > ModifyEffect is not yet implemented, but will use ${fromText}`);
             break;
           }
           default: {
@@ -172,49 +178,165 @@ const CUSTOM_FUNCTIONS: Record<
       })
   },
   ModifyProperty: async (actor, data) => {
-    let {filter, effect, target, value} = data;
-    if (U.isNumString(value)) {
-      value = U.pInt(value);
-    }
+    let {filter, effect, target, value, permanent} = data;
     if (!filter || !effect || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
     }
     if (filter === "actor") {
-
-      // First check whether a ValueMax is being changed, and adjust other elements of the ValueMax as needed.
-      if (typeof value === "number" && /\.value$|\.min$|\.max$/.test(`${target}`)) {
-        const valMax = getProperty(actor, `${target}`.replace(/\.value$|\.min$|\.max$/, ""));
-        const curVal = getProperty(actor, `${valMax}.value`);
-        const curMin = getProperty(actor, `${valMax}.min`);
-        const curMax = getProperty(actor, `${valMax}.max`);
-        if (typeof curVal === "number" && typeof curMin === "number" && typeof curMax === "number") {
-          if (`${target}`.endsWith("min") && curVal < value) {
-            // Min is being changed, and value is too low: Set to new minimum value.
-            actor.update({[`${valMax}.value`]: value});
-          }
-          if (`${target}`.endsWith("max") && curVal > value) {
-            // Max is being changed, and value is too high: Set to new maximum value.
-            actor.update({[`${valMax}.value`]: value});
-          }
-          if (`${target}`.endsWith("value")) {
-            // Value is being changed: Clamp to within min/max values.
-            value = U.gsap.utils.clamp(curMin, curMax, value);
-          }
-        }
+      let curVal = getProperty(actor, `${target}`);
+      if (`${value}` === `${curVal}`) {
+        return;
       }
       switch (effect) {
         case "Set": {
-          setProperty(actor, `${target}`, value);
+          if (permanent === true) {
+            actor.update({[`${target}`]: value});
+          } else {
+            setProperty(actor, `${target}`, value);
+          }
           break;
+        }
+        case "Downgrade": {
+          let curValue = getProperty(actor, `${target}`);
+          if (U.isNumString(curValue)) {
+            curValue = U.pInt(curValue);
+          } else if (U.isBooleanString(curValue)) {
+            curValue = U.pBool(curValue);
+          }
+          if (value === curValue) { return; }
+          if (typeof value === "string") {
+            throw new Error(`Invalid string value for Downgrade: '${value}'`);
+          }
+          if (typeof curValue === "number" && typeof value === "number" && value > curValue) {
+            return;
+          }
+          if (value === true) { return; }
+          if (permanent === true) {
+            actor.update({[`${target}`]: value});
+          } else {
+            setProperty(actor, `${target}`, value);
+          }
         }
       }
     }
   },
   PromptForData: async (actor, data) => {
-
+    let {title, key, input, inputVals, default: defaultVal, bodyText, subText} = data as Partial<{
+      title: string,
+      key: string,
+      input: PromptInputType,
+      default: string|number|boolean,
+      inputVals?: string,
+      bodyText?: string,
+      subText?: string
+    }>;
+    if (typeof title !== "string") {
+      throw new Error(`No title provided for PromptForData: ${JSON.stringify(data)}`);
+    }
+    if (typeof key !== "string") {
+      throw new Error(`No key provided for PromptForData: ${JSON.stringify(data)}`);
+    }
+    if (typeof input !== "string") {
+      throw new Error(`No input type provided for PromptForData: ${JSON.stringify(data)}`);
+    }
+    if (typeof defaultVal !== "string") {
+      throw new Error(`No default value provided for PromptForData: ${JSON.stringify(data)}`);
+    }
+    const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
+    const context: Record<string, string|number|boolean> = {
+      title,
+      bodyText: bodyText ?? "",
+      subText: subText ?? ""
+    }
+    const dialogData: Dialog.Data = {
+      title: title,
+      content: template(context),
+      buttons: {}
+    };
+    const userOutput = await new Promise((resolve) => {
+      dialogData.close = () => resolve(defaultVal);
+      switch (input) {
+        case PromptInputType.buttons: {
+          const buttonVals = (inputVals ?? "")
+            .split("|")
+            .map((val) => U.isNumString(val) ? U.pInt(val) : (U.isBooleanString(val) ? U.pBool(val) : val));
+          if (!buttonVals.length) {
+            throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
+          }
+          const buttonEntries = buttonVals.map((val) => {
+            return [
+              String(val),
+              {
+                label: String(val),
+                callback: () => resolve(val)
+              }
+            ];
+          });
+          // Assign the default value to the first button
+          dialogData.default = String(buttonVals[0]);
+          dialogData.buttons = Object.fromEntries(buttonEntries);
+          break;
+        }
+        case PromptInputType.text: {
+          dialogData.default = "submit";
+          dialogData.buttons = {
+            submit: {
+              label: "Submit",
+              callback: (html) => {
+                const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
+                resolve(inputValue);
+              }
+            }
+          };
+          break;
+        }
+        case PromptInputType.confirm: {
+          dialogData.default = "confirm";
+          dialogData.buttons = {
+            confirm: {
+              label: "Confirm",
+              callback: () => resolve(true)
+            },
+            cancel: {
+              label: "Cancel",
+              callback: () => resolve(false)
+            }
+          };
+          break;
+        }
+        default: {
+          throw new Error(`Invalid input type for PromptForData: ${input}`);
+        }
+      }
+      new Dialog(dialogData, {
+        classes: [C.SYSTEM_ID, "dialog"],
+      }).render(true);
+    });
+    if (key.startsWith("flags")) {
+      const flagKey = key.split(".").slice(1).join(".");
+      await actor.setFlag(C.SYSTEM_ID, flagKey, userOutput);
+      return;
+    }
+    throw new Error(`Unrecognized key for PromptForData: ${key}`);
   },
-  RequireItem: async (actor, data) => {
-
+  RequireItem: (actor, data) => {
+    let {filter, for: target} = data as Partial<{
+      filter: string,
+      for: string
+    }>;
+    if (typeof filter !== "string") {
+      throw new Error(`No filter provided for RequireItem: ${JSON.stringify(data)}`);
+    }
+    if (typeof target !== "string") {
+      throw new Error(`No for provided for RequireItem: ${JSON.stringify(data)}`);
+    }
+    const items = actor.getItemsByFilter(filter);
+    if (items.length === 0) {
+      // The required item is not found. Alert the user, and return false.
+      ui.notifications.error(`You currently lack "${filter}", which is a prerequisite for gaining "${target}"`);
+      return false;
+    }
+    return true;
   }
 } as const;
 // #endregion
@@ -321,33 +443,6 @@ class K4ActiveEffect extends ActiveEffect {
       return acc;
     }, {} as Record<string,string|number|boolean>);
   }
-  async promptUserForData<ResponseType extends string|number|boolean>(input: K4ActiveEffect.PromptInputDef, title: string, bodyText?: string): Promise<Maybe<ResponseType>> {
-    const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
-    const context: Record<string, string|number|boolean> = {
-      title,
-      bodyText: bodyText ?? ""
-    }
-    const dialogData: Dialog.Data = {
-      title: title,
-      content: template(context),
-      buttons: {}
-    };
-
-    const userOutput = await new Promise<ResponseType>((resolve) => {
-      if (input.type === PromptInputType.numberButtons) {
-        const {inputMin, inputMax} = input;
-        for (let i = inputMin; i <= inputMax; i++) {
-          dialogData.buttons[i] = {
-            label: String(i),
-            callback: () => resolve(i as ResponseType)
-          }
-        }
-      }
-      new Dialog(dialogData, {classes: [C.SYSTEM_ID, "dialog"]}).render(true);
-    });
-
-    return userOutput;
-  }
   // #endregion
 
   // #REGION === PUBLIC METHODS ===
@@ -394,25 +489,7 @@ namespace K4ActiveEffect {
   export type CustomFunction = (
     actor: K4Actor,
     data: Record<string, string|number|boolean>
-  ) => void;
-
-  interface PromptInputDef_Base {
-    type: PromptInputType;
-  }
-  interface PromptInputDef_Number extends PromptInputDef_Base {
-    type: PromptInputType.numberButtons;
-    inputMin: number;
-    inputMax: number;
-  }
-  interface PromptInputDef_Select extends PromptInputDef_Base {
-    type: PromptInputType.select;
-    options: Record<string, string>;
-  }
-  interface PromptInputDef_Text extends PromptInputDef_Base {
-    type: PromptInputType.text
-  }
-
-  export type PromptInputDef = PromptInputDef_Number | PromptInputDef_Select | PromptInputDef_Text;
+  ) => ValueOrPromise<void|boolean>;
 
   export interface ConstructorData extends ActiveEffectDataConstructorData {
     changes: Change.Data[];

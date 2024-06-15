@@ -204,7 +204,7 @@ const ITEM_DATA: {
             {
               key: "RequireItem",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Condemned"
+              value: "filter:Condemned,for:To the Last Breath"
             }
           ],
           "holdText": ""
@@ -1918,27 +1918,27 @@ const ITEM_DATA: {
             {
               key: "PromptForData",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "title:What is your first Field of Expertise?,key:flags.kult4th.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"
+              value: "title:What is your first Field of Expertise?,default: ,key:flags.Expert.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study.,subText:#>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"
             },
             {
               key: "PromptForData",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "title:What is your second Field of Expertise?,key:flags.kult4th.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study. #>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"
+              value: "title:What is your second Field of Expertise?,default: ,key:flags.Expert.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study.,subText:#>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology"
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+              value: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+              value: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.kult4th.field_1%<# or #>text-keyword>%insert.flags.kult4th.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
+              value: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#"
             }
           ],
           "holdText": ""
@@ -2054,7 +2054,7 @@ const ITEM_DATA: {
             {
               key: "RequireItem",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Condemned"
+              value: "filter:Condemned,for:Sealed Fate"
             }
           ],
           "holdText": ""
@@ -8687,6 +8687,11 @@ const ITEM_DATA: {
               key: "ModifyProperty",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
               value: "filter:actor,effect:Set,target:system.stability.max,value:6"
+            },
+            {
+              key: "ModifyProperty",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: "filter:actor,effect:Downgrade,target:system.stability.value,value:6,permanent:true"
             }
           ],
           "holdText": ""
@@ -11176,7 +11181,7 @@ const ITEM_DATA: {
             {
               key: "ModifyRoll",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputMin:1,inputMax:4,inStatusBar:false"
+              value: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputVals:1|2|3|4|5,inStatusBar:false"
             }
           ],
           "holdText": ""

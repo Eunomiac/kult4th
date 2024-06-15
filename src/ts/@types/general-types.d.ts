@@ -51,8 +51,8 @@ declare global {
   // Represents either an item or and index of items
   type ItemOrIndex<V = unknown> = V | Index<V>;
 
-  // Represents an item or a Promise resolving to an item
-  type ItemOrPromise<V = unknown> = V | Promise<V>;
+  // Represents a value or a Promise resolving to a value
+  type ValueOrPromise<V = unknown> = V | Promise<V>;
 
   // Represents a string, false, or undefined
   type MaybeStringOrFalse = string | false | undefined;

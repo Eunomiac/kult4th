@@ -1,6 +1,8 @@
 // #region IMPORTS ~
+import C from "./constants.js";
 import U from "./utilities.js";
 import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
+import K4Actor from "../documents/K4Actor.js";
 import K4Item from "../documents/K4Item.js";
 // #endregion
 
@@ -96,7 +98,9 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     // }
 
     // Step One: Replace any data object references.
-    str = str.replace(/%([^%.]+)\.([^%.]+)%/g, (_, sourceRef: string, dataKey: string) => {
+    str = str.replace(
+      /%([^%.]+)\.([^%]+)%/g,
+      (_, sourceRef: string, dataKey: string) => {
       switch (sourceRef) {
         case "data": {
           kLog.log("[formatForKult: 'data']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
@@ -124,7 +128,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
           kLog.log("[formatForKult: 'insert']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
           switch (dataKey) {
             case "break": {
-              return "<br /><br />"; // <p></p>";
+              return "<p class='break-elem'></p>"; // <p></p>";
             }
             case "rollPrompt": {
               return [
@@ -139,6 +143,22 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
               ].join("");
             }
             default: {
+              if (dataKey.startsWith("flags")) {
+                const flagParent: Maybe<K4Actor> = iData instanceof K4Item && iData.isOwned && iData.parent instanceof K4Actor
+                  ? iData.parent
+                  : iData instanceof K4Actor
+                    ? iData
+                    : undefined;
+                if (!flagParent) {
+                  throw new Error("Cannot access flags from a non-actor item");
+                }
+                const flagKey = dataKey.split(".").slice(1).join(".");
+
+                // Log the extracted namespace and key for debugging purposes
+                kLog.log("[formatForKult: 'flags-extraction']", { flagKey }, 3);
+
+                return flagParent.getFlag(C.SYSTEM_ID, flagKey);
+              }
               return `<span style='color: red;'>No Such Prompt: ${dataKey}</span>`;
             }
           }

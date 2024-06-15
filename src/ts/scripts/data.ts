@@ -597,14 +597,23 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
     // Delete all the remaining items
     return Promise.all(mainItems.map((item) => item.delete()));
   }
+  function clearActorEffects(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
+    if (!actor) { return new Promise((resolve) => resolve(true as unknown)); }
+    return actor.deleteEmbeddedDocuments("ActiveEffect", Array.from(actor.effects.keys()));
+  }
+  async function clearActor(actor: K4Actor<K4ActorType.pc>) {
+    await clearActorItems(actor);
+    await clearActorEffects(actor);
+    return;
+  }
 
-  function clearAllActorItems(): Promise<unknown> {
-    return Promise.all(game.actors.contents.map((actor) => clearActorItems(actor as K4Actor<K4ActorType.pc>)));
+  function clearAllActors(): Promise<unknown> {
+    return Promise.all(game.actors.contents.map((actor) => clearActor(actor as K4Actor<K4ActorType.pc>)));
   }
 
   // Await a Promise.all that deletes all the existing items
   await Promise.all([
-    clearAllActorItems(),
+    clearAllActors(),
     Promise.all(game.items.map((item) => item.delete()))
   ]);
 
@@ -612,7 +621,7 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   await Item.create(itemSchemas as unknown as ItemDataConstructorData);
 
   // Initialize each actor with a new set of basic moves
-  await Promise.all(game.actors.contents.map((actor) => actor.createBasicMoves()));
+  await Promise.all(game.actors.contents.map((actor) => actor.initMovesAndEffects()));
 }
 
 //#endregion
