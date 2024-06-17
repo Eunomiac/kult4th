@@ -12,50 +12,50 @@ export function formatStringForKult(str: string) {
 }
 
 const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
-/**
- * Handlebars helper to perform various comparison operations.
- * @param {unknown} param1 - The first parameter for comparison.
- * @param {string} operator - The comparison operator.
- * @param {unknown} param2 - The second parameter for comparison.
- * @returns {boolean} - The result of the comparison.
- */
-"test"(param1: unknown, operator: string, param2: unknown): boolean {
-  const isStringOrNumber = (a: unknown): a is string | number => typeof a === "number" || typeof a === "string";
+  /**
+   * Handlebars helper to perform various comparison operations.
+   * @param {unknown} param1 - The first parameter for comparison.
+   * @param {string} operator - The comparison operator.
+   * @param {unknown} param2 - The second parameter for comparison.
+   * @returns {boolean} - The result of the comparison.
+   */
+  "test"(param1: unknown, operator: string, param2: unknown): boolean {
+    const isStringOrNumber = (a: unknown): a is string | number => typeof a === "number" || typeof a === "string";
 
-  if (["!", "!!", "not"].includes(param1 as string)) {
-    ([param1, operator] = [operator, param1 as string]);
-  }
+    if (["!", "!!", "not"].includes(param1 as string)) {
+      ([param1, operator] = [operator, param1 as string]);
+    }
 
-  switch (operator) {
-    case "!":
-    case "!!":
-    case "not":
-      return !param1;
-    case "==":
-    case "===":
-      return param1 === param2;
-    case "!=":
-    case "!==":
-      return param1 !== param2;
-    case ">":
-      return U.isNumber(param1) && U.isNumber(param2) && param1 > param2;
-    case "<":
-      return U.isNumber(param1) && U.isNumber(param2) && param1 < param2;
-    case ">=":
-      return U.isNumber(param1) && U.isNumber(param2) && param1 >= param2;
-    case "<=":
-      return U.isNumber(param1) && U.isNumber(param2) && param1 <= param2;
-    case "includes":
-      return Array.isArray(param1) && param1.includes(param2);
-    case "in":
-      if (Array.isArray(param2)) { return param2.includes(param1); }
-      if (U.isList(param2) && isStringOrNumber(param1)) { return param1 in param2; }
-      if (typeof param2 === "string") { return new RegExp(String(param2), "gu").test(String(param1)); }
-      return false;
-    default:
-      return false;
-  }
-},
+    switch (operator) {
+      case "!":
+      case "!!":
+      case "not":
+        return !param1;
+      case "==":
+      case "===":
+        return param1 === param2;
+      case "!=":
+      case "!==":
+        return param1 !== param2;
+      case ">":
+        return U.isNumber(param1) && U.isNumber(param2) && param1 > param2;
+      case "<":
+        return U.isNumber(param1) && U.isNumber(param2) && param1 < param2;
+      case ">=":
+        return U.isNumber(param1) && U.isNumber(param2) && param1 >= param2;
+      case "<=":
+        return U.isNumber(param1) && U.isNumber(param2) && param1 <= param2;
+      case "includes":
+        return Array.isArray(param1) && param1.includes(param2);
+      case "in":
+        if (Array.isArray(param2)) { return param2.includes(param1); }
+        if (U.isList(param2) && isStringOrNumber(param1)) { return param1 in param2; }
+        if (typeof param2 === "string") { return new RegExp(String(param2), "gu").test(String(param1)); }
+        return false;
+      default:
+        return false;
+    }
+  },
   "case"(mode: StringCase, str: string) {
     // return U[`${mode.charAt(0)}Case`](str);
     switch (mode) {
@@ -78,6 +78,15 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
   "areEmpty"(...args) {
     args.pop();
     return !Object.values(args).flat().join("");
+  },
+  "getDropCap"(content: string): string {
+    if (!content || !content.length) {
+      return "";
+    }
+    return `systems/${C.SYSTEM_ID}/assets/chat/dropcaps/${content.slice(0, 1).toUpperCase()}.png`;
+  },
+  "getRestCaps"(content: string): string {
+    return content.slice(1);
   },
   "dbLog"(...args) {
     args.pop();

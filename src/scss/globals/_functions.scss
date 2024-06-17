@@ -20,6 +20,17 @@
 			1000));
 }
 
+@function build-text-shadow($size, $color: var(--K4-dBLACK), $count: 1, $offsetX: 0, $offsetY: 0) {
+  $shadows: ();
+
+  @for $i from 1 through $count {
+    $shadow: #{$offsetX} #{$offsetY} #{$size} #{$color};
+    $shadows: append($shadows, $shadow, comma);
+  }
+
+  @return $shadows;
+}
+
 @mixin to-mask($size, $radius, $padding: (0px 0px), $filter: none, $isExclusion: false) {
 	$cx: 50; $cy: 50;
 	$padding-x: to-number(nth($padding, 1));

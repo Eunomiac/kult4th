@@ -4,6 +4,7 @@ import U from "../scripts/utilities.js";
 import type { ActiveEffectDataConstructorData, ActiveEffectData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/activeEffectData';
 import K4Actor from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
+import K4Roll from "./K4Roll.js";
 import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
 // import { ObjectField, BooleanField, IntegerField, StringField } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/fields.mjs";
 // #endregion
@@ -147,6 +148,9 @@ const CUSTOM_FUNCTIONS: Record<
     if (!filter || !effect) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
     }
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
+    }
     actor.getItemsByFilter(K4ItemType.move, filter as string)
       .forEach((move) => {
         switch (effect) {
@@ -181,6 +185,9 @@ const CUSTOM_FUNCTIONS: Record<
     let {filter, effect, target, value, permanent} = data;
     if (!filter || !effect || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
+    }
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     if (filter === "actor") {
       let curVal = getProperty(actor, `${target}`);
@@ -241,6 +248,9 @@ const CUSTOM_FUNCTIONS: Record<
     }
     if (typeof defaultVal !== "string") {
       throw new Error(`No default value provided for PromptForData: ${JSON.stringify(data)}`);
+    }
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
     const context: Record<string, string|number|boolean> = {
@@ -330,6 +340,9 @@ const CUSTOM_FUNCTIONS: Record<
     if (typeof target !== "string") {
       throw new Error(`No for provided for RequireItem: ${JSON.stringify(data)}`);
     }
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
+    }
     const items = actor.getItemsByFilter(filter);
     if (items.length === 0) {
       // The required item is not found. Alert the user, and return false.
@@ -370,6 +383,13 @@ class K4ActiveEffect extends ActiveEffect {
   }
   // #endregion
 
+  static Call(parent: K4Actor|K4Roll, change: K4ActiveEffect.Change.Data) {
+    const {key, value} = change;
+    if (key in CUSTOM_FUNCTIONS) {
+      return CUSTOM_FUNCTIONS[key](parent, this.ParseFunctionDataString(value));
+    }
+    throw new Error(`Unrecognized custom function key: ${key}`);
+  }
   static onManageActiveEffect(event: ClickEvent, owner: K4Actor|K4Item) {
     event.preventDefault();
     const a = event.currentTarget;
@@ -487,7 +507,7 @@ namespace K4ActiveEffect {
   }
 
   export type CustomFunction = (
-    actor: K4Actor,
+    parent: K4Actor|K4Roll,
     data: Record<string, string|number|boolean>
   ) => ValueOrPromise<void|boolean>;
 
@@ -522,5 +542,5 @@ namespace K4ActiveEffect {
 // #endregion
 // #region EXPORTS ~
 export default K4ActiveEffect;
-export {EffectMode, EffectSource, CUSTOM_FUNCTIONS};
+export {EffectMode, EffectSource};
 // #endregion

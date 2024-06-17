@@ -5,7 +5,7 @@ import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect, {CUSTOM_FUNCTIONS, EffectSource} from "./K4ActiveEffect.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -356,13 +356,8 @@ class K4Item extends Item {
 
       /* === PROCESS ACTIVE EFFECT CHANGES: STEP 1 - RequireItem Prerequisite Check === */
       // Check for any "RequireItem" changes and reject creation if the requirement isn't met.
-      for (const change of itemData.requireItemChanges) {
-        if (!CUSTOM_FUNCTIONS.RequireItem(
-          actor as K4Actor,
-          K4ActiveEffect.ParseFunctionDataString(change.value)
-        )) {
-          return false;
-        }
+      if (itemData.requireItemChanges.some((change) => !K4ActiveEffect.Call(actor, change))) {
+        return false;
       }
 
       // Return true by default.
@@ -419,21 +414,22 @@ class K4Item extends Item {
   get edges(): Array<K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move>> {
     return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.isEdge());
   }
-  get allRulesChanges(): K4ActiveEffect.Change.Data[] {
+  get customChanges(): K4ActiveEffect.Change.Data[] {
     if (!this.hasMainEffects()) { return []; }
-    return this.system.rules.effects ?? [];
+    return (this.system.rules.effects ?? [])
+      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
   }
   get requireItemChanges(): K4ActiveEffect.Change.Data[] {
-    if (!this.hasMainEffects()) { return []; }
-    return this.system.rules.effects?.filter((change) => change.key === "RequireItem") ?? [];
+    return this.customChanges.filter((change) => change.key === "RequireItem");
   }
   get promptForDataChanges(): K4ActiveEffect.Change.Data[] {
-    if (!this.hasMainEffects()) { return []; }
-    return this.system.rules.effects?.filter((change) => change.key === "PromptForData") ?? [];
+    return this.customChanges.filter((change) => change.key === "PromptForData");
+  }
+  get modifyRollChanges(): K4ActiveEffect.Change.Data[] {
+    return this.customChanges.filter((change) => change.key === "ModifyRoll");
   }
   get systemChanges(): K4ActiveEffect.Change.Data[] {
-    if (!this.hasMainEffects()) { return []; }
-    return this.system.rules.effects?.filter((change) => !["PromptForData", "RequireItem"].includes(change.key)) ?? [];
+    return this.customChanges.filter((change) => !["ModifyRoll", "PromptForData", "RequireItem"].includes(change.key));
   }
 
   // #endregion
@@ -463,7 +459,7 @@ class K4Item extends Item {
     if (this.hasMainEffects()) {
       const {parent} = this;
       const effectData = {
-        changes: this.allRulesChanges,
+        changes: this.customChanges,
         disabled: false,
         icon: this.img,
         label: `[MAIN] ${this.name}`,
@@ -498,13 +494,7 @@ class K4Item extends Item {
     // PromptForData changes are resolved by querying the User for input when they are embedded within an Actor owned by that User -- i.e. right now.
     // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
     for (const change of this.promptForDataChanges) {
-      const { key, value } = change;
-      if (key in CUSTOM_FUNCTIONS) {
-        await CUSTOM_FUNCTIONS[key](
-          this.parent,
-          K4ActiveEffect.ParseFunctionDataString(value)
-        );
-      }
+      await K4ActiveEffect.Call(this.parent, change);
     }
 
     // If item has subItem schemas, create them now as independent K4Items.
@@ -735,7 +725,7 @@ class K4Item extends Item {
         name: this.system.chatName ?? this.name,
         cssClass: [
           ...this.chatCssClasses,
-          "chat-move-result kult4th-result-static"
+          "chat-roll-result kult4th-result-static"
         ].join(" ")
       };
     }

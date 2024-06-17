@@ -164,6 +164,26 @@ export const Colors = {
   BLACK: "rgb(20, 20, 20)",
   dBLACK: "rgb(0, 0, 0)"
 };
+
+export const ColorFilters = {
+  GOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(65%)",
+  dGOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(30%)",
+  bGOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(105%)",
+  gGOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(125%)",
+
+  RED: "hue-rotate(290.37deg) saturate(1620%) brightness(62%)",
+  dRED: "hue-rotate(290.37deg) saturate(1620%) brightness(28%)",
+  bRED: "hue-rotate(289.67deg) saturate(820%) brightness(95%)",
+  gRED: "hue-rotate(290.37deg) saturate(1620%)",
+
+  bWHITE: "saturate(0)",
+  WHITE: "hue-rotate(deg) saturate() brightness()",
+  bGREY: "hue-rotate(deg) saturate() brightness()",
+  GREY: "hue-rotate(deg) saturate() brightness()",
+  dGREY: "hue-rotate(deg) saturate() brightness()",
+  BLACK: "hue-rotate(deg) saturate() brightness()",
+  dBLACK: "hue-rotate(deg) saturate() brightness()"
+}
 export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
   if (colorVal in Colors) {
     return colorVal as KeyOf<typeof Colors>;
@@ -338,7 +358,7 @@ const C = {
       [K4ItemType.relation]: "R"
     }
   },
-  Colors,
+  Colors, ColorFilters,
   Ranges,
   RegExpPatterns,
   imageDefaults: {

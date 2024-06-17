@@ -72,6 +72,7 @@ declare global {
       attrVal: number,
       modifiers: ModData[],
       rollerName: string,
+      rollerImg: string,
       result: K4Item.Components.ResultData
     }
     interface Context_ItemSource extends Context_Base {
@@ -303,6 +304,7 @@ class K4Roll extends Roll {
       attrVal: this.attrVal,
       modifiers: this.modifiers,
       rollerName: this.actor.name ?? U.loc("roll.someone"),
+      rollerImg: this.actor.img ?? "",
       result: this.getOutcomeData(),
       ...(this.source instanceof K4Item && this.source.isActiveItem())
       ? {
@@ -315,7 +317,10 @@ class K4Roll extends Roll {
         source: this.source as K4Roll.RollableAttribute
       }
     };
-    const cssClasses = ["chat-move-result", `${this.parentType}-roll`];
+    const cssClasses = ["chat-roll-result"];
+    if (this.source instanceof K4Item && this.source.isActiveItem()) {
+      cssClasses.push(`${this.source.parentType}-roll`);
+    }
     switch (this.outcome) {
       case K4RollResult.completeSuccess: {
         cssClasses.push("roll-success");

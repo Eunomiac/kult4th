@@ -230,7 +230,7 @@ Hooks.once("init", async () => {
   $(".vtt.game.system-kult4th").prepend(svgDefTemplate(svgDefs));
 
   const colorDefTemplate = await getTemplate(U.getTemplatePath("globals", "color-defs"));
-  $(".vtt.game.system-kult4th").prepend(colorDefTemplate({colors: C.Colors}));
+  $(".vtt.game.system-kult4th").prepend(colorDefTemplate({colors: C.Colors, colorFilters: C.ColorFilters}));
   // #endregion ▄▄▄▄▄ STYLING ▄▄▄▄▄
 });
 

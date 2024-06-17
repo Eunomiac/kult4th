@@ -1,17 +1,31 @@
 {{log "{CHAT} result-static.hbs" this}}
 
 <div class="kult4th-chat {{cssClass}}">
-	<div class="roll-intro-header">
-		<span class="roll-char-name">{{item.parent.name}}</span>
-	</div>
-	<div class="roll-source-header">
+
+	<div class="roll-intro-header {{~#if item.system.isEdge}} roll-intro-header-with-footer{{/if}}">
+    <img class="drop-cap" src="{{getDropCap item.parent.name}}" />
+		<span class="roll-char-name">{{getRestCaps item.parent.name}}</span>
+    {{~#if item.system.isEdge}}
+    <span class="roll-intro-line"><span class="neon-glow-strong-blue">uses the Edge:</span></span>
+    {{/if}}
     {{> "systems/kult4th/templates/components/icon.hbs"
       icon=img
       type=parentType
       name=name
       isChat=true
     }}
-		<span class="roll-source-name"><span class="roll-source-text">{{name}}</span></span>
+    {{> "systems/kult4th/templates/components/icon.hbs"
+      icon=img
+      type=parentType
+      name=name
+      isChat=true
+    }}
+	</div>
+
+	<div class="roll-source-header roll-source-header-with-footer">
+		<span class="roll-source-name">
+      <span class="roll-source-text">{{name}}</span>
+    </span>
     <span class="roll-source-source-name">from <span class="roll-source-text">{{parentName}}</span></span>
 	</div>
 

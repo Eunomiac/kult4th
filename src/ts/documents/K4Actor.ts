@@ -4,7 +4,7 @@ import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect, {CUSTOM_FUNCTIONS} from "./K4ActiveEffect.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 import C, {K4Attribute, Archetype} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {PACKS} from "../scripts/data.js";
@@ -613,16 +613,28 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
-  get mainChanges(): Array<K4ActiveEffect.Change.Data> {
-    return this.enabledEffects
-      .map((effect) => effect.changes)
-      .flat()
-      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM && !["ModifyRoll", "PromptForData"].includes(change.key));
-  }
-
   get enabledEffects(): K4ActiveEffect[] {
     return Array.from(this.effects as Collection<K4ActiveEffect>)
       .filter((effect) => !effect.disabled);
+  }
+  get customChanges(): K4ActiveEffect.Change.Data[] {
+    return this.enabledEffects
+      .map((effect) => effect.changes)
+      .flat()
+      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
+  }
+
+  get requireItemChanges(): K4ActiveEffect.Change.Data[] {
+    return this.customChanges.filter((change) => change.key === "RequireItem");
+  }
+  get promptForDataChanges(): K4ActiveEffect.Change.Data[] {
+    return this.customChanges.filter((change) => change.key === "PromptForData");
+  }
+  get modifyRollChanges(): K4ActiveEffect.Change.Data[] {
+    return this.customChanges.filter((change) => change.key === "ModifyRoll");
+  }
+  get systemChanges(): K4ActiveEffect.Change.Data[] {
+    return this.customChanges.filter((change) => !["ModifyRoll", "PromptForData", "RequireItem"].includes(change.key));
   }
 
   /**
@@ -649,15 +661,8 @@ class K4Actor extends Actor {
       // this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
       this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0) as number;
 
-      // Call all 'main effect' custom functions.
-      this.mainChanges.forEach((change) => {
-        const {key, value} = change;
-        if (key in CUSTOM_FUNCTIONS) {
-          CUSTOM_FUNCTIONS[key](this, K4ActiveEffect.ParseFunctionDataString(value));
-        }
-      })
-
-
+      // Call all 'system change' custom functions.
+      this.systemChanges.forEach((change) => K4ActiveEffect.Call(this, change));
     }
   }
   /**

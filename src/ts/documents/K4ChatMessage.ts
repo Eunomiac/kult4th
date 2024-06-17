@@ -11,9 +11,138 @@ namespace K4ChatMessage {
 }
 // #endregion
 
+const ANIMATIONS = {
+  rollGearsIn(target: HTMLElement): GSAPAnimation {
+    const target$ = $(target);
+    const totalNum$ = target$.find(".roll-total-number");
+
+    const gearContainer$ = target$.find(".roll-total-gear");
+    const middleGear$ = gearContainer$.find("[class*='middle-ring']");
+    const outerGear$ = gearContainer$.find("[class*='outer-ring']");
+
+    // First kill any existing timelines or tweens on animated elements
+    U.gsap.killTweensOf([middleGear$, outerGear$, totalNum$]);
+
+    return U.gsap.timeline()
+
+      // Timeline: Middle Gear Component
+      .fromTo(middleGear$, {
+          filter: `blur(3px) brightness(5) drop-shadow(0px 0px 0px ${C.Colors.dBLACK})`,
+          scale: 2
+      }, {
+          rotation: "+=360",
+          filter: `blur(0px) brightness(0.75) drop-shadow(0px 0px 2px ${C.Colors.dGOLD})`,
+          scale: 1,
+          autoAlpha: 1,
+          ease: "power3.out",
+          duration: 1
+      })
+      .to(middleGear$, {
+          filter: `blur(0px) brightness(2) drop-shadow(0px 0px 5px ${C.Colors.bGOLD})`,
+          scale: 1.25,
+          duration: 0.5,
+          repeat: 1,
+          ease: "power2.in",
+          yoyo: true
+      })
+      .to(middleGear$, {
+          rotation:      "-=20",
+          duration:      0.4,
+          repeatRefresh: true,
+          repeatDelay:   1.6,
+          ease:          "back.out(5)",
+          repeat:        -1
+        })
+
+      // Timeline: Outer Gear Component
+      .fromTo(outerGear$, {
+          scale: 5,
+          filter: "blur(15px)"
+      }, {
+          autoAlpha: 0.85,
+          scale: 1,
+          filter: "blur(1.5px)",
+          ease: "power2.inOut",
+          duration: 1
+      }, 0.5)
+      .to(outerGear$, {
+          rotation: "+=360",
+          repeat: -1,
+          duration: 30,
+          ease: "none"
+      })
+
+      // Timeline: Total Number Component
+      .fromTo(totalNum$, {
+          transformOrigin: "center center",
+          skewX: -25,
+          scale: 1,
+          x: 100,
+          autoAlpha: 0,
+          filter: "blur(50px)"
+      }, {
+          autoAlpha: 1,
+          skewX: 0,
+          x: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          ease: "power2.inOut",
+          duration: 1
+      }, 1)
+
+  }
+}
 // #region === K4ChatMessage CLASS ===
 class K4ChatMessage extends ChatMessage {
   // #region INITIALIZATION ~
+  static async GenerateInputPanel(html: JQuery): Promise<void> {
+    // Load the template for the chat input control panel
+    const template = await getTemplate(U.getTemplatePath("sidebar", "chat-input-control-panel"));
+    // Convert the template into a jQuery object
+    const buttonHtml = $(template({}));
+    // Find the chat form in the rendered HTML
+    const chatForm = html.find("#chat-form").attr("data-type", "ic");
+    // Append the control panel to the chat form
+    chatForm.append(buttonHtml);
+
+    // Add click event listener for the In-Character button
+    buttonHtml.find("#ic").on("click", (event: ClickEvent) => {
+      event.preventDefault(); // Prevent the default form submission
+      ui.notifications.info("Message is In-Character"); // Notify the user
+      chatForm.attr("data-type", "ic"); // Set the data-type attribute to "ic"
+    });
+    // Add click event listener for the Out-of-Character button
+    buttonHtml.find("#ooc").on("click", (event: ClickEvent) => {
+      event.preventDefault(); // Prevent the default form submission
+      ui.notifications.info("Message is Out-of-Character"); // Notify the user
+      chatForm.attr("data-type", "ooc"); // Set the data-type attribute to "ooc"
+    });
+    // Add click event listener for the GM Whisper button
+    buttonHtml.find("#gm").on("click", (event: ClickEvent) => {
+      event.preventDefault(); // Prevent the default form submission
+      ui.notifications.info("Message will be Whispered to the GM"); // Notify the user
+      chatForm.attr("data-type", "gm"); // Set the data-type attribute to "gm"
+    });
+  }
+
+
+
+  static get ChatLog$(): JQuery {
+    return $("#chat-log");
+  }
+
+  static GetMessage(ref: string|JQuery|HTMLElement): Maybe<K4ChatMessage> {
+    if (typeof ref === "string") {
+      return game.messages.get(ref) as Maybe<K4ChatMessage>;
+    } else if (ref instanceof HTMLElement) {
+      const message$ = $(ref).closest(".chat-message");
+      const messageId = message$.data("messageId");
+      return game.messages.get(messageId) as Maybe<K4ChatMessage>;
+    } else {
+      const messageId = $(ref).data("messageId");
+      return game.messages.get(messageId) as Maybe<K4ChatMessage>;
+    }
+  }
   /**
   * Pre-Initialization of the K4ChatMessage class. This method should be run during the "init" hook.
   *
@@ -38,42 +167,66 @@ class K4ChatMessage extends ChatMessage {
 
     // Register a hook to run when the chat log is rendered
     Hooks.on("renderChatLog", async (_log: ChatLog, html: JQuery, _options: unknown) => {
-      // Load the template for the chat input control panel
-      const template = await getTemplate(U.getTemplatePath("sidebar", "chat-input-control-panel"));
-      // Convert the template into a jQuery object
-      const buttonHtml = $(template({}));
-      // Find the chat form in the rendered HTML
-      const chatForm = html.find("#chat-form").attr("data-type", "ic");
-      // Append the control panel to the chat form
-      chatForm.append(buttonHtml);
+      // Generate the button panel for setting input type
+      K4ChatMessage.GenerateInputPanel(html);
 
-      // Add click event listener for the In-Character button
-      buttonHtml.find("#ic").on("click", (event: ClickEvent) => {
-        event.preventDefault(); // Prevent the default form submission
-        ui.notifications.info("Message is In-Character"); // Notify the user
-        chatForm.attr("data-type", "ic"); // Set the data-type attribute to "ic"
-      });
-      // Add click event listener for the Out-of-Character button
-      buttonHtml.find("#ooc").on("click", (event: ClickEvent) => {
-        event.preventDefault(); // Prevent the default form submission
-        ui.notifications.info("Message is Out-of-Character"); // Notify the user
-        chatForm.attr("data-type", "ooc"); // Set the data-type attribute to "ooc"
-      });
-      // Add click event listener for the GM Whisper button
-      buttonHtml.find("#gm").on("click", (event: ClickEvent) => {
-        event.preventDefault(); // Prevent the default form submission
-        ui.notifications.info("Message will be Whispered to the GM"); // Notify the user
-        chatForm.attr("data-type", "gm"); // Set the data-type attribute to "gm"
-      });
+      // Animate the gears of the last message in the chat log, if there are any
+      const lastMessage$ = html.find(".chat-message").last();
+      const lastMessage = K4ChatMessage.GetMessage(lastMessage$);
+      if (lastMessage) {
+        lastMessage.animateGears();
+      }
     });
 
     // Register a hook to run when a chat message is rendered
-    Hooks.on("renderChatMessage", (message: ChatMessage, html) => {
-      const cssClasses = message.getFlag("kult4th", "cssClasses") as Maybe<string[]>;
-      if (Array.isArray(cssClasses)) {
-        html.addClass(cssClasses.join(" "));
-      }
+    Hooks.on("renderChatMessage", (message: K4ChatMessage, html) => {
+      // Introduce a brief pause to let the DOM settle
+      setTimeout(() => {
+
+        // Apply custom CSS classes to the chat message based on its flags
+        message.applyFlagCSSClasses();
+
+        // If this is the last chat message, animate its gears
+        if (message.isLastMessage) {
+          message.animateGears();
+        }
+      })
     });
+  }
+  // #endregion
+
+  applyFlagCSSClasses() {
+    const cssClasses = this.getFlag("kult4th", "cssClasses") as Maybe<string[]>;
+    if (Array.isArray(cssClasses)) {
+      this.elem$.addClass(cssClasses.join(" "));
+    }
+  }
+
+  animateGears() {
+    if(this.elem$.find(".roll-total-gear").length) {
+      setTimeout(() => ANIMATIONS.rollGearsIn(this.elem$[0]), 500);
+    }
+  }
+
+  get elem$(): JQuery {
+    return K4ChatMessage.ChatLog$.find(`[data-message-id="${this.id}"]`);
+  }
+
+  get isLastMessage(): boolean {
+    return this.id === K4ChatMessage.ChatLog$.find(".chat-message").last().data("messageId");
+  }
+
+  // #region STATIC METHODS ~
+  /**
+   * Given a string, will return the URL to the drop cap image for the first character of that string.
+   * @param {string} content - The string to extract the first character from.
+   * @returns {string} The URL to the drop cap image for the first character of the string.
+   */
+  static GetDropCap(content: string): string {
+    if (!content || !content.length) {
+      return ""
+    };
+    return `systems/kult4th/assets/chat/dropcaps/${content.slice(0, 1).toUpperCase()}.png`;
   }
   // #endregion
 

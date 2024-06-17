@@ -259,7 +259,7 @@
   --color-text-light-primary: var(--K4-color-primary);
   --color-text-light-highlight: var(--K4-color-primary-glow);
   --color-text-light-heading: var(--K4-color-primary-bright);
-  --color-text-dark-primary: var(--K4-color-primary-bright);
+  --chat-text-color-dark: var(--K4-color-primary-bright);
   --color-text-dark-secondary: var(--K4-color-primary);
   --color-text-dark-header: var(--K4-color-contrast);
   --color-text-dark-inactive: var(--K4-GREY);
