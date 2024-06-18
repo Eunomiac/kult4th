@@ -3,7 +3,7 @@
 <div class="kult4th-chat {{cssClass}}">
 
   <div class="roll-intro-header roll-intro-header-with-footer">
-    <img class="drop-cap" src="{{getDropCap rollerName}}" />
+    <img class="drop-cap {{~#if isWideDropCap}} wide-drop-cap{{/if}}" src="{{getDropCap rollerName}}" />
     <span class="roll-char-name">{{getRestCaps rollerName}}</span>
     <span class="roll-intro-line">
       {{#if sourceName}}

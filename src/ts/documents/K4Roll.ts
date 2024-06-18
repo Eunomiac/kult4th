@@ -116,10 +116,75 @@ class K4Roll extends Roll {
   }
   // #endregion
 
-  // #region GETTERS & SETTERS ~
-  override get formula(): string {
-    return `2d10`;
+  static CheckSource(rollData: K4Roll.ConstructorData, actor: K4Actor): {
+    type: K4RollType,
+    img: string,
+    attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute,
+    attrVal: number,
+    source: K4Roll.Source
+  } {
+    if (typeof rollData.source === "string") {
+      let attrVal: number;
+      switch (rollData.source) {
+        case K4Attribute.ask: {
+          throw new Error("Need to implement ask-for-attribute prompt in K4Actor, where it can be awaited.")
+          /* return {
+            type: K4RollType.attribute,
+            img: (rollData as K4Roll.ConstructorData_AttrSource).img,
+            attribute: actor.askForAttribute(),
+            source: rollData.source
+          }; */
+        }
+        case K4Attribute.zero:
+          attrVal = 0;
+        case K4Attribute.charisma:
+        case K4Attribute.coolness:
+        case K4Attribute.fortitude:
+        case K4Attribute.intuition:
+        case K4Attribute.perception:
+        case K4Attribute.reason:
+        case K4Attribute.reflexes:
+        case K4Attribute.soul:
+        case K4Attribute.violence:
+        case K4Attribute.willpower: {
+          attrVal ??= actor.attributes[rollData.source as K4CharAttribute];
+          return {
+            type: K4RollType.attribute,
+            img: (rollData as K4Roll.ConstructorData_AttrSource).img,
+            attribute: rollData.source,
+            attrVal,
+            source: rollData.source
+          };
+        }
+        default: {
+          // Assume an item reference by UUID, ID or name
+          const item = fromUuidSync(rollData.source) as Maybe<K4Item>
+            ?? actor.items.get(rollData.source) as Maybe<K4Item>
+            ?? actor.getItemByName(rollData.source) as Maybe<K4Item>
+          if (!item?.isActiveItem()) {
+            throw new Error(`Unrecognized rollData.source: ${rollData.source}`);
+          }
+          rollData.source = item;
+        }
+      }
+    }
+
+    if (rollData.source instanceof K4Item && rollData.source.isActiveItem()) {
+      const {attribute} = rollData.source.system;
+      if (attribute === K4Attribute.ask) {
+        throw new Error("Need to implement ask-for-attribute prompt in K4Actor, where it can be awaited. Both for generic asks and item.system.attribute = 'ask' cases.")
+      }
+      return {
+        type: K4RollType.move,
+        img: rollData.source.img ?? "",
+        attribute,
+        attrVal: attribute === K4Attribute.zero ? 0 : actor.attributes[attribute],
+        source: rollData.source
+      }
+    }
+    throw new Error(`Unable to parse attribute from rollData.source: ${JSON.stringify(2, null, rollData.source)}`);
   }
+  // #region GETTERS & SETTERS ~
   public actor: K4Actor<K4ActorType.pc>;
   public img: string;
   public _attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute;
@@ -197,72 +262,15 @@ class K4Roll extends Roll {
   // #endregion
 
   // #region === CONSTRUCTOR ===
-  #checkSource(rollData: K4Roll.ConstructorData): {
-    type: K4RollType,
-    img: string,
-    _attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute,
-    source: K4Roll.Source
-  } {
-    if (typeof rollData.source === "string") {
-      switch (rollData.source) {
-        case K4Attribute.ask: {
-          return {
-            type: K4RollType.attribute,
-            img: (rollData as K4Roll.ConstructorData_AttrSource).img,
-            _attribute: this.actor.askForAttribute(),
-            source: rollData.source
-          };
-        }
-        case K4Attribute.zero:
-        case K4Attribute.charisma:
-        case K4Attribute.coolness:
-        case K4Attribute.fortitude:
-        case K4Attribute.intuition:
-        case K4Attribute.perception:
-        case K4Attribute.reason:
-        case K4Attribute.reflexes:
-        case K4Attribute.soul:
-        case K4Attribute.violence:
-        case K4Attribute.willpower: {
-          return {
-            type: K4RollType.attribute,
-            img: (rollData as K4Roll.ConstructorData_AttrSource).img,
-            _attribute: rollData.source,
-            source: rollData.source
-          };
-        }
-        default: {
-          // Assume an item reference by UUID, ID or name
-          const item = fromUuidSync(rollData.source) as Maybe<K4Item>
-            ?? this.actor.items.get(rollData.source) as Maybe<K4Item>
-            ?? this.actor.getItemByName(rollData.source) as Maybe<K4Item>
-          if (!item?.isActiveItem()) {
-            throw new Error(`Unrecognized rollData.source: ${rollData.source}`);
-          }
-          rollData.source = item;
-        }
-      }
-    }
-
-    if (rollData.source instanceof K4Item && rollData.source.isActiveItem()) {
-      return {
-        type: K4RollType.move,
-        img: rollData.source.img ?? "",
-        _attribute: rollData.source.system.attribute === K4Attribute.ask
-          ? this.actor.askForAttribute()
-          : rollData.source.system.attribute,
-        source: rollData.source
-      }
-    }
-    throw new Error(`Unable to parse attribute from rollData.source: ${JSON.stringify(2, null, rollData.source)}`);
-  }
   constructor(rollData: K4Roll.ConstructorData, actor: K4Actor<K4ActorType.pc>) {
-    super("2d10");
+    const {img, type, attribute, attrVal, source} = K4Roll.CheckSource(rollData, actor);
+    /* const modTotal = K4Roll.GetModifierTotal(rollData, actor); */
+    const modTotal = 0;
+    super(`2d10 + ${attrVal} + ${modTotal}`);
     this.actor = actor;
-    const {img, type, _attribute, source} = this.#checkSource(rollData);
     this.img = img;
     this.type = type;
-    this._attribute = _attribute;
+    this._attribute = attribute;
     this.source = source;
   }
 
@@ -338,6 +346,9 @@ class K4Roll extends Roll {
         break;
       }
       default: throw new Error("Invalid roll result");
+    }
+    if (templateData.rollerName.startsWith("M") || templateData.rollerName.startsWith("W")) {
+      cssClasses.push("wide-drop-cap");
     }
     // cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
     if (this.sourceName.length > 22) {

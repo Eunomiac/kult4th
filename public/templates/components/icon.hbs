@@ -1,6 +1,6 @@
 <div class="icon-container icon-{{type}}">
   {{#if (test icon "in" ".svg")}}
-    <img class="chat-icon" src="{{icon}}" />
+    <div class="chat-icon" style="mask: url({{icon}}) no-repeat center; -webkit-mask: url({{icon}}) no-repeat center;"></div>
     <svg class="non-chat-icon svg-container" title="{{name}}">
       <use href="{{icon}}#icon"></use>
     </svg>

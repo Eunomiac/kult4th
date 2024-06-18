@@ -10,23 +10,12 @@ namespace K4ChatMessage {
 
 }
 // #endregion
-
-const ANIMATIONS = {
-  rollGearsIn(target: HTMLElement): GSAPAnimation {
-    const target$ = $(target);
-    const totalNum$ = target$.find(".roll-total-number");
-
-    const gearContainer$ = target$.find(".roll-total-gear");
-    const middleGear$ = gearContainer$.find("[class*='middle-ring']");
-    const outerGear$ = gearContainer$.find("[class*='outer-ring']");
-
-    // First kill any existing timelines or tweens on animated elements
-    U.gsap.killTweensOf([middleGear$, outerGear$, totalNum$]);
-
-    return U.gsap.timeline()
-
-      // Timeline: Middle Gear Component
-      .fromTo(middleGear$, {
+const GSAPEFFECTS = {
+  rollMiddleGear: {
+    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
+      const target$ = $(target);
+      return U.gsap.timeline()
+        .fromTo(target$, {
           filter: `blur(3px) brightness(5) drop-shadow(0px 0px 0px ${C.Colors.dBLACK})`,
           scale: 2
       }, {
@@ -37,7 +26,7 @@ const ANIMATIONS = {
           ease: "power3.out",
           duration: 1
       })
-      .to(middleGear$, {
+      .to(target$, {
           filter: `blur(0px) brightness(2) drop-shadow(0px 0px 5px ${C.Colors.bGOLD})`,
           scale: 1.25,
           duration: 0.5,
@@ -45,17 +34,23 @@ const ANIMATIONS = {
           ease: "power2.in",
           yoyo: true
       })
-      .to(middleGear$, {
+      .to(target$, {
           rotation:      "-=20",
           duration:      0.4,
           repeatRefresh: true,
           repeatDelay:   1.6,
           ease:          "back.out(5)",
           repeat:        -1
-        })
-
-      // Timeline: Outer Gear Component
-      .fromTo(outerGear$, {
+        });
+    },
+    defaults: {},
+    extendTimeline: true
+  },
+  rollOuterGear: {
+    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
+      const target$ = $(target);
+      return U.gsap.timeline()
+        .fromTo(target$, {
           scale: 5,
           filter: "blur(15px)"
       }, {
@@ -64,16 +59,44 @@ const ANIMATIONS = {
           filter: "blur(1.5px)",
           ease: "power2.inOut",
           duration: 1
-      }, 0.5)
-      .to(outerGear$, {
+      })
+      .to(target$, {
           rotation: "+=360",
           repeat: -1,
           duration: 30,
           ease: "none"
       })
-
-      // Timeline: Total Number Component
-      .fromTo(totalNum$, {
+    },
+    defaults: {},
+    extendTimeline: true
+  },
+  bounceInDice: {
+    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
+      const target$ = $(target);
+      return U.gsap.timeline()
+        .fromTo(target$, {
+          transformOrigin: "center center",
+          scale: 1.5,
+          y: -20,
+          filter: "brightness(2) blur(5px)"
+        }, {
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          filter: "brightness(1) blur(0px)",
+          ease: "power2.out",
+          duration: 1,
+          stagger: 0.25
+        });
+    },
+    defaults: {},
+    extendTimeline: true
+  },
+  slideIn: {
+    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
+      const target$ = $(target);
+      return U.gsap.timeline()
+        .fromTo(target$, {
           transformOrigin: "center center",
           skewX: -25,
           scale: 1,
@@ -88,8 +111,72 @@ const ANIMATIONS = {
           filter: "blur(0px)",
           ease: "power2.inOut",
           duration: 1
-      }, 1)
+      });
+    },
+    defaults: {},
+    extendTimeline: true
+  },
+  staggerInResults: {
+    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
+      const target$ = $(target);
+      return U.gsap.timeline()
+        .fromTo(target$, {
+          autoAlpha: 0,
+          filter: "blur(10px)"
+      }, {
+          autoAlpha: 1,
+          filter: "blur(0px)",
+          ease: "power2.out",
+          duration: 1,
+          stagger: 0.25
+      });
+    },
+    defaults: {},
+    extendTimeline: true
+  }
+}
+const ANIMATIONS = {
+  rollGearsIn(target: HTMLElement): GSAPAnimation {
+    const target$ = $(target);
 
+    const gearContainer$ = target$.find(".roll-total-gear");
+    const middleGear$ = gearContainer$.find("[class*='middle-ring']");
+    const outerGear$ = gearContainer$.find("[class*='outer-ring']");
+    const totalNum$ = target$.find(".roll-total-number");
+
+    const d10s$ = target$.find(".roll-d10");
+    const outcome$ = target$.find(".roll-outcome > *");
+    const results$ = target$.find(".roll-dice-results ~ div, .roll-dice-results ~ label, .roll-dice-results ~ h2, .roll-dice-results ~ ul li");
+
+    gsap.registerEffect
+
+    // First kill any existing timelines or tweens on animated elements
+    U.gsap.killTweensOf([middleGear$, outerGear$, totalNum$]);
+
+    return U.gsap.timeline()
+      // Allow overflow visibility for scaling in of animation
+      .set(gearContainer$, {overflow: "visible"})
+
+      // Timeline: Middle Gear Component
+      .rollMiddleGear(middleGear$)
+
+      // Timeline: Outer Gear Component
+      .rollOuterGear(outerGear$, {}, 0)
+
+      // Hide overflow visibility once scaling in nears completion
+      .set(gearContainer$, {overflow: "hidden"}, 1.5)
+
+      // Timeline: Dice
+      .bounceInDice(d10s$, {}, 0.75)
+
+      // Timeline: Total Number Component
+      .slideIn(totalNum$, {}, 1)
+
+      // Timeline: Outcome Component
+      .slideIn(outcome$, {}, 1.25)
+
+      // Timeline: Stagger In Results
+      .staggerInResults(results$, {}, 1.5);
   }
 }
 // #region === K4ChatMessage CLASS ===
@@ -125,7 +212,11 @@ class K4ChatMessage extends ChatMessage {
     });
   }
 
-
+  static RegisterGsapEffects() {
+    Object.entries(GSAPEFFECTS).forEach(([name, effect]) => {
+      U.gsap.registerEffect({name, ...effect});
+    });
+  }
 
   static get ChatLog$(): JQuery {
     return $("#chat-log");
@@ -165,17 +256,13 @@ class K4ChatMessage extends ChatMessage {
     // Set the default template for system chat messages
     CONFIG.ChatMessage.template = U.getTemplatePath("sidebar", "chat-message");
 
+    // Register GSAP effects
+    K4ChatMessage.RegisterGsapEffects();
+
     // Register a hook to run when the chat log is rendered
     Hooks.on("renderChatLog", async (_log: ChatLog, html: JQuery, _options: unknown) => {
       // Generate the button panel for setting input type
       K4ChatMessage.GenerateInputPanel(html);
-
-      // Animate the gears of the last message in the chat log, if there are any
-      const lastMessage$ = html.find(".chat-message").last();
-      const lastMessage = K4ChatMessage.GetMessage(lastMessage$);
-      if (lastMessage) {
-        lastMessage.animateGears();
-      }
     });
 
     // Register a hook to run when a chat message is rendered
@@ -190,7 +277,7 @@ class K4ChatMessage extends ChatMessage {
         if (message.isLastMessage) {
           message.animateGears();
         }
-      })
+      }, 1500)
     });
   }
   // #endregion
