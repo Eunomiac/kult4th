@@ -1,5 +1,6 @@
 // #region IMPORTS ~
 import U from "../scripts/utilities.js";
+import C from "../scripts/constants.js";
 import {K4Attribute} from "../scripts/constants.js";
 import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
@@ -70,6 +71,7 @@ declare global {
       source: K4Roll.RollableAttribute|K4Item.Active,
       attribute: K4Roll.RollableAttribute,
       attrVal: number,
+      attrType: "active"|"passive"|"zero",
       modifiers: ModData[],
       rollerName: string,
       rollerImg: string,
@@ -310,6 +312,7 @@ class K4Roll extends Roll {
       total: this.total!,
       attribute: this.attribute!,
       attrVal: this.attrVal,
+      attrType: this.attribute! in C.Attributes.Active ? "active" : "passive",
       modifiers: this.modifiers,
       rollerName: this.actor.name ?? U.loc("roll.someone"),
       rollerImg: this.actor.img ?? "",

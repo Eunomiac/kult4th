@@ -93,18 +93,18 @@ export const Archetypes = {
 
 export const Attributes = {
   Active: {
-    reason: {},
-    intuition: {},
-    perception: {},
-    coolness: {},
-    violence: {},
-    charisma: {},
-    soul: {}
+    [K4Attribute.reason]: {},
+    [K4Attribute.intuition]: {},
+    [K4Attribute.perception]: {},
+    [K4Attribute.coolness]: {},
+    [K4Attribute.violence]: {},
+    [K4Attribute.charisma]: {},
+    [K4Attribute.soul]: {}
   },
   Passive: {
-    fortitude: {},
-    willpower: {},
-    reflexes: {}
+    [K4Attribute.fortitude]: {},
+    [K4Attribute.willpower]: {},
+    [K4Attribute.reflexes]: {}
   }
 } as const;
 export const HarmButtons = (resolve: (value: {harm: number}) => void) => {

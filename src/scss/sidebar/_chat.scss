@@ -261,11 +261,15 @@
             }
 
             .roll-source-source-name {
-              // position: absolute;
-              margin-bottom: -22px;
+              margin-bottom: -18px;
               margin-top: 0%;
               display: block;
-              width: 100%;
+              width: min-content;
+              margin-left: auto;
+              white-space: nowrap;
+              background: var(--K4-BLACK);
+              line-height: $rem-14;
+              padding-left: 10px;
               text-align: right;
               padding-right: 5px;
               // top: var(--source-item-vert-shift);
@@ -382,9 +386,10 @@
                   }
 
                   &.roll-d10 {
+                    z-index: 2;
                     img {
-                      height: var(--chat-dice-results-term-container-size);
-                      width: var(--chat-dice-results-term-container-size);
+                      height: calc(1.15 * var(--chat-dice-results-term-container-size));
+                      width: calc(1.15 * var(--chat-dice-results-term-container-size));
                     }
                   }
 
@@ -394,83 +399,86 @@
                     transform: scale(0.8);
 
                     img {
-                      height: 300%;
-                      width: 300%;
+                      height: 400%;
+                      width: 400%;
                     }
 
-                    .roll-d10-value {
-                      display: block;
-                      position: relative;
-                      z-index: 1;
-                      text-align: center;
-                      line-height: var(--chat-dice-results-term-container-size);
-                      font-size: $rem-28;
-                      font-weight: $font-weight-black;
-                      &::first-letter {
-                        font-size: $rem-18;
-                        vertical-align: middle;
-                      }
+                    // .roll-d10-value {
+                    //   display: block;
+                    //   position: relative;
+                    //   z-index: 1;
+                    //   text-align: center;
+                    //   line-height: var(--chat-dice-results-term-container-size);
+                    //   font-size: $rem-28;
+                    //   font-weight: $font-weight-black;
+                    //   &::first-letter {
+                    //     font-size: $rem-18;
+                    //     vertical-align: middle;
+                    //   }
 
-                      &[data-attrval="7"] {
-                        color: var(--K4-bWHITE);
-                      }
-                      &[data-attrval="6"] {
-                        color: var(--K4-bWHITE);
-                      }
+                    //   &[data-attrval="7"] {
+                    //     color: var(--K4-bWHITE);
+                    //   }
+                    //   &[data-attrval="6"] {
+                    //     color: var(--K4-bWHITE);
+                    //   }
 
-                      &[data-attrval="5"] {
-                        color: var(--K4-bWHITE);
-                      }
+                    //   &[data-attrval="5"] {
+                    //     color: var(--K4-bWHITE);
+                    //   }
 
-                      &[data-attrval="4"] {
-                        color: var(--K4-WHITE);
-                      }
+                    //   &[data-attrval="4"] {
+                    //     color: var(--K4-WHITE);
+                    //   }
 
-                      &[data-attrval="3"] {
-                        color: var(--K4-gGOLD);
-                      }
+                    //   &[data-attrval="3"] {
+                    //     color: var(--K4-gGOLD);
+                    //   }
 
-                      &[data-attrval="2"] {
-                        color: var(--K4-bGOLD);
-                      }
+                    //   &[data-attrval="2"] {
+                    //     color: var(--K4-bGOLD);
+                    //   }
 
-                      &[data-attrval="1"] {
-                        color: var(--K4-GOLD);
-                      }
+                    //   &[data-attrval="1"] {
+                    //     color: var(--K4-GOLD);
+                    //   }
 
-                      &[data-attrval="0"] {
-                        color: var(--K4-dGOLD);
-                      }
+                    //   &[data-attrval="0"] {
+                    //     color: var(--K4-dGOLD);
+                    //   }
 
-                      &[data-attrval="-1"] {
-                        color: var(--K4-RED);
-                      }
+                    //   &[data-attrval="-1"] {
+                    //     color: var(--K4-RED);
+                    //   }
 
-                      &[data-attrval="-2"] {
-                        color: var(--K4-bRED);
-                      }
+                    //   &[data-attrval="-2"] {
+                    //     color: var(--K4-bRED);
+                    //   }
 
-                      &[data-attrval="-3"] {
-                        color: var(--K4-gRED);
-                      }
+                    //   &[data-attrval="-3"] {
+                    //     color: var(--K4-gRED);
+                    //   }
 
-                      &[data-attrval="-4"] {
-                        color: var(--K4-gRED);
-                      }
+                    //   &[data-attrval="-4"] {
+                    //     color: var(--K4-gRED);
+                    //   }
 
-                      &[data-attrval="-5"] {
-                        color: var(--K4-gRED);
-                        font-weight: $font-weight-black;
-                      }
-                    }
+                    //   &[data-attrval="-5"] {
+                    //     color: var(--K4-gRED);
+                    //     font-weight: $font-weight-black;
+                    //   }
+                    // }
 
                     &.attribute-zero { display: none }
                     &.attribute-fortitude,
                     &.attribute-reason,
-                    &.attribute-coolness { left: -10px }
+                    &.attribute-coolness { left: -5px }
                     &.attribute-reflexes,
                     &.attribute-intuition,
-                    &.attribute-violence { left: 10px }
+                    &.attribute-violence { left: 5px }
+                    &.attribute-perception,
+                    &.attribute-charisma,
+                    &.attribute-soul { top: 10px }
                   }
                 }
               }

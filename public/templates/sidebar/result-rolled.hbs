@@ -46,8 +46,8 @@
       </div>
       {{#unless (eq attribute "zero")}}
       <div class="roll-term-container attribute-{{attribute}}">
-        <img src="systems/kult4th/assets/icons/roll-terms/{{attribute}}.svg" />
-        <span class="roll-d10-value" data-attrVal="{{attrVal}}">{{signNum attrVal}}</span>
+        <img class="attribute-flare" src="systems/kult4th/assets/chat/attribute_flares/{{attribute}}-flare.png" />
+        <img class="attribute-value" src="systems/kult4th/assets/chat/attribute_vals/{{attrType}}{{attrVal}}.png" />
       </div>
       {{/unless}}
       <div class="roll-term-container roll-d10">
