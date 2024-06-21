@@ -42,7 +42,10 @@
   <div class="roll-dice-results">
     <div class="roll-dice-line">
       <div class="roll-term-container roll-d10">
-        <img src="systems/kult4th/assets/chat/dice/{{dice.[0]}}.png" />
+        <div class="d10-animation">
+          <video autoplay loop muted><source src="systems/kult4th/assets/chat/dice/d10-bg-animation.webm" type="video/webm"></video>
+        </div>
+        <img class="d10-front" src="systems/kult4th/assets/chat/dice/{{dice.[0]}}.png" />
       </div>
       {{#unless (eq attribute "zero")}}
       <div class="roll-term-container attribute-{{attribute}}">
@@ -51,7 +54,10 @@
       </div>
       {{/unless}}
       <div class="roll-term-container roll-d10">
-        <img src="systems/kult4th/assets/chat/dice/{{dice.[1]}}.png" />
+        <div class="d10-animation">
+          <video autoplay loop muted><source src="systems/kult4th/assets/chat/dice/d10-bg-animation.webm" type="video/webm"></video>
+        </div>
+        <img class="d10-front" src="systems/kult4th/assets/chat/dice/{{dice.[1]}}.png" />
       </div>
     </div>
     <div class="roll-total">

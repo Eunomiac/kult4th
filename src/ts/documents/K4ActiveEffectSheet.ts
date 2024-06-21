@@ -85,7 +85,7 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:false,canToggle:true,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel:in Close Combat,fromText:#>text-keyword>Elite Sport (Contact)<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls against close combat attacks. #>text-sourceref>(from <##>text-keyword>Elite Sport (Contact)<##>text-sourceref>)<#"}
   ],
   "Endure Injury": [
-    {ModifyRoll: "filter:Endure Injury,effect:Add,value:actor.armor,inStatusBar:false"},
+    {ModifyRoll: "filter:Endure Injury,effect:Add,value:actor.system.armor,inStatusBar:false"},
     {ModifyRoll: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputMin:1,inputMax:4,inStatusBar:false"},
   ],
   "Expert": [
@@ -132,6 +132,11 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (2 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
     {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene. #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#"},
     {ModifyMove: "filter:Read a Person,target:system.results.failure.listRefs,effect:PushElement,value:questions"}
+  ],
+  "Interrogator": [
+    {ModifyMove: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>text-keyword>Interrogator<##>text-sourceref>)<#"},
+    {ModifyMove: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>text-keyword>Interrogator<##>text-sourceref>)<#"},
+    {ModifyMove: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if you mention a name, person, or object, you may still ask 'Are you lying?' #>text-sourceref>(from <##>text-keyword>Interrogator<##>text-sourceref>)<#"}
   ],
   "Sealed Fate": [
     {RequireItem: "filter:Condemned"}

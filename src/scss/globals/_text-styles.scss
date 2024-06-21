@@ -146,9 +146,9 @@
 
 		&.section-title {
 			width: calc(100% + var(--K4-subsection-padding-left) + var(--K4-subsection-padding-right));
-			text-transform: uppercase;
+			text-transform: lowercase;
 			font-weight: $font-weight-bold;
-			font-family: var(--font-primary-caps);
+			font-family: var(--font-primary-smallcaps);
 			margin:
 				calc(-1 * (var(--K4-subsection-padding-top)))
 				0
@@ -179,8 +179,18 @@
     // width: calc(100% / 0.8);
 
     font-family: var(--font-primary-smallcaps);
-		font-variant: all-small-caps;
+		text-transform: lowercase;
 		margin: 5px 0;
+
+    --horiz-scale: 0.8;
+    --full-width: calc(100% / var(--horiz-scale));
+    --extra-width: calc(var(--full-width) - 100%);
+    --horiz-shift-left: calc(-0.5 * var(--extra-width));
+
+    transform: scaleX(var(--horiz-scale));
+    transform-origin: center center;
+    width: var(--full-width);
+    margin-left: var(--horiz-shift-left);
 	}
 
   @keyframes neonGlow-blue {
@@ -317,7 +327,7 @@
     font-family: var(--font-primary-smallcaps);
 		font-size: $rem-16;
 		font-weight: $font-weight-bold;
-		font-variant: all-small-caps;
+    text-transform: lowercase;
 		// height: $rem-16;
 		margin: 10px 0 0 0;
 	}
@@ -470,8 +480,8 @@
 					text-align: center;
 					line-height: var(--K4-icon-size);
 					font-size: $rem-16;
-					text-transform: uppercase;
-					font-family: var(--font-primary-caps);
+					text-transform: lowercase;
+					font-family: var(--font-primary-smallcaps);
 					font-weight: $font-weight-black;
 					transform-origin: center center;
 					transform: translate(-50%, -50%) scaleX(0.75);

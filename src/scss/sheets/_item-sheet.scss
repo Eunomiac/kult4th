@@ -155,7 +155,7 @@
 					--K4-section-padding-bottom: 20px;
 					p:first-child::first-line {
             font-family: var(--font-primary-smallcaps);
-						font-variant: all-small-caps;
+            text-transform: lowercase;
 					}
 				}
 

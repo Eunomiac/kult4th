@@ -184,7 +184,7 @@ class K4Roll extends Roll {
         source: rollData.source
       }
     }
-    throw new Error(`Unable to parse attribute from rollData.source: ${JSON.stringify(2, null, rollData.source)}`);
+    throw new Error(`Unable to parse attribute from rollData.source: ${JSON.stringify(rollData.source, null, 2)}`);
   }
   // #region GETTERS & SETTERS ~
   public actor: K4Actor<K4ActorType.pc>;
@@ -300,6 +300,11 @@ class K4Roll extends Roll {
     }
   }
 
+  override get total(): Maybe<number> {
+    if (typeof super.total !== "number") { return super.total; }
+    return Math.max(0, super.total);
+  }
+
   public async displayToChat() {
     if (!this._evaluated) {
       throw new Error("Cannot display a roll that has not been evaluated.");
@@ -354,26 +359,31 @@ class K4Roll extends Roll {
       cssClasses.push("wide-drop-cap");
     }
     // cssClasses.push(`mod-rows-${Math.ceil(rollData.modifiers.length / 2)}`);
-    if (this.sourceName.length > 22) {
-      cssClasses.push("ultra-condensed");
-    } else if (this.sourceName.length > 18) {
-      cssClasses.push("condensed");
-    }
+    // if (this.sourceName.length > 22) {
+    //   cssClasses.push("ultra-condensed");
+    // } else if (this.sourceName.length > 18) {
+    //   cssClasses.push("condensed");
+    // }
     templateData.cssClass = cssClasses.join(" ");
     // kLog.log("DISPLAYING ROLL RESULT", {roll, templateData, rollData, options});
     const content = template(templateData);
 
 
-    await K4ChatMessage.create({
+    return await K4ChatMessage.create({
       content,
       speaker: K4ChatMessage.getSpeaker(),
       flags: {
         kult4th: {
-          cssClasses: [themeClass]
+          cssClasses: [themeClass],
+          isSummary: false,
+          isAnimated: true,
+          isRoll: true,
+          isTrigger: false,
+          rollOutcome: this.outcome,
+          isEdge: false
         }
       }
-    });
-
+    }) as K4ChatMessage;
   }
   public override evaluate(options?: InexactPartial<RollTerm.Options> & { async: true }): Promise<Evaluated<this>>;
   public override evaluate(options: InexactPartial<RollTerm.Options & { async: false }>): Evaluated<this>;

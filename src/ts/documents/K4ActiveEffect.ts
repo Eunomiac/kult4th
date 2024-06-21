@@ -1,7 +1,6 @@
 // #region IMPORTS ~
-import C from "../scripts/constants.js";
+import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import type { ActiveEffectDataConstructorData, ActiveEffectData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/activeEffectData';
 import K4Actor from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4Roll from "./K4Roll.js";
@@ -107,11 +106,79 @@ enum PromptInputType {
   confirm = "confirm"
 }
 // #endregion
+// #region TYPES ~
+namespace K4Change {
+  export type Source = EffectChangeData;
 
+}
+namespace K4ActiveEffect {
+
+  // export namespace Change {
+  //   interface BaseData {
+  //     value: string;
+  //   }
+
+  //   interface CustomData extends BaseData {
+  //     key: keyof typeof CUSTOM_FUNCTIONS;
+  //     mode: EffectMode.Custom;
+  //   }
+
+  //   interface NonCustomData extends BaseData {
+  //     key: string;
+  //     mode: Exclude<EffectMode, EffectMode.Custom>;
+  //   }
+
+  //   export type Data = CustomData | NonCustomData;
+
+  // }
+
+  export type CustomFunction = (
+    parent: K4Actor|K4Roll,
+    data: Record<string, string|number|boolean>
+  ) => ValueOrPromise<void|boolean>;
+
+  // export interface ConstructorData extends ActiveEffectDataConstructorData {
+  //   changes: Change.Data[];
+  // }
+
+  export interface Data extends Partial<Omit<ActiveEffectData, "changes">> {
+    changes: EffectChangeData[];
+    state: boolean; // Whether the Effect is currently enabled or disabled
+    defaultState?: boolean; // Whether the effect is enabled by default when applied. (default = true)
+    uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
+                    // - if undefined, the Effect is not limited-use
+    inStatusBar: boolean; // Whether the Effect should be displayed in the status bar on the Actor's character sheet. (default = false)
+                          // - if true, several additional properties are required:
+    canToggle?: boolean; // Whether the PARENTACTOR can toggle the effect on/off on their character sheet (default = true)
+
+    shortLabel?: string; // A short label to be shown in the status bar
+    tooltip?: string; // A longer description of the effect, shown in the tooltip when hovering over the effect's label on the actor's sheet
+    fromText?: string; // The name to display in any "(from ...)" references in displayed game text
+    effectSource: EffectSource; // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
+
+    // "isPooled": For ActiveEffects on scenes and sessions, whether the "system.usage.value" is shared among all actors. (default = true)
+    // Default is true because this is how changes can be transferred between actors,
+    // i.e. one actor creates a usage.max = 1 bonus to a roll, which another actor can use,
+    // is how the "Help Other" move works.
+    // Limited-use scene or session effects are comparatively rare.
+  }
+
+  // export type ConstructorData = Data & ActiveEffectDataConstructorData & {effectSource: EffectSource};
+}
+// #endregion
 // #region -- INTERFACE AUGMENTATION ~
-
+interface K4ActiveEffect extends ActiveEffect {
+  label: string,
+  icon: string,
+  origin: string
+  disabled: boolean
+  changes: EffectChangeData[]
+  updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>
+  data: K4ActiveEffect.Data & ActiveEffectData
+}
 // #endregion
 // #endregion --
+
 
 // #region === CUSTOM FUNCTIONS FOR MODE EffectMode.Custom ===
 const CUSTOM_FUNCTIONS: Record<
@@ -133,10 +200,16 @@ const CUSTOM_FUNCTIONS: Record<
   CreateTracker: async (actor, data) => {
 
   },
+  ChangeTracker: async (actor, data) => {
+
+  },
   ModifyAttack: async (actor, data) => {
 
   },
   ModifyMove: async (actor, data) => {
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
+    }
     let {filter, target, effect, value, text, fromText} = data as Partial<{
       filter: string,
       effect: string,
@@ -147,9 +220,6 @@ const CUSTOM_FUNCTIONS: Record<
     }>;
     if (!filter || !effect) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
-    }
-    if (!(actor instanceof K4Actor)) {
-      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     actor.getItemsByFilter(K4ItemType.move, filter as string)
       .forEach((move) => {
@@ -182,12 +252,12 @@ const CUSTOM_FUNCTIONS: Record<
       })
   },
   ModifyProperty: async (actor, data) => {
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
+    }
     let {filter, effect, target, value, permanent} = data;
     if (!filter || !effect || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
-    }
-    if (!(actor instanceof K4Actor)) {
-      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     if (filter === "actor") {
       let curVal = getProperty(actor, `${target}`);
@@ -228,6 +298,9 @@ const CUSTOM_FUNCTIONS: Record<
     }
   },
   PromptForData: async (actor, data) => {
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
+    }
     let {title, key, input, inputVals, default: defaultVal, bodyText, subText} = data as Partial<{
       title: string,
       key: string,
@@ -237,20 +310,24 @@ const CUSTOM_FUNCTIONS: Record<
       bodyText?: string,
       subText?: string
     }>;
-    if (typeof title !== "string") {
-      throw new Error(`No title provided for PromptForData: ${JSON.stringify(data)}`);
-    }
     if (typeof key !== "string") {
       throw new Error(`No key provided for PromptForData: ${JSON.stringify(data)}`);
+    }
+    // If the key has already been filled with data, skip the prompt.
+    if (key.startsWith("flags")) {
+      const flagKey = key.split(".").slice(1).join(".");
+      if (actor.getFlag(C.SYSTEM_ID, flagKey) !== undefined) {
+        return;
+      }
+    }
+    if (typeof title !== "string") {
+      throw new Error(`No title provided for PromptForData: ${JSON.stringify(data)}`);
     }
     if (typeof input !== "string") {
       throw new Error(`No input type provided for PromptForData: ${JSON.stringify(data)}`);
     }
     if (typeof defaultVal !== "string") {
       throw new Error(`No default value provided for PromptForData: ${JSON.stringify(data)}`);
-    }
-    if (!(actor instanceof K4Actor)) {
-      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
     const context: Record<string, string|number|boolean> = {
@@ -330,6 +407,9 @@ const CUSTOM_FUNCTIONS: Record<
     throw new Error(`Unrecognized key for PromptForData: ${key}`);
   },
   RequireItem: (actor, data) => {
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
+    }
     let {filter, for: target} = data as Partial<{
       filter: string,
       for: string
@@ -340,9 +420,6 @@ const CUSTOM_FUNCTIONS: Record<
     if (typeof target !== "string") {
       throw new Error(`No for provided for RequireItem: ${JSON.stringify(data)}`);
     }
-    if (!(actor instanceof K4Actor)) {
-      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
-    }
     const items = actor.getItemsByFilter(filter);
     if (items.length === 0) {
       // The required item is not found. Alert the user, and return false.
@@ -350,86 +427,22 @@ const CUSTOM_FUNCTIONS: Record<
       return false;
     }
     return true;
+  },
+  ModifyRoll: (roll, data) => {
+    if (!(roll instanceof K4Roll)) {
+      throw new Error(`Invalid roll for ModifyRoll: ${String(roll)}`);
+    }
   }
 } as const;
 // #endregion
 
-// #region === K4ACTIVEEFFECT CLASS ===
+// #region === K4CHANGE CLASS ===
 /**
- * The active effect itself can be applied using Foundry's standard logic, resulting in changes
- * arrays that contain mode:0 custom functions where key is the function name, and value is the
- * function string.
- *
- * Effects defined in the system.rules schema of an item are created as embedded
- * effects on the item, and set to be transferrable to any owning actor.
- *
- * Effects defined in the system.results schema of an item are instead created as embedded effects
- * directly on the actor when the associated result is triggered.
- *
- * Changes are generally parsed and applied during the owning actor's prepareData() method, ensuring
- * all changes do not make permanent changes to the actor's data, simplifying the process of removal.
- * This includes changes made to other items owned by the actor. Changes that apply modifiers to dice
- * rolls determine whether they should be displayed in the status bar of the actor's sheet and/or whether
- * the actor can toggle them on and off at this step. When the actor makes a roll, these changes are
- * iterated through and applied during the roll process.
+ * A utility class wrapper around the changes array of a K4ActiveEffect, providing methods for
+ * compiling, filtering, and applying changes to a parent K4Actor.
  */
-class K4ActiveEffect extends ActiveEffect {
-
-  // #region INITIALIZATION ~
-  static async PreInitialize(): Promise<void> {
-    CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
-    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
-    DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, { makeDefault: true });
-  }
-  // #endregion
-
-  static Call(parent: K4Actor|K4Roll, change: K4ActiveEffect.Change.Data) {
-    const {key, value} = change;
-    if (key in CUSTOM_FUNCTIONS) {
-      return CUSTOM_FUNCTIONS[key](parent, this.ParseFunctionDataString(value));
-    }
-    throw new Error(`Unrecognized custom function key: ${key}`);
-  }
-  static onManageActiveEffect(event: ClickEvent, owner: K4Actor|K4Item) {
-    event.preventDefault();
-    const a = event.currentTarget;
-    if (a.dataset.action === "create") {
-      return owner.createEmbeddedDocuments("ActiveEffect", [{
-        name:   owner.name,
-        icon:   owner.img,
-        origin: owner.uuid
-      }]);
-    }
-    const selector = a.closest("tr");
-    if (selector === null) { return null; }
-    const effect = selector.dataset.effectId
-      ? owner.effects.get(selector.dataset.effectId) as K4ActiveEffect
-      : null;
-    if (!effect) { return null; }
-    switch ( a.dataset.action ) {
-      case "edit":
-        return effect.sheet?.render(true);
-      case "delete":
-        return effect.delete();
-      case "toggle":
-        return effect.update({state: !effect.data.state});
-      default: return null;
-    }
-  }
-
-  // #region GETTERS & SETTERS ~
-
-  // public effectSource: EffectSource;
-  // // #endregion
-
-  // #region CONSTRUCTOR
-  constructor(data: K4ActiveEffect.ConstructorData) {
-    super(data);
-  }
-  // #endregion
-
-
-  // #region PRIVATE METHODS ~
+class K4Change implements EffectChangeData {
+  // #region STATIC METHODS ~
   /**
    * Parses a function data string into an object literal.
    *
@@ -465,9 +478,255 @@ class K4ActiveEffect extends ActiveEffect {
   }
   // #endregion
 
+  // #region Effect Change Data Properties ~
+  key: string;
+  value: string;
+  mode: number;
+  priority: number | null | undefined;
+
+  // #region GETTERS & SETTERS ~
+  get isInstantiated(): boolean {
+    return Boolean(this.parentEffect);
+  }
+  get isOwnedByActor(): boolean {
+    return this.parentEffect?.actor !== undefined;
+  }
+  get actor(): Maybe<K4Actor> {
+    if (!this.isOwnedByActor) { return; }
+    return this.parentEffect!.actor;
+  }
+  get isPromptOnCreate(): boolean {
+    return ["PromptForData"].includes(this.customFunctionName);
+  }
+  get isRequireItemCheck(): boolean {
+    return ["RequireItem"].includes(this.customFunctionName);
+  }
+  get isPermanentChange(): boolean {
+    return this.customFunctionData.permanent === true;
+  }
+  get isSystemModifier(): boolean {
+    return !this.isPromptOnCreate
+      && !this.isRequireItemCheck
+      && !this.isPermanentChange
+      && !this.isRollModifier;
+  }
+  get isRollModifier(): boolean {
+    return ["ModifyRoll"].includes(this.customFunctionName);
+  }
+  get filter(): Maybe<"all"|K4Attribute|K4ItemType|string> {
+    return this.customFunctionData.filter as Maybe<string>;
+  }
+  _promptedValue?: string|number|boolean;
+  get finalValue(): Maybe<string|number|boolean> {
+    const {value} = this.customFunctionData;
+    if (value === undefined) { return; }
+    if (value === "prompt") {
+      return this._promptedValue;
+    }
+    if (this.isOwnedByActor && typeof value === "string" && value.startsWith("actor.")) {
+      return getProperty(this.actor as K4Actor, value.slice(6));
+    }
+    return value;
+  }
+  get hasNumericValue(): boolean {
+    return typeof this.finalValue === "number";
+  }
+  get isInStatusBar(): boolean {
+    return this.isRollModifier
+      && this.customFunctionData.inStatusBar !== false
+      && this.hasNumericValue;
+  }
+  // #endregion
+
+  // #region CONSTRUCTOR
+  customFunctionName: keyof typeof CUSTOM_FUNCTIONS;
+  customFunction: K4ActiveEffect.CustomFunction;
+  customFunctionData: Record<string, string|number|boolean>;
+  parentEffect?: K4ActiveEffect;
+  constructor(data: EffectChangeData, effect: K4ActiveEffect) {
+    const {key, mode, value} = data;
+    if (mode !== CONST.ACTIVE_EFFECT_MODES.CUSTOM) {
+      throw new Error(`[new K4Change] Attempted K4Change construction for non-custom effect: ${JSON.stringify(data)}`);
+    }
+    if (!(key in CUSTOM_FUNCTIONS)) {
+      throw new Error(`[new K4Change] Unrecognized custom function key: ${key}`);
+    }
+    this.key = key;
+    this.value = value;
+    this.mode = mode;
+    this.customFunctionName = key;
+    this.customFunction = CUSTOM_FUNCTIONS[key];
+    this.customFunctionData = K4Change.ParseFunctionDataString(value);
+    this.parentEffect = effect;
+  }
+  // #endregion
+
+  // #region PUBLIC METHODS ~
+  apply(parent?: K4Actor|K4Roll) {
+    parent ??= this.actor;
+    if (!parent) {
+      throw new Error(`[K4Change.apply] No valid parent found for '${this.customFunctionName}' K4Change of K4ActiveEffect '${this.parentEffect?.name ?? "(Uninstantiated Effect Data)"}'`);
+    }
+    return this.customFunction(parent, this.customFunctionData);
+  }
+  // #endregion
+
+  // #region PRIVATE METHODS ~
+  // #endregion
+
+}
+
+// #region === K4ACTIVEEFFECT CLASS ===
+/**
+ * The active effect itself can be applied using Foundry's standard logic, resulting in changes
+ * arrays that contain mode:0 custom functions where key is the function name, and value is the
+ * function string.
+ *
+ * Effects defined in the system.rules schema of an item are created as embedded
+ * effects on the item, and set to be transferrable to any owning actor.
+ *
+ * Effects defined in the system.results schema of an item are instead created as embedded effects
+ * directly on the actor when the associated result is triggered.
+ *
+ * Changes are generally parsed and applied during the owning actor's prepareData() method, ensuring
+ * all changes do not make permanent changes to the actor's data, simplifying the process of removal.
+ * This includes changes made to other items owned by the actor. Changes that apply modifiers to dice
+ * rolls determine whether they should be displayed in the status bar of the actor's sheet and/or whether
+ * the actor can toggle them on and off at this step. When the actor makes a roll, these changes are
+ * iterated through and applied during the roll process.
+ */
+class K4ActiveEffect extends ActiveEffect {
+
+  // #region INITIALIZATION ~
+  static async PreInitialize(): Promise<void> {
+    CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
+    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
+    DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, { makeDefault: true });
+
+    Hooks.on("createActiveEffect", async (effect: K4ActiveEffect) => {
+      kLog.display(`[on CreateActiveEffect] ${effect.label}`, {
+        origin: effect.origin,
+        ownedByActor: effect.isOwnedByActor,
+        hasItemOrigin: effect.hasItemOrigin,
+        originDoc: effect.origin ? fromUuidSync(effect.origin) : null,
+        isItemOwned: effect.hasItemOrigin ? effect.originItem!.isOwnedItem() : false,
+        requireItemChanges: effect.requireItemChanges,
+        permanentChanges: effect.permanentChanges
+      });
+
+      // If this effect is not embedded in an actor, do nothing
+      if (!effect.isOwnedByActor) { return true; }
+
+      // If the effect has no custom changes, do nothing.
+      if (!effect.getCustomChanges().length) { return true; }
+
+      const originItem = fromUuidSync(effect.origin) as Maybe<K4Item>;
+
+      /* === PROCESS CUSTOM CHANGES: STEP 1 - RequireItem Prerequisite Check === */
+      // Check for any "RequireItem" changes. If any of them fail, remove both the ActiveEffect and the embedded Item.
+      if (effect.requireItemChanges.some((change) => !change.apply())) {
+        originItem?.delete();
+        return false;
+      }
+
+      /* === PROCESS CUSTOM CHANGES: STEP 2 - PromptForData Check === */
+      // PromptForData changes are resolved by querying the User for input when they are embedded within an Actor owned by that User -- i.e. right now.
+      // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
+      // (Note: The "PromptForData" function will only run once; if the data it is seeking is already written to the actor's flags, it will do nothing.)
+      for (const change of effect.promptForDataChanges) {
+        await change.apply();
+      }
+
+      /* === PROCESS CUSTOM CHANGES: STEP 3 - Permanent Effects Check === */
+      // If any changes are permanent, apply them now -- they will be filtered out of future applications of the effect,
+      // and will not be reversed when the active effect is removed.
+      effect.permanentChanges.forEach((change) => change.apply());
+      return true;
+    });
+  }
+  // #endregion
+  static onManageActiveEffect(event: ClickEvent, owner: K4Actor|K4Item) {
+    event.preventDefault();
+    const a = event.currentTarget;
+    if (a.dataset.action === "create") {
+      return owner.createEmbeddedDocuments("ActiveEffect", [{
+        name:   owner.name,
+        icon:   owner.img,
+        origin: owner.uuid
+      }]);
+    }
+    const selector = a.closest("tr");
+    if (selector === null) { return null; }
+    const effect = selector.dataset.effectId
+      ? owner.effects.get(selector.dataset.effectId) as K4ActiveEffect
+      : null;
+    if (!effect) { return null; }
+    switch ( a.dataset.action ) {
+      case "edit":
+        return effect.sheet?.render(true);
+      case "delete":
+        return effect.delete();
+      case "toggle":
+        return effect.update({state: !effect.data.state});
+      default: return null;
+    }
+  }
+
+  // #region GETTERS & SETTERS ~
+  get isOwnedByActor(): boolean {
+    return this.origin?.startsWith("Actor") ?? false;
+  }
+  get isOwnedByItem(): boolean {
+    return this.origin?.startsWith("Item") ?? false;
+  }
+  get hasItemOrigin(): boolean {
+    return this.origin?.includes("Item") ?? false;
+  }
+  get originItem(): Maybe<K4Item> {
+    if (!this.hasItemOrigin) { return; }
+    return fromUuidSync(this.origin);
+  }
+  get actor(): Maybe<K4Actor> {
+    if (!this.isOwnedByActor) { return; }
+    const [_, actorId] = this.origin.split(".");
+    return game.actors.get(actorId);
+  }
+  getCustomChanges(): K4Change[] {
+    return this.changes
+      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM)
+      .map((change) => new K4Change(change, this));
+  }
+  get requireItemChanges() {
+    return this.getCustomChanges().filter((change) => change.isRequireItemCheck);
+  }
+  get permanentChanges() {
+    return this.getCustomChanges().filter((change) => change.isPermanentChange);
+  }
+  get promptForDataChanges() {
+    return this.getCustomChanges().filter((change) => change.isPromptOnCreate);
+  }
+  get modifyRollChanges() {
+    return this.getCustomChanges().filter((change) => change.isRollModifier);
+  }
+  get systemChanges() {
+    return this.getCustomChanges().filter((change) => change.isSystemModifier);
+  }
+  // // #endregion
+
+  // #region CONSTRUCTOR
+  constructor(data: ActiveEffectDataConstructorData) {
+    super(data);
+  }
+  // #endregion
+
+
+  // #region PRIVATE METHODS ~
+
+  // #endregion
+
   // #REGION === PUBLIC METHODS ===
   applyToActor(actor?: K4Actor) {
-    actor ??= this.parent;
+    actor ??= this.actor;
     if (!(actor instanceof K4Actor)) { return; }
   }
 
@@ -476,71 +735,8 @@ class K4ActiveEffect extends ActiveEffect {
   }
   // #ENDREGION
 }
-interface K4ActiveEffect extends ActiveEffect {
-  icon: string,
-  origin: string
-  disabled: boolean
-  changes: K4ActiveEffect.Change.Data[]
-  updateSource(updateData: {changes: K4ActiveEffect.Change.Data[]}): Promise<void>
-  data: K4ActiveEffect.Data & ActiveEffectData
-}
-// #region TYPES ~
-namespace K4ActiveEffect {
 
-  export namespace Change {
-    interface BaseData {
-      value: string;
-    }
-
-    interface CustomData extends BaseData {
-      key: keyof typeof CUSTOM_FUNCTIONS;
-      mode: EffectMode.Custom;
-    }
-
-    interface NonCustomData extends BaseData {
-      key: string;
-      mode: Exclude<EffectMode, EffectMode.Custom>;
-    }
-
-    export type Data = CustomData | NonCustomData;
-
-  }
-
-  export type CustomFunction = (
-    parent: K4Actor|K4Roll,
-    data: Record<string, string|number|boolean>
-  ) => ValueOrPromise<void|boolean>;
-
-  export interface ConstructorData extends ActiveEffectDataConstructorData {
-    changes: Change.Data[];
-  }
-
-  export interface Data extends Partial<Omit<ActiveEffectData, "changes">> {
-    changes: Change.Data[];
-    state: boolean; // Whether the Effect is currently enabled or disabled
-    defaultState?: boolean; // Whether the effect is enabled by default when applied. (default = true)
-    uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
-                    // - if undefined, the Effect is not limited-use
-    inStatusBar: boolean; // Whether the Effect should be displayed in the status bar on the Actor's character sheet. (default = false)
-                          // - if true, several additional properties are required:
-    canToggle?: boolean; // Whether the PARENTACTOR can toggle the effect on/off on their character sheet (default = true)
-
-    shortLabel?: string; // A short label to be shown in the status bar
-    tooltip?: string; // A longer description of the effect, shown in the tooltip when hovering over the effect's label on the actor's sheet
-    fromText?: string; // The name to display in any "(from ...)" references in displayed game text
-    effectSource: EffectSource; // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
-
-    // "isPooled": For ActiveEffects on scenes and sessions, whether the "system.usage.value" is shared among all actors. (default = true)
-    // Default is true because this is how changes can be transferred between actors,
-    // i.e. one actor creates a usage.max = 1 bonus to a roll, which another actor can use,
-    // is how the "Help Other" move works.
-    // Limited-use scene or session effects are comparatively rare.
-  }
-
-  // export type ConstructorData = Data & ActiveEffectDataConstructorData & {effectSource: EffectSource};
-}
-// #endregion
 // #region EXPORTS ~
 export default K4ActiveEffect;
-export {EffectMode, EffectSource};
+export {K4Change as K4Change, EffectMode, EffectSource};
 // #endregion

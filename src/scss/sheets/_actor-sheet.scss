@@ -826,9 +826,9 @@
                     --K4-hoverstrip-scale: 1;
 
                     .strip-name {
-                      text-transform: uppercase;
+                      text-transform: lowercase;
                       font-weight: 900;
-                      font-family: var(--font-primary-caps);
+                      font-family: var(--font-primary-smallcaps);
                     }
 
                     &:not(.wound-stabilized) {
@@ -963,7 +963,6 @@
                     left: unset;
                     right: 0;
                     font-family: var(--font-primary-smallcaps);
-                    font-variant: small-caps;
                     text-transform: lowercase;
                     font-size: 16px;
                     line-height: 16px;

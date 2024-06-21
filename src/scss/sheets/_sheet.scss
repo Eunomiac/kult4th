@@ -211,8 +211,9 @@
 					);
 
 					color: var(--K4-color-contrast);
-					font-family: var(--font-primary-caps);
-					font-weight: $font-weight-bold;
+					font-family: var(--font-primary-smallcaps);
+          text-transform: lowercase;
+          font-weight: $font-weight-bold;
 					line-height: var(--K4-icon-size);
 					font-size: $rem-12;
 					text-align: center;

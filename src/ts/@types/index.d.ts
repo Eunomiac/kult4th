@@ -8,10 +8,10 @@ import "./field-types";
 type SceneDoc = Scene;
 type ActorDoc = K4Actor;
 type ItemDoc = K4Item;
-type ActiveEffectDoc = ActiveEffect;
-type ChatMessageDoc = ChatMessage;
-type DialogDoc = Dialog;
-type RollDoc = Roll;
+type ActiveEffectDoc = K4ActiveEffect;
+type ChatMessageDoc = K4ChatMessage;
+type DialogDoc = K4Dialog;
+type RollDoc = K4Roll;
 type UserDoc = User;
 
 declare module "virtual:colors" {
@@ -47,24 +47,6 @@ declare global {
   }): EntityDoc | null;
 
   function $clamp(element: HTMLElement, options?: ClampOptions): ClampResponse;
-
-  namespace foundry {
-    namespace data {
-      namespace fields {
-        class AlphaField extends AlphaField { }
-        class ArrayField extends ArrayField { }
-        class DataField extends foundry.data.fields.OBJECT_FIELD { }
-        class SchemaField extends DataField { }
-        class NumberField extends foundry.data.fields.INTEGER_FIELD { }
-        class FilePathField extends foundry.data.fields.STRING_FIELD { }
-        class ColorField extends foundry.data.fields.COLOR_FIELD { }
-        class StringField extends foundry.data.fields.STRING_FIELD { }
-        class BooleanField extends foundry.data.fields.BOOLEAN_FIELD { }
-        class ObjectField extends foundry.data.fields.OBJECT_FIELD { }
-        class DocumentIdField extends foundry.data.fields.DOCUMENT_ID { }
-      }
-    }
-  }
   interface LenientGlobalVariableTypes {
     game: never,
     ui: never,

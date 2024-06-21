@@ -4,7 +4,7 @@ import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
+import K4ActiveEffect, {type K4Change} from "./K4ActiveEffect.js";
 import C, {K4Attribute, Archetype} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {PACKS} from "../scripts/data.js";
@@ -160,6 +160,44 @@ class K4Actor extends Actor {
     // Customize the sidebar icon for the Actor directory
     CONFIG.Actor.sidebarIcon = "fa-regular fa-people-group";
   }
+  /**
+   * Initialization of a K4Actor instance. This method should be run during the actor's "_onCreate" method.
+   *
+   * - Creates the basic player move items for the character.
+   * - Creates the singleton "Wounds" and "Stability" K4ActiveEffects.
+   */
+  async initMovesAndEffects() {
+    if (this.basicMoves.length) {return;}
+    // Create the basic moves for the character
+    await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
+    // Create the singleton "Wounds" and "Stability" K4ActiveEffects
+    await this.createEmbeddedDocuments("ActiveEffect", [
+      {
+        label: "Wounds",
+        icon: "systems/kult4th/assets/icons/wounds/wound-serious.svg",
+        origin: this.uuid,
+        changes: [
+          {
+            key: "ApplyWounds",
+            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+            value: "source:wounds"
+          }
+        ]
+      },
+      {
+        label: "Stability",
+        icon: "systems/kult4th/assets/icons/stability.svg",
+        origin: this.uuid,
+        changes: [
+          {
+            key: "ApplyStability",
+            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+            value: "source:stability"
+          }
+        ]
+      }
+    ]);
+  }
   // #endregion
   // #region Type Guards ~
   /**
@@ -173,7 +211,9 @@ class K4Actor extends Actor {
   }
   // #endregion
 
-  // #region GETTERS & SETTERS ~
+  // #region GETTERS ~
+  // #region -- Embedded Item Search & Retrieval Methods ~
+
   /**
    * Retrieves items of a specific type.
    * @param {Type} type - The type of items to retrieve.
@@ -255,40 +295,11 @@ class K4Actor extends Actor {
       arg2 ? this.getItemsOfType(arg1 as Type) : [...this.items]
     );
   }
-
-  async initMovesAndEffects() {
-    if (this.basicMoves.length) {return;}
-    // Create the basic moves for the character
-    await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
-    // Create the singleton "Wounds" and "Stability" K4ActiveEffects
-    await this.createEmbeddedDocuments("ActiveEffect", [
-      {
-        label: "Wounds",
-        icon: "systems/kult4th/assets/icons/wounds/wound-serious.svg",
-        changes: [
-          {
-            key: "ApplyWounds",
-            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-            value: "source:wounds"
-          }
-        ]
-      },
-      {
-        label: "Stability",
-        icon: "systems/kult4th/assets/icons/stability.svg",
-        changes: [
-          {
-            key: "ApplyStability",
-            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-            value: "source:stability"
-          }
-        ]
-      }
-    ]);
+  // #endregion
+  get moves() {
+    return this.getItemsOfType(K4ItemType.move)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
-
-  get moves() {return this.getItemsOfType(K4ItemType.move)
-      .sort((a, b) => a.name.localeCompare(b.name));}
   get basicMoves() {
     return this.moves
       .filter((move) => move.isBasicMove());
@@ -515,7 +526,7 @@ class K4Actor extends Actor {
 
   // #region EDGES ~
   async updateEdges(edges: number, source?: K4Item) {
-    if (!this.is(K4ActorType.pc)) { return; }
+    if (!this.is(K4ActorType.pc)) {return;}
     const sourceName = source ? source.parentName : this.system.edges.sourceName;
     if (this.sheet.rendered) {
       const html = this.sheet.element;
@@ -617,24 +628,217 @@ class K4Actor extends Actor {
     return Array.from(this.effects as Collection<K4ActiveEffect>)
       .filter((effect) => !effect.disabled);
   }
-  get customChanges(): K4ActiveEffect.Change.Data[] {
-    return this.enabledEffects
-      .map((effect) => effect.changes)
-      .flat()
-      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
+  get customChanges() {
+    return this.enabledEffects.map((effect) => effect.getCustomChanges()).flat();
+  }
+  get promptForDataChanges() {
+    return this.customChanges.filter((change) => change.isPromptOnCreate);
+  }
+  get requireItemChanges() {
+    return this.customChanges.filter((change) => change.isRequireItemCheck);
+  }
+  get modifyRollChanges() {
+    return this.customChanges.filter((change) => change.isRollModifier);
+  }
+  get systemChanges() {
+    return this.customChanges.filter((change) => change.isSystemModifier);
   }
 
-  get requireItemChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => change.key === "RequireItem");
+  /**
+   * Iterates over all active roll modifiers with numeric values and combines them as concisely as possible into a list for display on the actor's sheet, sorted with the most specific modifiers first.
+   *
+   * e.g. Given an array of the following modifiers:
+   * [
+   *  {filter: "all", value: 2},
+   *  {filter: "advantage", value: 1},
+   *  {filter: "disadvantage", value: -1},
+   *  {filter: "Keep It Together", value: 3},
+   *  {filter: "Involuntary Medium", value: 2},
+   *  {filter: "Engage In Combat", value: -2}
+   * ];
+   * ... and, knowing that:
+   * - "Keep It Together" and "Engage in Combat" are a basic moves
+   * - "Involuntary Medium" is a disadvantage move
+   *
+   * the method would return:
+   * [
+   *   {display: "Keep It Together", value: 5}, (all + Keep It Together)
+   *   {display: "Involuntary Medium", value: 3}, (all + disadvantage + Involuntary Medium)
+   *   {display: "Other Disadvantages", value: -1}, (all + disadvantage) ('other', to indicate this has already been accounted for in the 'Involuntary Medium' disadvantage total)
+   *   {display: "Advantages", value: 3}, (all + advantage) (no 'other', since there are no more-specific Advantage modifiers in the list)
+   *   {display: "All Other Rolls", value: 2} (all)
+   * ]
+   * (Note that it does NOT include "Engage in Combat", as when combined with "all", its modifier sums to zero.)
+   */
+  collapseRollModifiers(testFilterVals?: Array<{filter: string, value: number}>) {
+
+    testFilterVals = [
+      {filter: "all", value: 2},
+      {filter: "advantage", value: 1},
+      // {filter: "disadvantage", value: -1},
+      {filter: "Keep It Together", value: 3},
+      {filter: "Involuntary Medium", value: 2},
+      {filter: "Engage in Combat", value: -3}
+   ];
+
+    const collapsedModifierData: Array<{
+      display: string,
+      value: number,
+      othering?: Array<"all"|K4ItemType.advantage|K4ItemType.disadvantage>,
+      category?: K4ItemType.move|K4ItemType.advantage|K4ItemType.disadvantage}
+    > = [];
+    const filterVals: Array<{
+      filter: "all" | K4ItemType.advantage | K4ItemType.disadvantage | string,
+      value: number
+    }> = testFilterVals ?? this.modifyRollChanges
+      .filter((change): change is K4Change & {filter: string, value: number} => change.isInStatusBar)
+      .map((change) => ({
+        filter: change.filter,
+        value: change.finalValue
+      }));
+    kLog.log("[collapseRollModifiers] Initial Filter Vals", U.objClone(filterVals));
+
+    const categoryVals = {
+      all: 0,
+      [K4ItemType.advantage]: 0,
+      [K4ItemType.disadvantage]: 0
+    };
+
+    // Sort filterVals by specificity: specific move names first, then categories, then "all"
+    filterVals.sort((a, b) => {
+      if (a.filter === "all") return 1;
+      if (b.filter === "all") return -1;
+      if (a.filter === K4ItemType.advantage || a.filter === K4ItemType.disadvantage) return 1;
+      if (b.filter === K4ItemType.advantage || b.filter === K4ItemType.disadvantage) return -1;
+      return 0;
+    }).reverse();
+    kLog.log("[collapseRollModifiers] Sorted Filter Vals", U.objClone(filterVals));
+
+    // Helper function to add or update the collapsed data
+    const addOrUpdate = (
+      display: string,
+      value: number,
+      othering?: Array<"all"|K4ItemType.advantage|K4ItemType.disadvantage>,
+      category?: K4ItemType.move|K4ItemType.advantage|K4ItemType.disadvantage
+    ) => {
+      const existing = collapsedModifierData.find((mod) => mod.display === display);
+      if (existing) {
+        existing.value += value;
+      } else {
+        collapsedModifierData.push({display, value, othering, category});
+      }
+    };
+
+    // Iterate over the filter values and combine them
+    filterVals.forEach(({filter, value}) => {
+      switch (filter) {
+        case "all": {
+          categoryVals.all += value;
+          addOrUpdate("All Rolls", value);
+          break;
+        }
+        case K4ItemType.advantage: {
+          value += categoryVals.all;
+          categoryVals.advantage = value;
+          addOrUpdate("Advantages", value, ["all"]);
+          break;
+        }
+        case K4ItemType.disadvantage: {
+          value += categoryVals.all;
+          categoryVals.disadvantage += value;
+          addOrUpdate("Disadvantages", value, ["all"]);
+          break;
+        }
+        default: {
+          const move = this.getItemByName(filter);
+          if (!move) {
+            // throw new Error(`Unrecognized filter value: '${filter}'`);
+            break;
+          }
+          const othering: Array<"all"|K4ItemType.advantage|K4ItemType.disadvantage> = ["all"];
+          const category = move.isSubItem() ? move.parentType as K4ItemType.advantage|K4ItemType.disadvantage : move.type;
+          if ([K4ItemType.advantage, K4ItemType.disadvantage].includes(category)) {
+            othering.push(category as K4ItemType.advantage|K4ItemType.disadvantage);
+            value += categoryVals[category as K4ItemType.advantage|K4ItemType.disadvantage];
+          } else {
+            value += categoryVals.all;
+          }
+          addOrUpdate(filter, value, othering, category as K4ItemType.advantage|K4ItemType.disadvantage);
+          break;
+        }
+      }
+    });
+
+    kLog.log("[collapseRollModifiers] Initial Combination Pass", {
+      categoryVals: U.objClone(categoryVals),
+      collapsedModifierData: U.objClone(collapsedModifierData)
+    });
+
+    // Filter out any '0' values from the collapsed data
+    const filteredModifierData = collapsedModifierData.filter(({value}) => value !== 0);
+
+    kLog.log("[collapseRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
+
+    // Adjust the display names to include "Other" where necessary
+    if (filteredModifierData.some(({othering}) => othering?.includes("all"))) {
+      const allMod = filteredModifierData.find((mod) => mod.display === "All Rolls");
+      if (allMod) {
+        allMod.display = "All Other Rolls";
+      }
+    }
+    if (filteredModifierData.some(({othering}) => othering?.includes(K4ItemType.advantage))) {
+      const advMod = filteredModifierData.find((mod) => mod.display === "Advantages");
+      if (advMod) {
+        advMod.display = "Other Advantages";
+      }
+    }
+    if (filteredModifierData.some(({othering}) => othering?.includes(K4ItemType.disadvantage))) {
+      const disMod = filteredModifierData.find((mod) => mod.display === "Disadvantages");
+      if (disMod) {
+        disMod.display = "Other Disadvantages";
+      }
+    }
+
+    kLog.log("[collapseRollModifiers] Othering Pass", U.objClone(filteredModifierData));
+
+    /** Sort the collapsed and filtered modifier data as follows:
+     *
+     * - Specific non-advantage, non-disadvantage moves
+     * - Specific advantage moves
+     * - "Advantages"/"Other Advantages" general modifier
+     * - Specific disadvantage moves
+     * - "Disadvantages"/"Other Disadvantages" general modifier
+     * - "All Rolls"/"All Other Rolls" general modifier
+     */
+    const moveModifierData = filteredModifierData.filter(({display}) => !/^(Advantages$|Disadvantages$|^All.*Rolls$)/.test(display));
+    const sortedModifierData = [
+      ...moveModifierData.filter(({category}) => category === K4ItemType.move),
+      ...moveModifierData.filter(({category}) => category === K4ItemType.advantage),
+      filteredModifierData.find(({display}) => display.endsWith("Advantages")),
+      ...moveModifierData.filter(({category}) => category === K4ItemType.disadvantage),
+      filteredModifierData.find(({display}) => display.endsWith("Disadvantages")),
+      filteredModifierData.find(({display}) => display.endsWith("Rolls"))
+    ].filter(U.isDefined);
+
+    kLog.log("[collapseRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
+
+    return sortedModifierData;
   }
-  get promptForDataChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => change.key === "PromptForData");
-  }
-  get modifyRollChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => change.key === "ModifyRoll");
-  }
-  get systemChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => !["ModifyRoll", "PromptForData", "RequireItem"].includes(change.key));
+
+  /**
+   * Builds an HTML summary of all modifiers currently applied to the actor for display on their sheet.
+   * @returns {string} The modifier report HTML
+   */
+  buildModifierReport() {
+    const returnStrings = [];
+    for (const {display, value} of this.collapseRollModifiers()) {
+      if (value < 0) {
+        returnStrings.push(`<span class="k4-theme-red"><strong>${value}</strong> to <strong>${display}</strong></span>`);
+      } else {
+        returnStrings.push(`<span class="k4-theme-gold"><strong>+${value}</strong> to <strong>${display}</strong></span>`);
+      }
+    }
+    return returnStrings.join("<span class='k4-theme-black no-flex'>&#9670;</span>");
   }
 
   /**
@@ -658,11 +862,11 @@ class K4Actor extends Actor {
         critical: this.system.modifiers.wounds_critical.length as number,
         total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as number
       };
-      // this.system.modifiersReport = this.buildModifierReport(this.flatModTargets);
       this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0) as number;
+      this.system.modifiersReport = this.buildModifierReport();
 
       // Call all 'system change' custom functions.
-      this.systemChanges.forEach((change) => K4ActiveEffect.Call(this, change));
+      this.systemChanges.forEach((change) => change.apply(this));
     }
   }
   /**
@@ -703,7 +907,7 @@ class K4Actor extends Actor {
    * will be rerendered once the animation completes.
    *  - as options.updateAnim   *
    **/
-  override async update(data: Record<string, unknown>, options: DocumentModificationContext & {updateAnim?: GsapAnimation} = {}): Promise<Maybe<this>> {
+  override async update(data: Record<string, unknown>, options: DocumentModificationContext & {updateAnim?: GsapAnimation;} = {}): Promise<Maybe<this>> {
 
     const {updateAnim, ...updateOptions} = options;
     if (updateAnim && this.sheet.rendered) {

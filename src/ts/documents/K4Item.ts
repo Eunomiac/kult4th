@@ -5,7 +5,7 @@ import K4ChatMessage from "./K4ChatMessage.js";
 import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
+import K4ActiveEffect, {K4Change} from "./K4ActiveEffect.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -149,7 +149,7 @@ declare global {
           trigger?: string,
           outro?: string,
           listRefs?: string[],
-          effects?: K4ActiveEffect.Change.Data[],
+          effects?: EffectChangeData[], // Array<Omit<ChangeData, "priority">>,
           holdText?: string;
         };
       }
@@ -157,7 +157,7 @@ declare global {
       export interface ResultData {
         result: string,
         listRefs?: string[],
-        effects?: K4ActiveEffect.Change.Data[],
+        effects?: EffectChangeData[],
         edges?: number,
         hold?: number;
       }
@@ -310,7 +310,18 @@ declare global {
   }
 }
 // #ENDREGION
-
+// #region -- AUGMENTED INTERFACE ~
+interface K4Item<T extends K4ItemType = K4ItemType> {
+  get id(): IDString;
+  get name(): string;
+  get type(): T;
+  get sheet(): K4Item["_sheet"] & K4ItemSheet;
+  get effects(): EmbeddedCollection & Collection<K4ActiveEffect>[];
+  system: K4Item.System<T>;
+  parent: Maybe<K4Item | K4Actor>;
+}
+// #endregion
+// #endregion
 // #REGION === K4ITEM CLASS ===
 class K4Item extends Item {
   // #region INITIALIZATION ~
@@ -333,31 +344,19 @@ class K4Item extends Item {
     CONFIG.Item.sidebarIcon = "fa-regular fa-box-open";
 
     // Register creation hook
-    Hooks.on("preCreateItem", (itemData: K4Item): boolean => {
+    Hooks.on("preCreateItem", async (item: K4Item): Promise<boolean> => {
       // Ensure the item is being created for an actor
-      if (!itemData.parent || itemData.parent.documentName !== "Actor") {
+      if (!item.parent || item.parent.documentName !== "Actor") {
         return true;
       }
-      const actor: K4Actor = itemData.parent;
+      const actor: K4Actor = item.parent;
 
       // If an item with the same name and type already exists, other than the one being created, prevent the creation
       const existingItem: Maybe<K4Item> = actor.items
-      .find((i: K4Item): boolean => i.name === itemData.name && i.type === itemData.type && i.id !== itemData.id);
+      .find((i: K4Item): boolean => i.name === item.name && i.type === item.type && i.id !== item.id);
       if (existingItem) {
-        ui.notifications.warn(`The item "${itemData.name}" already exists on this actor.`);
+        ui.notifications.warn(`The item "${item.name}" already exists on this actor.`);
         return false; // Returning false prevents the item from being created
-      }
-
-      kLog.display(`#${itemData.id} [K4Item._preCreate] [[${C.Abbreviations.ItemType[itemData.type]}.${U.uCase(itemData.name)}]]`, {
-        ITEM: itemData,
-        isOwned: itemData.isOwnedItem(),
-        requireItemChanges: itemData.requireItemChanges
-      });
-
-      /* === PROCESS ACTIVE EFFECT CHANGES: STEP 1 - RequireItem Prerequisite Check === */
-      // Check for any "RequireItem" changes and reject creation if the requirement isn't met.
-      if (itemData.requireItemChanges.some((change) => !K4ActiveEffect.Call(actor, change))) {
-        return false;
       }
 
       // Return true by default.
@@ -375,7 +374,7 @@ class K4Item extends Item {
   isSubItem(): this is K4Item & K4SubItem {return Boolean("parentItem" in this.system && this.system.parentItem?.name);}
   isBasicMove(): this is K4Item<K4ItemType.move> {return C.BasicMoves.includes(this.name);}
   isEdge(): this is K4SubItem<K4ItemType.move> {return this.isSubItem() && Boolean(this.system.isEdge);}
-  isOwnedItem(): this is K4Item & {parent: K4Actor;} {return this.isEmbedded && this.parent instanceof Actor;}
+  isOwnedItem(): this is K4Item & {parent: K4Actor;} {return Boolean(this.isEmbedded && this.parent instanceof Actor);}
   isOwnedSubItem(): this is K4Item & K4SubItem & {parent: K4Actor;} {return this.isSubItem() && this.isOwnedItem();}
   isOwnedByUser(): this is K4Item & {parent: K4Actor;} {return this.isOwnedItem() && this.parent.isOwner;}
   isActiveItem(): this is K4Item.Active {return this.system.subType === K4ItemSubType.activeRolled;}
@@ -414,22 +413,33 @@ class K4Item extends Item {
   get edges(): Array<K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move>> {
     return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.isEdge());
   }
-  get customChanges(): K4ActiveEffect.Change.Data[] {
+  get customChangeData(): K4Change.Source[] {
     if (!this.hasMainEffects()) { return []; }
     return (this.system.rules.effects ?? [])
-      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
+      .filter((cData: K4Change.Source) => cData.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
   }
-  get requireItemChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => change.key === "RequireItem");
+  _systemCustomActiveEffect?: K4ActiveEffect;
+  _rollCustomActiveEffects?: Record<K4RollResult, K4ActiveEffect>|{triggered: K4ActiveEffect};
+  // get customChanges(): K4Change[] {
+  //   return this.customChangeData
+  //     .map((cData: EffectChangeData) => new K4Change(cData));
+  // }
+  get requireItemChangesData() {
+    return this.customChangeData.filter((change) => change.key === "RequireItem");
   }
-  get promptForDataChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => change.key === "PromptForData");
+  get permanentChangesData() {
+    return this.customChangeData.filter((change) => /permanent:true/.test(String(change.value)));
   }
-  get modifyRollChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => change.key === "ModifyRoll");
+  get promptForDataChangesData() {
+    return this.customChangeData.filter((change) => change.key === "PromptForData");
   }
-  get systemChanges(): K4ActiveEffect.Change.Data[] {
-    return this.customChanges.filter((change) => !["ModifyRoll", "PromptForData", "RequireItem"].includes(change.key));
+  get modifyRollChangesData() {
+    return this.customChangeData.filter((change) => change.key === "ModifyRoll");
+  }
+  get systemChangesData() {
+    return this.customChangeData
+      .filter((change) => !["RequireItem", "PromptForData", "ModifyRoll"].includes(change.key)
+        && !/permanent:true/.test(String(change.value)));
   }
 
   // #endregion
@@ -459,7 +469,7 @@ class K4Item extends Item {
     if (this.hasMainEffects()) {
       const {parent} = this;
       const effectData = {
-        changes: this.customChanges,
+        changes: this.customChangeData,
         disabled: false,
         icon: this.img,
         label: `[MAIN] ${this.name}`,
@@ -468,7 +478,7 @@ class K4Item extends Item {
       }
       // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).
       if (!parent) {
-        kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] PRIMARY: Creating Embedded Documents on ITEM`, {
+        kLog.display(`[Primary K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" PRIMARY: Embedding ActiveEffect on ITEM`, {
           ITEM: this,
           effectData
         });
@@ -478,7 +488,7 @@ class K4Item extends Item {
         // - (1) this item is being created by embedding an existing Primary item onto an actor, which will have transferred all of the K4ActiveEffects it created during its own _onCreate step. In this case, we don't need to do anything, as the effects will have already transferred to the Actor.
         // - (2) this item is being created directly as an embedded item on an actor, and will not have previously-created K4ActiveEffects to transfer. Because of Foundry limitations on creating ActiveEffects on already-embedded items, we must manually transfer the effects to the Actor by creating them on the Actor directly.
         // We know we are in case (2) if this item has no K4ActiveEffects (despite having effects defined in its system.rules.effects array).
-        kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] CREATED-AS-EMBEDDED: Creating Embedded Documents on ACTOR directly`, {
+        kLog.display(`[Owned K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" CREATED-AS-EMBEDDED: Embedding ActiveEffect on ACTOR DIRECTLY`, {
           ITEM: this,
           actor: parent,
           effectData
@@ -490,17 +500,10 @@ class K4Item extends Item {
     // If this isn't an item embedded on an actor, no additional functionality is necessary
     if (!this.isOwnedItem()) {return;}
 
-    /* === PROCESS ACTIVE EFFECT CHANGES: STEP 2 - PromptForData Check === */
-    // PromptForData changes are resolved by querying the User for input when they are embedded within an Actor owned by that User -- i.e. right now.
-    // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
-    for (const change of this.promptForDataChanges) {
-      await K4ActiveEffect.Call(this.parent, change);
-    }
-
     // If item has subItem schemas, create them now as independent K4Items.
     if (this.isParentItem()) {
       const subItemData = this.prepareSubItemData();
-      kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating ${subItemData.length} SubItems`, {
+      kLog.display(`[Owned K4ParentItem._onCreate] "${C.Abbreviations.ItemType[this.type]}.${this.name}" is Creating ${subItemData.length} SubItems`, {
         ITEM: this,
         subItemData: foundry.utils.deepClone(subItemData)
       });
@@ -508,12 +511,12 @@ class K4Item extends Item {
     } else if (this.isSubItem()) {
       const [parentName, parentType] = [this.parentName, this.parentType];
       const parentDisplay = `${C.Abbreviations.ItemType[parentType]}.${U.uCase(parentName)}`;
-      kLog.display(`... #${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Created by #${this.parentID ?? ""}[[${parentDisplay}]]`, {
+      kLog.log(`... [Owned K4SubItem._onCreate] "${C.Abbreviations.ItemType[this.type]}.${this.name}" Created by "${parentDisplay}"`, {
         ITEM: this,
         parent: this.parentItem
       });
     } else {
-      kLog.display(`#${this.id} [K4Item._onCreate] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Created`, {
+      kLog.display(`[Owned K4SoloItem._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" is neither a Parent nor a SubItem: Embedded Into Actor`, {
         ITEM: this
       });
     }
@@ -742,7 +745,12 @@ class K4Item extends Item {
       speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""}),
       flags: {
         kult4th: {
-          cssClasses: [this.chatTheme]
+          cssClasses: [this.chatTheme],
+          isSummary: true,
+          isAnimated: false,
+          isRoll: false,
+          isTrigger: false,
+          isEdge: false
         }
       }
     });
@@ -760,7 +768,7 @@ class K4Item extends Item {
       this.updateHold(hold!);
     }
     if ((effects ?? []).length > 0) {
-      const effectData: Array<K4ActiveEffect.ConstructorData> = [{
+      const effectData: Array<ActiveEffectDataConstructorData & Record<string, unknown>> = [{
         changes: effects!,
         disabled: false,
         icon: this.img,
@@ -772,23 +780,27 @@ class K4Item extends Item {
           ITEM: this,
           effectData: foundry.utils.deepClone(effectData)
         });
-      await this.parent.createEmbeddedDocuments("ActiveEffect", effectData as Array<K4ActiveEffect.ConstructorData & Record<string, unknown>>);
+      await this.parent.createEmbeddedDocuments("ActiveEffect", effectData);
     }
   }
 
   async rollItem(speaker?: string) {
     if (!this.hasResults()) {return;}
     if (!this.isOwnedItem()) {return;}
+    if (!this.parent.is(K4ActorType.pc)) { return; }
     if (this.isEdge()) {
       this.parent.spendEdge();
     }
-    if (this.is(K4ItemType.move) && this.parent.is(K4ActorType.pc)) {
+    if (this.is(K4ItemType.move)) {
       const roll = new K4Roll({source: this as K4Item.Active}, this.parent);
       await roll._attribute;
       roll.evaluate();
-      roll.displayToChat();
-      const outcomeData = roll.getOutcomeData();
-      this.applyResult(outcomeData);
+      kLog.display("Evaluated Roll, Displaying to Chat.");
+      const message = await roll.displayToChat();
+      kLog.display("Awaiting Animations Promise...");
+      await message.animationsPromise;
+      kLog.display("Animation Complete!");
+      this.applyResult(roll.getOutcomeData());
     }
   }
 
@@ -798,36 +810,32 @@ class K4Item extends Item {
     if (this.isEdge()) {
       this.parent.spendEdge();
     }
-    this.applyResult(this.system.results.triggered);
     const template = await getTemplate(this.triggerTemplate);
     const content = K4ChatMessage.CapitalizeFirstLetter(
       template(this.triggerSummaryContext)
     ).replace(/This Move threatens Hold/g, "This Move Generates Hold");
-    await K4ChatMessage.create({
+    const message = await K4ChatMessage.create({
       content,
       speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""}),
       flags: {
         kult4th: {
-          cssClasses: [this.parentItem?.chatTheme ?? this.chatTheme]
+          cssClasses: [this.parentItem?.chatTheme ?? this.chatTheme],
+          isSummary: false,
+          isAnimated: true,
+          isRoll: false,
+          isTrigger: true,
+          isEdge: this.isEdge()
         }
       }
-    });
+    }) as K4ChatMessage;
+    await message.animationsPromise;
+    this.applyResult(this.system.results.triggered);
   }
 }
 // #ENDREGION
 
 // #endregion
-// #region -- AUGMENTED INTERFACE ~
-interface K4Item<T extends K4ItemType = K4ItemType> {
-  get id(): IDString;
-  get name(): string;
-  get type(): T;
-  get sheet(): K4Item["_sheet"] & K4ItemSheet;
-  get effects(): EmbeddedCollection & Collection<K4ActiveEffect>[];
-  system: K4Item.System<T>;
-  parent: Maybe<K4Item | K4Actor>;
-}
-// #endregion
+
 
 // #region EXPORTS ~
 export default K4Item;
