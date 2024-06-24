@@ -135,7 +135,7 @@ namespace K4ActiveEffect {
   export type CustomFunction = (
     parent: K4Actor|K4Roll,
     data: Record<string, string|number|boolean>
-  ) => ValueOrPromise<void|boolean>;
+  ) => ValueOrPromise<void|boolean|string>;
 
   // export interface ConstructorData extends ActiveEffectDataConstructorData {
   //   changes: Change.Data[];
@@ -175,6 +175,11 @@ interface K4ActiveEffect extends ActiveEffect {
   changes: EffectChangeData[]
   updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>
   data: K4ActiveEffect.Data & ActiveEffectData
+  flags: {
+    kult4th?: {
+      disabledChanges?: Record<number, boolean>
+    }
+  }
 }
 // #endregion
 // #endregion --
@@ -188,7 +193,17 @@ const CUSTOM_FUNCTIONS: Record<
   ApplyStability: async (actor, data) => {
 
   },
-  ApplyWounds: async (actor, data) => {
+  ApplyWounds: (roll, data) => {
+    if (roll instanceof K4Actor) {
+      throw new Error(`Invalid roll for ApplyWounds custom function: ${String(roll)}`);
+    }
+    const {actor} = roll;
+
+    const numUnstableSerious = actor.wounds_serious_unstabilized.length;
+    const numUnstableCritical = actor.wounds_critical_unstabilized.length;
+    if (numUnstableSerious === 0 && numUnstableCritical === 0) {
+      return;
+    }
 
   },
   CreateAttack: async (actor, data) => {
@@ -210,7 +225,7 @@ const CUSTOM_FUNCTIONS: Record<
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    let {filter, target, effect, value, text, fromText} = data as Partial<{
+    const {filter, target, effect, value, text, fromText} = data as Partial<{
       filter: string,
       effect: string,
       target?: string,
@@ -225,16 +240,17 @@ const CUSTOM_FUNCTIONS: Record<
       .forEach((move) => {
         switch (effect) {
           case "PushElement": {
-            const targetArray = getProperty(move, `${target}` ?? "");
+            const targetArray = U.getProp<Array<string|number|boolean>>(move, target ?? "");
             if (!Array.isArray(targetArray)) {
               throw new Error(`Invalid target for PushElement: '${target}'`);
             }
+            if (U.isUndefined(value)) { return; }
             targetArray.push(value);
             setProperty(move, target as string, targetArray);
             break;
           }
           case "AppendText": {
-            const targetString = getProperty(move, `${target}` ?? "");
+            const targetString = getProperty(move, String(target));
             if (typeof targetString !== "string") {
               throw new Error(`Invalid target for AppendText: '${target}'`);
             }
@@ -255,12 +271,12 @@ const CUSTOM_FUNCTIONS: Record<
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    let {filter, effect, target, value, permanent} = data;
+    const {filter, effect, target, value, permanent} = data;
     if (!filter || !effect || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
     }
     if (filter === "actor") {
-      let curVal = getProperty(actor, `${target}`);
+      const curVal = getProperty(actor, `${target}`);
       if (`${value}` === `${curVal}`) {
         return;
       }
@@ -301,7 +317,7 @@ const CUSTOM_FUNCTIONS: Record<
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    let {title, key, input, inputVals, default: defaultVal, bodyText, subText} = data as Partial<{
+    const {title, key, input, inputVals, default: defaultVal, bodyText, subText} = data as Partial<{
       title: string,
       key: string,
       input: PromptInputType,
@@ -410,7 +426,7 @@ const CUSTOM_FUNCTIONS: Record<
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    let {filter, for: target} = data as Partial<{
+    const {filter, for: target} = data as Partial<{
       filter: string,
       for: string
     }>;
@@ -464,12 +480,10 @@ class K4Change implements EffectChangeData {
         .map(str => str.trim()) as [string, string];
 
       // Convert the value to the appropriate type
-      if (/^\d+$/.test(value)) {
-        value = U.pInt(value); // number
-      } else if (/^\d*\.\d$/.test(value)) {
-        value = U.pFloat(value); // Float
-      } else if (/^(true|false)$/i.test(value)) {
-        value = value.toLowerCase() === "true"; // Boolean
+      if (U.isNumString(value)) {
+        value = /\./.test(value) ? U.pFloat(value) : U.pInt(value);
+      } else if (U.isBooleanString(value)) {
+        value = U.pBool(value);
       }
 
       acc[key] = value;
@@ -485,15 +499,35 @@ class K4Change implements EffectChangeData {
   priority: number | null | undefined;
 
   // #region GETTERS & SETTERS ~
-  get isInstantiated(): boolean {
+  isInstantiated(): this is typeof this & {parentEffect: K4ActiveEffect} {
     return Boolean(this.parentEffect);
   }
-  get isOwnedByActor(): boolean {
+  get id(): Maybe<string> {
+    if (!this.isInstantiated()) { return; }
+    return `${this.parentEffect.id}_${this.index}`;
+  }
+  isOwnedByActor(): this is typeof this & {actor: K4Actor, parentEffect: K4ActiveEffect & {actor: K4Actor}} {
     return this.parentEffect?.actor !== undefined;
   }
+  get index(): number {
+    if (!this.isInstantiated()) { return -1; }
+    return this.parentEffect.changes.findIndex((change) => change.value === this.value);
+  }
+  get isEnabled(): boolean {
+    if (!this.isInstantiated()) { return false; }
+    return this.parentEffect.getFlag<boolean>(`disabledChanges.${this.id}`) !== true;
+  }
+  set isEnabled(value: boolean) {
+    if (!this.isInstantiated()) { return; }
+    this.parentEffect.setFlag(`disabledChanges.${this.id}`, !value);
+  }
   get actor(): Maybe<K4Actor> {
-    if (!this.isOwnedByActor) { return; }
-    return this.parentEffect!.actor;
+    if (!this.isOwnedByActor()) { return; }
+    return this.parentEffect.actor;
+  }
+  get originItem(): Maybe<K4Item> {
+    if (!this.isInstantiated()) { return; }
+    return this.parentEffect.originItem;
   }
   get isPromptOnCreate(): boolean {
     return ["PromptForData"].includes(this.customFunctionName);
@@ -508,13 +542,48 @@ class K4Change implements EffectChangeData {
     return !this.isPromptOnCreate
       && !this.isRequireItemCheck
       && !this.isPermanentChange
-      && !this.isRollModifier;
+      && !this.isRollModifier();
   }
-  get isRollModifier(): boolean {
-    return ["ModifyRoll"].includes(this.customFunctionName);
+  isRollModifier(): this is typeof this & {modData: K4Roll.ModData} {
+    return ["ModifyRoll", "ApplyWounds", "ApplyStability"].includes(this.customFunctionName);
   }
-  get filter(): Maybe<"all"|K4Attribute|K4ItemType|string> {
-    return this.customFunctionData.filter as Maybe<string>;
+  get modData(): Maybe<K4Roll.ModData> {
+    if (!this.isRollModifier()) {
+      throw new Error(`[K4Change.modData] Attempted to access modData for non-roll modifier: ${this.customFunctionName}`);
+    }
+    if (!this.hasNumericValue()) {
+      throw new Error(`[K4Change.modData] Attempted to access modData for non-numeric value: ${this.customFunctionName} (${this.finalValue})`);
+    }
+    return {
+      name: this.name,
+      filter: this.filter,
+      value: this.finalValue,
+      icon: this.icon,
+      tooltip: this.tooltip,
+      linkToItem: this.originItem
+    }
+  }
+
+  get filter(): "all"|K4Attribute|K4ItemType|string {
+    return this.customFunctionData.filter as Maybe<string> ?? "all";
+  }
+  get name(): string {
+    return this.customFunctionData.name as Maybe<string>
+      ?? this.originItem?.name
+      ?? (["wounds", "stability"].includes(String(this.customFunctionData.value))
+        ? U.tCase(this.customFunctionData.value)
+        : undefined)
+      ?? "";
+  }
+  get icon(): string {
+    return this.customFunctionData.icon as Maybe<string>
+      ?? this.parentEffect?.icon
+      ?? this.originItem?.img
+      ?? "";
+  }
+  get tooltip(): Maybe<string> {
+    if (typeof this.customFunctionData.tooltip !== "string") { return; }
+    return this.customFunctionData.tooltip;
   }
   _promptedValue?: string|number|boolean;
   get finalValue(): Maybe<string|number|boolean> {
@@ -523,18 +592,31 @@ class K4Change implements EffectChangeData {
     if (value === "prompt") {
       return this._promptedValue;
     }
-    if (this.isOwnedByActor && typeof value === "string" && value.startsWith("actor.")) {
+    if (!this.isOwnedByActor()) { return value }
+    // if (value === "wounds") {
+    //   return this.actor.
+    // }
+    if (typeof value === "string" && value.startsWith("actor.")) {
       return getProperty(this.actor as K4Actor, value.slice(6));
+    }
+    if (U.isNumString(value)) {
+      return U.pInt(value);
+    }
+    if (U.isBooleanString(value)) {
+      return U.pBool(value);
     }
     return value;
   }
-  get hasNumericValue(): boolean {
+  hasNumericValue(): this is typeof this & {finalValue: number} {
     return typeof this.finalValue === "number";
   }
-  get isInStatusBar(): boolean {
-    return this.isRollModifier
+  isInStatusBar(): this is typeof this & {finalValue: number} {
+    return this.isRollModifier()
       && this.customFunctionData.inStatusBar !== false
-      && this.hasNumericValue;
+      && this.hasNumericValue();
+  }
+  get canToggle(): boolean {
+    return this.isRollModifier() && this.customFunctionData.canToggle === true;
   }
   // #endregion
 
@@ -543,7 +625,7 @@ class K4Change implements EffectChangeData {
   customFunction: K4ActiveEffect.CustomFunction;
   customFunctionData: Record<string, string|number|boolean>;
   parentEffect?: K4ActiveEffect;
-  constructor(data: EffectChangeData, effect: K4ActiveEffect) {
+  constructor(data: EffectChangeData, effect?: K4ActiveEffect) {
     const {key, mode, value} = data;
     if (mode !== CONST.ACTIVE_EFFECT_MODES.CUSTOM) {
       throw new Error(`[new K4Change] Attempted K4Change construction for non-custom effect: ${JSON.stringify(data)}`);
@@ -561,7 +643,7 @@ class K4Change implements EffectChangeData {
   }
   // #endregion
 
-  // #region PUBLIC METHODS ~
+
   apply(parent?: K4Actor|K4Roll) {
     parent ??= this.actor;
     if (!parent) {
@@ -569,10 +651,7 @@ class K4Change implements EffectChangeData {
     }
     return this.customFunction(parent, this.customFunctionData);
   }
-  // #endregion
 
-  // #region PRIVATE METHODS ~
-  // #endregion
 
 }
 
@@ -606,16 +685,16 @@ class K4ActiveEffect extends ActiveEffect {
     Hooks.on("createActiveEffect", async (effect: K4ActiveEffect) => {
       kLog.display(`[on CreateActiveEffect] ${effect.label}`, {
         origin: effect.origin,
-        ownedByActor: effect.isOwnedByActor,
-        hasItemOrigin: effect.hasItemOrigin,
+        ownedByActor: effect.isOwnedByActor(),
+        hasItemOrigin: effect.hasItemOrigin(),
         originDoc: effect.origin ? fromUuidSync(effect.origin) : null,
-        isItemOwned: effect.hasItemOrigin ? effect.originItem!.isOwnedItem() : false,
+        isItemOwned: effect.hasItemOrigin() ? effect.originItem!.isOwnedItem() : false,
         requireItemChanges: effect.requireItemChanges,
         permanentChanges: effect.permanentChanges
       });
 
       // If this effect is not embedded in an actor, do nothing
-      if (!effect.isOwnedByActor) { return true; }
+      if (!effect.isOwnedByActor()) { return true; }
 
       // If the effect has no custom changes, do nothing.
       if (!effect.getCustomChanges().length) { return true; }
@@ -673,21 +752,30 @@ class K4ActiveEffect extends ActiveEffect {
   }
 
   // #region GETTERS & SETTERS ~
-  get isOwnedByActor(): boolean {
-    return this.origin?.startsWith("Actor") ?? false;
+  isOwned(): this is {origin: string, owner: K4Actor|K4Item} {
+    return Boolean(this.origin);
   }
-  get isOwnedByItem(): boolean {
-    return this.origin?.startsWith("Item") ?? false;
+  isOwnedByActor(): this is {origin: string, owner: K4Actor, actor: K4Actor} {
+    return this.isOwned() && this.origin.startsWith("Actor");
   }
-  get hasItemOrigin(): boolean {
-    return this.origin?.includes("Item") ?? false;
+  isOwnedByItem(): this is {origin: string, owner: K4Item, originItem: K4Item} {
+    return this.isOwned() && this.origin.startsWith("Item");
+  }
+  hasItemOrigin(): this is {origin: string, owner: K4Actor|K4Item, originItem: K4Item} {
+    return this.isOwned() && this.origin.includes("Item");
+  }
+  hasToggleableChanges(): boolean {
+    return this.toggleableChanges.length > 0;
   }
   get originItem(): Maybe<K4Item> {
-    if (!this.hasItemOrigin) { return; }
-    return fromUuidSync(this.origin);
+    if (!this.hasItemOrigin()) { return; }
+    return fromUuidSync(this.origin) as Maybe<K4Item>;
+  }
+  get owner(): Maybe<K4Actor|K4Item> {
+    return this.isOwnedByActor() ? this.actor : this.originItem;
   }
   get actor(): Maybe<K4Actor> {
-    if (!this.isOwnedByActor) { return; }
+    if (!this.isOwnedByActor()) { return; }
     const [_, actorId] = this.origin.split(".");
     return game.actors.get(actorId);
   }
@@ -696,20 +784,29 @@ class K4ActiveEffect extends ActiveEffect {
       .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM)
       .map((change) => new K4Change(change, this));
   }
+  getCustomChange(id: string): Maybe<K4Change> {
+    return this.getCustomChanges().find((change) => change.id === id);
+  }
+  get enabledCustomChanges(): K4Change[] {
+    return this.getCustomChanges().filter((change) => change.isEnabled);
+  }
   get requireItemChanges() {
-    return this.getCustomChanges().filter((change) => change.isRequireItemCheck);
+    return this.enabledCustomChanges.filter((change) => change.isRequireItemCheck);
   }
   get permanentChanges() {
-    return this.getCustomChanges().filter((change) => change.isPermanentChange);
+    return this.enabledCustomChanges.filter((change) => change.isPermanentChange);
   }
   get promptForDataChanges() {
-    return this.getCustomChanges().filter((change) => change.isPromptOnCreate);
+    return this.enabledCustomChanges.filter((change) => change.isPromptOnCreate);
   }
   get modifyRollChanges() {
-    return this.getCustomChanges().filter((change) => change.isRollModifier);
+    return this.enabledCustomChanges.filter((change) => change.isRollModifier());
   }
   get systemChanges() {
-    return this.getCustomChanges().filter((change) => change.isSystemModifier);
+    return this.enabledCustomChanges.filter((change) => change.isSystemModifier);
+  }
+  get toggleableChanges() {
+    return this.getCustomChanges().filter((change) => change.canToggle);
   }
   // // #endregion
 
@@ -725,6 +822,31 @@ class K4ActiveEffect extends ActiveEffect {
   // #endregion
 
   // #REGION === PUBLIC METHODS ===
+  override getFlag<T>(key: string): Maybe<T> {
+    if (!this.isOwnedByActor()) {
+      throw new Error(`[K4ActiveEffect.getFlag] Attempted to get flag '${key}' for non-actor-owned effect '${this.label}'.`);
+    }
+    return this.actor.getFlag("kult4th", key) as Maybe<T>;
+  }
+  override async setFlag<T>(key: string, val: T): Promise<this> {
+    if (!this.isOwnedByActor()) {
+      throw new Error(`[K4ActiveEffect.setFlag] Attempted to set flag '${key}' to '${val}' for non-actor-owned effect '${this.label}'`);
+    }
+    await this.actor.setFlag("kult4th", key, val);
+    return this;
+  }
+
+
+  applyToggleListeners(html: JQuery) {
+    this.toggleableChanges.forEach((change) => {
+      html.find(`[data-change-id="${change.id}"]`).on("click", async (event: ClickEvent) => {
+        event.preventDefault();
+        change.isEnabled = !change.isEnabled;
+      });
+    });
+  }
+
+
   applyToActor(actor?: K4Actor) {
     actor ??= this.actor;
     if (!(actor instanceof K4Actor)) { return; }

@@ -3,6 +3,9 @@
   {{> "systems/kult4th/templates/components/pc-header.hbs" }}
 
   {{log "PC SHEET CONTEXT" this}}
+  {{log "curTab" curTab}}
+  {{log "curTab = front" (eq curTab "front")}}
+  {{log "curTab = bio" (eq curTab "bio")}}
   <main class="tab-content">
     <section class="tab front {{~#if (eq curTab "front")}} active{{/if}}" data-group="primary" data-tab="front">
       <section class="subsection dramatic-hooks">
@@ -482,7 +485,7 @@
             </svg>
           </div>
           <span class="edges-header">Edges</span>
-          <span class="edges-count">{{actor.system.edges.value}}</span>
+          <span class="edges-count neon-glow-strong-blue">{{actor.system.edges.value}}</span>
           <span class="edges-source">{{actor.system.edges.sourceName}}</span>
           {{#each actor.system.activeEdges}}
           {{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
@@ -491,7 +494,8 @@
         </div>
       </section>
       <section class="subsection modifiers">
-        <span class="modifiers-report">{{{actor.system.modifiersReport}}}</span>
+        {{{actor.system.modifiersReport}}}
+        {{{actor.system.toggleControlStrip}}}
       </section>
       <section class="subsection attributes">
         <label class="k4-title section-title">{{case "upper" (localize "kult4th.trait.attributes")}}</label>

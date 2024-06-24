@@ -52,6 +52,13 @@ export enum Archetype {
   timeAndSpaceMagician = "timeAndSpaceMagician",
   sleeper = "sleeper"
 }
+export enum K4Stability {
+  composed = "composed",
+  moderate = "moderate",
+  serious = "serious",
+  critical = "critical",
+  broken = "broken"
+}
 export const Archetypes = {
   Asleep: {
     [Archetype.sleeper]: "Sleeper"
@@ -372,7 +379,7 @@ const C = {
     [K4ItemType.weapon]: "k4-theme-gold",
     [K4ItemType.gear]: "k4-theme-gold",
     [K4ItemType.move]: "k4-theme-black",
-    edge: "k4-theme-blue neon-glow-strong-blue"
+    edge: "k4-theme-blue"
   }
 };
 

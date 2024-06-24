@@ -1,7 +1,6 @@
 // #region IMPORTS ~
 import U from "../scripts/utilities.js";
-import C from "../scripts/constants.js";
-import {K4Attribute} from "../scripts/constants.js";
+import C, {K4Attribute} from "../scripts/constants.js";
 import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4ChatMessage from "./K4ChatMessage.js";
@@ -32,6 +31,8 @@ declare global {
 
     export interface ModData {
       name: string,
+      filter: string,
+      icon: string,
       tooltip?: string,
       linkToItem?: K4Item,
       value: number
@@ -191,7 +192,7 @@ class K4Roll extends Roll {
   public img: string;
   public _attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute;
   public type: K4RollType;
-  public source: K4Roll.Attribute|K4Item.Active;
+  public source: K4Roll.Attribute|K4Item<K4Item.Types.Active>;
   public get sourceName(): string {
     if (this.type === K4RollType.attribute) {
       return U.tCase(this.attribute);
@@ -224,13 +225,10 @@ class K4Roll extends Roll {
     }
     return U.tCase(this.attribute);
   }
-  public get parentType(): Maybe<K4Item.Types.Active> {
-    if (this.source instanceof K4Item) {
-      if (this.source.isSubItem()) {
-        return this.source.parentType as K4Item.Types.Active;
-      }
-    }
-    return undefined;
+  public get sourceType() {
+    if (!(this.source instanceof K4Item)) { return undefined; }
+    if (!this.source.isSubItem()) { return undefined; }
+    return this.source.parentType;
   }
   public get outcome(): K4RollResult {
     if (!this._evaluated) {

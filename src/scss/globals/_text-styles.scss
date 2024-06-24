@@ -39,6 +39,7 @@
 		// box-shadow: none;
 
 		overflow: hidden;
+    pointer-events: auto !important;
 
 		&:invalid {
 			color: var(--K4-dRED);
@@ -276,7 +277,7 @@
       0 0 2px #000,
       0 0 10px $glowColor,
       0 0 5px $glowColor,
-      0 0 25px $glowColor,;
+      0 0 25px $glowColor;
   }
 
   .neon-glow-strong-blue {
@@ -404,29 +405,45 @@
 		font-style: italic;
 	}
 
-	div.hover-strip {
-    --K4-hoverstrip-height: 30px;
-		--K4-hoverstrip-padding-vert: 5px;
-    --K4-hoverstrip-inner-height: calc(var(--K4-hoverstrip-height) - 2 * var(--K4-hoverstrip-padding-vert));
-		--K4-hoverstrip-scale: 1;
+  .tooltip {
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    font-family: var(--font-primary);
+    font-size: $rem-12;
+    line-height: $rem-14;
+    font-style: italic;
+    width: 100%;
+    text-align: left;
+    color: var(--K4-strip-tooltip-color-fg);
+    background: var(--K4-strip-tooltip-color-bg);
+    opacity: 0;
+    bottom: calc(0.75 * var(--K4-strip-height));
+    left: 0;
+    z-index: 40;
+    white-space: break-spaces;
 
-    // &:first-of-type {
-    //   outline: 1px dotted magenta;
-    //   .strip-name { outline: 1px dotted yellow; }
-    //   .strip-bg { background: rgba(255, 255, 0, 0.2); }
-    //   .button-strip { outline: 1px dotted lime; }
-    // }
+    padding: 4px;
+    border-radius: 20px;
+  }
+
+	div.hover-strip {
+    --K4-strip-height: 30px;
+		--K4-strip-padding-vert: 5px;
+    --K4-strip-inner-height: calc(var(--K4-strip-height) - 2 * var(--K4-strip-padding-vert));
+		--K4-strip-scale: 1;
 
 		position: relative;
-		height: var(--K4-hoverstrip-height);
+		height: var(--K4-strip-height);
 		white-space: nowrap;
 		transform-origin: left center;
-		transform: scale(var(--K4-hoverstrip-scale));
-		padding: var(--K4-hoverstrip-padding-vert) 0;
+		transform: scale(var(--K4-strip-scale));
+		padding: var(--K4-strip-padding-vert) 0;
+    pointer-events: auto !important;
 
 		.strip-bg,
     .button-strip {
-      --K4-icon-size: var(--K4-hoverstrip-inner-height);
+      --K4-icon-size: var(--K4-strip-inner-height);
       --K4-icon-fill: var(--K4-strip-button-color-fg);
       --K4-icon-bg-color: transparent;
       --K4-icon-clip-path: none;
@@ -434,12 +451,12 @@
 			position: absolute;
 			display: block;
 
-			height: var(--K4-hoverstrip-inner-height);
-			width: calc(100% - 0.5 * var(--K4-hoverstrip-height));
+			height: var(--K4-strip-inner-height);
+			width: calc(100% - 0.5 * var(--K4-strip-height));
 		}
 
     .strip-bg {
-      background: var(--K4-color-primary);
+      background: var(--K4-strip-main-color-bg);
       filter: brightness(0.5);
       opacity: 0;
     }
@@ -473,6 +490,7 @@
 				box-shadow: none;
 				border-radius: 0;
 				transition: 0.25s;
+        pointer-events: auto !important;
 
 				.button-tooltip {
 					opacity: 0;
@@ -505,17 +523,17 @@
 		}
 
     .icon-container {
-      margin-top: calc(-1 * var(--K4-hoverstrip-padding-vert));
+      margin-top: calc(-1 * var(--K4-strip-padding-vert));
     }
 
 		.strip-name {
 			position: absolute;
-			height: var(--K4-hoverstrip-inner-height);
-			color: var(--K4-hoverstrip-fg-color);
+			height: var(--K4-strip-inner-height);
+			color: var(--K4-strip-main-color-fg);
 			font-size: $rem-16;
 			font-weight: $font-weight-semi;
-			line-height: var(--K4-hoverstrip-inner-height);
-			top: var(--K4-hoverstrip-padding-vert);
+			line-height: var(--K4-strip-inner-height);
+			top: var(--K4-strip-padding-vert);
 			left: calc(var(--K4-icon-size) + 5px);
 			white-space: nowrap;
 			z-index: 30;
@@ -525,33 +543,120 @@
 			}
 		}
 
-		.strip-tooltip {
-			pointer-events: none;
-			position: absolute;
-			display: block;
-			font-family: var(--font-primary);
-			font-size: $rem-12;
-			line-height: $rem-14;
-			font-style: italic;
-			width: 100%;
-			text-align: left;
-			color: var(--K4-strip-tooltip-color-fg);
-			background: var(--K4-strip-tooltip-color-bg);
-			opacity: 0;
-			bottom: calc(0.75 * var(--K4-hoverstrip-height));
-			left: 0;
-			z-index: 40;
-			white-space: break-spaces;
 
-			padding: 4px;
-			border-radius: 20px;
-		}
 
 		&.move-strip {
 			--K4-strip-icon-color-bg: var(--K4-color-primary);
 			--K4-strip-icon-color-fg: var(--K4-color-contrast);
 			--K4-icon-outline-color: var(--K4-color-primary);
 		}
+
+    &.wound-strip {
+      --K4-strip-scale: 0.8;
+
+      --K4-icon-outline-color: transparent;
+      --K4-icon-outline-width: 1px;
+      --K4-icon-clip-path: none;
+      --K4-icon-bg-color: transparent;
+
+      --K4-strip-main-color-fg: var(--K4-RED);
+      --K4-strip-main-color-bg: var(--K4-dRED);
+      --K4-strip-icon-color-bg: transparent;
+      --K4-strip-button-color-fg: var(--K4-BLACK);
+      --K4-strip-button-color-bg: var(--K4-RED);
+      --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
+      --K4-strip-button-hover-color-bg: var(--K4-gRED);
+
+      .button-strip {
+        .strip-button { flex-grow: 0.3; }
+      }
+
+      &.wound-critical {
+        --K4-strip-scale: 1;
+
+        .strip-name {
+          text-transform: lowercase;
+          font-weight: 900;
+          font-family: var(--font-primary-smallcaps);
+        }
+
+        &:not(.wound-stabilized) {
+          --K4-strip-main-color-fg: var(--K4-gRED);
+          --K4-strip-icon-color-fg: var(--K4-gRED);
+          --icon-scale: 1.2;
+        }
+      }
+
+      &.wound-stabilized {
+        --K4-icon-fill: var(--K4-GOLD);
+        --K4-icon-clip-path: none;
+        --K4-icon-outline-color: transparent;
+
+        --K4-strip-main-color-fg: var(--K4-GOLD);
+
+        .strip-name {
+          font-style: italic;
+        }
+
+        .strip-bg {
+          border-color: transparent;
+        }
+      }
+    }
+
+    &.edge-strip {
+      --K4-strip-height: 19px;
+      --K4-strip-padding-vert: 1px;
+      --K4-icon-outline-color: transparent;
+      --K4-icon-outline-width: 0px;
+      --K4-icon-clip-path: none;
+      --K4-icon-bg-color: transparent;
+
+      --K4-strip-main-color-fg: var(--K4-bWHITE);
+      --K4-strip-main-color-bg: transparent;
+      --K4-strip-icon-color-bg: transparent;
+      --K4-strip-button-color-fg: var(--K4-dBLACK);
+      --K4-strip-button-color-bg: var(--K4-bBLUE);
+      --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
+      --K4-strip-button-hover-color-bg: var(--K4-gBLUE);
+
+      .button-strip {
+        width: calc(100% - 0.5 * var(--K4-icon-size) + 30px);
+        left: calc(0.5 * var(--K4-icon-size) - 30px);
+
+        .button-spacer { display: none; }
+        .strip-button { flex-grow: 0.3; }
+      }
+      .strip-name {
+        left: unset;
+        right: 0;
+        font-family: var(--font-primary-smallcaps);
+        text-transform: lowercase;
+        font-size: 16px;
+        line-height: 16px;
+        color: var(--K4-bWHITE);
+        text-shadow:
+          0 0 2px #000,
+          0 0 10px rgba(3, 247, 249, 0.561),
+          0 0 5px rgba(3, 247, 249, 0.561),
+          0 0 25px rgba(3, 247, 249, 0.561);
+      }
+      > .icon-container {
+        display: none;
+      }
+      .strip-tooltip {
+        width: auto;
+        left: -160px;
+        top: calc(1.75 * var(--K4-strip-height) - 5px);
+        bottom: unset;
+        // white-space: nowrap;
+      }
+
+      & { right: 150px; }
+      & + .hover-strip { right: 128px; }
+      & + .hover-strip + .hover-strip { right: 110px; }
+      & + .hover-strip + .hover-strip + .hover-strip { right: 88px; }
+    }
 	}
 
 	.result-entry {

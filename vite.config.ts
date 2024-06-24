@@ -17,13 +17,13 @@ import {exec} from "child_process";
 /* ==== CONFIGURATION ==== */
 
 const FOUNDRY_VERSION = 10;
-const PACKAGE_TYPE: "module"|"system" = "system";
+const PACKAGE_TYPE: "module" | "system" = "system";
 const PACKAGE_ID = "kult4th";
 const ENTRY_FILE_NAME = "kult4th";
 
 /* --- SCSS Color Extraction --- */
 // Path to the SCSS file containing color definitions
-const COLOR_STYLESHEET_PATH: string|false = false; // Set to false to disable SCSS color extraction.
+const COLOR_STYLESHEET_PATH: string | false = false; // Set to false to disable SCSS color extraction.
 // Must match the SCSS variable name format, capturing 'hue', 'brightness', 'red', 'green', and 'blue' values
 const COLOR_MATCH_REGEXP: Maybe<RegExp> = undefined; // /--blades-(?<hue>[a-z]+)-(?<brightness>[a-z]+)-nums:\s*(?<red>\d+),\s*(?<green>\d+),\s*(?<blue>\d+)\s*;/g;
 /* --- SCSS Color Extraction --- */
@@ -96,6 +96,9 @@ function openChromePlugin(): Plugin {
   };
 }
 
+/**
+ * Plugin to extract color definitions from an SCSS file and export them as a JavaScript module.
+ */
 function scssVariablesToJsPlugin(): Plugin {
   return {
     name: "scss-variables-to-js",
@@ -115,7 +118,7 @@ function scssVariablesToJsPlugin(): Plugin {
         const scssVariables: string = fs.readFileSync(COLOR_STYLESHEET_PATH, "utf-8");
         let match: RegExpExecArray | null;
 
-        type Brightness = "brightest"|"bright"|"normal"|"dark"|"darkest"|"black";
+        type Brightness = "brightest" | "bright" | "normal" | "dark" | "darkest" | "black";
         const colorDefs: Record<string, Partial<Record<Brightness, number[]>>> = {};
 
         while ((match = COLOR_MATCH_REGEXP.exec(scssVariables)) !== null) {
@@ -135,6 +138,53 @@ function scssVariablesToJsPlugin(): Plugin {
   };
 }
 
+/**
+ * Custom plugin to handle hot reloading of Handlebars (.hbs) files.
+ */
+function hmrHandlerPlugin(): Plugin {
+  return {
+    name:            "hmr-handler",
+    apply:           "serve",
+    handleHotUpdate: (context) => {
+      const outDir = "dist"; // path.resolve(__dirname, "dist");
+      if (context.file.startsWith(outDir)) return;
+
+      if (context.file.endsWith("en.json")) {
+        const basePath = context.file.slice(context.file.indexOf("lang/"));
+        console.log(`Updating lang file at ${basePath}`);
+        fs.promises
+          .copyFile(context.file, `${outDir}/${basePath}`)
+          .then(() => {
+            context.server.ws.send({
+              type:  "custom",
+              event: "lang-update",
+              data:  {path: `${PACKAGE_TYPE}s/${PACKAGE_ID}/${basePath}`}
+            });
+          }).catch((err) => {
+            console.error("Failed to send language json update:", err)
+          });
+      } else if (context.file.endsWith(".hbs")) {
+        const basePath = context.file.slice(context.file.indexOf("templates/"));
+        console.log(`Updating template file at ${basePath}`);
+        fs.promises
+          .copyFile(context.file, `${outDir}/${basePath}`)
+          .then(() => {
+            context.server.ws.send({
+              type:  "custom",
+              event: "template-update",
+              data:  {path: `${PACKAGE_TYPE}s/${PACKAGE_ID}/${basePath}`}
+            });
+          }).catch((err) => {
+            console.error("Failed to send template update:", err)
+          });
+      }
+    }
+  };
+}
+
+/**
+ * Custom plugin to handle the Foundry VTT module system.
+ */
 function foundryPlugin(): Plugin {
   const usesFoundryPlugin = Symbol("foundry-plugin");
   const externalsSourceMap = new Map([
@@ -245,7 +295,7 @@ const config: UserConfig = defineConfig({
     }
   },
   plugins: [
-    watchPublicDirPlugin(),
+    // watchPublicDirPlugin(),
     foundryPlugin(),
     checker({typescript: true}),
     COLOR_STYLESHEET_PATH ? scssVariablesToJsPlugin() : undefined,
@@ -253,7 +303,8 @@ const config: UserConfig = defineConfig({
       gzipSize: true,
       template: "treemap"
     }),
-    openChromePlugin() // Add the custom plugin here
+    openChromePlugin(),
+    hmrHandlerPlugin()
   ].filter(Boolean)
 });
 

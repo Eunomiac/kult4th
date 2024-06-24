@@ -303,6 +303,7 @@ const ANIMATIONS = {
   hoverStrip(target: HTMLElement, context: JQuery): GsapAnimation {
     const FULL_DURATION = 0.5;
 
+    const isEdgeStrip = $(target).hasClass("edge-strip");
     const hoverTarget$ = $(context).find($(target).data("hover-target"));
     const stripIcon$ = $(target).children(".icon-container");
     const stripName$ = $(target).find(".strip-name");
@@ -316,8 +317,13 @@ const ANIMATIONS = {
     // const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
     // const colorFG = $(target).css("--K4-strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
     // const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--K4-strip-color-bg")?.trim()) ?? C.Colors.BLACK);
-    const colorFG = stripName$.css("color");
-    const colorBG = "rgb(0, 0, 0)";
+    const colorBase = stripName$.css("color");
+    const colorHover = isEdgeStrip
+      ? C.Colors.bWHITE
+      : C.Colors.dBLACK;
+    const colorShadow = isEdgeStrip
+      ? "rgba(3, 247, 249, 0.56)"
+      : colorBase;
     const nameShift = U.get(target, "height", "px");
 
     // kLog.log(`HOVER STRIP: ${$(target).attr("class")}`, {target, colorFG, colorBG, nameShift});
@@ -350,7 +356,7 @@ const ANIMATIONS = {
         ease:     "sine"
       }, 0)
       .fromTo(stripName$, {
-        color: colorFG
+        color: colorBase
       }, {
         xPercent:   -100,
         x:          `-=${2 * nameShift}`,
@@ -358,11 +364,11 @@ const ANIMATIONS = {
         fontStyle:  "normal",
         zIndex:     20,
         duration:   FULL_DURATION,
-        color:      colorBG,
+        color:      colorHover,
         textShadow: [
-          ...Array.from({length: 4}).fill(`0 0 15px ${colorFG}`) as string[],
-          ...Array.from({length: 6}).fill(`0 0 5px ${colorFG}`) as string[],
-          ...Array.from({length: 4}).fill(`0 0 2px ${colorFG}`) as string[]
+          ...Array.from({length: 4}).fill(`0 0 15px ${colorShadow}`) as string[],
+          ...Array.from({length: 6}).fill(`0 0 5px ${colorShadow}`) as string[],
+          ...Array.from({length: 4}).fill(`0 0 2px ${colorShadow}`) as string[]
         ].join(", "),
         ease: "back"
       }, 0);
@@ -426,7 +432,8 @@ class K4PCSheet extends ActorSheet {
   static async PreInitialize() {
     gsap.registerEffect({
       name: "breakShard",
-      effect: (_: unknown, config: {stability: number}) => {
+      effect: (stabilityContainer$: JQuery, config: {stability: number}) => {
+        stabilityContainer$ = $(stabilityContainer$);
         const shardsMap = {
           7: [
             [13, 4],
@@ -444,18 +451,17 @@ class K4PCSheet extends ActorSheet {
         };
         const getFadingShards = (stabilityNum: number) => {
           const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][0] ?? [];
-          return $(shardNums.map((num) => `#shard-${num}`).join(", "));
+          return stabilityContainer$.find(shardNums.map((num) => `#shard-${num}`).join(", "));
         };
         const getShrinkingShards = (stabilityNum: number) => {
           const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][1] ?? [];
-          return $(shardNums.map((num) => `#shard-${num}`).join(", "));
+          return stabilityContainer$.find(shardNums.map((num) => `#shard-${num}`).join(", "));
         };
         const fullDuration = 0.5;
         const fadingShardsScaleFullDuration = fullDuration / 5;
         const fadingShardsShiftFullDuration = fullDuration - fadingShardsScaleFullDuration;
 
         const fadingShards$ = getFadingShards(config.stability);
-        console.log({config, fadingShards$})
         const fadingShardsNum = Array.from(fadingShards$).length;
         const fadingShardsScaleStagger = fadingShardsNum <= 1
           ? 0
@@ -469,19 +475,6 @@ class K4PCSheet extends ActorSheet {
               fadingShardsShiftDur +
               (fadingShardsScaleStagger * (fadingShardsNum - 1)) +
               (fadingShardsShiftStagger * (fadingShardsNum - 1));
-
-        // console.log("FADING SHARDS DATA", {
-        //   fullDuration,
-        //   fadingShards$,
-        //   fadingShardsNum,
-        //   fadingShardsScaleFullDuration,
-        //   fadingShardsScaleStagger,
-        //   fadingShardsScaleDur,
-        //   fadingShardsShiftFullDuration,
-        //   fadingShardsShiftStagger,
-        //   fadingShardsShiftDur,
-        //   fadingShardsAnimDuration
-        // });
 
         return gsap.timeline({})
           .to(getShrinkingShards(config.stability), { transformOrigin: "center center", scale: 1, duration: 0.25, ease: "none" }, 0)
@@ -506,64 +499,80 @@ class K4PCSheet extends ActorSheet {
   }
 
   #buildStabilityShardsTimeline(html: JQuery) {
-    return gsap.timeline({ paused: true })
-      .set(html.find("#stability-shards"), {fill: C.Colors.GOLD})
-      .set(html.find("#stability-frame"), {fill: C.Colors.GOLD, stroke: C.Colors.GOLD})
+    const shards$ = html.find("#stability-shards, #stability-frame");
+    const cracks$ = html.find("#stability-cracks-path");
+    const glitchNum$ = html.find("#glitch");
+    const gears$ = html.find("#stability-gear-geburah, #stability-gear-binah");
+    const anim$ = html.find("#stability-animation-bg img");
+
+    /** Depending on whether the variant rule for Stability is used, break points may be different:
+     * == DEFAULT ==
+     * Composed: 10
+     * Moderate Stress: 8-9
+     * Serious Stress: 5-7
+     * Critical Stress: 2-4
+     * Broken: 1
+     *
+     * == VARIANT ==
+     * Composed: 10
+     * Moderate Stress: 8-9
+     * Serious Stress: 5-7
+     * Critical Stress: 1-4
+     * Broken: 0
+     */
+    const tl = U.gsap.timeline({paused: true})
+      .fromTo(shards$, {fill: C.Colors.bGOLD, stroke: C.Colors.bGOLD}, {fill: C.Colors.bGOLD, stroke: C.Colors.bGOLD, duration: 0}, 0)
+      .fromTo(anim$, {filter: "brightness(0) saturate(1.5)"}, {filter: "brightness(0) saturate(1.5)", duration: 0}, 0)
+    // COMPOSED (GOLD)
     .addLabel("stability10")
-      .to(html.find("#stability-cracks-path"), {
+      .to(cracks$, {
         morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-9")[0],
         duration: 0.5,
         ease: "power4"
       }, 0)
+      // .fromTo(shards$, {fill: C.Colors.GOLD, stroke: C.Colors.GOLD}, {fill: C.Colors.BLACK, stroke: C.Colors.BLACK, duration: 5})
+    // MODERATE (dGOLD)
+    .to(shards$, {fill: C.Colors.GOLD, stroke: C.Colors.GOLD, duration: 0.5}, "<")
     .addLabel("stability9")
-      .to(html.find("#stability-cracks-path"), {
+      .to(cracks$, {
         morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-8")[0],
         duration: 0.5,
         ease: "power4"
       })
     .addLabel("stability8")
-      .to(html.find("#stability-cracks-path"), {
+      .to(cracks$, {
         morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-7")[0],
         duration: 0.5,
         ease: "power4"
       })
-      .breakShard([], {stability: 7}, "<")
-      .to(html.find("#glitch"), {opacity: 1, duration: 0.5, ease: "power4"}, "<")
+      .breakShard(html, {stability: 7}, "<")
+      .to(glitchNum$, {opacity: 1, duration: 0.5, ease: "power4"}, "<")
+    // SERIOUS (dRED)
+    .to(shards$, {fill: C.Colors.dGOLD, stroke: C.Colors.dGOLD, duration: 0.5}, "<")
     .addLabel("stability7")
-      .breakShard([], {stability: 6})
+      .breakShard(html, {stability: 6})
     .addLabel("stability6")
-      .breakShard([], {stability: 5})
+      .breakShard(html, {stability: 5})
     .addLabel("stability5")
-      .breakShard([], {stability: 4})
-      .to(html.find("#stability-gear-geburah, #stability-gear-binah"), {opacity: 1, duration: 0.5, ease: "power4"}, "<")
-      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0.95, duration: 0.5, ease: "sine"}, "<")
+      .breakShard(html, {stability: 4})
+      .to(gears$, {opacity: 1, duration: 0.5, ease: "power4"}, "<")
+      .to(anim$, {filter: "brightness(0.5) saturate(1.5)", duration: 0.5, ease: "sine"}, "<")
+    // CRITICAL (gRED)
+    .to(shards$, {fill: C.Colors.dRED, stroke: C.Colors.dRED, duration: 0.5}, "<")
     .addLabel("stability4")
-      .breakShard([], {stability: 3})
-      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0.85, duration: 0.5, ease: "sine"}, "<")
+      .breakShard(html, {stability: 3})
+      .to(anim$, {filter: "brightness(1) saturate(1.5)", duration: 0.5, ease: "sine"}, "<")
     .addLabel("stability3")
-      .breakShard([], {stability: 2})
-      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0.75, duration: 0.5, ease: "sine"}, "<")
+      .breakShard(html, {stability: 2})
+      .to(anim$, {filter: "brightness(2) saturate(1.5)", duration: 0.5, ease: "sine"}, "<")
+      .to(shards$, {fill: C.Colors.bRED, stroke: C.Colors.bRED, duration: 0.5}, "<")
     .addLabel("stability2")
-      .breakShard([], {stability: 1})
-      .to(html.find("#stability-animation-bg .overlay"), {opacity: 0, duration: 0.5, ease: "sine"}, "<")
-    .addLabel("stability1")
-      .fromTo(html.find("#stability-shards, #stability-frame"), {
-        fill: C.Colors.GOLD,
-        stroke: C.Colors.GOLD
-      },
-      {
-        fill: C.Colors.dRED,
-        stroke: C.Colors.GOLD,
-        duration: 5,
-        ease: "power2"
-      }, 0)
-      .to(html.find("#stability-shards, #stability-frame"), {
-        fill: C.Colors.bRED,
-        stroke: C.Colors.dBLACK,
-        duration: 5,
-        ease: "power2"
-      }, 5)
-      ;
+      .breakShard(html, {stability: 1})
+      .to(anim$, {filter: "brightness(10) saturate(1.5)", duration: 0.5, ease: "sine"}, "<")
+      .to(shards$, {fill: C.Colors.gRED, stroke: C.Colors.gRED, duration: 0.5}, "<")
+    .addLabel("stability1");
+
+    return tl;
   }
   _stabilityShardsTimeline: gsap.core.Timeline|undefined = undefined;
   get stabilityShardsTimeline(): gsap.core.Timeline {
@@ -783,22 +792,11 @@ class K4PCSheet extends ActorSheet {
   }
 
 
-
-  override activateListeners(html: JQuery) {
-
-    // Call the parent class's activateListeners method to ensure any inherited listeners are also activated
-    super.activateListeners(html);
+  activateNavMenuListeners(html: JQuery): Array<Tuple<HTMLElement, GsapAnimation>> {
     const self = this;
-
-    // Remove shadows from tab content if the "shadows" setting is disabled
-    if (!U.getSetting("shadows")) {
-      html.find(".tab-content").each(function() { $(this).css("filter", "none");});
-    }
-
-    const hoverTimelines: Array<[HTMLElement, GsapAnimation]> = [];
-
+    const hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>> = [];
     // Iterate over each nav-panel element to set up animations and styles
-    this.element.find(".nav-panel").each(function() {
+    html.find(".nav-panel").each(function() {
       // Remove flare background if the "flare" setting is disabled
       if (!U.getSetting("flare")) {
         gsap.set(self.element.find(".nav-flare"), {background: "none"});
@@ -812,7 +810,7 @@ class K4PCSheet extends ActorSheet {
     });
 
     // Iterate over each nav-tab element to set up animations and click listeners
-    this.element.find(".nav-tab")
+    html.find(".nav-tab")
       .each(function() {
         // Add hover animation to the hoverTimelines array for nav-tab
         hoverTimelines.push([this, ANIMATIONS.hoverNavTab(this)]);
@@ -822,40 +820,34 @@ class K4PCSheet extends ActorSheet {
         });
       });
 
-    // Apply text clamping to each element with the class "clamp-text"
-    html.find(".clamp-text").each(function() {
-      self.clamp(this);
-    });
+    return hoverTimelines;
+  }
 
-    // Handle gear animations based on the "gears" setting
-    if (U.getSetting("gears")) {
-      // Rotate huge gears if the setting is enabled
-      this.element.find(".gear-container.gear-huge")
+  animateGears(html: JQuery, isEnabled = true) {
+    if (isEnabled) {
+      // Rotate huge gears
+      html.find(".gear-container.gear-huge")
         .each(function() {
           ANIMATIONS.gearHugeRotate(this);
         });
-      // Rotate Geburah gears if the setting is enabled
-      this.element.find(".gear-container.gear-geburah")
+      // Rotate Geburah gears
+      html.find(".gear-container.gear-geburah")
         .each(function() {
           ANIMATIONS.gearGeburahRotate(this);
         });
-      // Rotate Binah gears if the setting is enabled
-      this.element.find(".gear-container.gear-binah")
+      // Rotate Binah gears
+      html.find(".gear-container.gear-binah")
         .each(function() {
           ANIMATIONS.gearBinahRotate(this);
         });
     } else {
       // Remove all gear containers if the setting is disabled
-      this.element.find(".gear-container")
+      html.find(".gear-container")
         .remove();
     }
+  }
 
-    // Set actor name background to black if animations are disabled
-    if (!game.settings.get("kult4th", "animations")) {
-      gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.BLACK});
-    }
-
-    // Handle stability animations & stability glitch
+  animateStability(html: JQuery) {
     this._glitchTimeline = this.#buildGlitchTimeline(html);
     this._stabilityShardsTimeline = this.#buildStabilityShardsTimeline(html);
     this.stabilityShardsTimeline.seek(`stability${this.actor.system.stability.value}`);
@@ -878,7 +870,46 @@ class K4PCSheet extends ActorSheet {
     gsap.to(html.find("#stability-gear-geburah"), {rotation: "+=360", duration: 10, repeat: -1, ease: "none"});
     gsap.to(html.find("#stability-gear-binah"), {rotation: "-=360", duration: 10, repeat: -1, ease: "rough({strength: 0.2, points: 25, template: sine, taper: out, randomize: true, clamp: false})"});
     gsap.set(html.find("#stability-animation-bg img, .stability-count, #stability-frame"), { opacity: 1 });
+  }
+  activateStabilityListeners(html: JQuery) {
+    let clickStatus = false;
+    const buttonContainer$ = html.find(".button-container");
+    const dblClickCheck = (event: DoubleClickEvent) => {
+      event.preventDefault();
+      if (clickStatus) { return }
+      clickStatus = true;
+      buttonContainer$.off("dblclick");
+      this.changeStability(-1 as number);
+    }
+    const clickCheck = (event: DoubleClickEvent) => {
+      event.preventDefault();
+      if (clickStatus) { return }
+      console.log("CLICK");
+      buttonContainer$.off("click");
+      buttonContainer$.on("dblclick", dblClickCheck.bind(this));
+      setTimeout(() => {
+        if (!clickStatus) {
+          // gsap.effects.splashBannerText(labelChars);
+          console.warn("WOULD DRAW A TOOLTIP HERE!");
+          // gsap.effects.drawToolTip(".tooltip-container"); // .paused(false);
+        }
+        buttonContainer$.off("dblclick");
+        clickStatus = false;
+        buttonContainer$.on({
+          click: clickCheck.bind(this)}
+        );
+      }, 250)
+    }
 
+    buttonContainer$.on({
+      click: clickCheck.bind(this),
+      contextmenu: (event) => {
+        event.preventDefault();
+        this.changeStability(1 as number);
+      }
+    });
+  }
+  animateEdges(html: JQuery) {
     if (this.actor.activeEdges.length) {
       gsap.to(html.find(".edges-header"), {autoAlpha: 1, duration: 0});
       gsap.to(html.find(".edges-count"), {autoAlpha: 1, duration: 0});
@@ -892,81 +923,83 @@ class K4PCSheet extends ActorSheet {
         {autoAlpha: 1, rotation: 175 + (20 * numEdges), duration: 0}
       )
     }
+  }
+  animateHoverStrips(html: JQuery): Array<Tuple<HTMLElement, GsapAnimation>> {
+    const hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>> = [];
+    // Add hover animations for hover-strip elements
+    html.find(".hover-strip")
+    .each(function() {
+      hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html)]);
+    });
 
-    let clickStatus = false;
-    const dblClickCheck = (event: DoubleClickEvent) => {
-      event.preventDefault();
-      if (clickStatus) { return }
-      clickStatus = true;
-      $(".button-container").off("dblclick");
-      this.changeStability(-1 as number);
-    }
-    const clickCheck = (event: DoubleClickEvent) => {
-      event.preventDefault();
-      if (clickStatus) { return }
-      console.log("CLICK");
-      $(".button-container").off("click");
-      $(".button-container").on("dblclick", dblClickCheck.bind(this));
-      setTimeout(() => {
-        if (!clickStatus) {
-          // gsap.effects.splashBannerText(labelChars);
-          console.warn("WOULD DRAW A TOOLTIP HERE!");
-          // gsap.effects.drawToolTip(".tooltip-container"); // .paused(false);
-        }
-        $(".button-container").off("dblclick");
-        clickStatus = false;
-        $(".button-container").on({
-          click: clickCheck.bind(this)}
-        );
-      }, 250)
-    }
-
-    $(".button-container").on({
-      click: clickCheck.bind(this),
-      contextmenu: (event) => {
-        event.preventDefault();
-        this.changeStability(1 as number);
+    // Add hover animations for hover-strip button elements
+    html.find(".hover-strip .strip-button")
+      .each(function() {
+        hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this)]);
+      });
+    return hoverTimelines;
+  }
+  activateHoverStripListeners(html: JQuery) {
+    const self = this;
+    // Add click listeners for elements with data-action="open" to open item sheets
+    html.find("*[data-action=\"open\"]")
+    .each(function() {
+      const itemName = $(this).attr("data-item-name");
+      if (itemName) {
+        $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
       }
     });
 
+  // Add click listeners for elements with data-action="roll" to roll item actions
+  html.find("*[data-action=\"roll\"]")
+    .each(function() {
+      const itemName = $(this).attr("data-item-name");
+      if (itemName) {
+        $(this).on("click", () => self.actor.roll(itemName));
+      }
+    });
 
-    // Add click listeners for elements with data-action="open" to open item sheets
-    html.find("*[data-action=\"open\"]")
-      .each(function() {
-        const itemName = $(this).attr("data-item-name");
-        if (itemName) {
-          $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
-        }
-      });
+  // Add click listeners for elements with data-action="trigger" to trigger item actions
+  html.find("*[data-action=\"trigger\"]")
+    .each(function() {
+      const itemName = $(this).attr("data-item-name");
+      if (itemName) {
+        $(this).on("click", () => self.actor.trigger(itemName));
+      }
+    });
 
-    // Add click listeners for elements with data-action="roll" to roll item actions
-    html.find("*[data-action=\"roll\"]")
-      .each(function() {
-        const itemName = $(this).attr("data-item-name");
-        if (itemName) {
-          $(this).on("click", () => self.actor.roll(itemName));
-        }
-      });
+  // Add click listeners for elements with data-action="chat" to display item summaries in chat
+  html.find("*[data-action=\"chat\"]")
+    .each(function() {
+      const itemName = $(this).attr("data-item-name");
+      if (itemName) {
+        $(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
+      }
+    });
 
-    // Add click listeners for elements with data-action="trigger" to trigger item actions
-    html.find("*[data-action=\"trigger\"]")
-      .each(function() {
-        const itemName = $(this).attr("data-item-name");
-        if (itemName) {
-          $(this).on("click", () => self.actor.trigger(itemName));
-        }
-      });
-
-    // Add click listeners for elements with data-action="chat" to display item summaries in chat
-    html.find("*[data-action=\"chat\"]")
-      .each(function() {
-        const itemName = $(this).attr("data-item-name");
-        if (itemName) {
-          $(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
-        }
-      });
-
-    // Initialize content-editable elements with placeholder text if necessary
+  // Add click listeners for elements with data-action="drop" to drop items
+  html.find("*[data-action=\"drop\"]")
+  .each(function() {
+    const itemName = $(this).attr("data-item-name");
+    if (itemName) {
+      $(this).on("click", () => self.actor.dropItemByName(itemName));
+    }
+  });
+  }
+  activateHoverListeners(hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>>) {
+    hoverTimelines.forEach(([target, anim]) => {
+      $(target)
+        .on("mouseenter", () => {
+          anim.timeScale(1);
+          anim.reversed(false);
+        })
+        .on("mouseleave", () => {
+          anim.timeScale(2);
+          anim.reversed(true);
+        });
+    });
+  }
+  applyPlaceholderText(html: JQuery) {
     html.find(".content-editable")
       .each(function() {
         $(this).attr("contenteditable", "false");
@@ -979,28 +1012,9 @@ class K4PCSheet extends ActorSheet {
             .text($(this).data("placeholder") as string);
         }
       });
-
-    // Add hover animations for hover-strip elements
-    html.find(".hover-strip")
-      .each(function() {
-        hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html)]);
-      });
-
-    // Add hover animations for hover-strip button elements
-    html.find(".hover-strip .strip-button")
-      .each(function() {
-        hoverTimelines.push([this, ANIMATIONS.hoverStripButton(this)]);
-      });
-
-    // Add mouseenter and mouseleave listeners to control hover animations
-    hoverTimelines.forEach(([target, anim]) => {
-      $(target)
-        .on("mouseenter", () => anim.reversed(false))
-        .on("mouseleave", () => anim.reversed(true));
-    });
-
-    // Add resize listener that calls resizeModifierReport when sheet is resized
-    const resizableHandle = this.element.find(".window-resizable-handle");
+  }
+  activateResizeListener(html: JQuery) {
+    const resizableHandle = html.find(".window-resizable-handle");
     const debouncedResizeModifierReport = debounce(() => this.resizeModifierReport(html), 1);
 
     const onMouseMove = () => {
@@ -1021,31 +1035,18 @@ class K4PCSheet extends ActorSheet {
 
     // Initial call to resizeModifierReport
     requestAnimationFrame(() => this.resizeModifierReport(html));
-
-    // If the sheet is not editable, return early
-    if (!this.options.editable) { return; }
-
-    // Add click listeners for elements with data-action="drop" to drop items
-    html.find("*[data-action=\"drop\"]")
-      .each(function() {
-        const itemName = $(this).attr("data-item-name");
-        if (itemName) {
-          $(this).on("click", () => self.actor.dropItemByName(itemName));
-        }
-      });
-
-    // // Add click listeners for stability-add buttons to increase stability
-    // html.find("button.stability-add")
-    //   .each(function() {
-    //     $(this).on("click", () => self.actor.changeStability(1));
-    //   });
-
-    // // Add click listeners for stability-remove buttons to decrease stability
-    // html.find("button.stability-remove")
-    //   .each(function() {
-    //     $(this).on("click", () => self.actor.changeStability(-1));
-    //   });
-
+  }
+  setActiveTab(html: JQuery) {
+    const curTab = this.actor.getFlag("kult4th", "sheetTab") as string;
+    html.find(".tab.active").each(function() {
+      if (this.getAttribute("data-tab") !== curTab) {
+        this.classList.remove("active");
+      }
+    });
+    html.find(`.tab[data-tab="${curTab}"]`).addClass("active");
+  }
+  activateWoundListeners(html: JQuery) {
+    const self = this;
     // Add click listeners for wound-add buttons to add a new wound
     html.find("button.wound-add")
       .each(function() {
@@ -1100,7 +1101,9 @@ class K4PCSheet extends ActorSheet {
           $(this).on("click", () => self.actor.removeWound(woundID));
         }
       });
-
+  }
+  activateWindowControlListeners(html: JQuery) {
+    const self = this;
     // Add click listeners for close buttons in the header to close the sheet
     html.find(".header-button.close")
       .each(function() {
@@ -1118,7 +1121,9 @@ class K4PCSheet extends ActorSheet {
           }
         });
       });
-
+  }
+  activateContentEditableListeners(html: JQuery) {
+    const self = this;
     // Initialize content-editable elements with click, focus, and blur listeners for inline editing
     html.find(".content-editable").each(function() {
       $(this)
@@ -1185,6 +1190,74 @@ class K4PCSheet extends ActorSheet {
           }
         });
     });
+  }
+  override activateListeners(html: JQuery) {
+
+    // Call the parent class's activateListeners method to ensure any inherited listeners are also activated
+    super.activateListeners(html);
+    const self = this;
+
+    // Remove shadows from tab content if the "shadows" setting is disabled
+    if (!U.getSetting("shadows")) {
+      html.find(".tab-content").each(function() { $(this).css("filter", "none");});
+    }
+
+    const hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>> = [];
+
+    // Activate listeners for the navigation menu
+    hoverTimelines.push(...this.activateNavMenuListeners(html));
+
+    // Apply text clamping to each element with the class "clamp-text"
+    html.find(".clamp-text").each(function() {
+      self.clamp(this);
+    });
+
+    // Handle gear animations based on the "gears" setting
+    this.animateGears(html.parent(), U.getSetting<boolean>("gears"));
+
+    // Set actor name background to black if animations are disabled
+    if (!game.settings.get("kult4th", "animations")) {
+      gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.BLACK});
+    }
+
+    // Animate stability display
+    this.animateStability(html);
+
+    // Activate double-click and right-click listeners for stability display
+    this.activateStabilityListeners(html);
+
+    // Animate any edges
+    this.animateEdges(html);
+
+    // Animate hover strips
+    hoverTimelines.push(...this.animateHoverStrips(html));
+
+    // Activate hover-strip listeners ("open", "roll", "trigger", "chat", "drop")
+    this.activateHoverStripListeners(html);
+
+    // Activate hover listeners
+    this.activateHoverListeners(hoverTimelines);
+
+    // Initialize content-editable elements with placeholder text if necessary
+    this.applyPlaceholderText(html);
+
+    // Add resize listener that calls resizeModifierReport when sheet is resized
+    this.activateResizeListener(html);
+
+    // Set active tab
+    this.setActiveTab(html);
+
+    // If the sheet is not editable, return early
+    if (!this.options.editable) { return; }
+
+    // Activate wound listeners
+    this.activateWoundListeners(html);
+
+    // Activate listeners for closing & minimizing the sheet
+    this.activateWindowControlListeners(html);
+
+    // Activate listeners for editing "content-editable" elements
+    this.activateContentEditableListeners(html);
   }
 
   activateTab(tabName: string | null) {

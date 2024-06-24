@@ -66,7 +66,7 @@
   "parserOptions": {
     "project": true,
     "requireConfigFile": false,
-    "tsconfigRootDir": "D:\\Projects\\.CODING\\FoundryVTT\\Foundryv11DevData\\Data\\systems\\kult4th",
+    "tsconfigRootDir": "D:\\Projects\\.CODING\\FoundryVTT\\FoundryV10DevData\\Data\\systems\\kult4th",
     "ecmaVersion": 2022,
     "sourceType": "module",
     "allowImportExportEverywhere": false,

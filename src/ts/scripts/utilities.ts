@@ -2052,6 +2052,8 @@ const isTargetFlagKey = (ref: unknown): ref is TargetFlagKey => {
   return true;
 };
 
+const getProp = <T>(obj: object, key: string): Maybe<T> => getProperty(obj, key) as Maybe<T>;
+
 const parseDocRefToUUID = (ref: unknown): UUIDString => {
   if (isDocUUID(ref)) {
     return ref;
@@ -2080,10 +2082,10 @@ const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
   return locRef;
 };
 
-const getSetting = (setting: string, submenu?: string) => {
+const getSetting = <T = unknown>(setting: string, submenu?: string): Maybe<T> => {
   const settingPath = [submenu, setting].filter(isDefined).join(".");
   if (game.settings.settings.has(`${game.system.id}.${settingPath}`)) {
-    return game.settings.get(game.system.id, settingPath);
+    return game.settings.get(game.system.id, settingPath) as T;
   }
   return undefined;
 };
@@ -2225,11 +2227,12 @@ export default {
 
   // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) â–‘â–‘â–‘â–‘â–‘â–‘â–‘
   isDocID, isDocUUID, isDotKey, isTargetKey, isTargetFlagKey,
+  getProp,
 
   parseDocRefToUUID,
 
   loc, getSetting, getTemplatePath, displayImageSelector
 
 
-};
+} as const;
 // #endregion â–„â–„â–„â–„â–„ EXPORTS â–„â–„â–„â–„â–„

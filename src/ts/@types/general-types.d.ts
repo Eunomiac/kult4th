@@ -3,6 +3,7 @@
 import C from "../scripts/constants";
 import K4Config from "../scripts/config";
 import K4Actor from "../documents/K4Actor.js";
+import K4Item from "../documents/K4Item.js";
 import K4PCSheet from "../documents/K4PCSheet.js";
 import K4NPCSheet from "../documents/K4NPCSheet.js";
 import K4ItemSheet from "../documents/K4ItemSheet.js";
@@ -50,6 +51,8 @@ declare global {
 
   // Represents either an item or and index of items
   type ItemOrIndex<V = unknown> = V | Index<V>;
+  // Represents either an item or an array of items
+  type ItemOrArray<V = unknown> = V | V[];
 
   // Represents a value or a Promise resolving to a value
   type ValueOrPromise<V = unknown> = V | Promise<V>;

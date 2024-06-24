@@ -65,6 +65,14 @@ export default function registerSettings() {
     "type": Boolean/* ,
     "onChange": () => window.location.reload() */
   });
+  game.settings.register("kult4th", "useStabilityVariant", {
+    "name": "Variant Rule: Stability",
+    "hint": "Use a variant for Stability that uses an additional level (for a total of ten), and allows for more flexibility defining the character's mental state at each level. Recommended.",
+    "scope": "world",
+    "config": true,
+    "default": false,
+    "type": Boolean
+  });
 }
 
 export function initTinyMCEStyles() {

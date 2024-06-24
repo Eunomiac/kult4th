@@ -183,6 +183,7 @@ declare global {
      */
     export namespace SourceSchema {
       export interface Move extends K4Item.Components.Base,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         K4SubItem.Components.CanSubItem,
         K4Item.Components.RulesData,
         K4Item.Components.ResultsData {
@@ -316,7 +317,7 @@ interface K4Item<T extends K4ItemType = K4ItemType> {
   get name(): string;
   get type(): T;
   get sheet(): K4Item["_sheet"] & K4ItemSheet;
-  get effects(): EmbeddedCollection & Collection<K4ActiveEffect>[];
+  get effects(): this["data"]["effects"] & Collection<K4ActiveEffect>;
   system: K4Item.System<T>;
   parent: Maybe<K4Item | K4Actor>;
 }
@@ -344,7 +345,7 @@ class K4Item extends Item {
     CONFIG.Item.sidebarIcon = "fa-regular fa-box-open";
 
     // Register creation hook
-    Hooks.on("preCreateItem", async (item: K4Item): Promise<boolean> => {
+    Hooks.on("createItem", async (item: K4Item): Promise<boolean> => {
       // Ensure the item is being created for an actor
       if (!item.parent || item.parent.documentName !== "Actor") {
         return true;
@@ -353,9 +354,10 @@ class K4Item extends Item {
 
       // If an item with the same name and type already exists, other than the one being created, prevent the creation
       const existingItem: Maybe<K4Item> = actor.items
-      .find((i: K4Item): boolean => i.name === item.name && i.type === item.type && i.id !== item.id);
+        .find((i: K4Item): boolean => i.name === item.name && i.type === item.type && i.id !== item.id);
       if (existingItem) {
         ui.notifications.warn(`The item "${item.name}" already exists on this actor.`);
+        await item.delete();
         return false; // Returning false prevents the item from being created
       }
 
@@ -371,9 +373,9 @@ class K4Item extends Item {
   } isParentItem(): this is K4Item.Parent {return Boolean("subItems" in this.system && Array.isArray(this.system.subItems) && this.system.subItems.length > 0);}
   hasSubMoves(): this is K4Item.Parent {return "subMoves" in this.system && Array.isArray(this.system.subMoves) && this.system.subMoves.length > 0;}
   hasSubAttacks(): this is K4Item.Parent {return "subAttacks" in this.system && Array.isArray(this.system.subAttacks) && this.system.subAttacks.length > 0;}
-  isSubItem(): this is K4Item & K4SubItem {return Boolean("parentItem" in this.system && this.system.parentItem?.name);}
+  isSubItem(): this is K4Item<K4ItemType.move> & K4SubItem {return Boolean("parentItem" in this.system && this.system.parentItem?.name);}
   isBasicMove(): this is K4Item<K4ItemType.move> {return C.BasicMoves.includes(this.name);}
-  isEdge(): this is K4SubItem<K4ItemType.move> {return this.isSubItem() && Boolean(this.system.isEdge);}
+  isEdge(): this is K4Item<K4ItemType.move> {return this.isSubItem() && Boolean(this.system.isEdge);}
   isOwnedItem(): this is K4Item & {parent: K4Actor;} {return Boolean(this.isEmbedded && this.parent instanceof Actor);}
   isOwnedSubItem(): this is K4Item & K4SubItem & {parent: K4Actor;} {return this.isSubItem() && this.isOwnedItem();}
   isOwnedByUser(): this is K4Item & {parent: K4Actor;} {return this.isOwnedItem() && this.parent.isOwner;}
@@ -607,6 +609,9 @@ class K4Item extends Item {
     };
     if (this.hasRules()) {
       stripData.tooltip = this.system.rules.trigger;
+    }
+    if (this.isEdge()) {
+      stripData.tooltip = this.system.rules.outro;
     }
 
     // Roll Button or Trigger Button?

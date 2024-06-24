@@ -28,28 +28,24 @@ enum K4ItemSubType {
   activeStatic = "active-static",
   passive = "passive"
 }
-enum K4ItemRange {
-  arm = "arm",
-  room = "room",
-  field = "field",
-  horizon = "horizon"
-}
-export interface PackSchema<T extends K4ItemType = K4ItemType> {
-  name: string;
-  type: T;
-  img: string;
-  system: K4Item.Source<T>;
+namespace ITEM_DATA {
+  export interface Schema<T extends K4ItemType = K4ItemType> {
+    name: string;
+    type: T;
+    img: string;
+    system: K4Item.Source<T>;
+  }
 }
 // #endregion
 
 const ITEM_DATA: {
-  advantage: PackSchema<K4ItemType.advantage>[],
-  disadvantage: PackSchema<K4ItemType.disadvantage>[],
-  darksecret: PackSchema<K4ItemType.darksecret>[],
-  weapon: PackSchema<K4ItemType.weapon>[],
-  gear: PackSchema<K4ItemType.gear>[],
-  move: PackSchema<K4ItemType.move>[],
-  relation: PackSchema<K4ItemType.relation>[]
+  advantage: ITEM_DATA.Schema<K4ItemType.advantage>[],
+  disadvantage: ITEM_DATA.Schema<K4ItemType.disadvantage>[],
+  darksecret: ITEM_DATA.Schema<K4ItemType.darksecret>[],
+  weapon: ITEM_DATA.Schema<K4ItemType.weapon>[],
+  gear: ITEM_DATA.Schema<K4ItemType.gear>[],
+  move: ITEM_DATA.Schema<K4ItemType.move>[],
+  relation: ITEM_DATA.Schema<K4ItemType.relation>[]
 } = {
   advantage: [
     {

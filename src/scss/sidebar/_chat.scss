@@ -69,8 +69,19 @@
       background: transparent;
       left: -10px;
 
+      &:last-child {
+        margin-bottom: 20px;
+      }
+
       &:last-child:not(.not-animating) {
         margin-bottom: 20px;
+        // max-height: 240px;
+        // min-height: 240px;
+
+        .message-content {
+          // max-height: 240px;
+          // min-height: 240px;
+        }
 
         .message-content .kult4th-chat {
           .roll-dice-results {
@@ -86,7 +97,7 @@
           .roll-dice-results ~ div,
           .roll-dice-results ~ label,
           .roll-dice-results ~ h2,
-          .roll-dice-results ~ ul li { visibility: hidden; }
+          .roll-dice-results ~ ul li { display: none; visibility: hidden; opacity: 0}
         }
       }
 
@@ -117,6 +128,7 @@
         padding: var(--chat-vert-padding-external) var(--chat-horiz-padding-external);
         // width: var(--sidebar-width);
         min-height: 42px;
+        overflow: hidden;
 
         .message-bg {
           position: absolute;
@@ -539,6 +551,7 @@
               .roll-modifiers {
                 grid-area: roll-modifiers;
                 position: relative;
+                // min-height: 100px;
               }
               .roll-outcome {
                 grid-area: roll-outcome;

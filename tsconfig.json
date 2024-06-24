@@ -5,15 +5,15 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "checkJs": false,
-            "esModuleInterop": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "lib": [
       "ESNext",
       "DOM"
     ],
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
     "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,

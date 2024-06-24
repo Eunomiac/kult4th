@@ -1,5 +1,5 @@
 <div
-  class="hover-strip item {{~#if isGlowing}} neon-glow-strong-{{isGlowing}}{{/if}} {{~#each stripClasses}} {{this}}{{/each}}"
+  class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}}"
   data-type={{type}}
   {{~#if dataset}}{{#each dataset as |val key|}}
     data-{{key}}="{{val}}"
