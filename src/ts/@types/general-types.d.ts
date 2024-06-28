@@ -8,33 +8,38 @@ import K4PCSheet from "../documents/K4PCSheet.js";
 import K4NPCSheet from "../documents/K4NPCSheet.js";
 import K4ItemSheet from "../documents/K4ItemSheet.js";
 import K4ActiveEffect from "../documents/K4ActiveEffect.js";
+import K4ChatMessage from "../documents/K4ChatMessage.js";
+import K4Dialog from "../documents/K4Dialog.js";
+import K4Roll from "../documents/K4Roll.js";
+import K4Scene from "../documents/K4Scene.js";
 
 import {gsap} from "gsap";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
-type GsapTester = typeof gsap;
+declare global {
 
-// #region CONFIGURATION OF SYSTEM CLASSES
-type ActorDoc = K4Actor; // Actor;
-type ItemDoc = K4Item; // Item;
-type ActorSheetDoc = K4PCSheet | K4NPCSheet; // ActorSheet;
-type ItemSheetDoc = K4ItemSheet; // ItemSheet;
+  // #region CONFIGURATION OF SYSTEM CLASSES
+  type ActorDoc = K4Actor; // Actor;
+  type ItemDoc = K4Item; // Item;
+  type ActorSheetDoc = K4PCSheet | K4NPCSheet; // ActorSheet;
+  type ItemSheetDoc = K4ItemSheet; // ItemSheet;
 
-type ActiveEffectDoc = K4ActiveEffect; // ActiveEffect;
-type ChatMessageDoc = ChatMessage; // ChatMessage;
-type DialogDoc = Dialog; // Dialog;
-type RollDoc = Roll; // Roll;
-type SceneDoc = Scene; // Scene;
-type UserDoc = User; // User;
-// #endregion
+  type ActiveEffectDoc = K4ActiveEffect; // ActiveEffect;
+  type ChatMessageDoc = K4ChatMessage; // ChatMessage;
+  type DialogDoc = K4Dialog; // Dialog;
+  type RollDoc = K4Roll; // Roll;
+  type SceneDoc = K4Scene; // Scene;
+  type UserDoc = User; // User;
+  // #endregion
 
-// #region UTILITY TYPES
-type HexDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "A" | "B" | "C" | "D" | "E" | "F";
-type MaybeSpace = " " | "";
-type FlexComma = `,${MaybeSpace}`;
-// #endregion
-// Type definitions for Clamp.js
+  // #region UTILITY TYPES
+  type HexDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "A" | "B" | "C" | "D" | "E" | "F";
+  type MaybeSpace = " " | "";
+  type FlexComma = `,${MaybeSpace}`;
+  // #endregion
+  // Type definitions for Clamp.js
+}
 
 
 declare global {

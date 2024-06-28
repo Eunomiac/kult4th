@@ -121,7 +121,8 @@
 			"darksecret",
 			"relation",
 			"weapon",
-			"gear"
+			"gear",
+      "gmtracker"
 		],
 		"templates": {
 			"base": {
@@ -229,6 +230,9 @@
 		"gear": {
 			"templates": ["base", "hasSubItems", "rulesData"],
 			"armor": 0
-		}
+		},
+    "gmtracker": {
+      "templates": ["base", "hasSubItems"]
+    }
 	}
 }

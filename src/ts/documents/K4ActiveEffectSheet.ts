@@ -173,3 +173,87 @@ const WOUNDANDSTABILITY_FUNCS = {
     {ApplyStability: ""}
   ]
 }
+
+/** MODIFY ROLL CHANGES */
+const MODIFYROLLCHANGES = [
+  { // Hardened
+    key: "ModifyRoll",
+    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+    value: `
+      filter:Endure Injury,
+      label:Hardened,
+      effect:Add,
+      value:1,
+      duration:ongoing,
+      defaultState:true,
+      canToggle:false,
+      icon:systems/kult4th/assets/icons/move/endure-injury.svg,
+      fromText:#>text-keyword>Hardened<#,
+      tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#
+    `,
+    priority: undefined
+  },
+  { // Observe a Situation - Complete Success
+    key: "ModifyRoll",
+    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+    value: `
+      filter:all,
+      effect:Add,
+      value:1,
+      duration:ongoing,
+      usageMax:1,
+      defaultState:true,
+      canToggle:true,
+      icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,
+      shortLabel:Act On Observations,
+      fromText:an #>text-keyword>Observe a Situation<# roll,
+      tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#
+    `,
+    priority: undefined
+  },
+  {
+    key: "ModifyRoll",
+    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+    value: `
+      filter:all,
+      label:Act On Observations,
+      effect:Add,
+      value:1,
+      duration:ongoing,
+      usageMax:1,
+      defaultState:true,
+      canToggle:true,
+      icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,
+      fromText:an #>text-keyword>Observe a Situation<# roll,
+      tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#
+    `,
+    priority: undefined
+  },
+  {
+    key: "ModifyRoll",
+    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+    value: `
+      filter:Endure Injury,
+      label:Endure Injury Mods,
+      effect:Add,
+      value:actor.system.armor,
+      inStatusBar:false
+    `,
+    priority: undefined
+  },
+  {
+    key: "ModifyRoll",
+    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+    value: `
+      filter:Endure Injury,
+      label:Endure Injury Mods,
+      effect:Subtract,
+      value:prompt,
+      title:How much Harm?,
+      input:numberButtons,
+      inputVals:1|2|3|4|5,
+      inStatusBar:false
+    `,
+    priority: undefined
+  }
+]

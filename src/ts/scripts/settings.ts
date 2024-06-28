@@ -107,7 +107,7 @@ export function initTinyMCEStyles() {
       items: [
         {title: U.tCase(U.loc("kult4th.system.trigger")), inline: "em", classes: "text-trigger", wrapper: false},
         {title: U.tCase(U.loc("kult4th.system.keyword")), inline: "strong", classes: "text-keyword", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.item.type.move")), inline: "em", classes: "text-keyword text-movename", wrapper: false}
+        {title: U.tCase(U.loc("kult4th.item.type.move")), inline: "em", classes: "text-keyword text-doclink", wrapper: false}
       ]
     }
   ];

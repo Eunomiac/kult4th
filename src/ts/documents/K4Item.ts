@@ -17,7 +17,8 @@ enum K4ItemType {
   darksecret = "darksecret",
   relation = "relation",
   gear = "gear",
-  weapon = "weapon"
+  weapon = "weapon",
+  gmtracker = "gmtracker"
 }
 
 enum K4ItemSubType {
@@ -319,7 +320,7 @@ interface K4Item<T extends K4ItemType = K4ItemType> {
   get sheet(): K4Item["_sheet"] & K4ItemSheet;
   get effects(): this["data"]["effects"] & Collection<K4ActiveEffect>;
   system: K4Item.System<T>;
-  parent: Maybe<K4Item | K4Actor>;
+  parent: ActorDoc | null;
 }
 // #endregion
 // #endregion
@@ -469,22 +470,10 @@ class K4Item extends Item {
 
     // If this has Change data in its system.rules schema, prepare a K4ActiveEffect to carry those Changes
     if (this.hasMainEffects()) {
-      const {parent} = this;
-      const effectData = {
-        changes: this.customChangeData,
-        disabled: false,
-        icon: this.img,
-        label: `[MAIN] ${this.name}`,
-        origin: this.uuid,
-        transfer: true
-      }
-      // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).
-      if (!parent) {
-        kLog.display(`[Primary K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" PRIMARY: Embedding ActiveEffect on ITEM`, {
-          ITEM: this,
-          effectData
-        });
-        await this.createEmbeddedDocuments("ActiveEffect", [effectData]);
+      if (!this.parent) {
+        // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).
+        kLog.display(`[Primary K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" PRIMARY: Embedding ActiveEffect on ITEM`, this);
+        await K4ActiveEffect.CreateFromChangeData(this.customChangeData, this);
       } else if (this.effects.size === 0) {
         // If this is an owned item, there are two possible cases:
         // - (1) this item is being created by embedding an existing Primary item onto an actor, which will have transferred all of the K4ActiveEffects it created during its own _onCreate step. In this case, we don't need to do anything, as the effects will have already transferred to the Actor.
@@ -492,10 +481,9 @@ class K4Item extends Item {
         // We know we are in case (2) if this item has no K4ActiveEffects (despite having effects defined in its system.rules.effects array).
         kLog.display(`[Owned K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" CREATED-AS-EMBEDDED: Embedding ActiveEffect on ACTOR DIRECTLY`, {
           ITEM: this,
-          actor: parent,
-          effectData
+          actor: this.parent
         });
-        await parent.createEmbeddedDocuments("ActiveEffect", [effectData]);
+        await K4ActiveEffect.CreateFromChangeData(this.customChangeData, this, this.parent as K4Actor<K4ActorType.pc>);
       }
     }
 
@@ -773,19 +761,19 @@ class K4Item extends Item {
       this.updateHold(hold!);
     }
     if ((effects ?? []).length > 0) {
-      const effectData: Array<ActiveEffectDataConstructorData & Record<string, unknown>> = [{
-        changes: effects!,
-        disabled: false,
-        icon: this.img,
-        label: `[ROLL] ${this.name}`,
-        origin: this.uuid,
-        transfer: true
-      }];
-        kLog.display(`#${this.id} [K4Item.applyResult] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating Roll Result ActiveEffect`, {
-          ITEM: this,
-          effectData: foundry.utils.deepClone(effectData)
-        });
-      await this.parent.createEmbeddedDocuments("ActiveEffect", effectData);
+      // const effectData: Array<ActiveEffectDataConstructorData & Record<string, unknown>> = [{
+      //   changes: effects!,
+      //   disabled: false,
+      //   icon: this.img,
+      //   label: `[ROLL] ${this.name}`,
+      //   origin: this.uuid,
+      //   transfer: true
+      // }];
+      //   kLog.display(`#${this.id} [K4Item.applyResult] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating Roll Result ActiveEffect`, {
+      //     ITEM: this,
+      //     effectData: foundry.utils.deepClone(effectData)
+      //   });
+      await K4ActiveEffect.CreateFromChangeData(effects!, this as K4Item<K4ActiveEffect.OriginTypes>, this.parent as K4Actor<K4ActorType.pc>);
     }
   }
 

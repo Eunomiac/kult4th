@@ -451,7 +451,6 @@
                   }
 
                   &:first-child {
-                    // --chat-dice-results-animation-scale: -0.1, -0.1;
                     --chat-dice-results-animation-scale: -0.075, 0.075;
                     --chat-dice-results-animation-rotation: 45deg;
                   }
@@ -467,72 +466,6 @@
                       width: 400%;
                     }
 
-                    // .roll-d10-value {
-                    //   display: block;
-                    //   position: relative;
-                    //   z-index: 1;
-                    //   text-align: center;
-                    //   line-height: var(--chat-dice-results-term-container-size);
-                    //   font-size: $rem-28;
-                    //   font-weight: $font-weight-black;
-                    //   &::first-letter {
-                    //     font-size: $rem-18;
-                    //     vertical-align: middle;
-                    //   }
-
-                    //   &[data-attrval="7"] {
-                    //     color: var(--K4-bWHITE);
-                    //   }
-                    //   &[data-attrval="6"] {
-                    //     color: var(--K4-bWHITE);
-                    //   }
-
-                    //   &[data-attrval="5"] {
-                    //     color: var(--K4-bWHITE);
-                    //   }
-
-                    //   &[data-attrval="4"] {
-                    //     color: var(--K4-WHITE);
-                    //   }
-
-                    //   &[data-attrval="3"] {
-                    //     color: var(--K4-gGOLD);
-                    //   }
-
-                    //   &[data-attrval="2"] {
-                    //     color: var(--K4-bGOLD);
-                    //   }
-
-                    //   &[data-attrval="1"] {
-                    //     color: var(--K4-GOLD);
-                    //   }
-
-                    //   &[data-attrval="0"] {
-                    //     color: var(--K4-dGOLD);
-                    //   }
-
-                    //   &[data-attrval="-1"] {
-                    //     color: var(--K4-RED);
-                    //   }
-
-                    //   &[data-attrval="-2"] {
-                    //     color: var(--K4-bRED);
-                    //   }
-
-                    //   &[data-attrval="-3"] {
-                    //     color: var(--K4-gRED);
-                    //   }
-
-                    //   &[data-attrval="-4"] {
-                    //     color: var(--K4-gRED);
-                    //   }
-
-                    //   &[data-attrval="-5"] {
-                    //     color: var(--K4-gRED);
-                    //     font-weight: $font-weight-black;
-                    //   }
-                    // }
-
                     &.attribute-zero { display: none }
                     &.attribute-fortitude,
                     &.attribute-reason,
@@ -542,9 +475,6 @@
                     &.attribute-violence { left: 5px }
                     &.attribute-reason,
                     &.attribute-intuition { z-index: 0 }
-                    // &.attribute-perception,
-                    // &.attribute-charisma,
-                    // &.attribute-soul { top: 10px }
                   }
                 }
               }

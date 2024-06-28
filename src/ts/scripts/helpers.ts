@@ -143,8 +143,8 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
               return [
                 "#>",
                 "item-button text-attributename",
-                `:data-item-name='${iData.name}'`,
-                ":data-action='roll'",
+                `&data-item-name='${iData.name}'`,
+                "&data-action='roll'",
                 ">",
                 "roll ",
                 `+${U.tCase(iData.system.attribute)}`,
@@ -177,24 +177,11 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     });
 
     // Step Two: Apply span styling.
-    /*
-    const strings = [
-                      "#>text-center>You get #>text-keyword>+1 ongoing<# against this guy<#",
-                      "#>text-keyword>+1 ongoing<#",
-                      "#>item-button text-keyword text-movename:data-item-name='Engage_in_Combat':data-action='open'>Engage in Combat<#",
-                      "#>text-center>You are a seasoned marksman.<#%insert.break%#>text-center>You deal #>text-keyword>+1 Harm<# with firearms.<#"
-                    ];
-
-    strings.forEach((str) => {
-      // Insert function to test
-      kLog.log(str);
-    } */
-
     // str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
     let prevStr;
     while (str !== prevStr) {
       prevStr = str;
-      str = str.replace(/#>([^>:]+)(:[^>]+)?>([^#]+)<#/g, (_, classRefs, attrRefs, contents) => {
+      str = str.replace(/#>([^>&]+)(&[^>]+)?>([^#]+)<#/g, (_, classRefs, attrRefs, contents) => {
         classRefs = ["text-tag", classRefs ?? ""].join(" ").trim();
         const htmlParts = [
           "<span class='",
@@ -202,7 +189,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
           "'"
         ];
         if (attrRefs) {
-          htmlParts.push(attrRefs.replace(/:/g, " "));
+          htmlParts.push(attrRefs.replace(/&/g, " "));
         }
         htmlParts.push(...[
           ">",

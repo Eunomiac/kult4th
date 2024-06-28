@@ -1,11 +1,13 @@
 // #region IMPORTS ~
 import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import K4Actor from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4Roll from "./K4Roll.js";
+import K4Scene from "./K4Scene.js";
 import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
-// import { ObjectField, BooleanField, IntegerField, StringField } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/fields.mjs";
+import K4ChatMessage from "./K4ChatMessage.js";
+import K4Dialog from "./K4Dialog.js";
 // #endregion
 
 /** #region == K4 Active Effects == ~
@@ -64,40 +66,30 @@ import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
 
 // #region -- TYPES & ENUMS --
 // #region ENUMS ~
-enum EffectMode {
-  Custom,
-  Multiply,
-  Add,
-  Downgrade,
-  Upgrade,
-  Override
-}
 
 /** == EFFECT SOURCE ==
  * The category of entity, event or circumstance that empowers the Effect, that is ultimately responsible for removing it when it no longer applies.
  * An Effect's Source is usually, but not always, the entity that created the Effect.
  */
-enum EffectSource {
-  item = "item", // The Effect is applied by an item owned by the Actor. REMOVAL: the item is removed from the Actor.
-  roll = "roll", // The Effect was applied by a roll result. REMOVAL: Must be specified (default = single-use, toggleable effect)
-  wound = "wound", // The Effect is applied by the Actor's wound state. Every Actor will have a singleton instance of this Effect,
-                   // which is refreshed whenever the Actor's wounds change. REMOVAL: never (will apply zero Changes at no wounds)
-  stability = "stability", // The Effect is applied by the Actor's stability level. Every Actor will have a singleton instance of this Effect,
-                           // which is refreshed whenever the Actor's stability changes. REMOVAL: never (will apply zero Changes at full Stability)
-  scene = "scene", // The Effect is applied by the active scene to all Actors present. REMOVAL: when the scene ends
-  session = "session", // The Effect is applied by the active session to all Actors present. REMOVAL: when the session ends
+enum EffectSourceType {
+  ownedItem = "ownedItem", // The Effect is applied by an item owned by the Actor. REMOVAL: the item is removed from the Actor.
+  moveResult = "moveResult", // The Effect was applied by a move result, either triggered or rolled. REMOVAL: Must be specified (default = single-use, toggleable effect)
+  claimedResult = "claimedResult", // The Effect was applied by clicking on an effect link in a move result chat card. REMOVAL: Must be specified (default = single-use, toggleable effect)
+  scene = "scene", // The Effect was applied by a K4Scene document to all actors present. REMOVAL: when the Scene ends.
+  actor = "actor", // The Effect is created by the Actor and applied directly when the Actor is created. REMOVAL: Never.
   gm = "gm" // The Effect is applied by the GM manually to selected actors via the GM Screen. REMOVAL: no automatic removal; manually controlled by the GM
 }
 
-/** == EFFECT TARGET ==
- * The actual Document entity the Changes affect. Though many values are shared in common with Source,
- * they are distinct in that Source describes where the Effect originated, while Target describes what it affects.
+/** == EFFECT DURATION ==
+ * The duration of the Effect, which determines when it is automatically removed.
  */
-enum EffectTarget {
-  actor = "actor", // The Actor's base data
-  item = "item", // An item owned by the Actor
-  roll = "roll", // A roll made by the Actor
-  gm = "gm" // Information displayed on the GM Screen
+enum EffectDuration {
+  instant = "instant", // The Effect is instant, and is never actually created: instead of being created, its changes are permanently applied
+  ongoing = "ongoing", // The Effect is ongoing and is not automatically removed by duration checks (its removal, if not permanent, must be handled elsewhere).
+  limited = "limited", // The Effect has a limited number of uses (defined in the uses property) and is then removed.
+                          // - "ongoing" effects can also have a uses property, but they are not removed when uses.value === uses.max (i.e. they can be "refilled")
+  scene = "scene", // The Effect is applied for the duration of the active Scene and is removed when the Scene ends.
+  session = "session", // The Effect is applied for the duration of the active Session and is removed when the Session ends.
 }
 
 enum PromptInputType {
@@ -112,76 +104,71 @@ namespace K4Change {
 
 }
 namespace K4ActiveEffect {
-
-  // export namespace Change {
-  //   interface BaseData {
-  //     value: string;
-  //   }
-
-  //   interface CustomData extends BaseData {
-  //     key: keyof typeof CUSTOM_FUNCTIONS;
-  //     mode: EffectMode.Custom;
-  //   }
-
-  //   interface NonCustomData extends BaseData {
-  //     key: string;
-  //     mode: Exclude<EffectMode, EffectMode.Custom>;
-  //   }
-
-  //   export type Data = CustomData | NonCustomData;
-
-  // }
-
+  export type OriginTypes = Exclude<K4ItemType, K4ItemType.darksecret>;
+  export type Origin = K4Item<OriginTypes>|K4Actor<K4ActorType.pc>|K4Scene|K4ChatMessage;
   export type CustomFunction = (
     parent: K4Actor|K4Roll,
     data: Record<string, string|number|boolean>
   ) => ValueOrPromise<void|boolean|string>;
 
-  // export interface ConstructorData extends ActiveEffectDataConstructorData {
-  //   changes: Change.Data[];
-  // }
+  namespace Components {
+    export namespace EffectSource {
+      interface Base {
+        type: EffectSourceType
+      }
 
-  export interface Data extends Partial<Omit<ActiveEffectData, "changes">> {
-    changes: EffectChangeData[];
-    state: boolean; // Whether the Effect is currently enabled or disabled
-    defaultState?: boolean; // Whether the effect is enabled by default when applied. (default = true)
-    uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
-                    // - if undefined, the Effect is not limited-use
-    inStatusBar: boolean; // Whether the Effect should be displayed in the status bar on the Actor's character sheet. (default = false)
-                          // - if true, several additional properties are required:
-    canToggle?: boolean; // Whether the PARENTACTOR can toggle the effect on/off on their character sheet (default = true)
+      interface DocSource extends Base {
+        type: Exclude<EffectSourceType, EffectSourceType.moveResult|EffectSourceType.claimedResult>,
+        uuid: string
+      }
+      interface ResultSource extends Base {
+        type: EffectSourceType.moveResult|EffectSourceType.claimedResult
+      }
+      export type Data = DocSource|ResultSource;
+    }
 
-    shortLabel?: string; // A short label to be shown in the status bar
-    tooltip?: string; // A longer description of the effect, shown in the tooltip when hovering over the effect's label on the actor's sheet
-    fromText?: string; // The name to display in any "(from ...)" references in displayed game text
-    effectSource: EffectSource; // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
-
-    // "isPooled": For ActiveEffects on scenes and sessions, whether the "system.usage.value" is shared among all actors. (default = true)
-    // Default is true because this is how changes can be transferred between actors,
-    // i.e. one actor creates a usage.max = 1 bonus to a roll, which another actor can use,
-    // is how the "Help Other" move works.
-    // Limited-use scene or session effects are comparatively rare.
+    export namespace Effect {
+      interface Base {
+        canToggle: boolean; // Whether the PARENTACTOR can toggle the effect on/off on their character sheet (default = true)
+        defaultState?: boolean; // Whether the effect is enabled by default when applied. (default = true)
+        toggleLabel?: string; // The label to display next to the the toggle button in the actor's character sheet (default = "")
+        tooltip?: string; // The tooltip to display on the toggle button in the actor's character sheet
+        uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
+                          // - if undefined, the Effect is not limited-use
+        duration?: EffectDuration, // The duration of the Effect, which determines when it is automatically removed (default = "ongoing")
+        effectSource: Components.EffectSource.Data // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
+      }
+      interface CanToggle extends Base {
+        canToggle: true;
+        defaultState: boolean;
+        toggleLabel: string;
+        tooltip: string;
+      }
+      interface CannotToggle extends Base {
+        canToggle: false;
+        defaultState?: never;
+        toggleLabel?: never;
+        tooltip?: never;
+      }
+      export type Data = CanToggle|CannotToggle;
+    }
   }
 
-  // export type ConstructorData = Data & ActiveEffectDataConstructorData & {effectSource: EffectSource};
-}
-// #endregion
-// #region -- INTERFACE AUGMENTATION ~
-interface K4ActiveEffect extends ActiveEffect {
-  label: string,
-  icon: string,
-  origin: string
-  disabled: boolean
-  changes: EffectChangeData[]
-  updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>
-  data: K4ActiveEffect.Data & ActiveEffectData
-  flags: {
-    kult4th?: {
-      disabledChanges?: Record<number, boolean>
+  export type ExtendedData = Components.Effect.Data;
+  export type ExtendedConstructorData = Omit<ExtendedData, "effectSource">;
+
+  export type ConstructorData = ActiveEffectDataConstructorData;
+
+  export type Data = ActiveEffectData & {
+    flags: {
+      kult4th: {
+        data: ExtendedData
+      }
     }
   }
 }
 // #endregion
+
 // #endregion --
 
 
@@ -190,19 +177,15 @@ const CUSTOM_FUNCTIONS: Record<
   string,
   K4ActiveEffect.CustomFunction
 > = {
-  ApplyStability: async (actor, data) => {
+  ApplyWounds: async (roll, data) => {
+    if (!(roll instanceof K4Roll)) {
+      throw new Error(`Invalid roll for ApplyWounds: ${String(roll)}`);
+    }
 
   },
-  ApplyWounds: (roll, data) => {
-    if (roll instanceof K4Actor) {
-      throw new Error(`Invalid roll for ApplyWounds custom function: ${String(roll)}`);
-    }
-    const {actor} = roll;
-
-    const numUnstableSerious = actor.wounds_serious_unstabilized.length;
-    const numUnstableCritical = actor.wounds_critical_unstabilized.length;
-    if (numUnstableSerious === 0 && numUnstableCritical === 0) {
-      return;
+  ApplyStability: async (roll, data) => {
+    if (!(roll instanceof K4Roll)) {
+      throw new Error(`Invalid roll for ApplyStability: ${String(roll)}`);
     }
 
   },
@@ -330,12 +313,12 @@ const CUSTOM_FUNCTIONS: Record<
       throw new Error(`No key provided for PromptForData: ${JSON.stringify(data)}`);
     }
     // If the key has already been filled with data, skip the prompt.
-    if (key.startsWith("flags")) {
-      const flagKey = key.split(".").slice(1).join(".");
-      if (actor.getFlag(C.SYSTEM_ID, flagKey) !== undefined) {
-        return;
-      }
-    }
+    // if (key.startsWith("flags")) {
+    //   const flagKey = key.split(".").slice(1).join(".");
+    //   if (actor.getFlag(C.SYSTEM_ID, flagKey) !== undefined) {
+    //     return;
+    //   }
+    // }
     if (typeof title !== "string") {
       throw new Error(`No title provided for PromptForData: ${JSON.stringify(data)}`);
     }
@@ -352,7 +335,7 @@ const CUSTOM_FUNCTIONS: Record<
       subText: subText ?? ""
     }
     const dialogData: Dialog.Data = {
-      title: title,
+      title,
       content: template(context),
       buttons: {}
     };
@@ -471,10 +454,13 @@ class K4Change implements EffectChangeData {
    * @returns {Record<string, string>} - The parsed object literal.
    */
   static ParseFunctionDataString(dataString: string): Record<string, string|number|boolean> {
+    if (!dataString) { return {}; }
     const pairs = dataString.match(/([^,]+:[^,]+(?:,[^,]+)*?)(?=(?:,[^:]+:)|$)/g);
     if (!pairs) {
       throw new Error(`Invalid function data string format: "${dataString}"`);
     }
+
+
     return pairs.reduce((acc, pair) => {
       let [key, value]: [string, string|number|boolean] = pair.split(/:(.+)/) // Split only at the first colon
         .map(str => str.trim()) as [string, string];
@@ -484,6 +470,13 @@ class K4Change implements EffectChangeData {
         value = /\./.test(value) ? U.pFloat(value) : U.pInt(value);
       } else if (U.isBooleanString(value)) {
         value = U.pBool(value);
+      }
+
+      /** Debugging: Record unique keys and values to CONFIG object */
+      CONFIG.debug.customFunctionParams ??= {};
+      CONFIG.debug.customFunctionParams[key] ??= [];
+      if (!CONFIG.debug.customFunctionParams[key].includes(value)) {
+        CONFIG.debug.customFunctionParams[key].push(value);
       }
 
       acc[key] = value;
@@ -497,13 +490,14 @@ class K4Change implements EffectChangeData {
   value: string;
   mode: number;
   priority: number | null | undefined;
+  // #endregion
 
   // #region GETTERS & SETTERS ~
   isInstantiated(): this is typeof this & {parentEffect: K4ActiveEffect} {
     return Boolean(this.parentEffect);
   }
   get id(): Maybe<string> {
-    if (!this.isInstantiated()) { return; }
+    if (!this.isInstantiated()) { return undefined; }
     return `${this.parentEffect.id}_${this.index}`;
   }
   isOwnedByActor(): this is typeof this & {actor: K4Actor, parentEffect: K4ActiveEffect & {actor: K4Actor}} {
@@ -515,18 +509,14 @@ class K4Change implements EffectChangeData {
   }
   get isEnabled(): boolean {
     if (!this.isInstantiated()) { return false; }
-    return this.parentEffect.getFlag<boolean>(`disabledChanges.${this.id}`) !== true;
-  }
-  set isEnabled(value: boolean) {
-    if (!this.isInstantiated()) { return; }
-    this.parentEffect.setFlag(`disabledChanges.${this.id}`, !value);
+    return !this.parentEffect.disabled;
   }
   get actor(): Maybe<K4Actor> {
-    if (!this.isOwnedByActor()) { return; }
+    if (!this.isOwnedByActor()) { return undefined; }
     return this.parentEffect.actor;
   }
   get originItem(): Maybe<K4Item> {
-    if (!this.isInstantiated()) { return; }
+    if (!this.isInstantiated()) { return undefined; }
     return this.parentEffect.originItem;
   }
   get isPromptOnCreate(): boolean {
@@ -655,6 +645,7 @@ class K4Change implements EffectChangeData {
 
 }
 
+// #endregion
 // #region === K4ACTIVEEFFECT CLASS ===
 /**
  * The active effect itself can be applied using Foundry's standard logic, resulting in changes
@@ -676,6 +667,247 @@ class K4Change implements EffectChangeData {
  */
 class K4ActiveEffect extends ActiveEffect {
 
+  static override create(data: K4ActiveEffect.ConstructorData, options?: DocumentModificationContext): Promise<K4ActiveEffect> {
+    return super.create(data, options) as Promise<K4ActiveEffect>;
+  }
+  static #isChangeModeCustom(change: EffectChangeData): boolean { return change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM; }
+  static #doesAnyChangeHave(changeData: K4Change.Source[], param: string, value?: string|number|boolean): boolean {
+    return changeData
+      .filter((changeData) => this.#isChangeModeCustom(changeData))
+      .map((changeData) => K4Change.ParseFunctionDataString(changeData.value)[param])
+      .some((paramValue: Maybe<string|number|boolean>) => {
+        if (value === undefined) {
+          return paramValue !== undefined;
+        }
+        return paramValue === value;
+      })
+  }
+  static #getChangesWith(changeData: K4Change.Source[], param: string, value?: string|number|boolean): K4Change.Source[] {
+    return changeData
+      .filter((changeData) => this.#isChangeModeCustom(changeData))
+      .filter((changeData) => changeData.value.includes(`${param}:${String(value ?? "")}`));
+  }
+  static #getConflictingChanges(changeData: K4Change.Source[], param: string): K4Change.Source[] {
+    const valueRecord: Record<string, K4Change.Source[]> = {};
+    changeData
+      .filter((changeData) => this.#isChangeModeCustom(changeData))
+      .forEach((changeData) => {
+        const value = K4Change.ParseFunctionDataString(changeData.value)[param];
+        if (value === undefined) { return; }
+        valueRecord[String(value)] = valueRecord[String(value)] ?? [];
+        valueRecord[String(value)].push(changeData);
+      });
+    if (Object.values(valueRecord).length === 0) { return []; }
+    // Find which value has the most changes, and return a flattened array of all OTHER Changes
+    const sortedEntries = Object.entries(valueRecord)
+      .sort((a, b) => b[1].length - a[1].length);
+    if (sortedEntries.length === 0) {
+      throw new Error(`No changes found for parameter '${param}' in effect '${changeData[0].key}'`);
+    }
+    const majorityValue = sortedEntries[0][0];
+    if (majorityValue === undefined) { return []; }
+    delete valueRecord[majorityValue];
+    return Object.values(valueRecord).flat();
+  }
+  static #groupChangesByEffectName(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Source[]> {
+    const defaultName = this.#resolveEffectName(changeData, origin) as string;
+    return changeData.reduce((acc, cData) => {
+      const effectName = this.#resolveEffectName([cData], origin, true) ?? defaultName;
+      acc[effectName] = acc[effectName] ?? [];
+      cData.key = cData.key;
+      acc[effectName].push(cData);
+      return acc;
+    }, {} as Record<string, K4Change.Source[]>);
+  }
+  /**
+ * Given a list of changes, will group them by assigned name and validate that they are all compatible with each other.
+ */
+  static #ProcessEffectChanges(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Source[]> {
+    // First group changes by effect name
+    const groupedChanges = this.#groupChangesByEffectName(changeData, origin);
+
+    Object.values(groupedChanges).forEach((effectChanges) => {
+      /**
+       * The following function parameters, if present on any change, cannot conflict with the same parameter on another change in the same effect:
+       *  - canToggle, usageMax, duration, fromText
+       */
+      ["canToggle", "usageMax", "duration", "fromText"].forEach((param) => {
+        const conflictingChanges = this.#getConflictingChanges(effectChanges, param);
+        if (conflictingChanges.length) {
+          throw new Error(`Conflicting changes found for parameter '${param}' in effect '${effectChanges[0].key}': ${conflictingChanges.map((change) => change.value).join(", ")}`);
+        }
+      });
+    });
+
+    return groupedChanges;
+  }
+  static #resolveEffectSource(origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData["effectSource"] {
+    if (origin instanceof K4Item) {
+      if (origin.is(K4ItemType.gmtracker)) {
+        // GM Tracker effect applied by GM
+        return {
+          type: EffectSourceType.gm,
+          uuid: origin.uuid
+        };
+      }
+      if (origin.is(
+        K4ItemType.move,
+        K4ItemType.advantage,
+        K4ItemType.disadvantage,
+        K4ItemType.relation,
+        K4ItemType.weapon,
+        K4ItemType.gear
+      )) {
+        // Origin is an item that will transfer its effects to an owning actor.
+        return {
+          type: EffectSourceType.ownedItem,
+          uuid: origin.uuid
+        };
+      }
+      throw new Error(`Invalid origin item type for ActiveEffect: ${origin.type}`);
+    }
+
+    if (origin instanceof K4Actor) {
+      // ActiveEffect is being created directly on an Actor
+      return {
+        type: EffectSourceType.actor,
+        uuid: origin.uuid
+      };
+    }
+
+    if (origin instanceof K4ChatMessage) {
+      if (origin.isResult) {
+        // ActiveEffect is being applied by the result of a rolled or triggered move, to the actor who rolled/triggered the move
+        return {
+          type: EffectSourceType.moveResult
+        };
+      }
+      throw new Error(`Chat message ${origin.id} is not a Result and cannot create an ActiveEffect.`);
+    }
+
+    if (origin instanceof K4Scene) {
+      // ActiveEFfect is being applied by a K4Scene to actors present in that scene.
+      return {
+        type: EffectSourceType.scene,
+        uuid: origin.uuid
+      };
+    }
+
+    throw new Error(`Invalid origin type for ActiveEffect: ${String(origin)}`);
+  }
+  static #resolveEffectName(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
+    let effectName: Maybe<string> = K4Change.ParseFunctionDataString(this.#getChangesWith(changeData, "label")[0]?.value).label as Maybe<string>;
+    if (effectName || explicitOnly) { return effectName; }
+    if (origin instanceof K4Item) {
+      effectName = origin.name;
+    }
+    if (origin instanceof K4Actor) {
+      effectName = origin.name;
+    }
+    if (origin instanceof K4ChatMessage) {
+      effectName = "Result";
+    }
+    if (origin instanceof K4Scene) {
+      effectName = origin.name ?? "Scene";
+    }
+    console.warn(`No effect name found in listed changes, defaulting to '${effectName}'`, {changeData, origin});
+    return effectName as string;
+  }
+  /**
+   * Given an array of K4Changes, will extract those function parameters that apply to the parent effect as a whole.
+   * (Any potential conflicts are resolved by the time this function is called.)
+   * @param {K4Change.Source[]} changeData - The array of changes to extract from.
+   * @param {K4ActiveEffect.Origin} origin - The origin of the ActiveEffect.
+   * @returns {K4ActiveEffect.ExtendedData} - The extracted data.
+   */
+  static #ExtractExtendedData(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
+    const canToggle = this.#doesAnyChangeHave(changeData, "canToggle", true);
+    const uses = this.#getChangesWith(changeData, "usageMax")
+      .map((change) => {
+        const {usageMax} = K4Change.ParseFunctionDataString(change.value);
+        return {
+          value: 0,
+          min: 0,
+          max: usageMax as number
+        };
+      })[0] ?? undefined;
+    const duration = this.#getChangesWith(changeData, "duration")
+      .map((change) => {
+        const {duration} = K4Change.ParseFunctionDataString(change.value);
+        return duration as EffectDuration;
+      })[0] ?? EffectDuration.ongoing;
+    const effectSource = this.#resolveEffectSource(origin);
+
+    let defaultState: Maybe<boolean>;
+    let toggleLabel: Maybe<string>;
+    let tooltip: Maybe<string>;
+
+    if (canToggle) {
+      defaultState = this.#getChangesWith(changeData, "defaultState")
+        .map((change) => K4Change.ParseFunctionDataString(change.value).defaultState)[0] as Maybe<boolean> ?? true;
+      toggleLabel = this.#getChangesWith(changeData, "toggleLabel")
+        .map((change) => K4Change.ParseFunctionDataString(change.value).toggleLabel)[0] as Maybe<string> ?? "";
+      tooltip = this.#getChangesWith(changeData, "tooltip")
+        .map((change) => K4Change.ParseFunctionDataString(change.value).tooltip)[0] as Maybe<string>;
+      if (!tooltip) {
+        throw new Error(`Missing tooltip for toggleable effect on '${origin.name}'`)
+      }
+
+      return {
+        canToggle: true,
+        uses,
+        duration,
+        defaultState,
+        toggleLabel,
+        tooltip,
+        effectSource
+      }
+    } else {
+      return {
+        canToggle: false,
+        uses,
+        duration,
+        effectSource
+      }
+    }
+  }
+  static async CreateFromChangeData(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin, target?: K4Actor<K4ActorType.pc>): Promise<K4ActiveEffect[]> {
+    const effectCreationPromises: Promise<K4ActiveEffect>[] = [];
+
+    // Process the effect changes, validating them and separating them as necessary into multiple effects.
+    const groupedChanges = this.#ProcessEffectChanges(changeData, origin);
+
+    // Iterate through each group of changes, creating an ActiveEffect for each.
+    for (const [effectName, effectChanges] of Object.entries(groupedChanges)) {
+      const extData = this.#ExtractExtendedData(effectChanges, origin);
+      const effectData: K4ActiveEffect.ConstructorData & Record<string, unknown> = {
+        origin: origin.uuid,
+        label: effectName,
+        transfer: !target,
+        disabled: extData.canToggle && extData.defaultState === false,
+        changes: effectChanges.map((change) => {
+          return {
+            key: change.key,
+            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+            value: change.value
+          };
+        }),
+        flags: {
+          kult4th: {
+            data: extData
+          }
+        }
+      };
+      if (target) {
+        effectCreationPromises.push(target.createEmbeddedDocuments("ActiveEffect", [effectData]) as unknown as Promise<K4ActiveEffect>);
+      } else {
+        effectCreationPromises.push(origin.createEmbeddedDocuments("ActiveEffect", [effectData]) as unknown as Promise<K4ActiveEffect>);
+      }
+    }
+
+    return Promise.all(effectCreationPromises);
+  }
+
   // #region INITIALIZATION ~
   static async PreInitialize(): Promise<void> {
     CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
@@ -684,11 +916,12 @@ class K4ActiveEffect extends ActiveEffect {
 
     Hooks.on("createActiveEffect", async (effect: K4ActiveEffect) => {
       kLog.display(`[on CreateActiveEffect] ${effect.label}`, {
+        effect,
         origin: effect.origin,
         ownedByActor: effect.isOwnedByActor(),
         hasItemOrigin: effect.hasItemOrigin(),
         originDoc: effect.origin ? fromUuidSync(effect.origin) : null,
-        isItemOwned: effect.hasItemOrigin() ? effect.originItem!.isOwnedItem() : false,
+        isItemOwned: effect.hasItemOrigin() ? effect.originItem.isOwnedItem() : false,
         requireItemChanges: effect.requireItemChanges,
         permanentChanges: effect.permanentChanges
       });
@@ -737,7 +970,7 @@ class K4ActiveEffect extends ActiveEffect {
     const selector = a.closest("tr");
     if (selector === null) { return null; }
     const effect = selector.dataset.effectId
-      ? owner.effects.get(selector.dataset.effectId) as K4ActiveEffect
+      ? owner.effects.get(selector.dataset.effectId)
       : null;
     if (!effect) { return null; }
     switch ( a.dataset.action ) {
@@ -746,7 +979,7 @@ class K4ActiveEffect extends ActiveEffect {
       case "delete":
         return effect.delete();
       case "toggle":
-        return effect.update({state: !effect.data.state});
+        return effect.update({disabled: !effect.disabled});
       default: return null;
     }
   }
@@ -811,7 +1044,7 @@ class K4ActiveEffect extends ActiveEffect {
   // // #endregion
 
   // #region CONSTRUCTOR
-  constructor(data: ActiveEffectDataConstructorData) {
+  constructor(data: K4ActiveEffect.ConstructorData) {
     super(data);
   }
   // #endregion
@@ -822,43 +1055,47 @@ class K4ActiveEffect extends ActiveEffect {
   // #endregion
 
   // #REGION === PUBLIC METHODS ===
-  override getFlag<T>(key: string): Maybe<T> {
-    if (!this.isOwnedByActor()) {
-      throw new Error(`[K4ActiveEffect.getFlag] Attempted to get flag '${key}' for non-actor-owned effect '${this.label}'.`);
-    }
-    return this.actor.getFlag("kult4th", key) as Maybe<T>;
+  override getFlag<T>(namespace: string, key: string): Maybe<T>
+  override getFlag<T>(key: string): Maybe<T>
+  override getFlag<T>(...args: [string, string] | [string]): Maybe<T> {
+    const [namespace, key] = args.length === 1 ? ["kult4th", args[0]] : args;
+    return super.getFlag(namespace, key) as Maybe<T>;
   }
-  override async setFlag<T>(key: string, val: T): Promise<this> {
-    if (!this.isOwnedByActor()) {
-      throw new Error(`[K4ActiveEffect.setFlag] Attempted to set flag '${key}' to '${val}' for non-actor-owned effect '${this.label}'`);
-    }
-    await this.actor.setFlag("kult4th", key, val);
+  override async setFlag<T>(namespace: string, key: string, val: T): Promise<this>
+  override async setFlag<T>(key: string, val: T): Promise<this>
+  override async setFlag<T>(...args: [string, string, T] | [string, T]): Promise<this> {
+    const [namespace, key, val] = args.length === 2 ? ["kult4th", args[0], args[1]] : args;
+    await super.setFlag(namespace, key, val);
     return this;
   }
 
-
   applyToggleListeners(html: JQuery) {
-    this.toggleableChanges.forEach((change) => {
-      html.find(`[data-change-id="${change.id}"]`).on("click", async (event: ClickEvent) => {
-        event.preventDefault();
-        change.isEnabled = !change.isEnabled;
-      });
+    html.find(`[data-id="${this.id}"]`).on("click", async (event: ClickEvent) => {
+      event.preventDefault();
+      if (!this.parent) { return; }
+      K4ActiveEffect.onManageActiveEffect(event, this.parent);
     });
-  }
-
-
-  applyToActor(actor?: K4Actor) {
-    actor ??= this.actor;
-    if (!(actor instanceof K4Actor)) { return; }
-  }
-
-  applyToRoll(roll: Roll) {
-
   }
   // #ENDREGION
 }
 
+// #region -- INTERFACE AUGMENTATION ~
+interface K4ActiveEffect extends ActiveEffect {
+  label: string,
+  icon: string,
+  origin: string
+  disabled: boolean
+  changes: EffectChangeData[]
+  updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>
+  // data: K4ActiveEffect.Data & ActiveEffectData;
+  flags: {
+    kult4th: {
+      data: K4ActiveEffect.ExtendedData
+    }
+  }
+}
+// #endregion
 // #region EXPORTS ~
 export default K4ActiveEffect;
-export {K4Change as K4Change, EffectMode, EffectSource};
+export {K4Change, EffectSourceType};
 // #endregion

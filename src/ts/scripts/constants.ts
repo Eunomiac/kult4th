@@ -362,7 +362,8 @@ const C = {
       [K4ItemType.weapon]: "W",
       [K4ItemType.move]: "M",
       [K4ItemType.gear]: "G",
-      [K4ItemType.relation]: "R"
+      [K4ItemType.relation]: "R",
+      [K4ItemType.gmtracker]: "GM"
     }
   },
   Colors, ColorFilters,
@@ -379,6 +380,7 @@ const C = {
     [K4ItemType.weapon]: "k4-theme-gold",
     [K4ItemType.gear]: "k4-theme-gold",
     [K4ItemType.move]: "k4-theme-black",
+    [K4ItemType.gmtracker]: "k4-theme-black",
     edge: "k4-theme-blue"
   }
 };

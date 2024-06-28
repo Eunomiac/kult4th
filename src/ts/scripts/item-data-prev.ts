@@ -186,7 +186,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones:",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones:",
           "trigger": "",
           "outro": "",
           "listRefs": [
@@ -1020,7 +1020,7 @@ export default {
             "name": "Options",
             "items": [
               "Enticement: Entice an entity to come to you.",
-              "Visions: #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# into a specific place of your choice.",
+              "Visions: #>item-button text-docname:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# into a specific place of your choice.",
               "Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
             ]
           }
@@ -2020,7 +2020,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -2062,10 +2062,10 @@ export default {
         "rules": {
           "intro": "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%",
           "trigger": "",
-          "outro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
+          "outro": "Whenever you #>item-button text-docname:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
           "effects": [
-            "GET: ReplaceList (#>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
+            "GET: ReplaceList (#>item-button text-docname:data-item-name='Investigate':data-action='open'>Investigate<#, Questions)",
             "StoreInput: text=Field of Expertise #1>flags.field_1",
             "StoreInput: text=Field of Expertise #2>flags.field_2"
           ],
@@ -2088,7 +2088,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask.",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -2450,12 +2450,12 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "You take #>text-keyword>+1 ongoing<# to all #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls.",
+          "intro": "You take #>text-keyword>+1 ongoing<# to all #>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
           "effects": [
-            "BuffRoll:#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1"
+            "BuffRoll:#>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<#,1"
           ],
           "holdText": ""
         },
@@ -3437,8 +3437,8 @@ export default {
           "options": {
             "name": "Options",
             "items": [
-              "Viciousness — #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# rolls for the remainder of the fight.",
-              "Adrenaline Rush — #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls for the remainder of the fight."
+              "Viciousness — #>text-keyword>+1 ongoing<# to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# rolls for the remainder of the fight.",
+              "Adrenaline Rush — #>text-keyword>+1 ongoing<# to #>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls for the remainder of the fight."
             ]
           }
         },
@@ -3764,7 +3764,7 @@ export default {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%",
+          "intro": "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -3786,7 +3786,7 @@ export default {
           "options": {
             "name": "Options",
             "items": [
-              "Automatically #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence<# someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
+              "Automatically #>item-button text-docname:data-item-name='Influence Other NPC':data-action='open'>Influence<# someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
               "Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
               "Make a statement about something or someone in mass media.",
               "Gain access to people or places under the pretense of engaging in your research or studies."
@@ -3865,7 +3865,7 @@ export default {
             "name": "Edges",
             "items": [
               "#>text-edgename>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-              "#>text-edgename>Quick Thinking<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
+              "#>text-edgename>Quick Thinking<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-docname:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
               "#>text-edgename>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
             ]
           }
@@ -3949,7 +3949,7 @@ export default {
               "isCustom": false,
               "isEdge": true,
               "rules": {
-                "outro": "... to realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it."
+                "outro": "... to realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-docname:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it."
               },
               "subType": "active-static",
               "key": "genius"
@@ -4479,7 +4479,7 @@ export default {
           "complications": {
             "name": "Complications",
             "items": [
-              "You risk losing control during the fight (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to prevent it).",
+              "You risk losing control during the fight (#>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to prevent it).",
               "You earn an enemy, who will try to get back at you later."
             ]
           }
@@ -4850,8 +4850,8 @@ export default {
           "options": {
             "name": "Options",
             "items": [
-              "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence Other<# rolls made against them.",
-              "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder Other':data-action='open'>Hinder Other<# rolls made against them."
+              "Take #>text-posmod>+2<# to #>item-button text-docname:data-item-name='Influence Other NPC':data-action='open'>Influence Other<# rolls made against them.",
+              "Take #>text-posmod>+2<# to #>item-button text-docname:data-item-name='Hinder Other':data-action='open'>Hinder Other<# rolls made against them."
             ]
           }
         },
@@ -4943,7 +4943,7 @@ export default {
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but afterwards you discover you have been injured without noticing it (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
+                  "result": "#>text-keyword>Gain 1 Edge<#, but afterwards you discover you have been injured without noticing it (#>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<#; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
                   "listRefs": [
                     "edges"
                   ],
@@ -5069,7 +5069,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "When you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, you may also choose from these additional questions: %list.questions%",
+          "intro": "When you #>item-button text-docname:data-item-name='Investigate':data-action='open'>Investigate<#, you may also choose from these additional questions: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -5730,9 +5730,9 @@ export default {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
-              "#>text-edgename>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
-              "#>text-edgename>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
+              "#>text-edgename>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
+              "#>text-edgename>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
+              "#>text-edgename>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
               "#>text-edgename>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
             ]
           }
@@ -5792,7 +5792,7 @@ export default {
               "isCustom": false,
               "isEdge": true,
               "rules": {
-                "outro": "... to one ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#."
+                "outro": "... to one ally gets #>text-posmod>+2<# to their next roll to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#."
               },
               "subType": "active-static",
               "key": "officer"
@@ -5811,7 +5811,7 @@ export default {
               "isCustom": false,
               "isEdge": true,
               "rules": {
-                "outro": "... to give all allies #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight."
+                "outro": "... to give all allies #>text-posmod>+1<# to their next roll to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight."
               },
               "subType": "active-static",
               "key": "officer"
@@ -5830,7 +5830,7 @@ export default {
               "isCustom": false,
               "isEdge": true,
               "rules": {
-                "outro": "... to have you or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#."
+                "outro": "... to have you or one of your allies' #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#."
               },
               "subType": "active-static",
               "key": "officer"
@@ -6380,9 +6380,9 @@ export default {
           "options": {
             "name": "Options",
             "items": [
-              "You realize how to get through your opponent's defenses (take #>text-posmod>+1<# to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
-              "You find your opponent's weak spot (deal #>text-keyword>+1 Harm<# whenever you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
-              "You perceive your opponent's pattern of attack (take #>text-posmod>+1<# to #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever they attack you). These effects are permanent against this opponent."
+              "You realize how to get through your opponent's defenses (take #>text-posmod>+1<# to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
+              "You find your opponent's weak spot (deal #>text-keyword>+1 Harm<# whenever you #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
+              "You perceive your opponent's pattern of attack (take #>text-posmod>+1<# to #>item-button text-docname:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever they attack you). These effects are permanent against this opponent."
             ]
           }
         },
@@ -6751,7 +6751,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7054,7 +7054,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
+          "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-docname:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7144,7 +7144,7 @@ export default {
               "isCustom": false,
               "rules": {
                 "trigger": "When you engage an able opponent out of your reach but no farther than a few meters away in ranged combat,",
-                "outro": "expend 1 Ammo and %insert.rollPrompt%. A targeted PC must #>item-button text-movename:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<#.",
+                "outro": "expend 1 Ammo and %insert.rollPrompt%. A targeted PC must #>item-button text-docname:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<#.",
                 "listRefs": [
                   "gmoptions"
                 ]
@@ -7175,7 +7175,7 @@ export default {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%",
+          "intro": "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.inline-attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7267,7 +7267,7 @@ export default {
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you fight your deity's enemies or fight to protect a sacred object,",
-                "outro": "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
+                "outro": "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
               },
               "subType": "active-static",
               "key": "divine-champion"
@@ -7299,13 +7299,13 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
-            "AddNote:#>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
+            "AddNote:#>item-button text-docname:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/completeSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers.",
+            "AddNote:#>item-button text-docname:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#/partialSuccess,Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
           ],
           "holdText": ""
         },
@@ -7334,7 +7334,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7369,7 +7369,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Investigate':data-action='open'>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7576,7 +7576,7 @@ export default {
             "name": "Edges",
             "items": [
               "#>text-edgename>Block<# &mdash; Avoid a melee attack.",
-              "#>text-edgename>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
+              "#>text-edgename>Roundhouse Strike<# &mdash; #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
               "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon.",
               "#>text-edgename>Throw<# &mdash; Reposition an opponent or drop them to the ground."
             ]
@@ -7660,7 +7660,7 @@ export default {
               "isCustom": false,
               "isEdge": true,
               "rules": {
-                "outro": "... to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack."
+                "outro": "... to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack."
               },
               "subType": "active-static",
               "key": "martial-arts-expert"
@@ -7809,7 +7809,7 @@ export default {
             "name": "Edges",
             "items": [
               "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
-              "#>text-edgename>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+              "#>text-edgename>Blinding Speed<# &mdash; #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
               "#>text-edgename>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
             ]
           }
@@ -7892,7 +7892,7 @@ export default {
               "isCustom": false,
               "isEdge": true,
               "rules": {
-                "outro": "... to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo."
+                "outro": "... to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo."
               },
               "subType": "active-static",
               "key": "lightning-fast"
@@ -8024,12 +8024,12 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
+          "intro": "Whenever you #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
           "effects": [
-            "AddNote:#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
+            "AddNote:#>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<#:partialSuccess='You may suppress your emotions, postponing their effects until the next scene.'"
           ],
           "holdText": ""
         },
@@ -8050,7 +8050,7 @@ export default {
         "pdfLink": "",
         "subItems": [],
         "rules": {
-          "intro": "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks.",
+          "intro": "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -8117,7 +8117,7 @@ export default {
             "name": "Options",
             "items": [
               "Aim for the sensitive parts: Deal #>text-keyword>+1 Harm<#.",
-              "Knock out: The NPC is rendered unconcious. PCs roll to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# and become neutralized on a #>text-resultlabel>(—9)<#.",
+              "Knock out: The NPC is rendered unconcious. PCs roll to #>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<# and become neutralized on a #>text-resultlabel>(—9)<#.",
               "Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
             ]
           }
@@ -8219,7 +8219,7 @@ export default {
                   "result": "You discover what you're looking for, and may also choose one option: %list.options%"
                 },
                 "partialSuccess": {
-                  "result": "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to see how it affects you."
+                  "result": "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to see how it affects you."
                 },
                 "failure": {
                   "result": "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. #>text-gmtext>The GM makes a Move<#."
@@ -8528,7 +8528,7 @@ export default {
             "name": "Edges",
             "items": [
               "#>text-edgename>Brutal Assault<# &mdash; Add #>text-keyword>+1 Harm<# to your attack.",
-              "#>text-edgename>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
+              "#>text-edgename>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
               "#>text-edgename>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
             ]
           }
@@ -8591,7 +8591,7 @@ export default {
               "isCustom": false,
               "isEdge": true,
               "rules": {
-                "outro": "... to take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#."
+                "outro": "... to take #>text-posmod>+2<# to #>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<#."
               },
               "subType": "active-static",
               "key": "rage"
@@ -8645,7 +8645,7 @@ export default {
               "They offer you something they think you'd rather have.",
               "Retreat from the scene.",
               "They are terrorized; you have #>text-keyword>+1 ongoing<# on all rolls against them until they've proven they're not afraid of you.",
-              "They attack you from a disadvantaged position. You take #>text-posmod>+2<# on your roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# if you counterattack."
+              "They attack you from a disadvantaged position. You take #>text-posmod>+2<# on your roll to #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# if you counterattack."
             ]
           }
         },
@@ -8790,7 +8790,7 @@ export default {
               "Give you something you want.",
               "Reveal a secret.",
               "Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
-              "Make them feel bad for opposing you (they must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#)",
+              "Make them feel bad for opposing you (they must #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<#)",
               "They feel happy in your presence, and gain #>text-posmod>+2<# #>text-keyword>Stability<#."
             ]
           }
@@ -8883,7 +8883,7 @@ export default {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence<# them."
+                  "result": "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-docname:data-item-name='Influence Other NPC':data-action='open'>Influence<# them."
                 },
                 "partialSuccess": {
                   "result": "They know of your reputation; you can decide what they have heard."
@@ -8923,8 +8923,8 @@ export default {
             "name": "Options",
             "items": [
               "Prepare Ambush - Deal your weapon's #>text-keyword>Harm<# when your enemy stumbles in.",
-              "Camouflage - Take #>text-keyword>+2 ongoing<# to #>item-button text-movename:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<# for as long as you remain hiding.",
-              "Move in Shadows - Take #>text-keyword>+2 ongoing<# to #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# from ranged weapons."
+              "Camouflage - Take #>text-keyword>+2 ongoing<# to #>item-button text-docname:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<# for as long as you remain hiding.",
+              "Move in Shadows - Take #>text-keyword>+2 ongoing<# to #>item-button text-docname:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# from ranged weapons."
             ]
           }
         },
@@ -9041,7 +9041,7 @@ export default {
                   ]
                 },
                 "failure": {
-                  "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+                  "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                 }
               },
               "subType": "active-rolled",
@@ -9265,7 +9265,7 @@ export default {
               "Lie - Come up with a convincing lie.",
               "Gear Up - Find something you can use as a makeshift melee weapon. The GM will tell you what it is.",
               "Hide - Stay out of a pursuer's sight.",
-              "Prepare - Set a trap that gives you a #>text-posmod>+2<# surprise bonus the first time you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# after the trap is sprung."
+              "Prepare - Set a trap that gives you a #>text-posmod>+2<# surprise bonus the first time you #>item-button text-docname:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# after the trap is sprung."
             ]
           }
         },
@@ -9549,7 +9549,7 @@ export default {
               "isCustom": false,
               "rules": {
                 "trigger": "Whenever you're confronted by the object of your phobia,",
-                "outro": "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+                "outro": "you must #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
               },
               "subType": "active-static",
               "key": "phobia"
@@ -9601,7 +9601,7 @@ export default {
                   "result": "Your condition triggers, causing pain and daze (#>text-negmod>−1<# to all rolls until the scene ends)."
                 },
                 "failure": {
-                  "result": "Your condition is aggravated with life threatening results (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
+                  "result": "Your condition is aggravated with life threatening results (#>item-button text-docname:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
                 }
               },
               "subType": "active-rolled",
@@ -9705,7 +9705,7 @@ export default {
               "rules": {
                 "trigger": "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
               },
               "results": {
                 "completeSuccess": {
@@ -9732,7 +9732,7 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [],
-          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
         "attribute": "zero",
         "currentHold": 0
@@ -9852,7 +9852,7 @@ export default {
                   "result": "You sleep in peace."
                 },
                 "partialSuccess": {
-                  "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#) when you wake up."
+                  "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<#) when you wake up."
                 },
                 "failure": {
                   "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
@@ -10258,7 +10258,7 @@ export default {
                   "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
                 },
                 "failure": {
-                  "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
+                  "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
                 }
               },
               "subType": "active-rolled",
@@ -10313,7 +10313,7 @@ export default {
                   "result": "You're afflicted by jealousy and take #>text-negmod>−1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
                 },
                 "failure": {
-                  "result": "Your jealousy takes hold of you. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
+                  "result": "Your jealousy takes hold of you. You must #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
                 }
               },
               "subType": "active-rolled",
@@ -10485,7 +10485,7 @@ export default {
               "isCustom": false,
               "rules": {
                 "intro": "In addition to the standard effects,",
-                "trigger": "Whenever you #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
+                "trigger": "Whenever you #>item-button text-docname:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
                 "outro": "the GM may choose one option from the list below:",
                 "listRefs": [
                   "gmoptions"
@@ -10645,7 +10645,7 @@ export default {
               "rules": {
                 "trigger": "Whenever you consciously #>text-keyword>Harm<# someone,",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
+                "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
               },
               "results": {
                 "completeSuccess": {
@@ -10672,7 +10672,7 @@ export default {
           "outro": "",
           "listRefs": [],
           "effects": [],
-          "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
+          "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
         },
         "attribute": "zero",
         "currentHold": 0
@@ -11186,7 +11186,7 @@ export default {
                   "result": "You continue to suppress the memories."
                 },
                 "partialSuccess": {
-                  "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+                  "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-docname:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
                 },
                 "failure": {
                   "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."

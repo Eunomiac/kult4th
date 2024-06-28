@@ -4,7 +4,7 @@ import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect, {K4Change} from "./K4ActiveEffect.js";
+import K4ActiveEffect, {K4Change, EffectSourceType} from "./K4ActiveEffect.js";
 import C, {K4Attribute, Archetype, K4Stability} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {PACKS} from "../scripts/data.js";
@@ -168,36 +168,28 @@ class K4Actor extends Actor {
    * - Creates the singleton "Wounds" and "Stability" K4ActiveEffects.
    */
   async initMovesAndEffects() {
-    if (this.basicMoves.length) {return;}
+    if (!this.is(K4ActorType.pc)) {return;}
+    const promises: Array<Promise<unknown>> = [];
     // Create the basic moves for the character
-    await this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves);
+    if (this.basicMoves.length === 0) {
+      promises.push(this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves));
+    }
+
     // Create the singleton "Wounds" and "Stability" K4ActiveEffects
-    await this.createEmbeddedDocuments("ActiveEffect", [
-      {
-        label: "Wounds",
-        icon: "systems/kult4th/assets/icons/wounds/wound-serious.svg",
-        origin: this.uuid,
-        changes: [
-          {
-            key: "ApplyWounds",
-            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-            value: "value:wounds"
-          }
-        ]
-      },
-      {
-        label: "Stability",
-        icon: "systems/kult4th/assets/icons/stability.svg",
-        origin: this.uuid,
-        changes: [
-          {
-            key: "ApplyStability",
-            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-            value: "value:stability"
-          }
-        ]
-      }
-    ]);
+    promises.push(K4ActiveEffect.CreateFromChangeData([{
+      key: "ApplyWounds",
+      value: "label:Wounds,icon:systems/kult4th/assets/icons/wounds/wound-serious.svg",
+      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+      priority: undefined
+    }], this));
+    promises.push(K4ActiveEffect.CreateFromChangeData([{
+      key: "ApplyStability",
+      value: "label:Stability,icon:systems/kult4th/assets/icons/stability.svg",
+      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+      priority: undefined
+    }], this));
+
+    await Promise.all(promises);
   }
   // #endregion
   // #region Type Guards ~
@@ -674,16 +666,8 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
-  get enabledEffects(): K4ActiveEffect[] {
-    return Array.from(this.effects as Collection<K4ActiveEffect>)
-      .filter((effect) => !effect.disabled);
-  }
   get customChanges() {
-    return [
-      ...this.enabledEffects.map((effect) => effect.getCustomChanges()).flat(),
-      ...this.woundRollChanges,
-      ...this.stabilityRollChanges
-    ];
+    return Array.from(this.effects as Collection<K4ActiveEffect>).map((effect) => effect.getCustomChanges()).flat();
   }
   get enabledCustomChanges() {
     return this.customChanges.filter((change) => change.isEnabled);

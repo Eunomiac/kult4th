@@ -21,7 +21,8 @@ enum K4ItemType {
   darksecret = "darksecret",
   relation = "relation",
   gear = "gear",
-  weapon = "weapon"
+  weapon = "weapon",
+  gmtracker = "gmtracker"
 }
 enum K4ItemSubType {
   activeRolled = "active-rolled",
@@ -94,7 +95,7 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "I know something about this (ask the GM what you know and take #>text-keyword>+1 ongoing<# while acting on the answers during this scene).",
+              "I know something about this (ask the GM what you know and take #>text-mod>+1 ongoing<# while acting on the answers during this scene).",
               "I know where I can find more information about this (ask the GM where)."
             ]
           }
@@ -227,7 +228,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones:",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Read a Person'&data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones:",
           "trigger": "",
           "outro": "",
           "listRefs": [
@@ -237,13 +238,13 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What are you afraid of? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What are you afraid of? #>text-sourceref>(from <##>text-itemlink>Extortionist<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-itemlink>Extortionist<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -745,7 +746,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you try to make it through overwhelming odds,",
-                "outro": "take #>text-keyword>+1 ongoing<# on all rolls until you're clear of the threat."
+                "outro": "take #>text-mod>+1 ongoing<# on all rolls until you're clear of the threat."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -785,10 +786,10 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "People around you accept you as their leader and listen to you. Take #>text-keyword>+1 ongoing<# against people in this scene."
+                  "result": "People around you accept you as their leader and listen to you. Take #>text-mod>+1 ongoing<# against people in this scene."
                 },
                 "partialSuccess": {
-                  "result": "People feel you're leadership material and show you respect. Choose one of them, in particular, who goes along with what you think. You have #>text-keyword>+1 ongoing<# against them during this scene."
+                  "result": "People feel you're leadership material and show you respect. Choose one of them, in particular, who goes along with what you think. You have #>text-mod>+1 ongoing<# against them during this scene."
                 },
                 "failure": {
                   "result": "People feel like you're the leader, but one of them tries to challenge you for it. #>text-gmtext>The GM makes a Move<#."
@@ -975,7 +976,7 @@ const ITEM_DATA: {
             "name": "Options",
             "items": [
               "Enticement: Entice an entity to come to you.",
-              "Visions: #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# into a specific place of your choice.",
+              "Visions: #>item-button text-doclink&data-item-name='See Through the Illusion'&data-action='open'>See Through the Illusion<# into a specific place of your choice.",
               "Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
             ]
           }
@@ -1045,7 +1046,7 @@ const ITEM_DATA: {
             "items": [
               "Durable: The construction can be used multiple times and doesn't break easily.",
               "Effective: The construction confers #>text-posmod>+1<# on rolls where it is used for its intended purpose.",
-              "Lethal: The construction causes #>text-keyword>+1 Harm<#.",
+              "Lethal: The construction causes #>text-mod>+1 Harm<#.",
               "Protective: The construction confers #>text-posmod>+1<# armor."
             ]
           }
@@ -1866,7 +1867,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Read a Person'&data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -1874,13 +1875,13 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What sort of person are you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What sort of person are you? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Observant'&data-action='open'>Observant<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Is there anything odd about you? #>text-sourceref>(from <##>text-keyword>Observant<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Is there anything odd about you? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Observant'&data-action='open'>Observant<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -1914,7 +1915,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%",
           "trigger": "",
-          "outro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
+          "outro": "Whenever you #>item-button text-doclink&data-item-name='Investigate'&data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
           "effects": [
             {
@@ -1932,19 +1933,19 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#",
+              value: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<# you may ask an additional question, any question you want. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Expert'&data-action='open'>Expert<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<#, you may ask an additional question, any question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#",
+              value: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<# you may ask an additional question, any question you want. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Expert'&data-action='open'>Expert<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<#, you may still ask any one question you want. #>text-sourceref>(from <##>text-keyword>Expert<##>text-sourceref>)<#",
+              value: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<# you may still ask any one question you want. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Expert'&data-action='open'>Expert<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -1962,7 +1963,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask.",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Read a Person'&data-action='open'>Read a Person<# and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -1970,19 +1971,19 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>text-keyword>Interrogator<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Interrogator'&data-action='open'>Interrogator<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>text-keyword>Interrogator<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Interrogator'&data-action='open'>Interrogator<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if you mention a name, person, or object, you may still ask 'Are you lying?' #>text-sourceref>(from <##>text-keyword>Interrogator<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if you mention a name, person, or object, you may still ask 'Are you lying?' #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Interrogator'&data-action='open'>Interrogator<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -2303,7 +2304,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You take #>text-keyword>+1 ongoing<# to all #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls.",
+          "intro": "You take #>text-mod>+1 ongoing<# to all #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# rolls.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -2311,7 +2312,7 @@ const ITEM_DATA: {
             {
               key: "ModifyRoll",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#",
+              value: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>item-button text-doclink&data-item-name='Hardened'&data-action='open'>Hardened<#,tooltip:Applies to all #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# rolls. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Hardened'&data-action='open'>Hardened<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -2822,7 +2823,7 @@ const ITEM_DATA: {
             {
               key: "CreateAttack",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:sword,name:Riposte,range:arm,harm:3,fromText:#>text-keyword>Elite Sport (Fencing)<#,special:You can make this attack immediately after parrying.",
+              value: "filter:sword,name:Riposte,range:arm,harm:3,fromText:#>item-button text-doclink&data-item-name='Elite Sport (Fencing)'&data-action='open'>Elite Sport (Fencing)<#,special:You can make this attack immediately after parrying.",
               priority: undefined
             }
           ],
@@ -2962,7 +2963,7 @@ const ITEM_DATA: {
               "The person must have you, and will abandon their normally reasonable behavior to do so.",
               "The person is distracted by you for as long as you're in the vicinity, unable to concentrate on anything else.",
               "The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
-              "You make them uncertain and confused. You take #>text-keyword>+1 ongoing<# against them during this scene."
+              "You make them uncertain and confused. You take #>text-mod>+1 ongoing<# against them during this scene."
             ]
           }
         },
@@ -3146,8 +3147,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Viciousness — #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# rolls for the remainder of the fight.",
-              "Adrenaline Rush — #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls for the remainder of the fight."
+              "Viciousness — #>text-mod>+1 ongoing<# to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# rolls for the remainder of the fight.",
+              "Adrenaline Rush — #>text-mod>+1 ongoing<# to #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# rolls for the remainder of the fight."
             ]
           }
         },
@@ -3329,7 +3330,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
+          "intro": "#>text-center>You are a master of armed melee combat.<#%insert.break%When you #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -3343,19 +3344,19 @@ const ITEM_DATA: {
             {
               key: "CreateAttack",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:close_combat,name:Launching Attack,range:room,harm:2,fromText:#>text-keyword>Weapon Master (Melee)<#",
+              value: "filter:close_combat,name:Launching Attack,range:room,harm:2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Melee)'&data-action='open'>Weapon Master (Melee)<#",
               priority: undefined
             },
             {
               key: "CreateAttack",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:close_combat,name:Precision Attack,range:arm,harm:2,fromText:#>text-keyword>Weapon Master (Melee)<#,special:Ignores armor.",
+              value: "filter:close_combat,name:Precision Attack,range:arm,harm:2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Melee)'&data-action='open'>Weapon Master (Melee)<#,special:Ignores armor.",
               priority: undefined
             },
             {
               key: "CreateAttack",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:close_combat,name:Tripping Attack,range:arm,harm:2,fromText:#>text-keyword>Weapon Master (Melee)<#,special:Target falls prone.",
+              value: "filter:close_combat,name:Tripping Attack,range:arm,harm:2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Melee)'&data-action='open'>Weapon Master (Melee)<#,special:Target falls prone.",
               priority: undefined
             }
           ],
@@ -3373,7 +3374,7 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Automatically #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence<# someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
+              "Automatically #>item-button text-doclink&data-item-name='Influence Other NPC'&data-action='open'>Influence<# someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
               "Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
               "Make a statement about something or someone in mass media.",
               "Gain access to people or places under the pretense of engaging in your research or studies."
@@ -3443,8 +3444,8 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it.",
-              "#>text-edgename>Quick Thinking<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it.",
+              "#>text-edgename>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-mod>+1 Harm<# whenever you exploit it.",
+              "#>text-edgename>Quick Thinking<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-doclink&data-item-name='Avoid Harm'&data-action='open'>Avoid Harm<# whenever you exploit it.",
               "#>text-edgename>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
             ]
           }
@@ -3505,7 +3506,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to realize an effective way to dispose of the threat. Deal #>text-keyword>+1 Harm<# whenever you exploit it."
+                "outro": "... to realize an effective way to dispose of the threat. Deal #>text-mod>+1 Harm<# whenever you exploit it."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -3522,7 +3523,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever you exploit it."
+                "outro": "... to realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on #>item-button text-doclink&data-item-name='Avoid Harm'&data-action='open'>Avoid Harm<# whenever you exploit it."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -3922,7 +3923,7 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Deal #>text-keyword>+1 Harm<#.",
+              "Deal #>text-mod>+1 Harm<#.",
               "Hit another target as well.",
               "Immobilize your target.",
               "Get the target to lose control of something.",
@@ -3998,7 +3999,7 @@ const ITEM_DATA: {
           "complications": {
             "name": "Complications",
             "items": [
-              "You risk losing control during the fight (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to prevent it).",
+              "You risk losing control during the fight (#>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to prevent it).",
               "You earn an enemy, who will try to get back at you later."
             ]
           }
@@ -4274,7 +4275,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you suffer a serious or critical injury, name the person you feel is responsible.",
-                "outro": "You get #>text-keyword>+2 ongoing<# to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
+                "outro": "You get #>text-mod>+2 ongoing<# to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4356,8 +4357,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence Other<# rolls made against them.",
-              "Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Hinder Other':data-action='open'>Hinder Other<# rolls made against them."
+              "Take #>text-posmod>+2<# to #>item-button text-doclink&data-item-name='Influence Other NPC'&data-action='open'>Influence Other<# rolls made against them.",
+              "Take #>text-posmod>+2<# to #>item-button text-doclink&data-item-name='Hinder Other'&data-action='open'>Hinder Other<# rolls made against them."
             ]
           }
         },
@@ -4402,9 +4403,9 @@ const ITEM_DATA: {
             "name": "Edges",
             "items": [
               "#>text-edgename>Bring 'Em On<# &mdash; Engage an additional hostile in Combat.",
-              "#>text-edgename>Savagery<# &mdash; Deal #>text-keyword>+2 Harm<# with one attack.",
+              "#>text-edgename>Savagery<# &mdash; Deal #>text-mod>+2 Harm<# with one attack.",
               "#>text-edgename>Charge<# &mdash; Get within reach to attack a hostile.",
-              "#>text-edgename>Go Crazy<# &mdash; Frighten your opponents by laughing into the face of death (#>text-keyword>+1 ongoing<# during the fight)."
+              "#>text-edgename>Go Crazy<# &mdash; Frighten your opponents by laughing into the face of death (#>text-mod>+1 ongoing<# during the fight)."
             ]
           }
         },
@@ -4440,7 +4441,7 @@ const ITEM_DATA: {
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but afterwards you discover you have been injured without noticing it (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
+                  "result": "#>text-keyword>Gain 1 Edge<#, but afterwards you discover you have been injured without noticing it (#>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<#; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
                   "listRefs": [
                     "edges"
                   ],
@@ -4480,7 +4481,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to deal #>text-keyword>+2 Harm<# with one attack."
+                "outro": "... to deal #>text-mod>+2 Harm<# with one attack."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4514,7 +4515,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to frighten your opponents by laughing into the face of death (#>text-keyword>+1 ongoing<# during the fight)."
+                "outro": "... to frighten your opponents by laughing into the face of death (#>text-mod>+1 ongoing<# during the fight)."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4551,7 +4552,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "When you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<#, you may also choose from these additional questions: %list.questions%",
+          "intro": "When you #>item-button text-doclink&data-item-name='Investigate'&data-action='open'>Investigate<#, you may also choose from these additional questions: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -4559,19 +4560,19 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Which organizations, groups, or people of interest may be connected to this? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#",
+              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Which organizations, groups, or people of interest may be connected to this? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Analyst'&data-action='open'>Analyst<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Is there a connection between this and another event? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#",
+              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Is there a connection between this and another event? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Analyst'&data-action='open'>Analyst<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:What could a plausible motive be? #>text-sourceref>(from <##>text-keyword>Analyst<##>text-sourceref>)<#",
+              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:What could a plausible motive be? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Analyst'&data-action='open'>Analyst<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -4774,7 +4775,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.%insert.break%You take #>text-keyword>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects.",
+          "intro": "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.%insert.break%You take #>text-mod>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -4807,7 +4808,7 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact. You also get #>text-keyword>+2 ongoing<# against your target."
+                  "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact. You also get #>text-mod>+2 ongoing<# against your target."
                 },
                 "partialSuccess": {
                   "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact."
@@ -5152,9 +5153,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#.",
-              "#>text-edgename>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight.",
-              "#>text-edgename>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#.",
+              "#>text-edgename>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<#.",
+              "#>text-edgename>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# with firearms while in the fight.",
+              "#>text-edgename>\"Go For The Head!\"<# &mdash; You or one of your allies' #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# deals #>text-mod>+1 Harm<#.",
               "#>text-edgename>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
             ]
           }
@@ -5210,7 +5211,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to one ally gets #>text-posmod>+2<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<#."
+                "outro": "... to one ally gets #>text-posmod>+2<# to their next roll to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<#."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5227,7 +5228,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to give all allies #>text-posmod>+1<# to their next roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with firearms while in the fight."
+                "outro": "... to give all allies #>text-posmod>+1<# to their next roll to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# with firearms while in the fight."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5244,7 +5245,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to have you or one of your allies' #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# deals #>text-keyword>+1 Harm<#."
+                "outro": "... to have you or one of your allies' #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# deals #>text-mod>+1 Harm<#."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5372,7 +5373,7 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "Everyone involved takes #>text-keyword>+1 ongoing<# to carry out the plan, and you get #>text-keyword>one Experience<# if the plan is successful."
+                  "result": "Everyone involved takes #>text-mod>+1 ongoing<# to carry out the plan, and you get #>text-keyword>one Experience<# if the plan is successful."
                 },
                 "partialSuccess": {
                   "result": "You get #>text-keyword>one Experience<# if the plan is successful, but you have overlooked or miscalculated something."
@@ -5407,7 +5408,7 @@ const ITEM_DATA: {
             "name": "Options",
             "items": [
               "They trust you (PC takes #>text-posmod>+1<# #>text-keyword>Relation<# with you).",
-              "They're spellbound by you (take #>text-keyword>+1 ongoing<# against them during this scene).",
+              "They're spellbound by you (take #>text-mod>+1 ongoing<# against them during this scene).",
               "They reveal a weakness, which you can exploit later."
             ]
           },
@@ -5669,7 +5670,7 @@ const ITEM_DATA: {
                     {
                       key: "CreateAttack",
                       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                      value: "filter:close_combat,name:Surprise Strike,range:arm,harm:2,fromText:#>text-keyword>Field Agent<#,uses:1",
+                      value: "filter:close_combat,name:Surprise Strike,range:arm,harm:2,fromText:#>item-button text-doclink&data-item-name='Field Agent'&data-action='open'>Field Agent<#,uses:1",
                       priority: undefined
                     }
                   ]
@@ -5701,9 +5702,9 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "You realize how to get through your opponent's defenses (take #>text-posmod>+1<# to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
-              "You find your opponent's weak spot (deal #>text-keyword>+1 Harm<# whenever you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with them).",
-              "You perceive your opponent's pattern of attack (take #>text-posmod>+1<# to #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# whenever they attack you). These effects are permanent against this opponent."
+              "You realize how to get through your opponent's defenses (take #>text-posmod>+1<# to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# with them).",
+              "You find your opponent's weak spot (deal #>text-mod>+1 Harm<# whenever you #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# with them).",
+              "You perceive your opponent's pattern of attack (take #>text-posmod>+1<# to #>item-button text-doclink&data-item-name='Avoid Harm'&data-action='open'>Avoid Harm<# whenever they attack you). These effects are permanent against this opponent."
             ]
           }
         },
@@ -6030,7 +6031,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<#, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6038,13 +6039,13 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What weaknesses do they have I can use to my advantage? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#",
+              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What weaknesses do they have I can use to my advantage? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Keen-Eyed'&data-action='open'>Keen-Eyed<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What strengths do they have I should watch out for? #>text-sourceref>(from <##>text-keyword>Keen-Eyed<##>text-sourceref>)<#",
+              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What strengths do they have I should watch out for? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Keen-Eyed'&data-action='open'>Keen-Eyed<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -6307,7 +6308,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
+          "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you #>item-button text-doclink&data-item-name='Read a Person'&data-action='open'>Read a Person<#, you may always ask one additional question, regardless of the outcome of your roll.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6315,19 +6316,19 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (3 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (3 total). #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Intuitive'&data-action='open'>Intuitive<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (2 total). #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (2 total). #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Intuitive'&data-action='open'>Intuitive<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene. #>text-sourceref>(from <##>text-keyword>Intuitive<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Intuitive'&data-action='open'>Intuitive<##>text-sourceref>)<#",
               priority: undefined
             },
             {
@@ -6352,14 +6353,14 @@ const ITEM_DATA: {
             "name": "Attacks (Firearms)",
             "items": [
               "#>text-negmod><strong>Two in the Chest, One in the Head</strong> [<strong>4</strong>] [Distance: <strong>room</strong>] [Ammo: <strong>●●</strong>]<#",
-              "#>text-negmod><strong>Disarming Shot</strong> [<strong>1</strong>] [Distance: <strong>room</strong>] [Ammo: <strong>●</strong>] Disarm target on success. A targeted PC must<# #>text-movename>Act Under Pressure<#"
+              "#>text-negmod><strong>Disarming Shot</strong> [<strong>1</strong>] [Distance: <strong>room</strong>] [Ammo: <strong>●</strong>] Disarm target on success. A targeted PC must<# #>item-button text-doclink&data-item-name='Act Under Pressure'&data-action='open'>Act Under Pressure<#"
             ]
           }
         },
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
+          "intro": "#>text-center>You are a master of gunplay.<#%insert.break%When you #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6373,13 +6374,13 @@ const ITEM_DATA: {
             {
               key: "CreateAttack",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:firearm,range:room,harm:4,ammo:-2,fromText:#>text-keyword>Weapon Master (Firearms)<#,name:Two in the Chest, One in the Head",
+              value: "filter:firearm,range:room,harm:4,ammo:-2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Firearms)'&data-action='open'>Weapon Master (Firearms)<#,name:Two in the Chest, One in the Head",
               priority: undefined
             },
             {
               key: "CreateAttack",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:firearm,range:room,harm:4,ammo:-1,fromText:#>text-keyword>Weapon Master (Firearms)<#,name:Disarm,special:Disarm target; a targeted PC must Act Under Pressure.",
+              value: "filter:firearm,range:room,harm:4,ammo:-1,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Firearms)'&data-action='open'>Weapon Master (Firearms)<#,name:Disarm,special:Disarm target; a targeted PC must Act Under Pressure.",
               priority: undefined
             }
           ],
@@ -6456,7 +6457,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you fight your deity's enemies or fight to protect a sacred object,",
-                "outro": "you do #>text-keyword>+1 Harm<# and take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
+                "outro": "you do #>text-mod>+1 Harm<# and take #>text-mod>+1 ongoing<# to #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<#.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -6482,7 +6483,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Observe a Situation':data-action='open'>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6490,25 +6491,25 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#",
+              value: "filter:Observe a Situation,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>text-keyword>Instinct<##>text-sourceref>)<#",
+              value: "filter:Observe a Situation,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.completeSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#",
+              value: "filter:Observe a Situation,target:system.results.completeSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.partialSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>text-keyword>Instinct<#",
+              value: "filter:Observe a Situation,target:system.results.partialSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<#",
               priority: undefined
             }
           ],
@@ -6534,7 +6535,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Read a Person':data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Read a Person'&data-action='open'>Read a Person<#, you may choose from these questions in addition to the usual ones: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6542,13 +6543,13 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Are you hiding anything from me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Are you hiding anything from me? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Vigilant'&data-action='open'>Vigilant<##>text-sourceref>)<#",
               priority: undefined
             },
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:How do you really feel about me? #>text-sourceref>(from <##>text-keyword>Vigilant<##>text-sourceref>)<#",
+              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:How do you really feel about me? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Vigilant'&data-action='open'>Vigilant<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -6575,7 +6576,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Investigate':data-action='open'>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Investigate'&data-action='open'>Investigate<# an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6736,7 +6737,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a seasoned marksman.<# #>text-center>You deal #>text-keyword>+1 Harm<# with firearms.<#",
+          "intro": "#>text-center>You are a seasoned marksman.<# #>text-center>You deal #>text-mod>+1 Harm<# with firearms.<#",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6744,7 +6745,7 @@ const ITEM_DATA: {
             {
               key: "ModifyAttack",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>text-keyword>Dead Shot<#",
+              value: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>item-button text-doclink&data-item-name='Dead Shot'&data-action='open'>Dead Shot<#",
               priority: undefined
             }
           ],
@@ -6763,7 +6764,7 @@ const ITEM_DATA: {
             "name": "Edges",
             "items": [
               "#>text-edgename>Block<# &mdash; Avoid a melee attack.",
-              "#>text-edgename>Roundhouse Strike<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
+              "#>text-edgename>Roundhouse Strike<# &mdash; #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack.",
               "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon.",
               "#>text-edgename>Throw<# &mdash; Reposition an opponent or drop them to the ground."
             ]
@@ -6841,7 +6842,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack."
+                "outro": "... to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# against several opponents surrounding you, counting as a single attack."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -6973,8 +6974,8 @@ const ITEM_DATA: {
             "name": "Edges",
             "items": [
               "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
-              "#>text-edgename>Blinding Speed<# &mdash; #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
-              "#>text-edgename>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
+              "#>text-edgename>Blinding Speed<# &mdash; #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+              "#>text-edgename>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-mod>+1 Harm<#."
             ]
           }
         },
@@ -7050,7 +7051,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo."
+                "outro": "... to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7067,7 +7068,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to hit your opponent's weak spot. Deal #>text-keyword>+1 Harm<#."
+                "outro": "... to hit your opponent's weak spot. Deal #>text-mod>+1 Harm<#."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7097,7 +7098,7 @@ const ITEM_DATA: {
             "items": [
               "They want to see more of your art.",
               "They are affected by the emotion you wanted to convey (e.g., anger, sorrow, fear, joy, lust, etc).",
-              "They look up to you (take #>text-keyword>+1 ongoing<# with the audience during this scene).",
+              "They look up to you (take #>text-mod>+1 ongoing<# with the audience during this scene).",
               "Their attention is fixed entirely on you throughout your performance."
             ]
           }
@@ -7165,7 +7166,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
+          "intro": "Whenever you #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7173,7 +7174,7 @@ const ITEM_DATA: {
             {
               key: "ModifyMove",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>text-keyword>Jaded<##>text-sourceref>)<#",
+              value: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Jaded'&data-action='open'>Jaded<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -7191,7 +7192,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-keyword>+1 ongoing<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# rolls against close-combat attacks.",
+          "intro": "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-mod>+1 ongoing<# to #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# rolls against close-combat attacks.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7247,8 +7248,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Aim for the sensitive parts: Deal #>text-keyword>+1 Harm<#.",
-              "Knock out: The NPC is rendered unconcious. PCs roll to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# and become neutralized on a #>text-resultlabel>(—9)<#.",
+              "Aim for the sensitive parts: Deal #>text-mod>+1 Harm<#.",
+              "Knock out: The NPC is rendered unconcious. PCs roll to #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# and become neutralized on a #>text-resultlabel>(—9)<#.",
               "Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
             ]
           }
@@ -7339,7 +7340,7 @@ const ITEM_DATA: {
                   "result": "You discover what you're looking for, and may also choose one option: %list.options%"
                 },
                 "partialSuccess": {
-                  "result": "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to see how it affects you."
+                  "result": "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to see how it affects you."
                 },
                 "failure": {
                   "result": "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. #>text-gmtext>The GM makes a Move<#."
@@ -7560,7 +7561,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "When someone directly or indirectly ruins your plans,",
-                "outro": "you take #>text-keyword>+1 ongoing<# against them until you have taken revenge or received restitution of equal worth to what you lost."
+                "outro": "you take #>text-mod>+1 ongoing<# against them until you have taken revenge or received restitution of equal worth to what you lost."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7605,8 +7606,8 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Brutal Assault<# &mdash; Add #>text-keyword>+1 Harm<# to your attack.",
-              "#>text-edgename>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#.",
+              "#>text-edgename>Brutal Assault<# &mdash; Add #>text-mod>+1 Harm<# to your attack.",
+              "#>text-edgename>What Pain?<# &mdash; Take #>text-posmod>+2<# to #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<#.",
               "#>text-edgename>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
             ]
           }
@@ -7645,7 +7646,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to add #>text-keyword>+1 Harm<# to your attack."
+                "outro": "... to add #>text-mod>+1 Harm<# to your attack."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7662,7 +7663,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to take #>text-posmod>+2<# to #>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<#."
+                "outro": "... to take #>text-posmod>+2<# to #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<#."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7707,8 +7708,8 @@ const ITEM_DATA: {
             "items": [
               "They offer you something they think you'd rather have.",
               "Retreat from the scene.",
-              "They are terrorized; you have #>text-keyword>+1 ongoing<# on all rolls against them until they've proven they're not afraid of you.",
-              "They attack you from a disadvantaged position. You take #>text-posmod>+2<# on your roll to #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# if you counterattack."
+              "They are terrorized; you have #>text-mod>+1 ongoing<# on all rolls against them until they've proven they're not afraid of you.",
+              "They attack you from a disadvantaged position. You take #>text-posmod>+2<# on your roll to #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# if you counterattack."
             ]
           }
         },
@@ -7837,7 +7838,7 @@ const ITEM_DATA: {
               "Give you something you want.",
               "Reveal a secret.",
               "Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
-              "Make them feel bad for opposing you (they must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#)",
+              "Make them feel bad for opposing you (they must #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<#)",
               "They feel happy in your presence, and gain #>text-posmod>+2<# #>text-keyword>Stability<#."
             ]
           }
@@ -7919,7 +7920,7 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-movename:data-item-name='Influence Other NPC':data-action='open'>Influence<# them."
+                  "result": "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to #>item-button text-doclink&data-item-name='Influence Other NPC'&data-action='open'>Influence<# them."
                 },
                 "partialSuccess": {
                   "result": "They know of your reputation; you can decide what they have heard."
@@ -7954,8 +7955,8 @@ const ITEM_DATA: {
             "name": "Options",
             "items": [
               "Prepare Ambush - Deal your weapon's #>text-keyword>Harm<# when your enemy stumbles in.",
-              "Camouflage - Take #>text-keyword>+2 ongoing<# to #>item-button text-movename:data-item-name='Act Under Pressure':data-action='open'>Act Under Pressure<# for as long as you remain hiding.",
-              "Move in Shadows - Take #>text-keyword>+2 ongoing<# to #>item-button text-movename:data-item-name='Avoid Harm':data-action='open'>Avoid Harm<# from ranged weapons."
+              "Camouflage - Take #>text-mod>+2 ongoing<# to #>item-button text-doclink&data-item-name='Act Under Pressure'&data-action='open'>Act Under Pressure<# for as long as you remain hiding.",
+              "Move in Shadows - Take #>text-mod>+2 ongoing<# to #>item-button text-doclink&data-item-name='Avoid Harm'&data-action='open'>Avoid Harm<# from ranged weapons."
             ]
           }
         },
@@ -8061,7 +8062,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+                  "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<#."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8138,7 +8139,7 @@ const ITEM_DATA: {
             "name": "Edges",
             "items": [
               "#>text-edgename>Meat Shield<# &mdash; Force them to take all the #>text-keyword>Harm<# from one attack for you.",
-              "#>text-edgename>Nothing But Bait<# &mdash; Expose someone to danger so you can flank an enemy (deal #>text-keyword>+1 Harm<#).",
+              "#>text-edgename>Nothing But Bait<# &mdash; Expose someone to danger so you can flank an enemy (deal #>text-mod>+1 Harm<#).",
               "#>text-edgename>Leave Them Behind<# &mdash; Abandon them to the enemy while you slip away."
             ]
           }
@@ -8211,7 +8212,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to expose someone to danger so you can flank an enemy (deal #>text-keyword>+1 Harm<#)."
+                "outro": "... to expose someone to danger so you can flank an enemy (deal #>text-mod>+1 Harm<#)."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -8259,7 +8260,7 @@ const ITEM_DATA: {
               "Lie - Come up with a convincing lie.",
               "Gear Up - Find something you can use as a makeshift melee weapon. The GM will tell you what it is.",
               "Hide - Stay out of a pursuer's sight.",
-              "Prepare - Set a trap that gives you a #>text-posmod>+2<# surprise bonus the first time you #>item-button text-movename:data-item-name='Engage in Combat':data-action='open'>Engage in Combat<# after the trap is sprung."
+              "Prepare - Set a trap that gives you a #>text-posmod>+2<# surprise bonus the first time you #>item-button text-doclink&data-item-name='Engage in Combat'&data-action='open'>Engage in Combat<# after the trap is sprung."
             ]
           }
         },
@@ -8511,7 +8512,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you're confronted by the object of your phobia,",
-                "outro": "you must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+                "outro": "you must #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<#."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -8557,7 +8558,7 @@ const ITEM_DATA: {
                   "result": "Your condition triggers, causing pain and daze (#>text-negmod>−1<# to all rolls until the scene ends)."
                 },
                 "failure": {
-                  "result": "Your condition is aggravated with life threatening results (#>item-button text-movename:data-item-name='Endure Injury':data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
+                  "result": "Your condition is aggravated with life threatening results (#>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# with #>text-keyword>2 Harm<#)."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8647,7 +8648,7 @@ const ITEM_DATA: {
               "rules": {
                 "trigger": "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
               },
               "results": {
                 "completeSuccess": {
@@ -8673,7 +8674,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [],
-          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
         "currentHold": 0
       }
@@ -8787,7 +8788,7 @@ const ITEM_DATA: {
                   "result": "You sleep in peace."
                 },
                 "partialSuccess": {
-                  "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#) when you wake up."
+                  "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (#>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<#) when you wake up."
                 },
                 "failure": {
                   "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
@@ -9144,7 +9145,7 @@ const ITEM_DATA: {
                   "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
                 },
                 "failure": {
-                  "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
+                  "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<#. Your obsession cannot be assuaged while the target remains in the same scene with you."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -9192,7 +9193,7 @@ const ITEM_DATA: {
                   "result": "You're afflicted by jealousy and take #>text-negmod>−1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
                 },
                 "failure": {
-                  "result": "Your jealousy takes hold of you. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
+                  "result": "Your jealousy takes hold of you. You must #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to refrain from harming, destroying, or stealing from the subject of your jealousy."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -9343,7 +9344,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "intro": "In addition to the standard effects,",
-                "trigger": "Whenever you #>item-button text-movename:data-item-name='See Through the Illusion':data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
+                "trigger": "Whenever you #>item-button text-doclink&data-item-name='See Through the Illusion'&data-action='open'>See Through the Illusion<# and whenever the Illusion shatters,",
                 "outro": "the GM may choose one option from the list below:",
                 "listRefs": [
                   "gmoptions"
@@ -9483,7 +9484,7 @@ const ITEM_DATA: {
               "rules": {
                 "trigger": "Whenever you consciously #>text-keyword>Harm<# someone,",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
+                "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to resist the darkness' influence."
               },
               "results": {
                 "completeSuccess": {
@@ -9509,7 +9510,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [],
-          "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<# to resist the darkness' influence."
+          "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to resist the darkness' influence."
         },
         "currentHold": 0
       }
@@ -9682,7 +9683,7 @@ const ITEM_DATA: {
             {
               key: "CreateTracker",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.tracker,value:0,min:0,max:10,fromText:#>text-keyword>Condemned<#",
+              value: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.tracker,value:0,min:0,max:10,fromText:#>item-button text-doclink&data-item-name='Condemned'&data-action='open'>Condemned<#",
               priority: undefined
             }
           ],
@@ -9966,7 +9967,7 @@ const ITEM_DATA: {
                   "result": "You continue to suppress the memories."
                 },
                 "partialSuccess": {
-                  "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-movename:data-item-name='Keep It Together':data-action='open'>Keep It Together<#."
+                  "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<#."
                 },
                 "failure": {
                   "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."
@@ -10685,7 +10686,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "",
           "trigger": "When you help another player character's Move,",
-          "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the #>text-keyword>Attribute<# is the same as the other player is rolling.",
+          "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the #>item-button text-doclink&data-item-name='Attribute'&data-action='open'>Attribute<# is the same as the other player is rolling.",
           "listRefs": [],
           "effects": [],
           "holdText": ""
@@ -10898,7 +10899,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "",
           "trigger": "When you hinder another player character's Move,",
-          "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the #>text-keyword>Attribute<# is the same as the other player is rolling.",
+          "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the #>item-button text-doclink&data-item-name='Attribute'&data-action='open'>Attribute<# is the same as the other player is rolling.",
           "listRefs": [],
           "effects": [],
           "holdText": ""
@@ -11172,7 +11173,7 @@ const ITEM_DATA: {
               {
                 key: "ModifyRoll",
                 mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#",
+                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
                 priority: undefined
               }
             ],
@@ -11188,7 +11189,7 @@ const ITEM_DATA: {
               {
                 key: "ModifyRoll",
                 mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#",
+                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
                 priority: undefined
               }
             ],
@@ -11235,7 +11236,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "",
           "trigger": "When enduring an injury,",
-          "outro": "%insert.rollPrompt% #>item-button text-keyword:data-item-name='Endure Injury':data-action='roll'>+Armor<# #>item-button text-negmod text-keyword:data-item-name='Endure Injury':data-action='roll'>−Harm<#.",
+          "outro": "%insert.rollPrompt% #>text-posmod>+Armor<# #>text-negmod>−Harm<#.",
           "listRefs": [],
           "effects": [
             {

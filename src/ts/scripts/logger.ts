@@ -68,7 +68,8 @@ const STYLES = {
   },
   display: {
     "color": C.Colors.gGOLD,
-    "font-family": "Kultrata",
+    "font-family": "Kultrata SC",
+    "text-transform": "lowercase",
     "font-size": "16px",
     "margin-left": "-100px",
     "padding": "0 100px"
@@ -92,7 +93,6 @@ const STYLES = {
     "font-family": "Pragmata Pro"
   }
 };
-
 const kLog = {
   display: (...content: [string, ...any[]]) => k4Logger("display", ...content),
   log: (...content: [string, ...any[]]) => k4Logger("base", ...content),

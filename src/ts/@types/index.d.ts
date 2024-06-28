@@ -1,18 +1,13 @@
 import K4Config from "../scripts/config";
+import K4Actor from "../documents/K4Actor";
+import K4Item from "../documents/K4Item";
+import K4Scene from "../documents/K4Scene";
+import K4Roll from "../documents/K4Roll";
 
 import "./general-types";
 import "./system-types";
 import "./league-types";
 import "./field-types";
-
-type SceneDoc = Scene;
-type ActorDoc = K4Actor;
-type ItemDoc = K4Item;
-type ActiveEffectDoc = K4ActiveEffect;
-type ChatMessageDoc = K4ChatMessage;
-type DialogDoc = K4Dialog;
-type RollDoc = K4Roll;
-type UserDoc = User;
 
 declare module "virtual:colors" {
   export const Colors: Record<string, string>;
@@ -57,8 +52,8 @@ declare global {
     dice3d: {
       showForRoll: (r: Roll) => Promise<void>
     },
-    items: Collection<ActorDoc>,
-    actors: Collection<ItemDoc>,
+    items: Collection<ItemDoc>,
+    actors: Collection<ActorDoc>,
     user: UserDoc,
     users: Collection<UserDoc>,
     messages: Collection<ChatMessageDoc>,
@@ -72,7 +67,8 @@ declare global {
   interface CONFIG {
     debug: {
       logging: boolean,
-      hooks: boolean
+      hooks: boolean,
+      customFunctionParams: Record<string, Array<string|number|boolean>>
     },
     TinyMCE: TinyMCEConfig,
     K4: typeof K4Config,
@@ -98,6 +94,10 @@ declare global {
   interface SourceConfig {
     Actor: K4ActorSourceData.any,
     Item: K4ItemSourceData.any
+  }
+
+  interface ActiveEffect {
+    get data(): ActiveEffectData;
   }
 
   // interface DataConfig {

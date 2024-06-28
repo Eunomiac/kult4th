@@ -1,6 +1,7 @@
 // #region IMPORTS ~
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
+import K4Actor from "./K4Actor.js";
 import {K4RollResult} from "./K4Roll.js";
 // #endregion
 
@@ -26,6 +27,9 @@ namespace K4ChatMessage {
 // #endregion
 // #region -- INTERFACE AUGMENTATION ~
 interface K4ChatMessage {
+  speaker: {
+    actor?: string
+  }
 }
 // #endregion
 // #endregion
@@ -500,7 +504,7 @@ class K4ChatMessage extends ChatMessage {
 
     // Register a hook to run when a chat message is rendered
     Hooks.on("renderChatMessage", async (message: K4ChatMessage, html) => {
-      kLog.log(`RENDERING ${message.isLastMessage ? "LAST " : ""}CHAT MESSAGE`, message);
+      // kLog.log(`RENDERING ${message.isLastMessage ? "LAST " : ""}CHAT MESSAGE`, message);
       // Apply custom CSS classes to the chat message based on its flags
       message.applyFlagCSSClasses(html);
 
@@ -524,23 +528,11 @@ class K4ChatMessage extends ChatMessage {
   }
   // #endregion
 
-  static override create(data: K4ChatMessage.ConstructorData, context?: Context): Promise<K4ChatMessage> {
+  static override create(data: K4ChatMessage.ConstructorData, context?: Context): Promise<Maybe<K4ChatMessage>> {
     return super.create(data as ChatMessageDataConstructorData, context);
   }
 
-  applyFlagCSSClasses(html?: JQuery) {
-    (html ?? this.elem$).addClass(this.cssClasses.join(" "));
-  }
 
-  activateListeners(html: JQuery) {
-    /**
-     * @todo Add general-purpose listeners that select for [data-] attributes and apply corresponding event listeners to them.
-     * - data-action="choose-option" (for cases where individual options have effects that must be selected and applied)
-     * - data-action="claim-modifier" (e.g. the target of a Help/Hinder roll can click this to claim the bonus/penalty conferred)
-     * - data-action="change-gm-modifier" (the GM can click this to add a new modifier and then increment it to correct for any errors in roll formulation,
-     *                                       or right-click it to reduce the value. At zero, custom modifier will not be displayed to players.)
-     */
-  }
 
   animationTimeline?: gsap.core.Timeline;
   get timelinePromise(): Promise<void> {
@@ -548,15 +540,15 @@ class K4ChatMessage extends ChatMessage {
     // if (!this.isAnimated) { return Promise.resolve(undefined); }
     // Return a promise that checks every 250ms for _animationTimeline and resolves when it is defined.
     return new Promise((resolve, reject) => {
-      kLog.display("Awaiting Timeline Promise...");
+      // kLog.display("Awaiting Timeline Promise...");
       const intervalId = setInterval(() => {
         if (this.animationTimeline) {
-          kLog.display("Timeline Promise Resolved!", {timeline: this.animationTimeline});
+          // kLog.display("Timeline Promise Resolved!", {timeline: this.animationTimeline});
           clearInterval(intervalId); // Stop checking
           clearTimeout(timeoutId); // Clear the timeout
           resolve(); // Resolve the promise
         }
-        kLog.display("Awaiting Timeline Promise...", {timeline: this.animationTimeline})
+        // kLog.display("Awaiting Timeline Promise...", {timeline: this.animationTimeline})
       }, 250);
 
       // Set a timeout to reject the promise after 10 seconds
@@ -568,24 +560,24 @@ class K4ChatMessage extends ChatMessage {
   }
   get animationsPromise(): Promise<void> {
     if (!this.isAnimated) {
-      kLog.display("Message isn't animated: Resolving.");
+      // kLog.display("Message isn't animated: Resolving.");
       return Promise.resolve();
     }
 
     return new Promise(async (resolve) => {
-      kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
+      // kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
       await this.timelinePromise;
-      kLog.display("Timeline Promise Resolved!");
+      // kLog.display("Timeline Promise Resolved!");
       const timeline = this.animationTimeline as gsap.core.Timeline;
       if (!timeline) { return; }
       const labelTime = timeline.labels["revealed"];
       const watchLabel = () => {
         if (timeline.time() >= labelTime) {
-          kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
+          // kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
           resolve();
           return;
         }
-        kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
+        // kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
         setTimeout(watchLabel, 250);
       };
       watchLabel();
@@ -594,14 +586,7 @@ class K4ChatMessage extends ChatMessage {
   get cssClasses(): string[] {
     return (this.getFlag("kult4th", "cssClasses") ?? []) as string[];
   }
-  addClass(cls: string, html?: JQuery) {
-    this.setFlag("kult4th", "cssClasses", U.unique([...this.cssClasses, cls]))
-        .then(() => this.applyFlagCSSClasses(html));
-  }
-  remClass(cls: string, html?: JQuery) {
-    this.setFlag("kult4th", "cssClasses", this.cssClasses.filter((c) => c !== cls))
-        .then(() => this.applyFlagCSSClasses(html));
-  }
+
   get isAnimated(): boolean {
     return this.getFlag("kult4th", "isAnimated") as boolean;
   }
@@ -612,14 +597,7 @@ class K4ChatMessage extends ChatMessage {
     }
   }
 
-  get videoElements(): JQuery {
-    return this.elem$.find("video");
-  }
-  get previousMessage(): Maybe<K4ChatMessage> {
-    const prevMessage = this.elem$.prev(".chat-message");
-    if (!prevMessage.length) { return; }
-    return K4ChatMessage.GetMessage(prevMessage);
-  }
+
 
   animate() {
     if (!this.isAnimated) { return; }
@@ -649,20 +627,6 @@ class K4ChatMessage extends ChatMessage {
     }
   }
 
-  get elem$(): JQuery {
-    return K4ChatMessage.ChatLog$.find(`[data-message-id="${this.id}"]`);
-  }
-
-  get isLastMessage(): boolean {
-    return this.id === U.getLast(Array.from(game.messages)).id;
-  }
-  get isChatRoll(): boolean {
-    return (this.getFlag("kult4th", "isRoll") ?? false) as boolean;
-  }
-  get isChatTrigger(): boolean {
-    return (this.getFlag("kult4th", "isTrigger") ?? false) as boolean;
-  }
-
   // #region STATIC METHODS ~
   /**
    * Given a string, will return the URL to the drop cap image for the first character of that string.
@@ -685,6 +649,32 @@ class K4ChatMessage extends ChatMessage {
 
   // #region GETTERS & SETTERS ~
 
+  get elem$(): JQuery {
+    return K4ChatMessage.ChatLog$.find(`[data-message-id="${this.id}"]`);
+  }
+  get videoElements(): JQuery {
+    return this.elem$.find("video");
+  }
+  get previousMessage(): Maybe<K4ChatMessage> {
+    const prevMessage = this.elem$.prev(".chat-message");
+    if (!prevMessage.length) { return; }
+    return K4ChatMessage.GetMessage(prevMessage);
+  }
+  get isLastMessage(): boolean {
+    return this.id === U.getLast(Array.from(game.messages)).id;
+  }
+  get isChatRoll(): boolean {
+    return (this.getFlag("kult4th", "isRoll") ?? false) as boolean;
+  }
+  get isChatTrigger(): boolean {
+    return (this.getFlag("kult4th", "isTrigger") ?? false) as boolean;
+  }
+  get isResult(): boolean {
+    return this.isChatRoll || this.isChatTrigger;
+  }
+  get actor(): Maybe<K4Actor> {
+    return game.actors.get(this.speaker.actor ?? "") as Maybe<K4Actor>;
+  }
   // #endregion
 
   // #region HTML PARSING
@@ -710,10 +700,8 @@ class K4ChatMessage extends ChatMessage {
       if (nextElement) {
         // Traverse the child nodes to find the first text node with content
         const walker = document.createTreeWalker(nextElement, NodeFilter.SHOW_TEXT, {
-          acceptNode: (node) => {
-            // Only accept text nodes with non-whitespace content
-            return node.nodeType === Node.TEXT_NODE && node.textContent?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-          }
+          // Only accept text nodes with non-whitespace content
+          acceptNode: (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
         });
 
         const firstTextNode = walker.nextNode();
@@ -726,6 +714,27 @@ class K4ChatMessage extends ChatMessage {
 
     // Serialize the modified DOM back to a string
     return doc.body.innerHTML;
+  }
+  addClass(cls: string, html?: JQuery) {
+    this.setFlag("kult4th", "cssClasses", U.unique([...this.cssClasses, cls]))
+        .then(() => this.applyFlagCSSClasses(html));
+  }
+  remClass(cls: string, html?: JQuery) {
+    this.setFlag("kult4th", "cssClasses", this.cssClasses.filter((c) => c !== cls))
+        .then(() => this.applyFlagCSSClasses(html));
+  }
+  applyFlagCSSClasses(html?: JQuery) {
+    (html ?? this.elem$).addClass(this.cssClasses.join(" "));
+  }
+
+  activateListeners(html: JQuery) {
+    /**
+     * @todo Add general-purpose listeners that select for [data-] attributes and apply corresponding event listeners to them.
+     * - data-action="choose-option" (for cases where individual options have effects that must be selected and applied)
+     * - data-action="claim-modifier" (e.g. the target of a Help/Hinder roll can click this to claim the bonus/penalty conferred)
+     * - data-action="change-gm-modifier" (the GM can click this to add a new modifier and then increment it to correct for any errors in roll formulation,
+     *                                       or right-click it to reduce the value. At zero, custom modifier will not be displayed to players.)
+     */
   }
   // #endregion
 

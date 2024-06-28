@@ -29,7 +29,8 @@ enum K4ItemType {
   darksecret = "darksecret",
   relation = "relation",
   gear = "gear",
-  weapon = "weapon"
+  weapon = "weapon",
+  gmtracker = "gmtracker"
 }
 enum K4ItemSubType {
   activeRolled = "active-rolled",
@@ -583,7 +584,8 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
     [K4ItemType.relation]: null,
     [K4ItemType.weapon]: "Weapons & Gear",
     [K4ItemType.gear]: "Weapons & Gear",
-    [K4ItemType.move]: "Basic Player Moves"
+    [K4ItemType.move]: "Basic Player Moves",
+    [K4ItemType.gmtracker]: null
   };
   return itemDataArray
     .map((itemData) => {
