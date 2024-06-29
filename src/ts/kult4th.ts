@@ -303,7 +303,9 @@ async function preloadTemplates() {
       "pc-nav-menu",
       "svg",
       "icon",
-      "toggle-box"
+      "toggle-box",
+      "edges-blade-container",
+      "stability-shards-overlay"
     ]),
     ...U.getTemplatePath("partials", [
       "item-block",

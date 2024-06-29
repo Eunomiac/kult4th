@@ -939,8 +939,8 @@
   font-family: var(--font-primary-italics);
   font-style: italic;
 }
-#tinymce .tooltip,
-#tinymce .mce-content-body .tooltip {
+#tinymce .tooltip:not(.button-tooltip),
+#tinymce .mce-content-body .tooltip:not(.button-tooltip) {
   pointer-events: none;
   position: absolute;
   display: block;
@@ -1081,8 +1081,9 @@
   --K4-strip-icon-color-fg: var(--K4-color-contrast);
   --K4-icon-outline-color: var(--K4-color-primary);
 }
-#tinymce div.hover-strip.wound-strip,
-#tinymce .mce-content-body div.hover-strip.wound-strip {
+#tinymce div.hover-strip.wound-strip, #tinymce div.hover-strip.condition-strip,
+#tinymce .mce-content-body div.hover-strip.wound-strip,
+#tinymce .mce-content-body div.hover-strip.condition-strip {
   --K4-strip-scale: 0.8;
   --K4-icon-outline-color: transparent;
   --K4-icon-outline-width: 1px;
@@ -1096,39 +1097,68 @@
   --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
   --K4-strip-button-hover-color-bg: var(--K4-gRED);
 }
-#tinymce div.hover-strip.wound-strip .button-strip .strip-button,
-#tinymce .mce-content-body div.hover-strip.wound-strip .button-strip .strip-button {
+#tinymce div.hover-strip.wound-strip.condition-strip, #tinymce div.hover-strip.condition-strip.condition-strip,
+#tinymce .mce-content-body div.hover-strip.wound-strip.condition-strip,
+#tinymce .mce-content-body div.hover-strip.condition-strip.condition-strip {
+  --K4-strip-main-color-fg: var(--K4-GOLD);
+  --K4-strip-main-color-bg: var(--K4-bGOLD);
+  --K4-strip-icon-color-fg: var(--K4-GOLD);
+  --K4-strip-button-color-fg: var(--K4-dBLACK);
+  --K4-strip-button-color-bg: var(--K4-bGOLD);
+  --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
+  --K4-strip-button-hover-color-bg: var(--K4-gGOLD);
+}
+#tinymce div.hover-strip.wound-strip.condition-strip.stability-strip, #tinymce div.hover-strip.condition-strip.condition-strip.stability-strip,
+#tinymce .mce-content-body div.hover-strip.wound-strip.condition-strip.stability-strip,
+#tinymce .mce-content-body div.hover-strip.condition-strip.condition-strip.stability-strip {
+  --K4-strip-main-color-fg: var(--K4-BLUE);
+  --K4-strip-main-color-bg: var(--K4-bBLUE);
+  --K4-strip-icon-color-fg: var(--K4-BLUE);
+  --K4-strip-button-color-fg: var(--K4-dBLACK);
+  --K4-strip-button-color-bg: var(--K4-bBLUE);
+  --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
+  --K4-strip-button-hover-color-bg: var(--K4-gBLUE);
+}
+#tinymce div.hover-strip.wound-strip .button-strip .strip-button, #tinymce div.hover-strip.condition-strip .button-strip .strip-button,
+#tinymce .mce-content-body div.hover-strip.wound-strip .button-strip .strip-button,
+#tinymce .mce-content-body div.hover-strip.condition-strip .button-strip .strip-button {
   flex-grow: 0.3;
 }
-#tinymce div.hover-strip.wound-strip.wound-critical,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical {
+#tinymce div.hover-strip.wound-strip.wound-critical, #tinymce div.hover-strip.condition-strip.wound-critical,
+#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical,
+#tinymce .mce-content-body div.hover-strip.condition-strip.wound-critical {
   --K4-strip-scale: 1;
 }
-#tinymce div.hover-strip.wound-strip.wound-critical .strip-name,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name {
+#tinymce div.hover-strip.wound-strip.wound-critical .strip-name, #tinymce div.hover-strip.condition-strip.wound-critical .strip-name,
+#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical .strip-name,
+#tinymce .mce-content-body div.hover-strip.condition-strip.wound-critical .strip-name {
   text-transform: lowercase;
   font-weight: 900;
   font-family: var(--font-primary-smallcaps);
 }
-#tinymce div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized),
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized) {
+#tinymce div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized), #tinymce div.hover-strip.condition-strip.wound-critical:not(.wound-stabilized),
+#tinymce .mce-content-body div.hover-strip.wound-strip.wound-critical:not(.wound-stabilized),
+#tinymce .mce-content-body div.hover-strip.condition-strip.wound-critical:not(.wound-stabilized) {
   --K4-strip-main-color-fg: var(--K4-gRED);
   --K4-strip-icon-color-fg: var(--K4-gRED);
   --icon-scale: 1.2;
 }
-#tinymce div.hover-strip.wound-strip.wound-stabilized,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized {
+#tinymce div.hover-strip.wound-strip.wound-stabilized, #tinymce div.hover-strip.condition-strip.wound-stabilized,
+#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized,
+#tinymce .mce-content-body div.hover-strip.condition-strip.wound-stabilized {
   --K4-icon-fill: var(--K4-GOLD);
   --K4-icon-clip-path: none;
   --K4-icon-outline-color: transparent;
   --K4-strip-main-color-fg: var(--K4-GOLD);
 }
-#tinymce div.hover-strip.wound-strip.wound-stabilized .strip-name,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name {
+#tinymce div.hover-strip.wound-strip.wound-stabilized .strip-name, #tinymce div.hover-strip.condition-strip.wound-stabilized .strip-name,
+#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-name,
+#tinymce .mce-content-body div.hover-strip.condition-strip.wound-stabilized .strip-name {
   font-style: italic;
 }
-#tinymce div.hover-strip.wound-strip.wound-stabilized .strip-bg,
-#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-bg {
+#tinymce div.hover-strip.wound-strip.wound-stabilized .strip-bg, #tinymce div.hover-strip.condition-strip.wound-stabilized .strip-bg,
+#tinymce .mce-content-body div.hover-strip.wound-strip.wound-stabilized .strip-bg,
+#tinymce .mce-content-body div.hover-strip.condition-strip.wound-stabilized .strip-bg {
   border-color: transparent;
 }
 #tinymce div.hover-strip.edge-strip,

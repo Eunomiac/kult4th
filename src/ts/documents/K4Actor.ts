@@ -203,13 +203,13 @@ class K4Actor extends Actor {
     // Create the singleton "Wounds" and "Stability" K4ActiveEffects
     promises.push(K4ActiveEffect.CreateFromChangeData([{
       key: "ApplyWounds",
-      value: "label:Wounds,icon:systems/kult4th/assets/icons/wounds/wound-serious.svg",
+      value: "label:Wounds,icon:systems/kult4th/assets/icons/wounds/wound-serious.svg,fromText:Wounds",
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
       priority: undefined
     }], this));
     promises.push(K4ActiveEffect.CreateFromChangeData([{
       key: "ApplyStability",
-      value: "label:Stability,icon:systems/kult4th/assets/icons/stability.svg",
+      value: "label:Stability,icon:systems/kult4th/assets/icons/stability.svg,fromText:Stability",
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
       priority: undefined
     }], this));
@@ -354,6 +354,26 @@ class K4Actor extends Actor {
   get wounds_critical_unstabilized() {return this.wounds_critical.filter((wound) => !wound.isStabilized);}
   get wounds_serious_stabilized() {return this.wounds_serious.filter((wound) => wound.isStabilized);}
   get wounds_critical_stabilized() {return this.wounds_critical.filter((wound) => wound.isStabilized);}
+  get enabledUnstabilizedWounds() {
+    const enabledUnstabilizedWounds: Record<K4WoundType.serious|K4WoundType.critical, K4Actor.Components.Wound[]> = {
+      [K4WoundType.serious]: [],
+      [K4WoundType.critical]: [],
+    };
+    Object.values(this.wounds)
+      .filter((wound) => !wound.isStabilized && wound.isApplyingToRolls)
+      .forEach((wound) => {
+        enabledUnstabilizedWounds[wound.isCritical ? K4WoundType.critical : K4WoundType.serious].push(wound);
+      });
+    return enabledUnstabilizedWounds;
+  }
+  get woundsIcon(): string {
+    if (!this.is(K4ActorType.pc)) {return "";}
+    const numSerious = this.enabledUnstabilizedWounds.serious.length;
+    const numCritical = this.enabledUnstabilizedWounds.critical.length;
+    if (numCritical) { return "systems/kult4th/assets/icons/wounds/wound-critical.svg"; }
+    if (numSerious) { return "systems/kult4th/assets/icons/wounds/wound-serious.svg"; }
+    return "";
+  }
   get stabilityConditions(): K4Actor.Components.Condition[] {
     if (!this.is(K4ActorType.pc)) {return [];}
     return Object.values(this.system.conditions)
@@ -362,26 +382,31 @@ class K4Actor extends Actor {
   get enabledStabilityConditions(): K4Actor.Components.Condition[] {
     return this.stabilityConditions.filter((condition) => condition.isApplyingToRolls);
   }
+  get stabilityIcon(): string {
+    if (!this.is(K4ActorType.pc)) {return "";}
+    if (this.stabilityLevel === K4Stability.composed) { return ""; }
+    return `systems/kult4th/assets/icons/stability/stability-${this.stabilityLevel}.svg`;
+  }
 
   get woundModData(): K4Roll.ModData[] {
     if (!this.is(K4ActorType.pc)) {return [];}
-    const numSerious = this.wounds_serious_unstabilized.length;
-    const numCritical = this.wounds_critical_unstabilized.length;
+    const numSerious = this.wounds_serious_unstabilized.filter((wound) => wound.isApplyingToRolls).length;
+    const numCritical = this.wounds_critical_unstabilized.filter((wound) => wound.isApplyingToRolls).length;
     const numBoth = Math.min(numSerious, numCritical);
-    const woundModDefinitions = {
-      ...this.system.modifiers.wounds_seriouscritical[numBoth],
-      ...this.system.modifiers.wounds_serious[numSerious],
-      ...this.system.modifiers.wounds_critical[numCritical]
-    };
+    if (numSerious + numCritical === 0) { return []; }
+    let woundModDefinitions: K4Roll.ModDefinition = {};
     let tooltipLabel = "";
     let tooltipDesc = "";
     if (numBoth) {
+      woundModDefinitions = this.system.modifiers.wounds_seriouscritical[numBoth];
       tooltipLabel = "Grievously Wounded";
       tooltipDesc = "Your many grievous injuries threaten death if not treated, even as the pain brings you closer than ever before to piercing the Illusion.";
     } else if (numCritical) {
+      woundModDefinitions = this.system.modifiers.wounds_critical[numCritical];
       tooltipLabel = "Critically Wounded";
       tooltipDesc = "You are critically wounded, greatly limiting your ability to act. If you do not receive medical attention soon, death is assured.";
     } else if (numSerious) {
+      woundModDefinitions = this.system.modifiers.wounds_serious[numSerious];
       tooltipLabel = "Wounded";
       tooltipDesc = "Your untreated injuries hamper your ability to act."
     }
@@ -874,7 +899,9 @@ class K4Actor extends Actor {
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
   get customChanges() {
-    return Array.from(this.effects as Collection<K4ActiveEffect>).map((effect) => effect.getCustomChanges()).flat();
+    return Array.from(this.effects as Collection<K4ActiveEffect>)
+      .map((effect) => effect.getCustomChanges())
+      .flat();
   }
   get enabledCustomChanges() {
     return this.customChanges.filter((change) => change.isEnabled);
@@ -1074,7 +1101,9 @@ class K4Actor extends Actor {
    */
   buildModifierReport() {
     const returnStrings = [];
-    for (const {display, value} of this.collapseRollModifiers()) {
+    const collapsedModifiers = this.collapseRollModifiers();
+    kLog.log("[buildModifierReport] Collapsed Modifiers", U.objClone(collapsedModifiers));
+    for (const {display, value} of collapsedModifiers) {
       if (value < 0) {
         returnStrings.push(`<span class="k4-theme-red"><strong>${value}</strong> to <strong>${display}</strong></span>`);
       } else {
@@ -1156,16 +1185,19 @@ class K4Actor extends Actor {
       this.system.relations = this.relations;
 
       this.system.maxWounds = {
-        serious: this.system.modifiers.wounds_serious.length as number,
-        critical: this.system.modifiers.wounds_critical.length as number,
-        total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length) as number
+        serious: this.system.modifiers.wounds_serious.length,
+        critical: this.system.modifiers.wounds_critical.length,
+        total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length)
       };
-      this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0) as number;
-      this.system.modifiersReport = this.buildModifierReport();
-      this.system.toggleControlStrip = this.buildToggleControlStrip();
+      this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0);
 
       // Call all 'system change' custom functions.
       this.systemChanges.forEach((change) => change.apply());
+
+      const modReport = this.buildModifierReport();
+      this.system.modifiersReport = this.buildModifierReport();
+      this.system.toggleControlStrip = this.buildToggleControlStrip();
+
     }
   }
   /**

@@ -593,13 +593,8 @@ class K4Change implements EffectChangeData {
     }
     return value;
   }
-  hasNumericValue(): this is typeof this & {finalValue: number} {
-    return typeof this.finalValue === "number";
-  }
-  isInStatusBar(): this is typeof this & {finalValue: number} {
-    return this.isRollModifier()
-      && this.customFunctionData.inStatusBar !== false
-      && this.hasNumericValue();
+  isInStatusBar() {
+    return this.isRollModifier() && this.customFunctionData.inStatusBar !== false;
   }
   get canToggle(): boolean {
     return this.isRollModifier() && this.customFunctionData.canToggle === true;
@@ -1062,6 +1057,12 @@ class K4ActiveEffect extends ActiveEffect {
   hasToggleableChanges(): boolean {
     return this.toggleableChanges.length > 0;
   }
+  get isApplyingWoundModifiers(): boolean {
+    return this.getCustomChangeData().some((change) => change.key === "ApplyWounds");
+  }
+  get isApplyingStabilityModifiers(): boolean {
+    return this.getCustomChangeData().some((change) => change.key === "ApplyStability");
+  }
   get originItem(): Maybe<K4Item> {
     if (!this.hasItemOrigin()) { return; }
     return fromUuidSync(this.origin) as Maybe<K4Item>;
@@ -1074,7 +1075,49 @@ class K4ActiveEffect extends ActiveEffect {
     const [_, actorId] = this.origin.split(".");
     return game.actors.get(actorId);
   }
+  getCustomChangeData(): EffectChangeData[] {
+    return this.changes.filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
+  }
   getCustomChanges(): K4Change[] {
+    if (this.isApplyingWoundModifiers) {
+      if (!this.isOwnedByActor()) { return []; }
+      return this.actor.woundModData.map((woundData) => {
+        return new K4Change({
+          key: "ModifyRoll",
+          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+          value: `
+            filter:${woundData.filter},
+            label:${woundData.label},
+            effect:Add,
+            value:${woundData.value},
+            duration:ongoing,
+            icon:${this.actor.woundsIcon},
+            fromText:#>text-negmod>Wounds<#,
+            tooltip:<h2>${woundData.tooltipLabel}<h2><p>${woundData.tooltipDesc}</p>
+          `,
+          priority: undefined
+        }, this);
+      })
+    } else if (this.isApplyingStabilityModifiers) {
+      if (!this.isOwnedByActor()) { return []; }
+      return this.actor.stabilityModData.map((stabilityData) => {
+        return new K4Change({
+          key: "ModifyRoll",
+          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+          value: `
+            filter:${stabilityData.filter},
+            label:${stabilityData.label},
+            effect:Add,
+            value:${stabilityData.value},
+            duration:ongoing,
+            icon:${this.actor.stabilityIcon},
+            fromText:#>text-negmod>Stability<#,
+            tooltip:<h2>${stabilityData.tooltipLabel}<h2><p>${stabilityData.tooltipDesc}</p>
+          `,
+          priority: undefined
+        }, this);
+      })
+    }
     return this.changes
       .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM)
       .map((change) => new K4Change(change, this));
