@@ -92,6 +92,17 @@ enum EffectDuration {
   session = "session", // The Effect is applied for the duration of the active Session and is removed when the Session ends.
 }
 
+/** == EFFECT RESET ON ==
+ * For 'canToggle' effects, the conditions under which the effect is reset to its default state. *
+ */
+enum EffectResetOn {
+  never = "never", // The effect is never reset to its default state, and will retain its toggle state indefinitely.
+  onUse = "onUse", // The effect is reset to its default state whenever it is used (i.e. when it is applied to a roll or triggered result)
+  onScene = "onScene", // The effect is reset to its default state whenever the active Scene changes
+  onSession = "onSession", // The effect is reset to its default state whenever the active Session changes
+  onSheetOpen = "onSheetOpen" // The effect is reset to its default state whenever the Actor's character sheet is opened
+}
+
 enum PromptInputType {
   buttons = "buttons",
   text = "text",
@@ -124,37 +135,45 @@ namespace K4ActiveEffect {
       interface ResultSource extends Base {
         type: EffectSourceType.moveResult|EffectSourceType.claimedResult
       }
-      export type Data = DocSource|ResultSource;
+      export type Ref = DocSource|ResultSource;
     }
 
     export namespace Effect {
       interface Base {
+        label: string; // The principal name of the Effect. Appears in tooltips and in chat roll results.
         canToggle: boolean; // Whether the PARENTACTOR can toggle the effect on/off on their character sheet (default = true)
-        defaultState?: boolean; // Whether the effect is enabled by default when applied. (default = true)
         toggleLabel?: string; // The label to display next to the the toggle button in the actor's character sheet (default = "")
-        tooltip?: string; // The tooltip to display on the toggle button in the actor's character sheet
+                             // Can include '%value%' syntax, which will be replaced with the current value of the effect
+        toggleTooltip?: string; // The tooltip to display on the toggle button in the actor's character sheet
+        defaultState?: boolean; // Whether the effect is enabled by default when applied. (default = true)
+        resetOn?: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
+        duration: EffectDuration, // The duration of the Effect, which determines when it is automatically removed (default = "ongoing")
+        isUnique: boolean; // Whether the Effect is unique, meaning a second effect with the same label will OVERWRITE any existing effect (default = "true")
         uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
                           // - if undefined, the Effect is not limited-use
-        duration?: EffectDuration, // The duration of the Effect, which determines when it is automatically removed (default = "ongoing")
-        effectSource: Components.EffectSource.Data // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
+        canRefill?: boolean; // Whether the Effect can be refilled, or if it is removed when uses.value === uses.max (default = false)
+        effectSource: Components.EffectSource.Ref // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
+        fromText: string; // A reference to the source of the effect in FormatForKult form
       }
       interface CanToggle extends Base {
         canToggle: true;
+        toggleLabel: string,
+        toggleTooltip: string,
         defaultState: boolean;
-        toggleLabel: string;
-        tooltip: string;
+        resetOn: EffectResetOn;
       }
       interface CannotToggle extends Base {
         canToggle: false;
+        toggleLabel?: never,
+        toggleTooltip?: never,
         defaultState?: never;
-        toggleLabel?: never;
-        tooltip?: never;
+        resetOn?: never;
       }
-      export type Data = CanToggle|CannotToggle;
+      export type ExtData = CanToggle|CannotToggle;
     }
   }
 
-  export type ExtendedData = Components.Effect.Data;
+  export type ExtendedData = Components.Effect.ExtData;
   export type ExtendedConstructorData = Omit<ExtendedData, "effectSource">;
 
   export type ConstructorData = ActiveEffectDataConstructorData;
@@ -181,13 +200,14 @@ const CUSTOM_FUNCTIONS: Record<
     if (!(roll instanceof K4Roll)) {
       throw new Error(`Invalid roll for ApplyWounds: ${String(roll)}`);
     }
-
+    // const
+    kLog.display("CALL: APPLYWOUNDS", {roll, data});
   },
   ApplyStability: async (roll, data) => {
     if (!(roll instanceof K4Roll)) {
       throw new Error(`Invalid roll for ApplyStability: ${String(roll)}`);
     }
-
+    kLog.display("CALL: APPLYWOUNDS", {roll, data});
   },
   CreateAttack: async (actor, data) => {
 
@@ -312,13 +332,6 @@ const CUSTOM_FUNCTIONS: Record<
     if (typeof key !== "string") {
       throw new Error(`No key provided for PromptForData: ${JSON.stringify(data)}`);
     }
-    // If the key has already been filled with data, skip the prompt.
-    // if (key.startsWith("flags")) {
-    //   const flagKey = key.split(".").slice(1).join(".");
-    //   if (actor.getFlag(C.SYSTEM_ID, flagKey) !== undefined) {
-    //     return;
-    //   }
-    // }
     if (typeof title !== "string") {
       throw new Error(`No title provided for PromptForData: ${JSON.stringify(data)}`);
     }
@@ -328,18 +341,18 @@ const CUSTOM_FUNCTIONS: Record<
     if (typeof defaultVal !== "string") {
       throw new Error(`No default value provided for PromptForData: ${JSON.stringify(data)}`);
     }
-    const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
-    const context: Record<string, string|number|boolean> = {
-      title,
-      bodyText: bodyText ?? "",
-      subText: subText ?? ""
-    }
-    const dialogData: Dialog.Data = {
-      title,
-      content: template(context),
-      buttons: {}
-    };
-    const userOutput = await new Promise((resolve) => {
+    const userOutput = await new Promise(async (resolve) => {
+      const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
+      const context: Record<string, string|number|boolean> = {
+        title,
+        bodyText: bodyText ?? "",
+        subText: subText ?? ""
+      }
+      const dialogData: Dialog.Data = {
+        title,
+        content: template(context),
+        buttons: {}
+      };
       dialogData.close = () => resolve(defaultVal);
       switch (input) {
         case PromptInputType.buttons: {
@@ -537,23 +550,6 @@ class K4Change implements EffectChangeData {
   isRollModifier(): this is typeof this & {modData: K4Roll.ModData} {
     return ["ModifyRoll", "ApplyWounds", "ApplyStability"].includes(this.customFunctionName);
   }
-  get modData(): Maybe<K4Roll.ModData> {
-    if (!this.isRollModifier()) {
-      throw new Error(`[K4Change.modData] Attempted to access modData for non-roll modifier: ${this.customFunctionName}`);
-    }
-    if (!this.hasNumericValue()) {
-      throw new Error(`[K4Change.modData] Attempted to access modData for non-numeric value: ${this.customFunctionName} (${this.finalValue})`);
-    }
-    return {
-      name: this.name,
-      filter: this.filter,
-      value: this.finalValue,
-      icon: this.icon,
-      tooltip: this.tooltip,
-      linkToItem: this.originItem
-    }
-  }
-
   get filter(): "all"|K4Attribute|K4ItemType|string {
     return this.customFunctionData.filter as Maybe<string> ?? "all";
   }
@@ -709,38 +705,21 @@ class K4ActiveEffect extends ActiveEffect {
     delete valueRecord[majorityValue];
     return Object.values(valueRecord).flat();
   }
-  static #groupChangesByEffectName(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Source[]> {
-    const defaultName = this.#resolveEffectName(changeData, origin) as string;
-    return changeData.reduce((acc, cData) => {
-      const effectName = this.#resolveEffectName([cData], origin, true) ?? defaultName;
-      acc[effectName] = acc[effectName] ?? [];
-      cData.key = cData.key;
-      acc[effectName].push(cData);
-      return acc;
-    }, {} as Record<string, K4Change.Source[]>);
-  }
-  /**
- * Given a list of changes, will group them by assigned name and validate that they are all compatible with each other.
- */
-  static #ProcessEffectChanges(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Source[]> {
-    // First group changes by effect name
-    const groupedChanges = this.#groupChangesByEffectName(changeData, origin);
-
-    Object.values(groupedChanges).forEach((effectChanges) => {
-      /**
-       * The following function parameters, if present on any change, cannot conflict with the same parameter on another change in the same effect:
-       *  - canToggle, usageMax, duration, fromText
-       */
-      ["canToggle", "usageMax", "duration", "fromText"].forEach((param) => {
-        const conflictingChanges = this.#getConflictingChanges(effectChanges, param);
-        if (conflictingChanges.length) {
-          throw new Error(`Conflicting changes found for parameter '${param}' in effect '${effectChanges[0].key}': ${conflictingChanges.map((change) => change.value).join(", ")}`);
-        }
-      });
+  static #getEffectPropFromChanges<T extends string|number|boolean>(changeData: K4Change.Source[], prop: string): Maybe<T>
+  static #getEffectPropFromChanges<T extends string|number|boolean>(changeData: K4Change.Source[], prop: string, defaultVal: T): T
+  static #getEffectPropFromChanges<T extends string|number|boolean>(changeData: K4Change.Source[], prop: string, defaultVal?: T): Maybe<T> {
+    let propVal: Maybe<string|number|boolean> = undefined;
+    this.#getChangesWith(changeData, prop).forEach((cData) => {
+      const changeVal = K4Change.ParseFunctionDataString(cData.value)[prop];
+      if (propVal === undefined) {
+        propVal = changeVal;
+      } else if (propVal !== changeVal) {
+        throw new Error(`Conflicting values found for effect property '${prop}' in effect '${cData.key}': ${propVal}, ${changeVal}`);
+      }
     });
-
-    return groupedChanges;
+    return propVal ?? defaultVal;
   }
+
   static #resolveEffectSource(origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData["effectSource"] {
     if (origin instanceof K4Item) {
       if (origin.is(K4ItemType.gmtracker)) {
@@ -813,6 +792,37 @@ class K4ActiveEffect extends ActiveEffect {
     console.warn(`No effect name found in listed changes, defaulting to '${effectName}'`, {changeData, origin});
     return effectName as string;
   }
+  static #groupChangesByEffectName(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Source[]> {
+    const defaultName = this.#resolveEffectName(changeData, origin) as string;
+    return changeData.reduce((acc, cData) => {
+      const effectName = this.#resolveEffectName([cData], origin, true) ?? defaultName;
+      acc[effectName] = acc[effectName] ?? [];
+      acc[effectName].push(cData);
+      return acc;
+    }, {} as Record<string, K4Change.Source[]>);
+  }
+  /**
+ * Given a list of changes, will group them by assigned name and validate that they are all compatible with each other.
+ */
+  static #ProcessEffectChanges(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Array<Tuple<string, K4Change.Source[]>> {
+    // First group changes by effect name
+    const groupedChanges = this.#groupChangesByEffectName(changeData, origin);
+
+    Object.values(groupedChanges).forEach((effectChanges) => {
+      /**
+       * The following function parameters, if present on any change, cannot conflict with the same parameter on another change in the same effect:
+       *  - canToggle, defaultState, resetOn, duration, isUnique, uses, canRefill, fromText
+       */
+      ["canToggle", "defaultState", "resetOn", "duration", "isUnique", "uses", "canRefill", "fromText"].forEach((param) => {
+        const conflictingChanges = this.#getConflictingChanges(effectChanges, param);
+        if (conflictingChanges.length) {
+          throw new Error(`Conflicting changes found for parameter '${param}' in effect '${effectChanges[0].key}': ${conflictingChanges.map((change) => change.value).join(", ")}`);
+        }
+      });
+    });
+
+    return Object.entries(groupedChanges);
+  }
   /**
    * Given an array of K4Changes, will extract those function parameters that apply to the parent effect as a whole.
    * (Any potential conflicts are resolved by the time this function is called.)
@@ -821,68 +831,120 @@ class K4ActiveEffect extends ActiveEffect {
    * @returns {K4ActiveEffect.ExtendedData} - The extracted data.
    */
   static #ExtractExtendedData(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
-    const canToggle = this.#doesAnyChangeHave(changeData, "canToggle", true);
-    const uses = this.#getChangesWith(changeData, "usageMax")
-      .map((change) => {
-        const {usageMax} = K4Change.ParseFunctionDataString(change.value);
-        return {
-          value: 0,
-          min: 0,
-          max: usageMax as number
-        };
-      })[0] ?? undefined;
-    const duration = this.#getChangesWith(changeData, "duration")
-      .map((change) => {
-        const {duration} = K4Change.ParseFunctionDataString(change.value);
-        return duration as EffectDuration;
-      })[0] ?? EffectDuration.ongoing;
+    const canToggle = this.#getEffectPropFromChanges<boolean>(changeData, "canToggle");
+    const label = this.#getEffectPropFromChanges<string>(changeData, "label")
+      ?? this.#resolveEffectName(changeData, origin);
+    if (!label) {
+      throw new Error(`No effect label found in changes: ${JSON.stringify(changeData)}`);
+    }
+    const useMax = this.#getEffectPropFromChanges<number>(changeData, "uses");
+    const uses = U.isDefined(useMax)
+      ? {
+        value: 0,
+        min: 0,
+        max: useMax
+      }
+      : undefined;
+    const canRefill = U.isDefined(uses)
+      ? this.#getEffectPropFromChanges<boolean>(
+        changeData,
+        "canRefill",
+        false
+      )
+      : undefined;
+    const durationDefaultVal = U.isDefined(uses) && !canRefill
+      ? EffectDuration.limited
+      : EffectDuration.ongoing;
+    const duration = this.#getEffectPropFromChanges<EffectDuration>(
+      changeData,
+      "duration",
+      durationDefaultVal
+    );
+    const isUnique = this.#getEffectPropFromChanges<boolean>(
+        changeData,
+        "isUnique",
+        true
+      )
     const effectSource = this.#resolveEffectSource(origin);
-
-    let defaultState: Maybe<boolean>;
-    let toggleLabel: Maybe<string>;
-    let tooltip: Maybe<string>;
+    let fromText = this.#getEffectPropFromChanges<string>(changeData, "fromText");
+    if (!fromText) {
+      if (origin instanceof K4Item) {
+        fromText = `#>item-button text-doclink&data-item-name='${origin.name}'&data-action='open'>${origin.name}<#`;
+      } else {
+        throw new Error(`No fromText found for ActiveEffect: ${label}`);
+      }
+    }
 
     if (canToggle) {
-      defaultState = this.#getChangesWith(changeData, "defaultState")
-        .map((change) => K4Change.ParseFunctionDataString(change.value).defaultState)[0] as Maybe<boolean> ?? true;
-      toggleLabel = this.#getChangesWith(changeData, "toggleLabel")
-        .map((change) => K4Change.ParseFunctionDataString(change.value).toggleLabel)[0] as Maybe<string> ?? "";
-      tooltip = this.#getChangesWith(changeData, "tooltip")
-        .map((change) => K4Change.ParseFunctionDataString(change.value).tooltip)[0] as Maybe<string>;
-      if (!tooltip) {
-        throw new Error(`Missing tooltip for toggleable effect on '${origin.name}'`)
+      const defaultState = this.#getEffectPropFromChanges<boolean>(
+        changeData,
+        "defaultState",
+        true
+      );
+      const resetOnDefaultVal = U.isDefined(uses) ? EffectResetOn.onUse : EffectResetOn.never;
+      const resetOn = this.#getEffectPropFromChanges<EffectResetOn>(
+        changeData,
+        "defaultState",
+        resetOnDefaultVal
+      );
+      const toggleLabel = this.#getEffectPropFromChanges<string>(
+        changeData,
+        "toggleLabel",
+        "%value%"
+      );
+      const toggleTooltip = this.#getEffectPropFromChanges<string>(
+        changeData,
+        "tooltip"
+      );
+      if (U.isUndefined(toggleTooltip)) {
+        throw new Error(`No tooltip found for toggleable effect: ${label}`);
       }
 
       return {
+        label,
         canToggle: true,
-        uses,
-        duration,
         defaultState,
+        resetOn,
         toggleLabel,
-        tooltip,
-        effectSource
+        toggleTooltip,
+        duration,
+        isUnique,
+        uses,
+        canRefill,
+        effectSource,
+        fromText
       }
     } else {
       return {
+        label,
         canToggle: false,
-        uses,
         duration,
-        effectSource
+        isUnique,
+        uses,
+        canRefill,
+        effectSource,
+        fromText
       }
     }
   }
-  static async CreateFromChangeData(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin, target?: K4Actor<K4ActorType.pc>): Promise<K4ActiveEffect[]> {
+  static async CreateFromChangeData(
+    changeData: K4Change.Source[],
+    origin: K4ActiveEffect.Origin,
+    target?: K4Actor<K4ActorType.pc>
+  ): Promise<K4ActiveEffect[]> {
     const effectCreationPromises: Promise<K4ActiveEffect>[] = [];
 
     // Process the effect changes, validating them and separating them as necessary into multiple effects.
     const groupedChanges = this.#ProcessEffectChanges(changeData, origin);
 
     // Iterate through each group of changes, creating an ActiveEffect for each.
-    for (const [effectName, effectChanges] of Object.entries(groupedChanges)) {
+    groupedChanges.forEach(([label, effectChanges]) => {
+      // First we extract the extended data, which will be stored in the effect's flags
       const extData = this.#ExtractExtendedData(effectChanges, origin);
+
       const effectData: K4ActiveEffect.ConstructorData & Record<string, unknown> = {
         origin: origin.uuid,
-        label: effectName,
+        label,
         transfer: !target,
         disabled: extData.canToggle && extData.defaultState === false,
         changes: effectChanges.map((change) => {
@@ -903,7 +965,7 @@ class K4ActiveEffect extends ActiveEffect {
       } else {
         effectCreationPromises.push(origin.createEmbeddedDocuments("ActiveEffect", [effectData]) as unknown as Promise<K4ActiveEffect>);
       }
-    }
+    });
 
     return Promise.all(effectCreationPromises);
   }

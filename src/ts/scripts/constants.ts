@@ -260,6 +260,42 @@ export const Ranges = {
   [AttackRange.field_horizon]: "over a hundred meters away in ranged combat,",
   [AttackRange.horizon]: "at extreme range (over one hundred meters away) in ranged combat,"
 } as const;
+export const StabilityConditions: Record<
+  string,
+  {
+    description: string,
+    modDef: Record<string, number>
+  }
+> = {
+  angry: {
+    description: "You blame someone or something in your vicinity for whatever happened, and may lash out against them or harbor resentment.",
+    modDef: {all: -1}
+  },
+  sad: {
+    description: "You feel sorrow or grief over what happened. You might want to seek solitude or the comfort of a loved one.",
+    modDef: {all: -1}
+  },
+  scared: {
+    description: "You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.",
+    modDef: {all: -1}
+  },
+  "guilt-ridden": {
+    description: "You blame yourself for what transpired, and seek forgiveness from those around you.",
+    modDef: {all: -1}
+  },
+  obsessed: {
+    description: "You are paradoxically enthralled by whatever initially caused you stress, now finding it attractive and compelling. You may feel compelled to seek it out or to study it intensely.",
+    modDef: {all: -1}
+  },
+  distracted: {
+    description: "You are confused and sidetracked by what threatens you. You cannot stop looking at it, and are inattentive to everything else around you. You take −2 to all rolls in situations where being distracted is an obstacle.",
+    modDef: {all: -2}
+  },
+  haunted: {
+    description: "The GM gets 1 Hold they can spend later to haunt you with visions, dreams, or create actual encounters related to whatever caused the trauma.",
+    modDef: {all: -1}
+  }
+};
 export const RegExpPatterns = {
   Attributes: [
     ...Object.keys(Attributes.Active),

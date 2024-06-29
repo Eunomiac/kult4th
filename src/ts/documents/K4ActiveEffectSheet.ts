@@ -104,8 +104,8 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyProperty: "filter:actor,effect:Set,target:system.modifiers.wounds_seriouscritical.1.all,value:0"}
   ],
   "Broken": [
-    {ModifyProperty: "filter:actor,effect:Set,target:system.stability.max,value:6"},
-    {ModifyProperty: "filter:actor,effect:Downgrade,target:system.stability.value,value:6,permanent:true"}
+    {ModifyProperty: "filter:actor,effect:Set,target:system.stability.max,value:6,permanent:true"},
+    {ModifyProperty: "filter:actor,effect:Downgrade,target:system.stability.value,value:6"}
   ],
   "Hardened": [
     {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"}
@@ -153,10 +153,10 @@ const CUSTOMFUNCEXAMPLES = {
 /** RESULT-SOURCE EFFECTS -- These are created as the result of a roll OR a triggered static effect (like an edge), and are created directly on the rolling Actor. They must define their own removal logic. Schema-wise, they go into the effectFunctions array within each roll result, and are created as ActiveEffects on the rolling actor after a roll has been made. */
 const CUSTOMROLLFUNCEXAMPLES = {
   "Observe a Situation/completeSuccess": [
-    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
+    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
   ],
   "Observe a Situation/partialSuccess": [
-    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
+    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
   ],
   "Draw an Ace:Reveal a Weapon/triggered": [
     {PromptForData: "... name of weapon ..."},
@@ -201,7 +201,7 @@ const MODIFYROLLCHANGES = [
       effect:Add,
       value:1,
       duration:ongoing,
-      usageMax:1,
+      uses:1,
       defaultState:true,
       canToggle:true,
       icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,
@@ -220,7 +220,7 @@ const MODIFYROLLCHANGES = [
       effect:Add,
       value:1,
       duration:ongoing,
-      usageMax:1,
+      uses:1,
       defaultState:true,
       canToggle:true,
       icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,

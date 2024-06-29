@@ -600,6 +600,7 @@ img {
             button:not(.strip-button) {
               --button-gradient-light: var(--K4-color-primary-bright);
               --button-gradient-dark: var(--K4-color-contrast);
+              pointer-events: auto;
               display: inline-block;
               height: $button-size;
               width: $button-size;
@@ -812,11 +813,10 @@ img {
 
             /* #endregion */
 
-            /* WOUNDS */
-            .wounds {
+            /* STATUS BAR STRIPS */
+            .status-bar-strips {
               --button-gradient-light: var(--K4-bRED);
               --button-gradient-dark: var(--K4-dRED);
-              // --K4-color-primary: var(--K4-bWHITE);
               display: grid;
               padding: 0px;
               grid-template-columns: 1fr 1fr;

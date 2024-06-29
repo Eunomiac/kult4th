@@ -1,8 +1,10 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C from "../scripts/constants.js";
+import C, {StabilityConditions} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Actor, {K4ActorType, K4ConditionType} from "./K4Actor.js";
+import K4Dialog from "./K4Dialog.js";
+import K4Roll from "./K4Roll.js";
 import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -723,7 +725,7 @@ class K4PCSheet extends ActorSheet {
       gear:          this.actor.gear,
       attributes:    this.actor.attributeData,
       curTab:        this.actor.getFlag("kult4th", "sheetTab") as string,
-      wounds:        this.actor.woundStrips
+      statusBarStrips:        this.actor.statusBarStrips
     };
     /*DEVCODE*/
     kLog.log("Final Actor Data", context);
@@ -1045,7 +1047,7 @@ class K4PCSheet extends ActorSheet {
     });
     html.find(`.tab[data-tab="${curTab}"]`).addClass("active");
   }
-  activateWoundListeners(html: JQuery) {
+  activateStatusStripListeners(html: JQuery) {
     const self = this;
     // Add click listeners for wound-add buttons to add a new wound
     html.find("button.wound-add")
@@ -1099,6 +1101,102 @@ class K4PCSheet extends ActorSheet {
         const woundID = $(this).data("target") as IDString;
         if (woundID) {
           $(this).on("click", () => self.actor.removeWound(woundID));
+        }
+      });
+
+    // Add click listeners for elements with data-action="suppress-wound" to remove a specific wound
+    html.find("*[data-action=\"suppress-wound\"]")
+      .each(function() {
+        const woundID = $(this).data("target") as IDString;
+        if (woundID) {
+          $(this).on("click", () => self.actor.toggleWound(woundID, "applying"));
+        }
+      });
+
+    // Add click listeners for condition-add buttons to add a new condition
+    html.find("button.condition-add")
+    .each(function() {
+      $(this).on("click", async () => {
+        const type = U.lCase(await K4Dialog.AskWithButtons(
+          "Condition Type",
+          Object.values(K4ConditionType).map((cType) => U.tCase(cType)).join("|"),
+          "Select the type of condition to add:"
+        )) as K4ConditionType;
+        switch (type) {
+          case K4ConditionType.stability: {
+            const label: string = U.tCase(await K4Dialog.AskForText(
+              "Condition Label",
+              "Enter the label for the new Stability condition:",
+              "(Preconfigured Conditions: 'Angry', 'Sad', 'Scared', 'Guilt-Ridden', 'Obsessed', 'Distracted', 'Haunted')"
+            )).trim();
+            const preconfiguredData = StabilityConditions[U.lCase(label) as keyof typeof StabilityConditions];
+            let {description, modDef} = preconfiguredData as Maybe<{description: string, modDef: K4Roll.ModDefinition}> ?? {};
+            if (U.isUndefined(description)) {
+              description = await K4Dialog.AskForText(
+                "Condition Description",
+                `Briefly describe the effects of the '${label}' condition on your mental state:`,
+                "E.g. 'You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.'"
+              );
+            }
+            if (U.isUndefined(modDef)) {
+              const modDefString = await K4Dialog.AskForText(
+                "Condition Modifiers",
+                "Define what and by how much the condition modifies. Multiple modifiers can be separated by a comma.",
+                "E.g. 'all: -2, disadvantage: -1, See Through the Illusion: 3'",
+                "all:-1"
+              );
+              modDef = Object.fromEntries(modDefString
+                .split(/\s*,\s*/)
+                .map((mod) => {
+                  const [key, val] = mod.split(/\s*:\s*/);
+                  return [key, U.pInt(val)];
+                }));
+            }
+            self.actor.addCondition({
+              type,
+              label,
+              description,
+              modDef
+            }).catch(kLog.error);
+          }
+        }
+      });
+    });
+
+    // Add click listeners for condition-delete buttons to remove a specific condition
+    html.find("button.condition-delete")
+      .each(function() {
+        const conditionID = $(this).data("conditionId") as IDString;
+        $(this).on("click", () => {
+          // kLog.log(`Deleting condition ${conditionID}. Button:`, this);
+          self.actor.removeCondition(conditionID).catch(kLog.error);
+        });
+      });
+
+    // Add click listeners for elements with data-action="suppress-condition" to toggle roll applicability
+    html.find("*[data-action=\"suppress-condition\"]")
+      .each(function() {
+        const conditionID = $(this).data("target") as IDString;
+        if (conditionID) {
+          $(this).on("click", () => self.actor.toggleCondition(conditionID));
+        }
+      });
+
+    // Add click listeners for elements with data-action="reset-condition-name" to reset the condition name
+    html.find("*[data-action=\"reset-condition-name\"]")
+      .each(function() {
+        const conditionID = $(this).data("target") as IDString;
+        if (conditionID) {
+          $(this).on("click", () => self.actor.resetConditionName(conditionID));
+        }
+      });
+
+    // Add click listeners for elements with data-action="drop-condition" to remove a specific condition
+    html.find("*[data-action=\"drop-condition\"]")
+      .each(function() {
+        const conditionID = $(this).data("target") as IDString;
+        if (conditionID) {
+          $(this).on("click", () => self.actor.removeCondition(conditionID));
         }
       });
   }
@@ -1251,7 +1349,7 @@ class K4PCSheet extends ActorSheet {
     if (!this.options.editable) { return; }
 
     // Activate wound listeners
-    this.activateWoundListeners(html);
+    this.activateStatusStripListeners(html);
 
     // Activate listeners for closing & minimizing the sheet
     this.activateWindowControlListeners(html);

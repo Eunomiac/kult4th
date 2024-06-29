@@ -2312,7 +2312,7 @@ const ITEM_DATA: {
             {
               key: "ModifyRoll",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>item-button text-doclink&data-item-name='Hardened'&data-action='open'>Hardened<#,tooltip:Applies to all #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# rolls. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Hardened'&data-action='open'>Hardened<##>text-sourceref>)<#",
+              value: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,icon:systems/kult4th/assets/icons/advantage/hardened.svg,label:Hardened,tooltip:Applies to all #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# rolls. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Hardened'&data-action='open'>Hardened<##>text-sourceref>)<#",
               priority: undefined
             }
           ],
@@ -11173,7 +11173,7 @@ const ITEM_DATA: {
               {
                 key: "ModifyRoll",
                 mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
+                value: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,label:Acting On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies to any rolls made while acting on the GM's answers.#>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
                 priority: undefined
               }
             ],
@@ -11189,7 +11189,7 @@ const ITEM_DATA: {
               {
                 key: "ModifyRoll",
                 mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:ongoing,usageMax:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
+                value: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
                 priority: undefined
               }
             ],

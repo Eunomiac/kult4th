@@ -418,7 +418,7 @@
 		font-style: italic;
 	}
 
-  .tooltip {
+  .tooltip:not(.button-tooltip) {
     pointer-events: none;
     position: absolute;
     display: block;
@@ -564,7 +564,7 @@
 			--K4-icon-outline-color: var(--K4-color-primary);
 		}
 
-    &.wound-strip {
+    &.wound-strip, &.condition-strip {
       --K4-strip-scale: 0.8;
 
       --K4-icon-outline-color: transparent;
@@ -579,6 +579,26 @@
       --K4-strip-button-color-bg: var(--K4-RED);
       --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
       --K4-strip-button-hover-color-bg: var(--K4-gRED);
+
+      &.condition-strip {
+        --K4-strip-main-color-fg: var(--K4-GOLD);
+        --K4-strip-main-color-bg: var(--K4-bGOLD);
+        --K4-strip-icon-color-fg: var(--K4-GOLD);
+        --K4-strip-button-color-fg: var(--K4-dBLACK);
+        --K4-strip-button-color-bg: var(--K4-bGOLD);
+        --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
+        --K4-strip-button-hover-color-bg: var(--K4-gGOLD);
+
+        &.stability-strip { // Stability Strip is Colored BLUE not GOLD
+          --K4-strip-main-color-fg: var(--K4-BLUE);
+          --K4-strip-main-color-bg: var(--K4-bBLUE);
+          --K4-strip-icon-color-fg: var(--K4-BLUE);
+          --K4-strip-button-color-fg: var(--K4-dBLACK);
+          --K4-strip-button-color-bg: var(--K4-bBLUE);
+          --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
+          --K4-strip-button-hover-color-bg: var(--K4-gBLUE);
+        }
+      }
 
       .button-strip {
         .strip-button { flex-grow: 0.3; }

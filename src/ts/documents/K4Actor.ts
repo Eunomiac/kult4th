@@ -5,12 +5,12 @@ import K4NPCSheet from "./K4NPCSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect, {K4Change, EffectSourceType} from "./K4ActiveEffect.js";
-import C, {K4Attribute, Archetype, K4Stability} from "../scripts/constants.js";
+import C, {K4Attribute, Archetype, K4Stability, StabilityConditions} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {PACKS} from "../scripts/data.js";
 // #endregion
 
-// #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
+// #region === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
 // #region -- ENUMS ~
 enum K4ActorType {
   pc = "pc",
@@ -27,6 +27,9 @@ enum K4WoundType {
   stableserious = "stableserious",
   stablecritical = "stablecritical"
 }
+enum K4ConditionType {
+  stability = "stability"
+}
 // #endregion
 // #region -- TYPES ~
 declare global {
@@ -37,13 +40,25 @@ declare global {
     export namespace Components {
       export interface Wound {
         id: IDString,
-        description: string,
+        label: string,
         isCritical: boolean,
         isStabilized: boolean;
+        isApplyingToRolls: boolean;
       }
+
+      export interface Condition {
+        id: IDString,
+        label: string,
+        description: string,
+        type: K4ConditionType,
+        modDef: K4Roll.ModDefinition,
+        isApplyingToRolls: boolean
+      }
+
       export interface Base {
         description: string,
         wounds: Record<IDString, Wound>,
+        conditions: Record<IDString, Condition>,
         penalties: Record<IDString, number>;
       }
     }
@@ -140,9 +155,19 @@ declare global {
   }
 }
 // #endregion
-// #ENDREGION
-
-// #REGION === K4ACTOR CLASS ===
+// #region -- AUGMENTED INTERFACE ~
+interface K4Actor<Type extends K4ActorType = K4ActorType> {
+  get id(): IDString;
+  get name(): string;
+  get type(): Type;
+  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
+  get items(): Actor["items"] & Collection<K4Item>;
+  get effects(): Actor["effects"] & Collection<K4ActiveEffect>;
+  system: K4Actor.System<Type>;
+}
+// #endregion
+// #endregion
+// #region === K4ACTOR CLASS ===
 class K4Actor extends Actor {
   // #region INITIALIZATION ~
   /**
@@ -320,87 +345,229 @@ class K4Actor extends Actor {
   get wounds(): Record<IDString, K4Actor.Components.Wound> {
     return this.system.wounds;
   }
+  get conditions(): Record<IDString, K4Actor.Components.Condition> {
+    return this.system.conditions;
+  }
   get wounds_serious() {return Object.values(this.wounds).filter((wound) => !wound.isCritical);}
   get wounds_critical() {return Object.values(this.wounds).filter((wound) => wound.isCritical);}
   get wounds_serious_unstabilized() {return this.wounds_serious.filter((wound) => !wound.isStabilized);}
   get wounds_critical_unstabilized() {return this.wounds_critical.filter((wound) => !wound.isStabilized);}
   get wounds_serious_stabilized() {return this.wounds_serious.filter((wound) => wound.isStabilized);}
   get wounds_critical_stabilized() {return this.wounds_critical.filter((wound) => wound.isStabilized);}
-  get woundRollChanges(): K4Change[] {
-    if (!this.is(K4ActorType.pc)) { return []; }
+  get stabilityConditions(): K4Actor.Components.Condition[] {
+    if (!this.is(K4ActorType.pc)) {return [];}
+    return Object.values(this.system.conditions)
+      .filter((condition) => condition.type === K4ConditionType.stability);
+  }
+  get enabledStabilityConditions(): K4Actor.Components.Condition[] {
+    return this.stabilityConditions.filter((condition) => condition.isApplyingToRolls);
+  }
+
+  get woundModData(): K4Roll.ModData[] {
+    if (!this.is(K4ActorType.pc)) {return [];}
     const numSerious = this.wounds_serious_unstabilized.length;
     const numCritical = this.wounds_critical_unstabilized.length;
     const numBoth = Math.min(numSerious, numCritical);
-    const modDefs = Object.entries({
+    const woundModDefinitions = {
       ...this.system.modifiers.wounds_seriouscritical[numBoth],
       ...this.system.modifiers.wounds_serious[numSerious],
       ...this.system.modifiers.wounds_critical[numCritical]
-    });
-
-    return modDefs.map(([key, value]) => (new K4Change({
-      key: "ModifyRoll",
-      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-      value: `filter:${key},effect:Add,value:${value},duration:ongoing,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/wounds/wound-${numCritical ? "critical" : "serious"}.svg,shortLabel:Wounds`,
-      priority: undefined
-    })));
+    };
+    let tooltipLabel = "";
+    let tooltipDesc = "";
+    if (numBoth) {
+      tooltipLabel = "Grievously Wounded";
+      tooltipDesc = "Your many grievous injuries threaten death if not treated, even as the pain brings you closer than ever before to piercing the Illusion.";
+    } else if (numCritical) {
+      tooltipLabel = "Critically Wounded";
+      tooltipDesc = "You are critically wounded, greatly limiting your ability to act. If you do not receive medical attention soon, death is assured.";
+    } else if (numSerious) {
+      tooltipLabel = "Wounded";
+      tooltipDesc = "Your untreated injuries hamper your ability to act."
+    }
+    const modData: K4Roll.ModData[] = [];
+    for (const [filter, value] of Object.entries(woundModDefinitions)) {
+      modData.push({
+        id: `wound-${filter}`,
+        filter,
+        value,
+        label: "Wounds",
+        tooltipLabel,
+        tooltipDesc
+      });
+    }
+    return modData;
   }
-  get woundStrips(): HoverStripData[] {
-    return Object.values(this.wounds).map((wound) => {
-      const stripData: Partial<HoverStripData> = {
-        id: wound.id,
-        icon: "systems/kult4th/assets/icons/wounds/",
-        type: [
-          wound.isStabilized ? "stable" : "",
-          wound.isCritical ? "critical" : "serious"
-        ].join("") as K4WoundType,
-        display: wound.description ?? "",
-        // isGlowing:    (wound.isCritical && !wound.isStabilized) ? "red" : false,
-        stripClasses: ["wound-strip"],
-        dataTarget: `system.wounds.${wound.id}.description`,
-        placeholder: "(description)  ",
-        buttons: [
-          {
-            icon: "data-retrieval",
-            dataset: {
-              target: wound.id,
-              action: "reset-wound-name"
-            },
-            tooltip: "RENAME"
-          },
-          {
-            icon: "wound-serious-stabilized",
-            dataset: {
-              target: wound.id,
-              action: "toggle-wound-stabilize"
-            },
-            tooltip: wound.isStabilized ? "STABLE" : "STABILIZE"
-          },
-          {
-            icon: "hover-strip-button-drop",
-            dataset: {
-              target: wound.id,
-              action: "drop-wound"
-            },
-            tooltip: "DROP"
-          }
-        ]
-      };
-      if (wound.isCritical) {
-        stripData.icon += `wound-critical${wound.isStabilized ? "-stabilized" : ""}.svg`;
-        stripData.stripClasses?.push("wound-critical");
-      } else {
-        stripData.icon += `wound-serious${wound.isStabilized ? "-stabilized" : ""}.svg`;
+  get stabilityModData(): K4Roll.ModData[] {
+    if (!this.is(K4ActorType.pc)) {return [];}
+    const stabilityModDefinitions = this.system.modifiers.stability[this.stability];
+    let tooltipLabel = "";
+    let tooltipDesc = "";
+    switch (this.stabilityLevel) {
+      case K4Stability.broken:
+        tooltipLabel = "Broken";
+        tooltipDesc = "You are broken, unable to act or even think clearly. You are at the mercy of your surroundings.";
+        break;
+      case K4Stability.critical:
+        tooltipLabel = "Critical Stress";
+        tooltipDesc = "You are critically unstable, your mind teetering on the brink of madness. You are barely able to act, and your thoughts are consumed by your instability.";
+        break;
+      case K4Stability.serious:
+        tooltipLabel = "Serious Stress";
+        tooltipDesc = "You are seriously unstable, your thoughts and actions hindered by your instability.";
+        break;
+      case K4Stability.moderate:
+        tooltipLabel = "Moderate Stress";
+        tooltipDesc = "You are moderately unstable, your thoughts and actions occasionally hindered by your instability.";
+        break;
+      case K4Stability.composed:
+        return [];
+    }
+    const modData: K4Roll.ModData[] = [];
+    for (const [filter, value] of Object.entries(stabilityModDefinitions)) {
+      modData.push({
+        id: `stability-${filter}`,
+        filter,
+        value,
+        label: "Stability",
+        tooltipLabel,
+        tooltipDesc
+      });
+    }
+    return modData;
+  }
+  get conditionModData(): K4Roll.ModData[] {
+    if (!this.is(K4ActorType.pc)) {return [];}
+    const modData: K4Roll.ModData[] = [];
+    for (const condition of this.enabledStabilityConditions) {
+      const modDefinitions = condition.modDef;
+      for (const [filter, value] of Object.entries(modDefinitions)) {
+        modData.push({
+          id: `condition-${condition.id}-${filter}`,
+          filter,
+          value,
+          label: condition.label,
+          tooltipLabel: condition.label,
+          tooltipDesc: condition.description
+        });
       }
-      if (wound.isStabilized) {
-        stripData.stripClasses?.push("k4-theme-gold", "wound-stabilized");
-      } else {
-        stripData.stripClasses?.push("k4-theme-red");
+    }
+    return modData;
+  }
+  get statusBarStrips(): HoverStripData[] {
+    const woundStrips: HoverStripData[] = Object.values(this.wounds)
+      .map((strip) => {
+        const stripData: Partial<HoverStripData> = {
+          id: strip.id,
+          icon: "systems/kult4th/assets/icons/wounds/",
+          type: [
+            strip.isStabilized ? "stable" : "",
+            strip.isCritical ? "critical" : "serious"
+          ].join("") as K4WoundType,
+          display: strip.label ?? "",
+          stripClasses: ["wound-strip"],
+          dataTarget: `system.wounds.${strip.id}.label`,
+          placeholder: "(description)  ",
+          buttons: [
+            {
+              icon: "data-retrieval",
+              dataset: {
+                target: strip.id,
+                action: "reset-wound-name"
+              },
+              tooltip: "RENAME"
+            },
+            {
+              icon: "wound-serious-stabilized",
+              dataset: {
+                target: strip.id,
+                action: "toggle-wound-stabilize"
+              },
+              tooltip: strip.isStabilized ? "REOPEN" : "STABILIZE"
+            },
+            {
+              icon: "hover-strip-button-suppress",
+              dataset: {
+                target: strip.id,
+                action: "suppress-wound"
+              },
+              tooltip: strip.isApplyingToRolls ? "DISABLE" : "ENABLE"
+            }
+          ]
+        };
+        if (strip.isCritical) {
+          stripData.icon += `wound-critical${strip.isStabilized ? "-stabilized" : ""}.svg`;
+          stripData.stripClasses?.push("wound-critical");
+        } else {
+          stripData.icon += `wound-serious${strip.isStabilized ? "-stabilized" : ""}.svg`;
+        }
+        if (strip.isStabilized) {
+          stripData.stripClasses?.push("k4-theme-gold", "wound-stabilized");
+        } else {
+          stripData.stripClasses?.push("k4-theme-red");
+        }
+        if (strip.isApplyingToRolls) {
+          stripData.stripClasses?.push("roll-enabled");
+        } else {
+          stripData.stripClasses?.push("roll-disabled");
+        }
+        return stripData as HoverStripData;
+      });
+    const conditionStrips: HoverStripData[] = Object.values(this.conditions)
+      .map((strip) => {
+        const stripData: Partial<HoverStripData> = {
+          id: strip.id,
+          icon: `systems/kult4th/assets/icons/conditions/${strip.type}.svg`,
+          type: strip.type,
+          display: strip.label ?? "",
+          stripClasses: ["condition-strip", `${strip.type}-strip`, "k4-theme-blue"],
+          dataTarget: `system.conditions.${strip.id}.label`,
+          placeholder: "(description)  ",
+          buttons: [
+            {
+              icon: "data-retrieval",
+              dataset: {
+                target: strip.id,
+                action: "reset-wound-name"
+              },
+              tooltip: "RENAME"
+            },
+            {
+              icon: "hover-strip-button-suppress",
+              dataset: {
+                target: strip.id,
+                action: "suppress-condition"
+              },
+              tooltip: strip.isApplyingToRolls ? "DISABLE" : "ENABLE"
+            }
+          ]
+        };
+        if (strip.isApplyingToRolls) {
+          stripData.stripClasses?.push("roll-enabled");
+        } else {
+          stripData.stripClasses?.push("roll-disabled");
+        }
+        return stripData as HoverStripData;
+      });
+
+    return [
+      ...woundStrips,
+      ...conditionStrips
+    ].sort((a, b) => {
+      const order = ["wound-critical", "wound-serious"];
+      if (a.icon.includes(order[0]) && b.icon.includes(order[0])
+        || a.icon.includes(order[1]) && b.icon.includes(order[1])) {
+        return 0;
       }
-      return stripData as HoverStripData;
-    });
+      if (a.icon.includes(order[0])) { return -1; }
+      if (b.icon.includes(order[0])) { return 1; }
+      if (a.icon.includes(order[1])) { return -1; }
+      if (b.icon.includes(order[1])) { return 1; }
+      return 0;
+    })
   }
   get stability() {
-    if (!this.is(K4ActorType.pc)) { return 0; }
+    if (!this.is(K4ActorType.pc)) {return 0;}
     const pcData: K4Actor.System<K4ActorType.pc> = this.system;
     return pcData.stability.value;
   }
@@ -408,7 +575,7 @@ class K4Actor extends Actor {
     /**
      * @todo Replace this with customizable stability levels in settings, and/or variant stability rule
      */
-    if (!this.is(K4ActorType.pc)) { return K4Stability.composed; }
+    if (!this.is(K4ActorType.pc)) {return K4Stability.composed;}
     return [
       K4Stability.broken,
       K4Stability.critical,
@@ -423,19 +590,9 @@ class K4Actor extends Actor {
       K4Stability.composed
     ][this.stability];
   }
-  get stabilityRollChanges(): K4Change[] {
-    if (!this.is(K4ActorType.pc)) { return []; }
-    const modDefs = Object.entries(this.system.modifiers.stability[this.stability]);
-    return modDefs.map(([key, value]) => (new K4Change({
-      key: "ModifyRoll", // D:\Projects\.CODING\FoundryVTT\FoundryV10DevData\Data\systems\kult4th\public\assets\icons\stability
-      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-      value: `filter:${key},effect:Add,value:${value},duration:ongoing,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/stability/stability-${this.stabilityLevel}.svg,shortLabel:Stability`,
-      priority: undefined
-    })));
-  }
-   /* filter
-      Also add pulse animations to teh roll result chat message -- "Violence" and attrflare should pulse, then name, then dice staggered
-      */
+  /* filter
+     Also add pulse animations to teh roll result chat message -- "Violence" and attrflare should pulse, then name, then dice staggered
+     */
   get attributeData() {
     if (this.is(K4ActorType.pc)) {
       const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as K4CharAttribute[];
@@ -476,19 +633,38 @@ class K4Actor extends Actor {
       }
     }
   }
-
+  async addCondition(data: Partial<K4Actor.Components.Condition>) {
+    if (!this.is(K4ActorType.pc)) { return; }
+    const {label, description, type, modDef} = data;
+    if (!label) {
+      throw new Error("Cannot add a condition without a label.");
+    }
+    if (U.isUndefined(modDef)) {
+      throw new Error("Cannot add a condition without a mod definitions object.");
+    }
+    const conditionData: K4Actor.Components.Condition = {
+      id: U.getID(),
+      label,
+      description: description ?? "",
+      type: type ?? K4ConditionType.stability,
+      modDef,
+      isApplyingToRolls: true
+    };
+    await this.update({[`system.conditions.${conditionData.id}`]: conditionData});
+  }
   /**
    * Adds a wound to the actor.
    * @param {K4WoundType} [type] - The type of the wound.
-   * @param {string} [description] - The description of the wound.
+   * @param {string} [label] - A brief description of the wound.
    */
-  async addWound(type?: K4WoundType, description?: string) {
+  async addWound(type?: K4WoundType, label?: string) {
     if (this.is(K4ActorType.pc)) {
       const woundData: K4Actor.Components.Wound = {
         id: U.getID(),
-        description: description ?? "",
+        label: label ?? "",
         isCritical: type === K4WoundType.critical,
-        isStabilized: false
+        isStabilized: false,
+        isApplyingToRolls: true
       };
       let isWoundUpgrading = false;
       // If the wound is serious, check if the actor has more than the maximum number of allowed serious wounds
@@ -522,11 +698,11 @@ class K4Actor extends Actor {
   }
 
   /**
-   * Toggles the type or stabilization state of a wound.
-   * @param {K4WoundType} id - The ID of the wound.
-   * @param {"type"|"stabilized"} toggleSwitch - The property to toggle.
+   * Toggles the type, stabilization state, or applicability to rolls of a wound.
+   * @param {IDString} id - The ID of the wound.
+   * @param {"type"|"stabilized"|"applying"} toggleSwitch - The property to toggle.
    */
-  async toggleWound(id: IDString, toggleSwitch: "type" | "stabilized") {
+  async toggleWound(id: IDString, toggleSwitch: "type" | "stabilized" | "applying") {
     const woundData = this.wounds[id];
     if (woundData) {
       switch (toggleSwitch) {
@@ -537,22 +713,23 @@ class K4Actor extends Actor {
         case "stabilized": {
           await this.update({[`system.wounds.${id}.isStabilized`]: !this.wounds[id].isStabilized});
         }
+        case "applying": {
+          await this.update({[`system.wounds.${id}.isApplyingToRolls`]: !this.wounds[id].isApplyingToRolls});
+        }
         // no default
       }
     }
   }
-
   /**
-   * Resets the name of a wound.
-   * @param {string} id - The ID of the wound.
-   */
-  async resetWoundName(id: IDString) {
-    const woundData = this.wounds[id];
-    if (woundData) {
-      await this.update({[`system.wounds.${id}.description`]: ""});
-    }
-  }
-
+  * Resets the name of a wound.
+  * @param {string} id - The ID of the wound.
+  */
+ async resetWoundName(id: IDString) {
+   const woundData = this.wounds[id];
+   if (woundData) {
+     await this.update({[`system.wounds.${id}.label`]: ""});
+   }
+ }
   /**
    * Removes a wound from the actor.
    * @param {string} id - The ID of the wound.
@@ -562,6 +739,37 @@ class K4Actor extends Actor {
       kLog.log("Starting Wounds", U.objClone(this.system.wounds));
       await this.update({[`system.wounds.-=${id}`]: null});
       kLog.log("Updated Wounds", this.system.wounds);
+    }
+  }
+  /**
+   * Toggles the applicability of a condition to rolls..
+   * @param {IDString} id - The ID of the wound.
+   */
+    async toggleCondition(id: IDString) {
+      const conditionData = this.conditions[id];
+      if (conditionData) {
+        await this.update({[`system.conditions.${id}.isApplyingToRolls`]: !this.conditions[id].isApplyingToRolls});
+      }
+    }
+  /**
+   * Resets the name of a condition.
+   * @param {string} id - The ID of the condition.
+   */
+  async resetConditionName(id: IDString) {
+    const conditionData = this.conditions[id];
+    if (conditionData) {
+      await this.update({[`system.conditions.${id}.label`]: ""});
+    }
+  }
+    /**
+   * Removes a condition from the actor.
+   * @param {string} id - The ID of the wound.
+   */
+  async removeCondition(id: IDString) {
+    if (this.is(K4ActorType.pc)) {
+      kLog.log("Starting Conditions", U.objClone(this.system.conditions));
+      await this.update({[`system.conditions.-=${id}`]: null});
+      kLog.log("Updated Conditions", this.system.conditions);
     }
   }
   // #endregion
@@ -613,7 +821,7 @@ class K4Actor extends Actor {
   async dropItemByName(iName: string) {
     return [...this.items].find((item: K4Item): item is K4Item => item.name === iName)?.delete();
   }
-  // #region -- ROLLS --
+  // #region -- ROLLS & TRIGGERED RESULTS -- ~
   /**
    * Prompts the user to select an attribute using a dialog.
    * @param {string | undefined} message - Optional message to display in the dialog.
@@ -644,8 +852,6 @@ class K4Actor extends Actor {
       return null;
     }
   }
-
-  // #endregion
   public async roll(rollSource: string) {
     const item = this.getItemByName(rollSource);
     if (!item) {
@@ -660,6 +866,7 @@ class K4Actor extends Actor {
     }
     await item.triggerItem();
   }
+  // #endregion
 
   // #region EDGES: Enabling, Triggering, Disabling ~
 
@@ -722,8 +929,9 @@ class K4Actor extends Actor {
     const collapsedModifierData: Array<{
       display: string,
       value: number,
-      othering?: Array<"all"|K4ItemType.advantage|K4ItemType.disadvantage>,
-      category?: K4ItemType.move|K4ItemType.advantage|K4ItemType.disadvantage}
+      othering?: Array<"all" | K4ItemType.advantage | K4ItemType.disadvantage>,
+      category?: K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage;
+    }
     > = [];
 
 
@@ -753,8 +961,8 @@ class K4Actor extends Actor {
     const addOrUpdate = (
       display: string,
       value: number,
-      othering?: Array<"all"|K4ItemType.advantage|K4ItemType.disadvantage>,
-      category?: K4ItemType.move|K4ItemType.advantage|K4ItemType.disadvantage
+      othering?: Array<"all" | K4ItemType.advantage | K4ItemType.disadvantage>,
+      category?: K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage
     ) => {
       const existing = collapsedModifierData.find((mod) => mod.display === display);
       if (existing) {
@@ -790,15 +998,15 @@ class K4Actor extends Actor {
             // throw new Error(`Unrecognized filter value: '${filter}'`);
             break;
           }
-          const othering: Array<"all"|K4ItemType.advantage|K4ItemType.disadvantage> = ["all"];
-          const category = move.isSubItem() ? move.parentType as K4ItemType.advantage|K4ItemType.disadvantage : move.type;
+          const othering: Array<"all" | K4ItemType.advantage | K4ItemType.disadvantage> = ["all"];
+          const category = move.isSubItem() ? move.parentType as K4ItemType.advantage | K4ItemType.disadvantage : move.type;
           if ([K4ItemType.advantage, K4ItemType.disadvantage].includes(category)) {
-            othering.push(category as K4ItemType.advantage|K4ItemType.disadvantage);
-            value += categoryVals[category as K4ItemType.advantage|K4ItemType.disadvantage];
+            othering.push(category as K4ItemType.advantage | K4ItemType.disadvantage);
+            value += categoryVals[category as K4ItemType.advantage | K4ItemType.disadvantage];
           } else {
             value += categoryVals.all;
           }
-          addOrUpdate(filter, value, othering, category as K4ItemType.advantage|K4ItemType.disadvantage);
+          addOrUpdate(filter, value, othering, category as K4ItemType.advantage | K4ItemType.disadvantage);
           break;
         }
       }
@@ -885,37 +1093,36 @@ class K4Actor extends Actor {
     let hasAddedStabilityToggle = false;
     let hasAddedWoundsToggle = false;
 
-    return `<div class="toggle-modifier-strip">${
-        this.toggleableChanges.map((change) => {
-          let className: string;
-          let icon: string;
-          let value: string = String(change.finalValue);
-          const valueClass = change.finalValue as number >= 0 ? "neon-glow-soft-blue" : "neon-glow-soft-red";
-          const buttonClass = change.finalValue as number >= 0 ? "pos-mod" : "neg-mod";
+    return `<div class="toggle-modifier-strip">${this.toggleableChanges.map((change) => {
+      let className: string;
+      let icon: string;
+      let value: string = String(change.finalValue);
+      const valueClass = change.finalValue as number >= 0 ? "neon-glow-soft-blue" : "neon-glow-soft-red";
+      const buttonClass = change.finalValue as number >= 0 ? "pos-mod" : "neg-mod";
 
-          const label = String(change.customFunctionData.shortLabel);
-          if (label === "Stability") {
-            if (hasAddedStabilityToggle) { return ""; }
-            hasAddedStabilityToggle = true;
-            value = "";
-            className = "stability-modifier";
-            icon = `systems/kult4th/assets/icons/stability/stability-${this.stabilityLevel}.svg`;
-          } else if (label === "Wounds") {
-            if (hasAddedWoundsToggle) { return ""; }
-            hasAddedWoundsToggle = true;
-            value = "";
-            className = "wound-modifier";
-            icon = `systems/kult4th/assets/icons/wounds/wound-serious.svg`;
-          } else {
-            className = `${change.originItem?.parentType}-modifier`;
-            icon = change.icon;
-            value = `${change.finalValue as number >= 0 ? "+" : ""}${change.finalValue}`;
-          }
-          if (value === "") {
-            className += " no-value";
-          }
+      const label = String(change.customFunctionData.shortLabel);
+      if (label === "Stability") {
+        if (hasAddedStabilityToggle) {return "";}
+        hasAddedStabilityToggle = true;
+        value = "";
+        className = "stability-modifier";
+        icon = `systems/kult4th/assets/icons/stability/stability-${this.stabilityLevel}.svg`;
+      } else if (label === "Wounds") {
+        if (hasAddedWoundsToggle) {return "";}
+        hasAddedWoundsToggle = true;
+        value = "";
+        className = "wound-modifier";
+        icon = `systems/kult4th/assets/icons/wounds/wound-serious.svg`;
+      } else {
+        className = `${change.originItem?.parentType}-modifier`;
+        icon = change.icon;
+        value = `${change.finalValue as number >= 0 ? "+" : ""}${change.finalValue}`;
+      }
+      if (value === "") {
+        className += " no-value";
+      }
 
-          return `<div class="toggle-modifier ${className}">
+      return `<div class="toggle-modifier ${className}">
                 <button class="toggle-modifier-button ${buttonClass}" data-target="${change.id}" data-action="toggle-change" data-state="${change.isEnabled ? "enabled" : "disabled"}">
                   <span class="toggle-modifier-label">
                     <span class="toggle-modifier-name">${label}</span>
@@ -927,7 +1134,7 @@ class K4Actor extends Actor {
                 </button>
                 <span class="tooltip toggle-modifier-tooltip">${change.tooltip}</span>
               </div>`;
-        }).join("")
+    }).join("")
 
       }</div>`;
   }
@@ -1018,25 +1225,15 @@ class K4Actor extends Actor {
   }
   // #endregion
 }
-// #ENDREGION
-
-// #region -- AUGMENTED INTERFACE ~
-interface K4Actor<Type extends K4ActorType = K4ActorType> {
-  get id(): IDString;
-  get name(): string;
-  get type(): Type;
-  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
-  get items(): Actor["items"] & Collection<K4Item>;
-  get effects(): Actor["effects"] & Collection<K4ActiveEffect>;
-  system: K4Actor.System<Type>;
-}
 // #endregion
+
 // #region EXPORTS ~
 export default K4Actor;
 
 export {
   K4ActorType,
   K4RollType,
-  K4WoundType
+  K4WoundType,
+  K4ConditionType
 };
 // #endregion

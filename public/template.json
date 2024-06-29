@@ -71,6 +71,7 @@
 				}
 			},
 			"wounds": {},
+      "conditions": {},
 			"modifiers": {
 				"wounds_serious": [
 					{},

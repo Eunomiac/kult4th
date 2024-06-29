@@ -856,35 +856,52 @@
   display: none;
 }
 #tinymce .text-posmod,
+#tinymce .text-mod,
 #tinymce .text-negmod,
 #tinymce .text-keyword,
 #tinymce .text-attributename,
-#tinymce .text-movename,
+#tinymce .text-doclink,
 #tinymce .text-edgename,
 #tinymce .text-gmtext,
 #tinymce .text-resultlabel,
 #tinymce .mce-content-body .text-posmod,
+#tinymce .mce-content-body .text-mod,
 #tinymce .mce-content-body .text-negmod,
 #tinymce .mce-content-body .text-keyword,
 #tinymce .mce-content-body .text-attributename,
-#tinymce .mce-content-body .text-movename,
+#tinymce .mce-content-body .text-doclink,
 #tinymce .mce-content-body .text-edgename,
 #tinymce .mce-content-body .text-gmtext,
 #tinymce .mce-content-body .text-resultlabel {
   font-weight: 900;
 }
-#tinymce .text-keyword,
-#tinymce .mce-content-body .text-keyword {
+#tinymce .text-keyword, #tinymce .text-mod,
+#tinymce .mce-content-body .text-keyword,
+#tinymce .mce-content-body .text-mod {
   color: var(--K4-color-keyword);
 }
 #tinymce .text-attributename,
 #tinymce .mce-content-body .text-attributename {
   color: var(--K4-color-keyword);
 }
-#tinymce .text-movename,
-#tinymce .mce-content-body .text-movename {
+#tinymce .text-doclink,
+#tinymce .mce-content-body .text-doclink {
   color: var(--K4-color-keyword-bright);
   font-style: italic;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+#tinymce .text-doclink:hover,
+#tinymce .mce-content-body .text-doclink:hover {
+  filter: saturate(0.5) brightness(3);
+}
+#tinymce .text-sourceref, #tinymce .text-sourceref + .text-tag,
+#tinymce .mce-content-body .text-sourceref,
+#tinymce .mce-content-body .text-sourceref + .text-tag {
+  font-family: var(--font-primary-smallcaps);
+  text-transform: lowercase;
+  font-style: normal;
+  font-size: smaller;
 }
 #tinymce .text-edgename,
 #tinymce .mce-content-body .text-edgename {

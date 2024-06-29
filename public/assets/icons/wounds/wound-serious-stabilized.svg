@@ -3,8 +3,8 @@
 <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
 	<style type="text/css">
-		.st0{fill:#968C6A; stroke:transparent;}
-		.st1{fill:#413D2E; stroke:transparent;}
+		.st0{fill:#968C6A;stroke:none;}
+		.st1{fill:#413D2E;stroke:none;}
 	</style>
 	<path class="st0" d="M269.9,322.6c-8.5,11.6-19.8,17.5-31.2,23.2c-3.5,1.7-10.7,5-10.7,5s63,10.9,94.2,20.7
 		c33.7,9.3,93.4,34.9,93.4,34.9s-42.7-42.1-73.8-74c-9.6-9.9-39.1-36-28.9-54.7c9-16.5,66.5-19.9,66.5-19.9S266.9,224,248.4,201.6

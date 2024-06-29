@@ -1,6 +1,6 @@
 import SVGDATA from "../scripts/svgdata.ts";
 import {K4ItemType} from "../documents/K4Item.ts";
-import {K4WoundType} from "../documents/K4Actor.ts";
+import {K4WoundType, K4ConditionType} from "../documents/K4Actor.ts";
 
 
 declare global {
@@ -12,7 +12,7 @@ declare global {
   }
   interface HoverStripData {
     id: string,
-    type: K4ItemType | K4WoundType | "edge",
+    type: K4ItemType | K4WoundType | K4ConditionType | "edge",
     display: string,
     icon: string,
     isGlowing?: "red"|"blue"|"gold"|false,

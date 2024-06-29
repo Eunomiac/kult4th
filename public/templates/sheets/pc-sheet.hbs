@@ -380,8 +380,10 @@
           </div>
           <div class="button-container"></div>
         </div>
-        <div class="wounds">
-          {{#each wounds}}
+        <div class="status-bar-strips">
+          <button class="condition-add" title="Add Condition"><i class="fas fa-plus"></i></button>
+          <button class="wound-add" title="Add Wound"><i class="fas fa-plus"></i></button>
+          {{#each statusBarStrips}}
           {{> "systems/kult4th/templates/components/hover-strip.hbs" }}
           {{/each}}
         </div>

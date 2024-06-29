@@ -30,42 +30,43 @@ declare global {
     export type ModDefinition = Record<ModFilter, number>;
 
     export interface ModData {
-      name: string,
-      filter: string,
-      icon: string,
-      tooltip?: string,
-      linkToItem?: K4Item,
-      value: number
+      id: string,
+      filter: "all"|K4ItemType.advantage|K4ItemType.disadvantage|string,
+      value: number,
+      label: string,
+      tooltipLabel?: string,
+      tooltipDesc?: string,
+      cssClasses?: string[]
     }
 
-    interface ConstructorData_Base {
+    interface ConstructorDataBase {
       source: K4Roll.Source|string
     }
-    interface ConstructorData_ItemSource extends ConstructorData_Base {
+    interface ConstructorDataItemSource extends ConstructorDataBase {
       source: K4Item.Active|string
     }
-    interface ConstructorData_AttrSource extends ConstructorData_Base {
+    interface ConstructorDataAttrSource extends ConstructorDataBase {
       source: K4Roll.Attribute
       img: string
     }
 
-    export type ConstructorData = ConstructorData_ItemSource | ConstructorData_AttrSource;
+    export type ConstructorData = ConstructorDataItemSource | ConstructorDataAttrSource;
 
-    interface Data_Base extends ConstructorData_Base {
+    interface DataBase extends ConstructorDataBase {
       attribute: K4Roll.RollableAttribute,
       attrVal: number,
       modifiers: Array<K4Roll.ModData>
     }
 
-    interface Data_ItemSource extends Data_Base {
+    interface DataItemSource extends DataBase {
       source: K4Item.Active
     }
-    interface Data_AttrSource extends Data_Base {
+    interface DataAttrSource extends DataBase {
       source: K4Roll.RollableAttribute,
       img: string
     }
-    export type Data = Data_ItemSource | Data_AttrSource;
-    interface Context_Base {
+    export type Data = DataItemSource | DataAttrSource;
+    interface ContextBase {
       cssClass: string,
       dice: [number, number],
       total: number,
@@ -78,16 +79,16 @@ declare global {
       rollerImg: string,
       result: K4Item.Components.ResultData
     }
-    interface Context_ItemSource extends Context_Base {
+    interface ContextItemSource extends ContextBase {
       source: K4Item.Active,
       sourceType: K4ItemType,
       sourceName: string,
       sourceImg: string
     }
-    interface Context_AttrSource extends Context_Base {
+    interface ContextAttrSource extends ContextBase {
       source: K4Roll.RollableAttribute
     }
-    export type Context = Context_ItemSource | Context_AttrSource;
+    export type Context = ContextItemSource | ContextAttrSource;
   }
 }
 // #endregion
@@ -153,7 +154,7 @@ class K4Roll extends Roll {
           attrVal ??= actor.attributes[rollData.source as K4CharAttribute];
           return {
             type: K4RollType.attribute,
-            img: (rollData as K4Roll.ConstructorData_AttrSource).img,
+            img: (rollData as K4Roll.ConstructorDataAttrSource).img,
             attribute: rollData.source,
             attrVal,
             source: rollData.source

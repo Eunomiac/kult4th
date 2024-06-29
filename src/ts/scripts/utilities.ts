@@ -341,6 +341,20 @@ const pBool = (
   return true;
 };
 
+const castString = (str: string): string|number|boolean => {
+  if (isNumString(str)) {
+    const numVal = pFloat(str);
+    if (isInt(numVal)) {
+      return pInt(str);
+    }
+    return numVal;
+  }
+  if (isBooleanString(str)) {
+    return pBool(str);
+  }
+  return str;
+}
+
 
 const radToDeg = (rad: number, isConstrained = true): number => {
   rad = isConstrained ? rad % (2 * Math.PI) : rad;
@@ -2143,7 +2157,7 @@ export default {
   isHTMLCode, isRGBColor, isHexColor,
   isUndefined, isDefined, isEmpty, hasItems, isInstance: isInstanceOf,
   areEqual, areFuzzyEqual,
-  pFloat, pInt, pBool, radToDeg, degToRad,
+  castString, pFloat, pInt, pBool, radToDeg, degToRad,
   getKey,
   assertNonNullType,
 
