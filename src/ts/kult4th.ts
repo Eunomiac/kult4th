@@ -305,7 +305,8 @@ async function preloadTemplates() {
       "icon",
       "toggle-box",
       "edges-blade-container",
-      "stability-shards-overlay"
+      "stability-shards-overlay",
+      "modifier-toggle"
     ]),
     ...U.getTemplatePath("partials", [
       "item-block",

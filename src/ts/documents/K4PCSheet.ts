@@ -1200,6 +1200,9 @@ class K4PCSheet extends ActorSheet {
         }
       });
   }
+  activateToggleStripListeners(html: JQuery) {
+    this.actor.toggleableEffects.forEach((effect) => effect.applyToggleListeners(html));
+  }
   activateWindowControlListeners(html: JQuery) {
     const self = this;
     // Add click listeners for close buttons in the header to close the sheet
@@ -1348,8 +1351,11 @@ class K4PCSheet extends ActorSheet {
     // If the sheet is not editable, return early
     if (!this.options.editable) { return; }
 
-    // Activate wound listeners
+    // Activate wound & stability condition listeners
     this.activateStatusStripListeners(html);
+
+    // Activate toggle strip listeners
+    this.activateToggleStripListeners(html);
 
     // Activate listeners for closing & minimizing the sheet
     this.activateWindowControlListeners(html);

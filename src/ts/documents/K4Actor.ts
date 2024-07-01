@@ -122,7 +122,7 @@ declare global {
           total: number;
         };
         modifiersReport: string;
-        toggleControlStrip: string;
+        toggleableEffects: K4ActiveEffect[];
         stability: SourceSchema.PC["stability"] & {
           statusOptions: string[];
         };
@@ -209,7 +209,7 @@ class K4Actor extends Actor {
     }], this));
     promises.push(K4ActiveEffect.CreateFromChangeData([{
       key: "ApplyStability",
-      value: "label:Stability,icon:systems/kult4th/assets/icons/stability.svg,fromText:Stability",
+      value: "label:Stability,canToggle:true,defaultState:true,duration:ongoing,icon:systems/kult4th/assets/icons/modifiers/stability-broken.svg,fromText:Stability,tooltip:Your mental stability affects your ability to act and think clearly.",
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
       priority: undefined
     }], this));
@@ -374,6 +374,9 @@ class K4Actor extends Actor {
     if (numSerious) { return "systems/kult4th/assets/icons/wounds/wound-serious.svg"; }
     return "";
   }
+  get enabledConditions(): K4Actor.Components.Condition[] {
+    return Object.values(this.conditions).filter((condition) => condition.isApplyingToRolls);
+  }
   get stabilityConditions(): K4Actor.Components.Condition[] {
     if (!this.is(K4ActorType.pc)) {return [];}
     return Object.values(this.system.conditions)
@@ -385,7 +388,7 @@ class K4Actor extends Actor {
   get stabilityIcon(): string {
     if (!this.is(K4ActorType.pc)) {return "";}
     if (this.stabilityLevel === K4Stability.composed) { return ""; }
-    return `systems/kult4th/assets/icons/stability/stability-${this.stabilityLevel}.svg`;
+    return `systems/kult4th/assets/icons/modifiers/stability-${this.stabilityLevel}.svg`;
   }
 
   get woundModData(): K4Roll.ModData[] {
@@ -418,7 +421,8 @@ class K4Actor extends Actor {
         value,
         label: "Wounds",
         tooltipLabel,
-        tooltipDesc
+        tooltipDesc,
+        cssClasses: ["k4-theme-red"]
       });
     }
     return modData;
@@ -456,24 +460,26 @@ class K4Actor extends Actor {
         value,
         label: "Stability",
         tooltipLabel,
-        tooltipDesc
+        tooltipDesc,
+        cssClasses: ["k4-theme-red"]
       });
     }
     return modData;
   }
-  get conditionModData(): K4Roll.ModData[] {
+  get stabilityConditionModData(): K4Roll.ModData[] {
     if (!this.is(K4ActorType.pc)) {return [];}
     const modData: K4Roll.ModData[] = [];
     for (const condition of this.enabledStabilityConditions) {
       const modDefinitions = condition.modDef;
       for (const [filter, value] of Object.entries(modDefinitions)) {
         modData.push({
-          id: `condition-${condition.id}-${filter}`,
+          id: `stability-condition-${condition.id}-${filter}`,
           filter,
           value,
           label: condition.label,
           tooltipLabel: condition.label,
-          tooltipDesc: condition.description
+          tooltipDesc: condition.description,
+          cssClasses: ["k4-theme-blue"]
         });
       }
     }
@@ -516,7 +522,7 @@ class K4Actor extends Actor {
                 target: strip.id,
                 action: "suppress-wound"
               },
-              tooltip: strip.isApplyingToRolls ? "DISABLE" : "ENABLE"
+              tooltip: strip.isApplyingToRolls ? "SUPPRESS" : "ENABLE"
             }
           ]
         };
@@ -532,9 +538,9 @@ class K4Actor extends Actor {
           stripData.stripClasses?.push("k4-theme-red");
         }
         if (strip.isApplyingToRolls) {
-          stripData.stripClasses?.push("roll-enabled");
+          stripData.stripClasses?.push("strip-enabled");
         } else {
-          stripData.stripClasses?.push("roll-disabled");
+          stripData.stripClasses?.push("strip-disabled");
         }
         return stripData as HoverStripData;
       });
@@ -548,6 +554,7 @@ class K4Actor extends Actor {
           stripClasses: ["condition-strip", `${strip.type}-strip`, "k4-theme-blue"],
           dataTarget: `system.conditions.${strip.id}.label`,
           placeholder: "(description)  ",
+          tooltip: strip.description,
           buttons: [
             {
               icon: "data-retrieval",
@@ -563,14 +570,14 @@ class K4Actor extends Actor {
                 target: strip.id,
                 action: "suppress-condition"
               },
-              tooltip: strip.isApplyingToRolls ? "DISABLE" : "ENABLE"
+              tooltip: strip.isApplyingToRolls ? "SUPPRESS" : "ENABLE"
             }
           ]
         };
         if (strip.isApplyingToRolls) {
-          stripData.stripClasses?.push("roll-enabled");
+          stripData.stripClasses?.push("strip-enabled");
         } else {
-          stripData.stripClasses?.push("roll-disabled");
+          stripData.stripClasses?.push("strip-disabled");
         }
         return stripData as HoverStripData;
       });
@@ -826,15 +833,15 @@ class K4Actor extends Actor {
   }
   async spendEdge() {
     if (!this.is(K4ActorType.pc) || !this.system.edges.value) {return;}
-    await this.updateEdges(this.system.edges.value - 1 as number);
+    await this.updateEdges(this.system.edges.value - 1);
   }
   async gainEdge() {
     if (!this.is(K4ActorType.pc) || !this.system.edges.sourceName) {return;}
-    await this.updateEdges(this.system.edges.value + 1 as number);
+    await this.updateEdges(this.system.edges.value + 1);
   }
   async clearEdges(): Promise<void> {
     if (!this.is(K4ActorType.pc)) {return;}
-    await this.updateEdges(0 as number);
+    await this.updateEdges(0);
   }
   // #endregion
 
@@ -898,6 +905,9 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region OVERRIDES: _onCreate, prepareData, _onDelete ~
+  get enabledEffects() {
+    return this.effects.filter((effect) => effect.isEnabled);
+  }
   get customChanges() {
     return Array.from(this.effects as Collection<K4ActiveEffect>)
       .map((effect) => effect.getCustomChanges())
@@ -921,8 +931,8 @@ class K4Actor extends Actor {
   get statusBarChanges() {
     return this.modifyRollChanges.filter((change) => change.isInStatusBar());
   }
-  get toggleableChanges() {
-    return this.customChanges.filter((change) => change.canToggle);
+  get toggleableEffects() {
+    return this.effects.filter((effect) => effect.canToggle() && effect.isRelevant);
   }
 
   /**
@@ -956,8 +966,8 @@ class K4Actor extends Actor {
     const collapsedModifierData: Array<{
       display: string,
       value: number,
-      othering?: Array<"all" | K4ItemType.advantage | K4ItemType.disadvantage>,
-      category?: K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage;
+      othering: Array<"all" | K4Item.Types.Rollable>,
+      category: "all" | "type" | K4Item.Types.Rollable
     }
     > = [];
 
@@ -967,20 +977,21 @@ class K4Actor extends Actor {
       [K4ItemType.advantage]: 0,
       [K4ItemType.disadvantage]: 0
     };
+    const moveTypeRecord: Record<string, K4Item.Types.Rollable> = {};
     const statusBarVals = this.statusBarChanges
       .map((change) => ({
         filter: change.filter,
         value: change.finalValue as number
-      }));
-
-    // Sort filterVals by specificity: specific move names first, then categories, then "all"
-    statusBarVals.sort((a, b) => {
-      if (a.filter === "all") return 1;
-      if (b.filter === "all") return -1;
-      if (a.filter === K4ItemType.advantage || a.filter === K4ItemType.disadvantage) return 1;
-      if (b.filter === K4ItemType.advantage || b.filter === K4ItemType.disadvantage) return -1;
-      return 0;
-    }).reverse();
+      }))
+      // Sort filterVals by specificity: specific move names first, then categories, then "all"
+      .toSorted((a, b) => {
+        if (a.filter === "all") { return 1 };
+        if (b.filter === "all") { return -1 };
+        if (a.filter === K4ItemType.advantage || a.filter === K4ItemType.disadvantage) { return 1 };
+        if (b.filter === K4ItemType.advantage || b.filter === K4ItemType.disadvantage) { return -1 };
+        return 0;
+      })
+      .toReversed();
 
     kLog.log("[collapseRollModifiers] Status Bar Vals", U.objClone(statusBarVals));
 
@@ -988,8 +999,8 @@ class K4Actor extends Actor {
     const addOrUpdate = (
       display: string,
       value: number,
-      othering?: Array<"all" | K4ItemType.advantage | K4ItemType.disadvantage>,
-      category?: K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage
+      othering: Array<"all" | K4Item.Types.Rollable>,
+      category: "all" | "type" | K4Item.Types.Rollable
     ) => {
       const existing = collapsedModifierData.find((mod) => mod.display === display);
       if (existing) {
@@ -1004,19 +1015,19 @@ class K4Actor extends Actor {
       switch (filter) {
         case "all": {
           categoryVals.all += value;
-          addOrUpdate("Any Roll", value);
+          addOrUpdate("Any Roll", value, [], "all");
           break;
         }
         case K4ItemType.advantage: {
           value += categoryVals.all;
           categoryVals.advantage = value;
-          addOrUpdate("Any Advantage Roll", value, ["all"]);
+          addOrUpdate("Any Advantage Roll", value, ["all"], "type");
           break;
         }
         case K4ItemType.disadvantage: {
           value += categoryVals.all;
           categoryVals.disadvantage += value;
-          addOrUpdate("Any Disadvantage Roll", value, ["all"]);
+          addOrUpdate("Any Disadvantage Roll", value, ["all"], "type");
           break;
         }
         default: {
@@ -1026,7 +1037,10 @@ class K4Actor extends Actor {
             break;
           }
           const othering: Array<"all" | K4ItemType.advantage | K4ItemType.disadvantage> = ["all"];
-          const category = move.isSubItem() ? move.parentType as K4ItemType.advantage | K4ItemType.disadvantage : move.type;
+          const category = move.isSubItem()
+            ? move.parentType as K4ItemType.advantage | K4ItemType.disadvantage
+            : K4ItemType.move;
+          moveTypeRecord[move.name] = category;
           if ([K4ItemType.advantage, K4ItemType.disadvantage].includes(category)) {
             othering.push(category as K4ItemType.advantage | K4ItemType.disadvantage);
             value += categoryVals[category as K4ItemType.advantage | K4ItemType.disadvantage];
@@ -1044,8 +1058,21 @@ class K4Actor extends Actor {
       collapsedModifierData: U.objClone(collapsedModifierData)
     });
 
-    // Filter out any '0' values from the collapsed data
-    const filteredModifierData = collapsedModifierData.filter(({value}) => value !== 0);
+    // Filter out any unnecessary values:
+    // - remove 'all' if it is zero
+    // - remove 'advantage' and 'disadvantage' if they are equal to all
+    // - remove move names if they are equal to their parent category (or 'all' for basic player moves)
+    const filteredModifierData = collapsedModifierData
+      .filter(({value, category}) => {
+        switch (category) {
+          case "all": return value !== 0;
+          case "type": return value !== categoryVals.all;
+          case K4ItemType.advantage: return value !== categoryVals.advantage;
+          case K4ItemType.disadvantage: return value !== categoryVals.disadvantage;
+          default: return value !== categoryVals.all;
+        }
+      });
+
 
     kLog.log("[collapseRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
 
@@ -1114,61 +1141,6 @@ class K4Actor extends Actor {
   }
 
   /**
-   * Builds the strip of buttons for controlling toggleable roll modifiers.
-   * @returns {string} The HTML for the toggleable modifier strip.
-   */
-  buildToggleControlStrip() {
-
-    let hasAddedStabilityToggle = false;
-    let hasAddedWoundsToggle = false;
-
-    return `<div class="toggle-modifier-strip">${this.toggleableChanges.map((change) => {
-      let className: string;
-      let icon: string;
-      let value: string = String(change.finalValue);
-      const valueClass = change.finalValue as number >= 0 ? "neon-glow-soft-blue" : "neon-glow-soft-red";
-      const buttonClass = change.finalValue as number >= 0 ? "pos-mod" : "neg-mod";
-
-      const label = String(change.customFunctionData.shortLabel);
-      if (label === "Stability") {
-        if (hasAddedStabilityToggle) {return "";}
-        hasAddedStabilityToggle = true;
-        value = "";
-        className = "stability-modifier";
-        icon = `systems/kult4th/assets/icons/stability/stability-${this.stabilityLevel}.svg`;
-      } else if (label === "Wounds") {
-        if (hasAddedWoundsToggle) {return "";}
-        hasAddedWoundsToggle = true;
-        value = "";
-        className = "wound-modifier";
-        icon = `systems/kult4th/assets/icons/wounds/wound-serious.svg`;
-      } else {
-        className = `${change.originItem?.parentType}-modifier`;
-        icon = change.icon;
-        value = `${change.finalValue as number >= 0 ? "+" : ""}${change.finalValue}`;
-      }
-      if (value === "") {
-        className += " no-value";
-      }
-
-      return `<div class="toggle-modifier ${className}">
-                <button class="toggle-modifier-button ${buttonClass}" data-target="${change.id}" data-action="toggle-change" data-state="${change.isEnabled ? "enabled" : "disabled"}">
-                  <span class="toggle-modifier-label">
-                    <span class="toggle-modifier-name">${label}</span>
-                    <span class="toggle-modifier-value ${valueClass}">${value}</span>
-                  </span>
-                  <div class="icon-container">
-                    <div class="icon-mask" style="mask:url(${icon}) no-repeat center;-webkit-mask:url(${icon}) no-repeat center;"></div>
-                  </div>
-                </button>
-                <span class="tooltip toggle-modifier-tooltip">${change.tooltip}</span>
-              </div>`;
-    }).join("")
-
-      }</div>`;
-  }
-
-  /**
  * Prepares data specific to player characters.
  */
   preparePCData() {
@@ -1194,9 +1166,8 @@ class K4Actor extends Actor {
       // Call all 'system change' custom functions.
       this.systemChanges.forEach((change) => change.apply());
 
-      const modReport = this.buildModifierReport();
       this.system.modifiersReport = this.buildModifierReport();
-      this.system.toggleControlStrip = this.buildToggleControlStrip();
+      this.system.toggleableEffects = this.toggleableEffects;
 
     }
   }

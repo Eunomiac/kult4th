@@ -26,7 +26,7 @@ declare global {
     export type Attribute = K4Attribute;
     export type RollableAttribute = K4CharAttribute|K4Attribute.zero;
     export type Source = K4Item.Active|K4Roll.Attribute;
-    export type ModFilter = "all"|"basic_move"|K4Item.Types.Active|K4CharAttribute|string;
+    export type ModFilter = "all"|K4ItemType.advantage|K4ItemType.disadvantage|string;
     export type ModDefinition = Record<ModFilter, number>;
 
     export interface ModData {
@@ -34,9 +34,9 @@ declare global {
       filter: "all"|K4ItemType.advantage|K4ItemType.disadvantage|string,
       value: number,
       label: string,
-      tooltipLabel?: string,
-      tooltipDesc?: string,
-      cssClasses?: string[]
+      tooltipLabel: string,
+      tooltipDesc: string,
+      cssClasses: string[]
     }
 
     interface ConstructorDataBase {
@@ -194,6 +194,7 @@ class K4Roll extends Roll {
   public _attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute;
   public type: K4RollType;
   public source: K4Roll.Attribute|K4Item<K4Item.Types.Active>;
+  public isCancelled = false;
   public get sourceName(): string {
     if (this.type === K4RollType.attribute) {
       return U.tCase(this.attribute);
@@ -245,34 +246,18 @@ class K4Roll extends Roll {
     return K4RollResult.failure;
   }
 
-  get modifierFilterData(): K4Roll.ModFilter[] {
-    const filters: K4Roll.ModFilter[] = [
-      "all",
-
-    ];
-    return filters;
-  }
-
-  get modifiers(): K4Roll.ModData[] {
-    const mods: K4Roll.ModData[] = [];
-
-
-    return mods;
-  }
-
   // #endregion
 
   // #region === CONSTRUCTOR ===
   constructor(rollData: K4Roll.ConstructorData, actor: K4Actor<K4ActorType.pc>) {
     const {img, type, attribute, attrVal, source} = K4Roll.CheckSource(rollData, actor);
-    /* const modTotal = K4Roll.GetModifierTotal(rollData, actor); */
-    const modTotal = 0;
-    super(`2d10 + ${attrVal} + ${modTotal}`);
+    super(`2d10 + ${attrVal}`);
     this.actor = actor;
     this.img = img;
     this.type = type;
     this._attribute = attribute;
     this.source = source;
+    kLog.log("K4Roll created", {rollData, actor, roll: this});
   }
 
   // #ENDREGION
@@ -286,6 +271,12 @@ class K4Roll extends Roll {
 
 
   // #ENDREGION
+  doesFilterApply(filter: K4Roll.ModFilter): boolean {
+    if (filter === "all") { return true; }
+    if (this.sourceType === filter) { return true; }
+    if (this.sourceName === filter) { return true; }
+    return false;
+  }
   getOutcomeData(): K4Item.Components.ResultData {
     if (this.source instanceof K4Item) {
       if (this.source.system.subType !== K4ItemSubType.activeRolled) {
@@ -299,15 +290,55 @@ class K4Roll extends Roll {
     }
   }
 
+  public modifiers: K4Roll.ModData[] = [];
+
   override get total(): Maybe<number> {
     if (typeof super.total !== "number") { return super.total; }
     return Math.max(0, super.total);
   }
 
-  public async displayToChat() {
-    if (!this._evaluated) {
-      throw new Error("Cannot display a roll that has not been evaluated.");
+  public async evaluateToChat() {
+
+    // Collect all applicable K4ActiveEffects
+    const applicableEffects = this.actor.effects
+      .filter((effect) => effect.doesEffectApply(this));
+
+    kLog.log("Applicable Effects", {roll: this, applicableEffects});
+
+    for (const effect of applicableEffects) {
+      const modData = await effect.getRollModData(this);
+      kLog.log("Effect Mod Data", {effect, modData})
+      if (modData === false) {
+        // User cancelled an input prompt, so we cancel the roll.
+        return false;
+      } else {
+        // Otherwise, we add the effect's modifier data to the modifiers array and trigger a use of the effect.
+        this.modifiers.push(...modData);
+      }
     }
+
+    // Insert the modTerm into the roll's terms
+    this.terms.push(
+      new OperatorTerm({operator: "+", options: {}}),
+      new NumericTerm({
+        number: this.modifiers.reduce((acc, mod) => acc + mod.value, 0),
+        options: {}
+      })
+    );
+
+    kLog.log("EVALUATING ROLL", {roll: this});
+
+    super.evaluate({async: false});
+
+    game.dice3d?.showForRoll(this);
+
+    return await this.displayToChat();
+  }
+
+  public async displayToChat() {
+    // if (!this._evaluated) {
+    //   throw new Error("Cannot display a roll that has not been evaluated.");
+    // }
     let themeClass: string;
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: K4Roll.Context = {
@@ -383,20 +414,6 @@ class K4Roll extends Roll {
         }
       }
     }) as K4ChatMessage;
-  }
-  public override evaluate(options?: InexactPartial<RollTerm.Options> & { async: true }): Promise<Evaluated<this>>;
-  public override evaluate(options: InexactPartial<RollTerm.Options & { async: false }>): Evaluated<this>;
-  public override evaluate(options?: InexactPartial<RollTerm.Options>): Evaluated<this> | Promise<Evaluated<this>> {
-    const returnData = super.evaluate({async: false});
-
-    // const rollPromises: Promise<void>[] = [];
-    // if (game.dice3d) {
-      // rollPromises.push(game.dice3d.showForRoll(this));
-    game.dice3d?.showForRoll(this);
-    // }
-    // rollPromises.push(this.#displayRollResult());
-    // await Promise.all(rollPromises);
-    return returnData;
   }
 }
 

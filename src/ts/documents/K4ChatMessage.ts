@@ -3,6 +3,7 @@ import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor from "./K4Actor.js";
 import {K4RollResult} from "./K4Roll.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
 // #region TYPES ~
@@ -727,7 +728,13 @@ class K4ChatMessage extends ChatMessage {
     (html ?? this.elem$).addClass(this.cssClasses.join(" "));
   }
 
-  activateListeners(html: JQuery) {
+  activateListeners(html?: JQuery) {
+    html ??= this.elem$;
+    html.find(".tooltip").parent()
+      .each((_, parent) => {
+        K4ActiveEffect.ApplyTooltipListener($(parent));
+      });
+
     /**
      * @todo Add general-purpose listeners that select for [data-] attributes and apply corresponding event listeners to them.
      * - data-action="choose-option" (for cases where individual options have effects that must be selected and applied)

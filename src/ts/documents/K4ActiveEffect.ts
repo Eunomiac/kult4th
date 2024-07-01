@@ -113,16 +113,23 @@ enum PromptInputType {
 namespace K4Change {
   export type Source = EffectChangeData;
 
+  export interface StatusBarData {
+    id: string; // The id of the change: `${parentEffect.id}_${change.index}`
+    filter: "all"|K4ItemType.advantage|K4ItemType.disadvantage|string,
+    value: number,
+    tooltip: string // An HTML string to be listed in the bullet-list tooltip assembled when mods are collapsed.
+  }
+
 }
 namespace K4ActiveEffect {
   export type OriginTypes = Exclude<K4ItemType, K4ItemType.darksecret>;
   export type Origin = K4Item<OriginTypes>|K4Actor<K4ActorType.pc>|K4Scene|K4ChatMessage;
   export type CustomFunction = (
     parent: K4Actor|K4Roll,
-    data: Record<string, string|number|boolean>
+    data: Record<string, SystemScalar>
   ) => ValueOrPromise<void|boolean|string>;
 
-  namespace Components {
+  export namespace Components {
     export namespace EffectSource {
       interface Base {
         type: EffectSourceType
@@ -137,43 +144,53 @@ namespace K4ActiveEffect {
       }
       export type Ref = DocSource|ResultSource;
     }
-
     export namespace Effect {
+      /**
+       * Base interface for an Effect.
+       */
       interface Base {
         label: string; // The principal name of the Effect. Appears in tooltips and in chat roll results.
         canToggle: boolean; // Whether the PARENTACTOR can toggle the effect on/off on their character sheet (default = true)
-        toggleLabel?: string; // The label to display next to the the toggle button in the actor's character sheet (default = "")
-                             // Can include '%value%' syntax, which will be replaced with the current value of the effect
-        toggleTooltip?: string; // The tooltip to display on the toggle button in the actor's character sheet
-        defaultState?: boolean; // Whether the effect is enabled by default when applied. (default = true)
-        resetOn?: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
-        duration: EffectDuration, // The duration of the Effect, which determines when it is automatically removed (default = "ongoing")
+        duration: EffectDuration; // The duration of the Effect, which determines when it is automatically removed (default = "ongoing")
         isUnique: boolean; // Whether the Effect is unique, meaning a second effect with the same label will OVERWRITE any existing effect (default = "true")
         uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
-                          // - if undefined, the Effect is not limited-use
+                         // - if undefined, the Effect is not limited-use
         canRefill?: boolean; // Whether the Effect can be refilled, or if it is removed when uses.value === uses.max (default = false)
-        effectSource: Components.EffectSource.Ref // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
+        effectSource: Components.EffectSource.Ref; // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
         fromText: string; // A reference to the source of the effect in FormatForKult form
       }
-      interface CanToggle extends Base {
+
+      /**
+       * Interface for effects that can be toggled.
+       */
+      export interface CanToggle extends Base {
         canToggle: true;
-        toggleLabel: string,
-        toggleTooltip: string,
-        defaultState: boolean;
-        resetOn: EffectResetOn;
+        isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
+        isEnabled: boolean; // Whether the effect is active and should be applied to rolls (default = defaultState)
+        toggleIcon: string; // The icon to display on the toggle modifier button.
+        toggleLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
+        toggleTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
+        defaultState: boolean; // Whether the effect is enabled by default when applied. (default = true)
+        resetOn: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
+        resetTo: boolean; // The state to which the effect is reset when resetOn conditions are met (default = defaultState)
       }
+
+      /**
+       * Interface for effects that cannot be toggled.
+       */
       interface CannotToggle extends Base {
         canToggle: false;
-        toggleLabel?: never,
-        toggleTooltip?: never,
-        defaultState?: never;
-        resetOn?: never;
       }
-      export type ExtData = CanToggle|CannotToggle;
+
+      /**
+       * Union type for Effect data, discriminated by `canToggle`.
+       */
+      export type ExtData = CanToggle | CannotToggle;
     }
   }
 
   export type ExtendedData = Components.Effect.ExtData;
+  export type ExtendedToggleData = Components.Effect.ExtData & Components.Effect.CanToggle;
   export type ExtendedConstructorData = Omit<ExtendedData, "effectSource">;
 
   export type ConstructorData = ActiveEffectDataConstructorData;
@@ -184,6 +201,20 @@ namespace K4ActiveEffect {
         data: ExtendedData
       }
     }
+  }
+
+  export interface ToggleData {
+    isEnabled: boolean; // Whether the effect is active and should be applied to rolls (default = defaultState)
+    defaultState: boolean; // Whether the effect is enabled by default when applied. (default = true)
+    resetOn: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
+    resetTo: boolean; // The state to which the effect is reset when resetOn conditions are met (default = defaultState)
+    isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
+    toggleIcon: string; // The icon to display on the toggle modifier button.
+    toggleCategory: "stability"|"wound"|K4ItemType; // The category of the effect, used to group similar effects in the actor's character sheet
+    toggleLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
+    toggleTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
+    toggleValue: string; // The value displayed next to the toggle button in the actor's character sheet (default = "")
+    toggleValueGlow: string // The neon glow class to be applied to any value shown (default = "")
   }
 }
 // #endregion
@@ -232,7 +263,7 @@ const CUSTOM_FUNCTIONS: Record<
       filter: string,
       effect: string,
       target?: string,
-      value?: string|number|boolean,
+      value?: SystemScalar,
       text?: string,
       fromText?: string
     }>;
@@ -243,7 +274,7 @@ const CUSTOM_FUNCTIONS: Record<
       .forEach((move) => {
         switch (effect) {
           case "PushElement": {
-            const targetArray = U.getProp<Array<string|number|boolean>>(move, target ?? "");
+            const targetArray = U.getProp<Array<SystemScalar>>(move, target ?? "");
             if (!Array.isArray(targetArray)) {
               throw new Error(`Invalid target for PushElement: '${target}'`);
             }
@@ -324,7 +355,7 @@ const CUSTOM_FUNCTIONS: Record<
       title: string,
       key: string,
       input: PromptInputType,
-      default: string|number|boolean,
+      default: SystemScalar,
       inputVals?: string,
       bodyText?: string,
       subText?: string
@@ -343,7 +374,7 @@ const CUSTOM_FUNCTIONS: Record<
     }
     const userOutput = await new Promise(async (resolve) => {
       const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
-      const context: Record<string, string|number|boolean> = {
+      const context: Record<string, SystemScalar> = {
         title,
         bodyText: bodyText ?? "",
         subText: subText ?? ""
@@ -466,17 +497,20 @@ class K4Change implements EffectChangeData {
    * @param {string} dataString - The function data string to parse.
    * @returns {Record<string, string>} - The parsed object literal.
    */
-  static ParseFunctionDataString(dataString: string): Record<string, string|number|boolean> {
+  static ParseFunctionDataString(dataString: string): Record<string, SystemScalar> {
     if (!dataString) { return {}; }
+    dataString = U.trimInner(dataString);
     const pairs = dataString.match(/([^,]+:[^,]+(?:,[^,]+)*?)(?=(?:,[^:]+:)|$)/g);
     if (!pairs) {
       throw new Error(`Invalid function data string format: "${dataString}"`);
     }
-
+    kLog.log("[ParseFunctionDataString]", {dataString, pairs}, 3)
 
     return pairs.reduce((acc, pair) => {
-      let [key, value]: [string, string|number|boolean] = pair.split(/:(.+)/) // Split only at the first colon
-        .map(str => str.trim()) as [string, string];
+
+      let [key, value]: [string, SystemScalar] = pair
+        .split(/:(.+)/) // Split only at the first colon
+        .map((str) => str.trim()) as [string, string];
 
       // Convert the value to the appropriate type
       if (U.isNumString(value)) {
@@ -494,7 +528,7 @@ class K4Change implements EffectChangeData {
 
       acc[key] = value;
       return acc;
-    }, {} as Record<string,string|number|boolean>);
+    }, {} as Record<string,SystemScalar>);
   }
   // #endregion
 
@@ -522,7 +556,7 @@ class K4Change implements EffectChangeData {
   }
   get isEnabled(): boolean {
     if (!this.isInstantiated()) { return false; }
-    return !this.parentEffect.disabled;
+    return this.parentEffect.isEnabled;
   }
   get actor(): Maybe<K4Actor> {
     if (!this.isOwnedByActor()) { return undefined; }
@@ -534,6 +568,9 @@ class K4Change implements EffectChangeData {
   }
   get isPromptOnCreate(): boolean {
     return ["PromptForData"].includes(this.customFunctionName);
+  }
+  get isPromptOnRoll(): boolean {
+    return this.isRollModifier() && this.customFunctionData.value === "prompt";
   }
   get isRequireItemCheck(): boolean {
     return ["RequireItem"].includes(this.customFunctionName);
@@ -547,8 +584,31 @@ class K4Change implements EffectChangeData {
       && !this.isPermanentChange
       && !this.isRollModifier();
   }
-  isRollModifier(): this is typeof this & {modData: K4Roll.ModData} {
+  isRollModifier(): this is this & {modData: K4Roll.ModData} {
     return ["ModifyRoll", "ApplyWounds", "ApplyStability"].includes(this.customFunctionName);
+  }
+  get modData(): Maybe<K4Roll.ModData> {
+    if (!this.isRollModifier()) { return; }
+    if (typeof this.finalValue !== "number") {
+      throw new Error(`Invalid final value for roll modifier: ${this.finalValue}`);
+    }
+    if (this.finalValue === 0) { return; }
+    const modData: K4Roll.ModData = {
+      id: this.id!,
+      filter: this.filter,
+      value: this.finalValue,
+      label: this.customFunctionData.label as Maybe<string> ?? this.name,
+      tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
+      tooltipDesc: this.tooltip ?? "",
+      cssClasses: []
+    };
+    if (modData.value > 0) {
+      modData.cssClasses.push("k4-theme-gold");
+    } else {
+      modData.cssClasses.push("k4-theme-red");
+    }
+    // if (mod)
+    return modData;
   }
   get filter(): "all"|K4Attribute|K4ItemType|string {
     return this.customFunctionData.filter as Maybe<string> ?? "all";
@@ -561,18 +621,12 @@ class K4Change implements EffectChangeData {
         : undefined)
       ?? "";
   }
-  get icon(): string {
-    return this.customFunctionData.icon as Maybe<string>
-      ?? this.parentEffect?.icon
-      ?? this.originItem?.img
-      ?? "";
-  }
   get tooltip(): Maybe<string> {
     if (typeof this.customFunctionData.tooltip !== "string") { return; }
     return this.customFunctionData.tooltip;
   }
-  _promptedValue?: string|number|boolean;
-  get finalValue(): Maybe<string|number|boolean> {
+  _promptedValue?: SystemScalar;
+  get finalValue(): Maybe<SystemScalar> {
     const {value} = this.customFunctionData;
     if (value === undefined) { return; }
     if (value === "prompt") {
@@ -595,16 +649,12 @@ class K4Change implements EffectChangeData {
   }
   isInStatusBar() {
     return this.isRollModifier() && this.customFunctionData.inStatusBar !== false;
-  }
-  get canToggle(): boolean {
-    return this.isRollModifier() && this.customFunctionData.canToggle === true;
-  }
-  // #endregion
+  }  // #endregion
 
   // #region CONSTRUCTOR
   customFunctionName: keyof typeof CUSTOM_FUNCTIONS;
   customFunction: K4ActiveEffect.CustomFunction;
-  customFunctionData: Record<string, string|number|boolean>;
+  customFunctionData: Record<string, SystemScalar>;
   parentEffect?: K4ActiveEffect;
   constructor(data: EffectChangeData, effect?: K4ActiveEffect) {
     const {key, mode, value} = data;
@@ -658,22 +708,19 @@ class K4Change implements EffectChangeData {
  */
 class K4ActiveEffect extends ActiveEffect {
 
-  static override create(data: K4ActiveEffect.ConstructorData, options?: DocumentModificationContext): Promise<K4ActiveEffect> {
-    return super.create(data, options) as Promise<K4ActiveEffect>;
-  }
   static #isChangeModeCustom(change: EffectChangeData): boolean { return change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM; }
-  static #doesAnyChangeHave(changeData: K4Change.Source[], param: string, value?: string|number|boolean): boolean {
+  static #doesAnyChangeHave(changeData: K4Change.Source[], param: string, value?: SystemScalar): boolean {
     return changeData
       .filter((changeData) => this.#isChangeModeCustom(changeData))
       .map((changeData) => K4Change.ParseFunctionDataString(changeData.value)[param])
-      .some((paramValue: Maybe<string|number|boolean>) => {
+      .some((paramValue: Maybe<SystemScalar>) => {
         if (value === undefined) {
           return paramValue !== undefined;
         }
         return paramValue === value;
       })
   }
-  static #getChangesWith(changeData: K4Change.Source[], param: string, value?: string|number|boolean): K4Change.Source[] {
+  static #getChangesWith(changeData: K4Change.Source[], param: string, value?: SystemScalar): K4Change.Source[] {
     return changeData
       .filter((changeData) => this.#isChangeModeCustom(changeData))
       .filter((changeData) => changeData.value.includes(`${param}:${String(value ?? "")}`));
@@ -700,10 +747,10 @@ class K4ActiveEffect extends ActiveEffect {
     delete valueRecord[majorityValue];
     return Object.values(valueRecord).flat();
   }
-  static #getEffectPropFromChanges<T extends string|number|boolean>(changeData: K4Change.Source[], prop: string): Maybe<T>
-  static #getEffectPropFromChanges<T extends string|number|boolean>(changeData: K4Change.Source[], prop: string, defaultVal: T): T
-  static #getEffectPropFromChanges<T extends string|number|boolean>(changeData: K4Change.Source[], prop: string, defaultVal?: T): Maybe<T> {
-    let propVal: Maybe<string|number|boolean> = undefined;
+  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Source[], prop: string): Maybe<T>
+  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Source[], prop: string, defaultVal: T): T
+  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Source[], prop: string, defaultVal?: T): Maybe<T> {
+    let propVal: Maybe<SystemScalar> = undefined;
     this.#getChangesWith(changeData, prop).forEach((cData) => {
       const changeVal = K4Change.ParseFunctionDataString(cData.value)[prop];
       if (propVal === undefined) {
@@ -826,6 +873,7 @@ class K4ActiveEffect extends ActiveEffect {
    * @returns {K4ActiveEffect.ExtendedData} - The extracted data.
    */
   static #ExtractExtendedData(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
+
     const canToggle = this.#getEffectPropFromChanges<boolean>(changeData, "canToggle");
     const label = this.#getEffectPropFromChanges<string>(changeData, "label")
       ?? this.#resolveEffectName(changeData, origin);
@@ -879,13 +927,22 @@ class K4ActiveEffect extends ActiveEffect {
       const resetOnDefaultVal = U.isDefined(uses) ? EffectResetOn.onUse : EffectResetOn.never;
       const resetOn = this.#getEffectPropFromChanges<EffectResetOn>(
         changeData,
-        "defaultState",
+        "resetOn",
         resetOnDefaultVal
       );
+      const resetTo = this.#getEffectPropFromChanges<boolean>(
+        changeData,
+        "resetTo",
+        defaultState
+      );
+      const toggleIcon = this.#getEffectPropFromChanges<string>(
+        changeData,
+        "icon"
+      ) ?? "";
       const toggleLabel = this.#getEffectPropFromChanges<string>(
         changeData,
         "toggleLabel",
-        "%value%"
+        ""
       );
       const toggleTooltip = this.#getEffectPropFromChanges<string>(
         changeData,
@@ -898,8 +955,12 @@ class K4ActiveEffect extends ActiveEffect {
       return {
         label,
         canToggle: true,
+        isLocked: false,
+        isEnabled: defaultState,
         defaultState,
         resetOn,
+        resetTo,
+        toggleIcon,
         toggleLabel,
         toggleTooltip,
         duration,
@@ -922,12 +983,151 @@ class K4ActiveEffect extends ActiveEffect {
       }
     }
   }
+  /**
+   * Type guard to check if the effect can be toggled.
+   * @returns {boolean} - True if the effect can be toggled, false otherwise.
+   */
+   canToggle(): this is this & { canToggle: true, eData: K4ActiveEffect.ExtendedToggleData } {
+    return this.flags.kult4th.data.canToggle === true;
+  }
+  get defaultState(): boolean { return this.canToggle() ? this.eData.defaultState ?? true : true; }
+  get isLocked(): boolean { return this.canToggle() ? this.eData.isLocked ?? false : false; }
+  set isLocked(value: boolean) { this.setFlag<boolean>("data.isLocked", value);}
+  get isEnabled(): boolean { return this.canToggle() ? this.eData.isEnabled ?? true : true; }
+  get isRelevant(): boolean {
+    return this.getCustomChanges()
+      .some((change) => Boolean(change.finalValue)
+        && typeof change.finalValue === "number")
+  }
+  get resetOn(): EffectResetOn { return this.canToggle() ? this.eData.resetOn ?? EffectResetOn.never : EffectResetOn.never; }
+  get resetTo(): boolean { return this.canToggle() ? this.eData.resetTo ?? this.defaultState : this.defaultState; }
+  get toggleCategory(): "wound"|"stability"|K4ItemType {
+    if (this.isApplyingWoundModifiers) { return "wound"; }
+    if (this.isApplyingStabilityModifiers) { return "stability"; }
+    return this.enabledCustomChanges
+      .find((change) => Boolean(change.originItem))?.originItem?.type ?? K4ItemType.move;
+  }
+  get toggleIcon(): string {
+    if (!this.canToggle()) { return ""; }
+    if (!this.isOwnedByActor()) { return ""; }
+    if (this.isApplyingWoundModifiers) { return this.actor.woundsIcon; }
+    if (this.isApplyingStabilityModifiers) { return this.actor.stabilityIcon; }
+    if (this.eData.toggleIcon) { return this.eData.toggleIcon; }
+    return `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-${this.benefit}.svg`;
+  }
+  get toggleLabel(): string { return this.canToggle() ? this.eData.toggleLabel ?? "" : ""; }
+  get toggleTooltip(): string { return this.canToggle() ? this.eData.toggleTooltip ?? "" : ""; }
+  get effectDuration(): EffectDuration { return this.eData.duration; }
+  get isUnique(): boolean { return this.eData.isUnique; }
+  get uses(): Maybe<ValueMax> { return this.eData.uses; }
+  get canRefill(): Maybe<boolean> { return this.eData.canRefill; }
+  get effectSource(): K4ActiveEffect.Components.EffectSource.Ref { return this.eData.effectSource; }
+  get fromText(): string { return this.eData.fromText; }
+  get benefit(): "pos"|"neg"|"neutral" {
+    if (this.isApplyingStabilityModifiers) { return "neg"; }
+    if (this.isApplyingWoundModifiers) { return "neg"; }
+    const numPosChanges = this.getCustomChanges()
+      .filter((change) => typeof change.finalValue === "number" && change.finalValue > 0).length;
+    const numNegChanges = this.getCustomChanges()
+      .filter((change) => typeof change.finalValue === "number" && change.finalValue < 0).length;
+    if (numPosChanges && numNegChanges) { return "neutral"; }
+    if (numPosChanges) { return "pos"; }
+    if (numNegChanges) { return "neg"; }
+    return "neutral";
+  }
+  get value(): Maybe<number> {
+    if (!this.canToggle()) { return undefined; }
+    const valueChanges = this.getCustomChanges()
+      .filter((change): change is K4Change & {finalValue: number} => typeof change.finalValue === "number");
+    if (valueChanges.length === 1) {
+      return valueChanges[0].finalValue;
+    }
+    return undefined;
+  }
+  get toggleValue(): Maybe<string> {
+    if (U.isUndefined(this.value)) { return undefined; }
+    if (!U.isNumber(this.value)) { return undefined; }
+
+    return U.signNum(this.value, "", "+");
+  }
+  get toggleValueGlow(): Maybe<string> {
+    if (!this.canToggle()) { return undefined; }
+    if (U.isUndefined(this.value)) { return undefined; }
+    if (this.value > 0) { return "neon-glow-soft-blue"; }
+    if (this.value < 0) { return "neon-glow-soft-red"; }
+    return "neon-glow-soft-gold";
+  }
+  get toggleData(): Maybe<K4ActiveEffect.ToggleData> {
+    if (!this.canToggle()) { return undefined; }
+    if (!this.isOwnedByActor()) { return undefined; }
+    return {
+      isEnabled: this.isEnabled,
+      defaultState: this.defaultState,
+      resetOn: this.resetOn,
+      resetTo: this.resetTo,
+      isLocked: this.isLocked,
+      toggleIcon: this.toggleIcon,
+      toggleCategory: this.toggleCategory,
+      toggleLabel: this.toggleLabel,
+      toggleTooltip: this.toggleTooltip,
+      toggleValue: this.toggleValue ?? "",
+      toggleValueGlow: this.toggleValueGlow!,
+    };
+  }
+
+  getApplicableRollModifiers(roll: K4Roll): K4Change[] {
+    return this.getCustomChanges()
+      .filter((change) => change.isRollModifier()
+        && roll.doesFilterApply(change.filter));
+  }
+  doesEffectApply(roll: K4Roll): boolean {
+    return this.isEnabled && this.getApplicableRollModifiers(roll).length > 0;
+  }
+  getApplicablePromptOnRollModifiers(roll: K4Roll): K4Change[] {
+    return this.getApplicableRollModifiers(roll)
+      .filter((change) => change.isPromptOnRoll);
+  }
+
+  compilePromptButtons(min: number, max: number): string {
+    const buttonStrings: string[] = [];
+    for (let i = min; i <= max; i++) {
+      buttonStrings.push(String(i));
+    }
+    kLog.log("Prompt buttons compiled:", {min, max, buttonStrings});
+    return buttonStrings.join("|");
+  }
+
+  async getRollModData(roll: K4Roll): Promise<K4Roll.ModData[]|false> {
+
+    // First, for any promptOnRoll changes, prompt the user for input. Return 'false' if the user provides none, cancelling the roll.
+    for (const change of this.getApplicablePromptOnRollModifiers(roll)) {
+      kLog.log("Prompting for data:", {change, customFunctionData: change.customFunctionData});
+      const userInput = await K4Dialog.AskWithButtons<number>(
+        change.customFunctionData.title as string,
+        change.customFunctionData.inputVals as string,
+        change.customFunctionData.bodyText as Maybe<string>,
+        change.customFunctionData.subText as Maybe<string>,
+        change.customFunctionData.default as Maybe<number>
+      )
+      if (U.isDefined(userInput)) {
+        change._promptedValue = userInput;
+      } else {
+        return false;
+      }
+    }
+
+    // Now all changes should have a finalValue that resolves to a number, and a modData object can be returned for each change.
+    return this.getApplicableRollModifiers(roll).map((change) => change.modData!);
+  }
+
   static async CreateFromChangeData(
     changeData: K4Change.Source[],
     origin: K4ActiveEffect.Origin,
     target?: K4Actor<K4ActorType.pc>
   ): Promise<K4ActiveEffect[]> {
-    const effectCreationPromises: Promise<K4ActiveEffect>[] = [];
+    const effectDeletionIDs: string[] = [];
+    const effectDataSets: Array<K4ActiveEffect.ConstructorData & Record<string, unknown>> = [];
+    const effectHost = target ?? origin;
 
     // Process the effect changes, validating them and separating them as necessary into multiple effects.
     const groupedChanges = this.#ProcessEffectChanges(changeData, origin);
@@ -935,13 +1135,20 @@ class K4ActiveEffect extends ActiveEffect {
     // Iterate through each group of changes, creating an ActiveEffect for each.
     groupedChanges.forEach(([label, effectChanges]) => {
       // First we extract the extended data, which will be stored in the effect's flags
-      const extData = this.#ExtractExtendedData(effectChanges, origin);
+      const extData = this.#ExtractExtendedData(effectChanges, origin)
 
-      const effectData: K4ActiveEffect.ConstructorData & Record<string, unknown> = {
+      // Then we check whether the effect is unique: If so, and an effect with the same name already exists, we remove it before creating the new one.
+      if (extData.isUnique && !(effectHost instanceof K4Scene) && !(effectHost instanceof K4ChatMessage)) {
+        const existingEffect = effectHost.effects.find((effect) => effect.label === label);
+        if (existingEffect) {
+          effectDeletionIDs.push(existingEffect.id!);
+        }
+      }
+      effectDataSets.push({
         origin: origin.uuid,
         label,
-        transfer: !target,
-        disabled: extData.canToggle && extData.defaultState === false,
+        transfer: origin.uuid !== target?.uuid,
+        disabled: false,
         changes: effectChanges.map((change) => {
           return {
             key: change.key,
@@ -954,15 +1161,10 @@ class K4ActiveEffect extends ActiveEffect {
             data: extData
           }
         }
-      };
-      if (target) {
-        effectCreationPromises.push(target.createEmbeddedDocuments("ActiveEffect", [effectData]) as unknown as Promise<K4ActiveEffect>);
-      } else {
-        effectCreationPromises.push(origin.createEmbeddedDocuments("ActiveEffect", [effectData]) as unknown as Promise<K4ActiveEffect>);
-      }
+      });
     });
-
-    return Promise.all(effectCreationPromises);
+    await effectHost.deleteEmbeddedDocuments("ActiveEffect", effectDeletionIDs);
+    return effectHost.createEmbeddedDocuments("ActiveEffect", effectDataSets) as unknown as Promise<K4ActiveEffect[]>;
   }
 
   // #region INITIALIZATION ~
@@ -1014,31 +1216,78 @@ class K4ActiveEffect extends ActiveEffect {
     });
   }
   // #endregion
-  static onManageActiveEffect(event: ClickEvent, owner: K4Actor|K4Item) {
+  static async onManageActiveEffect(event: ClickEvent, owner: K4Actor|K4Item, action?: string) {
     event.preventDefault();
     const a = event.currentTarget;
-    if (a.dataset.action === "create") {
+    action ??= a.dataset.action;
+    if (action === "create") {
       return owner.createEmbeddedDocuments("ActiveEffect", [{
         name:   owner.name,
         icon:   owner.img,
         origin: owner.uuid
       }]);
     }
-    const selector = a.closest("tr");
-    if (selector === null) { return null; }
-    const effect = selector.dataset.effectId
-      ? owner.effects.get(selector.dataset.effectId)
-      : null;
+    const effect = owner.effects.get(a.dataset.target ?? "");
     if (!effect) { return null; }
-    switch ( a.dataset.action ) {
-      case "edit":
-        return effect.sheet?.render(true);
-      case "delete":
-        return effect.delete();
-      case "toggle":
-        return effect.update({disabled: !effect.disabled});
+    switch ( action ) {
+      case "edit": return effect.sheet?.render(true);
+      case "delete": return effect.delete();
+      case "toggle": return effect.toggleEnabled();
+      case "lock": return effect.toggleLock();
+      case "reset": return effect.reset();
+      case "use": return effect.use();
       default: return null;
     }
+  }
+
+  async toggleEnabled(value?: boolean, isForcing = false) {
+    if (!this.canToggle()) { return; }
+    if (this.isLocked && !isForcing) { return; }
+    const promises: Promise<unknown>[] = [
+      this.setFlag<boolean>("data.isEnabled", value ?? !this.isEnabled)
+    ];
+    if (this.isLocked && isForcing) {
+      promises.push(this.toggleLock(false));
+    }
+    return Promise.all(promises);
+  }
+  async toggleLock(value?: boolean) {
+    if (!this.canToggle()) { return; }
+    return this.setFlag<boolean>("data.isLocked", value ?? !this.isLocked);
+  }
+  async reset(resetTo?: boolean, isForcing = false) {
+    if (!this.canToggle()) { return; }
+    if (this.isLocked && !isForcing) { return; }
+    resetTo ??= this.resetTo;
+    const promises: Promise<unknown>[] = [];
+    if (this.isLocked && isForcing) {
+      promises.push(this.toggleLock(false));
+    }
+    if (resetTo !== this.isEnabled) {
+      promises.push(this.toggleEnabled(resetTo, true));
+    }
+    return Promise.all(promises);
+  }
+  async use() {
+    if (!this.canToggle()) { return; }
+    if (U.isUndefined(this.uses)) { return; }
+    if (this.uses.value >= this.uses.max) { return; }
+    if ((this.uses.value + 1) >= this.uses.max) {
+      if (this.canRefill) {
+        return Promise.all([
+          this.toggleEnabled(false, true),
+          this.toggleLock(true)
+        ])
+      }
+      return this.delete();
+    }
+    const promises: Promise<unknown>[] = [
+      this.setFlag<number>("data.uses.value", this.uses.value + 1)
+    ];
+    if (this.resetOn === EffectResetOn.onUse) {
+      promises.push(this.reset(this.resetTo, true));
+    }
+    return Promise.all(promises);
   }
 
   // #region GETTERS & SETTERS ~
@@ -1053,9 +1302,6 @@ class K4ActiveEffect extends ActiveEffect {
   }
   hasItemOrigin(): this is {origin: string, owner: K4Actor|K4Item, originItem: K4Item} {
     return this.isOwned() && this.origin.includes("Item");
-  }
-  hasToggleableChanges(): boolean {
-    return this.toggleableChanges.length > 0;
   }
   get isApplyingWoundModifiers(): boolean {
     return this.getCustomChangeData().some((change) => change.key === "ApplyWounds");
@@ -1075,6 +1321,14 @@ class K4ActiveEffect extends ActiveEffect {
     const [_, actorId] = this.origin.split(".");
     return game.actors.get(actorId);
   }
+  get eData(): K4ActiveEffect.ExtendedData|K4ActiveEffect.ExtendedToggleData {
+    const eData = this.getFlag<K4ActiveEffect.ExtendedData>("data")!;
+    if (this.canToggle()) {
+      return eData as K4ActiveEffect.ExtendedToggleData;
+    }
+    return eData as K4ActiveEffect.ExtendedData;
+  }
+
   getCustomChangeData(): EffectChangeData[] {
     return this.changes.filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
   }
@@ -1087,36 +1341,57 @@ class K4ActiveEffect extends ActiveEffect {
           mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
           value: `
             filter:${woundData.filter},
+            canToggle:false,
             label:${woundData.label},
             effect:Add,
             value:${woundData.value},
             duration:ongoing,
             icon:${this.actor.woundsIcon},
             fromText:#>text-negmod>Wounds<#,
-            tooltip:<h2>${woundData.tooltipLabel}<h2><p>${woundData.tooltipDesc}</p>
+            tooltip:${woundData.tooltipDesc}
           `,
           priority: undefined
         }, this);
       })
     } else if (this.isApplyingStabilityModifiers) {
       if (!this.isOwnedByActor()) { return []; }
-      return this.actor.stabilityModData.map((stabilityData) => {
-        return new K4Change({
-          key: "ModifyRoll",
-          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: `
-            filter:${stabilityData.filter},
-            label:${stabilityData.label},
-            effect:Add,
-            value:${stabilityData.value},
-            duration:ongoing,
-            icon:${this.actor.stabilityIcon},
-            fromText:#>text-negmod>Stability<#,
-            tooltip:<h2>${stabilityData.tooltipLabel}<h2><p>${stabilityData.tooltipDesc}</p>
-          `,
-          priority: undefined
-        }, this);
-      })
+      return [
+        ...this.actor.stabilityModData.map((stabilityData) => {
+          return new K4Change({
+            key: "ModifyRoll",
+            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+            value: `
+              filter:${stabilityData.filter},
+              canToggle:true,
+              label:${stabilityData.label},
+              effect:Add,
+              value:${stabilityData.value},
+              duration:ongoing,
+              icon:${this.actor.stabilityIcon},
+              fromText:#>text-negmod>Stability<#,
+              tooltip:${stabilityData.tooltipDesc}
+            `,
+            priority: undefined
+          }, this);
+        }),
+        ...this.actor.stabilityConditionModData.map((conditionData) => {
+            return new K4Change({
+              key: "ModifyRoll",
+              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+              value: `
+                filter:${conditionData.filter},
+                label:${conditionData.label},
+                effect:Add,
+                value:${conditionData.value},
+                duration:ongoing,
+                icon:${this.actor.stabilityIcon},
+                fromText:#>text-negmod>${conditionData.label}<#,
+                tooltip:${conditionData.tooltipDesc}
+              `,
+              priority: undefined
+            }, this);
+          }),
+      ];
     }
     return this.changes
       .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM)
@@ -1143,10 +1418,7 @@ class K4ActiveEffect extends ActiveEffect {
   get systemChanges() {
     return this.enabledCustomChanges.filter((change) => change.isSystemModifier);
   }
-  get toggleableChanges() {
-    return this.getCustomChanges().filter((change) => change.canToggle);
-  }
-  // // #endregion
+  // #endregion
 
   // #region CONSTRUCTOR
   constructor(data: K4ActiveEffect.ConstructorData) {
@@ -1170,17 +1442,93 @@ class K4ActiveEffect extends ActiveEffect {
   override async setFlag<T>(key: string, val: T): Promise<this>
   override async setFlag<T>(...args: [string, string, T] | [string, T]): Promise<this> {
     const [namespace, key, val] = args.length === 2 ? ["kult4th", args[0], args[1]] : args;
-    await super.setFlag(namespace, key, val);
+    if (!this.owner) {
+      throw new Error(`Cannot get flag '${key}' from ActiveEffect with no owner.`);
+    }
+    await this.owner.updateEmbeddedDocuments("ActiveEffect", [{
+      _id: this.id,
+      [`flags.${namespace}.${key}`]: val
+    }]);
     return this;
+  }
+  /*
+  tl.fromTo(stripToolTip$, {
+    opacity: 0,
+    scale:   1.5
+  }, {
+    opacity:  1,
+    scale:    1,
+    y:        "-=10",
+    duration: 0.75 * FULL_DURATION,
+    ease:     "power2.in"
+  }, 0);
+
+
+  function() {
+      }
+
+*/
+
+  static ApplyTooltipListener(container$: JQuery) {
+    container$.css({position: "relative", pointerEvents: "auto"});
+    const tooltip$ = container$.find(".tooltip");
+    const tooltipTimeline = U.gsap.timeline({reversed: true})
+      .fromTo(tooltip$, {
+        opacity: 0,
+        scale:   1.5
+      }, {
+        opacity:  1,
+        scale:    1,
+        y:        "-=10",
+        duration: 0.375,
+        ease:     "power2.in"
+      }, 0);
+    container$
+      .on({
+        mouseenter: () => {
+          tooltipTimeline.timeScale(1);
+          tooltipTimeline.reversed(false);
+        },
+        mouseleave: () => {
+          tooltipTimeline.timeScale(2);
+          tooltipTimeline.reversed(true);
+        }
+      });
   }
 
   applyToggleListeners(html: JQuery) {
-    html.find(`[data-id="${this.id}"]`).on("click", async (event: ClickEvent) => {
-      event.preventDefault();
-      if (!this.parent) { return; }
-      K4ActiveEffect.onManageActiveEffect(event, this.parent);
-    });
-  }
+    if (!this.canToggle()) { return; }
+    const button$ = html.find(`[data-target="${this.id}"]`);
+    button$
+      .on({
+        click: async (event: ClickEvent) => {
+          event.preventDefault();
+          if (!this.owner) { return; }
+          K4ActiveEffect.onManageActiveEffect(event, this.owner);
+        },
+        dblclick: async (event: ClickEvent) => {
+          event.preventDefault();
+          if (!this.owner) { return; }
+          if (this.isLocked) {
+            const {value, max} = this.uses ?? {};
+            if (U.isDefined(value) && value === max) { return; }
+            K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
+            return;
+          }
+          await K4ActiveEffect.onManageActiveEffect(event, this.owner, "toggle");
+          K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
+        },
+        contextmenu: async (event: ClickEvent) => {
+          event.preventDefault();
+          if (!this.owner) { return; }
+          await K4ActiveEffect.onManageActiveEffect(event, this.owner, "reset");
+        }
+      })
+      .each((_i, elem) => {
+        const tooltipContainer$ = $(elem).closest(".toggle-modifier");
+        K4ActiveEffect.ApplyTooltipListener(tooltipContainer$);
+      })
+    }
   // #ENDREGION
 }
 
@@ -1188,10 +1536,9 @@ class K4ActiveEffect extends ActiveEffect {
 interface K4ActiveEffect extends ActiveEffect {
   label: string,
   icon: string,
-  origin: string
-  disabled: boolean
-  changes: EffectChangeData[]
-  updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>
+  origin: string,
+  changes: EffectChangeData[],
+  updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>,
   // data: K4ActiveEffect.Data & ActiveEffectData;
   flags: {
     kult4th: {

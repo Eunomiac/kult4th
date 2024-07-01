@@ -1,0 +1,16 @@
+<div class="toggle-modifier {{toggleCategory}}-modifier {{#unless toggleValue}}no-value{{/unless}}">
+  <button class="toggle-modifier-button {{benefit}}-mod" data-target="{{id}}" data-action="toggle" data-state="{{#if isEnabled}}enabled{{else}}disabled{{/if}}">
+    <span class="toggle-modifier-label">
+      <span class="toggle-modifier-name">{{toggleLabel}}</span>
+      {{#if toggleValue}}
+      <span class="toggle-modifier-value {{toggleValueGlow}}">{{toggleValue}}</span>
+      {{/if}}
+    </span>
+    <div class="icon-container">
+      <div class="icon-mask" style="mask:url({{toggleIcon}}) no-repeat center;-webkit-mask:url({{toggleIcon}}) no-repeat center;"></div>
+    </div>
+  </button>
+  {{#if toggleTooltip}}
+  <span class="tooltip toggle-modifier-tooltip">{{{formatForKult toggleTooltip}}}</span>
+  {{/if}}
+</div>

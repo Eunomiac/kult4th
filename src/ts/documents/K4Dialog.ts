@@ -23,11 +23,11 @@ namespace K4Dialog {
 
 export default class K4Dialog extends Dialog {
 
-  static async #ResolveTemplateContent(path: string, context: Record<string, string|number|boolean>) {
+  static async #ResolveTemplateContent(path: string, context: Record<string, SystemScalar>) {
     const template = await getTemplate(path);
     return template(context);
   }
-  static async #RenderDialogWindow<T extends string|number|boolean>(dialogData: K4Dialog.Data, resolveCallback: (value: T | PromiseLike<T>) => void, defaultVal?: T) {
+  static async #RenderDialogWindow<T extends SystemScalar>(dialogData: K4Dialog.Data, resolveCallback: (value: T | PromiseLike<T>) => void, defaultVal?: T) {
     if (U.isDefined(defaultVal)) {
       dialogData.close ??= () => resolveCallback(defaultVal);
     }
@@ -65,7 +65,8 @@ export default class K4Dialog extends Dialog {
     });
   }
 
-  static async AskWithButtons<T extends string|number|boolean>(title: string, inputVals: string, bodyText?: string, subText?: string, defaultVal?: T) {
+  static async AskWithButtons<T extends SystemScalar>(title: string, inputVals: string, bodyText?: string, subText?: string, defaultVal?: T): Promise<Maybe<T>> {
+    kLog.log("[AskWithButtons]", { title, inputVals, bodyText, subText, defaultVal }, 3);
     const buttonVals = inputVals
       .split("|")
       .map((val) => U.castString(val) as T);
@@ -73,7 +74,7 @@ export default class K4Dialog extends Dialog {
       throw new Error(`Invalid inputVals string for AskWithButtons: ${JSON.stringify(inputVals)}`);
     }
 
-    return new Promise<T>(async (resolve) => {
+    return new Promise<Maybe<T>>(async (resolve) => {
 
       const buttonEntries = buttonVals.map((val) => {
         return [

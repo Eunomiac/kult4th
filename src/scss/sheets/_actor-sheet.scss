@@ -938,17 +938,21 @@ img {
 
             .modifiers-report,
             .toggle-modifier-strip {
+              min-height: 21px;
               display: flex;
               flex-direction: row;
               flex-wrap: wrap;
               justify-content: stretch;
               width: 100%;
 
-              span {
+              &.modifiers-report span {
                 flex-grow: 1;
-                text-align: center;
                 font-size: $rem-16;
                 line-height: $modifiers-height;
+              }
+
+              span {
+                text-align: center;
 
                 &.no-flex {
                   color: transparent;
@@ -976,16 +980,23 @@ img {
             .toggle-modifier-strip {
               justify-content: flex-end;
               gap: 10px;
-              padding-right: 10px;
+              padding: 0px 10px;
               background: transparent;
+              min-height: 20px;
 
               .toggle-modifier {
                 height: 20px;
                 max-width: 200px;
+                min-width: 40px;
+                position: relative;
                 transform-origin: center center;
                 // min-width: 80px;
                 flex-shrink: 0;
                 display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border-radius: 5px;
 
                 &.no-value {
                   height: 20px;
@@ -1010,13 +1021,32 @@ img {
                   }
                 }
 
+                .tooltip {
+                  width: 200px;
+                  transform: translate(-50%, -50%);
+                  position: absolute;
+                  left: -50%;
+                  top: -50%;
+                }
+
                 &.move-modifier {
                   --K4-color-primary: var(--K4-WHITE);
                   --K4-value-color: var(--K4-bWHITE);
                 }
                 &.stability-modifier {
-                  --K4-color-primary: var(--K4-gRED);
-                  --K4-value-color: var(--K4-bWHITE);
+                  margin-right: auto;
+
+                  .toggle-modifier-button {
+                    background: var(--K4-dRED);
+                  }
+
+                  .tooltip {
+                    width: 200px;
+                    transform: translate(0%, -50%);
+                    position: absolute;
+                    left: 50%;
+                    top: -80%;
+                  }
                 }
 
                 &.wound-modifier {
@@ -1033,25 +1063,32 @@ img {
                   &.neg-mod {
                     --K4-color-primary: var(--K4-gRED);
                   }
+                  &.neutral-mod {
+                    --K4-color-primary: var(--K4-bGOLD);
+                  }
                   background: transparent;
                   position: relative;
                   border-radius: 5px;
                   top: 0;
                   left: 0;
                   height: 100%;
+                  min-width: 40px;
                   flex-grow: 0;
                   flex-shrink: 0;
                   display: flex;
                   flex-direction: row;
                   flex-wrap: nowrap;
-                  padding: 0;
-                  padding-left: $modifiers-height + 5px;
-                  padding-right: 5px;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 0 5px;
+                  // padding-left: $modifiers-height + 5px;
+                  // padding-right: 5px;
                   box-shadow: 0 0 var(--shadow-size) var(--K4-color-primary);
 
                   &[data-state="disabled"] {
                     --K4-color-primary: var(--K4-dGREY);
                     --shadow-size: 3px;
+                    filter: saturate(0);
                     // scale: 0.8;
                     .toggle-modifier-label {
                       .toggle-modifier-name {
@@ -1083,10 +1120,11 @@ img {
                   .icon-container {
                     --K4-icon-size: #{$modifiers-height};
                     background: transparent;
-                    position: absolute;
-                    transform: translate(0%, -50%);
-                    top: 50%;
-                    left: 3px;
+                    order: -1;
+                    // position: absolute;
+                    // transform: translate(0%, -50%);
+                    // top: 50%;
+                    // left: 3px;
                     .icon-mask {
                       height: 100%;
                       width: 100%;

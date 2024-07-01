@@ -44,7 +44,11 @@
       </section>
       <section class="subsection modifiers">
         {{{actor.system.modifiersReport}}}
-        {{{actor.system.toggleControlStrip}}}
+        <div class="toggle-modifier-strip">
+        {{#each actor.system.toggleableEffects}}
+        {{> "systems/kult4th/templates/components/modifier-toggle.hbs"}}
+        {{/each}}
+        </div>
       </section>
       <section class="subsection attributes">
         <label class="k4-title section-title">{{case "upper" (localize "kult4th.trait.attributes")}}</label>

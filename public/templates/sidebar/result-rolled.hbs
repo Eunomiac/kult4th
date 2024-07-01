@@ -70,9 +70,13 @@
     </div>
     <div class="roll-modifiers">
       {{#each modifiers}}
-      <div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}}">
+      <div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}} {{cssClasses}}">
         <span class="roll-mod-val">{{signNum value}}</span>
-        <span class="roll-mod-desc">({{name}})</span>
+        <span class="roll-mod-desc">{{label}}</span>
+        <div class="tooltip roll-mod-tooltip">
+          <h2>{{tooltipLabel}}</h2>
+          <p>{{{formatForKult tooltipDesc}}}</p>
+        </div>
       </div>
       {{/each}}
     </div>

@@ -41,38 +41,31 @@ declare global {
   // Type definitions for Clamp.js
 }
 
-
 declare global {
   // #region MISCELLANEOUS TYPE ALIASES (nonfunctional; for clarity) ~
 
-  // Represents a list of a certain type
+  // Represents a Record of typed values and ambiguous keys
   type List<V = unknown, K extends Key = Key> = Record<K, V>
 
-  // Represents either an item or a list of items
-  type ItemOrList<V = unknown, K extends Key = Key> = V | List<V, K>;
-
-  // Represents an index of a certain type, where the keys do not matter
+  // Represents either an array or a list of values (i.e. where the keys do not matter)
   type Index<V = unknown> = List<V> | V[];
 
-  // Represents either an item or and index of items
-  type ItemOrIndex<V = unknown> = V | Index<V>;
-  // Represents either an item or an array of items
+  // Represents either a value or an index of values
+  type ValueOrIndex<V = unknown> = V | Index<V>;
+  // Represents either a value or an array of values
   type ItemOrArray<V = unknown> = V | V[];
-
+  // Represents either a value or a list of values
+  type ValueOrList<V = unknown, K extends Key = Key> = V | List<V, K>;
   // Represents a value or a Promise resolving to a value
   type ValueOrPromise<V = unknown> = V | Promise<V>;
-
-  // Represents a string, false, or undefined
-  type MaybeStringOrFalse = string | false | undefined;
-
   // Represents a function with an unknown number of parameters, returning a value of type R
-  type Func<R = unknown> = (...args: unknown[]) => R;
+  type Func<R = unknown, T extends unknown[] = unknown[]> = (...args: T) => R; // a function with a known return type and a tuple of parameter types
 
   // Represents an async function with an unknown number of parameters, returning a Promise resolving to a value of type R
-  type AsyncFunc<R = unknown> = (...args: unknown[]) => Promise<R>;
+  type AsyncFunc<R = unknown, T extends unknown[] = unknown[]> = (...args: T) => Promise<R>;
 
   // Represents any class constructor with an unknown number of parameters
-  type AnyClass<T = unknown> = new (...args: unknown[]) => T;
+  type AnyClass<T = unknown> = abstract new (...args: unknown[]) => T;
 
   // Represents a key which can be a string, number, or symbol
   type Key = string | number | symbol;
@@ -82,6 +75,9 @@ declare global {
 
   // Represents a string-like value
   type StringLike = string | number | boolean | null | undefined;
+
+  // Represents one of three simple scalar types of values found at the end-point of system schemas (string, number, boolean)
+  type SystemScalar = string | number | boolean;
 
   // Represents an object with number-strings as keys
   type StringArray<T> = Record<NumString, T>;
@@ -113,7 +109,7 @@ declare global {
   type KeyOf<T> = keyof T;
 
   // Represents a value of a certain type
-  type ValOf<T> = T extends unknown[] | readonly unknown[] ? T[number] : T[keyof T];
+  type ValOf<T> = T extends Record<string | number | symbol, infer V> | ReadonlyArray<infer V> ? V : never;
 
   /**
    * Represents a function that takes a key of type `Key` and an optional value of type `T`, and returns a value of type `R`.
@@ -155,42 +151,30 @@ declare global {
   // #endregion
 
   // #region BRANDED TYPES ~
-  // number === number type guard
-  // type number = number & { __intBrand: never };
-
-  // number === Positive integer type guard
-  // type PosInteger = number & { __posIntBrand: never };
+  declare const brand: unique symbol;
+  type Brand<T, BrandName extends string> = T & { [brand]: BrandName };
 
   // number === Float type guard
-  type Float = number & { __floatBrand: never };
-
+  type Float = Brand<number, "Float">;
   // number === Positive float type guard
-  type PosFloat = number & { __posFloatBrand: never };
-
+  type PosFloat = Brand<number & Float, "PosFloat">;
   // string === HTML code
-  type HTMLCode = string & {__htmlStringBrand: never};
-
+  type HTMLString = Brand<string, "HTMLString">; // e.g. "<p>Hello World</p>"
   // string === RGB color
   type RGBColor = `rgb(${number}${FlexComma}${number}${FlexComma}${number})` |
     `rgba(${number}${FlexComma}${number}${FlexComma}${number}${FlexComma}${number})`;
-
   // string === Hex color
-  type HexColor = string & { __hexColorBrand: never };
-
+  type HexColor = Brand<string, "HexColor">; // e.g. "#FF0000"
   // string === Document id
-  type IDString = string & {__idStringBrand: never};
-
+  type IDString = Brand<string, "IDString">; // e.g. "5e4e7b1c322f2e1c"
   // string === UUID
-  type UUIDString = string & {__uuidStringBrand: never};
-
+  type UUIDString = Brand<string, "UUIDString">; // e.g. "Actor.5e4e7b1c322f2e1c"
   // string === Dotkey
-  type DotKey = string & {__dotKeyBrand: never};
-
+  type DotKey = Brand<string, "DotKey">; // e.g. "system.attributes.hp.value"
   // string === Dotkey appropriate for update() data object
-  type TargetKey = string & DotKey & {__targetKeyBrand: never};
-
+  type TargetKey = Brand<string & DotKey, "TargetKey">;
   // string === Dotkey pointing to a flag instead of the document schema
-  type TargetFlagKey = string & DotKey & {__targetFlagKeyBrand: never};
+  type TargetFlagKey = Brand<string & DotKey, "TargetFlagKey">;
   // #endregion
 
   // Represents an object describing dimensions of an HTML element, of form {x: number, y: number, width: number, height: number}
@@ -352,8 +336,8 @@ declare global {
 
   // #region JQuery ~
   // Represents a jQuery text term
-  type jQueryTextTerm = string | number | boolean | (
-    (this: Element, index: number, text: string) => string | number | boolean
+  type jQueryTextTerm = SystemScalar | (
+    (this: Element, index: number, text: string) => SystemScalar
   );
 
   // Simplified JQuery Events
@@ -365,7 +349,7 @@ declare global {
   type BlurEvent = JQuery.BlurEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type DropEvent = JQuery.DropEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type OnSubmitEvent = Event & ClickEvent & {
-    result: Promise<Record<string, string | number | boolean>>
+    result: Promise<Record<string, SystemScalar>>
   }
   type ChangeEvent = JQuery.ChangeEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type SelectChangeEvent = JQuery.ChangeEvent<HTMLSelectElement, undefined, HTMLSelectElement, HTMLSelectElement>;

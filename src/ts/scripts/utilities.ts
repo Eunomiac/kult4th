@@ -147,7 +147,8 @@ const GMID = (): string | false => game?.user?.find((user) => user.isGM)?.id ?? 
 // #endregion â–„â–„â–„â–„â–„ GETTERS â–„â–„â–„â–„â–„
 
 // #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
-const isNumString = <T>(ref: T): ref is T & NumString => typeof ref === "string" && !isNaN(parseFloat(ref)) && isFinite(parseFloat(ref));
+const isNumString = <T>(ref: T): ref is T & NumString =>
+  typeof ref === "string" && /^-?\d*\.?\d+$/.test(ref);
 const isBooleanString = <T>(ref: T): ref is T & BoolString => typeof ref === "string"
   && (ref === "true" || ref === "false");
 
@@ -163,7 +164,7 @@ const isList = <T>(ref: T): ref is T & List => ref === Object(ref) && !isArray(r
 const isIndex = <T>(ref: T): ref is T & Index<ValOf<T>> => isList(ref) || isArray(ref);
 const isIterable = <T>(ref: T): ref is T & Iterable<unknown> => typeof ref === "object" && ref !== null && Symbol.iterator in ref;
 
-const isHTMLCode = <T>(ref: T): ref is T & HTMLCode => typeof ref === "string" && /^<.*>$/u.test(ref);
+const isHTMLString = <T>(ref: T): ref is T & HTMLString => typeof ref === "string" && /^<.*>$/u.test(ref);
 const isHexColor = <T>(ref: T): ref is T & HexColor => typeof ref === "string" && /^#(([0-9a-fA-F]{2}){3,4}|[0-9a-fA-F]{3,4})$/.test(ref);
 const isRGBColor = <T>(ref: T): ref is T & RGBColor => typeof ref === "string" && /^rgba?\((\d{1,3},\s*){1,2}?\d{1,3},\s*\d{1,3}(\.\d+)?\)$/.test(ref);
 
@@ -341,7 +342,7 @@ const pBool = (
   return true;
 };
 
-const castString = (str: string): string|number|boolean => {
+const castString = (str: string): SystemScalar => {
   if (isNumString(str)) {
     const numVal = pFloat(str);
     if (isInt(numVal)) {
@@ -464,6 +465,10 @@ const pad = (text: unknown, minLength: number, delim = " "): string => {
   }
   return str;
 };
+/**
+ * Given a string, returns the string with exterior whitespace trimmed and interior whitespace collapsed to a single space.
+ */
+const trimInner = (text: string): string => text.replace(/\s+/gu, " ").trim();
 const toKey = (text: string): string => (text ?? "").toLowerCase().replace(/ /g, "-").replace(/default/, "DEFAULT");
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
 const signNum = (num: number, delim = "", zeroSign = "+") => {
@@ -1692,7 +1697,7 @@ const drawCirclePath = (radius: number, origin: Point) => {
 
 // #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Colors]â–‘â–‘â–‘â–‘ Color Manipulation â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
 const getColorVals = (
-  red?: HexColor | RGBColor | ItemOrList<number>,
+  red?: HexColor | RGBColor | ValueOrList<number>,
   green?: number,
   blue?: number,
   alpha?: number
@@ -2154,7 +2159,7 @@ export default {
 
   // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
   isNumber, isNumString, isBooleanString, isSimpleObj, isList, isArray, isFunc, isInt, isFloat, isPosInt, isIterable,
-  isHTMLCode, isRGBColor, isHexColor,
+  isHTMLString, isRGBColor, isHexColor,
   isUndefined, isDefined, isEmpty, hasItems, isInstance: isInstanceOf,
   areEqual, areFuzzyEqual,
   castString, pFloat, pInt, pBool, radToDeg, degToRad,
@@ -2174,7 +2179,7 @@ export default {
   // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ Case Conversion â–‘â–‘â–‘â–‘â–‘â–‘â–‘
   uCase, lCase, sCase, tCase,
   // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ Formatting â–‘â–‘â–‘â–‘â–‘â–‘â–‘
-  /* hyphenate, */ unhyphenate, pluralize, oxfordize, ellipsize, pad,
+  /* hyphenate, */ unhyphenate, pluralize, oxfordize, ellipsize, pad, trimInner,
   toKey,
   parseArticles,
   signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,

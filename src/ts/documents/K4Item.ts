@@ -120,7 +120,7 @@ declare global {
   namespace K4Item {
     export namespace Types {
       export type Parent = K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear;
-      export type Rollable = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
+      export type Rollable = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage;
       export type Static = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
       export type Passive = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | K4ItemType.relation | K4ItemType.weapon | K4ItemType.gear;
       export type Active = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.gear;
@@ -761,19 +761,11 @@ class K4Item extends Item {
       this.updateHold(hold!);
     }
     if ((effects ?? []).length > 0) {
-      // const effectData: Array<ActiveEffectDataConstructorData & Record<string, unknown>> = [{
-      //   changes: effects!,
-      //   disabled: false,
-      //   icon: this.img,
-      //   label: `[ROLL] ${this.name}`,
-      //   origin: this.uuid,
-      //   transfer: true
-      // }];
-      //   kLog.display(`#${this.id} [K4Item.applyResult] [[${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}]] Creating Roll Result ActiveEffect`, {
-      //     ITEM: this,
-      //     effectData: foundry.utils.deepClone(effectData)
-      //   });
-      await K4ActiveEffect.CreateFromChangeData(effects!, this as K4Item<K4ActiveEffect.OriginTypes>, this.parent as K4Actor<K4ActorType.pc>);
+      await K4ActiveEffect.CreateFromChangeData(
+        effects!,
+        this as K4Item<K4ActiveEffect.OriginTypes>,
+        this.parent as K4Actor<K4ActorType.pc>
+      );
     }
   }
 
@@ -787,9 +779,9 @@ class K4Item extends Item {
     if (this.is(K4ItemType.move)) {
       const roll = new K4Roll({source: this as K4Item.Active}, this.parent);
       await roll._attribute;
-      roll.evaluate();
-      kLog.display("Evaluated Roll, Displaying to Chat.");
-      const message = await roll.displayToChat();
+      kLog.display("Evaluating Roll to Chat.");
+      const message = await roll.evaluateToChat();
+      if (message === false) { return; }
       kLog.display("Awaiting Animations Promise...");
       await message.animationsPromise;
       kLog.display("Animation Complete!");

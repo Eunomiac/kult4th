@@ -960,6 +960,10 @@
   padding: 4px;
   border-radius: 20px;
 }
+#tinymce .tooltip:not(.button-tooltip) .text-doclink,
+#tinymce .mce-content-body .tooltip:not(.button-tooltip) .text-doclink {
+  pointer-events: none !important;
+}
 #tinymce div.hover-strip,
 #tinymce .mce-content-body div.hover-strip {
   --K4-strip-height: 30px;
@@ -973,6 +977,12 @@
   transform: scale(var(--K4-strip-scale));
   padding: var(--K4-strip-padding-vert) 0;
   pointer-events: auto !important;
+}
+#tinymce div.hover-strip.strip-disabled, #tinymce div.hover-strip.strip-disabled *,
+#tinymce .mce-content-body div.hover-strip.strip-disabled,
+#tinymce .mce-content-body div.hover-strip.strip-disabled * {
+  filter: saturate(0);
+  font-style: italic !important;
 }
 #tinymce div.hover-strip .strip-bg,
 #tinymce div.hover-strip .button-strip,
@@ -1111,9 +1121,9 @@
 #tinymce div.hover-strip.wound-strip.condition-strip.stability-strip, #tinymce div.hover-strip.condition-strip.condition-strip.stability-strip,
 #tinymce .mce-content-body div.hover-strip.wound-strip.condition-strip.stability-strip,
 #tinymce .mce-content-body div.hover-strip.condition-strip.condition-strip.stability-strip {
-  --K4-strip-main-color-fg: var(--K4-BLUE);
-  --K4-strip-main-color-bg: var(--K4-bBLUE);
-  --K4-strip-icon-color-fg: var(--K4-BLUE);
+  --K4-strip-main-color-fg: var(--K4-bBLUE);
+  --K4-strip-main-color-bg: var(--K4-gBLUE);
+  --K4-strip-icon-color-fg: var(--K4-bBLUE);
   --K4-strip-button-color-fg: var(--K4-dBLACK);
   --K4-strip-button-color-bg: var(--K4-bBLUE);
   --K4-strip-button-hover-color-fg: var(--K4-dBLACK);

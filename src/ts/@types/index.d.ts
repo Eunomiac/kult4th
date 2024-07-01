@@ -68,7 +68,7 @@ declare global {
     debug: {
       logging: boolean,
       hooks: boolean,
-      customFunctionParams: Record<string, Array<string|number|boolean>>
+      customFunctionParams: Record<string, SystemScalar[]>
     },
     TinyMCE: TinyMCEConfig,
     K4: typeof K4Config,

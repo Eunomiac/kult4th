@@ -438,6 +438,10 @@
 
     padding: 4px;
     border-radius: 20px;
+
+    .text-doclink {
+      pointer-events: none !important;
+    }
   }
 
 	div.hover-strip {
@@ -445,6 +449,11 @@
 		--K4-strip-padding-vert: 5px;
     --K4-strip-inner-height: calc(var(--K4-strip-height) - 2 * var(--K4-strip-padding-vert));
 		--K4-strip-scale: 1;
+
+    &.strip-disabled, &.strip-disabled * {
+      filter: saturate(0);
+      font-style: italic !important;
+    }
 
 		position: relative;
 		height: var(--K4-strip-height);
@@ -590,9 +599,9 @@
         --K4-strip-button-hover-color-bg: var(--K4-gGOLD);
 
         &.stability-strip { // Stability Strip is Colored BLUE not GOLD
-          --K4-strip-main-color-fg: var(--K4-BLUE);
-          --K4-strip-main-color-bg: var(--K4-bBLUE);
-          --K4-strip-icon-color-fg: var(--K4-BLUE);
+          --K4-strip-main-color-fg: var(--K4-bBLUE);
+          --K4-strip-main-color-bg: var(--K4-gBLUE);
+          --K4-strip-icon-color-fg: var(--K4-bBLUE);
           --K4-strip-button-color-fg: var(--K4-dBLACK);
           --K4-strip-button-color-bg: var(--K4-bBLUE);
           --K4-strip-button-hover-color-fg: var(--K4-dBLACK);

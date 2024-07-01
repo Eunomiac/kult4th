@@ -121,7 +121,7 @@
     {
       "label": "[MULTI] Run Vite Dev Server",
       "type": "shell",
-      "command": "npx vite",
+      "command": "$env:NODE_OPTIONS='--max-old-space-size=8192'; npx vite",
       "group": "build",
       "presentation": {
         "echo": false,

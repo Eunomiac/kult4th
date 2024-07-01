@@ -1,6 +1,5 @@
 // #region IMPORTS ~
 import C from "../scripts/constants.js";
-import U from "../scripts/utilities.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
@@ -76,13 +75,13 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyMove: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-keyword>Extortionist<##>text-sourceref>)<#"}
   ],
   "Elite Sport (Athletics)": [
-    {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:false,canToggle:true,icon:systems/kult4th/assets/icons/advantage/elite-sport-(athletics).svg,shortLabel:Run/Catch/Throw,fromText:#>text-keyword>Elite Sport (Athletics)<#,tooltip:Applies to all rolls relevant to running, throwing, or catching objects. #>text-sourceref>(from <##>text-keyword>Elite Sport (Athletics)<##>text-sourceref>)<#"}
+    {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:false,canToggle:true,icon:systems/kult4th/assets/icons/advantage/elite-sport-(athletics).svg,label:Run/Catch/Throw,fromText:#>text-keyword>Elite Sport (Athletics)<#,tooltip:Applies to all rolls relevant to running, throwing, or catching objects. #>text-sourceref>(from <##>text-keyword>Elite Sport (Athletics)<##>text-sourceref>)<#"}
   ],
   "Elite Sport (Fencing)": [
     {CreateAttack: "filter:sword,name:Riposte,range:arm,harm:3,fromText:#>text-keyword>Elite Sport (Fencing)<#,special:You can make this attack immediately after parrying."}
   ],
   "Elite Sport (Contact)": [
-    {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:false,canToggle:true,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel:in Close Combat,fromText:#>text-keyword>Elite Sport (Contact)<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls against close combat attacks. #>text-sourceref>(from <##>text-keyword>Elite Sport (Contact)<##>text-sourceref>)<#"}
+    {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:false,canToggle:true,icon:systems/kult4th/assets/icons/move/endure-injury.svg,label:in Close Combat,fromText:#>text-keyword>Elite Sport (Contact)<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls against close combat attacks. #>text-sourceref>(from <##>text-keyword>Elite Sport (Contact)<##>text-sourceref>)<#"}
   ],
   "Endure Injury": [
     {ModifyRoll: "filter:Endure Injury,effect:Add,value:actor.system.armor,inStatusBar:false"},
@@ -108,7 +107,7 @@ const CUSTOMFUNCEXAMPLES = {
     {ModifyProperty: "filter:actor,effect:Downgrade,target:system.stability.value,value:6"}
   ],
   "Hardened": [
-    {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,shortLabel: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"}
+    {ModifyRoll: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/move/endure-injury.svg,label: ,fromText:#>text-keyword>Hardened<#,tooltip:Applies to all #>text-keyword>Endure Injury<# rolls. #>text-sourceref>(from <##>text-keyword>Hardened<##>text-sourceref>)<#"}
   ],
   "Jaded": [
     {ModifyMove: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>text-keyword>Jaded<##>text-sourceref>)<#"}
@@ -153,10 +152,10 @@ const CUSTOMFUNCEXAMPLES = {
 /** RESULT-SOURCE EFFECTS -- These are created as the result of a roll OR a triggered static effect (like an edge), and are created directly on the rolling Actor. They must define their own removal logic. Schema-wise, they go into the effectFunctions array within each roll result, and are created as ActiveEffects on the rolling actor after a roll has been made. */
 const CUSTOMROLLFUNCEXAMPLES = {
   "Observe a Situation/completeSuccess": [
-    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
+    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,label:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
   ],
   "Observe a Situation/partialSuccess": [
-    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,shortLabel:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
+    {ModifyRoll: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,label:Act On Observations,fromText:an #>text-keyword>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#"}
   ],
   "Draw an Ace:Reveal a Weapon/triggered": [
     {PromptForData: "... name of weapon ..."},
@@ -205,7 +204,7 @@ const MODIFYROLLCHANGES = [
       defaultState:true,
       canToggle:true,
       icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,
-      shortLabel:Act On Observations,
+      label:Act On Observations,
       fromText:an #>text-keyword>Observe a Situation<# roll,
       tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>text-keyword>Observe a Situation<##>text-sourceref> roll)<#
     `,
