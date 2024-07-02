@@ -77,7 +77,8 @@ declare global {
       modifiers: ModData[],
       rollerName: string,
       rollerImg: string,
-      result: K4Item.Components.ResultData
+      result: K4Item.Components.ResultData,
+      outcome: K4RollResult
     }
     interface ContextItemSource extends ContextBase {
       source: K4Item.Active,
@@ -352,6 +353,7 @@ class K4Roll extends Roll {
       rollerName: this.actor.name ?? U.loc("roll.someone"),
       rollerImg: this.actor.img ?? "",
       result: this.getOutcomeData(),
+      outcome: this.outcome,
       ...(this.source instanceof K4Item && this.source.isActiveItem())
       ? {
         source: this.source as K4Item.Active,
@@ -370,17 +372,17 @@ class K4Roll extends Roll {
     switch (this.outcome) {
       case K4RollResult.completeSuccess: {
         cssClasses.push("roll-success");
-        themeClass = "k4-theme-gold";
+        themeClass = "k4-theme-gold roll-success";
         break;
       }
       case K4RollResult.partialSuccess: {
         cssClasses.push("roll-partial");
-        themeClass = "k4-theme-gold";
+        themeClass = "k4-theme-gold roll-partial";
         break;
       }
       case K4RollResult.failure: {
         cssClasses.push("roll-failure");
-        themeClass = "k4-theme-gold";
+        themeClass = "k4-theme-gold roll-failure";
         break;
       }
       default: throw new Error("Invalid roll result");

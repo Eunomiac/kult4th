@@ -153,7 +153,7 @@ const isBooleanString = <T>(ref: T): ref is T & BoolString => typeof ref === "st
   && (ref === "true" || ref === "false");
 
 const isArray = <T>(ref: T): ref is T & Array<ValOf<T>> => Array.isArray(ref);
-const isSimpleObj = <T>(ref: T): ref is T & Record<Key, unknown> => ref === Object(ref) && !isArray(ref);
+const isSimpleObj = <T>(ref: T): ref is T & Record<Key, ValOf<T>> => ref === Object(ref) && !isArray(ref);
 const isNumber = <T>(ref: T): ref is T & number => typeof ref === "number" && !isNaN(ref);
 const isInt = <T>(ref: T): ref is T & number => isNumber(ref) && ref % 1 === 0;
 const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && /\./.test(`${ref}`);

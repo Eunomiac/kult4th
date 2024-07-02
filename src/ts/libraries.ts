@@ -9,6 +9,23 @@ import {gsap, RoughEase, ExpoScaleEase, SlowMo, CustomEase, CustomWiggle, Flip, 
 export default function InitializeLibraries() {
   gsap.registerPlugin(RoughEase, ExpoScaleEase, SlowMo, CustomEase, CustomWiggle, Flip, Observer, Draggable, MotionPathPlugin, PixiPlugin, TextPlugin, MorphSVGPlugin, SplitText, GSDevTools);
   gsap.config({nullTargetWarn: false});
+  Object.assign(globalThis, {
+    gsap,
+    RoughEase,
+    ExpoScaleEase,
+    SlowMo,
+    CustomEase,
+    CustomWiggle,
+    Flip,
+    Observer,
+    Draggable,
+    MotionPathPlugin,
+    PixiPlugin,
+    TextPlugin,
+    MorphSVGPlugin,
+    SplitText,
+    GSDevTools
+  });
 }
 
 // Export Tagify

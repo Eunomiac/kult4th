@@ -372,7 +372,8 @@
 		color: var(--K4-color-keyword);
 	}
 	.text-attributename {
-		color: var(--K4-color-keyword);
+    --K4-color-primary: var(--K4-color-keyword);
+		// color: var(--K4-color-keyword);
 	}
 	.text-doclink {
 		color: var(--K4-color-keyword-bright);
