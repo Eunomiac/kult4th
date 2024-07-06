@@ -60,6 +60,8 @@ declare global {
   type ValueOrPromise<V = unknown> = V | Promise<V>;
   // Represents a function with an unknown number of parameters, returning a value of type R
   type Func<R = unknown, T extends unknown[] = unknown[]> = (...args: T) => R; // a function with a known return type and a tuple of parameter types
+  // Represents either an element or a jQuery object wrapping that element
+  type ElemOrJQuery<T extends HTMLElement = HTMLElement> = T | JQuery<T>;
 
   // Represents an async function with an unknown number of parameters, returning a Promise resolving to a value of type R
   type AsyncFunc<R = unknown, T extends unknown[] = unknown[]> = (...args: T) => Promise<R>;
@@ -310,6 +312,10 @@ declare global {
   // Represents a gsap animation
   type GsapAnimation = gsap.core.Tween | gsap.core.Timeline;
 
+  // An alias for the `gsap` object that can be augmented with the names of custom effects
+  // This allows type checking of custom effects when accessing the `gsap` object cast as
+  // `GSAPEffects` from the "utilities.js" library via `U.GSAPEffects`
+  interface GSAPEffects { }
   // Represents a valid gsap animation target
   type TweenTarget = JQuery | gsap.TweenTarget;
   interface GSAPEffect<Defaults extends gsap.TweenVars> {

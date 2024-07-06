@@ -745,51 +745,6 @@ img {
                 }
               }
 
-              .tooltip-container {
-                position: absolute;
-                padding: 0;
-                left: 75px;
-                top: -30px;
-                width: fit-content;
-                filter: drop-shadow(3px 3px 1px black);
-                opacity: 0;
-
-                .tooltip-text {
-                  position: relative;
-                  top: 90px;
-                  left: 15px;
-                  color: var(--K4-gold-bright);
-                  font-family: Alverata Irregular;
-                  font-size: 8px;
-                  font-weight: 900;
-                  padding: 2px;
-                  // font-style: italic;
-                  filter: drop-shadow(1px 1px 0px black);
-                  background: var(--K4-black);
-                  z-index: 2;
-                }
-
-                .tooltip-arrow {
-                  position: absolute;
-                  width: 70px;
-                  left: -23px;
-                  top: 57px;
-                  stroke-width: 3px;
-                  transform-origin: top left;
-
-                  polyline {
-                    fill: none;
-                    stroke: var(--K4-black);
-                  }
-
-                  circle {
-                    fill: var(--K4-black);
-                    // stroke: var(--K4-white);
-                  }
-                }
-
-              }
-
               #stability-gear-geburah,
               #stability-gear-binah,
               #stability-panel-bg,
@@ -1021,14 +976,6 @@ img {
                   }
                 }
 
-                .tooltip {
-                  width: 200px;
-                  transform: translate(-50%, -50%);
-                  position: absolute;
-                  left: -50%;
-                  top: -50%;
-                }
-
                 &.move-modifier {
                   --K4-color-primary: var(--K4-WHITE);
                   --K4-value-color: var(--K4-bWHITE);
@@ -1040,13 +987,6 @@ img {
                     background: var(--K4-dRED);
                   }
 
-                  .tooltip {
-                    width: 200px;
-                    transform: translate(0%, -50%);
-                    position: absolute;
-                    left: 50%;
-                    top: -80%;
-                  }
                 }
 
                 &.wound-modifier {
@@ -1132,10 +1072,6 @@ img {
                     }
 
                   }
-                }
-                .toggle-modifier-tooltip {
-                  // display: none;
-
                 }
               }
             }

@@ -2235,6 +2235,7 @@ export default {
 
   // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ GreenSock â–‘â–‘â–‘â–‘â–‘â–‘â–‘
   gsap, get, set, getGSAngleDelta, getNearestLabel, reverseRepeatingTimeline, /* to, from, fromTo, */
+  gsapEffects: gsap as GSAPEffects,
 
   /* TextPlugin, Flip, */ MotionPathPlugin,
 

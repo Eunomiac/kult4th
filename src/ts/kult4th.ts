@@ -10,6 +10,7 @@ import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
 import C, {getContrastingColor} from "./scripts/constants.js";
+import InitializeTooltips from "./scripts/tooltips.js";
 import U from "./scripts/utilities.js";
 import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
@@ -32,6 +33,8 @@ Hooks.once("init", async () => {
   CONFIG.compatibility.mode = 0;
   // Initialize Libraries
   InitializeLibraries();
+  // Initialize Tooltips Overlay
+  InitializeTooltips($("body"));
 
   // PreInitialize all classes that have a PreInitialize method
   [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]

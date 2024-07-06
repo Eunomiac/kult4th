@@ -1,4 +1,4 @@
-<div class="toggle-modifier {{toggleCategory}}-modifier {{#unless toggleValue}}no-value{{/unless}}">
+<div class="toggle-modifier {{toggleCategory}}-modifier {{#unless toggleValue}}no-value{{/unless}} {{~#if toggleTooltip}} tooltip-trigger{{/if}}">
   <button class="toggle-modifier-button {{benefit}}-mod" data-target="{{id}}" data-action="toggle" data-state="{{#if isEnabled}}enabled{{else}}disabled{{/if}}">
     <span class="toggle-modifier-label">
       <span class="toggle-modifier-name">{{toggleLabel}}</span>

@@ -6,6 +6,7 @@ $assetPath: '/assets';
 
 .vtt.game.system-kult4th {
 	@import 'globals/colors';
+  @import 'globals/tooltips';
 
 	@include cq-prolyfill("width >= 1000px") {
 		outline: 3px solid lime !important;
@@ -24,6 +25,7 @@ $assetPath: '/assets';
 	#hud,
 	#board,
 	#pause,
+  #kult-tooltips,
 	.app.window-app {
 		@import 'globals/text-styles';
 		@import 'globals/icon-styles';

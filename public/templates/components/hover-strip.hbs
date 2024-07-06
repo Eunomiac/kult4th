@@ -1,5 +1,5 @@
 <div
-  class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}}"
+  class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}} {{~#if display}} tooltip-trigger{{/if}}"
   data-type={{type}}
   {{~#if dataset}}{{#each dataset as |val key|}}
     data-{{key}}="{{val}}"
@@ -28,8 +28,8 @@
       >
         {{> "systems/kult4th/templates/components/svg.hbs" key=(getImgName bdata.icon)}}
         {{#if bdata.tooltip}}
-          <span class="tooltip button-tooltip">{{{formatForKult bdata.tooltip}}}</span>
-          <span class="tooltip button-tooltip button-tooltip-flare">{{{formatForKult bdata.tooltip}}}</span>
+          <span class="button-tooltip">{{{formatForKult bdata.tooltip}}}</span>
+          <span class="button-tooltip button-tooltip-flare">{{{formatForKult bdata.tooltip}}}</span>
         {{/if}}
       </button>
     {{/each}}
@@ -40,8 +40,11 @@
     icon=icon
     type=type
     name=name
-    tooltip=tooltip
   }}
+
+  {{#if tooltip}}
+    <span class="tooltip">{{{formatForKult tooltip}}}</span>
+  {{/if}}
 
 {{else}}
 

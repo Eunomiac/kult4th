@@ -340,7 +340,7 @@ class K4Roll extends Roll {
     // if (!this._evaluated) {
     //   throw new Error("Cannot display a roll that has not been evaluated.");
     // }
-    let themeClass: string;
+    const themeCSSClasses: string[] = [];
     const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: K4Roll.Context = {
       cssClass: "",
@@ -372,17 +372,17 @@ class K4Roll extends Roll {
     switch (this.outcome) {
       case K4RollResult.completeSuccess: {
         cssClasses.push("roll-success");
-        themeClass = "k4-theme-gold roll-success";
+        themeCSSClasses.push("k4-theme-gold", "roll-success");
         break;
       }
       case K4RollResult.partialSuccess: {
         cssClasses.push("roll-partial");
-        themeClass = "k4-theme-gold roll-partial";
+        themeCSSClasses.push("k4-theme-gold", "roll-partial");
         break;
       }
       case K4RollResult.failure: {
         cssClasses.push("roll-failure");
-        themeClass = "k4-theme-gold roll-failure";
+        themeCSSClasses.push("k4-theme-gold", "roll-failure");
         break;
       }
       default: throw new Error("Invalid roll result");
@@ -406,7 +406,7 @@ class K4Roll extends Roll {
       speaker: K4ChatMessage.getSpeaker(),
       flags: {
         kult4th: {
-          cssClasses: [themeClass],
+          cssClasses: themeCSSClasses,
           isSummary: false,
           isAnimated: true,
           isRoll: true,

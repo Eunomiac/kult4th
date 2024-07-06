@@ -961,7 +961,13 @@ class K4Actor extends Actor {
    * ]
    * (Note that it does NOT include "Engage in Combat", as when combined with "all", its modifier sums to zero.)
    */
-  collapseRollModifiers() {
+  collapseRollModifiers(): Array<{
+    display: string,
+    tooltip: string,
+    value: number,
+    othering: Array<"all" | K4Item.Types.Rollable>,
+    category: "all" | "type" | K4Item.Types.Rollable
+  }> {
 
     const collapsedModifierData: Array<{
       display: string,
@@ -993,7 +999,7 @@ class K4Actor extends Actor {
       })
       .toReversed();
 
-    kLog.log("[collapseRollModifiers] Status Bar Vals", U.objClone(statusBarVals));
+    kLog.log("[collapseRollModifiers] Status Bar Vals", {changes: this.statusBarChanges, vals: U.objClone(statusBarVals)});
 
     // Helper function to add or update the collapsed data
     const addOrUpdate = (
@@ -1119,7 +1125,51 @@ class K4Actor extends Actor {
 
     kLog.log("[collapseRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
 
-    return sortedModifierData;
+    const isContributingTo = (sourceFilter: string, display: string) => {
+      if (sourceFilter === "all") { return true; }
+      if (display === sourceFilter) { return true; }
+      if (display.includes("Advantage")) {
+        return sourceFilter === K4ItemType.advantage;
+      }
+      if (display.includes("Disadvantage")) {
+        return sourceFilter === K4ItemType.disadvantage;
+      }
+      const move = this.getItemByName(sourceFilter);
+      if (!move) {
+        // throw new Error(`Unrecognized filter value: '${filter}'`);
+        return false;
+      }
+      const category = move.isSubItem()
+        ? move.parentType as K4ItemType.advantage | K4ItemType.disadvantage
+        : K4ItemType.move;
+      if (category === K4ItemType.advantage) {
+        return sourceFilter === K4ItemType.advantage;
+      }
+      if (category === K4ItemType.disadvantage) {
+        return sourceFilter === K4ItemType.disadvantage;
+      }
+      return false;
+    }
+
+    // Now cycle through each modifier and construct the tooltip based on contributions from statusBarChanges
+    return sortedModifierData.map((mData) => {
+      const tooltip = `<span class="tooltip"><ul>${this.statusBarChanges
+        .filter(({filter}) => isContributingTo(filter, mData.display))
+        .toSorted((a, b) => b.modData!.value - a.modData!.value)
+        .map(({modData}) => {
+          if (!modData) { return ""; }
+          return [
+            "<li>",
+            `<strong class='${modData.cssClasses[0]}'>${modData.value >= 0 ? "+" : "–"}${Math.abs(modData.value)}</strong> from <strong class='${modData.cssClasses[0]}'>${modData.label}</strong>`,
+            "</li>"
+          ].join("")
+        }).join("")}</ul></span>`;
+
+        return {
+          tooltip,
+          ...mData
+        };
+      });
   }
 
   /**
@@ -1130,11 +1180,11 @@ class K4Actor extends Actor {
     const returnStrings = [];
     const collapsedModifiers = this.collapseRollModifiers();
     kLog.log("[buildModifierReport] Collapsed Modifiers", U.objClone(collapsedModifiers));
-    for (const {display, value} of collapsedModifiers) {
+    for (const {display, value, tooltip} of collapsedModifiers) {
       if (value < 0) {
-        returnStrings.push(`<span class="k4-theme-red"><strong>${value}</strong> to <strong>${display}</strong></span>`);
+        returnStrings.push(`<span class="k4-theme-red tooltip-trigger"><strong>${value}</strong> to <strong>${display}</strong>${tooltip}</span>`);
       } else {
-        returnStrings.push(`<span class="k4-theme-gold"><strong>+${value}</strong> to <strong>${display}</strong></span>`);
+        returnStrings.push(`<span class="k4-theme-gold tooltip-trigger"><strong>+${value}</strong> to <strong>${display}</strong>${tooltip}</span>`);
       }
     }
     return `<span class="modifiers-report">${returnStrings.join("<span class='k4-theme-black no-flex'>&#9670;</span>")}</span>`;

@@ -1,0 +1,55 @@
+& {
+  --tooltip-color-fg: var(--K4-bWHITE);
+  --tooltip-color-bg: var(--K4-dBLACK);
+
+  .tooltip-trigger {
+    pointer-events: auto !important;
+  }
+
+  .tooltip,
+  .tooltip-clone {
+    position: absolute;
+    pointer-events: none;
+    display: block;
+    font-family: var(--font-primary);
+    font-size: $rem-12;
+    line-height: $rem-14;
+    font-style: italic;
+    text-align: left;
+    color: var(--tooltip-color-fg);
+    background: var(--tooltip-color-bg);
+    text-wrap: pretty;
+    hyphens: auto;
+    outline: 1px solid var(--tooltip-color-fg);
+    box-shadow:
+      2px 2px 3px var(--K4-dBLACK),
+      2px 2px 3px var(--K4-dBLACK),
+      2px 2px 3px var(--K4-dBLACK);
+
+    padding: 5px;
+    border-radius: 10px;
+
+    * {
+      white-space: break-spaces;
+      text-wrap: pretty;
+      hyphens: auto;
+    }
+  }
+
+  .tooltip {
+    opacity: 0;
+    width: 100%;
+  }
+
+  .tooltip-clone {
+    --K4-color-primary: var(--K4-bWHITE);
+    opacity: 1;
+    width: auto;
+    max-width: 300px;
+
+    * {
+      pointer-events: none !important;
+    }
+  }
+
+}

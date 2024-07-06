@@ -38,7 +38,6 @@
     --chat-intro-header-icon-max-size: calc(var(--chat-intro-header-max-height) + var(--chat-vert-padding-internal));
     --chat-intro-header-icon-min-vert-shift: calc(var(--chat-intro-header-min-height) - var(--chat-intro-header-icon-min-size));
     --chat-intro-header-icon-max-vert-shift: calc(var(--chat-intro-header-max-height) - var(--chat-intro-header-icon-max-size));
-    // --chat-intro-header-icon-max-vert-shift: 0;
     --chat-intro-header-icon-horiz-shift: 0px;
     --chat-intro-header-icon-vert-shift: 0px;
     --chat-intro-header-char-font-size: 26px;
@@ -101,15 +100,29 @@
         .roll-dice-results ~ ul li { display: none; visibility: hidden; opacity: 0}
       }
 
+      &.not-animating {
+        .kult4th-chat {
+          .roll-dice-results {
+            .roll-dice-line {
+              .roll-term-container[class*='attribute'] {
+                transform: scale(0.64) translateY(-10px);
+              }
+            }
+          }
+        }
+      }
+
       &.not-animating.roll-success {
         * {
-          --K4-chat-border-image: #{to-url("chat/border-bgold.svg")};
+          // --K4-chat-border-image: #{to-url("chat/border-bgold.svg")};
+          --K4-chat-border-image: #{to-url("chat/border-success.webp")};
           --K4-color-primary: var(--K4-gGOLD);
           --roll-result-fg: var(--K4-gGOLD);
         }
         .kult4th-chat {
           .roll-intro-header {
             .icon-container.icon-base,
+            .icon-container.icon-partial,
             .icon-container.icon-fail { visibility: hidden; }
           }
           .roll-source-header {
@@ -124,20 +137,46 @@
       }
       &.not-animating.roll-partial {
         * {
-          --K4-chat-border-image: #{to-url("chat/border-gold.svg")};
-          --K4-color-primary: var(--K4-GOLD);
-          --roll-result-fg: var(--K4-GOLD);
+          --K4-chat-border-image: #{to-url("chat/border-partial.webp")};
+          --K4-color-primary: var(--K4-bGREY);
+          --roll-result-fg: var(--K4-bGREY);
         }
         .message-content {
-          .message-bg {
-            filter: grayscale(0.5) brightness(0);
-          }
           .kult4th-chat {
-            .roll-intro-header,
+            .roll-intro-header {
+              .drop-cap,
+              .roll-char-name,
+              .roll-intro-line,
+              .icon-container {
+                filter: grayscale(1);
+              }
+            }
+            .roll-source-header {
+              filter: grayscale(1);
+            }
+            .roll-dice-results {
+              .roll-dice-line {
+                .roll-term-container[class*='attribute'] {
+                  filter: grayscale(1);
+                }
+              }
+              .roll-total {
+                .roll-total-gear,
+                .roll-total-number {
+                  filter: grayscale(1);
+
+                  &.roll-total-gear {
+                    filter: grayscale(1) blur(1.5px);
+                  }
+                }
+              }
+            }
+
             .roll-source-header,
             .roll-total,
             .result-entry {
-              filter: brightness(0.85) grayscale(0.25) contrast(1.15);
+              // filter: brightness(0.85) grayscale(0.25) contrast(1.15);
+              .icon-container.icon-base,
               .icon-container.icon-success,
               .icon-container.icon-fail { visibility: hidden; }
             }
@@ -146,7 +185,7 @@
       }
       &.not-animating.roll-failure {
         * {
-          --K4-chat-border-image: #{to-url("chat/border-red.svg")};
+          --K4-chat-border-image: #{to-url("chat/border-failure.webp")};
           --K4-color-primary: var(--K4-bRED) !important;
           --roll-result-fg: var(--K4-bRED);
         }
@@ -156,6 +195,7 @@
               filter: sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5) drop-shadow(2px 2px 2px var(--K4-dBLACK));
             }
             .icon-container.icon-base,
+            .icon-container.icon-partial,
             .icon-container.icon-success { visibility: hidden; }
           }
           .roll-source-header {
@@ -211,10 +251,26 @@
           height: 100%;
           width: 100%;
           border: 1px solid transparent;
-          border-image: var(--K4-chat-border-image) 58 8 fill/58px 8px/20px 8px 36px 8px stretch;
           top: 0;
           left: 0;
-          z-index: 0;
+          z-index: 1;
+          border-image: var(--K4-chat-border-image) 200 30 fill/58px 8px/20px 8px 36px 8px stretch;
+
+          &.bg-success {
+            visibility: hidden;
+            z-index: 0;
+            --K4-chat-border-image: #{to-url("chat/border-success.webp")};
+          }
+          &.bg-partial {
+            visibility: hidden;
+            z-index: 0;
+            --K4-chat-border-image: #{to-url("chat/border-partial.webp")};
+          }
+          &.bg-fail {
+            visibility: hidden;
+            z-index: 0;
+            --K4-chat-border-image: #{to-url("chat/border-failure.webp")};
+          }
         }
 
         .kult4th-chat {
@@ -309,10 +365,14 @@
               .chat-icon { height: 100%; width: 100%; }
 
               &.icon-base .chat-icon {
+                z-index: 3;
                 background: transparent #{to-url("backgrounds/texture-gold.webp")} repeat repeat center center/100px 100px;
               }
               &.icon-fail .chat-icon {
                 background: transparent #{to-url("backgrounds/texture-red.webp")} repeat repeat center center/100px 100px;
+              }
+              &.icon-partial .chat-icon {
+                background: transparent #{to-url("backgrounds/bg-white.webp")} repeat repeat center center/100px 100px;
               }
               &.icon-success .chat-icon {
                 background: linear-gradient(-45deg, var(--K4-bGOLD) 20%, var(--K4-bWHITE) 50%, var(--K4-bGOLD) 80%);
@@ -333,8 +393,6 @@
               position: relative;
 
               .roll-source-text {
-                // background: rgba(255, 255, 0, var(--debug-fill-opacity));
-                // outline: 1px dashed rgba(255, 255, 0, var(--debug-outline-opacity));
                 --text-horiz-inset: calc(var(--chat-intro-header-text-horiz-shift) - 20px);
                 display: block;
                 padding: var(--chat-source-header-name-vert-padding) 0px;
@@ -347,7 +405,6 @@
                 text-transform: lowercase;
                 font-weight: $font-weight-black;
                 text-align: center;
-                // white-space: nowrap;
               }
             }
 
@@ -363,8 +420,6 @@
               padding-left: 10px;
               text-align: right;
               padding-right: 5px;
-              // top: var(--source-item-vert-shift);
-              // right: calc(-1 * var(--chat-horiz-padding-internal) + 3px);
               font-size: $rem-10;
               font-style: italic;
 
@@ -398,7 +453,7 @@
             &.roll-failure {
               --roll-result-fg: var(--K4-RED);
               --roll-outcome-height: var(--chat-outcome-main-font-size);
-              --roll-total-filter: brightness(1.85);
+              --roll-total-filter: brightness(0.75) saturate(2) contrast(1);
             }
 
             font-size: var(--chat-font-size-large);
@@ -412,21 +467,12 @@
                 "roll-total roll-outcome";
               grid-template-columns: var(--chat-dice-results-dice-total-width) 1fr;
               grid-template-rows: var(--chat-dice-results-term-container-size) 1fr var(--roll-outcome-height);
-              // margin-top: -40px;
               text-shadow: 0 0 1px var(--K4-BLACK) !important;
               position: relative;
-              z-index: 3;
-
-              // outline: 2px dashed rgba(255, 255, 0, var(--debug-outline-opacity));
-
-              > * {
-                // outline: 1px dotted rgba(0, 255, 0, var(--debug-outline-opacity));
-              }
 
               .roll-total {
                 grid-area: roll-total;
                 position: relative;
-                // transform-origin: bottom left;
 
                 .roll-total-gear {
                   position: absolute;
@@ -464,28 +510,11 @@
                 position: relative;
                 z-index: 1;
 
-                // .roll-term-container.roll-d10 {
-                //   outline: 1px dotted yellow;
-                //   .d10-animation {
-                //     outline: 1px dotted lime;
-                //     video, img {
-                //       outline: 1px dotted red;
-                //     }
-                //   }
-                // }
                 .roll-term-container {
                   position: relative;
                   height: var(--chat-dice-results-term-container-size);
                   width: var(--chat-dice-results-term-container-size);
                   z-index: 1;
-
-                  // img, video {
-                  //   position: absolute;
-                  //   max-width: unset;
-                  //   transform: translate(-50%, -50%);
-                  //   top: 50%;
-                  //   left: 50%;
-                  // }
 
                   .attribute-flare, .attribute-value,
                   .d10-front, .d10-animation {
@@ -533,7 +562,6 @@
                   &[class*='attribute-'] {
                     position: relative;
                     transform-origin: center center;
-                    transform: scale(calc(0.8 * 0.8)) translateY(-10px);;
                     z-index: 1;
 
                     img {
@@ -556,7 +584,6 @@
               .roll-modifiers {
                 grid-area: roll-modifiers;
                 position: relative;
-                // min-height: 100px;
               }
               .roll-outcome {
                 grid-area: roll-outcome;
@@ -564,7 +591,6 @@
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
-                // justify-content: center;
                 align-items: flex-end;
 
                 > * {
@@ -583,7 +609,6 @@
                   font-size: var(--chat-outcome-sub-font-size);
                   line-height: var(--chat-outcome-sub-font-size);
                   text-align: right;
-                  // margin-top: 5px;
                   margin-right: 5px;
                   margin-top: -12px;
                   font-style: italic;
@@ -616,9 +641,7 @@
             li { text-align: left; }
           }
         }
-
       }
-
     }
   }
 
@@ -766,7 +789,7 @@
           top: 0px;
           right: calc((-1 * var(--button-width)) - 5px);
           opacity: 0;
-          font-family: 'KultrataSC';
+          font-family: var(--font-primary-smallcaps);
           text-transform: lowercase;
           transition: 0.5s;
         }

@@ -419,32 +419,6 @@
 		font-style: italic;
 	}
 
-  .tooltip:not(.button-tooltip) {
-    pointer-events: none;
-    position: absolute;
-    display: block;
-    font-family: var(--font-primary);
-    font-size: $rem-12;
-    line-height: $rem-14;
-    font-style: italic;
-    width: 100%;
-    text-align: left;
-    color: var(--K4-strip-tooltip-color-fg);
-    background: var(--K4-strip-tooltip-color-bg);
-    opacity: 0;
-    bottom: calc(0.75 * var(--K4-strip-height));
-    left: 0;
-    z-index: 40;
-    white-space: break-spaces;
-
-    padding: 4px;
-    border-radius: 20px;
-
-    .text-doclink {
-      pointer-events: none !important;
-    }
-  }
-
 	div.hover-strip {
     --K4-strip-height: 30px;
 		--K4-strip-padding-vert: 5px;
@@ -686,13 +660,6 @@
       }
       > .icon-container {
         display: none;
-      }
-      .strip-tooltip {
-        width: auto;
-        left: -160px;
-        top: calc(1.75 * var(--K4-strip-height) - 5px);
-        bottom: unset;
-        // white-space: nowrap;
       }
 
       & { right: 150px; }

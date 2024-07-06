@@ -34,210 +34,33 @@ interface K4ChatMessage {
 }
 // #endregion
 // #endregion
-const GSAPEFFECTS = {
-  rollMiddleGear: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const target$ = $(target);
-      const gearContainer$ = target$.closest(".roll-total-gear");
-      return U.gsap.timeline()
-        .fromTo(target$, {
-          // filter: `blur(3px) brightness(5) drop-shadow(0px 0px 0px ${C.Colors.dBLACK})`,
-          scale: 2
-      }, {
-          rotation: "+=360",
-          // filter: `blur(0px) brightness(0.75) drop-shadow(0px 0px 2px ${C.Colors.dGOLD})`,
-          scale: 1,
-          autoAlpha: 1,
-          ease: "power3.out",
-          duration: 1
-      })
-      .to(target$, {
-          // filter: `blur(0px) brightness(2) drop-shadow(0px 0px 5px ${C.Colors.bGOLD})`,
-          scale: 1.25,
-          duration: 0.5,
-          repeat: 1,
-          ease: "power2.in",
-          yoyo: true,
-          onReverseComplete() {
-            U.gsap.set(gearContainer$, {overflow: "hidden"});
-          }
-        })
-      .to(target$, {
-          rotation:      "-=20",
-          duration:      0.4,
-          repeatRefresh: true,
-          repeatDelay:   1.6,
-          ease:          "back.out(5)",
-          repeat:        -1
-        });
-    },
-    defaults: {},
-    extendTimeline: true
-  },
-  rollOuterGear: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const target$ = $(target);
-      return U.gsap.timeline()
-        .fromTo(target$, {
-          scale: 5,
-          filter: "blur(15px)"
-      }, {
-          autoAlpha: 0.85,
-          scale: 1,
-          filter: "blur(1.5px)",
-          ease: "power2.inOut",
-          duration: 1
-      })
-      .to(target$, {
-          rotation: "+=360",
-          repeat: -1,
-          duration: 30,
-          ease: "none"
-      })
-    },
-    defaults: {},
-    extendTimeline: true
-  },
-  bounceInDice: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const d10s$ = $(target);
-      const [d10VideoA, d10VideoB] = Array.from(d10s$.children(".d10-animation").children("video"));
 
-      return U.gsap.timeline()
-        .fromTo(d10s$, {
-          transformOrigin: "center center",
-          scale: 1.5,
-          y: -20,
-          filter: "brightness(2) blur(5px)"
-        }, {
-          autoAlpha: 1,
-          scale: 1,
-          y: 0,
-          filter: "brightness(1) blur(0px)",
-          ease: "power2.out",
-          duration: 1,
-          stagger: 0.25
-        })
-        // Manually stagger the play calls for each video
-        .call(() => { d10VideoA.currentTime = 0; d10VideoA.play() }, undefined, 0.25)
-        .call(() => { d10VideoB.currentTime = 0; d10VideoB.play() }, undefined, 0.75);
-    },
-    defaults: {},
-    extendTimeline: true
-  },
-  slideIn: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const target$ = $(target);
-      const {xPercent, yPercent} = config as {xPercent: number, yPercent: number};
-      return U.gsap.timeline()
-        .fromTo(target$, {
-          transformOrigin: "center center",
-          skewX: -25,
-          scale: 1,
-          x: 100,
-          autoAlpha: 0,
-          xPercent,
-          yPercent,
-          filter: "blur(50px)"
-      }, {
-          autoAlpha: 1,
-          skewX: 0,
-          x: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          ease: "power2.inOut",
-          duration: 1
-      });
-    },
-    defaults: {xPercent: 0, yPercent: 0},
-    extendTimeline: true
-  },
-  dropIn: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const target$ = $(target);
-      if (!target$.length) { return U.gsap.timeline(); }
-      return U.gsap.timeline()
-        .fromTo(target$, {
-          y: config.y as number,
-          autoAlpha: 0
-        }, {
-          y: 0,
-          autoAlpha: 1,
-          ease: "elastic",
-          duration: 2
-        })
-    },
-    defaults: {y: -100},
-    extendTimeline: true
-  },
-  slowShrink: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const target$ = $(target);
-      const fromScale = config.fromScale as number;
-      const toScale = config.toScale as number;
-      const yShift = config.yShift as number;
-      const xShift = config.xShift as number;
-      const duration = config.duration as number;
-      const delay = config.delay as number;
-      return U.gsap.timeline()
-        .fromTo(target$, {
-          scale: fromScale
-        }, {
-          x: xShift,
-          y: yShift,
-          scale: toScale,
-          ease: "back.out",
-          delay,
-          duration
-        });
-    },
-    defaults: {
-      fromScale: 1,
-      toScale: 1,
-      duration: 5,
-      delay: 0,
-      yShift: 0,
-      xShift: 0
-    },
-    extendTimeline: true
-  },
-  staggerInResults: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const target$ = $(target);
-      return U.gsap.timeline()
-        .fromTo(target$, {
-          autoAlpha: 0,
-          filter: "blur(10px)"
-      }, {
-          autoAlpha: 1,
-          filter: "blur(0px)",
-          ease: "power2.out",
-          duration: 1,
-          stagger: 0.25
-      });
-    },
-    defaults: {},
-    extendTimeline: true
-  },
+// interface GSAPEffects {
+//   [key: keyof typeof GSAPEFFECTS]: gsap.core.Timeline
+// }
+const GSAPEFFECTS = {
   animateFailure: {
     effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
       const {duration, stagger, ease} = config as {duration: number, stagger: number, ease: string};
 
-      var msg$ = $(target);
-      var msgBg = msg$.find(".message-bg");
-      var msgDropCap = msg$.find(".drop-cap");
-      var msgAttrFlare = msg$.find(".roll-term-container[class*='attribute-']");
-      var msgIntro = msg$.find(".roll-char-name, .roll-intro-line");
-      var msgIcon = msg$.find(".icon-container .chat-icon");
-      var msgSource = msg$.find(".roll-source-header");
-      var msgGears = msg$.find(".roll-total-gear > img");
-      var msgTotal = msg$.find(".roll-total-number");
-      var msgOutcomeMain = msg$.find(".roll-outcome .roll-outcome-main");
-      var msgOutcomeSub = msg$.find(".roll-outcome .roll-outcome-sub");
-      var msgTextToRed = msg$.find(".roll-char-name, .roll-intro-line, .text-attributename, .roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
-      var msgTextToBlack = msg$.find(".roll-source-name .roll-source-text");
+      const msg$ = $(target);
+      const msgBgBase$ = msg$.find(".message-bg.bg-base");
+      msg$.find(".message-bg.bg-fail").css("visibility", "visible");
+
+
+      const msgDropCap = msg$.find(".drop-cap");
+      const msgAttrFlare = msg$.find(".roll-term-container[class*='attribute-']");
+      const msgIntro = msg$.find(".roll-char-name, .roll-intro-line");
+      const msgIcon = msg$.find(".icon-container .chat-icon");
+      const msgSource = msg$.find(".roll-source-header");
+      const msgGears = msg$.find(".roll-total-gear > img");
+      const msgTotal = msg$.find(".roll-total-number");
+      const msgOutcomeMain = msg$.find(".roll-outcome .roll-outcome-main");
+      const msgOutcomeSub = msg$.find(".roll-outcome .roll-outcome-sub");
+      const msgTextToRed = msg$.find(".roll-char-name, .roll-intro-line, .text-attributename, .roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
+      const msgTextToBlack = msg$.find(".roll-source-name .roll-source-text");
       return U.gsap.timeline({ease, clearProps: true})
-          .fromTo(msgBg, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) hue-rotate(-45deg) saturate(5) contrast(2)", duration}, 0)
+        .to(msgBgBase$, {autoAlpha: 0, duration, ease: "power2.inOut"})
           .fromTo(msgDropCap, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5)", duration}, 0)
           .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration}, 0)
           .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(3.5px) sepia(5) brightness(0.65) saturate(5) hue-rotate(-45deg) contrast(2)", duration}, 0)
@@ -303,10 +126,29 @@ const GSAPEFFECTS = {
   }
 }
 
-const MASTERTIMELINE = (message$: JQuery) => {
+const MASTERTIMELINE = (message$: JQuery, msg: K4ChatMessage, stagger?: ValueOrIndex<number>) => {
+
+  stagger ??= [
+    0.5,      // intro line stagger
+    1,        // source line stagger
+    1,        // dice stagger
+    0,        // modifiers stagger
+    0,        // total stagger
+    1.75,      // outcome stagger
+    1,        // window scroll stagger
+    0,        // success/fail stagger
+    0         // results stagger
+  ];
+  if (typeof stagger === "number") {
+    stagger = (new Array(8)).fill(stagger);
+  }
+
+  const staggers = stagger as number[];
+
+  // Determine the current and maximum height of the message for scrolling purposes
   const messageContent$ = message$.find(".message-content");
   const results$ = message$.find(".roll-dice-results ~ div, .roll-dice-results ~ label, .roll-dice-results ~ h2, .roll-dice-results ~ ul li");
-  let curHeight = message$.height() ?? 0;
+  const curHeight = message$.height() ?? 0;
   results$.css({
     display: "block",
     visibility: "visible",
@@ -324,18 +166,34 @@ const MASTERTIMELINE = (message$: JQuery) => {
   message$.css({minHeight: curHeight, maxHeight: curHeight});
   messageContent$.css({minHeight: curHeight, maxHeight: curHeight});
 
+  const tl = U.gsap.timeline()
+    .add(CHILD_TIMELINES.animateCharName(message$))
+    .add(CHILD_TIMELINES.animateIntroLine(message$), `<+=${staggers[0]}`)
+    .add(CHILD_TIMELINES.animateSource(message$), `<+=${staggers[1] ?? U.getLast(staggers)}`)
+    .add(CHILD_TIMELINES.animateDice(message$), `<+=${staggers[2] ?? U.getLast(staggers)}`)
+    .add(CHILD_TIMELINES.animateModifiers(message$), `<+=${staggers[3] ?? U.getLast(staggers)}`)
+    .add(CHILD_TIMELINES.animateTotal(message$), `<+=${staggers[4] ?? U.getLast(staggers)}`)
+    .add(CHILD_TIMELINES.animateOutcome(message$), `<+=${staggers[5] ?? U.getLast(staggers)}`)
+    .add(CHILD_TIMELINES.animateWindowSize(message$, curHeight, endHeight), `<+=${staggers[6] ?? U.getLast(staggers)}`);
 
+  if (message$.hasClass("roll-failure")) {
+    tl.add(CHILD_TIMELINES.animateToFailure(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
+  } else if (message$.hasClass("roll-success")) {
+    tl.add(CHILD_TIMELINES.animateToSuccess(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
+  } else if (message$.hasClass("roll-partial")) {
+    tl.add(CHILD_TIMELINES.animateToPartial(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
+  }
 
+  tl.add(CHILD_TIMELINES.animateResults(message$), `<+=${staggers[8] ?? U.getLast(staggers)}`);
+  tl.call(() => {
+    if (msg) {
+      setTimeout(() => {
+        msg.isAnimated = false;
+      }, 50000)
+    }
+  });
 
-
-            // // As outcome is revealed, animate theme-switch for failure or complete success
-            // if (chatContainer$.hasClass("roll-failure")) {
-            //   tl.animateFailure(target, {}, "<");
-            // } else if (chatContainer$.hasClass("roll-success")) {
-            //   tl.animateSuccess(target, {}, "<");
-            // }
-
-
+  return tl;
 }
 
 const CHILD_TIMELINES = {
@@ -346,23 +204,30 @@ const CHILD_TIMELINES = {
 
     // Split the character name into individual letters
     const splitCharName = new SplitText(charName$, { type: "chars" });
+    // Set chatName$ to visibility: visible
+    charName$.css("visibility", "visible");
 
     // Return a timeline that staggers the reveal of both the dropcap and the letters of the character name
-    return U.gsap.timeline()
+    return U.gsap.timeline({
+      clearProps: "all",
+      onReverseComplete() {
+        splitCharName.revert();
+      }
+    })
       .fromTo(dropCap$, {
-          autoAlpha: 0,
-          filter: "blur(100px)",
-          scale: 5,
-          x: -200,
-          y: -100,
+        autoAlpha: 0,
+        filter: "blur(100px)",
+        scale: 5,
+        x: -200,
+        y: -100,
       }, {
-          autoAlpha: 1,
-          filter: "blur(0px)",
-          scale: 1,
-          x: 0,
-          y: 0,
-          duration: 0.5,
-          ease: "power3"
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        scale: 1,
+        x: 0,
+        y: 0,
+        duration: 0.5,
+        ease: "power3"
       })
       .fromTo(splitCharName.chars, {
         autoAlpha: 0,
@@ -385,8 +250,14 @@ const CHILD_TIMELINES = {
     const attrFlare$ = message$.find(".roll-term-container[class*='attribute']");
 
     const splitIntroLine = new SplitText(introLine$, { type: "words" });
+    // Set introLine$ to visibility: visible
+    introLine$.css("visibility", "visible");
 
-    return U.gsap.timeline()
+    return U.gsap.timeline({
+      onReverseComplete() {
+        splitIntroLine.revert();
+      }
+    })
       .fromTo(splitIntroLine.words, {
         autoAlpha: 0,
         x: -100,
@@ -411,9 +282,31 @@ const CHILD_TIMELINES = {
           duration: 0.5,
           ease: "power2.inOut"
       }, "-=25%")
-      .dropIn(attrFlare$, {y: -100}, "-=35%");
+      .fromTo(attrFlare$, {
+        y: -100,
+        scale: 0.64,
+        autoAlpha: 0
+      }, {
+        y: 0,
+        scale: 0.64,
+        autoAlpha: 1,
+        ease: "elastic",
+        duration: 2
+      }, "-=45%")
+      // Call a delayed slow-shrink of the attribute flare a callback so that it doesn't change the timeline's duration
+      .call(() => {
+        U.gsap.fromTo(attrFlare$,
+          {
+            y: 0
+          }, {
+            y: -10,
+            ease: "back.out",
+            delay: 3,
+            duration: 5
+          });
+      });
   },
-  animateSource(message$: JQuery): gsap.core.Timeline {
+  animateSource(message$: JQuery, stagger = 0): gsap.core.Timeline {
     const sourceHeader$ = message$.find(".roll-source-header");
     const sourceName$ = message$.find(".roll-source-name");
     const sourceIcon$ = message$.find(".icon-container.icon-base");
@@ -423,48 +316,79 @@ const CHILD_TIMELINES = {
     const borderColorStart = `rgba(${borderRGB}, 0)`;
     const borderColorEnd = `rgba(${borderRGB}, 1)`;
 
-    // Split the source name into individual words
-    const splitSourceNameWords = new SplitText(sourceName$, { type: "words" });
-
-    // Further split each word into individual characters
-    const splitSourceNameChars = new SplitText(splitSourceNameWords.words, { type: "chars" });
-
-    return U.gsap.timeline()
+    const tl = U.gsap.timeline()
       .fromTo(sourceHeader$, {
           autoAlpha: 0,
           borderColor: borderColorStart,
       }, {
           autoAlpha: 1,
           borderColor: borderColorEnd,
+          delay: 0,
           background: "#000000",
+          duration: 0.25,
+          ease: "power2.out"
+      });
+
+    if (stagger > 0) {
+      // Split the source name into individual words
+      const splitSourceNameWords = new SplitText(sourceName$, { type: "words" });
+      // Set sourceName$ to visibility: visible
+      sourceName$.css("visibility", "visible");
+
+      // Add the source name animation to the timeline
+      tl.add(U.gsap.timeline({
+        onReverseComplete() {
+          splitSourceNameWords.revert();
+        }
+      })
+        .fromTo(splitSourceNameWords.words, {
+          autoAlpha: 0,
+          x: 0,
+          scale: 2,
+          filter: "blur(1px) brightness(2)"
+        }, {
+          autoAlpha: 1,
+          x: 0,
+          scale: 1,
+          filter: "blur(0px) brightness(1)",
+          duration: 0.5,
+          ease: "power2.out",
+          stagger
+        }), 0.15);
+    } else {
+      tl
+        .fromTo(sourceName$, {
+          autoAlpha: 0,
+          x: 0,
+          scale: 2,
+          filter: "blur(1px) brightness(5)"
+        }, {
+          autoAlpha: 1,
+          x: 0,
+          scale: 1,
+          filter: "blur(0px) brightness(1)",
+          duration: 0.5,
+          ease: "power2.out",
+          stagger
+        }, 0.25);
+    }
+
+    return tl
+      .fromTo(sourceIcon$, {
+          autoAlpha: 0,
+          x: -100,
+          y: 0,
+          scale: 1,
+          filter: "blur(50px)"
+        }, {
+          autoAlpha: 1,
+          scale: 1,
+          x: 0,
+          y: 0,
+          filter: "blur(0px)",
           duration: 0.5,
           ease: "power2.out"
-      })
-      .fromTo(splitSourceNameChars.chars, {
-        autoAlpha: 0,
-        x: -150,
-        filter: "blur(50px)"
-      }, {
-        autoAlpha: 1,
-        filter: "blur(0px)",
-        x: 0,
-        duration: 0.5,
-        stagger: 0.05}, 0)
-      .fromTo(sourceIcon$, {
-        autoAlpha: 0,
-        x: -100,
-        y: 0,
-        scale: 1,
-        filter: "blur(50px)"
-      }, {
-        autoAlpha: 1,
-        scale: 1,
-        x: 0,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.5,
-        ease: "power2.out"
-      }, "-=0.35");
+        }, ">-25%");
   },
   animateDice(message$: JQuery): gsap.core.Timeline {
     const d10s$ = message$.find(".roll-d10");
@@ -490,7 +414,7 @@ const CHILD_TIMELINES = {
         y: 0,
         filter: "brightness(1) blur(0px)",
         ease: "power2.out",
-        duration: 1,
+        duration: 0.5,
         stagger: 0.25
       })
       // Manually stagger the play calls for each video
@@ -510,61 +434,31 @@ const CHILD_TIMELINES = {
       });
   },
   animateModifiers(message$: JQuery): gsap.core.Timeline {
+    const modifiers$ = message$.find(".roll-modifiers .roll-mod");
 
-    const messageContent$ = message$.find(".message-content");
-
-    const chatContainer$ = message$.find(".kult4th-chat");
-
-    const gearContainer$ = message$.find(".roll-total-gear");
-    const middleGear$ = gearContainer$.find("[class*='middle-ring']");
-    const outerGear$ = gearContainer$.find("[class*='outer-ring']");
-    const totalNum$ = message$.find(".roll-total-number");
-
-    const attrFlare$ = message$.find(".roll-term-container[class*='attribute']");
-    const d10s$ = message$.find(".roll-d10");
-    const d10BGs$ = d10s$.children(".d10-animation");
-    const d10Videos = Array.from(d10BGs$.children("video"));
-    d10Videos.forEach((video, index) => {
-      video.loop = true;
-      video.muted = true;
-      video.playbackRate = 0.5 + (0.25 * index);
-      video.style.display = "block";
-    });
-    const [d10VideoA, d10VideoB] = d10Videos;
-
-    const outcome$ = message$.find(".roll-outcome > *");
-    const results$ = message$.find(".roll-dice-results ~ div, .roll-dice-results ~ label, .roll-dice-results ~ h2, .roll-dice-results ~ ul li");
-
-    let curHeight = message$.height() ?? 0;
-    results$.css({
-      display: "block",
-      visibility: "visible",
-      opacity: 0
-    });
-    let endHeight = message$.height() ?? 0;
-    if (endHeight > 800) {
-      messageContent$.css({"--chat-font-size-large": "12px", "--chat-line-height-large": "16px"})
-      endHeight = message$.height() ?? 0;
-    }
-    results$.css({
-      visibility: "hidden",
-      opacity: ""
-    });
-    message$.css({minHeight: curHeight, maxHeight: curHeight});
-    messageContent$.css({minHeight: curHeight, maxHeight: curHeight});
-
-    return U.gsap.timeline();
+    return U.gsap.timeline()
+      .fromTo(modifiers$, {
+        autoAlpha: 0,
+        x: -100,
+        filter: "blur(50px)"
+      }, {
+        autoAlpha: 1,
+        x: 0,
+        filter: "blur(0px)",
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "power2.out"
+      });
   },
   animateTotal(message$: JQuery): gsap.core.Timeline {
+    const msgContainer$ = message$.find(".message-content");
     const gearContainer$ = message$.find(".roll-total-gear");
+    kLog.log("Gear Containers: ", {msgContainer$, gearContainer$});
     const middleGear$ = gearContainer$.find("[class*='middle-ring']");
     const outerGear$ = gearContainer$.find("[class*='outer-ring']");
     const totalNum$ = message$.find(".roll-total-number");
 
     return U.gsap.timeline()
-      // Allow overflow visibility for scaling in of animation
-      .set(gearContainer$, {overflow: "visible"})
-
       // Timeline: Outer Gear Component
       .fromTo(outerGear$, {
         scale: 5,
@@ -575,7 +469,13 @@ const CHILD_TIMELINES = {
         filter: "blur(1.5px)",
         ease: "power2.inOut",
         duration: 1,
+        onStart() {
+          msgContainer$.css("overflow", "visible");
+          gearContainer$.css("overflow", "visible");
+        },
         onComplete() {
+          msgContainer$.css("overflow", "");
+          gearContainer$.css("overflow", "");
           U.gsap.to(outerGear$, {
             rotation: "+=360",
             repeat: -1,
@@ -601,8 +501,7 @@ const CHILD_TIMELINES = {
         repeat: 1,
         ease: "power2.in",
         yoyo: true,
-        onReverseComplete() {
-          U.gsap.set(gearContainer$, {overflow: "hidden"});
+        onComplete() {
           U.gsap.to(middleGear$, {
             rotation:      "-=20",
             duration:      0.4,
@@ -617,22 +516,22 @@ const CHILD_TIMELINES = {
       // Timeline: Total Number Component
       .fromTo(totalNum$, {
         transformOrigin: "center center",
-        skewX: -25,
-        scale: 1,
-        x: 100,
+        // skewX: -25,
+        scale: 1.25,
+        // x: 100,
         autoAlpha: 0,
         xPercent: -50,
         yPercent: -50,
-        filter: "blur(50px)"
+        filter: "blur(50px) brightness(5)"
     }, {
         autoAlpha: 1,
-        skewX: 0,
-        x: 0,
+        // skewX: 0,
+        // x: 0,
         scale: 1,
-        filter: "blur(0px)",
+        filter: "blur(0px) brightness(1)",
         ease: "power2.inOut",
         duration: 1
-    }, "-=0.4");
+    }, ">-=1.15");
   },
   animateOutcome(message$: JQuery): gsap.core.Timeline {
     const outcome$ = message$.find(".roll-outcome > *");
@@ -673,42 +572,145 @@ const CHILD_TIMELINES = {
       });
   },
   animateToSuccess(message$: JQuery): gsap.core.Timeline {
-    return U.gsap.timeline();
+    const msgBgBase$ = message$.find(".message-bg.bg-base");
+    message$.find(".message-bg.bg-success").css("visibility", "visible");
+
+
+    const msgDropCap$ = message$.find(".drop-cap");
+    const msgCharName$ = message$.find(".roll-char-name *");
+    const msgIntroLine$ = message$.find(".roll-intro-line *");
+    const msgAttrName$ = message$.find(".roll-intro-line .text-attributename *");
+    const msgIconBase$ = message$.find(".icon-container.icon-base");
+    const msgIconSuccess$ = message$.find(".icon-container.icon-success");
+
+    const msgSource = message$.find(".roll-source-header");
+    const msgSourceName$ = msgSource.find(".roll-source-name .roll-source-text");
+    const msgGears = message$.find(".roll-total-gear > img");
+    const msgTotal = message$.find(".roll-total-number");
+    const msgOutcomeMain = message$.find(".roll-outcome .roll-outcome-main");
+    const msgOutcomeSub = message$.find(".roll-outcome .roll-outcome-sub");
+    const msgTextToBrightGold = message$.find(".roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
+
+    return U.gsap.timeline({ease: "power3.in", clearProps: true})
+      .to(msgBgBase$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"})
+      .to(msgIconSuccess$, {autoAlpha: 1, duration: 0.25, ease: "power2.inOut"}, 0)
+      .to(msgCharName$, {color: C.Colors.bGOLD, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgIntroLine$, {color: C.Colors.bGOLD, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgAttrName$, {color: C.Colors.bGOLD, filter: "brightness(3) saturate(1.5)", duration: 1, ease: "power2.inOut"}, 0)
+      .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `sepia(0) brightness(1.5) contrast(5) drop-shadow(2px 2px 2px ${C.Colors.dBLACK})`, duration: 1}, 0)
+        // .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration: 1}, 0)
+        .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(1.5px) brightness(1.5) saturate(0.5)", duration: 1}, 0)
+        .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(1.5) saturate(2) contrast(1)", duration: 1}, 0)
+        .to(msgIconBase$, {autoAlpha: 0, duration: 1}, 0)
+
+
+        .to(msgSource, {opacity: 0, duration: 0.5, ease: "power2.out"}, 0)
+        .set(msgSource, {borderTopColor: C.Colors.gGOLD, borderBottomColor: C.Colors.gGOLD, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-gold.webp') repeat repeat center center/100px 100px"}, 0.5)
+        .to(msgSource, {opacity: 1, duration: 0.5, ease: "power2.out"}, 0.5)
+
+        .fromTo(msgSourceName$, {
+          textShadow: "0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0)"},  {
+          color: C.Colors.dBLACK,
+          textShadow: `0 0 5px ${C.Colors.bGOLD}, 0 0 5px ${C.Colors.bGOLD}, 0 0 5px ${C.Colors.bGOLD}, 0 0 5px ${C.Colors.bGOLD}, 0 0 5px ${C.Colors.bGOLD}, 0 0 5px ${C.Colors.bGOLD}`
+        }, 0)
+        .to(msgOutcomeMain, {filter: "saturate(0.25)", color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 12.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.5), 0 0 21px rgba(220, 220, 65, 0.5), 0 0 29px rgba(220, 220, 65, 0.5), 0 0 41.5px rgba(220, 220, 65, 0.5)", duration: 1, onComplete() {
+          msgOutcomeMain.addClass("neon-glow-strong-gold");
+          msgOutcomeMain.attr("style", "color: rgb(255, 255, 255); visibility: visible; filter: saturate(0.45)");
+        }}, 0)
+        .to(msgOutcomeSub, {color: C.Colors.gGOLD, textShadow: "none", duration: 1}, 0)
+        .to(msgTextToBrightGold, {color: C.Colors.bGOLD, duration: 1}, 0);
   },
   animateToFailure(message$: JQuery): gsap.core.Timeline {
     /*  const {duration, stagger, ease} = config as {duration: number, stagger: number, ease: string};
       duration: 1,
       stagger: 0,
       ease: "power3.in" */
+    const msgBgBase$ = message$.find(".message-bg.bg-base");
+    message$.find(".message-bg.bg-fail").css("visibility", "visible");
 
-    const msgBg = message$.find(".message-bg");
-    const msgDropCap = message$.find(".drop-cap");
+
+    const msgDropCap$ = message$.find(".drop-cap");
     const msgAttrFlare = message$.find(".roll-term-container[class*='attribute-']");
-    const msgIntro = message$.find(".roll-char-name, .roll-intro-line");
-    const msgIcon = message$.find(".icon-container .chat-icon");
+    const msgCharName$ = message$.find(".roll-char-name *");
+    const msgIntroLine$ = message$.find(".roll-intro-line *");
+    const msgAttrName$ = message$.find(".roll-intro-line .text-attributename *");
+    const msgIconBase$ = message$.find(".icon-container.icon-base");
+    const msgIconFail$ = message$.find(".icon-container.icon-fail");
+
     const msgSource = message$.find(".roll-source-header");
+    const msgSourceName$ = msgSource.find(".roll-source-name .roll-source-text");
     const msgGears = message$.find(".roll-total-gear > img");
     const msgTotal = message$.find(".roll-total-number");
     const msgOutcomeMain = message$.find(".roll-outcome .roll-outcome-main");
     const msgOutcomeSub = message$.find(".roll-outcome .roll-outcome-sub");
-    const msgTextToRed = message$.find(".roll-char-name, .roll-intro-line, .text-attributename, .roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
-    const msgTextToBlack = message$.find(".roll-source-name .roll-source-text");
+    const msgTextToRed = message$.find(".roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
+    // const msgTextToBlack = message$.find(".roll-source-name .roll-source-text");
     return U.gsap.timeline({ease: "power3.in", clearProps: true})
-        .fromTo(msgBg, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) hue-rotate(-45deg) saturate(5) contrast(2)", duration: 1}, 0)
-        .fromTo(msgDropCap, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5)", duration: 1}, 0)
-        .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration: 1}, 0)
-        .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(3.5px) sepia(5) brightness(0.65) saturate(5) hue-rotate(-45deg) contrast(2)", duration: 1}, 0)
+      .to(msgBgBase$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"})
+      .to(msgIconFail$, {autoAlpha: 1, duration: 0.25, ease: "power2.inOut"}, 0)
+      .to(msgCharName$, {color: C.Colors.bRED, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgIntroLine$, {color: C.Colors.bRED, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgAttrName$, {color: C.Colors.bRED, filter: "brightness(3) saturate(1.5)", duration: 1, ease: "power2.inOut"}, 0)
+      .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5) drop-shadow(2px 2px 2px ${C.Colors.dBLACK})`, duration: 1}, 0)
+        // .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration: 1}, 0)
+        .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(1.5px) sepia(5) brightness(0.65) saturate(5) hue-rotate(-45deg) contrast(2)", duration: 1}, 0)
         .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(0.75) saturate(2) contrast(1)", duration: 1}, 0)
-        .to(msgIcon, {background: "red", duration: 1}, 0)
-        .to(msgSource, {borderTopColor: "red", borderBottomColor: "red", background: "#990000", duration: 1}, 0)
-        .fromTo(msgOutcomeMain, {color: "rgb(155, 32, 32)", textShadow: "0 0 4px rgb(0, 0, 0), 0 0 4px rgb(0, 0, 0)"}, {color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5)", duration: 1, onComplete() {
+        .to(msgIconBase$, {autoAlpha: 0, duration: 1}, 0)
+
+        .to(msgSource, {opacity: 0, duration: 0.5, ease: "power2.out"}, 0)
+        .set(msgSource, {borderTopColor: C.Colors.gRED, borderBottomColor: C.Colors.gRED, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-red.webp') repeat repeat center center/100px 100px"}, 0.5)
+        .to(msgSource, {opacity: 1, duration: 0.5, ease: "power2.out"}, 0.5)
+        .fromTo(msgSourceName$, {
+          textShadow: "0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0)"},  {
+          color: C.Colors.dBLACK,
+          textShadow: `0 0 5px ${C.Colors.bRED}, 0 0 5px ${C.Colors.bRED}, 0 0 5px ${C.Colors.bRED}, 0 0 5px ${C.Colors.bRED}, 0 0 5px ${C.Colors.bRED}, 0 0 5px ${C.Colors.bRED}`
+        }, 0)
+        .to(msgOutcomeMain, {color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5)", duration: 1, onComplete() {
           msgOutcomeMain.addClass("neon-glow-strong-red");
           msgOutcomeMain.attr("style", "color: rgb(255, 255, 255); visibility: visible");
         }}, 0)
-        .to(msgOutcomeSub, {color: "red", textShadow: "none", duration: 1}, 0)
-        .to(msgTextToRed, {color: "red", duration: 1}, 0)
-        .to(msgTextToBlack, {color: "black", duration: 1}, 0);
+        .to(msgOutcomeSub, {color: C.Colors.gRED, textShadow: "none", duration: 1}, 0)
+        .to(msgTextToRed, {color: C.Colors.bRED, duration: 1}, 0);
   },
+  animateToPartial(message$: JQuery): gsap.core.Timeline {
+
+  const msgBgBase$ = message$.find(".message-bg.bg-base");
+  message$.find(".message-bg.bg-partial").css("visibility", "visible");
+
+
+  const msgDropCap$ = message$.find(".drop-cap");
+  const msgAttrFlare = message$.find(".roll-term-container[class*='attribute-']");
+  const msgCharName$ = message$.find(".roll-char-name *");
+  const msgIntroLine$ = message$.find(".roll-intro-line *");
+  const msgAttrName$ = message$.find(".roll-intro-line .text-attributename *");
+  const msgIconBase$ = message$.find(".icon-container.icon-base");
+  const msgIconPartial$ = message$.find(".icon-container.icon-partial");
+
+  const msgSource = message$.find(".roll-source-header");
+  const msgSourceName$ = msgSource.find(".roll-source-name .roll-source-text");
+  const msgGears = message$.find(".roll-total-gear > img");
+  const msgTotal = message$.find(".roll-total-number");
+  const msgOutcomeMain = message$.find(".roll-outcome .roll-outcome-main");
+  const msgOutcomeSub = message$.find(".roll-outcome .roll-outcome-sub");
+  const msgTextToGrey = message$.find(".roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
+
+  return U.gsap.timeline({ease: "power3.in", clearProps: true})
+    .to(msgBgBase$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"})
+    .to(msgIconPartial$, {autoAlpha: 1, filter: "grayscale(1)", duration: 0.25, ease: "power2.inOut"}, 0)
+    .to(msgCharName$, {color: C.Colors.bWHITE, duration: 1, ease: "power2.inOut"}, 0)
+    .to(msgIntroLine$, {color: C.Colors.bWHITE, duration: 1, ease: "power2.inOut"}, 0)
+    .to(msgAttrName$, {color: C.Colors.bWHITE, filter: "brightness(3)", duration: 1, ease: "power2.inOut"}, 0)
+    .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `grayscale(1) sepia(0) brightness(1) contrast(1) drop-shadow(2px 2px 2px ${C.Colors.dBLACK})`, duration: 1}, 0)
+      .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "grayscale(1)", duration: 1}, 0)
+      .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "grayscale(1) blur(1.5px) brightness(1)", duration: 1}, 0)
+      .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(1) saturate(1) contrast(1) grayscale(1)", duration: 1}, 0)
+      .to(msgIconBase$, {autoAlpha: 0, duration: 1}, 0)
+      .to(msgSource, {filter: "grayscale(1)", duration: 1}, 0)
+      .to(msgSourceName$, {color: C.Colors.WHITE}, 0)
+      .to(msgOutcomeMain, {color: C.Colors.WHITE, duration: 1}, 0)
+      .to(msgOutcomeSub, {color: C.Colors.WHITE, duration: 1}, 0)
+      .to(msgTextToGrey, {color: C.Colors.WHITE, duration: 1}, 0);
+},
   animateResults(message$: JQuery): gsap.core.Timeline {
 
     const results$ = message$.find([
@@ -718,8 +720,14 @@ const CHILD_TIMELINES = {
       ".roll-dice-results ~ ul li"
     ].join(", "));
 
+    // // Split results$ into lines
+    // const splitResultLines = new SplitText(results$, { type: "lines" });
+    // // Set results$ to visibility: visible
+    // results$.css("visibility", "visible");
+
     return U.gsap.timeline()
       .fromTo(results$, {
+      // .fromTo(splitResultLines.lines, {
         autoAlpha: 0,
         filter: "blur(10px)"
       }, {
@@ -737,116 +745,16 @@ const CHILD_TIMELINES = {
 
 
 const ANIMATIONS = {
-  animateChatRoll(target: HTMLElement): gsap.core.Timeline {
-    const message$ = $(target);
-    const messageContent$ = message$.find(".message-content");
-
-    const chatContainer$ = message$.find(".kult4th-chat");
-
-    const gearContainer$ = message$.find(".roll-total-gear");
-    const middleGear$ = gearContainer$.find("[class*='middle-ring']");
-    const outerGear$ = gearContainer$.find("[class*='outer-ring']");
-    const totalNum$ = message$.find(".roll-total-number");
-
-    const attrFlare$ = message$.find(".roll-term-container[class*='attribute']");
-    const d10s$ = message$.find(".roll-d10");
-    const d10BGs$ = d10s$.children(".d10-animation");
-    const d10Videos = Array.from(d10BGs$.children("video"));
-    d10Videos.forEach((video, index) => {
-      video.loop = true;
-      video.muted = true;
-      video.playbackRate = 0.5 + (0.25 * index);
-      video.style.display = "block";
-    });
-    const [d10VideoA, d10VideoB] = d10Videos;
-
-    const outcome$ = message$.find(".roll-outcome > *");
-    const results$ = message$.find(".roll-dice-results ~ div, .roll-dice-results ~ label, .roll-dice-results ~ h2, .roll-dice-results ~ ul li");
-
-    let curHeight = message$.height() ?? 0;
-    results$.css({
-      display: "block",
-      visibility: "visible",
-      opacity: 0
-    });
-    let endHeight = message$.height() ?? 0;
-    if (endHeight > 800) {
-      messageContent$.css({"--chat-font-size-large": "12px", "--chat-line-height-large": "16px"})
-      endHeight = message$.height() ?? 0;
-    }
-    results$.css({
-      visibility: "hidden",
-      opacity: ""
-    });
-    message$.css({minHeight: curHeight, maxHeight: curHeight});
-    messageContent$.css({minHeight: curHeight, maxHeight: curHeight});
-
-    // console.log({curHeight, endHeight});
-
-    const tl = U.gsap.timeline()
-      // Timeline: Initiate chat message so it is a constant height; will expand as results are revealed
-      // .to(messageContent$, {overflow: "hidden", duration: 0})
-      // .to([message$, messageContent$], {minHeight: curHeight, maxHeight: curHeight, duration: 0})
-
-      // Drop in Attribute if there is one
-      // .dropIn(attrFlare$, {y: -100}, 0.5)
-
-      // Allow overflow visibility for scaling in of animation
-      .set(gearContainer$, {overflow: "visible"}, "<")
-
-      // Timeline: Outer Gear Component
-      .rollOuterGear(outerGear$, {}, "<")
-
-      // Timeline: Middle Gear Component
-      .rollMiddleGear(middleGear$, {}, "<")
-
-      // Timeline: Dice
-      .bounceInDice(d10s$, {}, "<+0.2")
-
-      // Timeline: Total Number Component
-      .slideIn(totalNum$, {xPercent: -50, yPercent: -50}, "-=0.4")
-
-      // Timeline: Outcome Component
-      .slideIn(outcome$, {}, "-=0.25");
-
-      // Timeline: Expand chat message to its full height
-      tl.to([message$, messageContent$], {maxHeight: endHeight, duration: 1,
-        onUpdate() {
-          const newHeight = message$.height() ?? curHeight;
-          if (newHeight !== curHeight) {
-            K4ChatMessage.ChatLog$[0].scrollTo({top: K4ChatMessage.ChatLog$[0].scrollHeight + (newHeight - curHeight)/* , behavior: "smooth" */});
-            curHeight = newHeight;
-            // console.log({curHeight});
-          }
-        }
-      }, ">")
-
-      // As outcome is revealed, animate theme-switch for failure or complete success
-      if (chatContainer$.hasClass("roll-failure")) {
-        tl.animateFailure(target, {}, "<");
-      } else if (chatContainer$.hasClass("roll-success")) {
-        tl.animateSuccess(target, {}, "<");
-      }
-
-      // Timeline: Stagger In Results
-      tl.staggerInResults(results$, {}, "<+=0.5")
-
-      // Add a label after the results have animated in, at which point changes to the Actor should occur.
-      .addLabel("revealed")
-
-      // Timeline: Slowly shrink roll terms
-      .slowShrink(d10s$, {fromScale: 1, toScale: 0.8, yShift: -10, duration: 5}, ">+3")
-      // .slowShrink(attrFlare$, {fromScale: 0.8, toScale: (0.8 * 0.8), yShift: -10, duration: 5}, ">+3")
-
-      // Add a label to seek to when killing the timeline (slowShrink will be the last tween to finish)
-      .addLabel("end");
-
-    return tl;
-  },
-  animateChatTrigger(target: HTMLElement): gsap.core.Timeline {
+  animateChatTrigger(target: HTMLElement, msg: K4ChatMessage): gsap.core.Timeline {
     const target$ = $(target);
 
-    return U.gsap.timeline()
+    return U.gsap.timeline({
+      onComplete() {
+        if (msg) {
+          msg.isAnimated = false;
+        }
+      }
+    })
       .to(target$, { x: -200, duration: 0.5, ease: "bounce"})
       .to(target$, {x: 0, duration: 0.5, ease: "bounce"})
       .addLabel("revealed")
@@ -940,6 +848,9 @@ class K4ChatMessage extends ChatMessage {
       K4ChatMessage.GenerateInputPanel(html);
     });
 
+    // Assign object to the global scope for development purposes
+    Object.assign(globalThis, {MASTERTIMELINE, CHILD_TIMELINES, ANIMATIONS});
+
     // Register a hook to run when a chat message is rendered
     Hooks.on("renderChatMessage", async (message: K4ChatMessage, html) => {
       // kLog.log(`RENDERING ${message.isLastMessage ? "LAST " : ""}CHAT MESSAGE`, message);
@@ -950,7 +861,7 @@ class K4ChatMessage extends ChatMessage {
       message.activateListeners(html);
 
       // Introduce a brief pause to let the DOM settle
-      await U.sleep(1500);
+      await U.sleep(500);
 
       // If this is the last chat message, animate it and freeze any animations of currently-animating messages
       if (message.isLastMessage) {
@@ -1041,9 +952,9 @@ class K4ChatMessage extends ChatMessage {
     if (!this.isAnimated) { return; }
     this.freeze(false);
     if (this.isChatRoll) {
-      this.animationTimeline = ANIMATIONS.animateChatRoll(this.elem$[0]);
+      this.animationTimeline = MASTERTIMELINE(this.elem$, this);
     } else if (this.isChatTrigger) {
-      this.animationTimeline = ANIMATIONS.animateChatTrigger(this.elem$[0]);
+      this.animationTimeline = ANIMATIONS.animateChatTrigger(this.elem$[0], this);
     }
   }
   freeze(isPermanent = true) {
@@ -1165,12 +1076,12 @@ class K4ChatMessage extends ChatMessage {
     (html ?? this.elem$).addClass(this.cssClasses.join(" "));
   }
 
-  activateListeners(html?: JQuery) {
-    html ??= this.elem$;
-    html.find(".tooltip").parent()
-      .each((_, parent) => {
-        K4ActiveEffect.ApplyTooltipListener($(parent));
-      });
+  activateListeners(html$?: JQuery) {
+    html$ ??= this.elem$;
+    // html$.find(".tooltip").parent()
+    //   .each((_, parent) => {
+    //     K4ActiveEffect.ApplyTooltipListener($(parent));
+    //   });
 
     /**
      * @todo Add general-purpose listeners that select for [data-] attributes and apply corresponding event listeners to them.

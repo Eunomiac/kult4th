@@ -314,8 +314,6 @@ const ANIMATIONS = {
 
     if (!buttonStrip$[0]) { return gsap.timeline({reversed: true}); }
 
-    const stripToolTip$ = $(target).find(".strip-tooltip");
-
     // const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
     // const colorFG = $(target).css("--K4-strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
     // const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--K4-strip-color-bg")?.trim()) ?? C.Colors.BLACK);
@@ -376,18 +374,18 @@ const ANIMATIONS = {
       }, 0);
 
 
-    if (stripToolTip$[0]) {
-      tl.fromTo(stripToolTip$, {
-        opacity: 0,
-        scale:   1.5
-      }, {
-        opacity:  1,
-        scale:    1,
-        y:        "-=10",
-        duration: 0.75 * FULL_DURATION,
-        ease:     "power2.in"
-      }, 0);
-    }
+    // if (stripToolTip$[0]) {
+    //   tl.fromTo(stripToolTip$, {
+    //     opacity: 0,
+    //     scale:   1.5
+    //   }, {
+    //     opacity:  1,
+    //     scale:    1,
+    //     y:        "-=10",
+    //     duration: 0.75 * FULL_DURATION,
+    //     ease:     "power2.in"
+    //   }, 0);
+    // }
 
     if (hoverTarget$[0]) {
       tl.fromTo(hoverTarget$, {
@@ -890,11 +888,6 @@ class K4PCSheet extends ActorSheet {
       buttonContainer$.off("click");
       buttonContainer$.on("dblclick", dblClickCheck.bind(this));
       setTimeout(() => {
-        if (!clickStatus) {
-          // gsap.effects.splashBannerText(labelChars);
-          console.warn("WOULD DRAW A TOOLTIP HERE!");
-          // gsap.effects.drawToolTip(".tooltip-container"); // .paused(false);
-        }
         buttonContainer$.off("dblclick");
         clickStatus = false;
         buttonContainer$.on({

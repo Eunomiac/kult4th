@@ -1524,10 +1524,6 @@ class K4ActiveEffect extends ActiveEffect {
           await K4ActiveEffect.onManageActiveEffect(event, this.owner, "reset");
         }
       })
-      .each((_i, elem) => {
-        const tooltipContainer$ = $(elem).closest(".toggle-modifier");
-        K4ActiveEffect.ApplyTooltipListener(tooltipContainer$);
-      })
     }
   // #ENDREGION
 }

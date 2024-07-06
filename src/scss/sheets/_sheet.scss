@@ -250,28 +250,6 @@
 				}
 			}
 
-			.trigger-tooltip {
-				pointer-events: none;
-				position: absolute;
-				display: block;
-				font-family: var(--font-primary);
-				font-size: 10px;
-				line-height: $rem-12;
-				font-style: italic;
-				width: 100%;
-				text-align: left;
-				color: var(--K4-color-primary-bright);
-				opacity: 0;
-				bottom: 0;
-				left: 0;
-				z-index: 20;
-				white-space: break-spaces;
-
-				padding: 4px;
-				background: var(--K4-color-contrast);
-				border-radius: 20px;
-			}
-
 			&.basic-move-item {
 				--icon-background: var(--K4-GOLD);
 				--popout-background: var(--K4-GOLD);

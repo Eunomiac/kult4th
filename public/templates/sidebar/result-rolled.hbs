@@ -30,6 +30,13 @@
     icon=sourceImg
     type=sourceType
     name=sourceName
+    cssClasses="icon-partial"
+    isChat=true
+    }}
+    {{> "systems/kult4th/templates/components/icon.hbs"
+    icon=sourceImg
+    type=sourceType
+    name=sourceName
     cssClasses="icon-success"
     isChat=true
     }}
@@ -79,7 +86,7 @@
     </div>
     <div class="roll-modifiers">
       {{#each modifiers}}
-      <div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}} {{cssClasses}}">
+      <div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}} {{cssClasses}} tooltip-trigger">
         <span class="roll-mod-val">{{signNum value}}</span>
         <span class="roll-mod-desc">{{label}}</span>
         <div class="tooltip roll-mod-tooltip">

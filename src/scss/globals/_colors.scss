@@ -75,7 +75,7 @@ Kult White:  #FFFFFF */
 	--K4-list-indent: 12px;
 	--K4-bg: transparent #{to-url("backgrounds/bg-item-gold.webp")} no-repeat no-repeat center center / 100% 100%;
 	--K4-bg-inset: transparent #{to-url("backgrounds/bg-gold.webp")} repeat repeat center center/1000px 1000px;
-	--K4-chat-border-image: #{to-url("chat/border-gold.svg")};
+	--K4-chat-border-image: #{to-url("chat/border-default.webp")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-gold-bright.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
 	--K4-strip-main-color-fg: var(--K4-color-primary-bright);
@@ -87,11 +87,6 @@ Kult White:  #FFFFFF */
 	--K4-strip-button-hover-color-bg: var(--K4-color-primary-glow);
 	--K4-strip-tooltip-color-fg: var(--K4-bWHITE);
 	--K4-strip-tooltip-color-bg: var(--K4-dBLACK);
-
-	// --K4-icon-fill: var(--K4-color-primary);
-	// --K4-icon-bg-color: none;
-	// --K4-icon-clip-path: none;
-	// --K4-icon-outline-color-color: transparent;
 }
 
 /* GRADIENTS */
@@ -337,7 +332,7 @@ Kult White:  #FFFFFF */
 	--K4-list-indent: 12px;
 	--K4-bg: transparent #{to-url("backgrounds/bg-item-red.webp")} no-repeat no-repeat center center / 100% 100%;
 	--K4-bg-inset: transparent #{to-url("backgrounds/bg-red.webp")} repeat repeat center center/1000px 1000px;
-	--K4-chat-border-image: #{to-url("chat/border-red.svg")};
+	--K4-chat-border-image: #{to-url("chat/border-failure.webp")};
 	--K4-bullet: transparent #{to-url("icons/bullets/bullet-red.svg")} no-repeat center center/calc(0.5 * var(--K4-list-indent));
 
 	--K4-strip-main-color-fg: var(--K4-color-primary-bright);

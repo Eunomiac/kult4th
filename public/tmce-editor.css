@@ -245,7 +245,7 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-gold.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-gold.svg");
+  --K4-chat-border-image: url("/assets/chat/border-default.webp");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -325,7 +325,7 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-gold.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-gold.svg");
+  --K4-chat-border-image: url("/assets/chat/border-default.webp");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -464,7 +464,7 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-red.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-red.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-red.svg");
+  --K4-chat-border-image: url("/assets/chat/border-failure.webp");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-red.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -882,7 +882,7 @@
 }
 #tinymce .text-attributename,
 #tinymce .mce-content-body .text-attributename {
-  color: var(--K4-color-keyword);
+  --K4-color-primary: var(--K4-color-keyword);
 }
 #tinymce .text-doclink,
 #tinymce .mce-content-body .text-doclink {
@@ -938,31 +938,6 @@
   font-weight: 600;
   font-family: var(--font-primary-italics);
   font-style: italic;
-}
-#tinymce .tooltip:not(.button-tooltip),
-#tinymce .mce-content-body .tooltip:not(.button-tooltip) {
-  pointer-events: none;
-  position: absolute;
-  display: block;
-  font-family: var(--font-primary);
-  font-size: 12px;
-  line-height: 14px;
-  font-style: italic;
-  width: 100%;
-  text-align: left;
-  color: var(--K4-strip-tooltip-color-fg);
-  background: var(--K4-strip-tooltip-color-bg);
-  opacity: 0;
-  bottom: calc(0.75 * var(--K4-strip-height));
-  left: 0;
-  z-index: 40;
-  white-space: break-spaces;
-  padding: 4px;
-  border-radius: 20px;
-}
-#tinymce .tooltip:not(.button-tooltip) .text-doclink,
-#tinymce .mce-content-body .tooltip:not(.button-tooltip) .text-doclink {
-  pointer-events: none !important;
 }
 #tinymce div.hover-strip,
 #tinymce .mce-content-body div.hover-strip {
@@ -1214,13 +1189,6 @@
 #tinymce div.hover-strip.edge-strip > .icon-container,
 #tinymce .mce-content-body div.hover-strip.edge-strip > .icon-container {
   display: none;
-}
-#tinymce div.hover-strip.edge-strip .strip-tooltip,
-#tinymce .mce-content-body div.hover-strip.edge-strip .strip-tooltip {
-  width: auto;
-  left: -160px;
-  top: calc(1.75 * var(--K4-strip-height) - 5px);
-  bottom: unset;
 }
 #tinymce div.hover-strip.edge-strip,
 #tinymce .mce-content-body div.hover-strip.edge-strip {
