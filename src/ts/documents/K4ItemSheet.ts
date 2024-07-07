@@ -150,7 +150,7 @@ export default class K4ItemSheet extends ItemSheet {
       html.find(".effect-control").on("click", (ev) => {
         if ( self.item.isOwned ) {
           ui.notifications?.warn(game.i18n.localize("BITD.EffectWarning"));
-          return;
+          return undefined;
         }
         K4ActiveEffect.onManageActiveEffect(ev, self.item);
       });

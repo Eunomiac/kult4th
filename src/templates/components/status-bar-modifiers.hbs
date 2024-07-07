@@ -1,0 +1,17 @@
+<span class="modifiers-report">
+  {{#each collapsedRollModifiers}}
+    {{#if @index}}
+      <span class='k4-theme-black no-flex'></span>
+    {{/if}}
+    <span class="mod-container" data-filter="{{filter}}">
+      <span class="k4-theme-{{#if (test value ">=" 0)}}gold{{else}}red{{/if}} {{~#if tooltip}} tooltip-trigger{{/if}}">
+        <strong>{{#if (test value ">=" 0)}}+{{/if}}{{{value}}}</strong>&nbsp;to&nbsp;<strong>{{{display}}}</strong>
+        {{#if tooltip}}
+          <span class="tooltip">{{{tooltip}}}</span>
+        {{/if}}
+      </span>
+      <span class="status-mod-bg k4-theme-{{#if (test value ">=" 0)}}gold{{else}}red{{/if}}">
+      </span>
+    </span>
+  {{/each}}
+</span>

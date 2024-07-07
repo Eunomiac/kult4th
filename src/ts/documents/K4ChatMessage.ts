@@ -185,6 +185,7 @@ const MASTERTIMELINE = (message$: JQuery, msg: K4ChatMessage, stagger?: ValueOrI
   }
 
   tl.add(CHILD_TIMELINES.animateResults(message$), `<+=${staggers[8] ?? U.getLast(staggers)}`);
+  tl.addLabel("revealed");
   tl.call(() => {
     if (msg) {
       setTimeout(() => {
@@ -737,8 +738,6 @@ const CHILD_TIMELINES = {
         duration: 1,
         stagger: 0.25
       })
-      // Add a label after the results have animated in, at which point changes to the Actor should occur.
-      .addLabel("revealed")
   }
 }
 
@@ -914,19 +913,19 @@ class K4ChatMessage extends ChatMessage {
     }
 
     return new Promise(async (resolve) => {
-      // kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
+      kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
       await this.timelinePromise;
-      // kLog.display("Timeline Promise Resolved!");
+      kLog.display("Timeline Promise Resolved!");
       const timeline = this.animationTimeline as gsap.core.Timeline;
-      if (!timeline) { return; }
+      if (!timeline) { return undefined; }
       const labelTime = timeline.labels["revealed"];
       const watchLabel = () => {
         if (timeline.time() >= labelTime) {
-          // kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
+          kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
           resolve();
-          return;
+          return undefined;
         }
-        // kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
+        kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
         setTimeout(watchLabel, 250);
       };
       watchLabel();
@@ -949,7 +948,7 @@ class K4ChatMessage extends ChatMessage {
 
 
   animate() {
-    if (!this.isAnimated) { return; }
+    if (!this.isAnimated) { return undefined; }
     this.freeze(false);
     if (this.isChatRoll) {
       this.animationTimeline = MASTERTIMELINE(this.elem$, this);
@@ -962,12 +961,12 @@ class K4ChatMessage extends ChatMessage {
     if (isPermanent) {
       this.addClass("not-animating");
     }
-    if (!this.isAnimated) { return; }
+    if (!this.isAnimated) { return undefined; }
     if (!this.animationTimeline) {
       if (isPermanent) {
         this.isAnimated = false;
       }
-      return;
+      return undefined;
     }
     this.animationTimeline.seek("end");
     this.animationTimeline.kill();
@@ -1006,7 +1005,7 @@ class K4ChatMessage extends ChatMessage {
   }
   get previousMessage(): Maybe<K4ChatMessage> {
     const prevMessage = this.elem$.prev(".chat-message");
-    if (!prevMessage.length) { return; }
+    if (!prevMessage.length) { return undefined; }
     return K4ChatMessage.GetMessage(prevMessage);
   }
   get isLastMessage(): boolean {

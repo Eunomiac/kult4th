@@ -326,7 +326,7 @@ const pInt: {
   }
   return isNaN(pFloat(ref, 0, isStrict))
     ? NaN
-    : Math.round(pFloat(ref, 0, isStrict)) as number;
+    : Math.round(pFloat(ref, 0, isStrict));
 };
 
 const pBool = (
@@ -342,18 +342,21 @@ const pBool = (
   return true;
 };
 
-const castString = (str: string): SystemScalar => {
-  if (isNumString(str)) {
-    const numVal = pFloat(str);
-    if (isInt(numVal)) {
-      return pInt(str);
+const castToScalar = (val: unknown): SystemScalar => {
+  if (["number", "boolean"].includes(typeof val)) { return val as number|boolean; }
+  if (typeof val === "string") {
+    if (isNumString(val)) {
+      const numVal = pFloat(val);
+      if (isInt(numVal)) {
+        return pInt(val);
+      }
+      return numVal;
     }
-    return numVal;
+    if (isBooleanString(val)) {
+      return pBool(val);
+    }
   }
-  if (isBooleanString(str)) {
-    return pBool(str);
-  }
-  return str;
+  return String(val);
 }
 
 
@@ -1629,11 +1632,11 @@ const adjustTextContainerAspectRatio = (
       isContinuing = false;
     } else if (isInt(lineCount)) {
       // Handle cases where lineCount is defined
-      if (lines > lineCount && recurAdjustment()) { return; }
+      if (lines > lineCount && recurAdjustment()) { return undefined; }
       isContinuing = false;
     } else if (maxHeight && expectedHeight > maxHeight) {
       // Handle cases where maxHeight is exceeded
-      if (recurAdjustment()) { return; }
+      if (recurAdjustment()) { return undefined; }
       isContinuing = false;
     } else {
       // Update bestWidth with the expected width
@@ -1648,7 +1651,7 @@ const adjustTextContainerAspectRatio = (
   }
 
   // If the best width exceeds maxWidth, attempt to adjust font size and line height
-  if (!isAtMaxLineCount && maxWidth && bestWidth > maxWidth && recurAdjustment()) { return; }
+  if (!isAtMaxLineCount && maxWidth && bestWidth > maxWidth && recurAdjustment()) { return undefined; }
 
   // Apply the best width to the text container
   textContainer.style.setProperty("width", `${bestWidth}px`, "important");
@@ -2162,7 +2165,7 @@ export default {
   isHTMLString, isRGBColor, isHexColor,
   isUndefined, isDefined, isEmpty, hasItems, isInstance: isInstanceOf,
   areEqual, areFuzzyEqual,
-  castString, pFloat, pInt, pBool, radToDeg, degToRad,
+  castToScalar, pFloat, pInt, pBool, radToDeg, degToRad,
   getKey,
   assertNonNullType,
 

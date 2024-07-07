@@ -307,14 +307,8 @@ class K4Roll extends Roll {
     kLog.log("Applicable Effects", {roll: this, applicableEffects});
 
     for (const effect of applicableEffects) {
-      const modData = await effect.getRollModData(this);
-      kLog.log("Effect Mod Data", {effect, modData})
-      if (modData === false) {
-        // User cancelled an input prompt, so we cancel the roll.
+      if (await effect.applyToRoll(this) === false) {
         return false;
-      } else {
-        // Otherwise, we add the effect's modifier data to the modifiers array and trigger a use of the effect.
-        this.modifiers.push(...modData);
       }
     }
 

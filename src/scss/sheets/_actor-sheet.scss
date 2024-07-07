@@ -899,6 +899,8 @@ img {
               flex-wrap: wrap;
               justify-content: stretch;
               width: 100%;
+              position: relative;
+              overflow: visible;
 
               &.modifiers-report span {
                 flex-grow: 1;
@@ -930,6 +932,42 @@ img {
                   padding: 0 3px;
                 }
               }
+
+              .mod-container {
+                position: relative;
+                overflow: visible;
+
+                &, * {
+                  text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 4);
+                }
+
+                .tooltip-trigger {
+                  position: relative;
+                  z-index: 1;
+                }
+
+                .status-mod-bg {
+                  visibility: hidden;
+                  position: absolute;
+                  transform: translate(-50%, -50%);
+                  left: 50%;
+                  top: 50%;
+                  width: 120%;
+                  height: 400px;
+                  filter: brightness(2) saturate(4);
+                  z-index: 0;
+                  overflow: visible;
+                  pointer-events: none;
+
+                  &.k4-theme-gold {
+                    background: transparent #{to-url("animations/aurora-gold.webp")} no-repeat no-repeat center center/250px 75px;
+                  }
+                  &.k4-theme-red {
+                    background: transparent #{to-url("animations/aurora-red.webp")} no-repeat no-repeat center center/250px 75px;
+                  }
+                }
+
+              }
             }
 
             .toggle-modifier-strip {
@@ -938,6 +976,7 @@ img {
               padding: 0px 10px;
               background: transparent;
               min-height: 20px;
+              position: relative;
 
               .toggle-modifier {
                 height: 20px;
@@ -945,7 +984,6 @@ img {
                 min-width: 40px;
                 position: relative;
                 transform-origin: center center;
-                // min-width: 80px;
                 flex-shrink: 0;
                 display: flex;
                 flex-direction: row;
@@ -953,10 +991,9 @@ img {
                 align-items: center;
                 border-radius: 5px;
 
-                &.no-value {
+                &.no-value, &.stability-modifier {
                   height: 20px;
                   width: 40px;
-                  // padding: 0 5px;
                   .toggle-modifier-label {
                     display: none;
                     .toggle-modifier-value {
@@ -981,17 +1018,27 @@ img {
                   --K4-value-color: var(--K4-bWHITE);
                 }
                 &.stability-modifier {
-                  margin-right: auto;
+                  position: absolute;
+                  left: 10px;
 
                   .toggle-modifier-button {
                     background: var(--K4-dRED);
                   }
 
+                  + .wound-modifier {
+                    left: 60px;
+                  }
                 }
 
                 &.wound-modifier {
+                  position: absolute;
+                  left: 10px;
                   --K4-color-primary: var(--K4-gRED);
                   --K4-value-color: var(--K4-bWHITE);
+
+                  + .stability-modifier {
+                    left: 60px;
+                  }
                 }
 
 

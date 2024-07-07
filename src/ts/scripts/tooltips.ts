@@ -131,7 +131,7 @@ function getTriggerState(trigger$: JQuery): keyof typeof OUTLINE_COLORS | null {
  * @param state - The state of the trigger.
  */
 function updateTriggerOutline(trigger$: JQuery, state: keyof typeof OUTLINE_COLORS | null): void {
-  if (!ISDEBUGGING) { return; }
+  if (!ISDEBUGGING) { return undefined; }
   trigger$.css('outline', state ? `2px solid ${OUTLINE_COLORS[state]}` : 'none');
 }
 
@@ -225,7 +225,7 @@ function OLD_handleTooltipTrigger(event: JQuery.MouseEnterEvent): void {
         // existingAnimation.timeline.progress(0);
         // existingAnimation.timeline.timeScale(1).play();
         // updateTriggerOutline(trigger$, 'UNREVERSE');
-        return;
+        return undefined;
       }
     }
   }
@@ -234,7 +234,7 @@ function OLD_handleTooltipTrigger(event: JQuery.MouseEnterEvent): void {
 
   if (tooltip$.length === 0) {
     console.error(`Tooltip element not found for: ${trigger$.attr('class')}`);
-    return;
+    return undefined;
   }
 
   // Reverse all other tooltips
@@ -251,7 +251,7 @@ function OLD_handleTooltipTrigger(event: JQuery.MouseEnterEvent): void {
     const clonedTooltip$ = cloneTooltipToOverlay(tooltip$);
     if (!clonedTooltip$) {
       console.warn(`Failed to clone tooltip for: ${trigger$.attr('class')}`);
-      return;
+      return undefined;
     }
 
     tooltipId = generateUniqueId();
@@ -296,13 +296,13 @@ function handleTooltipTrigger(event: JQuery.MouseEnterEvent): void {
     const tooltip$ = trigger$.find(".tooltip");
     if (tooltip$.length === 0) {
       console.error(`Tooltip element not found for: ${trigger$.attr('class')}`);
-      return;
+      return undefined;
     }
 
     const clonedTooltip$ = cloneTooltipToOverlay(tooltip$);
     if (!clonedTooltip$) {
       console.warn(`Failed to clone tooltip for: ${trigger$.attr('class')}`);
-      return;
+      return undefined;
     }
 
     tooltipId = generateUniqueId();

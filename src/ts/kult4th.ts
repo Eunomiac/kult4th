@@ -309,7 +309,8 @@ async function preloadTemplates() {
       "toggle-box",
       "edges-blade-container",
       "stability-shards-overlay",
-      "modifier-toggle"
+      "modifier-toggle",
+      "status-bar-modifiers"
     ]),
     ...U.getTemplatePath("partials", [
       "item-block",

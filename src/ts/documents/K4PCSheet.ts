@@ -3,7 +3,9 @@
 import C, {StabilityConditions} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType, K4ConditionType} from "./K4Actor.js";
+import K4Item, {K4ItemType} from "./K4Item.js";
 import K4Dialog from "./K4Dialog.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 import K4Roll from "./K4Roll.js";
 import {gsap} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
@@ -302,13 +304,41 @@ const ANIMATIONS = {
         0
       ); */
   },
-  hoverStrip(target: HTMLElement, context: JQuery): GsapAnimation {
+  hoverStrip(target: HTMLElement, context: JQuery, actor: K4Actor): GsapAnimation {
     const FULL_DURATION = 0.5;
 
-    const isEdgeStrip = $(target).hasClass("edge-strip");
-    const hoverTarget$ = $(context).find($(target).data("hover-target"));
+    let stripType: "edge" | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.move;
+    if ($(target).hasClass("edge-strip")) {
+      stripType = "edge";
+    } else if ($(target).hasClass("advantage-strip")) {
+      stripType = K4ItemType.advantage;
+    } else if ($(target).hasClass("disadvantage-strip")) {
+      stripType = K4ItemType.disadvantage;
+    } else {
+      stripType = K4ItemType.move;
+    }
+
+    const hoverTargetMain$ = $(context).find($(target).data("hover-target"));
     const stripIcon$ = $(target).children(".icon-container");
     const stripName$ = $(target).find(".strip-name");
+    const modifiers$ = $(context).find(".modifiers-report").find(".mod-container");
+
+    const moveName = stripName$.text();
+    const move = actor.getItemByName(moveName) as K4Item<K4ItemType.move>;
+    let filterIndex = -1;
+    let modifier$: Maybe<JQuery>;
+    if (move) {
+      for (const [i, {filter}] of actor.collapsedRollModifiers.entries()) {
+        if (K4ActiveEffect.DoesFilterApplyToMove(filter, move)) {
+          filterIndex = i;
+          break;
+        }
+      }
+    }
+    if (filterIndex >= 0) {
+      modifier$ = $(modifiers$[filterIndex]);
+    }
+
     const buttonStrip$ = $(target).find(".button-strip");
     const stripBG$ = $(target).find(".strip-bg");
 
@@ -318,10 +348,10 @@ const ANIMATIONS = {
     // const colorFG = $(target).css("--K4-strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
     // const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--K4-strip-color-bg")?.trim()) ?? C.Colors.BLACK);
     const colorBase = stripName$.css("color");
-    const colorHover = isEdgeStrip
+    const colorHover = stripType === "edge"
       ? C.Colors.bWHITE
       : C.Colors.dBLACK;
-    const colorShadow = isEdgeStrip
+    const colorShadow = stripType === "edge"
       ? "rgba(3, 247, 249, 0.56)"
       : colorBase;
     const nameShift = U.get(target, "height", "px");
@@ -387,8 +417,8 @@ const ANIMATIONS = {
     //   }, 0);
     // }
 
-    if (hoverTarget$[0]) {
-      tl.fromTo(hoverTarget$, {
+    if (hoverTargetMain$[0]) {
+      tl.fromTo(hoverTargetMain$, {
         opacity: 0
       }, {
         opacity:  1,
@@ -396,7 +426,46 @@ const ANIMATIONS = {
         ease:     "sine"
       }, 0);
     }
-
+    if (modifier$?.[0]) {
+      const anim$ = modifier$.find(".status-mod-bg");
+      const strong$ = modifier$.find(".tooltip-trigger > strong");
+      let shadowColor: string;
+      let color: string;
+      if (modifier$.find(".tooltip-trigger").hasClass("k4-theme-red")) {
+        shadowColor = "220, 65, 65";
+        color = C.Colors.bRED;
+      } else {
+        shadowColor = "220, 220, 65";
+        color = C.Colors.bGOLD;
+      }
+      const textShadow = [
+        `0 0 2px rgba(0, 0, 0, 1)`,
+        `0 0 4px rgba(0, 0, 0, 1)`,
+        `0 0 4.5px rgba(0, 0, 0, 1)`,
+        `0 0 8px rgba(${shadowColor}, 0.8)`,
+        `0 0 12.5px rgba(${shadowColor}, 0.8)`,
+        `0 0 16.5px rgba(${shadowColor}, 0.5)`,
+        `0 0 21px rgba(${shadowColor}, 0.5)`,
+        `0 0 29px rgba(${shadowColor}, 0.5)`,
+        `0 0 41.5px rgba(${shadowColor}, 0.5)`
+      ].join(", ");
+      tl.fromTo(anim$, {
+        autoAlpha: 0
+      }, {
+        autoAlpha: 1,
+        duration: FULL_DURATION,
+        ease: "sine"
+      }, 0)
+        .fromTo(strong$, {
+          color,
+          textShadow: "0 0 0 rgba(0, 0, 0, 0)"
+        }, {
+          color: C.Colors.bWHITE,
+          textShadow,
+          duration: FULL_DURATION,
+          ease: "sine"
+        }, 0);
+    }
     return tl;
   },
   hoverStripButton(target: HTMLElement): GsapAnimation {
@@ -666,7 +735,7 @@ class K4PCSheet extends ActorSheet {
 
   async changeStability(stabilityDelta: number): Promise<unknown> {
     const newStability = U.clampNum(this.actor.system.stability.value + stabilityDelta, [1, 10]) as number;
-    if (newStability === this.actor.system.stability.value) { return; }
+    if (newStability === this.actor.system.stability.value) { return undefined; }
     let updateAnim: Maybe<GsapAnimation> = undefined;
     if (this.rendered) {
       this.glitchTimeline.repeatDelay(this.getGlitchRepeatDelay(newStability));
@@ -764,10 +833,10 @@ class K4PCSheet extends ActorSheet {
   resizeModifierReport(html: JQuery) {
     // Get the width of the container element
     const container = html.find(".tab.front.active");
-    if (!container[0]) { return; }
+    if (!container[0]) { return undefined; }
     const formWidth = container.width() ?? Infinity;
     const report = html.find(".modifiers-report");
-    if (!report[0]) { return; }
+    if (!report[0]) { return undefined; }
     report.removeClass("minimal");
     report.css("width", "");
     const modReportWidth = report.width() ?? 0;
@@ -776,7 +845,7 @@ class K4PCSheet extends ActorSheet {
       report.css("width", formWidth);
       height = report.height();
     }
-    if (!height) { return; }
+    if (!height) { return undefined; }
     let rows = Math.floor(height / 20);
     if (rows > 1) {
       report.addClass("minimal");
@@ -920,11 +989,12 @@ class K4PCSheet extends ActorSheet {
     }
   }
   animateHoverStrips(html: JQuery): Array<Tuple<HTMLElement, GsapAnimation>> {
+    const {actor} = this;
     const hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>> = [];
     // Add hover animations for hover-strip elements
     html.find(".hover-strip")
     .each(function() {
-      hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html)]);
+      hoverTimelines.push([this, ANIMATIONS.hoverStrip(this, html, actor)]);
     });
 
     // Add hover animations for hover-strip button elements
@@ -1223,7 +1293,7 @@ class K4PCSheet extends ActorSheet {
       $(this)
         .on("click", (clickEvent) => {
           if ($(clickEvent.currentTarget).attr("contenteditable") === "true") {
-            return;
+            return undefined;
           }
           clickEvent.preventDefault();
           const {currentTarget} = clickEvent;
@@ -1342,7 +1412,7 @@ class K4PCSheet extends ActorSheet {
     this.setActiveTab(html);
 
     // If the sheet is not editable, return early
-    if (!this.options.editable) { return; }
+    if (!this.options.editable) { return undefined; }
 
     // Activate wound & stability condition listeners
     this.activateStatusStripListeners(html);

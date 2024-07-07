@@ -69,7 +69,7 @@ export default class K4Dialog extends Dialog {
     kLog.log("[AskWithButtons]", { title, inputVals, bodyText, subText, defaultVal }, 3);
     const buttonVals = inputVals
       .split("|")
-      .map((val) => U.castString(val) as T);
+      .map((val) => U.castToScalar(val) as T);
     if (!buttonVals.length) {
       throw new Error(`Invalid inputVals string for AskWithButtons: ${JSON.stringify(inputVals)}`);
     }

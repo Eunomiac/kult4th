@@ -124,10 +124,20 @@ namespace K4Change {
 namespace K4ActiveEffect {
   export type OriginTypes = Exclude<K4ItemType, K4ItemType.darksecret>;
   export type Origin = K4Item<OriginTypes>|K4Actor<K4ActorType.pc>|K4Scene|K4ChatMessage;
-  export type CustomFunction = (
-    parent: K4Actor|K4Roll,
+  export type CustomFunctionActor = (
+    this: K4Change,
+    parent: K4Actor,
     data: Record<string, SystemScalar>
-  ) => ValueOrPromise<void|boolean|string>;
+  ) => Promise<boolean>;
+
+  export type CustomFunctionRoll = (
+    this: K4Change,
+    parent: K4Roll,
+    data: Record<string, SystemScalar>
+  ) => Promise<boolean>;
+
+  export type CustomFunction = CustomFunctionActor | CustomFunctionRoll;
+
 
   export namespace Components {
     export namespace EffectSource {
@@ -227,35 +237,27 @@ const CUSTOM_FUNCTIONS: Record<
   string,
   K4ActiveEffect.CustomFunction
 > = {
-  ApplyWounds: async (roll, data) => {
-    if (!(roll instanceof K4Roll)) {
-      throw new Error(`Invalid roll for ApplyWounds: ${String(roll)}`);
-    }
-    // const
-    kLog.display("CALL: APPLYWOUNDS", {roll, data});
-  },
-  ApplyStability: async (roll, data) => {
-    if (!(roll instanceof K4Roll)) {
-      throw new Error(`Invalid roll for ApplyStability: ${String(roll)}`);
-    }
-    kLog.display("CALL: APPLYWOUNDS", {roll, data});
-  },
-  CreateAttack: async (actor, data) => {
+  async CreateAttack(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
+    return true;
   },
-  CreateWeapon: async (actor, data) => {
+  async CreateWeapon(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
+    return true;
   },
-  CreateTracker: async (actor, data) => {
+  async CreateTracker(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
+    return true;
   },
-  ChangeTracker: async (actor, data) => {
+  async ChangeTracker(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
+    return true;
   },
-  ModifyAttack: async (actor, data) => {
+  async ModifyAttack(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
+    return true;
   },
-  ModifyMove: async (actor, data) => {
+  async ModifyMove(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
@@ -278,7 +280,7 @@ const CUSTOM_FUNCTIONS: Record<
             if (!Array.isArray(targetArray)) {
               throw new Error(`Invalid target for PushElement: '${target}'`);
             }
-            if (U.isUndefined(value)) { return; }
+            if (U.isUndefined(value)) { return undefined; }
             targetArray.push(value);
             setProperty(move, target as string, targetArray);
             break;
@@ -299,22 +301,46 @@ const CUSTOM_FUNCTIONS: Record<
             throw new Error(`Unrecognized effect for ModifyMove: '${effect}'`);
           }
         }
-      })
+      });
+    return true;
   },
-  ModifyProperty: async (actor, data) => {
+  async ModifyProperty(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {filter, effect, target, value, permanent} = data;
+    let {filter, effect, target, value, permanent} = data;
+    value = U.castToScalar(String(value));
     if (!filter || !effect || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
     }
     if (filter === "actor") {
-      const curVal = getProperty(actor, `${target}`);
-      if (`${value}` === `${curVal}`) {
-        return;
-      }
+      const curVal = U.castToScalar(getProperty(actor, `${target}`));
       switch (effect) {
+        case "Subtract":
+          if (typeof value !== "number") {
+            throw new Error(`Invalid value for ModifyProperty 'Subtract': ${value}`);
+          }
+          if (typeof curVal !== "number") {
+            throw new Error(`Invalid actor value (curVal) for ModifyProperty 'Subtract': ${curVal}`);
+          }
+          if (value === 0) { return true; }
+          value = -1 * value;
+          // falls through
+        case "Add": {
+          if (typeof value !== "number") {
+            throw new Error(`Invalid value for ModifyProperty 'Add': ${value}`);
+          }
+          if (typeof curVal !== "number") {
+            throw new Error(`Invalid actor value (curVal) for ModifyProperty 'Add': ${curVal}`);
+          }
+          if (value === 0) { return true; }
+          if (permanent === true) {
+            actor.update({[`${target}`]: curVal + value});
+          } else {
+            setProperty(actor, `${target}`, curVal + value);
+          }
+          break;
+        }
         case "Set": {
           if (permanent === true) {
             actor.update({[`${target}`]: value});
@@ -324,20 +350,14 @@ const CUSTOM_FUNCTIONS: Record<
           break;
         }
         case "Downgrade": {
-          let curValue = getProperty(actor, `${target}`);
-          if (U.isNumString(curValue)) {
-            curValue = U.pInt(curValue);
-          } else if (U.isBooleanString(curValue)) {
-            curValue = U.pBool(curValue);
-          }
-          if (value === curValue) { return; }
+          if (value === curVal) { return true; }
           if (typeof value === "string") {
             throw new Error(`Invalid string value for Downgrade: '${value}'`);
           }
-          if (typeof curValue === "number" && typeof value === "number" && value > curValue) {
-            return;
+          if (typeof curVal === "number" && typeof value === "number" && value > curVal) {
+            return true;
           }
-          if (value === true) { return; }
+          if (value === true) { return true; }
           if (permanent === true) {
             actor.update({[`${target}`]: value});
           } else {
@@ -346,8 +366,9 @@ const CUSTOM_FUNCTIONS: Record<
         }
       }
     }
+    return true;
   },
-  PromptForData: async (actor, data) => {
+  async PromptForData(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
@@ -372,7 +393,7 @@ const CUSTOM_FUNCTIONS: Record<
     if (typeof defaultVal !== "string") {
       throw new Error(`No default value provided for PromptForData: ${JSON.stringify(data)}`);
     }
-    const userOutput = await new Promise(async (resolve) => {
+    const userOutput = U.castToScalar(await new Promise(async (resolve) => {
       const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
       const context: Record<string, SystemScalar> = {
         title,
@@ -384,7 +405,7 @@ const CUSTOM_FUNCTIONS: Record<
         content: template(context),
         buttons: {}
       };
-      dialogData.close = () => resolve(defaultVal);
+      dialogData.close = () => resolve(false); // User cancelled the dialog; return false to trigger cancellation logic
       switch (input) {
         case PromptInputType.buttons: {
           const buttonVals = (inputVals ?? "")
@@ -441,15 +462,16 @@ const CUSTOM_FUNCTIONS: Record<
       new Dialog(dialogData, {
         classes: [C.SYSTEM_ID, "dialog"],
       }).render(true);
-    });
+    }));
+    if (userOutput === false) { return false; }
     if (key.startsWith("flags")) {
       const flagKey = key.split(".").slice(1).join(".");
       await actor.setFlag(C.SYSTEM_ID, flagKey, userOutput);
-      return;
+      return true;
     }
     throw new Error(`Unrecognized key for PromptForData: ${key}`);
   },
-  RequireItem: (actor, data) => {
+  async RequireItem(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
@@ -471,11 +493,138 @@ const CUSTOM_FUNCTIONS: Record<
     }
     return true;
   },
-  ModifyRoll: (roll, data) => {
+  async ModifyRoll(this: K4Change, roll: K4Roll, data: Record<string, SystemScalar>): Promise<boolean> {
     if (!(roll instanceof K4Roll)) {
       throw new Error(`Invalid roll for ModifyRoll: ${String(roll)}`);
     }
-  }
+    let {filter, effect, value} = data as Partial<{
+      filter: string,
+      effect: string,
+      value: SystemScalar
+    }>;
+    if (!filter || typeof filter !== "string") {
+      throw new Error(`Invalid filter for ModifyRoll: ${filter}`);
+    }
+    if (!effect || typeof effect !== "string") {
+      throw new Error(`Invalid effect for ModifyRoll: ${effect}`);
+    }
+    if (typeof value === "string") {
+      if (value === "prompt") {
+        let {title, bodyText, subText, input, inputVals} = data as Partial<{
+          title: string,
+          bodyText: string,
+          subText: string,
+          input: string,
+          inputVals: string
+        }>;
+        let userOutput: SystemScalar = await new Promise(async (resolve) => {
+          const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
+          const context: Record<string, SystemScalar> = {
+            title: title ?? "Input Roll Data",
+            bodyText: bodyText ?? "",
+            subText: subText ?? ""
+          }
+          const dialogData: Dialog.Data = {
+            title: context.title as string,
+            content: template(context),
+            buttons: {}
+          };
+          dialogData.close = () => resolve(false); // User cancelled the dialog; cancel the roll.
+          switch (input) {
+            case PromptInputType.buttons: {
+              const buttonVals = (inputVals ?? "")
+                .split("|")
+                .map((val) => U.isNumString(val) ? U.pInt(val) : (U.isBooleanString(val) ? U.pBool(val) : val));
+              if (!buttonVals.length) {
+                throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
+              }
+              const buttonEntries = buttonVals.map((val) => {
+                return [
+                  String(val),
+                  {
+                    label: String(val),
+                    callback: () => resolve(val)
+                  }
+                ];
+              });
+              // Assign the default value to the first button
+              dialogData.default = String(buttonVals[0]);
+              dialogData.buttons = Object.fromEntries(buttonEntries);
+              break;
+            }
+            case PromptInputType.text: {
+              dialogData.default = "submit";
+              dialogData.buttons = {
+                submit: {
+                  label: "Submit",
+                  callback: (html) => {
+                    const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
+                    resolve(inputValue);
+                  }
+                }
+              };
+              break;
+            }
+            case PromptInputType.confirm: {
+              dialogData.default = "confirm";
+              dialogData.buttons = {
+                confirm: {
+                  label: "Confirm",
+                  callback: () => resolve(true)
+                },
+                cancel: {
+                  label: "Cancel",
+                  callback: () => resolve(false)
+                }
+              };
+              break;
+            }
+            default: {
+              throw new Error(`Invalid input type for PromptForData: ${input}`);
+            }
+          }
+          new Dialog(dialogData, {
+            classes: [C.SYSTEM_ID, "dialog"],
+          }).render(true);
+        });
+        if (typeof userOutput === "string") {
+          userOutput = U.castToScalar(userOutput);
+        }
+        if (userOutput === false) {
+          return false; // User cancelled dialog; return false to cancel roll.
+        }
+        value = userOutput;
+      } else if (value.startsWith("actor")) {
+        const {actor} = roll;
+        value = U.castToScalar(getProperty(actor, value.slice(6)));
+      }
+    }
+    switch (effect) {
+      case "Subtract":
+        if (typeof value !== "number") {
+          throw new Error(`Invalid value for ModifyRoll 'Subtract': ${value}`);
+        }
+        value = -1 * value;
+        // falls through
+      case "Add": {
+        if (typeof value !== "number") {
+          throw new Error(`Invalid value for ModifyRoll 'Add': ${value}`);
+        }
+        roll.modifiers.push({
+          id: this.id!,
+          filter: this.filter,
+          label: this.customFunctionData.label as Maybe<string> ?? this.name,
+          tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
+          tooltipDesc: this.tooltip ?? "",
+          value,
+          cssClasses: [
+            value >= 0 ? "k4-theme-gold" : "k4-theme-red"
+          ]
+        });
+      }
+    }
+    return true;
+  },
 } as const;
 // #endregion
 
@@ -504,7 +653,7 @@ class K4Change implements EffectChangeData {
     if (!pairs) {
       throw new Error(`Invalid function data string format: "${dataString}"`);
     }
-    kLog.log("[ParseFunctionDataString]", {dataString, pairs}, 3)
+    // kLog.log("[ParseFunctionDataString]", {dataString, pairs}, 3)
 
     return pairs.reduce((acc, pair) => {
 
@@ -587,57 +736,31 @@ class K4Change implements EffectChangeData {
   isRollModifier(): this is this & {modData: K4Roll.ModData} {
     return ["ModifyRoll", "ApplyWounds", "ApplyStability"].includes(this.customFunctionName);
   }
-  get modData(): Maybe<K4Roll.ModData> {
-    if (!this.isRollModifier()) { return; }
-    if (typeof this.finalValue !== "number") {
-      throw new Error(`Invalid final value for roll modifier: ${this.finalValue}`);
-    }
-    if (this.finalValue === 0) { return; }
-    const modData: K4Roll.ModData = {
-      id: this.id!,
-      filter: this.filter,
-      value: this.finalValue,
-      label: this.customFunctionData.label as Maybe<string> ?? this.name,
-      tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
-      tooltipDesc: this.tooltip ?? "",
-      cssClasses: []
-    };
-    if (modData.value > 0) {
-      modData.cssClasses.push("k4-theme-gold");
-    } else {
-      modData.cssClasses.push("k4-theme-red");
-    }
-    // if (mod)
-    return modData;
-  }
   get filter(): "all"|K4Attribute|K4ItemType|string {
     return this.customFunctionData.filter as Maybe<string> ?? "all";
   }
   get name(): string {
+    if (["wounds", "stability"].includes(String(this.customFunctionData.value))) {
+      return U.tCase(this.customFunctionData.value);
+    }
     return this.customFunctionData.name as Maybe<string>
       ?? this.originItem?.name
-      ?? (["wounds", "stability"].includes(String(this.customFunctionData.value))
-        ? U.tCase(this.customFunctionData.value)
-        : undefined)
       ?? "";
   }
   get tooltip(): Maybe<string> {
-    if (typeof this.customFunctionData.tooltip !== "string") { return; }
+    if (typeof this.customFunctionData.tooltip !== "string") { return undefined; }
     return this.customFunctionData.tooltip;
   }
   _promptedValue?: SystemScalar;
   get finalValue(): Maybe<SystemScalar> {
     const {value} = this.customFunctionData;
-    if (value === undefined) { return; }
+    if (value === undefined) { return undefined; }
     if (value === "prompt") {
       return this._promptedValue;
     }
     if (!this.isOwnedByActor()) { return value }
-    // if (value === "wounds") {
-    //   return this.actor.
-    // }
     if (typeof value === "string" && value.startsWith("actor.")) {
-      return getProperty(this.actor as K4Actor, value.slice(6));
+      return getProperty(this.actor, value.slice(6));
     }
     if (U.isNumString(value)) {
       return U.pInt(value);
@@ -647,8 +770,24 @@ class K4Change implements EffectChangeData {
     }
     return value;
   }
+  get modData(): K4Roll.ModData {
+    if (typeof this.finalValue !== "number") {
+      throw new Error(`Invalid finalValue for K4Change '${this.finalValue}' (should it be in the status bar?)`);
+    }
+    return {
+      id: this.id!,
+      filter: this.filter,
+      label: this.customFunctionData.label as Maybe<string> ?? this.name,
+      tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
+      tooltipDesc: this.tooltip ?? "",
+      value: this.finalValue,
+      cssClasses: [
+        this.finalValue >= 0 ? "k4-theme-gold" : "k4-theme-red"
+      ]
+    };
+  }
   isInStatusBar() {
-    return this.isRollModifier() && this.customFunctionData.inStatusBar !== false;
+    return this.isRollModifier() && typeof this.finalValue === "number" && this.customFunctionData.inStatusBar !== false;
   }  // #endregion
 
   // #region CONSTRUCTOR
@@ -668,24 +807,29 @@ class K4Change implements EffectChangeData {
     this.value = value;
     this.mode = mode;
     this.customFunctionName = key;
-    this.customFunction = CUSTOM_FUNCTIONS[key];
+    this.customFunction = CUSTOM_FUNCTIONS[key].bind(this);
     this.customFunctionData = K4Change.ParseFunctionDataString(value);
     this.parentEffect = effect;
   }
   // #endregion
 
 
-  apply(parent?: K4Actor|K4Roll) {
-    parent ??= this.actor;
+  async apply(parent: K4Actor): Promise<string|boolean|void>
+  async apply(parent: K4Roll): Promise<boolean>
+  async apply(parent: K4Actor|K4Roll) {
+    const {parentEffect} = this;
     if (!parent) {
       throw new Error(`[K4Change.apply] No valid parent found for '${this.customFunctionName}' K4Change of K4ActiveEffect '${this.parentEffect?.name ?? "(Uninstantiated Effect Data)"}'`);
     }
-    return this.customFunction(parent, this.customFunctionData);
+    if (!parentEffect) {
+      throw new Error(`[K4Change.apply] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
+    }
+    if (parent instanceof K4Actor) {
+      return await (this.customFunction as K4ActiveEffect.CustomFunctionActor)(parent, this.customFunctionData);
+    }
+    return await (this.customFunction as K4ActiveEffect.CustomFunctionRoll)(parent, this.customFunctionData);
   }
-
-
 }
-
 // #endregion
 // #region === K4ACTIVEEFFECT CLASS ===
 /**
@@ -709,17 +853,6 @@ class K4Change implements EffectChangeData {
 class K4ActiveEffect extends ActiveEffect {
 
   static #isChangeModeCustom(change: EffectChangeData): boolean { return change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM; }
-  static #doesAnyChangeHave(changeData: K4Change.Source[], param: string, value?: SystemScalar): boolean {
-    return changeData
-      .filter((changeData) => this.#isChangeModeCustom(changeData))
-      .map((changeData) => K4Change.ParseFunctionDataString(changeData.value)[param])
-      .some((paramValue: Maybe<SystemScalar>) => {
-        if (value === undefined) {
-          return paramValue !== undefined;
-        }
-        return paramValue === value;
-      })
-  }
   static #getChangesWith(changeData: K4Change.Source[], param: string, value?: SystemScalar): K4Change.Source[] {
     return changeData
       .filter((changeData) => this.#isChangeModeCustom(changeData))
@@ -731,7 +864,7 @@ class K4ActiveEffect extends ActiveEffect {
       .filter((changeData) => this.#isChangeModeCustom(changeData))
       .forEach((changeData) => {
         const value = K4Change.ParseFunctionDataString(changeData.value)[param];
-        if (value === undefined) { return; }
+        if (value === undefined) { return undefined; }
         valueRecord[String(value)] = valueRecord[String(value)] ?? [];
         valueRecord[String(value)].push(changeData);
       });
@@ -951,7 +1084,6 @@ class K4ActiveEffect extends ActiveEffect {
       if (U.isUndefined(toggleTooltip)) {
         throw new Error(`No tooltip found for toggleable effect: ${label}`);
       }
-
       return {
         label,
         canToggle: true,
@@ -983,11 +1115,20 @@ class K4ActiveEffect extends ActiveEffect {
       }
     }
   }
+
+  static DoesFilterApplyToMove(filter: string, move: K4Item<K4ItemType.move>): boolean {
+    if (filter === "all") { return true; }
+    if (filter === move.parentType) { return true; }
+    if (filter === move.name) { return true; }
+    if (filter === move.parentName) { return true; }
+    return false;
+  }
+
   /**
    * Type guard to check if the effect can be toggled.
    * @returns {boolean} - True if the effect can be toggled, false otherwise.
    */
-   canToggle(): this is this & { canToggle: true, eData: K4ActiveEffect.ExtendedToggleData } {
+  canToggle(): this is this & { canToggle: true, eData: K4ActiveEffect.ExtendedToggleData } {
     return this.flags.kult4th.data.canToggle === true;
   }
   get defaultState(): boolean { return this.canToggle() ? this.eData.defaultState ?? true : true; }
@@ -1083,43 +1224,6 @@ class K4ActiveEffect extends ActiveEffect {
   doesEffectApply(roll: K4Roll): boolean {
     return this.isEnabled && this.getApplicableRollModifiers(roll).length > 0;
   }
-  getApplicablePromptOnRollModifiers(roll: K4Roll): K4Change[] {
-    return this.getApplicableRollModifiers(roll)
-      .filter((change) => change.isPromptOnRoll);
-  }
-
-  compilePromptButtons(min: number, max: number): string {
-    const buttonStrings: string[] = [];
-    for (let i = min; i <= max; i++) {
-      buttonStrings.push(String(i));
-    }
-    kLog.log("Prompt buttons compiled:", {min, max, buttonStrings});
-    return buttonStrings.join("|");
-  }
-
-  async getRollModData(roll: K4Roll): Promise<K4Roll.ModData[]|false> {
-
-    // First, for any promptOnRoll changes, prompt the user for input. Return 'false' if the user provides none, cancelling the roll.
-    for (const change of this.getApplicablePromptOnRollModifiers(roll)) {
-      kLog.log("Prompting for data:", {change, customFunctionData: change.customFunctionData});
-      const userInput = await K4Dialog.AskWithButtons<number>(
-        change.customFunctionData.title as string,
-        change.customFunctionData.inputVals as string,
-        change.customFunctionData.bodyText as Maybe<string>,
-        change.customFunctionData.subText as Maybe<string>,
-        change.customFunctionData.default as Maybe<number>
-      )
-      if (U.isDefined(userInput)) {
-        change._promptedValue = userInput;
-      } else {
-        return false;
-      }
-    }
-
-    // Now all changes should have a finalValue that resolves to a number, and a modData object can be returned for each change.
-    return this.getApplicableRollModifiers(roll).map((change) => change.modData!);
-  }
-
   static async CreateFromChangeData(
     changeData: K4Change.Source[],
     origin: K4ActiveEffect.Origin,
@@ -1195,7 +1299,7 @@ class K4ActiveEffect extends ActiveEffect {
 
       /* === PROCESS CUSTOM CHANGES: STEP 1 - RequireItem Prerequisite Check === */
       // Check for any "RequireItem" changes. If any of them fail, remove both the ActiveEffect and the embedded Item.
-      if (effect.requireItemChanges.some((change) => !change.apply())) {
+      if (effect.requireItemChanges.some((change) => !change.apply(effect.actor))) {
         originItem?.delete();
         return false;
       }
@@ -1205,13 +1309,13 @@ class K4ActiveEffect extends ActiveEffect {
       // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
       // (Note: The "PromptForData" function will only run once; if the data it is seeking is already written to the actor's flags, it will do nothing.)
       for (const change of effect.promptForDataChanges) {
-        await change.apply();
+        await change.apply(effect.actor);
       }
 
       /* === PROCESS CUSTOM CHANGES: STEP 3 - Permanent Effects Check === */
       // If any changes are permanent, apply them now -- they will be filtered out of future applications of the effect,
       // and will not be reversed when the active effect is removed.
-      effect.permanentChanges.forEach((change) => change.apply());
+      effect.permanentChanges.forEach((change) => change.apply(effect.actor));
       return true;
     });
   }
@@ -1240,9 +1344,17 @@ class K4ActiveEffect extends ActiveEffect {
     }
   }
 
+  override async delete(options?: DocumentModificationContext) {
+    if (this.isOwnedByActor()) {
+      await this.actor.deleteEmbeddedDocuments("ActiveEffect", [this.id!]);
+      return undefined;
+    }
+    return super.delete(options);
+  }
+
   async toggleEnabled(value?: boolean, isForcing = false) {
-    if (!this.canToggle()) { return; }
-    if (this.isLocked && !isForcing) { return; }
+    if (!this.canToggle()) { return undefined; }
+    if (this.isLocked && !isForcing) { return undefined; }
     const promises: Promise<unknown>[] = [
       this.setFlag<boolean>("data.isEnabled", value ?? !this.isEnabled)
     ];
@@ -1252,12 +1364,12 @@ class K4ActiveEffect extends ActiveEffect {
     return Promise.all(promises);
   }
   async toggleLock(value?: boolean) {
-    if (!this.canToggle()) { return; }
+    if (!this.canToggle()) { return undefined; }
     return this.setFlag<boolean>("data.isLocked", value ?? !this.isLocked);
   }
   async reset(resetTo?: boolean, isForcing = false) {
-    if (!this.canToggle()) { return; }
-    if (this.isLocked && !isForcing) { return; }
+    // if (!this.canToggle()) { return undefined; }
+    if (this.isLocked && !isForcing) { return undefined; }
     resetTo ??= this.resetTo;
     const promises: Promise<unknown>[] = [];
     if (this.isLocked && isForcing) {
@@ -1269,25 +1381,38 @@ class K4ActiveEffect extends ActiveEffect {
     return Promise.all(promises);
   }
   async use() {
-    if (!this.canToggle()) { return; }
-    if (U.isUndefined(this.uses)) { return; }
-    if (this.uses.value >= this.uses.max) { return; }
-    if ((this.uses.value + 1) >= this.uses.max) {
-      if (this.canRefill) {
-        return Promise.all([
-          this.toggleEnabled(false, true),
-          this.toggleLock(true)
-        ])
-      }
-      return this.delete();
-    }
-    const promises: Promise<unknown>[] = [
-      this.setFlag<number>("data.uses.value", this.uses.value + 1)
-    ];
-    if (this.resetOn === EffectResetOn.onUse) {
+    const promises: Promise<unknown>[] = [];
+
+    if (this.canToggle() && this.resetOn === EffectResetOn.onUse) {
       promises.push(this.reset(this.resetTo, true));
     }
+    if (U.isDefined(this.uses)) {
+      if ((this.uses.value + 1) >= this.uses.max) {
+        if (this.canRefill) {
+          promises.push(this.toggleEnabled(false, true));
+          promises.push(this.toggleLock(true));
+        } else {
+          promises.push(this.delete());
+        }
+      } else {
+        promises.push(this.setFlag<number>("data.uses.value", this.uses.value + 1));
+      }
+    }
+
     return Promise.all(promises);
+  }
+  async applyToRoll(roll: K4Roll) {
+    if (!this.doesEffectApply(roll)) { return undefined; }
+    let returnVal = true;
+    for (const change of this.getApplicableRollModifiers(roll)) {
+      if (await change.apply(roll) === false) {
+        returnVal = false;
+        break;
+      }
+    }
+    if (!returnVal) { return false; }
+    this.use();
+    return returnVal;
   }
 
   // #region GETTERS & SETTERS ~
@@ -1310,14 +1435,14 @@ class K4ActiveEffect extends ActiveEffect {
     return this.getCustomChangeData().some((change) => change.key === "ApplyStability");
   }
   get originItem(): Maybe<K4Item> {
-    if (!this.hasItemOrigin()) { return; }
+    if (!this.hasItemOrigin()) { return undefined; }
     return fromUuidSync(this.origin) as Maybe<K4Item>;
   }
   get owner(): Maybe<K4Actor|K4Item> {
     return this.isOwnedByActor() ? this.actor : this.originItem;
   }
   get actor(): Maybe<K4Actor> {
-    if (!this.isOwnedByActor()) { return; }
+    if (!this.isOwnedByActor()) { return undefined; }
     const [_, actorId] = this.origin.split(".");
     return game.actors.get(actorId);
   }
@@ -1451,76 +1576,32 @@ class K4ActiveEffect extends ActiveEffect {
     }]);
     return this;
   }
-  /*
-  tl.fromTo(stripToolTip$, {
-    opacity: 0,
-    scale:   1.5
-  }, {
-    opacity:  1,
-    scale:    1,
-    y:        "-=10",
-    duration: 0.75 * FULL_DURATION,
-    ease:     "power2.in"
-  }, 0);
-
-
-  function() {
-      }
-
-*/
-
-  static ApplyTooltipListener(container$: JQuery) {
-    container$.css({position: "relative", pointerEvents: "auto"});
-    const tooltip$ = container$.find(".tooltip");
-    const tooltipTimeline = U.gsap.timeline({reversed: true})
-      .fromTo(tooltip$, {
-        opacity: 0,
-        scale:   1.5
-      }, {
-        opacity:  1,
-        scale:    1,
-        y:        "-=10",
-        duration: 0.375,
-        ease:     "power2.in"
-      }, 0);
-    container$
-      .on({
-        mouseenter: () => {
-          tooltipTimeline.timeScale(1);
-          tooltipTimeline.reversed(false);
-        },
-        mouseleave: () => {
-          tooltipTimeline.timeScale(2);
-          tooltipTimeline.reversed(true);
-        }
-      });
-  }
 
   applyToggleListeners(html: JQuery) {
-    if (!this.canToggle()) { return; }
+    if (!this.canToggle()) { return undefined; }
     const button$ = html.find(`[data-target="${this.id}"]`);
     button$
       .on({
         click: async (event: ClickEvent) => {
           event.preventDefault();
-          if (!this.owner) { return; }
+          if (!this.owner) { return undefined; }
           K4ActiveEffect.onManageActiveEffect(event, this.owner);
         },
         dblclick: async (event: ClickEvent) => {
           event.preventDefault();
-          if (!this.owner) { return; }
+          if (!this.owner) { return undefined; }
           if (this.isLocked) {
             const {value, max} = this.uses ?? {};
-            if (U.isDefined(value) && value === max) { return; }
+            if (U.isDefined(value) && value === max) { return undefined; }
             K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
-            return;
+            return undefined;
           }
           await K4ActiveEffect.onManageActiveEffect(event, this.owner, "toggle");
           K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
         },
         contextmenu: async (event: ClickEvent) => {
           event.preventDefault();
-          if (!this.owner) { return; }
+          if (!this.owner) { return undefined; }
           await K4ActiveEffect.onManageActiveEffect(event, this.owner, "reset");
         }
       })

@@ -5,70 +5,25 @@ import fs from "fs";
 import checker from "vite-plugin-checker";
 import {visualizer} from "rollup-plugin-visualizer";
 import {exec} from "child_process";
-
-/** *** CHECK: *** https://vitejs.dev/guide/performance
- *
- * TypeScript: Enable:
- * - "moduleResolution": "bundler",
- * - "allowImportingTsExtensions": true
- * ... in your tsconfig.json's compilerOptions to use .ts and .tsx extensions directly in your code.
- * */
+import copy from "rollup-plugin-copy";
 
 /* ==== CONFIGURATION ==== */
 
 const FOUNDRY_VERSION = 10;
+const NUM_CHROME_PROFILES = 1;
 const PACKAGE_TYPE: "module" | "system" = "system";
 const PACKAGE_ID = "kult4th";
 const ENTRY_FILE_NAME = "kult4th";
 
-/* --- SCSS Color Extraction --- */
-// Path to the SCSS file containing color definitions
-const COLOR_STYLESHEET_PATH: string | false = false; // Set to false to disable SCSS color extraction.
-// Must match the SCSS variable name format, capturing 'hue', 'brightness', 'red', 'green', and 'blue' values
-const COLOR_MATCH_REGEXP: Maybe<RegExp> = undefined; // /--blades-(?<hue>[a-z]+)-(?<brightness>[a-z]+)-nums:\s*(?<red>\d+),\s*(?<green>\d+),\s*(?<blue>\d+)\s*;/g;
-/* --- SCSS Color Extraction --- */
-
 /* ==== END CONFIGURATION ==== */
 
-/**
- * Plugin to watch changes in the public directory, trigger a full reload, and append a timestamp query string for cache busting.
- */
-function watchPublicDirPlugin(): Plugin {
-  let lastUpdated = Date.now();
-  return {
-    name: "watch-public-directory",
-    configureServer(server) {
-      const {watcher, ws, middlewares} = server;
-      // Watch for changes in the public directory
-      watcher.add(path.resolve(__dirname, "public/**/*"));
-      watcher.on("change", (changedPath) => {
-        if (changedPath.startsWith(path.resolve(__dirname, "public"))) {
-          lastUpdated = Date.now();
-          // Trigger a full reload on the client
-          ws.send({
-            type: "full-reload"
-          });
-        }
-      });
-
-      // Middleware to append a cache-busting query string
-      middlewares.use((req, res, next) => {
-        if (req.url?.startsWith("/public/")) {
-          // Redirect to the URL with the updated query string
-          res.writeHead(302, {
-            Location: `${req.url}?t=${lastUpdated}`
-          });
-          res.end();
-        } else {
-          next();
-        }
-      });
-    }
-  };
-}
+/* --- PORTS --- */
+const foundryPort = 30000 + (FOUNDRY_VERSION * 100);
+const vitePort = foundryPort + 1;
+/* --- END PORTS --- */
 
 /**
- * Custom plugin to open Chrome with specific flags when the Vite server starts.
+ * Custom plugin to open one or more Chrome profiles with specific flags when the Vite server starts.
  */
 function openChromePlugin(): Plugin {
   return {
@@ -76,107 +31,14 @@ function openChromePlugin(): Plugin {
     apply: "serve", // Only apply this plugin during development
     configResolved(chromeConfig) {
       if (chromeConfig.command === "serve") {
-        // Command to open the first Chrome instance
-        const command1 = `start chrome --start-maximized --remote-debugging-port=9222 --auto-open-devtools-for-tabs --user-data-dir="D:/Projects/.CODING/FoundryVTT/ChromeDevProfile_1" http://localhost:${chromeConfig.server.port}`;
-        exec(command1, (error) => {
-          if (error) {
-            console.error("Failed to open first Chrome instance:", error);
-          }
-        });
-
-        // Command to open the second Chrome instance with a different profile
-        const command2 = `start chrome --start-maximized --remote-debugging-port=9223 --auto-open-devtools-for-tabs --user-data-dir="D:/Projects/.CODING/FoundryVTT/ChromeDevProfile_2" http://localhost:${chromeConfig.server.port}`;
-        exec(command2, (error) => {
-          if (error) {
-            console.error("Failed to open second Chrome instance:", error);
-          }
-        });
-      }
-    }
-  };
-}
-
-/**
- * Plugin to extract color definitions from an SCSS file and export them as a JavaScript module.
- */
-function scssVariablesToJsPlugin(): Plugin {
-  return {
-    name: "scss-variables-to-js",
-    // This function will tell Vite that "virtual:colors" is a virtual module
-    resolveId(source) {
-      if (source === "virtual:colors") {
-        return source; // Recognize "virtual:colors" as a module ID
-      }
-      return null; // Other imports are handled normally
-    },
-    // This function will load the content for our virtual module
-    load(id) {
-      if (id === "virtual:colors") {
-        if (!COLOR_STYLESHEET_PATH || !COLOR_MATCH_REGEXP) {
-          return null;
-        }
-        const scssVariables: string = fs.readFileSync(COLOR_STYLESHEET_PATH, "utf-8");
-        let match: RegExpExecArray | null;
-
-        type Brightness = "brightest" | "bright" | "normal" | "dark" | "darkest" | "black";
-        const colorDefs: Record<string, Partial<Record<Brightness, number[]>>> = {};
-
-        while ((match = COLOR_MATCH_REGEXP.exec(scssVariables)) !== null) {
-          const {hue, brightness, red, green, blue} = match.groups!;
-          const brightnessValue = (brightness || "normal") as Brightness;
-          colorDefs[hue] ??= {};
-          colorDefs[hue][brightnessValue] = [parseInt(red, 10), parseInt(green, 10), parseInt(blue, 10)];
-        }
-
-        return {
-          code: `export const ColorNums = ${JSON.stringify(colorDefs, null, 2)};\n`,
-          map:  null
-        };
-      }
-      return null; // Other modules are loaded normally
-    }
-  };
-}
-
-/**
- * Custom plugin to handle hot reloading of Handlebars (.hbs) files.
- */
-function hmrHandlerPlugin(): Plugin {
-  return {
-    name:            "hmr-handler",
-    apply:           "serve",
-    handleHotUpdate: (context) => {
-      const outDir = "dist"; // path.resolve(__dirname, "dist");
-      if (context.file.startsWith(outDir)) return;
-
-      if (context.file.endsWith("en.json")) {
-        const basePath = context.file.slice(context.file.indexOf("lang/"));
-        console.log(`Updating lang file at ${basePath}`);
-        fs.promises
-          .copyFile(context.file, `${outDir}/${basePath}`)
-          .then(() => {
-            context.server.ws.send({
-              type:  "custom",
-              event: "lang-update",
-              data:  {path: `${PACKAGE_TYPE}s/${PACKAGE_ID}/${basePath}`}
-            });
-          }).catch((err) => {
-            console.error("Failed to send language json update:", err)
+        for (let i = 0; i < NUM_CHROME_PROFILES; i++) {
+          const command = `start chrome --start-maximized --remote-debugging-port=${9222+i} --auto-open-devtools-for-tabs --user-data-dir="D:/Projects/.CODING/FoundryVTT/ChromeDevProfile_${i+1}" http://localhost:${chromeConfig.server.port}`;
+          exec(command, (error) => {
+            if (error) {
+              console.error(`Failed to open Chrome instance #${i+1}:`, error);
+            }
           });
-      } else if (context.file.endsWith(".hbs")) {
-        const basePath = context.file.slice(context.file.indexOf("templates/"));
-        console.log(`Updating template file at ${basePath}`);
-        fs.promises
-          .copyFile(context.file, `${outDir}/${basePath}`)
-          .then(() => {
-            context.server.ws.send({
-              type:  "custom",
-              event: "template-update",
-              data:  {path: `${PACKAGE_TYPE}s/${PACKAGE_ID}/${basePath}`}
-            });
-          }).catch((err) => {
-            console.error("Failed to send template update:", err)
-          });
+        }
       }
     }
   };
@@ -190,6 +52,7 @@ function foundryPlugin(): Plugin {
   const externalsSourceMap = new Map([
     ["gsap", "scripts/greensock/esm/all.js"]
   ]);
+  console.log("ACTIVATING FOUNDRY PLUGIN");
 
   return {
     name: "foundry-plugin",
@@ -230,8 +93,62 @@ function foundryPlugin(): Plugin {
   };
 }
 
-const foundryPort = 30000 + (FOUNDRY_VERSION * 100);
-const vitePort = foundryPort + 1;
+/**
+ * Attempt to get hot-reloading for .hbs files to work
+ */
+function hbsPlugin(): Plugin {
+  return {
+    name: "hmr-handler",
+    apply: "serve",
+    handleHotUpdate(context) {
+        if (context.file.startsWith("dist")) return;
+
+        if (context.file.endsWith(".hbs")) {
+            const basePath = context.file.slice(context.file.indexOf("templates/"));
+            console.log(`Updating template file at ${basePath}`);
+            fs.promises.copyFile(context.file, `dist/${basePath}`).then(() => {
+                context.server.ws.send({
+                    type: "custom",
+                    event: "template-update",
+                    data: { path: `systems/${PACKAGE_ID}/${basePath}` },
+                });
+            });
+        }
+    },
+  }
+}
+
+const simpleHbsPlugin: Plugin = {
+  name: "hmr-handler",
+  apply: "serve",
+  handleHotUpdate(context) {
+    console.log("Received HBSPLUGIN Context", context);
+      if (context.file.startsWith("dist")) return;
+
+      if (context.file.endsWith("en.json")) {
+          const basePath = context.file.slice(context.file.indexOf("lang/"));
+          console.log(`Updating lang file at ${basePath}`);
+          fs.promises.copyFile(context.file, `dist/${basePath}`).then(() => {
+              context.server.ws.send({
+                  type: "custom",
+                  event: "lang-update",
+                  data: { path: `systems/${PACKAGE_ID}/${basePath}` },
+              });
+          });
+      } else if (context.file.endsWith(".hbs")) {
+          const basePath = context.file.slice(context.file.indexOf("templates/"));
+          console.log(`Updating template file at ${basePath}`);
+          fs.promises.copyFile(context.file, `dist/${basePath}`).then(() => {
+              context.server.ws.send({
+                  type: "custom",
+                  event: "template-update",
+                  data: { path: `systems/${PACKAGE_ID}/${basePath}` },
+              });
+          });
+      }
+  }
+};
+
 
 // Defining the Vite configuration object with specific settings for this project
 const config: UserConfig = defineConfig({
@@ -256,6 +173,12 @@ const config: UserConfig = defineConfig({
         target: `ws://localhost:${foundryPort}`, // Target server for the proxy
         ws:     true // Enable WebSocket support
       }
+    },
+    warmup: {
+      clientFiles: [
+        "./src/ts/libraries.ts",
+        "./src/ts/scripts/utilities.ts"
+      ]
     }
   },
   // Configuration for the build process
@@ -295,16 +218,24 @@ const config: UserConfig = defineConfig({
     }
   },
   plugins: [
-    // watchPublicDirPlugin(),
     foundryPlugin(),
     checker({typescript: true}),
-    COLOR_STYLESHEET_PATH ? scssVariablesToJsPlugin() : undefined,
     visualizer({
       gzipSize: true,
       template: "treemap"
     }),
     openChromePlugin(),
-    hmrHandlerPlugin()
+    copy({
+      targets: [
+        { src: 'src/templates/**/*', dest: 'dist' },
+        { src: 'public/assets/**/*', dest: 'dist' }
+      ],
+      hook: "buildStart",
+      copySync: true,
+      flatten: false
+    }),
+    // hbsPlugin(),
+    simpleHbsPlugin,
   ].filter(Boolean)
 });
 

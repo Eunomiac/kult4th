@@ -9718,10 +9718,26 @@ const ITEM_DATA: {
                   "result": "You remain in control."
                 },
                 "partialSuccess": {
-                  "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll."
+                  "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll.",
+                  "effects": [
+                    {
+                      key: "ModifyRoll",
+                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+                      value: "filter:all,effect:Add,value:-1,duration:ongoing,uses:1,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/disadvantage/depression.svg,resetOn:onUse,resetTo:false,label:Depression,fromText:a roll to manage #>item-button text-doclink&data-item-name='Depression'&data-action='open'>Depression<#,tooltip:A temporary penalty to your next roll due to anxiety, decreased self-confidence, or lacko f will. #>text-sourceref>(from a roll to manage <##>item-button text-doclink&data-item-name='Depression'&data-action='open'>Depression<##>text-sourceref> roll)<#",
+                      priority: undefined
+                    }
+                  ]
                 },
                 "failure": {
-                  "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol."
+                  "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
+                  "effects": [
+                    {
+                      key: "ModifyProperty",
+                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+                      value: "filter:actor,effect:Add,target:system.stability.value,value:-2,permanent:true",
+                      priority: undefined
+                    }
+                  ]
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -11173,7 +11189,7 @@ const ITEM_DATA: {
               {
                 key: "ModifyRoll",
                 mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,resetOn:onUse,resetTo:false,label:Acting On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies to any rolls made while acting on the GM's answers.#>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
+                value: "filter:all,effect:Add,value:1,duration:scene,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,resetOn:onUse,resetTo:false,label:Acting On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies to any rolls made while acting on the GM's answers.#>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
                 priority: undefined
               }
             ],
@@ -11189,7 +11205,7 @@ const ITEM_DATA: {
               {
                 key: "ModifyRoll",
                 mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:ongoing,uses:1,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,resetOn:onUse,resetTo:false,label:Acting On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
+                value: "filter:all,effect:Add,value:1,duration:scene,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,resetOn:onUse,resetTo:false,label:Acting On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
                 priority: undefined
               }
             ],
@@ -11242,13 +11258,13 @@ const ITEM_DATA: {
             {
               key: "ModifyRoll",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,effect:Add,value:actor.system.armor,inStatusBar:false",
+              value: "filter:Endure Injury,label:Armor,effect:Add,value:actor.system.armor,inStatusBar:false",
               priority: undefined
             },
             {
               key: "ModifyRoll",
               mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,effect:Subtract,value:prompt,title:How much Harm?,input:numberButtons,inputVals:1|2|3|4|5,inStatusBar:false",
+              value: "filter:Endure Injury,label:Harm,effect:Subtract,value:prompt,title:How much Harm?,input:buttons,inputVals:1|2|3|4|5,inStatusBar:false",
               priority: undefined
             }
           ],

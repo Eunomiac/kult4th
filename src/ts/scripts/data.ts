@@ -621,7 +621,7 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   async function clearActor(actor: K4Actor<K4ActorType.pc>) {
     await clearActorItems(actor);
     await clearActorEffects(actor);
-    return;
+    return undefined;
   }
 
   function clearAllActors(): Promise<unknown> {

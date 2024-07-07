@@ -1183,7 +1183,7 @@
       super._validateType(data);
       options.source = options.source || data;
       const cls = this.getModelForType(options.source.type);
-      if ( !cls?._enableV10Validation ) return;
+      if ( !cls?._enableV10Validation ) return undefined;
       const schema = cls?.schema;
       const {errors} = schema?.validate(data, options) ?? {};
       if ( !isEmpty(errors) ) {

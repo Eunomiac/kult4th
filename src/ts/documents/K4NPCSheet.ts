@@ -231,7 +231,7 @@ class K4NPCSheet extends ActorSheet {
   }
 
   handleMouseMove(event: JQuery.MouseMoveEvent, navPanel: HTMLElement, hoverTimeline: gsap.core.Timeline) {
-    if (!$(navPanel).data("isHovered")) { return; }
+    if (!$(navPanel).data("isHovered")) { return undefined; }
     const animParams: gsap.TweenVars = {};
     const panelElem = document.elementsFromPoint(event.clientX, event.clientY).find((elem) => $(elem).hasClass("nav-panel"));
     if (!panelElem) {
@@ -247,7 +247,7 @@ class K4NPCSheet extends ActorSheet {
       const maxX = $(navPanel).width() ?? 0;
       const maxY = $(navPanel).height() ?? 0;
 
-      if (!maxX || !maxY) { return; }
+      if (!maxX || !maxY) { return undefined; }
 
       const posX = U.pInt(event.clientX) - (this.position.left ?? 0); // event.offsetX;
       const posY = U.pInt(event.clientY) - (this.position.top ?? 0); // event.offsetY;

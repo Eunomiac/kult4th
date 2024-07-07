@@ -193,7 +193,7 @@ class K4Actor extends Actor {
    * - Creates the singleton "Wounds" and "Stability" K4ActiveEffects.
    */
   async initMovesAndEffects() {
-    if (!this.is(K4ActorType.pc)) {return;}
+    if (!this.is(K4ActorType.pc)) {return undefined;}
     const promises: Array<Promise<unknown>> = [];
     // Create the basic moves for the character
     if (this.basicMoves.length === 0) {
@@ -666,7 +666,7 @@ class K4Actor extends Actor {
     }
   }
   async addCondition(data: Partial<K4Actor.Components.Condition>) {
-    if (!this.is(K4ActorType.pc)) { return; }
+    if (!this.is(K4ActorType.pc)) { return undefined; }
     const {label, description, type, modDef} = data;
     if (!label) {
       throw new Error("Cannot add a condition without a label.");
@@ -713,7 +713,7 @@ class K4Actor extends Actor {
           } else {
             ui.notifications?.error(`${this.name} has already suffered a critical wound and cannot withstand another.`);
           }
-          return;
+          return undefined;
         }
         if (isWoundUpgrading) {
           ui.notifications?.warn(`${this.name} already has ${U.verbalizeNum(this.wounds_serious.length)} serious wounds, and suffers a CRITICAL WOUND instead!`);
@@ -740,7 +740,7 @@ class K4Actor extends Actor {
       switch (toggleSwitch) {
         case "type": {
           await this.update({[`system.wounds.${id}.isCritical`]: !this.wounds[id].isCritical});
-          return;
+          return undefined;
         }
         case "stabilized": {
           await this.update({[`system.wounds.${id}.isStabilized`]: !this.wounds[id].isStabilized});
@@ -808,7 +808,7 @@ class K4Actor extends Actor {
 
   // #region EDGES ~
   async updateEdges(edges: number, source?: K4Item) {
-    if (!this.is(K4ActorType.pc)) {return;}
+    if (!this.is(K4ActorType.pc)) {return undefined;}
     const sourceName = source ? source.parentName : this.system.edges.sourceName;
     if (this.sheet.rendered) {
       const html = this.sheet.element;
@@ -832,15 +832,15 @@ class K4Actor extends Actor {
     });
   }
   async spendEdge() {
-    if (!this.is(K4ActorType.pc) || !this.system.edges.value) {return;}
+    if (!this.is(K4ActorType.pc) || !this.system.edges.value) {return undefined;}
     await this.updateEdges(this.system.edges.value - 1);
   }
   async gainEdge() {
-    if (!this.is(K4ActorType.pc) || !this.system.edges.sourceName) {return;}
+    if (!this.is(K4ActorType.pc) || !this.system.edges.sourceName) {return undefined;}
     await this.updateEdges(this.system.edges.value + 1);
   }
   async clearEdges(): Promise<void> {
-    if (!this.is(K4ActorType.pc)) {return;}
+    if (!this.is(K4ActorType.pc)) {return undefined;}
     await this.updateEdges(0);
   }
   // #endregion
@@ -961,19 +961,21 @@ class K4Actor extends Actor {
    * ]
    * (Note that it does NOT include "Engage in Combat", as when combined with "all", its modifier sums to zero.)
    */
-  collapseRollModifiers(): Array<{
+  get collapsedRollModifiers(): Array<{
     display: string,
     tooltip: string,
     value: number,
     othering: Array<"all" | K4Item.Types.Rollable>,
-    category: "all" | "type" | K4Item.Types.Rollable
+    category: "all" | "type" | K4Item.Types.Rollable,
+    filter: string
   }> {
 
     const collapsedModifierData: Array<{
       display: string,
       value: number,
       othering: Array<"all" | K4Item.Types.Rollable>,
-      category: "all" | "type" | K4Item.Types.Rollable
+      category: "all" | "type" | K4Item.Types.Rollable,
+      filter: string
     }
     > = [];
 
@@ -999,12 +1001,13 @@ class K4Actor extends Actor {
       })
       .toReversed();
 
-    kLog.log("[collapseRollModifiers] Status Bar Vals", {changes: this.statusBarChanges, vals: U.objClone(statusBarVals)});
+    kLog.log("[collapsedRollModifiers] Status Bar Vals", {changes: this.statusBarChanges, vals: U.objClone(statusBarVals)});
 
     // Helper function to add or update the collapsed data
     const addOrUpdate = (
       display: string,
       value: number,
+      filter: string,
       othering: Array<"all" | K4Item.Types.Rollable>,
       category: "all" | "type" | K4Item.Types.Rollable
     ) => {
@@ -1012,7 +1015,7 @@ class K4Actor extends Actor {
       if (existing) {
         existing.value += value;
       } else {
-        collapsedModifierData.push({display, value, othering, category});
+        collapsedModifierData.push({display, value, filter, othering, category});
       }
     };
 
@@ -1021,19 +1024,19 @@ class K4Actor extends Actor {
       switch (filter) {
         case "all": {
           categoryVals.all += value;
-          addOrUpdate("Any Roll", value, [], "all");
+          addOrUpdate("Any Roll", value, filter, [], "all");
           break;
         }
         case K4ItemType.advantage: {
           value += categoryVals.all;
           categoryVals.advantage = value;
-          addOrUpdate("Any Advantage Roll", value, ["all"], "type");
+          addOrUpdate("Any Advantage Roll", value, filter, ["all"], "type");
           break;
         }
         case K4ItemType.disadvantage: {
           value += categoryVals.all;
           categoryVals.disadvantage += value;
-          addOrUpdate("Any Disadvantage Roll", value, ["all"], "type");
+          addOrUpdate("Any Disadvantage Roll", value, filter, ["all"], "type");
           break;
         }
         default: {
@@ -1053,13 +1056,13 @@ class K4Actor extends Actor {
           } else {
             value += categoryVals.all;
           }
-          addOrUpdate(filter, value, othering, category as K4ItemType.advantage | K4ItemType.disadvantage);
+          addOrUpdate(filter, value, filter, othering, category as K4ItemType.advantage | K4ItemType.disadvantage);
           break;
         }
       }
     });
 
-    kLog.log("[collapseRollModifiers] Initial Combination Pass", {
+    kLog.log("[collapsedRollModifiers] Initial Combination Pass", {
       categoryVals: U.objClone(categoryVals),
       collapsedModifierData: U.objClone(collapsedModifierData)
     });
@@ -1080,7 +1083,7 @@ class K4Actor extends Actor {
       });
 
 
-    kLog.log("[collapseRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
+    kLog.log("[collapsedRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
 
     // Adjust the display names to include "Other" where necessary
     if (filteredModifierData.some(({othering}) => othering?.includes("all"))) {
@@ -1102,7 +1105,7 @@ class K4Actor extends Actor {
       }
     }
 
-    kLog.log("[collapseRollModifiers] Othering Pass", U.objClone(filteredModifierData));
+    kLog.log("[collapsedRollModifiers] Othering Pass", U.objClone(filteredModifierData));
 
     /** Sort the collapsed and filtered modifier data as follows:
      *
@@ -1123,7 +1126,7 @@ class K4Actor extends Actor {
       filteredModifierData.find(({display}) => /^Any\s*(Other)?\s*Roll/.test(display))
     ].filter(U.isDefined);
 
-    kLog.log("[collapseRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
+    kLog.log("[collapsedRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
 
     const isContributingTo = (sourceFilter: string, display: string) => {
       if (sourceFilter === "all") { return true; }
@@ -1153,7 +1156,7 @@ class K4Actor extends Actor {
 
     // Now cycle through each modifier and construct the tooltip based on contributions from statusBarChanges
     return sortedModifierData.map((mData) => {
-      const tooltip = `<span class="tooltip"><ul>${this.statusBarChanges
+      const tooltip = `<ul>${this.statusBarChanges
         .filter(({filter}) => isContributingTo(filter, mData.display))
         .toSorted((a, b) => b.modData!.value - a.modData!.value)
         .map(({modData}) => {
@@ -1163,7 +1166,9 @@ class K4Actor extends Actor {
             `<strong class='${modData.cssClasses[0]}'>${modData.value >= 0 ? "+" : "–"}${Math.abs(modData.value)}</strong> from <strong class='${modData.cssClasses[0]}'>${modData.label}</strong>`,
             "</li>"
           ].join("")
-        }).join("")}</ul></span>`;
+        }).join("")}</ul>`;
+
+
 
         return {
           tooltip,
@@ -1172,23 +1177,6 @@ class K4Actor extends Actor {
       });
   }
 
-  /**
-   * Builds an HTML summary of all modifiers currently applied to the actor for display on their sheet.
-   * @returns {string} The modifier report HTML
-   */
-  buildModifierReport() {
-    const returnStrings = [];
-    const collapsedModifiers = this.collapseRollModifiers();
-    kLog.log("[buildModifierReport] Collapsed Modifiers", U.objClone(collapsedModifiers));
-    for (const {display, value, tooltip} of collapsedModifiers) {
-      if (value < 0) {
-        returnStrings.push(`<span class="k4-theme-red tooltip-trigger"><strong>${value}</strong> to <strong>${display}</strong>${tooltip}</span>`);
-      } else {
-        returnStrings.push(`<span class="k4-theme-gold tooltip-trigger"><strong>+${value}</strong> to <strong>${display}</strong>${tooltip}</span>`);
-      }
-    }
-    return `<span class="modifiers-report">${returnStrings.join("<span class='k4-theme-black no-flex'>&#9670;</span>")}</span>`;
-  }
 
   /**
  * Prepares data specific to player characters.
@@ -1213,12 +1201,17 @@ class K4Actor extends Actor {
       };
       this.system.armor = this.gear.reduce((acc, gear) => acc + gear.system.armor, 0);
 
+      if (this.system.stability.value > this.system.stability.max) {
+        this.system.stability.value = this.system.stability.max;
+      }
+      if (this.system.stability.value < this.system.stability.min) {
+        this.system.stability.value = this.system.stability.min;
+      }
+
       // Call all 'system change' custom functions.
-      this.systemChanges.forEach((change) => change.apply());
+      this.systemChanges.forEach((change) => change.apply(this));
 
-      this.system.modifiersReport = this.buildModifierReport();
       this.system.toggleableEffects = this.toggleableEffects;
-
     }
   }
   /**
@@ -1242,7 +1235,7 @@ class K4Actor extends Actor {
 
   override async _onCreate(...params: Parameters<Actor["_onCreate"]>) {
     await super._onCreate(...params);
-    if (this.type !== K4ActorType.pc) {return;}
+    if (this.type !== K4ActorType.pc) {return undefined;}
 
     // Set the default tab for the character sheet
     this.setFlag("kult4th", "sheetTab", "front");

@@ -488,7 +488,7 @@ class K4Item extends Item {
     }
 
     // If this isn't an item embedded on an actor, no additional functionality is necessary
-    if (!this.isOwnedItem()) {return;}
+    if (!this.isOwnedItem()) {return undefined;}
 
     // If item has subItem schemas, create them now as independent K4Items.
     if (this.isParentItem()) {
@@ -532,7 +532,7 @@ class K4Item extends Item {
   }
   override _onDelete(...args: Parameters<Item["_onDelete"]>) {
     super._onDelete(...args);
-    if (!this.isOwnedItem()) {return;}
+    if (!this.isOwnedItem()) {return undefined;}
     if (this.isParentItem()) {
       this.subItems.forEach((item) => item.delete());
       const {parent} = this;
@@ -550,7 +550,7 @@ class K4Item extends Item {
 
   // #region PUBLIC METHODS
   async updateHold(delta: number): Promise<void> {
-    if (!this.isOwnedItem()) { return; }
+    if (!this.isOwnedItem()) { return undefined; }
     if (this.isOwnedSubItem()) {
       return this.parentItem?.updateHold(delta);
     }
@@ -560,7 +560,7 @@ class K4Item extends Item {
         this.update({"system.currentHold": newHold});
       }
     }
-    return;
+    return undefined;
   }
 
   // #endregion
@@ -750,8 +750,8 @@ class K4Item extends Item {
   }
 
   async applyResult(result: Maybe<K4Item.Components.ResultData>) {
-    if (!result) { return; }
-    if (!this.isOwnedItem()) { return; }
+    if (!result) { return undefined; }
+    if (!this.isOwnedItem()) { return undefined; }
     const {edges, hold, effects} = result;
     /* Apply Hold, add Edges, and create Effects Here */
     if ((edges ?? 0) > 0) {
@@ -770,9 +770,9 @@ class K4Item extends Item {
   }
 
   async rollItem(speaker?: string) {
-    if (!this.hasResults()) {return;}
-    if (!this.isOwnedItem()) {return;}
-    if (!this.parent.is(K4ActorType.pc)) { return; }
+    if (!this.hasResults()) {return undefined;}
+    if (!this.isOwnedItem()) {return undefined;}
+    if (!this.parent.is(K4ActorType.pc)) { return undefined; }
     if (this.isEdge()) {
       this.parent.spendEdge();
     }
@@ -781,7 +781,7 @@ class K4Item extends Item {
       await roll._attribute;
       kLog.display("Evaluating Roll to Chat.");
       const message = await roll.evaluateToChat();
-      if (message === false) { return; }
+      if (message === false) { return undefined; }
       kLog.display("Awaiting Animations Promise...");
       await message.animationsPromise;
       kLog.display("Animation Complete!");
@@ -790,8 +790,8 @@ class K4Item extends Item {
   }
 
   async triggerItem(speaker?: string) {
-    if (!this.hasResults()) {return;}
-    if (!this.isOwnedItem()) {return;}
+    if (!this.hasResults()) {return undefined;}
+    if (!this.isOwnedItem()) {return undefined;}
     if (this.isEdge()) {
       this.parent.spendEdge();
     }
