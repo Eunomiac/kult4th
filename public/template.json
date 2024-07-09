@@ -211,6 +211,7 @@
 		},
 		"relation": {
 			"templates": ["base"],
+      "concept": "",
 			"target": "",
 			"strength": {
 				"min": 0,

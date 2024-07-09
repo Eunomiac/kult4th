@@ -2,7 +2,7 @@
 import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
-import K4Item, {K4ItemType} from "./K4Item.js";
+import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass} from "./K4Item.js";
 import K4Roll from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
 import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
@@ -111,14 +111,122 @@ enum PromptInputType {
 // #endregion
 // #region TYPES ~
 namespace K4Change {
-  export type Source = EffectChangeData;
+  export type Data = EffectChangeData;
 
-  export interface StatusBarData {
-    id: string; // The id of the change: `${parentEffect.id}_${change.index}`
-    filter: "all"|K4ItemType.advantage|K4ItemType.disadvantage|string,
-    value: number,
-    tooltip: string // An HTML string to be listed in the bullet-list tooltip assembled when mods are collapsed.
+   namespace Modes {
+    export type ModifyMove =
+      "PushElement"|
+      "AppendText";
+    export type ModifyTracker =
+      "Add"|
+      "Subtract";
+    export type ModifyAttack =
+      "Add"|
+      "Subtract"|
+      "Set"
+    export type ModifyProperty =
+      "Add"|
+      "Subtract"|
+      "Set"|
+      "Downgrade";
+    export type ModifyRoll =
+      "Add"|
+      "Subtract";
+    export type ModifyChange =
+      "Add"|
+      "Subtract"|
+      "Set";
   }
+
+  namespace Comps {
+    export interface CreateAttack {
+      filter: ValueOrArray<string>, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      name: string, // Name of the attack
+      tags: ValueOrArray<string> // Tags to apply to the attack
+      range: ValueOrArray<K4ItemRange> // Range(s) of the attack.
+      harm: number, // The harm value of the attack
+      special?: string, // Any special rules associated with the attack
+      ammo?: number, // Ammo usage of the attack
+    }
+    export interface CreateItem<T extends K4ItemType> extends Omit<K4Item.Schema<T>, "type"> {
+      type: T, // Type of item being created
+      name: string, // Name of item being created
+    }
+    export interface CreateTracker {
+      name: string, // Name of the tracker being created
+      target: `FLAGS.${string}` // Where to store the tracker data on the active effect
+      imgFolder: string, // Folder path to the images for the tracker. Must include one .webp folder for each possible value (including min and max), named "0.webp", "1.webp", etc.
+      min: number, // Minimum value of the tracker
+      max: number, // Maximum value of the tracker
+      startValue: number, // Initial value of the tracker
+    }
+    export interface ModifyTracker {
+      filter: ValueOrArray<string>, // Filter to determine the tracker(s) to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target: string, // The property of the tracker data to modify (e.g. "value")
+      mode: Modes.ModifyTracker, // The mode of modification to use
+      value: SystemScalar, // The value to apply to the modification
+    }
+    export interface ModifyAttack {
+      filter: ValueOrArray<string>, // Filter to determine the type(s) of attacks to modify. Refer to TAGS on the ATTACK (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target: string, // Dotkey target of property to modify (e.g. "harm")
+      mode: Modes.ModifyAttack, // Mode of the custom function to use
+      value: SystemScalar, // Value to apply to the modification
+    }
+    export interface ModifyMove {
+      filter: ValueOrArray<string>, // Filter to determine the type(s) of attacks to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target: string, // Dotkey target of property to modify (e.g. "system.lists.questions.items")
+      mode: Modes.ModifyMove, // Mode of the custom function to use
+      value: SystemScalar, // Value to apply to the modification
+    }
+    export interface ModifyRoll extends Partial<Omit<PromptForData, "target">> {
+      filter: ValueOrArray<string>, // Filter to determine the type(s) of rolls this change applies to. Can be "all", an item type, a specific item name, or the attribute rolled. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters).
+      mode: Modes.ModifyRoll, // Mode of the custom function to use
+      value: SystemScalar // Value to apply to the modification
+    }
+    export interface ModifyProperty {
+      filter: ValueOrArray<string>, // Filter to determine the type(s) of attacks to modify. Almost always "actor". Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target: string, // Dotkey target of property to modify (e.g. "system.modifiers.wounds_critical.1.all")
+      mode: Modes.ModifyProperty, // Mode of the custom function to use
+      value: SystemScalar, // Value to apply to the modification
+    }
+    export interface ModifyChange {
+      filter: ValueOrArray<string>, // Filter identifying the ORIGIN ITEM bearing the ActiveEffect that contains the Change to be modified
+      target: string, // Dotkey path ending with "effects", to the array containing the Change to be modified
+      changeFilter: ValueOrArray<string>, // Filter identifying the Change to be modified within the targeted changeData array
+      mode: Modes.ModifyChange, // Mode of the custom function to use on the Change
+      changeTarget: string, // Dotkey path within the Change to the property to modify
+      value: SystemScalar, // Value to apply to the modification
+    }
+    export interface PromptForData {
+      title: string,
+      bodyText: string,
+      subText?: string,
+      target: `FLAGS.${string}`, // where to store data on active effect
+      input: PromptInputType, // Type of input requested
+      inputVals?: SystemScalar[], // Values for buttons or other input types
+      default?: string, // Default value if prompt window closed; if undefined, item creation is cancelled
+    }
+    export interface RequireItem {
+      filter: ValueOrArray<string>, // Name of required item(s)
+    }
+  }
+
+  export type FuncName = keyof typeof CUSTOM_FUNCTIONS;
+
+  export type FuncData<N extends keyof typeof CUSTOM_FUNCTIONS, T extends K4ItemType = K4ItemType> =
+      N extends "CreateAttack" ? Comps.CreateAttack :
+      N extends "CreateItem" ? Comps.CreateItem<T> :
+      N extends "CreateTracker" ? Comps.CreateTracker :
+      N extends "ModifyTracker" ? Comps.ModifyTracker :
+      N extends "ModifyAttack" ? Comps.ModifyAttack :
+      N extends "ModifyMove" ? Comps.ModifyMove :
+      N extends "ModifyProperty" ? Comps.ModifyProperty :
+      N extends "ModifyChange" ? Comps.ModifyChange :
+      N extends "PromptForData" ? Comps.PromptForData :
+      N extends "RequireItem" ? Comps.RequireItem :
+      N extends "ModifyRoll" ? Comps.ModifyRoll :
+      never;
+    export type AnyFuncData = Comps.CreateAttack|Comps.CreateItem<K4ItemType>|Comps.CreateTracker|Comps.ModifyTracker|Comps.ModifyAttack|Comps.ModifyMove|Comps.ModifyProperty|Comps.ModifyChange|Comps.PromptForData|Comps.RequireItem|Comps.ModifyRoll;
 
 }
 namespace K4ActiveEffect {
@@ -137,6 +245,31 @@ namespace K4ActiveEffect {
   ) => Promise<boolean>;
 
   export type CustomFunction = CustomFunctionActor | CustomFunctionRoll;
+
+  export interface BuildData {
+    parentData: SourceData,
+    changeData: EffectChangeData[]
+  }
+
+  export interface SourceData {
+    canToggle: boolean, // Whether the user can toggle this effect on/off
+    inStatusBar: boolean, // Whether the effect should be displayed in the status bar (default = false UNLESS canToggle = true)
+    label: Maybe<string>, // The principal name of the Effect. Appears in tooltips and in chat roll results.  If undefined, effect takes the name of its origin item.
+    uses: number, // Number of uses of the effect before it is disabled or requires refill (0 = infinite).
+    canRefill: boolean, // Whether the effect's uses can be refilled or if it should be deleted when uses = max
+    isUnique: boolean, // Whether the effect is unique (only one copy can be on any Actor at a time)
+    duration: EffectDuration, // If/when the effect should be automatically removed ("ongoing" for never)
+    defaultState: boolean, // Whether a toggleable effect is enabled by default
+    resetOn: Maybe<EffectResetOn>, // When the effect should reset to its default state (or resetTo)
+    resetTo: Maybe<boolean>, // Overrides the default state when the effect resets
+    icon: Maybe<string>; // The icon to display on the status bar. If undefined, takes icon of origin item.
+    statusLabel: string; // The label to display on the status bar (default = "")
+    tooltip: Maybe<string>; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
+    permanent: boolean; // Whether the effect should permanently apply its effects upon creation
+    from?: string, // Optional override for the default "#>text-keyword>{sourceName}<#" component (is prefixed with 'from')
+    alertUser?: string, // Optional alert to display to actor's owner when the change is applied (in formatForKult or HTML)
+    alertAll?: string // Optional alert to display to all players when the change is applied (in formatForKult or HTML). If alertUser is also set, will not display the global alert to user.
+  }
 
 
   export namespace Components {
@@ -177,9 +310,9 @@ namespace K4ActiveEffect {
         canToggle: true;
         isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
         isEnabled: boolean; // Whether the effect is active and should be applied to rolls (default = defaultState)
-        toggleIcon: string; // The icon to display on the toggle modifier button.
-        toggleLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
-        toggleTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
+        statusIcon: string; // The icon to display on the toggle modifier button.
+        statusLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
+        statusTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
         defaultState: boolean; // Whether the effect is enabled by default when applied. (default = true)
         resetOn: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
         resetTo: boolean; // The state to which the effect is reset when resetOn conditions are met (default = defaultState)
@@ -219,10 +352,10 @@ namespace K4ActiveEffect {
     resetOn: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
     resetTo: boolean; // The state to which the effect is reset when resetOn conditions are met (default = defaultState)
     isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
-    toggleIcon: string; // The icon to display on the toggle modifier button.
+    statusIcon: string; // The icon to display on the toggle modifier button.
     toggleCategory: "stability"|"wound"|K4ItemType; // The category of the effect, used to group similar effects in the actor's character sheet
-    toggleLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
-    toggleTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
+    statusLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
+    statusTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
     toggleValue: string; // The value displayed next to the toggle button in the actor's character sheet (default = "")
     toggleValueGlow: string // The neon glow class to be applied to any value shown (default = "")
   }
@@ -233,15 +366,12 @@ namespace K4ActiveEffect {
 
 
 // #region === CUSTOM FUNCTIONS FOR MODE EffectMode.Custom ===
-const CUSTOM_FUNCTIONS: Record<
-  string,
-  K4ActiveEffect.CustomFunction
-> = {
+const CUSTOM_FUNCTIONS = {
   async CreateAttack(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
     return true;
   },
-  async CreateWeapon(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async CreateItem(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
     return true;
   },
@@ -249,7 +379,7 @@ const CUSTOM_FUNCTIONS: Record<
 
     return true;
   },
-  async ChangeTracker(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async ModifyTracker(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
 
     return true;
   },
@@ -263,7 +393,7 @@ const CUSTOM_FUNCTIONS: Record<
     }
     const {filter, target, effect, value, text, fromText} = data as Partial<{
       filter: string,
-      effect: string,
+      mode: string,
       target?: string,
       value?: SystemScalar,
       text?: string,
@@ -306,7 +436,7 @@ const CUSTOM_FUNCTIONS: Record<
   },
   async ModifyProperty(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
-      throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
+      throw new Error(`Invalid actor for ModifyProperty: ${String(actor)}`);
     }
     let {filter, effect, target, value, permanent} = data;
     value = U.castToScalar(String(value));
@@ -366,6 +496,18 @@ const CUSTOM_FUNCTIONS: Record<
         }
       }
     }
+    return true;
+  },
+  async ModifyChange(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+    if (!(actor instanceof K4Actor)) {
+      throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
+    }
+    let {filter, effect, target, value, permanent} = data;
+    value = U.castToScalar(String(value));
+    if (!filter || !effect || !target) {
+      throw new Error(`Invalid data for ModifyChange: ${JSON.stringify(data)}`);
+    }
+
     return true;
   },
   async PromptForData(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
@@ -499,7 +641,7 @@ const CUSTOM_FUNCTIONS: Record<
     }
     let {filter, effect, value} = data as Partial<{
       filter: string,
-      effect: string,
+      mode: string,
       value: SystemScalar
     }>;
     if (!filter || typeof filter !== "string") {
@@ -853,13 +995,13 @@ class K4Change implements EffectChangeData {
 class K4ActiveEffect extends ActiveEffect {
 
   static #isChangeModeCustom(change: EffectChangeData): boolean { return change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM; }
-  static #getChangesWith(changeData: K4Change.Source[], param: string, value?: SystemScalar): K4Change.Source[] {
+  static #getChangesWith(changeData: K4Change.Data[], param: string, value?: SystemScalar): K4Change.Data[] {
     return changeData
       .filter((changeData) => this.#isChangeModeCustom(changeData))
       .filter((changeData) => changeData.value.includes(`${param}:${String(value ?? "")}`));
   }
-  static #getConflictingChanges(changeData: K4Change.Source[], param: string): K4Change.Source[] {
-    const valueRecord: Record<string, K4Change.Source[]> = {};
+  static #getConflictingChanges(changeData: K4Change.Data[], param: string): K4Change.Data[] {
+    const valueRecord: Record<string, K4Change.Data[]> = {};
     changeData
       .filter((changeData) => this.#isChangeModeCustom(changeData))
       .forEach((changeData) => {
@@ -880,9 +1022,9 @@ class K4ActiveEffect extends ActiveEffect {
     delete valueRecord[majorityValue];
     return Object.values(valueRecord).flat();
   }
-  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Source[], prop: string): Maybe<T>
-  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Source[], prop: string, defaultVal: T): T
-  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Source[], prop: string, defaultVal?: T): Maybe<T> {
+  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Data[], prop: string): Maybe<T>
+  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Data[], prop: string, defaultVal: T): T
+  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Data[], prop: string, defaultVal?: T): Maybe<T> {
     let propVal: Maybe<SystemScalar> = undefined;
     this.#getChangesWith(changeData, prop).forEach((cData) => {
       const changeVal = K4Change.ParseFunctionDataString(cData.value)[prop];
@@ -949,7 +1091,7 @@ class K4ActiveEffect extends ActiveEffect {
 
     throw new Error(`Invalid origin type for ActiveEffect: ${String(origin)}`);
   }
-  static #resolveEffectName(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
+  static #resolveEffectName(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
     let effectName: Maybe<string> = K4Change.ParseFunctionDataString(this.#getChangesWith(changeData, "label")[0]?.value).label as Maybe<string>;
     if (effectName || explicitOnly) { return effectName; }
     if (origin instanceof K4Item) {
@@ -967,19 +1109,19 @@ class K4ActiveEffect extends ActiveEffect {
     console.warn(`No effect name found in listed changes, defaulting to '${effectName}'`, {changeData, origin});
     return effectName as string;
   }
-  static #groupChangesByEffectName(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Source[]> {
+  static #groupChangesByEffectName(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Data[]> {
     const defaultName = this.#resolveEffectName(changeData, origin) as string;
     return changeData.reduce((acc, cData) => {
       const effectName = this.#resolveEffectName([cData], origin, true) ?? defaultName;
       acc[effectName] = acc[effectName] ?? [];
       acc[effectName].push(cData);
       return acc;
-    }, {} as Record<string, K4Change.Source[]>);
+    }, {} as Record<string, K4Change.Data[]>);
   }
   /**
  * Given a list of changes, will group them by assigned name and validate that they are all compatible with each other.
  */
-  static #ProcessEffectChanges(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): Array<Tuple<string, K4Change.Source[]>> {
+  static #ProcessEffectChanges(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin): Array<Tuple<string, K4Change.Data[]>> {
     // First group changes by effect name
     const groupedChanges = this.#groupChangesByEffectName(changeData, origin);
 
@@ -1001,11 +1143,11 @@ class K4ActiveEffect extends ActiveEffect {
   /**
    * Given an array of K4Changes, will extract those function parameters that apply to the parent effect as a whole.
    * (Any potential conflicts are resolved by the time this function is called.)
-   * @param {K4Change.Source[]} changeData - The array of changes to extract from.
+   * @param {K4Change.Data[]} changeData - The array of changes to extract from.
    * @param {K4ActiveEffect.Origin} origin - The origin of the ActiveEffect.
    * @returns {K4ActiveEffect.ExtendedData} - The extracted data.
    */
-  static #ExtractExtendedData(changeData: K4Change.Source[], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
+  static #ExtractExtendedData(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
 
     const canToggle = this.#getEffectPropFromChanges<boolean>(changeData, "canToggle");
     const label = this.#getEffectPropFromChanges<string>(changeData, "label")
@@ -1068,20 +1210,20 @@ class K4ActiveEffect extends ActiveEffect {
         "resetTo",
         defaultState
       );
-      const toggleIcon = this.#getEffectPropFromChanges<string>(
+      const statusIcon = this.#getEffectPropFromChanges<string>(
         changeData,
         "icon"
       ) ?? "";
-      const toggleLabel = this.#getEffectPropFromChanges<string>(
+      const statusLabel = this.#getEffectPropFromChanges<string>(
         changeData,
-        "toggleLabel",
+        "statusLabel",
         ""
       );
-      const toggleTooltip = this.#getEffectPropFromChanges<string>(
+      const statusTooltip = this.#getEffectPropFromChanges<string>(
         changeData,
         "tooltip"
       );
-      if (U.isUndefined(toggleTooltip)) {
+      if (U.isUndefined(statusTooltip)) {
         throw new Error(`No tooltip found for toggleable effect: ${label}`);
       }
       return {
@@ -1092,9 +1234,9 @@ class K4ActiveEffect extends ActiveEffect {
         defaultState,
         resetOn,
         resetTo,
-        toggleIcon,
-        toggleLabel,
-        toggleTooltip,
+        statusIcon,
+        statusLabel,
+        statusTooltip,
         duration,
         isUnique,
         uses,
@@ -1148,16 +1290,16 @@ class K4ActiveEffect extends ActiveEffect {
     return this.enabledCustomChanges
       .find((change) => Boolean(change.originItem))?.originItem?.type ?? K4ItemType.move;
   }
-  get toggleIcon(): string {
+  get statusIcon(): string {
     if (!this.canToggle()) { return ""; }
     if (!this.isOwnedByActor()) { return ""; }
     if (this.isApplyingWoundModifiers) { return this.actor.woundsIcon; }
     if (this.isApplyingStabilityModifiers) { return this.actor.stabilityIcon; }
-    if (this.eData.toggleIcon) { return this.eData.toggleIcon; }
+    if (this.eData.statusIcon) { return this.eData.statusIcon; }
     return `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-${this.benefit}.svg`;
   }
-  get toggleLabel(): string { return this.canToggle() ? this.eData.toggleLabel ?? "" : ""; }
-  get toggleTooltip(): string { return this.canToggle() ? this.eData.toggleTooltip ?? "" : ""; }
+  get statusLabel(): string { return this.canToggle() ? this.eData.statusLabel ?? "" : ""; }
+  get statusTooltip(): string { return this.canToggle() ? this.eData.statusTooltip ?? "" : ""; }
   get effectDuration(): EffectDuration { return this.eData.duration; }
   get isUnique(): boolean { return this.eData.isUnique; }
   get uses(): Maybe<ValueMax> { return this.eData.uses; }
@@ -1207,10 +1349,10 @@ class K4ActiveEffect extends ActiveEffect {
       resetOn: this.resetOn,
       resetTo: this.resetTo,
       isLocked: this.isLocked,
-      toggleIcon: this.toggleIcon,
+      statusIcon: this.statusIcon,
       toggleCategory: this.toggleCategory,
-      toggleLabel: this.toggleLabel,
-      toggleTooltip: this.toggleTooltip,
+      statusLabel: this.statusLabel,
+      statusTooltip: this.statusTooltip,
       toggleValue: this.toggleValue ?? "",
       toggleValueGlow: this.toggleValueGlow!,
     };
@@ -1225,7 +1367,7 @@ class K4ActiveEffect extends ActiveEffect {
     return this.isEnabled && this.getApplicableRollModifiers(roll).length > 0;
   }
   static async CreateFromChangeData(
-    changeData: K4Change.Source[],
+    changeData: K4Change.Data[],
     origin: K4ActiveEffect.Origin,
     target?: K4Actor<K4ActorType.pc>
   ): Promise<K4ActiveEffect[]> {
@@ -1626,5 +1768,5 @@ interface K4ActiveEffect extends ActiveEffect {
 // #endregion
 // #region EXPORTS ~
 export default K4ActiveEffect;
-export {K4Change, EffectSourceType};
+export {K4Change, EffectSourceType, EffectDuration, EffectResetOn, PromptInputType};
 // #endregion

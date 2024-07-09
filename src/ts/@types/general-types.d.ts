@@ -53,7 +53,7 @@ declare global {
   // Represents either a value or an index of values
   type ValueOrIndex<V = unknown> = V | Index<V>;
   // Represents either a value or an array of values
-  type ItemOrArray<V = unknown> = V | V[];
+  type ValueOrArray<V = unknown> = V | V[];
   // Represents either a value or a list of values
   type ValueOrList<V = unknown, K extends Key = Key> = V | List<V, K>;
   // Represents a value or a Promise resolving to a value

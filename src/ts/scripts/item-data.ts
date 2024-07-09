@@ -1,34 +1,13 @@
-
+import {K4Attribute} from "./constants.js";
+import K4ActiveEffect, {EffectDuration, EffectResetOn, K4Change, PromptInputType} from "../documents/K4ActiveEffect.js";
+import {
+  K4ItemType,
+  K4ItemSubType,
+  K4ItemRange,
+  K4WeaponClass,
+  K4RollResult
+} from "../documents/K4Item.js";
 // #region Types & Enums ~
-enum K4Attribute {
-  ask = "ask",
-  zero = "zero",
-  fortitude = "fortitude",
-  reflexes = "reflexes",
-  willpower = "willpower",
-  reason = "reason",
-  intuition = "intuition",
-  perception = "perception",
-  coolness = "coolness",
-  violence = "violence",
-  charisma = "charisma",
-  soul = "soul"
-}
-enum K4ItemType {
-  advantage = "advantage",
-  disadvantage = "disadvantage",
-  move = "move",
-  darksecret = "darksecret",
-  relation = "relation",
-  gear = "gear",
-  weapon = "weapon",
-  gmtracker = "gmtracker"
-}
-enum K4ItemSubType {
-  activeRolled = "active-rolled",
-  activeStatic = "active-static",
-  passive = "passive"
-}
 namespace ITEM_DATA {
   export interface Schema<T extends K4ItemType = K4ItemType> {
     name: string;
@@ -38,6 +17,43 @@ namespace ITEM_DATA {
   }
 }
 // #endregion
+
+function BuildEffectData(data?: Partial<K4ActiveEffect.SourceData>): K4ActiveEffect.SourceData {
+  data ??= {};
+  const canToggle = Boolean(data.canToggle);
+  const inStatusBar = canToggle || Boolean(data.inStatusBar);
+  return {
+    canToggle,
+    inStatusBar,
+    label: data.label ?? undefined,
+    uses: data.uses ?? 0,
+    canRefill: (data.uses ?? 0) > 0
+      ? Boolean(data.canRefill)
+      : false,
+    isUnique: data.isUnique ?? true,
+    duration: data.duration ?? EffectDuration.ongoing,
+    defaultState: data.defaultState ?? true,
+    resetOn: canToggle
+      ? (data.resetOn ?? EffectResetOn.never)
+      : undefined,
+    resetTo: canToggle
+      ? (data.resetTo ?? data.defaultState ?? true)
+      : undefined,
+    icon: data.icon ?? undefined,
+    statusLabel: data.statusLabel ?? "",
+    tooltip: data.tooltip ?? undefined,
+    permanent: Boolean(data.permanent)
+  };
+}
+
+function BuildChangeData<N extends K4Change.FuncName, T extends K4ItemType = K4ItemType>(funcName: N, value: K4Change.FuncData<N, T>): EffectChangeData {
+  return {
+    key: funcName,
+    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+    value: JSON.stringify(value),
+    priority: undefined
+  };
+}
 
 const ITEM_DATA: {
   advantage: ITEM_DATA.Schema<K4ItemType.advantage>[],
@@ -80,7 +96,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -146,7 +161,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -181,10 +195,21 @@ const ITEM_DATA: {
                   "hold": 0,
                   "effects": [
                     {
-                      key: "ChangeCounter",
-                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                      value: "filter:Time,value:1",
-                      priority: undefined
+                      "parentData": BuildEffectData({
+                        permanent: true,
+                        alertAll: [
+                          "<h2>%insert.actor.name% Refuses to Give In!</h2>",
+                          "<p>They sacrifice Time to reroll the dice.</p>"
+                        ].join("")
+                      }),
+                      "changeData": [
+                        BuildChangeData("ModifyTracker", {
+                          filter: "Time",
+                          target: "value",
+                          mode: "Add",
+                          value: -1
+                        })
+                      ]
                     }
                   ]
                 }
@@ -200,10 +225,17 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              key: "RequireItem",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Condemned,for:To the Last Breath",
-              priority: undefined
+              "parentData": BuildEffectData({
+                alertUser: [
+                  "<h2>Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span></h2>",
+                  "<p>You must take the 'Condemned' Disadvantage before you can take this Advantage.</p>"
+                ].join("")
+              }),
+              "changeData": [
+                BuildChangeData("RequireItem", {
+                  filter: "Condemned"
+                })
+              ]
             }
           ],
           "holdText": ""
@@ -236,16 +268,21 @@ const ITEM_DATA: {
           ],
           "effects": [
             {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What are you afraid of? #>text-sourceref>(from <##>text-itemlink>Extortionist<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What is precious to you? #>text-sourceref>(from <##>text-itemlink>Extortionist<##>text-sourceref>)<#",
-              priority: undefined
+              "parentData": BuildEffectData(),
+              "changeData": [
+                BuildChangeData("ModifyMove", {
+                  filter: "Read a Person",
+                  target: "system.lists.questions.items",
+                  mode: "PushElement",
+                  value: "What are you afraid of?"
+                }),
+                BuildChangeData("ModifyMove", {
+                  filter: "Read a Person",
+                  target: "system.lists.questions.items",
+                  mode: "PushElement",
+                  value: "What is precious to you?"
+                })
+              ]
             }
           ],
           "holdText": ""
@@ -318,7 +355,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -355,7 +391,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -427,7 +462,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move for the location."
         },
         "currentHold": 0,
@@ -464,7 +498,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -538,7 +571,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -605,7 +637,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -671,7 +702,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -720,7 +750,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -757,7 +786,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -806,7 +834,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -864,7 +891,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold on the Watchers' behalf to let them make a Move against you."
         },
         "currentHold": 0,
@@ -893,13 +919,121 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "The person is a friend (#>text-keyword>Relation +1<#)."
+                  "result": "The person is a friend (#>text-keyword>Relation +1<#).",
+                  "effects": [
+                    {
+                      "parentData": BuildEffectData({
+                        isUnique: false
+                      }),
+                      "changeData": [
+                        BuildChangeData("PromptForData", {
+                          title: "Describe Your Friend",
+                          bodyText: "What is your friend's name?",
+                          target: "FLAGS.name",
+                          input: PromptInputType.text
+                        }),
+                        BuildChangeData("PromptForData", {
+                          title: "Describe Your Friend",
+                          bodyText: "What is your friend's field of study?",
+                          subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
+                          target: "FLAGS.field",
+                          input: PromptInputType.text
+                        }),
+                        BuildChangeData("CreateItem", {
+                          type: K4ItemType.relation,
+                          name: "%FLAGS.name%",
+                          img: "icons/mystery-man.svg",
+                          system: {
+                            lists: {},
+                            subType: K4ItemSubType.passive,
+                            strength: {
+                              min: 0,
+                              max: 2,
+                              value: 1
+                            }
+                          }
+                        })
+                      ]
+                    }
+                  ]
                 },
                 "partialSuccess": {
-                  "result": "The person is an acquaintance (#>text-keyword>Relation +0<#)."
+                  "result": "The person is an acquaintance (#>text-keyword>Relation +0<#).",
+                  "effects": [
+                    {
+                      "parentData": BuildEffectData({
+                        isUnique: false
+                      }),
+                      "changeData": [
+                        BuildChangeData("PromptForData", {
+                          title: "Describe Your Acquaintance",
+                          bodyText: "What is your contact's name?",
+                          target: "FLAGS.name",
+                          input: PromptInputType.text
+                        }),
+                        BuildChangeData("PromptForData", {
+                          title: "Describe Your Acquaintance",
+                          bodyText: "What is your contact's field of study?",
+                          subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
+                          target: "FLAGS.field",
+                          input: PromptInputType.text
+                        }),
+                        BuildChangeData("CreateItem", {
+                          type: K4ItemType.relation,
+                          name: "%FLAGS.name%",
+                          img: "icons/mystery-man.svg",
+                          system: {
+                            lists: {},
+                            subType: K4ItemSubType.passive,
+                            strength: {
+                              min: 0,
+                              max: 2,
+                              value: 0
+                            }
+                          }
+                        })
+                      ]
+                    }
+                  ]
                 },
                 "failure": {
-                  "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#)."
+                  "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#).",
+                  "effects": [
+                    {
+                      "parentData": BuildEffectData({
+                        isUnique: false
+                      }),
+                      "changeData": [
+                        BuildChangeData("PromptForData", {
+                          title: "Describe Your Contact",
+                          bodyText: "What is your contact's name?",
+                          target: "FLAGS.name",
+                          input: PromptInputType.text
+                        }),
+                        BuildChangeData("PromptForData", {
+                          title: "Describe Your Contact",
+                          bodyText: "What is your contact's field of study?",
+                          subText: "<em>(Don't forget to describe how you got to know one another, and to work with the GM and other players to determine the nature of the enmity between you.)</em>",
+                          target: "FLAGS.field",
+                          input: PromptInputType.text
+                        }),
+                        BuildChangeData("CreateItem", {
+                          type: K4ItemType.relation,
+                          name: "%FLAGS.name%",
+                          img: "icons/mystery-man.svg",
+                          system: {
+                            lists: {},
+                            subType: K4ItemSubType.passive,
+                            strength: {
+                              min: 0,
+                              max: 2,
+                              value: 0
+                            }
+                          }
+                        })
+                      ]
+                    }
+                  ]
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -912,7 +1046,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -960,7 +1093,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1029,7 +1161,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1096,7 +1227,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1133,7 +1263,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1202,7 +1331,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1268,7 +1396,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1316,7 +1443,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1439,7 +1565,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1580,7 +1705,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1637,7 +1761,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1706,7 +1829,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1775,7 +1897,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1844,7 +1965,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1871,20 +1991,23 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:What sort of person are you? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Observant'&data-action='open'>Observant<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Is there anything odd about you? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Observant'&data-action='open'>Observant<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "What sort of person are you?"
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "Is there anything odd about you?"
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1917,38 +2040,43 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "Whenever you #>item-button text-doclink&data-item-name='Investigate'&data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
-          "effects": [
-            {
-              key: "PromptForData",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "title:What is your first Field of Expertise?,default: ,key:flags.Expert.field_1,input:text,bodyText:You may choose any sufficiently-broad area of academic study.,subText:#>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology",
-              priority: undefined
-            },
-            {
-              key: "PromptForData",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "title:What is your second Field of Expertise?,default: ,key:flags.Expert.field_2,input:text,bodyText:You may choose any sufficiently-broad area of academic study.,subText:#>text-posmod>Examples:<# Archaeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<# you may ask an additional question, any question you want. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Expert'&data-action='open'>Expert<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<# you may ask an additional question, any question you want. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Expert'&data-action='open'>Expert<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.flags.Expert.field_1%<# or #>text-keyword>%insert.flags.Expert.field_2%<# you may still ask any one question you want. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Expert'&data-action='open'>Expert<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("PromptForData", {
+                title: "What is your first Field of Expertise?",
+                target: "FLAGS.field_1",
+                input: PromptInputType.text,
+                bodyText: "You may choose any sufficiently-broad area of academic study.",
+                subText: "<em><strong>Examples:</strong> Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</em>"
+              }),
+              BuildChangeData("PromptForData", {
+                title: "What is your second Field of Expertise?",
+                target: "FLAGS.field_2",
+                input: PromptInputType.text,
+                bodyText: "You may choose any sufficiently-broad area of academic study.",
+                subText: "<em><strong>Examples:</strong> Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</em>"
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Investigate",
+                target: "system.results.completeSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may ask an additional question, any question you want."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Investigate",
+                target: "system.results.partialSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may ask an additional question, any question you want."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Investigate",
+                target: "system.results.failure.result",
+                mode: "AppendText",
+                value: "%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may still ask any one question you want."
+              }),
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1967,26 +2095,29 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Interrogator'&data-action='open'>Interrogator<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Interrogator'&data-action='open'>Interrogator<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, if you mention a name, person, or object, you may still ask 'Are you lying?' #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Interrogator'&data-action='open'>Interrogator<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.results.completeSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.results.partialSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.results.failure.result",
+                mode: "AppendText",
+                value: "%insert.break%Despite your failure, if you mention a name, person, or object, you may still ask 'Are you lying?'"
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2023,7 +2154,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2077,14 +2207,19 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "RequireItem",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Condemned,for:Sealed Fate",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData({
+              alertUser: [
+                "<h2>Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span></h2>",
+                "<p>You must take the 'Condemned' Disadvantage before you can take this Advantage.</p>"
+              ].join("")
+            }),
+            "changeData": [
+              BuildChangeData("RequireItem", {
+                filter: "Condemned"
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2153,7 +2288,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2219,7 +2353,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2289,7 +2422,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2308,14 +2440,22 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyRoll",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,effect:Add,value:1,duration:ongoing,icon:systems/kult4th/assets/icons/advantage/hardened.svg,label:Hardened,tooltip:Applies to all #>item-button text-doclink&data-item-name='Endure Injury'&data-action='open'>Endure Injury<# rolls. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Hardened'&data-action='open'>Hardened<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData({
+              canToggle: false,
+              inStatusBar: true,
+              duration: EffectDuration.ongoing,
+              icon: "systems/kult4th/assets/icons/advantage/hardened.svg",
+              tooltip: "Applies <em>+1 ongoing</em> to all #>text-keyword>Endure Injury<# rolls."
+            }),
+            "changeData": [
+              BuildChangeData("ModifyRoll", {
+                filter: "Endure Injury",
+                mode: "Add",
+                value: 1
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2371,7 +2511,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2444,7 +2583,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2501,7 +2639,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2570,7 +2707,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2640,7 +2776,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2677,7 +2812,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2800,7 +2934,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2819,14 +2952,19 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "CreateAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:sword,name:Riposte,range:arm,harm:3,fromText:#>item-button text-doclink&data-item-name='Elite Sport (Fencing)'&data-action='open'>Elite Sport (Fencing)<#,special:You can make this attack immediately after parrying.",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("CreateAttack", {
+                filter: "sword",
+                name: "Riposte",
+                tags: ["close_combat", "edged", "sword"],
+                range: K4ItemRange.arm,
+                harm: 1,
+                special: "You can make this attack immediately after parrying."
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2897,7 +3035,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2945,7 +3082,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3015,7 +3151,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3063,7 +3198,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3132,7 +3266,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3188,7 +3321,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3236,7 +3368,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3306,7 +3437,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3334,32 +3464,40 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:close_combat,effect:ChangeAttribute,value:coolness",
-              priority: undefined
-            },
-            {
-              key: "CreateAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:close_combat,name:Launching Attack,range:room,harm:2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Melee)'&data-action='open'>Weapon Master (Melee)<#",
-              priority: undefined
-            },
-            {
-              key: "CreateAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:close_combat,name:Precision Attack,range:arm,harm:2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Melee)'&data-action='open'>Weapon Master (Melee)<#,special:Ignores armor.",
-              priority: undefined
-            },
-            {
-              key: "CreateAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:close_combat,name:Tripping Attack,range:arm,harm:2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Melee)'&data-action='open'>Weapon Master (Melee)<#,special:Target falls prone.",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyAttack", {
+                filter: "close_combat",
+                target: "attribute",
+                mode: "Set",
+                value: K4Attribute.coolness
+              }),
+              BuildChangeData("CreateAttack", {
+                filter: "close_combat",
+                name: "Launching Attack",
+                range: K4ItemRange.room,
+                harm: 2,
+                tags: ["close_combat", "ranged"]
+              }),
+              BuildChangeData("CreateAttack", {
+                filter: "close_combat",
+                name: "Precision Attack",
+                range: K4ItemRange.arm,
+                harm: 2,
+                tags: ["close_combat", "ignore_armor"],
+                special: "Ignores armor."
+              }),
+              BuildChangeData("CreateAttack", {
+                filter: "close_combat",
+                name: "Tripping Attack",
+                range: K4ItemRange.arm,
+                harm: 2,
+                tags: ["close_combat"],
+                special: "Target falls prone."
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3429,7 +3567,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3553,7 +3690,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3694,7 +3830,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3764,7 +3899,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3838,7 +3972,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3908,7 +4041,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3976,7 +4108,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4102,7 +4233,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4178,7 +4308,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4249,7 +4378,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4286,7 +4414,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4305,44 +4432,47 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Set,target:system.modifiers.wounds_critical.1.all,value:0",
-              priority: undefined
-            },
-            {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.1.all,value:0",
-              priority: undefined
-            },
-            {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.2.all,value:0",
-              priority: undefined
-            },
-            {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.3.all,value:0",
-              priority: undefined
-            },
-            {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Set,target:system.modifiers.wounds_serious.4.all,value:0",
-              priority: undefined
-            },
-            {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Set,target:system.modifiers.wounds_seriouscritical.1.all,value:0",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyProperty", {
+                filter: "actor",
+                mode: "Set",
+                target: "system.modifiers.wounds_critical.1.all",
+                value: 0
+              }),
+              BuildChangeData("ModifyProperty", {
+                filter: "actor",
+                mode: "Set",
+                target: "system.modifiers.wounds_serious.1.all",
+                value: 0
+              }),
+              BuildChangeData("ModifyProperty", {
+                filter: "actor",
+                mode: "Set",
+                target: "system.modifiers.wounds_serious.2.all",
+                value: 0
+              }),
+              BuildChangeData("ModifyProperty", {
+                filter: "actor",
+                mode: "Set",
+                target: "system.modifiers.wounds_serious.3.all",
+                value: 0
+              }),
+              BuildChangeData("ModifyProperty", {
+                filter: "actor",
+                mode: "Set",
+                target: "system.modifiers.wounds_serious.4.all",
+                value: 0
+              }),
+              BuildChangeData("ModifyProperty", {
+                filter: "actor",
+                mode: "Set",
+                target: "system.modifiers.wounds_seriouscritical.1.all",
+                value: 0
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4387,7 +4517,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4528,7 +4657,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4556,26 +4684,29 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Which organizations, groups, or people of interest may be connected to this? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Analyst'&data-action='open'>Analyst<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:Is there a connection between this and another event? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Analyst'&data-action='open'>Analyst<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Investigate,target:system.lists.questions.items,effect:PushElement,value:What could a plausible motive be? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Analyst'&data-action='open'>Analyst<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Investigate",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "Which organizations, groups, or people of interest may be connected to this?"
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Investigate",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "Is there a connection between this and another event?"
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Investigate",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "What could a plausible motive be?"
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4631,7 +4762,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4689,7 +4819,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4760,7 +4889,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4779,7 +4907,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4827,7 +4954,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4950,7 +5076,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4998,7 +5123,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5069,7 +5193,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5138,7 +5261,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5275,7 +5397,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5344,7 +5465,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5392,7 +5512,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5466,7 +5585,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5534,7 +5652,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5666,14 +5783,20 @@ const ITEM_DATA: {
               "results": {
                 "triggered": {
                   "result": "",
-                  "effects": [
-                    {
-                      key: "CreateAttack",
-                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                      value: "filter:close_combat,name:Surprise Strike,range:arm,harm:2,fromText:#>item-button text-doclink&data-item-name='Field Agent'&data-action='open'>Field Agent<#,uses:1",
-                      priority: undefined
-                    }
-                  ]
+                  "effects": [{
+                    "parentData": BuildEffectData({
+                      uses: 1
+                    }),
+                    "changeData": [
+                      BuildChangeData("CreateAttack", {
+                        filter: "close_combat",
+                        name: "Surprise Strike",
+                        range: K4ItemRange.arm,
+                        harm: 2,
+                        tags: ["close_combat", "improvised"]
+                      })
+                    ]
+                  }],
                 }
               },
               "subType": K4ItemSubType.activeStatic,
@@ -5687,7 +5810,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5756,7 +5878,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5804,7 +5925,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5869,7 +5989,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5940,7 +6059,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6008,7 +6126,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6035,20 +6152,23 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What weaknesses do they have I can use to my advantage? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Keen-Eyed'&data-action='open'>Keen-Eyed<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.lists.questions.items,effect:PushElement,value:What strengths do they have I should watch out for? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Keen-Eyed'&data-action='open'>Keen-Eyed<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Observe a Situation",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "What weaknesses do they have I can use to my advantage?"
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Observe a Situation",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "What strengths do they have I should watch out for?"
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6120,7 +6240,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move."
         },
         "currentHold": 0,
@@ -6176,7 +6295,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6224,7 +6342,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6293,7 +6410,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6312,32 +6428,35 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (3 total). #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Intuitive'&data-action='open'>Intuitive<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may ask one additional question (2 total). #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Intuitive'&data-action='open'>Intuitive<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.failure.result,effect:AppendText,text:%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Intuitive'&data-action='open'>Intuitive<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.results.failure.listRefs,effect:PushElement,value:questions",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.results.completeSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%You may ask one additional question (3 total)."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.results.partialSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%You may ask one additional question (2 total)."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.results.failure.result",
+                mode: "AppendText",
+                value: "%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "questions"
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6364,26 +6483,34 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:firearm,effect:ChangeAttribute,value:coolness",
-              priority: undefined
-            },
-            {
-              key: "CreateAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:firearm,range:room,harm:4,ammo:-2,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Firearms)'&data-action='open'>Weapon Master (Firearms)<#,name:Two in the Chest, One in the Head",
-              priority: undefined
-            },
-            {
-              key: "CreateAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:firearm,range:room,harm:4,ammo:-1,fromText:#>item-button text-doclink&data-item-name='Weapon Master (Firearms)'&data-action='open'>Weapon Master (Firearms)<#,name:Disarm,special:Disarm target; a targeted PC must Act Under Pressure.",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyAttack", {
+                filter: "firearm",
+                mode: "Set",
+                target: "attribute",
+                value: K4Attribute.coolness
+              }),
+              BuildChangeData("CreateAttack", {
+                filter: "firearm",
+                range: K4ItemRange.room,
+                harm: 4,
+                ammo: 2,
+                tags: ["ranged", "firearm"],
+                name: "Two in the Chest, One in the Head"
+              }),
+              BuildChangeData("CreateAttack", {
+                filter: "firearm",
+                range: K4ItemRange.room,
+                harm: 4,
+                ammo: 1,
+                tags: ["ranged", "firearm"],
+                name: "Disarming Shot",
+                special: "Disarm target; a targeted PC must #>text-doclink>Act Under Pressure<#."
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6431,7 +6558,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6468,7 +6594,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6487,32 +6612,39 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.completeSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.completeSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Observe a Situation,target:system.results.partialSuccess.effects,effect:ModifyEffect,effectFilter:Act On Observations,effectProperty:value,effectValue:2,fromText:#>item-button text-doclink&data-item-name='Instinct'&data-action='open'>Instinct<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Observe a Situation",
+                target: "system.results.completeSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Observe a Situation",
+                target: "system.results.partialSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
+              }),
+              BuildChangeData("ModifyChange", {
+                filter: "Observe a Situation",
+                target: "system.results.completeSuccess.effects",
+                changeFilter: "Acting On Observations",
+                mode: "Set",
+                changeTarget: "value",
+                value: 2
+              }),
+              BuildChangeData("ModifyChange", {
+                filter: "Observe a Situation",
+                target: "system.results.partialSuccess.effects",
+                changeFilter: "Acting On Observations",
+                mode: "Set",
+                changeTarget: "value",
+                value: 2
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6539,20 +6671,23 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:Are you hiding anything from me? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Vigilant'&data-action='open'>Vigilant<##>text-sourceref>)<#",
-              priority: undefined
-            },
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Read a Person,target:system.lists.questions.items,effect:PushElement,value:How do you really feel about me? #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Vigilant'&data-action='open'>Vigilant<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "Are you hiding anything from me?"
+              }),
+              BuildChangeData("ModifyMove", {
+                filter: "Read a Person",
+                target: "system.lists.questions.items",
+                mode: "PushElement",
+                value: "How do you really feel about me?"
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6580,7 +6715,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6653,7 +6787,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6722,7 +6855,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6741,14 +6873,17 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyAttack",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:firearm,target:harm,effect:Add,value:1,fromText:#>item-button text-doclink&data-item-name='Dead Shot'&data-action='open'>Dead Shot<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyAttack", {
+                filter: "firearm",
+                target: "harm",
+                mode: "Add",
+                value: 1
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6889,7 +7024,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6958,7 +7092,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7081,7 +7214,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7151,7 +7283,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7170,14 +7301,17 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "ModifyMove",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Keep It Together,target:system.results.partialSuccess.result,effect:AppendText,text:%insert.break%You may suppress your emotions, postponing their effects until the next scene. #>text-sourceref>(from <##>item-button text-doclink&data-item-name='Jaded'&data-action='open'>Jaded<##>text-sourceref>)<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("ModifyMove", {
+                filter: "Keep It Together",
+                target: "system.results.partialSuccess.result",
+                mode: "AppendText",
+                value: "%insert.break%You may suppress your emotions, postponing their effects until the next scene."
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7196,7 +7330,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7233,7 +7366,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7299,7 +7431,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7356,7 +7487,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7432,7 +7562,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7498,7 +7627,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7535,7 +7663,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7572,7 +7699,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7591,7 +7717,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7691,7 +7816,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": ["edges"],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7749,7 +7873,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7820,7 +7943,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7891,7 +8013,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7939,7 +8060,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8008,7 +8128,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8075,7 +8194,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8123,7 +8241,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8242,7 +8359,6 @@ const ITEM_DATA: {
           "listRefs": [
             "edges"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8309,7 +8425,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8362,7 +8477,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your competitor. For example, your competitor may take control of some of your business dealings, learn one of your secrets, sabotages one of your assets, or harms or buys off someone you care for and trust."
         },
         "currentHold": 0
@@ -8429,7 +8543,6 @@ const ITEM_DATA: {
           "listRefs": [
             "options"
           ],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -8486,7 +8599,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -8523,7 +8635,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -8571,7 +8682,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -8622,7 +8732,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
         },
         "currentHold": 0
@@ -8673,7 +8782,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (#>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
         "currentHold": 0
@@ -8724,7 +8832,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
         },
         "currentHold": 0
@@ -8745,16 +8852,26 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Set,target:system.stability.max,value:6",
-              priority: undefined
+              "parentData": BuildEffectData({permanent: true}),
+              "changeData": [
+                BuildChangeData("ModifyProperty", {
+                  filter: "actor",
+                  mode: "Downgrade",
+                  target: "system.stability.value",
+                  value: 6
+                })
+              ]
             },
             {
-              key: "ModifyProperty",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:actor,effect:Downgrade,target:system.stability.value,value:6,permanent:true",
-              priority: undefined
+              "parentData": BuildEffectData(),
+              "changeData": [
+                BuildChangeData("ModifyProperty", {
+                  filter: "actor",
+                  mode: "Set",
+                  target: "system.stability.max",
+                  value: 6
+                })
+              ]
             }
           ],
           "holdText": ""
@@ -8804,7 +8921,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -8855,7 +8971,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
         },
         "currentHold": 0
@@ -8906,7 +9021,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your true identity. For example, you recognize unknown people or places, organizations or individuals from your past life get in touch with you, your old identity influences your thought patterns or actions, or you suffer traumatic flashbacks."
         },
         "currentHold": 0
@@ -8957,7 +9071,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your guilt. For example, relatives of the people you've hurt seek you out, demons and other creatures are attracted by your guilt, the dead haunt you with nightmares or visions, or you fall victim to anxiety and self-doubt."
         },
         "currentHold": 0
@@ -9008,7 +9121,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the entity. For example, it requests a service from you and threatens retribution if you refuse, the entity possesses your body for the night, or the entity reveals a clue of what it is and what it wants from you."
         },
         "currentHold": 0
@@ -9059,7 +9171,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the authorities. For example, your mugshot appears on the TV news and in newspapers, law enforcement officers attempt to trap and catch you, or the authorities detain and interrogate someone you care about, confiscate your possessions, or turn your friends/family against you."
         },
         "currentHold": 0
@@ -9110,7 +9221,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your pursuers. For example, a trusted associate has been paid off by them, one of your loved ones or allies disappears, something you are trying to do is undermined by your enemies, or they try to actively hurt you."
         },
         "currentHold": 0
@@ -9158,7 +9268,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -9206,7 +9315,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -9257,7 +9365,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the harassers. For example, someone destroys your property or possessions, you are bullied and attacked by people with a prejudice against you, the authorities forcefully take something from you (rights, property, assets), someone you care about is harmed for associating with you, or you are denied your basic rights due to your identity."
         },
         "currentHold": 0
@@ -9308,7 +9415,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move on behalf of your rival. For example, the rival may get an important person on their side, sabotage one of your projects, extort you with evidence damaging to your reputation, or take desperate measures to get rid of you permanently."
         },
         "currentHold": 0
@@ -9359,7 +9465,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -9407,7 +9512,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -9458,7 +9562,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold whenever a PC encounters someone they know to ask, \"What have you lied about to this person?\" or to invent a troublesome lie the PC has told in the past."
         },
         "currentHold": 0
@@ -9509,7 +9612,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to #>item-button text-doclink&data-item-name='Keep It Together'&data-action='open'>Keep It Together<# to resist the darkness' influence."
         },
         "currentHold": 0
@@ -9560,7 +9662,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for the curse. For example, you or someone you care about have an accident, something of yours is taken from you, you experience terrifying visions, or you're forced to take certain actions with risk of dire consequences, if you refuse."
         },
         "currentHold": 0
@@ -9611,7 +9712,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves on behalf of your nemesis. For example, your nemesis may strike when you're alone, use secrets they've uncovered to extort you, intimidate you, hire henchmen to capture you, or attack someone or something you hold dear."
         },
         "currentHold": 0
@@ -9679,14 +9779,19 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [
-            {
-              key: "CreateTracker",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "name:Time,imgFolder:systems/kult4th/assets/icons/trackers/condemned/,key:flags.kult4th.tracker,value:0,min:0,max:10,fromText:#>item-button text-doclink&data-item-name='Condemned'&data-action='open'>Condemned<#",
-              priority: undefined
-            }
-          ],
+          "effects": [{
+            "parentData": BuildEffectData(),
+            "changeData": [
+              BuildChangeData("CreateTracker", {
+                name: "Time",
+                imgFolder: "systems/kult4th/assets/icons/trackers/condemned/",
+                target: "FLAGS.timeTracker",
+                min: 0,
+                max: 10,
+                startValue: 0
+              })
+            ]
+          }],
           "holdText": ""
         },
         "currentHold": 0
@@ -9719,25 +9824,44 @@ const ITEM_DATA: {
                 },
                 "partialSuccess": {
                   "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll.",
-                  "effects": [
-                    {
-                      key: "ModifyRoll",
-                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                      value: "filter:all,effect:Add,value:-1,duration:ongoing,uses:1,defaultState:true,canToggle:false,icon:systems/kult4th/assets/icons/disadvantage/depression.svg,resetOn:onUse,resetTo:false,label:Depression,fromText:a roll to manage #>item-button text-doclink&data-item-name='Depression'&data-action='open'>Depression<#,tooltip:A temporary penalty to your next roll due to anxiety, decreased self-confidence, or lacko f will. #>text-sourceref>(from a roll to manage <##>item-button text-doclink&data-item-name='Depression'&data-action='open'>Depression<##>text-sourceref> roll)<#",
-                      priority: undefined
-                    }
-                  ]
+                  "effects": [{
+                    "parentData": BuildEffectData({
+                      canToggle: false,
+                      inStatusBar: true,
+                      label: "Depression",
+                      icon: "systems/kult4th/assets/icons/disadvantage/depression.svg",
+                      uses: 1,
+                      tooltip: "A temporary penalty to your next roll due to anxiety, decreased self-confidence, or lack of will.",
+                      from: "a roll to manage #>text-doclink>Depression<#"
+                    }),
+                    "changeData": [
+                      BuildChangeData("ModifyRoll", {
+                        filter: "all",
+                        mode: "Add",
+                        value: -1
+                      })
+                    ]
+                  }]
                 },
                 "failure": {
                   "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
-                  "effects": [
-                    {
-                      key: "ModifyProperty",
-                      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                      value: "filter:actor,effect:Add,target:system.stability.value,value:-2,permanent:true",
-                      priority: undefined
-                    }
-                  ]
+                  "effects": [{
+                    "parentData": BuildEffectData({
+                      permanent: true,
+                      alertAll: [
+                        "<h2>%insert.actor.name% Grows Less Stable</h2>",
+                        "<p>%insert.actor.name% succumbs to depression, reducing Stability by 2.</p>"
+                      ].join("")
+                    }),
+                    "changeData": [
+                      BuildChangeData("ModifyProperty", {
+                        filter: "actor",
+                        mode: "Add",
+                        target: "system.stability.value",
+                        value: -2
+                      })
+                    ]
+                  }]
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -9750,7 +9874,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -9801,7 +9924,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move for your schizophrenia. For example, one of your hallucinations takes on physical form, you view your current surroundings as being hostile to you, you're afflicted by terrifying hallucinations, you're subjected to dark visions (true or false), or someone in your vicinity turns out to not actually be real."
         },
         "currentHold": 0
@@ -9852,7 +9974,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make a Move representing how your bad reputation sticks to you. For example, people might react with fear and suspicion towards you, a lynch mob forms to bring you to justice, your property is vandalized, your allies turn against you, and you can lose your job, agreements, and relationships."
         },
         "currentHold": 0
@@ -9900,7 +10021,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -9951,7 +10071,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for the being possessing you. For example, the entity may give you a vision, make use of your body, communicate with or through you, try to harm someone else through you, follow you unseen, demand something from you, or drag you into another dimension."
         },
         "currentHold": 0
@@ -9999,7 +10118,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "currentHold": 0
@@ -10050,7 +10168,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to make Moves for your former owner. For example, they appear unexpectedly to convince you to return, send henchmen after you, kidnap or harm someone you care about, directly threaten you, destroy something important to you, try to mutilate you so nobody else would want you, or kill you outright so nobody else can have you."
         },
         "currentHold": 0
@@ -10101,7 +10218,6 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [],
           "holdText": "The GM can spend Hold to ignite a person's desires, influencing their behavior. For example, someone can be afflicted with an uncontrollable passion for you, attempt to force themselves on you, strongly proposition you, become intensely jealous of you, or harm themselves or someone else because of their desire of you."
         },
         "currentHold": 0
@@ -10134,7 +10250,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10169,7 +10284,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10202,7 +10316,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10236,7 +10349,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10271,7 +10383,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10305,7 +10416,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10339,7 +10449,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10373,7 +10482,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10407,7 +10515,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10441,7 +10548,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10475,7 +10581,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10510,7 +10615,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10544,7 +10648,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10578,7 +10681,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10612,7 +10714,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10645,7 +10746,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10679,7 +10779,6 @@ const ITEM_DATA: {
           "listRefs": [
             "drives"
           ],
-          "effects": [],
           "holdText": ""
         },
         "drive": "",
@@ -10704,28 +10803,24 @@ const ITEM_DATA: {
           "trigger": "When you help another player character's Move,",
           "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the #>item-button text-doclink&data-item-name='Attribute'&data-action='open'>Attribute<# is the same as the other player is rolling.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You may modify the subsequent roll by #>text-posmod>+2<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You may modify the subsequent roll by #>text-posmod>+1<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -10767,28 +10862,24 @@ const ITEM_DATA: {
           "trigger": "When you exercise self-control to keep from succumbing to stress, traumatic experiences, psychic influence, or supernatural forces,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You grit your teeth and stay the course.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>−1<# in situations where this condition would be a hindrance to you. Choose one: %list.options%",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The strain is too much for your mind to handle. The GM chooses your reaction: %list.gmoptions%",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -10819,7 +10910,6 @@ const ITEM_DATA: {
           "listRefs": [
             "questions"
           ],
-          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -10828,7 +10918,6 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -10837,14 +10926,12 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "You may get some information anyway, but you pay a price for it. You may expose yourself to dangers or costs. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -10876,28 +10963,24 @@ const ITEM_DATA: {
           "trigger": "When you engage an able opponent in combat,",
           "outro": "explain how and %insert.rollPrompt%.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You inflict damage to your opponent and avoid counterattacks.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You inflict damage, but at a cost. The GM chooses one: %list.gmoptions%",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -10917,28 +11000,24 @@ const ITEM_DATA: {
           "trigger": "When you hinder another player character's Move,",
           "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the #>item-button text-doclink&data-item-name='Attribute'&data-action='open'>Attribute<# is the same as the other player is rolling.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You may modify the subsequent roll by #>text-negmod>−2<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You may modify the subsequent roll by #>text-negmod>−1<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -10967,28 +11046,24 @@ const ITEM_DATA: {
           "trigger": "When you influence an NPC through negotiation, argument, or from a position of power,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "She does what you ask.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "She does what you ask, but the GM chooses one: %list.gmoptions%",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "Your attempt has unintended repercussions. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11021,7 +11096,6 @@ const ITEM_DATA: {
           "listRefs": [
             "questions"
           ],
-          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -11030,7 +11104,6 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -11039,14 +11112,12 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "You accidentally reveal your own intentions to the person you're trying to read. Tell the GM/player what these intentions are. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11076,7 +11147,6 @@ const ITEM_DATA: {
           "listRefs": [
             "options"
           ],
-          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -11085,7 +11155,6 @@ const ITEM_DATA: {
             "listRefs": [
               "options"
             ],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
@@ -11094,14 +11163,12 @@ const ITEM_DATA: {
             "listRefs": [
               "options"
             ],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The character gets #>text-posmod>+1<# on her next roll against you. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11121,28 +11188,24 @@ const ITEM_DATA: {
           "trigger": "When you do something risky, under time pressure, or try to avoid danger,",
           "outro": "the GM will explain what the consequences for failure are and you %insert.rollPrompt%.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You do what you intended.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You do it, but hesitate, are delayed, or must deal with a complication—the GM reveals an unexpected outcome, a high price, or a difficult choice.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "There are serious consequences, you make a mistake, or you're exposed to the danger. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11176,7 +11239,6 @@ const ITEM_DATA: {
           "listRefs": [
             "questions"
           ],
-          "effects": [],
           "holdText": ""
         },
         "results": {
@@ -11185,14 +11247,30 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [
-              {
-                key: "ModifyRoll",
-                mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:scene,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,resetOn:onUse,resetTo:false,label:Acting On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies to any rolls made while acting on the GM's answers.#>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
-                priority: undefined
-              }
-            ],
+            "effects": [{
+              "parentData": BuildEffectData({
+                canToggle: true,
+                inStatusBar: true,
+                label: "Acting On Observations",
+                duration: EffectDuration.scene,
+                defaultState: true,
+                resetOn: EffectResetOn.onUse,
+                resetTo: false,
+                icon: "systems/kult4th/assets/icons/move/observe-a-situation.svg",
+                tooltip: [
+                  "<h2>Acting on Observations</h2>",
+                  "<p>Applies to any rolls made while acting on the GM's answers.</p>",
+                ].join(""),
+                from: "an #>text-doclink>Observe a Situation<# roll"
+              }),
+              "changeData": [
+                BuildChangeData("ModifyRoll", {
+                  filter: "all",
+                  mode: "Add",
+                  value: 1
+                })
+              ]
+            }],
             "edges": 0,
             "hold": 0
           },
@@ -11201,14 +11279,30 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [
-              {
-                key: "ModifyRoll",
-                mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-                value: "filter:all,effect:Add,value:1,duration:scene,defaultState:true,canToggle:true,icon:systems/kult4th/assets/icons/move/observe-a-situation.svg,resetOn:onUse,resetTo:false,label:Acting On Observations,fromText:an #>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<# roll,tooltip:Applies once to the next roll made to act on the GM's answers. #>text-sourceref>(from an <##>item-button text-doclink&data-item-name='Observe a Situation'&data-action='open'>Observe a Situation<##>text-sourceref> roll)<#",
-                priority: undefined
-              }
-            ],
+            "effects": [{
+              "parentData": BuildEffectData({
+                canToggle: true,
+                inStatusBar: true,
+                label: "Acting On Observations",
+                duration: EffectDuration.scene,
+                defaultState: true,
+                resetOn: EffectResetOn.onUse,
+                resetTo: false,
+                icon: "systems/kult4th/assets/icons/move/observe-a-situation.svg",
+                tooltip: [
+                  "<h2>Acting on Observations</h2>",
+                  "<p>Applies to any rolls made while acting on the GM's answers.</p>",
+                ].join(""),
+                from: "an #>text-doclink>Observe a Situation<# roll"
+              }),
+              "changeData": [
+                BuildChangeData("ModifyRoll", {
+                  filter: "all",
+                  mode: "Add",
+                  value: 1
+                })
+              ]
+            }],
             "edges": 0,
             "hold": 0
           },
@@ -11217,7 +11311,6 @@ const ITEM_DATA: {
             "listRefs": [
               "questions"
             ],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11256,16 +11349,34 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              key: "ModifyRoll",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,label:Armor,effect:Add,value:actor.system.armor,inStatusBar:false",
-              priority: undefined
+              "parentData": BuildEffectData({
+                canToggle: false,
+                inStatusBar: true,
+                label: "Armor",
+                icon: "systems/kult4th/assets/icons/modifiers/armor.svg",
+                tooltip: "Your armor reduces the amount of Harm you take from an injury.",
+                from: "worn gear"
+              }),
+              "changeData": [
+                BuildChangeData("ModifyRoll", {
+                  filter: "Endure Injury",
+                  mode: "Add",
+                  value: "actor.system.armor"
+                })
+              ]
             },
             {
-              key: "ModifyRoll",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: "filter:Endure Injury,label:Harm,effect:Subtract,value:prompt,title:How much Harm?,input:buttons,inputVals:1|2|3|4|5,inStatusBar:false",
-              priority: undefined
+              "parentData": BuildEffectData(),
+              "changeData": [
+                BuildChangeData("ModifyRoll", {
+                  filter: "Endure Injury",
+                  mode: "Subtract",
+                  value: "prompt",
+                  title: "How much Harm?",
+                  input: PromptInputType.buttons,
+                  inputVals: [1,2,3,4,5]
+                })
+              ]
             }
           ],
           "holdText": ""
@@ -11274,21 +11385,18 @@ const ITEM_DATA: {
           "completeSuccess": {
             "result": "You ride out the pain and keep going.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You are still standing, but the GM picks one condition: %list.gmoptions%",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The injury is overwhelming. You choose if you... %list.options%",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11316,28 +11424,24 @@ const ITEM_DATA: {
           "trigger": "When you suffer shock, injuries, or distort your perception through drugs or rituals,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You perceive things as they truly are.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You see Reality, but you also affect the Illusion. The GM chooses one: %list.gmoptions%",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "The GM explains what you see. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }
@@ -11357,28 +11461,24 @@ const ITEM_DATA: {
           "trigger": "When you dodge, parry, or block Harm,",
           "outro": "%insert.rollPrompt%.",
           "listRefs": [],
-          "effects": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
             "result": "You emerge completely unharmed.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
             "result": "You avoid the worst of it, but the GM decides if you end up in a bad spot, lose something, or partially sustain #>text-keyword>Harm<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
             "result": "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any #>text-keyword>Harm<# at all, or you ended up in an even worse spot than before. #>text-gmtext>The GM makes a Move<#.",
             "listRefs": [],
-            "effects": [],
             "edges": 0,
             "hold": 0
           }

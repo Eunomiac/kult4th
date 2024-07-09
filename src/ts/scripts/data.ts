@@ -302,7 +302,7 @@ function getUniqueSystemKeys(itemDataArray: Array<ITEM_DATA.Schema | K4SubItem.S
  */
 function getUniqueValuesForSystemKey(itemDataArray: ITEM_DATA.Schema[], key: string): unknown[]
 function getUniqueValuesForSystemKey(itemDataArray: ITEM_DATA.Schema[], key: string[]): Record<string, unknown>
-function getUniqueValuesForSystemKey(itemDataArray: ITEM_DATA.Schema[], key: ItemOrArray<string>): Record<string, unknown> | unknown[] {
+function getUniqueValuesForSystemKey(itemDataArray: ITEM_DATA.Schema[], key: ValueOrArray<string>): Record<string, unknown> | unknown[] {
   if (Array.isArray(key)) {
     const valsByKey: Partial<Record<string, unknown[]>> = {};
     key.forEach((thisKey) => {
@@ -474,13 +474,13 @@ function getUniqueValuesForSubItemKey(itemDataArray: ITEM_DATA.Schema[], key: st
 function getUniqueValuesForSubItemKey(keys: string[]): Record<string, unknown[]>;
 function getUniqueValuesForSubItemKey(key: string): unknown[];
 function getUniqueValuesForSubItemKey(
-  arg1: ItemOrArray<string> | ITEM_DATA.Schema[],
-  arg2?: ItemOrArray<string>
+  arg1: ValueOrArray<string> | ITEM_DATA.Schema[],
+  arg2?: ValueOrArray<string>
 ): unknown[] | Record<string, unknown[]> {
 
   // Resolve overload signatures into key and subItemDataArray
   let itemDataArray: ITEM_DATA.Schema[];
-  let key: ItemOrArray<string>;
+  let key: ValueOrArray<string>;
   if (Array.isArray(arg1) && U.isList(arg1[0]) && U.isDefined(arg2)) {
     // arg1 is ITEM_DATA.Schema[], arg2 is a key or array of keys
     itemDataArray = arg1 as ITEM_DATA.Schema[];
@@ -488,7 +488,7 @@ function getUniqueValuesForSubItemKey(
   } else if (typeof arg1 === "string" || (Array.isArray(arg1) && typeof arg1[0] === "string") && U.isUndefined(arg2)) {
     // arg1 is a single key or array of keys, itemDataArray defaults to PACKS.all
     itemDataArray = PACKS.all;
-    key = arg1 as ItemOrArray<string>;
+    key = arg1 as ValueOrArray<string>;
   } else {
     throw new Error(`[getUniqueValuesForSubItemKey] Invalid Parameters: '${String(arg1)}', '${String(arg2)}`);
   }

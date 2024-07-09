@@ -150,7 +150,7 @@ declare global {
           trigger?: string,
           outro?: string,
           listRefs?: string[],
-          effects?: EffectChangeData[], // Array<Omit<ChangeData, "priority">>,
+          effects?: K4ActiveEffect.BuildData[],
           holdText?: string;
         };
       }
@@ -158,7 +158,7 @@ declare global {
       export interface ResultData {
         result: string,
         listRefs?: string[],
-        effects?: EffectChangeData[],
+        effects?: K4ActiveEffect.BuildData[],
         edges?: number,
         hold?: number;
       }
@@ -211,7 +211,8 @@ declare global {
       }
 
       export interface Relation extends K4Item.Components.Base {
-        target: string,
+        target?: IDString, // Link to npc actor, if one has been created
+        concept?: string, // Brief subtitle description of character
         strength: ValueMax;
       }
       export interface Weapon<C extends K4WeaponClass = K4WeaponClass> extends K4Item.Components.Base,
@@ -416,10 +417,10 @@ class K4Item extends Item {
   get edges(): Array<K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move>> {
     return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem<K4ItemType.move> => subItem.type === K4ItemType.move && subItem.isEdge());
   }
-  get customChangeData(): K4Change.Source[] {
+  get customChangeData(): K4Change.Data[] {
     if (!this.hasMainEffects()) { return []; }
     return (this.system.rules.effects ?? [])
-      .filter((cData: K4Change.Source) => cData.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
+      .filter((cData: K4Change.Data) => cData.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
   }
   _systemCustomActiveEffect?: K4ActiveEffect;
   _rollCustomActiveEffects?: Record<K4RollResult, K4ActiveEffect>|{triggered: K4ActiveEffect};
