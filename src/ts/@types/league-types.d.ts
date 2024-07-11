@@ -24,7 +24,15 @@ declare module "@league-of-foundry-developers/foundry-vtt-types/src/foundry/comm
 }
 
 declare global {
-  export type EmbeddedCollection = _EmbeddedCollection;
+  export type EmbeddedCollection<
+    ContainedDocumentConstructor extends foundry.abstract.DocumentConstructor,
+    ParentDocumentData extends foundry.abstract.AnyDocumentData
+  > = _EmbeddedCollection<ContainedDocumentConstructor, ParentDocumentData>;
+
+  export class EmbeddedCollection<
+    ContainedDocumentConstructor extends foundry.abstract.DocumentConstructor,
+    ParentDocumentData extends foundry.abstract.AnyDocumentData
+  > extends _EmbeddedCollection<ContainedDocumentConstructor, ParentDocumentData> { }
   export type ItemDataBaseProperties = _ItemDataBaseProperties;
   export type ItemDataConstructorData = _ItemDataConstructorData;
   export type ItemDataSchema = _ItemDataSchema;
@@ -32,7 +40,7 @@ declare global {
   export type ItemData = _ItemData;
   export type ConfiguredDocumentClass = _ConfiguredDocumentClass;
   export type ChatMessageDataConstructorData = _ChatMessageConstructorData;
-  export type Context = _Context;
+  export interface Context extends _Context {};
   export type ActiveEffectDataConstructorData = _ActiveEffectDataConstructorData;
   export type ActiveEffectData = _ActiveEffectData;
   export type EffectChangeData = import("@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData").EffectChangeDataProperties;

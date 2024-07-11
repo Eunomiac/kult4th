@@ -1,13 +1,8 @@
 import K4Config from "../scripts/config";
-import K4Actor from "../documents/K4Actor";
-import K4Item from "../documents/K4Item";
-import K4Scene from "../documents/K4Scene";
-import K4Roll from "../documents/K4Roll";
 
 import "./general-types";
 import "./system-types";
 import "./league-types";
-import "./field-types";
 
 declare module "virtual:colors" {
   export const Colors: Record<string, string>;

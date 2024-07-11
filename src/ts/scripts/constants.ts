@@ -118,8 +118,8 @@ export const HarmButtons = (resolve: (value: {harm: number}) => void) => {
   const harmButtons: Record<string,Dialog.Button> = {};
   for (let harm = 1; harm <= 5; harm++) {
     harmButtons[harm] = {
-      label: `${harm} Harm`,
-      callback: () => resolve({harm})
+      label: `${String(harm)} Harm`,
+      callback: () => { resolve({harm}) }
     };
   }
   return harmButtons;
@@ -141,7 +141,9 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
   ].forEach((attr) => {
     attrButtons[attr] = {
       label: U.loc(`trait.${attr}`),
-      callback: () => resolve({attribute: attr as K4Roll.RollableAttribute})
+      callback: () => {
+        resolve({attribute: attr as K4Roll.RollableAttribute})
+      }
     };
   });
   return attrButtons;
@@ -211,7 +213,7 @@ export function getContrastingColor(colorVal: string, contrastLevel = 1 as numbe
     throw new Error(`${colorVal} is not a recognized color name or RGB color value.`);
   }
   const masterColor = colorName.replace(/[a-z]/g, "");
-  if (colorName && /GOLD|BLUE|RED/.test(colorName)) { // it's a color
+  if (/GOLD|BLUE|RED/.test(colorName)) { // it's a color
     if (!/^[bgd]/.test(colorName)) { // it's a neutral color; refer to bgShade to nudge it brighter/darker
       if (bgShade === "light") {
         colorName = `d${masterColor}` as KeyOf<typeof Colors>;
@@ -303,9 +305,11 @@ export const RegExpPatterns = {
     "\\bObserve a Situation\\b",
     "\\bRead a Person\\b",
     "\\bSee Through the Illusion\\b"
-  ].map((patStr) => new RegExp(`(${patStr})`, "g")),
+  ].map((patStr: string|RegExp) => patStr instanceof RegExp
+    ? patStr
+    : new RegExp(`(${patStr})`, "g")),
   Keywords: [
-    /[-+]/g,
+    /([-+])/g,
     "(\\b|[^ :a-z()]+ )Harm\\b",
     "(\\b|[^ :a-z()]+ )Armor\\b",
     "\\bStability\\b( \\(.?\\d+\\))?",
@@ -313,7 +317,9 @@ export const RegExpPatterns = {
     "[^ :a-z()]+ ongoing\\b",
     "\\b(Serious |Critical |\\d+ )?Wounds?\\b",
     "(\\d+\\s+|\\b[Oo]ne\\s+)?\\bExperience"
-  ].map((patStr) => new RegExp(`(${patStr})`, "g")),
+  ].map((patStr: string|RegExp) => patStr instanceof RegExp
+    ? patStr
+    : new RegExp(`(${patStr})`, "g")),
   GMText: [
     /\b([Tt]he GM (?:may )?makes? a (?:hard |soft )?Move)\b/g,
     /\b([Tt]he GM takes \d+ Hold)\b/g

@@ -187,11 +187,9 @@ const MASTERTIMELINE = (message$: JQuery, msg: K4ChatMessage, stagger?: ValueOrI
   tl.add(CHILD_TIMELINES.animateResults(message$), `<+=${staggers[8] ?? U.getLast(staggers)}`);
   tl.addLabel("revealed");
   tl.call(() => {
-    if (msg) {
-      setTimeout(() => {
-        msg.isAnimated = false;
-      }, 50000)
-    }
+    setTimeout(() => {
+      msg.isAnimated = false;
+    }, 50000)
   });
 
   return tl;
@@ -313,7 +311,7 @@ const CHILD_TIMELINES = {
     const sourceIcon$ = message$.find(".icon-container.icon-base");
 
     // Extract RGB values from source header's border color, then define an rgba value with 0 alpha
-    const borderRGB = sourceHeader$.css("border-top-color")?.match(/\d+/g)?.join(",") ?? "255,255,255";
+    const borderRGB = sourceHeader$.css("border-top-color").match(/\d+/g)?.join(",") ?? "255,255,255";
     const borderColorStart = `rgba(${borderRGB}, 0)`;
     const borderColorEnd = `rgba(${borderRGB}, 1)`;
 
@@ -419,8 +417,8 @@ const CHILD_TIMELINES = {
         stagger: 0.25
       })
       // Manually stagger the play calls for each video
-      .call(() => { d10VideoA.currentTime = 0; d10VideoA.play() }, undefined, 0.25)
-      .call(() => { d10VideoB.currentTime = 0; d10VideoB.play() }, undefined, 0.75)
+      .call(() => { d10VideoA.currentTime = 0; void d10VideoA.play() }, undefined, 0.25)
+      .call(() => { d10VideoB.currentTime = 0; void d10VideoB.play() }, undefined, 0.75)
       // Call a delayed slow-shrink of the dice within a callback so that it doesn't change the timeline's duration
       .call(() => {
         U.gsap.fromTo(d10s$, {
@@ -749,9 +747,7 @@ const ANIMATIONS = {
 
     return U.gsap.timeline({
       onComplete() {
-        if (msg) {
-          msg.isAnimated = false;
-        }
+        msg.isAnimated = false;
       }
     })
       .to(target$, { x: -200, duration: 0.5, ease: "bounce"})
@@ -809,10 +805,10 @@ class K4ChatMessage extends ChatMessage {
       return game.messages.get(ref) as Maybe<K4ChatMessage>;
     } else if (ref instanceof HTMLElement) {
       const message$ = $(ref).closest(".chat-message");
-      const messageId = message$.data("messageId");
+      const messageId = String(message$.data("messageId"));
       return game.messages.get(messageId) as Maybe<K4ChatMessage>;
     } else {
-      const messageId = $(ref).data("messageId");
+      const messageId = String($(ref).data("messageId"));
       return game.messages.get(messageId) as Maybe<K4ChatMessage>;
     }
   }
@@ -824,10 +820,8 @@ class K4ChatMessage extends ChatMessage {
   * - Sets the default template for system chat messages to the "sidebar/chat-message" template.
   * - Registers a "renderChatLog" hook to add a control panel to the chat input panel for players to select the message type.
   * - Registers a "renderChatMessage" hook to apply custom CSS classes to chat messages based on their flags.
-  *
-  * @returns {Promise<void>} A promise that resolves when the hook is registered.
   */
-  static async PreInitialize(): Promise<void> {
+  static PreInitialize() {
 
     // Register the K4ChatMessage class as the document type for ChatMessage
     CONFIG.ChatMessage.documentClass = K4ChatMessage;
@@ -844,7 +838,7 @@ class K4ChatMessage extends ChatMessage {
     // Register a hook to run when the chat log is rendered
     Hooks.on("renderChatLog", async (_log: ChatLog, html: JQuery, _options: unknown) => {
       // Generate the button panel for setting input type
-      K4ChatMessage.GenerateInputPanel(html);
+      await K4ChatMessage.GenerateInputPanel(html);
     });
 
     // Assign object to the global scope for development purposes
@@ -867,7 +861,7 @@ class K4ChatMessage extends ChatMessage {
         message.animate();
         game.messages
           .filter((msg) => msg.isAnimated && msg.id !== message.id)
-          .forEach((msg) => msg.freeze());
+          .forEach((msg) => { msg.freeze(); });
       } else {
         // Otherwise, kill all tweens and hide video elements
         message.freeze();
@@ -876,7 +870,7 @@ class K4ChatMessage extends ChatMessage {
   }
   // #endregion
 
-  static override create(data: K4ChatMessage.ConstructorData, context?: Context): Promise<Maybe<K4ChatMessage>> {
+  static override create(data: K4ChatMessage.ConstructorData, context?: DocumentModificationContext): Promise<Maybe<K4ChatMessage>> {
     return super.create(data as ChatMessageDataConstructorData, context);
   }
 
@@ -912,23 +906,24 @@ class K4ChatMessage extends ChatMessage {
       return Promise.resolve();
     }
 
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
-      await this.timelinePromise;
-      kLog.display("Timeline Promise Resolved!");
-      const timeline = this.animationTimeline as gsap.core.Timeline;
-      if (!timeline) { return undefined; }
-      const labelTime = timeline.labels["revealed"];
-      const watchLabel = () => {
-        if (timeline.time() >= labelTime) {
-          kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
-          resolve();
-          return undefined;
-        }
-        kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
-        setTimeout(watchLabel, 250);
-      };
-      watchLabel();
+      void this.timelinePromise.then(() => {
+        kLog.display("Timeline Promise Resolved!");
+        const timeline = this.animationTimeline;
+        if (!timeline) { return undefined; }
+        const labelTime = timeline.labels.revealed;
+        const watchLabel = () => {
+          if (timeline.time() >= labelTime) {
+            kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
+            resolve();
+            return undefined;
+          }
+          kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
+          setTimeout(watchLabel, 250);
+        };
+        watchLabel();
+      });
     });
   }
   get cssClasses(): string[] {
@@ -939,7 +934,7 @@ class K4ChatMessage extends ChatMessage {
     return this.getFlag("kult4th", "isAnimated") as boolean;
   }
   set isAnimated(value: boolean) {
-    this.setFlag("kult4th", "isAnimated", value);
+    void this.setFlag("kult4th", "isAnimated", value);
     if (!value) {
       this.addClass("not-animating");
     }
@@ -982,16 +977,10 @@ class K4ChatMessage extends ChatMessage {
    * @returns {string} The URL to the drop cap image for the first character of the string.
    */
   static GetDropCap(content: string): string {
-    if (!content || !content.length) {
+    if (!content.length) {
       return ""
     };
     return `systems/kult4th/assets/chat/dropcaps/${content.slice(0, 1).toUpperCase()}.png`;
-  }
-  // #endregion
-
-  // #region CONSTRUCTOR ~
-  constructor(data: K4ChatMessage.ConstructorData, context?: Context) {
-    super(data, context);
   }
   // #endregion
 
@@ -1064,12 +1053,12 @@ class K4ChatMessage extends ChatMessage {
     return doc.body.innerHTML;
   }
   addClass(cls: string, html?: JQuery) {
-    this.setFlag("kult4th", "cssClasses", U.unique([...this.cssClasses, cls]))
-        .then(() => this.applyFlagCSSClasses(html));
+    void this.setFlag("kult4th", "cssClasses", U.unique([...this.cssClasses, cls]))
+        .then(() => { this.applyFlagCSSClasses(html); });
   }
   remClass(cls: string, html?: JQuery) {
-    this.setFlag("kult4th", "cssClasses", this.cssClasses.filter((c) => c !== cls))
-        .then(() => this.applyFlagCSSClasses(html));
+    void this.setFlag("kult4th", "cssClasses", this.cssClasses.filter((c) => c !== cls))
+        .then(() => { this.applyFlagCSSClasses(html); });
   }
   applyFlagCSSClasses(html?: JQuery) {
     (html ?? this.elem$).addClass(this.cssClasses.join(" "));

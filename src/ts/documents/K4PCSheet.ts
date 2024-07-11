@@ -162,8 +162,8 @@ const ANIMATIONS = {
       }, 0)
       .to($(target).find(".svg-def:not(.main-ring)"), {
         "--K4-icon-fill": C.Colors.BLACK,
-        duration:      0.6,
-        "ease":          "sine"
+        "duration":         0.6,
+        "ease":           "sine"
       }, 0)
       .set($(target).find(".svg-def.main-ring"), {
         fill: "url('#nav-main-ring-bg-end-gradient')"
@@ -248,7 +248,7 @@ const ANIMATIONS = {
 
     if (U.getSetting("blur")) {
       navTL
-        .to([U.getSiblings(target),sheetContent$, formSiblings$], {
+        .to([U.getSiblings(target), sheetContent$, formSiblings$], {
           filter:   "blur(5px)",
           duration: 0.5,
           ease:     "back"
@@ -324,7 +324,7 @@ const ANIMATIONS = {
     const modifiers$ = $(context).find(".modifiers-report").find(".mod-container");
 
     const moveName = stripName$.text();
-    const move = actor.getItemByName(moveName) as K4Item<K4ItemType.move>;
+    const move = actor.getItemByName(moveName) as Maybe<K4Item<K4ItemType.move>>;
     let filterIndex = -1;
     let modifier$: Maybe<JQuery>;
     if (move) {
@@ -342,7 +342,7 @@ const ANIMATIONS = {
     const buttonStrip$ = $(target).find(".button-strip");
     const stripBG$ = $(target).find(".strip-bg");
 
-    if (!buttonStrip$[0]) { return gsap.timeline({reversed: true}); }
+    if (!buttonStrip$.length) { return gsap.timeline({reversed: true}); }
 
     // const colorFG = $(target).data("color-fg") || gsap.getProperty(stripToolTip$[0], "color");
     // const colorFG = $(target).css("--K4-strip-color-fg")?.trim() ?? gsap.getProperty(stripToolTip$[0], "color");
@@ -439,9 +439,9 @@ const ANIMATIONS = {
         color = C.Colors.bGOLD;
       }
       const textShadow = [
-        `0 0 2px rgba(0, 0, 0, 1)`,
-        `0 0 4px rgba(0, 0, 0, 1)`,
-        `0 0 4.5px rgba(0, 0, 0, 1)`,
+        "0 0 2px rgba(0, 0, 0, 1)",
+        "0 0 4px rgba(0, 0, 0, 1)",
+        "0 0 4.5px rgba(0, 0, 0, 1)",
         `0 0 8px rgba(${shadowColor}, 0.8)`,
         `0 0 12.5px rgba(${shadowColor}, 0.8)`,
         `0 0 16.5px rgba(${shadowColor}, 0.5)`,
@@ -453,17 +453,17 @@ const ANIMATIONS = {
         autoAlpha: 0
       }, {
         autoAlpha: 1,
-        duration: FULL_DURATION,
-        ease: "sine"
+        duration:  FULL_DURATION,
+        ease:      "sine"
       }, 0)
         .fromTo(strong$, {
           color,
           textShadow: "0 0 0 rgba(0, 0, 0, 0)"
         }, {
-          color: C.Colors.bWHITE,
+          color:    C.Colors.bWHITE,
           textShadow,
           duration: FULL_DURATION,
-          ease: "sine"
+          ease:     "sine"
         }, 0);
     }
     return tl;
@@ -498,9 +498,9 @@ const ANIMATIONS = {
 };
 
 class K4PCSheet extends ActorSheet {
-  static async PreInitialize() {
+  static PreInitialize() {
     gsap.registerEffect({
-      name: "breakShard",
+      name:   "breakShard",
       effect: (stabilityContainer$: JQuery, config: {stability: number}) => {
         stabilityContainer$ = $(stabilityContainer$);
         const shardsMap = {
@@ -540,29 +540,29 @@ class K4PCSheet extends ActorSheet {
           : (0.5 * fadingShardsShiftFullDuration) / (fadingShardsNum - 1);
         const fadingShardsScaleDur = fadingShardsScaleFullDuration - (fadingShardsScaleStagger * (fadingShardsNum - 1));
         const fadingShardsShiftDur = fadingShardsShiftFullDuration - (fadingShardsShiftStagger * (fadingShardsNum - 1));
-        const fadingShardsAnimDuration = fadingShardsScaleDur +
-              fadingShardsShiftDur +
-              (fadingShardsScaleStagger * (fadingShardsNum - 1)) +
-              (fadingShardsShiftStagger * (fadingShardsNum - 1));
+        const fadingShardsAnimDuration = fadingShardsScaleDur
+              + fadingShardsShiftDur
+              + (fadingShardsScaleStagger * (fadingShardsNum - 1))
+              + (fadingShardsShiftStagger * (fadingShardsNum - 1));
 
         return gsap.timeline({})
-          .to(getShrinkingShards(config.stability), { transformOrigin: "center center", scale: 1, duration: 0.25, ease: "none" }, 0)
+          .to(getShrinkingShards(config.stability), {transformOrigin: "center center", scale: 1, duration: 0.25, ease: "none"}, 0)
           .set(fadingShards$, {transformOrigin: "right center"}, 0)
           .to(fadingShards$, {
-            scaleX: -1,
+            scaleX:   -1,
             duration: 0.5,
-            ease: "rough({ strength: 2, points: 10, template: power4.in, taper: out, randomize: true, clamp: false })", // "power2.inOut",
-            stagger: 0.1
+            ease:     "rough({ strength: 2, points: 10, template: power4.in, taper: out, randomize: true, clamp: false })", // "power2.inOut",
+            stagger:  0.1
           })
           .to(fadingShards$, {
             xPercent: 700,
             duration: 0.4,
-            ease: "power2.in",
-            stagger: 0.1
-          })
+            ease:     "power2.in",
+            stagger:  0.1
+          });
           // ">-0.75")
       },
-      defaults: {duration: 0.5},
+      defaults:       {duration: 0.5},
       extendTimeline: true
     });
   }
@@ -589,7 +589,7 @@ class K4PCSheet extends ActorSheet {
      * Critical Stress: 1-4
      * Broken: 0
      */
-    const tl = U.gsap.timeline({paused: true})
+    const tl = gsap.timeline({paused: true})
       .fromTo(shards$, {fill: C.Colors.bGOLD, stroke: C.Colors.bGOLD}, {fill: C.Colors.bGOLD, stroke: C.Colors.bGOLD, duration: 0}, 0)
       .fromTo(anim$, {filter: "brightness(0) saturate(1.5)"}, {filter: "brightness(0) saturate(1.5)", duration: 0}, 0)
     // COMPOSED (GOLD)
@@ -597,7 +597,7 @@ class K4PCSheet extends ActorSheet {
       .to(cracks$, {
         morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-9")[0],
         duration: 0.5,
-        ease: "power4"
+        ease:     "power4"
       }, 0)
       // .fromTo(shards$, {fill: C.Colors.GOLD, stroke: C.Colors.GOLD}, {fill: C.Colors.BLACK, stroke: C.Colors.BLACK, duration: 5})
     // MODERATE (dGOLD)
@@ -606,13 +606,13 @@ class K4PCSheet extends ActorSheet {
       .to(cracks$, {
         morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-8")[0],
         duration: 0.5,
-        ease: "power4"
+        ease:     "power4"
       })
     .addLabel("stability8")
       .to(cracks$, {
         morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-7")[0],
         duration: 0.5,
-        ease: "power4"
+        ease:     "power4"
       })
       .breakShard(html, {stability: 7}, "<")
       .to(glitchNum$, {opacity: 1, duration: 0.5, ease: "power4"}, "<")
@@ -648,12 +648,12 @@ class K4PCSheet extends ActorSheet {
     if (!this._stabilityShardsTimeline) {
       throw new Error("Attempt to get stabilityShardsTimeline before html context sent in activateListeners.");
     }
-    return this._stabilityShardsTimeline as gsap.core.Timeline;
+    return this._stabilityShardsTimeline;
   }
   getGlitchRepeatDelay(stability: number = this.actor.system.stability.value): number {
     const delayDistributor = gsap.utils.distribute({
       amount: 20,
-      ease: "sine.inOut"
+      ease:   "sine.inOut"
     });
     const distVals = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((target, i, arr) =>
       delayDistributor(i, arr[i], arr)
@@ -672,54 +672,54 @@ class K4PCSheet extends ActorSheet {
     // gsap.fromTo(glitchText$, {skewX: "random(-15, 5, 1)"}, {skewX: "random(5, 15, 1)", repeatRefresh: true, ease: "rough({strength: 3, points: 250, taper: none, randomize: true, clamp: false})", repeat: -1, yoyo: true, duration: 5});
     return gsap
       .timeline({
-        repeat: -1,
+        repeat:        -1,
         repeatRefresh: true,
-        repeatDelay: this.getGlitchRepeatDelay(),
+        repeatDelay:   this.getGlitchRepeatDelay()
         // onRepeat: setGlitchRepeatDelay
       })
       .to(glitchText$, {
         duration: 0.1,
-        skewX: "random([20,-20])",
-        ease: "power4.inOut"
+        skewX:    "random([20,-20])",
+        ease:     "power4.inOut"
       })
-      .to(glitchText$, { duration: 0.04, skewX: 0, ease: "power4.inOut" })
+      .to(glitchText$, {duration: 0.04, skewX: 0, ease: "power4.inOut"})
 
-      .to(glitchText$, { duration: 0.04, opacity: 0 })
-      .to(glitchText$, { duration: 0.04, opacity: 1 })
+      .to(glitchText$, {duration: 0.04, opacity: 0})
+      .to(glitchText$, {duration: 0.04, opacity: 1})
 
-      .to(glitchText$, { duration: 0.04, x: "random([20,-20])" })
-      .to(glitchText$, { duration: 0.04, x: 0 })
+      .to(glitchText$, {duration: 0.04, x: "random([20,-20])"})
+      .to(glitchText$, {duration: 0.04, x: 0})
 
       .add("split", 0)
 
-      .to(glitchTop$, { duration: 0.5, x: -30, ease: "power4.inOut" }, "split")
-      .to(glitchBottom$, { duration: 0.5, x: 30, ease: "power4.inOut" }, "split")
+      .to(glitchTop$, {duration: 0.5, x: -30, ease: "power4.inOut"}, "split")
+      .to(glitchBottom$, {duration: 0.5, x: 30, ease: "power4.inOut"}, "split")
       .to(
         glitchText$,
-        { duration: 0.08, textShadow: "-13px -13px 0px #460e0e" },
+        {duration: 0.08, textShadow: "-13px -13px 0px #460e0e"},
         "split"
       )
-      .to(glitch$, { duration: 0, scale: 1.2 }, "split")
-      .to(glitch$, { duration: 0, scale: 1 }, "+=0.02")
+      .to(glitch$, {duration: 0, scale: 1.2}, "split")
+      .to(glitch$, {duration: 0, scale: 1}, "+=0.02")
       .to(
         glitchText$,
-        { duration: 0.08, textShadow: "0px 0px 0px #460e0e" },
+        {duration: 0.08, textShadow: "0px 0px 0px #460e0e"},
         "+=0.09"
       )
       .to(
         glitchText$,
-        { duration: 0.03, textShadow: "13px 13px 0px #FFF" },
+        {duration: 0.03, textShadow: "13px 13px 0px #FFF"},
         "split"
       )
       .to(
         glitchText$,
-        { duration: 0.08, textShadow: "0px 0px 0px transparent" },
+        {duration: 0.08, textShadow: "0px 0px 0px transparent"},
         "+=0.01"
       )
-      .to(glitchTop$, { duration: 0.2, x: 0, ease: "power4.inOut" })
-      .to(glitchBottom$, { duration: 0.2, x: 0, ease: "power4.inOut" })
-      .to(glitchText$, { duration: 0.02, scaleY: 1.1, ease: "power4.inOut" })
-      .to(glitchText$, { duration: 0.04, scaleY: 1, ease: "power4.inOut" });
+      .to(glitchTop$, {duration: 0.2, x: 0, ease: "power4.inOut"})
+      .to(glitchBottom$, {duration: 0.2, x: 0, ease: "power4.inOut"})
+      .to(glitchText$, {duration: 0.02, scaleY: 1.1, ease: "power4.inOut"})
+      .to(glitchText$, {duration: 0.04, scaleY: 1, ease: "power4.inOut"});
   }
 
 
@@ -734,13 +734,13 @@ class K4PCSheet extends ActorSheet {
 
 
   async changeStability(stabilityDelta: number): Promise<unknown> {
-    const newStability = U.clampNum(this.actor.system.stability.value + stabilityDelta, [1, 10]) as number;
+    const newStability = U.clampNum(this.actor.system.stability.value + stabilityDelta, [1, 10]);
     if (newStability === this.actor.system.stability.value) { return undefined; }
     let updateAnim: Maybe<GsapAnimation> = undefined;
     if (this.rendered) {
       this.glitchTimeline.repeatDelay(this.getGlitchRepeatDelay(newStability));
       this.glitchTimeline.restart();
-      gsap.set(this.element.find(".stability-count"),  {
+      gsap.set(this.element.find(".stability-count"), {
         text: `${newStability}`
       });
       updateAnim = this.stabilityShardsTimeline.tweenTo(`stability${newStability}`);
@@ -782,16 +782,16 @@ class K4PCSheet extends ActorSheet {
     const baseContext = await super.getData();
     const context = {
       ...baseContext,
-      baseMoves:     this.actor.basicMoves,
-      derivedMoves:  this.actor.derivedMoves,
-      advantages:    this.actor.advantages,
-      disadvantages: this.actor.disadvantages,
-      darksecrets:   this.actor.darkSecrets,
-      relations:     this.actor.relations,
-      weapons:       this.actor.weapons,
-      gear:          this.actor.gear,
-      attributes:    this.actor.attributeData,
-      curTab:        this.actor.getFlag("kult4th", "sheetTab") as string,
+      baseMoves:       this.actor.basicMoves,
+      derivedMoves:    this.actor.derivedMoves,
+      advantages:      this.actor.advantages,
+      disadvantages:   this.actor.disadvantages,
+      darksecrets:     this.actor.darkSecrets,
+      relations:       this.actor.relations,
+      weapons:         this.actor.weapons,
+      gear:            this.actor.gear,
+      attributes:      this.actor.attributeData,
+      curTab:          this.actor.getFlag("kult4th", "sheetTab") as string,
       statusBarStrips:        this.actor.statusBarStrips
     };
     /*DEVCODE*/
@@ -922,13 +922,13 @@ class K4PCSheet extends ActorSheet {
     this.stabilityShardsTimeline.seek(`stability${this.actor.system.stability.value}`);
     gsap.set(html.find("#stability-shards-clip path"), {
       transformOrigin: "center center",
-      scale: 1.1,
-      display: "block"
+      scale:           1.1,
+      display:         "block"
     });
     gsap.set(html.find("#shard-11"), {
       transformOrigin: "left center",
-      display: "block",
-      scale: 1.2,
+      display:         "block",
+      scale:           1.2
     });
     gsap.set(html.find("#stability-shards-clip path"), {
       transformOrigin: "center center"
@@ -938,21 +938,21 @@ class K4PCSheet extends ActorSheet {
     gsap.set(html.find("#stability-gear-binah"), {x: -200, y: -200, scale: 2, transformOrigin: "center center"});
     gsap.to(html.find("#stability-gear-geburah"), {rotation: "+=360", duration: 10, repeat: -1, ease: "none"});
     gsap.to(html.find("#stability-gear-binah"), {rotation: "-=360", duration: 10, repeat: -1, ease: "rough({strength: 0.2, points: 25, template: sine, taper: out, randomize: true, clamp: false})"});
-    gsap.set(html.find("#stability-animation-bg img, .stability-count, #stability-frame"), { opacity: 1 });
+    gsap.set(html.find("#stability-animation-bg img, .stability-count, #stability-frame"), {opacity: 1});
   }
   activateStabilityListeners(html: JQuery) {
     let clickStatus = false;
     const buttonContainer$ = html.find(".button-container");
     const dblClickCheck = (event: DoubleClickEvent) => {
       event.preventDefault();
-      if (clickStatus) { return }
+      if (clickStatus) { return; }
       clickStatus = true;
       buttonContainer$.off("dblclick");
       this.changeStability(-1 as number);
-    }
+    };
     const clickCheck = (event: DoubleClickEvent) => {
       event.preventDefault();
-      if (clickStatus) { return }
+      if (clickStatus) { return; }
       console.log("CLICK");
       buttonContainer$.off("click");
       buttonContainer$.on("dblclick", dblClickCheck.bind(this));
@@ -962,11 +962,11 @@ class K4PCSheet extends ActorSheet {
         buttonContainer$.on({
           click: clickCheck.bind(this)}
         );
-      }, 250)
-    }
+      }, 250);
+    };
 
     buttonContainer$.on({
-      click: clickCheck.bind(this),
+      click:       clickCheck.bind(this),
       contextmenu: (event) => {
         event.preventDefault();
         this.changeStability(1 as number);
@@ -985,7 +985,7 @@ class K4PCSheet extends ActorSheet {
       gsap.to(
         html.find(".edges-blade-container svg"),
         {autoAlpha: 1, rotation: 175 + (20 * numEdges), duration: 0}
-      )
+      );
     }
   }
   animateHoverStrips(html: JQuery): Array<Tuple<HTMLElement, GsapAnimation>> {
@@ -1011,7 +1011,7 @@ class K4PCSheet extends ActorSheet {
     .each(function() {
       const itemName = $(this).attr("data-item-name");
       if (itemName) {
-        $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
+        $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet.render(true));
       }
     });
 
@@ -1080,7 +1080,7 @@ class K4PCSheet extends ActorSheet {
   }
   activateResizeListener(html: JQuery) {
     const resizableHandle = html.find(".window-resizable-handle");
-    const debouncedResizeModifierReport = debounce(() => this.resizeModifierReport(html), 1);
+    const debouncedResizeModifierReport = debounce(() => { this.resizeModifierReport(html); }, 1);
 
     const onMouseMove = () => {
       debouncedResizeModifierReport();
@@ -1099,7 +1099,7 @@ class K4PCSheet extends ActorSheet {
     });
 
     // Initial call to resizeModifierReport
-    requestAnimationFrame(() => this.resizeModifierReport(html));
+    requestAnimationFrame(() => { this.resizeModifierReport(html); });
   }
   setActiveTab(html: JQuery) {
     const curTab = this.actor.getFlag("kult4th", "sheetTab") as string;
@@ -1264,14 +1264,14 @@ class K4PCSheet extends ActorSheet {
       });
   }
   activateToggleStripListeners(html: JQuery) {
-    this.actor.toggleableEffects.forEach((effect) => effect.applyToggleListeners(html));
+    this.actor.toggleableEffects.forEach((effect) => { effect.applyToggleListeners(html); });
   }
   activateWindowControlListeners(html: JQuery) {
     const self = this;
     // Add click listeners for close buttons in the header to close the sheet
     html.find(".header-button.close")
       .each(function() {
-        $(this).on("click", () => self.actor.sheet?.close());
+        $(this).on("click", () => self.actor.sheet.close());
       });
 
     // Add click listeners for minimize buttons in the header to toggle minimize/maximize state

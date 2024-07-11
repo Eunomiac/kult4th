@@ -1,9 +1,9 @@
-<div class="toggle-modifier {{toggleCategory}}-modifier {{#unless toggleValue}}no-value{{/unless}} {{~#if statusTooltip}} tooltip-trigger{{/if}}" data-effect-id="{{id}}" data-state="{{#if isEnabled}}enabled{{else}}disabled{{/if}}">
+<div class="toggle-modifier {{toggleCategory}}-modifier {{#unless statusValue}}no-value{{/unless}} {{~#if statusTooltip}} tooltip-trigger{{/if}}" data-effect-id="{{id}}" data-state="{{#if isEnabled}}enabled{{else}}disabled{{/if}}">
   <button class="toggle-modifier-button {{benefit}}-mod" data-target="{{id}}" data-action="toggle" data-state="{{#if isEnabled}}enabled{{else}}disabled{{/if}}">
     <span class="toggle-modifier-label">
       <span class="toggle-modifier-name">{{statusLabel}}</span>
-      {{#if toggleValue}}
-      <span class="toggle-modifier-value {{toggleValueGlow}}">{{toggleValue}}</span>
+      {{#if statusValue}}
+      <span class="toggle-modifier-value {{statusValueGlow}}">{{statusValue}}</span>
       {{/if}}
     </span>
     <div class="icon-container">

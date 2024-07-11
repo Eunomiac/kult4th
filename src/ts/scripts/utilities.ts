@@ -10,7 +10,7 @@ const _noCapWords = "a|above|after|an|and|at|below|but|by|down|for|for|from|in|n
 // _capWords -- Patterns matching words that should ALWAYS be capitalized when converting to SENTENCE case.
 const _capWords = [
   "I", /[^a-z]{3,}|[.0-9]/gu
-].map((word) => (/RegExp/.test(Object.prototype.toString.call(word)) ? word : new RegExp(`\\b${word}\\b`, "gui"))) as RegExp[];
+].map((word) => (Object.prototype.toString.call(word).includes('RegExp') ? word : new RegExp(`\\b${word}\\b`, "gui"))) as RegExp[];
 
 // _loremIpsumText -- Boilerplate lorem ipsum
 const _loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies
@@ -143,7 +143,7 @@ const Initialize = async () => {
 
 // #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ GETTERS: Basic Data Lookup & Retrieval â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
 // @ts-expect-error Leauge of foundry developers is wrong about user not being on game.
-const GMID = (): string | false => game?.user?.find((user) => user.isGM)?.id ?? false;
+const GMID = (): string | false => game.user.find((user) => user.isGM)?.id ?? false;
 // #endregion â–„â–„â–„â–„â–„ GETTERS â–„â–„â–„â–„â–„
 
 // #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
@@ -151,12 +151,13 @@ const isNumString = <T>(ref: T): ref is T & NumString =>
   typeof ref === "string" && /^-?\d*\.?\d+$/.test(ref);
 const isBooleanString = <T>(ref: T): ref is T & BoolString => typeof ref === "string"
   && (ref === "true" || ref === "false");
+const isSystemScalar = <T>(ref: T): ref is T & SystemScalar => typeof ref === "string" || typeof ref === "number" || typeof ref === "boolean";
 
 const isArray = <T>(ref: T): ref is T & Array<ValOf<T>> => Array.isArray(ref);
 const isSimpleObj = <T>(ref: T): ref is T & Record<Key, ValOf<T>> => ref === Object(ref) && !isArray(ref);
 const isNumber = <T>(ref: T): ref is T & number => typeof ref === "number" && !isNaN(ref);
 const isInt = <T>(ref: T): ref is T & number => isNumber(ref) && ref % 1 === 0;
-const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && /\./.test(`${ref}`);
+const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && `${ref}`.includes('.');
 const isPosInt = <T>(ref: T): ref is T & number => isInt(ref) && ref >= 0;
 const isPosFloat = <T>(ref: T): ref is T & PosFloat => isFloat(ref) && ref >= 0;
 
@@ -165,6 +166,7 @@ const isIndex = <T>(ref: T): ref is T & Index<ValOf<T>> => isList(ref) || isArra
 const isIterable = <T>(ref: T): ref is T & Iterable<unknown> => typeof ref === "object" && ref !== null && Symbol.iterator in ref;
 
 const isHTMLString = <T>(ref: T): ref is T & HTMLString => typeof ref === "string" && /^<.*>$/u.test(ref);
+const isJQuery = <T>(ref: T): ref is T & JQuery => ref instanceof jQuery;
 const isHexColor = <T>(ref: T): ref is T & HexColor => typeof ref === "string" && /^#(([0-9a-fA-F]{2}){3,4}|[0-9a-fA-F]{3,4})$/.test(ref);
 const isRGBColor = <T>(ref: T): ref is T & RGBColor => typeof ref === "string" && /^rgba?\((\d{1,3},\s*){1,2}?\d{1,3},\s*\d{1,3}(\.\d+)?\)$/.test(ref);
 
@@ -319,7 +321,7 @@ const pFloat = <IsStrict extends boolean>(
 const pInt: {
   (ref: unknown, isStrict?: boolean): number;
   (ref: unknown, index: number, array: unknown[]): number;
-} = (ref: unknown, isStrictOrIndex?: boolean | number, _arr?: unknown[]): typeof NaN|number => {
+} = (ref: unknown, isStrictOrIndex?: boolean | number, _arr?: unknown[]): typeof NaN => {
   let isStrict = false;
   if (typeof isStrictOrIndex === "boolean") {
     isStrict = isStrictOrIndex;
@@ -401,7 +403,7 @@ const uCase = (str: unknown): Uppercase<string> => String(str).toUpperCase() as 
 const lCase = (str: unknown): Lowercase<string> => String(str).toLowerCase() as Lowercase<string>;
 const sCase = (str: unknown): Capitalize<string> => {
   if (typeof str === "object") { throw new Error("Cannot convert object to sentence case.");}
-  let [first, ...rest] = `${String(str)}`.split(/\s+/);
+  let [first, ...rest] = String(str).split(/\s+/);
   first = testRegExp(first, _capWords) ? first : `${uCase(first.charAt(0))}${lCase(first.slice(1))}`;
   if (hasItems(rest)) {
     rest = rest.map((word) => (testRegExp(word, _capWords) ? word : lCase(word)));
@@ -558,7 +560,7 @@ const verbalizeNum = (num: number | string) => {
   };
   const parseThreeDigits = (trio: string) => {
     if (pInt(trio) === 0) {return "";}
-    const digits = `${trio}`.split("").map((digit) => pInt(digit));
+    const digits = trio.split("").map((digit) => pInt(digit));
     let result = "";
     if (digits.length === 3) {
       const hundreds = digits.shift();
@@ -795,10 +797,10 @@ const getBoundingRectangle = (
       // The shape is a rectangle (or possibly a square).
       shape.width ??= shape.height;
       shape.height ??= shape.width;
-      shapeMinX = (shape.x - (shape.width as number)) / 2;
-      shapeMinY = (shape.y - (shape.height as number)) / 2;
-      shapeMaxX = (shape.x + (shape.width as number)) / 2;
-      shapeMaxY = (shape.y + (shape.height as number)) / 2;
+      shapeMinX = (shape.x - (shape.width!)) / 2;
+      shapeMinY = (shape.y - (shape.height!)) / 2;
+      shapeMaxX = (shape.x + (shape.width!)) / 2;
+      shapeMaxY = (shape.y + (shape.height!)) / 2;
     } else {
       throw new Error(`[getBoundingRectangle] Error: shape must be a circle, square, or rectangle, not ${JSON.stringify(shape)}`);
     }
@@ -1598,7 +1600,7 @@ const adjustTextContainerAspectRatio = (
     textContainer.style.fontSize = `${newFontSize}px`;
     textContainer.style.lineHeight = `${newLineHeight}px`;
     // Recursively call adjustTextContainerAspectRatio with updated parameters
-    return adjustTextContainerAspectRatio(textContainer, targetRatio, lineCount ?? maxHeight, maxWidth, minFontSize);
+    adjustTextContainerAspectRatio(textContainer, targetRatio, lineCount ?? maxHeight, maxWidth, minFontSize);
   }
 
   // Get computed styles of the text container
@@ -1704,7 +1706,7 @@ const getColorVals = (
   green?: number,
   blue?: number,
   alpha?: number
-): Maybe<Array<number>> => {
+): Maybe<number[]> => {
   if (isUndefined(red)) { return undefined; }
   let [redVal, greenVal, blueVal, alphaVal]: Array<Maybe<number>> = [];
   if (isRGBColor(red)) {
@@ -1738,7 +1740,7 @@ const getRGBString = (red: string | number, green?: number, blue?: number, alpha
     let colorString = "rgb";
     const colors = [red, green, blue];
     if (/^[.\d]+$/.test(`${alpha}`)) {
-      colors.push(alpha as number >= 1 ? pInt(alpha) : pFloat(alpha, 2));
+      colors.push(alpha! >= 1 ? pInt(alpha) : pFloat(alpha, 2));
       colorString += "a";
     }
     return `${colorString}(${colors.join(", ")})` as RGBColor;
@@ -1937,7 +1939,7 @@ const getNearestLabel = (tl: gsap.core.Timeline, matchTest?: RegExp|string): str
   const nearestTime = gsap.utils.snap(labelTimes.map(([_label, time]) => time), tl.time());
 
   // Get the associated label for the nearest time
-  const [nearestLabel] = labelTimes.find(([_label, time]) => time === nearestTime) as [string, number];
+  const [nearestLabel] = labelTimes.find(([_label, time]) => time === nearestTime)!;
 
   return nearestLabel;
 };
@@ -1996,9 +1998,9 @@ function waitFor(waitForTarget: unknown): Promise<void> {
     (resolve, reject) => {
       if (waitForTarget instanceof Promise
         || waitForTarget instanceof gsap.core.Animation) {
-        waitForTarget.then(() => resolve()).catch(reject);
+        waitForTarget.then(() => { resolve(); }).catch(reject);
       } else if (Array.isArray(waitForTarget)) {
-        Promise.all(waitForTarget.map((target) => waitFor(target))).then(() => resolve()).catch(reject);
+        Promise.all(waitForTarget.map((target) => waitFor(target))).then(() => { resolve(); }).catch(reject);
       } else {
         resolve();
       }
@@ -2022,8 +2024,8 @@ const EventHandlers = {
     let value;
     switch (dataType) {
       case "number": value = pFloat(elem.value); break;
-      case "boolean": value = lCase(`${elem.value}`) === "true"; break;
-      case "string": value = `${elem.value}`; break;
+      case "boolean": value = lCase(elem.value) === "true"; break;
+      case "string": value = elem.value; break;
       default: {
         if (isNumString(value)) {
           throw new Error("You must set 'data-dtype=\"Number\"' for <select> elements with number values.");
@@ -2031,7 +2033,7 @@ const EventHandlers = {
         if (isBooleanString(value)) {
           throw new Error("You must set 'data-dtype=\"Boolean\"' for <select> elements with boolean values.");
         }
-        value = `${elem.value}`;
+        value = elem.value;
         break;
       }
     }
@@ -2161,8 +2163,8 @@ export default {
   GMID, getUID, getID,
 
   // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
-  isNumber, isNumString, isBooleanString, isSimpleObj, isList, isArray, isFunc, isInt, isFloat, isPosInt, isIterable,
-  isHTMLString, isRGBColor, isHexColor,
+  isNumber, isNumString, isBooleanString, isSystemScalar, isSimpleObj, isList, isArray, isFunc, isInt, isFloat, isPosInt, isIterable,
+  isHTMLString, isJQuery, isRGBColor, isHexColor,
   isUndefined, isDefined, isEmpty, hasItems, isInstance: isInstanceOf,
   areEqual, areFuzzyEqual,
   castToScalar, pFloat, pInt, pBool, radToDeg, degToRad,
@@ -2238,7 +2240,6 @@ export default {
 
   // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ GreenSock â–‘â–‘â–‘â–‘â–‘â–‘â–‘
   gsap, get, set, getGSAngleDelta, getNearestLabel, reverseRepeatingTimeline, /* to, from, fromTo, */
-  gsapEffects: gsap as GSAPEffects,
 
   /* TextPlugin, Flip, */ MotionPathPlugin,
 

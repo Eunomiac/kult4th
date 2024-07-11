@@ -17,6 +17,8 @@
  *  - IS_FIX_TASK = false;       // Set to true when running fix tasks from VSCode's tasks.json.
  */
 
+const fs = require("fs");
+
 console.clear();
 
 // Use environment variables to toggle linting behavior.
@@ -100,7 +102,6 @@ const TYPE_INFO_RULES = {
     "require-await": ["warn"]
   }
 };
-
 const TYPESCRIPTRULES = {
   // "@typescript-eslint"
 
@@ -112,7 +113,7 @@ const TYPESCRIPTRULES = {
     // "no-explicit-any": "warn",
 
     "no-namespace":          "off",
-    "no-non-null-assertion": "warn",
+    "no-non-null-assertion": "off",
     "no-shadow":             "warn",
     "no-dupe-class-members": "error",
     "no-this-alias":         [
@@ -163,6 +164,7 @@ const TYPESCRIPTRULES = {
     }
   }
 };
+
 const GENERALRULES = {
   "accessor-pairs":        ["warn"],
   "array-callback-return": "warn",
@@ -726,13 +728,83 @@ Object.entries(RULES).forEach(([key, val]) => {
   }
 });
 
+// Create a new object with sorted keys
+const ASSEMBLED_RULES = Object.keys(RULES).sort().reduce((sortedObj, key) => {
+  sortedObj[key] = RULES[key];
+  return sortedObj;
+}, {});
+
 // Create a separate RULES object for JavaScript files
-const JSRULES = {...RULES};
+const TS_DISABLED_RULES = {
+  "@typescript-eslint/array-type": "off",
+  "@typescript-eslint/await-thenable": "off",
+  "@typescript-eslint/ban-ts-comment": "off",
+  "@typescript-eslint/default-param-last": "off",
+  "@typescript-eslint/no-dupe-class-members": "off",
+  "@typescript-eslint/no-empty-interface": "off",
+  "@typescript-eslint/no-misused-promises": "off",
+  "@typescript-eslint/no-namespace": "off",
+  "@typescript-eslint/no-non-null-assertion": "off",
+  "@typescript-eslint/no-shadow": "off",
+  "@typescript-eslint/no-this-alias": "off",
+  "@typescript-eslint/no-unnecessary-type-assertion": "off",
+  "@typescript-eslint/no-unnecessary-type-constraint": "off",
+  "@typescript-eslint/no-unsafe-declaration-merging": "off",
+  "@typescript-eslint/no-unused-vars": "off",
+  "@typescript-eslint/prefer-readonly": "off",
+  "@typescript-eslint/require-await": "off",
+  "@typescript-eslint/adjacent-overload-signatures": "off",
+  "@typescript-eslint/ban-tslint-comment": "off",
+  "@typescript-eslint/class-literal-property-style": "off",
+  "@typescript-eslint/consistent-generic-constructors": "off",
+  "@typescript-eslint/consistent-indexed-object-style": "off",
+  "@typescript-eslint/consistent-type-assertions": "off",
+  "@typescript-eslint/consistent-type-definitions": "off",
+  "@typescript-eslint/dot-notation": "off",
+  "@typescript-eslint/no-confusing-non-null-assertion": "off",
+  "@typescript-eslint/no-empty-function": "off",
+  "@typescript-eslint/no-inferrable-types": "off",
+  "@typescript-eslint/non-nullable-type-assertion-style": "off",
+  "@typescript-eslint/prefer-for-of": "off",
+  "@typescript-eslint/prefer-function-type": "off",
+  "@typescript-eslint/prefer-namespace-keyword": "off",
+  "@typescript-eslint/prefer-nullish-coalescing": "off",
+  "@typescript-eslint/prefer-optional-chain": "off",
+  "@typescript-eslint/prefer-string-starts-ends-with": "off",
+  "@typescript-eslint/ban-types": "off",
+  "@typescript-eslint/no-array-constructor": "off",
+  "@typescript-eslint/no-base-to-string": "off",
+  "@typescript-eslint/no-duplicate-enum-values": "off",
+  "@typescript-eslint/no-duplicate-type-constituents": "off",
+  "@typescript-eslint/no-explicit-any": "off",
+  "@typescript-eslint/no-extra-non-null-assertion": "off",
+  "@typescript-eslint/no-floating-promises": "off",
+  "@typescript-eslint/no-for-in-array": "off",
+  "@typescript-eslint/no-implied-eval": "off",
+  "@typescript-eslint/no-loss-of-precision": "off",
+  "@typescript-eslint/no-misused-new": "off",
+  "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+  "@typescript-eslint/no-redundant-type-constituents": "off",
+  "@typescript-eslint/no-unsafe-argument": "off",
+  "@typescript-eslint/no-unsafe-assignment": "off",
+  "@typescript-eslint/no-unsafe-call": "off",
+  "@typescript-eslint/no-unsafe-enum-comparison": "off",
+  "@typescript-eslint/no-unsafe-member-access": "off",
+  "@typescript-eslint/no-unsafe-return": "off",
+  "@typescript-eslint/no-var-requires": "off",
+  "@typescript-eslint/prefer-as-const": "off",
+  "@typescript-eslint/restrict-plus-operands": "off",
+  "@typescript-eslint/restrict-template-expressions": "off",
+  "@typescript-eslint/triple-slash-reference": "off",
+  "@typescript-eslint/unbound-method": "off"
+}; // Assembled from "./.dev/extract-eslint-rules.cjs"
+const JSRULES = {...ASSEMBLED_RULES};
 for (const rule in JSRULES) {
   if (rule.startsWith("@typescript-eslint")) {
     delete JSRULES[rule]; // remove TypeScript rules
   }
 }
+Object.assign(JSRULES, TS_DISABLED_RULES);
 
 const EXPORTS = {
   root: true,
@@ -742,7 +814,7 @@ const EXPORTS = {
     node:    true,
     jquery:  true
   },
-  ignorePatterns: ["./.eslintrc.cjs"],
+  // ignorePatterns: ["./.eslintrc.cjs"],
   plugins:        ["import", "@typescript-eslint", "jsdoc", "etc"],
   extends:        [
     ALL_RULES_ACTIVE ? "eslint:all" : "eslint:recommended",
@@ -754,6 +826,9 @@ const EXPORTS = {
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:etc/recommended"
   ],
+  globals:                       /* ISTYPESCRIPT ? {} : */ Object.fromEntries(
+    GLOBALCONSTANTS.map((constant) => [constant, "readonly"])
+  ),
   parser:        "@typescript-eslint/parser",
   parserOptions: {
     project:                     true,
@@ -771,39 +846,23 @@ const EXPORTS = {
     }
   },
   reportUnusedDisableDirectives: DEPLOYING,
-  rules:                         RULES,
-  globals:                       /* ISTYPESCRIPT ? {} : */ Object.fromEntries(
-    GLOBALCONSTANTS.map((constant) => [constant, "readonly"])
-  ),
+  rules:                         ASSEMBLED_RULES,
   overrides: [
-    // {
-    //   // Specify the folders you want ESLint to lint
-    //   files: [
-    //     "eunos-blades/**/*.{js,ts,tsx}",
-    //     "app/**/*.{js,ts,tsx}",
-    //     "snippets/**/*.{js,ts,tsx}",
-    //     ".Webpack CODING/**/*.{js,ts,tsx}",
-    //     "!!VSC_Custom_CSS/**/*.{js,ts,tsx}"
-    //   ]
-    // },
     {
-      files:         [".eslintrc.cjs", "*.js"],
+      files:         [".eslintrc.cjs", "svelte.config.cjs", "*.js", ".cjs"],
       plugins:       ["import"],
       extends:       [],
       parser:        "espree", // use the default parser for JavaScript files
       parserOptions: {
         project: undefined
       },
-      rules: {
-        ...JSRULES,
-        "@typescript-eslint/*": "off"
-      }
+      rules: JSRULES
     }
   ],
   settings: {
     "import/resolver": {
       node: {
-        paths:      ["./ts"], // replace this with the actual path to your TypeScript files
+        paths:      ["./src/ts"], // replace this with the actual path to your TypeScript files
         extensions: [".ts", ".tsx", ".d.ts"] // specify TypeScript extensions
       },
       typescript: {
@@ -818,841 +877,7 @@ const EXPORTS = {
   }
 };
 
-console.log(JSON.stringify(EXPORTS, null, 2));
+// Write the configuration object to a file
+fs.writeFileSync("./.dev/eslint-output.json", JSON.stringify(EXPORTS, null, 2));
 
 module.exports = EXPORTS;
-// module.exports = {
-//   root: true,
-//   env:  {
-//     browser: true,
-//     es2022:  true,
-//     node:    true,
-//     jquery:  true
-//   },
-//   ignorePatterns: [
-//     "./.eslintrc.cjs"
-//   ],
-//   plugins: [
-//     "import",
-//     "@typescript-eslint",
-//     "jsdoc",
-//     "etc"
-//   ],
-//   extends: [
-//     "eslint:recommended",
-//     "plugin:@typescript-eslint/eslint-recommended",
-//     "plugin:@typescript-eslint/recommended",
-//     "plugin:@typescript-eslint/recommended-type-checked",
-//     "plugin:@typescript-eslint/stylistic",
-//     "plugin:@typescript-eslint/stylistic-type-checked",
-//     "plugin:etc/recommended"
-//   ],
-//   parser:        "@typescript-eslint/parser",
-//   parserOptions: {
-//     project:                     true,
-//     requireConfigFile:           false,
-//     tsconfigRootDir:             "D:\\Projects\\.CODING\\FoundryVTT\\Foundryv11DevData\\Data\\systems\\eunos-blades",
-//     ecmaVersion:                 2022,
-//     sourceType:                  "module",
-//     allowImportExportEverywhere: false,
-//     codeFrame:                   false,
-//     createDefaultProgram:        true,
-//     ecmaFeatures:                {
-//       ts:            true,
-//       jsx:           false,
-//       impliedStrict: true
-//     }
-//   },
-//   reportUnusedDisableDirectives: false,
-//   rules:                         {
-//     "array-callback-return": "warn",
-//     "arrow-spacing":         "warn",
-//     "comma-dangle":          [
-//       "warn",
-//       "never"
-//     ],
-//     "comma-style":               "warn",
-//     "computed-property-spacing": "warn",
-//     "constructor-super":         "error",
-//     "default-param-last":        "off",
-//     "dot-location":              [
-//       "warn",
-//       "property"
-//     ],
-//     "eol-last": "off",
-//     "eqeqeq":   [
-//       "warn",
-//       "smart"
-//     ],
-//     "func-names": [
-//       "warn",
-//       "never"
-//     ],
-//     "getter-return":               "warn",
-//     "lines-between-class-members": 0,
-//     "new-parens":                  [
-//       "warn",
-//       "always"
-//     ],
-//     "no-alert":              "warn",
-//     "no-array-constructor":  "warn",
-//     "no-class-assign":       "warn",
-//     "no-compare-neg-zero":   "warn",
-//     "no-cond-assign":        "warn",
-//     "no-const-assign":       "error",
-//     "no-constant-condition": "warn",
-//     "no-constructor-return": "warn",
-//     "no-delete-var":         "warn",
-//     "no-dupe-args":          "warn",
-//     "no-dupe-class-members": 0,
-//     "no-dupe-keys":          "warn",
-//     "no-duplicate-case":     "warn",
-//     "no-duplicate-imports":  [
-//       "warn",
-//       {
-//         includeExports: true
-//       }
-//     ],
-//     "no-empty": [
-//       "warn",
-//       {
-//         allowEmptyCatch: true
-//       }
-//     ],
-//     "no-empty-character-class": "warn",
-//     "no-empty-pattern":         "warn",
-//     "no-func-assign":           "warn",
-//     "no-global-assign":         "warn",
-//     "no-implicit-coercion":     [
-//       "warn",
-//       {
-//         allow: [
-//           "!!"
-//         ]
-//       }
-//     ],
-//     "no-implied-eval":               "warn",
-//     "no-import-assign":              "warn",
-//     "no-invalid-regexp":             "warn",
-//     "no-irregular-whitespace":       "warn",
-//     "no-iterator":                   "warn",
-//     "no-lone-blocks":                "warn",
-//     "no-lonely-if":                  "warn",
-//     "no-loop-func":                  "warn",
-//     "no-misleading-character-class": "warn",
-//     "no-mixed-operators":            "warn",
-//     "no-multi-str":                  "warn",
-//     "no-new-func":                   "warn",
-//     "no-new-object":                 "warn",
-//     "no-new-symbol":                 "warn",
-//     "no-new-wrappers":               "warn",
-//     "no-nonoctal-decimal-escape":    "warn",
-//     "no-obj-calls":                  "warn",
-//     "no-octal":                      "warn",
-//     "no-octal-escape":               "warn",
-//     "no-promise-executor-return":    "warn",
-//     "no-proto":                      "warn",
-//     "no-regex-spaces":               "warn",
-//     "no-script-url":                 "warn",
-//     "no-self-assign":                "warn",
-//     "no-self-compare":               "warn",
-//     "no-setter-return":              "warn",
-//     "no-sequences":                  "warn",
-//     "no-shadow":                     0,
-//     "no-template-curly-in-string":   "warn",
-//     "no-this-before-super":          "error",
-//     "no-unexpected-multiline":       "warn",
-//     "no-unmodified-loop-condition":  "warn",
-//     "no-unneeded-ternary":           "warn",
-//     "no-unreachable":                "warn",
-//     "no-unreachable-loop":           "warn",
-//     "no-unsafe-negation":            [
-//       "warn",
-//       {
-//         enforceForOrderingRelations: true
-//       }
-//     ],
-//     "no-unsafe-optional-chaining": [
-//       "warn",
-//       {
-//         disallowArithmeticOperators: true
-//       }
-//     ],
-//     "no-unused-expressions":    "warn",
-//     "no-useless-backreference": "warn",
-//     "no-useless-call":          "warn",
-//     "no-useless-catch":         "warn",
-//     "no-useless-computed-key":  [
-//       "warn",
-//       {
-//         enforceForClassMembers: true
-//       }
-//     ],
-//     "no-useless-concat":      "warn",
-//     "no-useless-constructor": "warn",
-//     "no-useless-rename":      "warn",
-//     "no-useless-return":      "warn",
-//     "no-var":                 "warn",
-//     "no-void":                [
-//       "warn",
-//       {
-//         allowAsStatement: true
-//       }
-//     ],
-//     "no-whitespace-before-property": "warn",
-//     "prefer-numeric-literals":       "warn",
-//     "prefer-object-spread":          "warn",
-//     "prefer-regex-literals":         "warn",
-//     "prefer-spread":                 "warn",
-//     "rest-spread-spacing":           [
-//       "warn",
-//       "never"
-//     ],
-//     "semi-style": [
-//       "warn",
-//       "last"
-//     ],
-//     "switch-colon-spacing":   "warn",
-//     "symbol-description":     "warn",
-//     "template-curly-spacing": [
-//       "warn",
-//       "never"
-//     ],
-//     "unicode-bom": [
-//       "warn",
-//       "never"
-//     ],
-//     "use-isnan": [
-//       "warn",
-//       {
-//         enforceForSwitchCase: true,
-//         enforceForIndexOf:    true
-//       }
-//     ],
-//     "valid-typeof": [
-//       "warn",
-//       {
-//         requireStringLiterals: true
-//       }
-//     ],
-//     "wrap-iife": [
-//       "warn",
-//       "inside"
-//     ],
-//     "arrow-parens": [
-//       "warn",
-//       "always"
-//     ],
-//     "capitalized-comments":  "off",
-//     "comma-spacing":         "warn",
-//     "dot-notation":          "warn",
-//     "max-len":               "off",
-//     "no-extra-boolean-cast": [
-//       "warn",
-//       {
-//         enforceForLogicalOperands: true
-//       }
-//     ],
-//     "no-extra-semi":   "warn",
-//     "no-multi-spaces": [
-//       "warn",
-//       {
-//         ignoreEOLComments: true
-//       }
-//     ],
-//     "no-tabs":                          "warn",
-//     "no-throw-literal":                 "error",
-//     "no-useless-escape":                "warn",
-//     "nonblock-statement-body-position": [
-//       "warn",
-//       "beside"
-//     ],
-//     "one-var": [
-//       "warn",
-//       "never"
-//     ],
-//     "operator-linebreak": [
-//       "warn",
-//       "before",
-//       {
-//         overrides: {
-//           "=":  "after",
-//           "+=": "after",
-//           "-=": "after"
-//         }
-//       }
-//     ],
-//     "prefer-template": "warn",
-//     "quotes":          [
-//       "warn",
-//       "double",
-//       {
-//         avoidEscape:           true,
-//         allowTemplateLiterals: false
-//       }
-//     ],
-//     "semi":                "warn",
-//     "space-before-blocks": [
-//       "warn",
-//       "always"
-//     ],
-//     "no-extra-parens":       "off",
-//     "no-unused-vars":        "off",
-//     "require-await":         "off",
-//     "array-bracket-spacing": [
-//       "warn",
-//       "never"
-//     ],
-//     "func-call-spacing": [
-//       "warn",
-//       "never"
-//     ],
-//     "indent":      "off",
-//     "key-spacing": [
-//       "warn",
-//       {
-//         multiLine: {
-//           beforeColon: false,
-//           afterColon:  true
-//         },
-//         singleLine: {
-//           beforeColon: false,
-//           afterColon:  true
-//         },
-//         align: {
-//           beforeColon: false,
-//           afterColon:  true,
-//           on:          "value",
-//           mode:        "minimum"
-//         }
-//       }
-//     ],
-//     "keyword-spacing": [
-//       "warn",
-//       {
-//         overrides: {
-//           catch: {
-//             before: true,
-//             after:  false
-//           }
-//         }
-//       }
-//     ],
-//     "object-curly-spacing": [
-//       "warn",
-//       "never",
-//       {
-//         arraysInObjects:  true,
-//         objectsInObjects: true
-//       }
-//     ],
-//     "quote-props": [
-//       "warn",
-//       "consistent-as-needed"
-//     ],
-//     "semi-spacing":   "warn",
-//     "spaced-comment": [
-//       "warn",
-//       "always",
-//       {
-//         line: {
-//           exceptions: [
-//             "*",
-//             "~",
-//             "DEVCODE",
-//             "!DEVCODE",
-//             "/ <reference"
-//           ],
-//           markers: [
-//             "~"
-//           ]
-//         },
-//         block: {
-//           exceptions: [
-//             "*",
-//             "~",
-//             "*~",
-//             "DEVCODE",
-//             "!DEVCODE"
-//           ],
-//           markers: [
-//             "~",
-//             "*~"
-//           ],
-//           balanced: true
-//         }
-//       }
-//     ],
-//     "space-before-function-paren": [
-//       "warn",
-//       {
-//         anonymous:  "never",
-//         named:      "never",
-//         asyncArrow: "always"
-//       }
-//     ],
-//     "space-unary-ops": [
-//       "warn",
-//       {
-//         words:    true,
-//         nonwords: false
-//       }
-//     ],
-//     "etc/no-assign-mutated-array":   "off",
-//     "etc/no-deprecated":             "off",
-//     "etc/no-implicit-any-catch":     "off",
-//     "etc/no-internal":               "off",
-//     "@typescript-eslint/array-type": [
-//       "warn",
-//       {
-//         default: "array-simple"
-//       }
-//     ],
-//     "@typescript-eslint/ban-ts-comment":        0,
-//     "@typescript-eslint/no-empty-interface":    0,
-//     "@typescript-eslint/no-namespace":          "off",
-//     "@typescript-eslint/no-non-null-assertion": "warn",
-//     "@typescript-eslint/no-shadow":             "warn",
-//     "@typescript-eslint/no-dupe-class-members": "error",
-//     "@typescript-eslint/no-this-alias":         [
-//       "warn",
-//       {
-//         allowDestructuring: true,
-//         allowedNames:       [
-//           "self"
-//         ]
-//       }
-//     ],
-//     "@typescript-eslint/no-unnecessary-type-constraint": "warn",
-//     "@typescript-eslint/no-unsafe-declaration-merging":  "off",
-//     "@typescript-eslint/await-thenable":                 "error",
-//     "@typescript-eslint/no-misused-promises":            [
-//       "error",
-//       {
-//         checksVoidReturn: {
-//           arguments: false
-//         }
-//       }
-//     ],
-//     "@typescript-eslint/no-unnecessary-type-assertion": "warn",
-//     "@typescript-eslint/prefer-readonly":               "error",
-//     "@typescript-eslint/default-param-last":            "error",
-//     "@typescript-eslint/no-unused-vars":                "off",
-//     "@typescript-eslint/require-await":                 "warn"
-//   },
-//   globals: {
-//     CONFIG:           "readonly",
-//     CONST:            "readonly",
-//     foundry:          "readonly",
-//     game:             "readonly",
-//     canvas:           "readonly",
-//     ui:               "readonly",
-//     ActiveEffect:     "readonly",
-//     Actor:            "readonly",
-//     ActorSheet:       "readonly",
-//     Actors:           "readonly",
-//     Application:      "readonly",
-//     BladesHelpers:    "readonly",
-//     ChatMessage:      "readonly",
-//     Dialog:           "readonly",
-//     Draggable:        "readonly",
-//     Folder:           "readonly",
-//     FormDataExtended: "readonly",
-//     Handlebars:       "readonly",
-//     Hooks:            "readonly",
-//     Item:             "readonly",
-//     ItemSheet:        "readonly",
-//     Items:            "readonly",
-//     Macro:            "readonly",
-//     Roll:             "readonly",
-//     TextureLoader:    "readonly",
-//     TokenDocument:    "readonly",
-//     User:             "readonly",
-//     duplicate:        "readonly",
-//     fetchWithTimeout: "readonly",
-//     loadTemplates:    "readonly",
-//     getTemplate:      "readonly",
-//     mergeObject:      "readonly",
-//     randomID:         "readonly",
-//     renderTemplate:   "readonly",
-//     setProperty:      "readonly",
-//     srcExists:        "readonly",
-//     isObjectEmpty:    "readonly",
-//     expandObject:     "readonly",
-//     flattenObject:    "readonly",
-//     DEFAULT_TOKEN:    "readonly"
-//   },
-//   // "overrides": [
-//   //   {
-//   //     "files": [
-//   //       ".eslintrc.cjs",
-//   //       "*.js"
-//   //     ],
-//   //     "plugins": [
-//   //       "import"
-//   //     ],
-//   //     "extends": [],
-//   //     "parser": "@typescript-eslint/parser",
-//   //     "parserOptions": {},
-//   //     "project": true,
-//   //     "rules": {
-//   //       "array-callback-return": "warn",
-//   //       "arrow-spacing": "warn",
-//   //       "comma-dangle": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "comma-style": "warn",
-//   //       "computed-property-spacing": "warn",
-//   //       "constructor-super": "error",
-//   //       "default-param-last": "off",
-//   //       "dot-location": [
-//   //         "warn",
-//   //         "property"
-//   //       ],
-//   //       "eol-last": "off",
-//   //       "eqeqeq": [
-//   //         "warn",
-//   //         "smart"
-//   //       ],
-//   //       "func-names": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "getter-return": "warn",
-//   //       "lines-between-class-members": 0,
-//   //       "new-parens": [
-//   //         "warn",
-//   //         "always"
-//   //       ],
-//   //       "no-alert": "warn",
-//   //       "no-array-constructor": "warn",
-//   //       "no-class-assign": "warn",
-//   //       "no-compare-neg-zero": "warn",
-//   //       "no-cond-assign": "warn",
-//   //       "no-const-assign": "error",
-//   //       "no-constant-condition": "warn",
-//   //       "no-constructor-return": "warn",
-//   //       "no-delete-var": "warn",
-//   //       "no-dupe-args": "warn",
-//   //       "no-dupe-class-members": 0,
-//   //       "no-dupe-keys": "warn",
-//   //       "no-duplicate-case": "warn",
-//   //       "no-duplicate-imports": [
-//   //         "warn",
-//   //         {
-//   //           "includeExports": true
-//   //         }
-//   //       ],
-//   //       "no-empty": [
-//   //         "warn",
-//   //         {
-//   //           "allowEmptyCatch": true
-//   //         }
-//   //       ],
-//   //       "no-empty-character-class": "warn",
-//   //       "no-empty-pattern": "warn",
-//   //       "no-func-assign": "warn",
-//   //       "no-global-assign": "warn",
-//   //       "no-implicit-coercion": [
-//   //         "warn",
-//   //         {
-//   //           "allow": [
-//   //             "!!"
-//   //           ]
-//   //         }
-//   //       ],
-//   //       "no-implied-eval": "warn",
-//   //       "no-import-assign": "warn",
-//   //       "no-invalid-regexp": "warn",
-//   //       "no-irregular-whitespace": "warn",
-//   //       "no-iterator": "warn",
-//   //       "no-lone-blocks": "warn",
-//   //       "no-lonely-if": "warn",
-//   //       "no-loop-func": "warn",
-//   //       "no-misleading-character-class": "warn",
-//   //       "no-mixed-operators": "warn",
-//   //       "no-multi-str": "warn",
-//   //       "no-new-func": "warn",
-//   //       "no-new-object": "warn",
-//   //       "no-new-symbol": "warn",
-//   //       "no-new-wrappers": "warn",
-//   //       "no-nonoctal-decimal-escape": "warn",
-//   //       "no-obj-calls": "warn",
-//   //       "no-octal": "warn",
-//   //       "no-octal-escape": "warn",
-//   //       "no-promise-executor-return": "warn",
-//   //       "no-proto": "warn",
-//   //       "no-regex-spaces": "warn",
-//   //       "no-script-url": "warn",
-//   //       "no-self-assign": "warn",
-//   //       "no-self-compare": "warn",
-//   //       "no-setter-return": "warn",
-//   //       "no-sequences": "warn",
-//   //       "no-shadow": 0,
-//   //       "no-template-curly-in-string": "warn",
-//   //       "no-this-before-super": "error",
-//   //       "no-unexpected-multiline": "warn",
-//   //       "no-unmodified-loop-condition": "warn",
-//   //       "no-unneeded-ternary": "warn",
-//   //       "no-unreachable": "warn",
-//   //       "no-unreachable-loop": "warn",
-//   //       "no-unsafe-negation": [
-//   //         "warn",
-//   //         {
-//   //           "enforceForOrderingRelations": true
-//   //         }
-//   //       ],
-//   //       "no-unsafe-optional-chaining": [
-//   //         "warn",
-//   //         {
-//   //           "disallowArithmeticOperators": true
-//   //         }
-//   //       ],
-//   //       "no-unused-expressions": "warn",
-//   //       "no-useless-backreference": "warn",
-//   //       "no-useless-call": "warn",
-//   //       "no-useless-catch": "warn",
-//   //       "no-useless-computed-key": [
-//   //         "warn",
-//   //         {
-//   //           "enforceForClassMembers": true
-//   //         }
-//   //       ],
-//   //       "no-useless-concat": "warn",
-//   //       "no-useless-constructor": "warn",
-//   //       "no-useless-rename": "warn",
-//   //       "no-useless-return": "warn",
-//   //       "no-var": "warn",
-//   //       "no-void": [
-//   //         "warn",
-//   //         {
-//   //           "allowAsStatement": true
-//   //         }
-//   //       ],
-//   //       "no-whitespace-before-property": "warn",
-//   //       "prefer-numeric-literals": "warn",
-//   //       "prefer-object-spread": "warn",
-//   //       "prefer-regex-literals": "warn",
-//   //       "prefer-spread": "warn",
-//   //       "rest-spread-spacing": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "semi-style": [
-//   //         "warn",
-//   //         "last"
-//   //       ],
-//   //       "switch-colon-spacing": "warn",
-//   //       "symbol-description": "warn",
-//   //       "template-curly-spacing": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "unicode-bom": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "use-isnan": [
-//   //         "warn",
-//   //         {
-//   //           "enforceForSwitchCase": true,
-//   //           "enforceForIndexOf": true
-//   //         }
-//   //       ],
-//   //       "valid-typeof": [
-//   //         "warn",
-//   //         {
-//   //           "requireStringLiterals": true
-//   //         }
-//   //       ],
-//   //       "wrap-iife": [
-//   //         "warn",
-//   //         "inside"
-//   //       ],
-//   //       "arrow-parens": [
-//   //         "warn",
-//   //         "always"
-//   //       ],
-//   //       "capitalized-comments": "off",
-//   //       "comma-spacing": "warn",
-//   //       "dot-notation": "warn",
-//   //       "max-len": "off",
-//   //       "no-extra-boolean-cast": [
-//   //         "warn",
-//   //         {
-//   //           "enforceForLogicalOperands": true
-//   //         }
-//   //       ],
-//   //       "no-extra-semi": "warn",
-//   //       "no-multi-spaces": [
-//   //         "warn",
-//   //         {
-//   //           "ignoreEOLComments": true
-//   //         }
-//   //       ],
-//   //       "no-tabs": "warn",
-//   //       "no-throw-literal": "error",
-//   //       "no-useless-escape": "warn",
-//   //       "nonblock-statement-body-position": [
-//   //         "warn",
-//   //         "beside"
-//   //       ],
-//   //       "one-var": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "operator-linebreak": [
-//   //         "warn",
-//   //         "before",
-//   //         {
-//   //           "overrides": {
-//   //             "=": "after",
-//   //             "+=": "after",
-//   //             "-=": "after"
-//   //           }
-//   //         }
-//   //       ],
-//   //       "prefer-template": "warn",
-//   //       "quotes": [
-//   //         "warn",
-//   //         "double",
-//   //         {
-//   //           "avoidEscape": true,
-//   //           "allowTemplateLiterals": false
-//   //         }
-//   //       ],
-//   //       "semi": "warn",
-//   //       "space-before-blocks": [
-//   //         "warn",
-//   //         "always"
-//   //       ],
-//   //       "no-extra-parens": "off",
-//   //       "no-unused-vars": "off",
-//   //       "require-await": "off",
-//   //       "array-bracket-spacing": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "func-call-spacing": [
-//   //         "warn",
-//   //         "never"
-//   //       ],
-//   //       "indent": "off",
-//   //       "key-spacing": [
-//   //         "warn",
-//   //         {
-//   //           "multiLine": {
-//   //             "beforeColon": false,
-//   //             "afterColon": true
-//   //           },
-//   //           "singleLine": {
-//   //             "beforeColon": false,
-//   //             "afterColon": true
-//   //           },
-//   //           "align": {
-//   //             "beforeColon": false,
-//   //             "afterColon": true,
-//   //             "on": "value",
-//   //             "mode": "minimum"
-//   //           }
-//   //         }
-//   //       ],
-//   //       "keyword-spacing": [
-//   //         "warn",
-//   //         {
-//   //           "overrides": {
-//   //             "catch": {
-//   //               "before": true,
-//   //               "after": false
-//   //             }
-//   //           }
-//   //         }
-//   //       ],
-//   //       "object-curly-spacing": [
-//   //         "warn",
-//   //         "never",
-//   //         {
-//   //           "arraysInObjects": true,
-//   //           "objectsInObjects": true
-//   //         }
-//   //       ],
-//   //       "quote-props": [
-//   //         "warn",
-//   //         "consistent-as-needed"
-//   //       ],
-//   //       "semi-spacing": "warn",
-//   //       "spaced-comment": [
-//   //         "warn",
-//   //         "always",
-//   //         {
-//   //           "line": {
-//   //             "exceptions": [
-//   //               "*",
-//   //               "~",
-//   //               "DEVCODE",
-//   //               "!DEVCODE",
-//   //               "/ <reference"
-//   //             ],
-//   //             "markers": [
-//   //               "~"
-//   //             ]
-//   //           },
-//   //           "block": {
-//   //             "exceptions": [
-//   //               "*",
-//   //               "~",
-//   //               "*~",
-//   //               "DEVCODE",
-//   //               "!DEVCODE"
-//   //             ],
-//   //             "markers": [
-//   //               "~",
-//   //               "*~"
-//   //             ],
-//   //             "balanced": true
-//   //           }
-//   //         }
-//   //       ],
-//   //       "space-before-function-paren": [
-//   //         "warn",
-//   //         {
-//   //           "anonymous": "never",
-//   //           "named": "never",
-//   //           "asyncArrow": "always"
-//   //         }
-//   //       ],
-//   //       "space-unary-ops": [
-//   //         "warn",
-//   //         {
-//   //           "words": true,
-//   //           "nonwords": false
-//   //         }
-//   //       ],
-//   //       "etc/no-assign-mutated-array": "off",
-//   //       "etc/no-deprecated": "off",
-//   //       "etc/no-implicit-any-catch": "off",
-//   //       "etc/no-internal": "off",
-//   //       "@typescript-eslint/*": "off"
-//   //     }
-//   //   }
-//   // ],
-//   settings: {
-//     "import/resolver": {
-//       node: {
-//         paths: [
-//           "./ts"
-//         ],
-//         extensions: [
-//           ".ts",
-//           ".tsx",
-//           ".d.ts"
-//         ]
-//       },
-//       typescript: {
-//         alwaysTryTypes: true,
-//         project:        "./tsconfig.json"
-//       }
-//     }
-//   }
-// };

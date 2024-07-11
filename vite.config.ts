@@ -32,10 +32,10 @@ function openChromePlugin(): Plugin {
     configResolved(chromeConfig) {
       if (chromeConfig.command === "serve") {
         for (let i = 0; i < NUM_CHROME_PROFILES; i++) {
-          const command = `start chrome --start-maximized --remote-debugging-port=${9222+i} --auto-open-devtools-for-tabs --user-data-dir="D:/Projects/.CODING/FoundryVTT/ChromeDevProfile_${i+1}" http://localhost:${chromeConfig.server.port}`;
+          const command = `start chrome --start-maximized --remote-debugging-port=${String(9222+i)} --auto-open-devtools-for-tabs --user-data-dir="D:/Projects/.CODING/FoundryVTT/ChromeDevProfile_${String(i+1)}" http://localhost:${String(chromeConfig.server.port)}`;
           exec(command, (error) => {
             if (error) {
-              console.error(`Failed to open Chrome instance #${i+1}:`, error);
+              console.error(`Failed to open Chrome instance #${String(i+1)}:`, error);
             }
           });
         }
@@ -59,16 +59,19 @@ function foundryPlugin(): Plugin {
 
     resolveId(source) {
       if (externalsSourceMap.has(source)) {
-        return {
-          id: externalsSourceMap.get(source)!,
+        const id = externalsSourceMap.get(source);
+        if (id) {
+          return {
+            id,
 
-          // This is used to make sure that there's no later transformations during production.
-          external: "absolute",
+            // This is used to make sure that there's no later transformations during production.
+            external: "absolute",
 
-          meta: {
-            [usesFoundryPlugin]: true
-          }
-        };
+            meta: {
+              [usesFoundryPlugin]: true
+            }
+          };
+        }
       }
 
       return null;
@@ -93,58 +96,34 @@ function foundryPlugin(): Plugin {
   };
 }
 
-/**
- * Attempt to get hot-reloading for .hbs files to work
- */
-function hbsPlugin(): Plugin {
-  return {
-    name: "hmr-handler",
-    apply: "serve",
-    handleHotUpdate(context) {
-        if (context.file.startsWith("dist")) return;
-
-        if (context.file.endsWith(".hbs")) {
-            const basePath = context.file.slice(context.file.indexOf("templates/"));
-            console.log(`Updating template file at ${basePath}`);
-            fs.promises.copyFile(context.file, `dist/${basePath}`).then(() => {
-                context.server.ws.send({
-                    type: "custom",
-                    event: "template-update",
-                    data: { path: `systems/${PACKAGE_ID}/${basePath}` },
-                });
-            });
-        }
-    },
-  }
-}
-
-const simpleHbsPlugin: Plugin = {
+const hbsPlugin: Plugin = {
   name: "hmr-handler",
   apply: "serve",
   handleHotUpdate(context) {
-    console.log("Received HBSPLUGIN Context", context);
       if (context.file.startsWith("dist")) return;
 
       if (context.file.endsWith("en.json")) {
           const basePath = context.file.slice(context.file.indexOf("lang/"));
-          console.log(`Updating lang file at ${basePath}`);
           fs.promises.copyFile(context.file, `dist/${basePath}`).then(() => {
               context.server.ws.send({
                   type: "custom",
                   event: "lang-update",
                   data: { path: `systems/${PACKAGE_ID}/${basePath}` },
               });
-          });
+            }).catch((error: unknown) => {
+                console.error(`Failed to copy file: ${String(error)}`);
+            });
       } else if (context.file.endsWith(".hbs")) {
           const basePath = context.file.slice(context.file.indexOf("templates/"));
-          console.log(`Updating template file at ${basePath}`);
           fs.promises.copyFile(context.file, `dist/${basePath}`).then(() => {
               context.server.ws.send({
                   type: "custom",
                   event: "template-update",
                   data: { path: `systems/${PACKAGE_ID}/${basePath}` },
               });
-          });
+            }).catch((error: unknown) => {
+                console.error(`Failed to update file: ${String(error)}`);
+            });
       }
   }
 };
@@ -167,10 +146,10 @@ const config: UserConfig = defineConfig({
     // Configuring proxy rules for certain URLs
     proxy: {
       // Redirecting requests that do not start with "/systems/eunos-blades" to localhost:31100
-      [`^(?!/${PACKAGE_TYPE}s/${PACKAGE_ID})`]: `http://localhost:${foundryPort}/`,
+      [`^(?!/${PACKAGE_TYPE}s/${PACKAGE_ID})`]: `http://localhost:${String(foundryPort)}/`,
       // Special proxy configuration for WebSocket connections used by socket.io
       "/socket.io":                             {
-        target: `ws://localhost:${foundryPort}`, // Target server for the proxy
+        target: `ws://localhost:${String(foundryPort)}`, // Target server for the proxy
         ws:     true // Enable WebSocket support
       }
     },
@@ -235,7 +214,7 @@ const config: UserConfig = defineConfig({
       flatten: false
     }),
     // hbsPlugin(),
-    simpleHbsPlugin,
+    hbsPlugin,
   ].filter(Boolean)
 });
 

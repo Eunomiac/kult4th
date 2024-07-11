@@ -4,6 +4,7 @@
 // import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item.js";
 // import K4Actor, {K4ActorType} from "./K4Actor.js";
 // import K4ChatMessage from "./K4ChatMessage.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -16,7 +17,9 @@ declare global {
 }
 // #endregion
 // #region -- INTERFACE AUGMENTATION ~
-
+interface K4Scene {
+  get name(): string;
+}
 // #endregion
 // #ENDREGION
 
@@ -33,7 +36,12 @@ class K4Scene extends Scene {
   // #endregion
   // #region Type Guards ~ #endregion
 
-  // #region GETTERS & SETTERS ~ #endregion
+  // #region GETTERS & SETTERS ~
+  get effects(): Collection<K4ActiveEffect> {
+    return new Collection<K4ActiveEffect>();
+  }
+
+  // #endregion
 
   // #region === CONSTRUCTOR ===  #ENDREGION
 

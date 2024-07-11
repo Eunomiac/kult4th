@@ -9,10 +9,10 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "lib": [
-      "ESNext",
+      "esnext",
       "DOM"
     ],
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitOverride": true,
@@ -21,6 +21,8 @@
     "paths": {
       "*": [
         "*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV10DistData/Data/systems/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV10DevData/Data/systems/*",
         "D:/Projects/.CODING/FoundryVTT/FoundryV10DistData/Data/modules/*",
         "D:/Projects/.CODING/FoundryVTT/FoundryV10DevData/Data/modules/*",
         "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/*"
@@ -36,9 +38,10 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "ESNext",
+    "target": "esnext",
     "traceResolution": false,
     "types": [
+      "gsap",
       "@league-of-foundry-developers/foundry-vtt-types"
     ],
   },
@@ -47,6 +50,7 @@
     "vite.config.ts"
   ],
   "exclude": [
-    "./.dev"
+    "./.dev",
+    "eslint.config.mjs"
   ]
 }

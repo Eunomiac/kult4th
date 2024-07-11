@@ -39,9 +39,10 @@ Hooks.once("init", async () => {
   // PreInitialize all classes that have a PreInitialize method
   [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
     .filter((doc): doc is typeof doc & { PreInitialize: () => Promise<void> } => "PreInitialize" in doc)
-    .forEach((doc) => {
+    .forEach(async (doc) => {
       kLog.display(`PreInitializing ${doc.name}...`, 0);
-      doc.PreInitialize().then(() => kLog.display(`PreInitialized ${doc.name}.`)).catch(kLog.error);
+      await doc.PreInitialize()
+      kLog.display(`PreInitialized ${doc.name}.`);
     });
 
   // Define the "K4" namespace within the CONFIG object, and assign basic system configuration package.
@@ -242,7 +243,7 @@ Hooks.once("ready", () => {
   // $("body").removeClass("system-kult4th");
 
   // If user is GM, add "gm-user" class to #interface
-  if (game.user?.isGM) {
+  if (game.user.isGM) {
     $("#interface").addClass("gm-user");
   }
 
@@ -250,9 +251,9 @@ Hooks.once("ready", () => {
   initTinyMCEStyles();
 
   /*DEVCODE*/
-  const ACTOR = game.actors?.values().next().value as Maybe<K4Actor>;
-  const ITEM = game.items?.values().next().value as Maybe<K4Item>;
-  const EMBED = ACTOR?.items?.values().next().value as Maybe<K4Item>;
+  const ACTOR = game.actors.values().next().value as Maybe<K4Actor>;
+  const ITEM = game.items.values().next().value as Maybe<K4Item>;
+  const EMBED = ACTOR?.items.values().next().value as Maybe<K4Item>;
   const ACTORSHEET = ACTOR?.sheet;
 
   Object.assign(globalThis, {

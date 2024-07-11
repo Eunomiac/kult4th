@@ -2,67 +2,12 @@
 import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
-import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange, K4WeaponClass} from "./K4Item.js";
+import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
 import K4Roll from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
 import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
-import K4Dialog from "./K4Dialog.js";
 // #endregion
-
-/** #region == K4 Active Effects == ~
-  Active Effects are a powerful and flexible system for applying various modifications to actors, rolls, and other game elements. Here are some key concepts and design considerations:
-
-  CLARIFICATION OF TERMILOGY
-  ==========================
-
-  "EFFECT"
-    The K4ActiveEffect instance.
-
-  "CHANGE"
-    A single discrete modification applied by the Effect. Changes are stored in Effect.changes as
-    an array of {key, mode, value} objects. For custom effects:
-      - key: the name of a custom function
-      - mode: 0
-      - value: a string definition of a simple key:value data object to guide that function's behavior
-
-  "PARENT"
-    The K4Actor instance to which the Effect's Changes are applied. Effects owned by other entities (e.g., items)
-    do not apply their Changes until they are transferred to an Actor owner.
-
-  "SOURCE"
-    The entity, event or circumstance that empowers the Effect, that is ultimately responsible for removing it when it no longer applies.
-    An Effect's Source is usually, but not always, the entity that created the Effect. Valid Sources are:
-      "item": The effect is applied by an item owned by the actor.
-        - REMOVAL: the item is removed from the actor
-      "roll": The effect was applied by a roll result.
-        - REMOVAL: Must be specified, defaults to a single-use, toggleable effect that is initially disabled
-      "wound": The effect is applied by the actor's wound state.
-        - every actor will have a singleton instance of this ActiveEffect, which is refreshed whenever the actor's wounds change
-        - REMOVAL: never (will apply zero effects at no wounds)
-      "stability": The effect is applied by the actor's stability state.
-        - every actor will have a singleton instance of this ActiveEffect, which is refreshed whenever the actor's stability changes
-        - REMOVAL: never (will apply zero modifiers at full Stability)
-      "scene": The effect is applied by the active scene to all Actors present
-        - REMOVAL: when the scene ends
-      "session": The effect is applied by the active session to all Actors present
-        - REMOVAL: when the session ends
-      "gm": The effect is applied by the GM manually to selected actors via the GM Screen
-        - REMOVAL: no automatic removal; manually controlled by the GM
-
-  "TARGET"
-    The actual Document entity the Changes affect. Valid Targets are:
-      "actor": The actor's base data
-      "item": An item owned by the actor
-      "roll": A roll made by the actor
-      "gm": Information displayed on the GM Screen
-
-  SCHEMA
-  ======
-  Foundry does not support defining a custom schema for an ActiveEffect subclass. Instead, schema data is stored serverside
-  in the "kult4th" namespace of the K4ActiveEffect's flags, and merged with the ActiveEffect's native data schema during the
-  prepareData() method.
-*/
 
 // #region -- TYPES & ENUMS --
 // #region ENUMS ~
@@ -111,7 +56,7 @@ enum PromptInputType {
 // #endregion
 // #region TYPES ~
 namespace K4Change {
-  export type Data = EffectChangeData;
+  export type Source = EffectChangeData;
 
    namespace Modes {
     export type ModifyMove =
@@ -138,7 +83,7 @@ namespace K4Change {
       "Set";
   }
 
-  namespace Comps {
+  export namespace Schema {
     export interface CreateAttack {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       name: string, // Name of the attack
@@ -209,62 +154,72 @@ namespace K4Change {
     export interface RequireItem {
       filter: ValueOrArray<string>, // Name of required item(s)
     }
+
+    type AnySchema = CreateAttack|CreateItem<K4ItemType>|CreateTracker|ModifyTracker|ModifyAttack|ModifyMove|ModifyProperty|ModifyChange|PromptForData|RequireItem|ModifyRoll;
+
+    export type Any = Record<string, unknown> & AnySchema;
   }
 
-  export type FuncName = keyof typeof CUSTOM_FUNCTIONS;
+  export namespace CustomFunc {
+    export type Name = keyof typeof CUSTOM_FUNCTIONS;
 
-  export type FuncData<N extends keyof typeof CUSTOM_FUNCTIONS, T extends K4ItemType = K4ItemType> =
-      N extends "CreateAttack" ? Comps.CreateAttack :
-      N extends "CreateItem" ? Comps.CreateItem<T> :
-      N extends "CreateTracker" ? Comps.CreateTracker :
-      N extends "ModifyTracker" ? Comps.ModifyTracker :
-      N extends "ModifyAttack" ? Comps.ModifyAttack :
-      N extends "ModifyMove" ? Comps.ModifyMove :
-      N extends "ModifyProperty" ? Comps.ModifyProperty :
-      N extends "ModifyChange" ? Comps.ModifyChange :
-      N extends "PromptForData" ? Comps.PromptForData :
-      N extends "RequireItem" ? Comps.RequireItem :
-      N extends "ModifyRoll" ? Comps.ModifyRoll :
+    export type Data<N extends keyof typeof CUSTOM_FUNCTIONS, T extends K4ItemType = K4ItemType> =
+      N extends "CreateAttack" ? Schema.CreateAttack :
+      N extends "CreateItem" ? Schema.CreateItem<T> :
+      N extends "CreateTracker" ? Schema.CreateTracker :
+      N extends "ModifyTracker" ? Schema.ModifyTracker :
+      N extends "ModifyAttack" ? Schema.ModifyAttack :
+      N extends "ModifyMove" ? Schema.ModifyMove :
+      N extends "ModifyProperty" ? Schema.ModifyProperty :
+      N extends "ModifyChange" ? Schema.ModifyChange :
+      N extends "PromptForData" ? Schema.PromptForData :
+      N extends "RequireItem" ? Schema.RequireItem :
+      N extends "ModifyRoll" ? Schema.ModifyRoll :
       never;
-    export type AnyFuncData = Comps.CreateAttack|Comps.CreateItem<K4ItemType>|Comps.CreateTracker|Comps.ModifyTracker|Comps.ModifyAttack|Comps.ModifyMove|Comps.ModifyProperty|Comps.ModifyChange|Comps.PromptForData|Comps.RequireItem|Comps.ModifyRoll;
 
+    export type AnyData = Schema.Any;
+  }
+
+  export type CustomFunc = (this: K4Change, actor: K4Actor|K4Roll, data: Schema.Any) => Promise<boolean>;
 }
 namespace K4ActiveEffect {
   export type OriginTypes = Exclude<K4ItemType, K4ItemType.darksecret>;
-  export type Origin = K4Item<OriginTypes>|K4Actor<K4ActorType.pc>|K4Scene|K4ChatMessage;
-  export type CustomFunctionActor = (
-    this: K4Change,
-    parent: K4Actor,
-    data: Record<string, SystemScalar>
-  ) => Promise<boolean>;
+  export type Origin = K4Item<OriginTypes>|K4Actor<K4ActorType.pc>|K4Scene|K4ChatMessage|JQuery;
+  export type ToggleCategory = keyof typeof DYNAMIC_CHANGES|K4ItemType;
+  // export type CustomFunctionActor = (
+  //   this: K4Change,
+  //   parent: K4Actor,
+  //   data: K4Change.Schema.Any
+  // ) => Promise<boolean>;
 
-  export type CustomFunctionRoll = (
-    this: K4Change,
-    parent: K4Roll,
-    data: Record<string, SystemScalar>
-  ) => Promise<boolean>;
+  // export type CustomFunctionRoll = (
+  //   this: K4Change,
+  //   parent: K4Roll,
+  //   data: K4Change.Schema.ModifyRoll
+  // ) => Promise<boolean>;
 
-  export type CustomFunction = CustomFunctionActor | CustomFunctionRoll;
+  // export type CustomFunction = CustomFunctionActor | CustomFunctionRoll;
 
   export interface BuildData {
-    parentData: SourceData,
+    parentData: ParentData,
     changeData: EffectChangeData[]
   }
 
-  export interface SourceData {
+  export interface ParentData {
+    label?: string, // The principal name of the Effect. Appears in tooltips and in chat roll results.  If undefined, effect takes the name of its origin item.
+    dynamic?: keyof typeof DYNAMIC_CHANGES, // A list of dynamically-generated changes that should be refreshed each time the effect is applied. Possible values: "wounds", "stability", "stabilityConditions"
     canToggle: boolean, // Whether the user can toggle this effect on/off
     inStatusBar: boolean, // Whether the effect should be displayed in the status bar (default = false UNLESS canToggle = true)
-    label: Maybe<string>, // The principal name of the Effect. Appears in tooltips and in chat roll results.  If undefined, effect takes the name of its origin item.
     uses: number, // Number of uses of the effect before it is disabled or requires refill (0 = infinite).
     canRefill: boolean, // Whether the effect's uses can be refilled or if it should be deleted when uses = max
     isUnique: boolean, // Whether the effect is unique (only one copy can be on any Actor at a time)
     duration: EffectDuration, // If/when the effect should be automatically removed ("ongoing" for never)
     defaultState: boolean, // Whether a toggleable effect is enabled by default
-    resetOn: Maybe<EffectResetOn>, // When the effect should reset to its default state (or resetTo)
-    resetTo: Maybe<boolean>, // Overrides the default state when the effect resets
-    icon: Maybe<string>; // The icon to display on the status bar. If undefined, takes icon of origin item.
+    resetOn?: EffectResetOn, // When the effect should reset to its default state (or resetTo)
+    resetTo?: boolean, // Overrides the default state when the effect resets
+    icon?: string, // The icon to display on the status bar. If undefined, takes icon of origin item.
     statusLabel: string; // The label to display on the status bar (default = "")
-    tooltip: Maybe<string>; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
+    tooltip?: string; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
     permanent: boolean; // Whether the effect should permanently apply its effects upon creation
     from?: string, // Optional override for the default "#>text-keyword>{sourceName}<#" component (is prefixed with 'from')
     alertUser?: string, // Optional alert to display to actor's owner when the change is applied (in formatForKult or HTML)
@@ -291,52 +246,45 @@ namespace K4ActiveEffect {
       /**
        * Base interface for an Effect.
        */
-      interface Base {
+      interface Base extends Omit<ParentData, "uses"|"from"> {
         label: string; // The principal name of the Effect. Appears in tooltips and in chat roll results.
-        canToggle: boolean; // Whether the PARENTACTOR can toggle the effect on/off on their character sheet (default = true)
-        duration: EffectDuration; // The duration of the Effect, which determines when it is automatically removed (default = "ongoing")
-        isUnique: boolean; // Whether the Effect is unique, meaning a second effect with the same label will OVERWRITE any existing effect (default = "true")
+        dynamic?: keyof typeof DYNAMIC_CHANGES, // A list of dynamically-generated changes that should be refreshed each time the effect is applied. Possible values: "wounds", "stability", "stabilityConditions"
         uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
                          // - if undefined, the Effect is not limited-use
-        canRefill?: boolean; // Whether the Effect can be refilled, or if it is removed when uses.value === uses.max (default = false)
         effectSource: Components.EffectSource.Ref; // Identifies the category of entity, event or circumstance that empowers the Effect, and that is ultimately responsible for removing it when it no longer applies.
         fromText: string; // A reference to the source of the effect in FormatForKult form
       }
 
-      /**
-       * Interface for effects that can be toggled.
-       */
-      export interface CanToggle extends Base {
-        canToggle: true;
+      export interface ToggleData {
         isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
         isEnabled: boolean; // Whether the effect is active and should be applied to rolls (default = defaultState)
+        toggleCategory: ToggleCategory; // The category of the effect, used to group similar effects in the actor's character sheet
         statusIcon: string; // The icon to display on the toggle modifier button.
         statusLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
-        statusTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
+        statusTooltip?: string; // Optional override of 'tooltip' for the toggle button tooltip, if different from chat message tooltip
         defaultState: boolean; // Whether the effect is enabled by default when applied. (default = true)
         resetOn: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
         resetTo: boolean; // The state to which the effect is reset when resetOn conditions are met (default = defaultState)
       }
 
       /**
-       * Interface for effects that cannot be toggled.
+       * Interface for effects that can be toggled.
        */
-      interface CannotToggle extends Base {
-        canToggle: false;
+      export interface CanToggle extends Omit<Base, "resetOn"|"resetTo">, ToggleData {
+        canToggle: true;
+        inStatusBar: true;
       }
 
       /**
-       * Union type for Effect data, discriminated by `canToggle`.
+       * Interface for effects that cannot be toggled.
        */
-      export type ExtData = CanToggle | CannotToggle;
+      export interface CannotToggle extends Base {
+        canToggle: false;
+      }
     }
   }
 
-  export type ExtendedData = Components.Effect.ExtData;
-  export type ExtendedToggleData = Components.Effect.ExtData & Components.Effect.CanToggle;
-  export type ExtendedConstructorData = Omit<ExtendedData, "effectSource">;
-
-  export type ConstructorData = ActiveEffectDataConstructorData;
+  export type ExtendedData = Components.Effect.CanToggle|Components.Effect.CannotToggle;
 
   export type Data = ActiveEffectData & {
     flags: {
@@ -346,52 +294,41 @@ namespace K4ActiveEffect {
     }
   }
 
-  export interface ToggleData {
-    isEnabled: boolean; // Whether the effect is active and should be applied to rolls (default = defaultState)
-    defaultState: boolean; // Whether the effect is enabled by default when applied. (default = true)
-    resetOn: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
-    resetTo: boolean; // The state to which the effect is reset when resetOn conditions are met (default = defaultState)
-    isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
-    statusIcon: string; // The icon to display on the toggle modifier button.
-    toggleCategory: "stability"|"wound"|K4ItemType; // The category of the effect, used to group similar effects in the actor's character sheet
-    statusLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
-    statusTooltip: string; // The tooltip to display on the toggle button in the actor's character sheet
-    toggleValue: string; // The value displayed next to the toggle button in the actor's character sheet (default = "")
-    toggleValueGlow: string // The neon glow class to be applied to any value shown (default = "")
+  export interface ToggleContext extends Components.Effect.ToggleData {
+    statusValue: string; // The value displayed next to the toggle button in the actor's character sheet (default = "")
+    statusValueGlow: string; // The neon glow class to be applied to any value shown (default = "")
   }
 }
 // #endregion
-
 // #endregion --
-
 
 // #region === CUSTOM FUNCTIONS FOR MODE EffectMode.Custom ===
 const CUSTOM_FUNCTIONS = {
-  async CreateAttack(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async CreateAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateAttack): Promise<boolean> {
 
-    return true;
+    return Promise.resolve(true);
   },
-  async CreateItem(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async CreateItem(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateItem<K4ItemType>): Promise<boolean> {
 
-    return true;
+    return Promise.resolve(true);
   },
-  async CreateTracker(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async CreateTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateTracker): Promise<boolean> {
 
-    return true;
+    return Promise.resolve(true);
   },
-  async ModifyTracker(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async ModifyTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyTracker): Promise<boolean> {
 
-    return true;
+    return Promise.resolve(true);
   },
-  async ModifyAttack(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async ModifyAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyAttack): Promise<boolean> {
 
-    return true;
+    return Promise.resolve(true);
   },
-  async ModifyMove(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {filter, target, effect, value, text, fromText} = data as Partial<{
+    const {filter, target, mode, value, text, fromText} = data as Partial<{
       filter: string,
       mode: string,
       target?: string,
@@ -399,53 +336,55 @@ const CUSTOM_FUNCTIONS = {
       text?: string,
       fromText?: string
     }>;
-    if (!filter || !effect) {
+    if (!filter || !mode) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
     }
-    actor.getItemsByFilter(K4ItemType.move, filter as string)
+    actor.getItemsByFilter(K4ItemType.move, filter)
       .forEach((move) => {
-        switch (effect) {
+        switch (mode) {
           case "PushElement": {
-            const targetArray = U.getProp<Array<SystemScalar>>(move, target ?? "");
+            if (!target) {
+              throw new Error(`No target provided for PushElement: ${JSON.stringify(data)}`);
+            }
+            const targetArray = U.getProp<SystemScalar[]>(move, target);
             if (!Array.isArray(targetArray)) {
-              throw new Error(`Invalid target for PushElement: '${target}'`);
+              throw new Error(`Invalid target array for PushElement: '${target}'`);
             }
             if (U.isUndefined(value)) { return undefined; }
             targetArray.push(value);
-            setProperty(move, target as string, targetArray);
+            setProperty(move, target, targetArray);
             break;
           }
           case "AppendText": {
-            const targetString = getProperty(move, String(target));
+            if (!target) {
+              throw new Error(`No target provided for AppendText: ${JSON.stringify(data)}`);
+            }
+            const targetString = U.getProp<string>(move, target);
             if (typeof targetString !== "string") {
               throw new Error(`Invalid target for AppendText: '${target}'`);
             }
-            setProperty(move, target as string, targetString + text);
-            break;
-          }
-          case "ModifyEffect": {
-            console.warn(`ModifyMove > ModifyEffect is not yet implemented, but will use ${fromText}`);
+            setProperty(move, target, targetString + (text ?? ""));
             break;
           }
           default: {
-            throw new Error(`Unrecognized effect for ModifyMove: '${effect}'`);
+            throw new Error(`Unrecognized effect for ModifyMove: '${mode}'`);
           }
         }
       });
     return true;
   },
-  async ModifyProperty(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async ModifyProperty(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyProperty, isPermanent = false): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyProperty: ${String(actor)}`);
     }
-    let {filter, effect, target, value, permanent} = data;
+    let {filter, mode, target, value} = data;
     value = U.castToScalar(String(value));
-    if (!filter || !effect || !target) {
+    if (!filter || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
     }
     if (filter === "actor") {
-      const curVal = U.castToScalar(getProperty(actor, `${target}`));
-      switch (effect) {
+      const curVal = U.castToScalar(getProperty(actor, target));
+      switch (mode) {
         case "Subtract":
           if (typeof value !== "number") {
             throw new Error(`Invalid value for ModifyProperty 'Subtract': ${value}`);
@@ -464,18 +403,18 @@ const CUSTOM_FUNCTIONS = {
             throw new Error(`Invalid actor value (curVal) for ModifyProperty 'Add': ${curVal}`);
           }
           if (value === 0) { return true; }
-          if (permanent === true) {
-            actor.update({[`${target}`]: curVal + value});
+          if (isPermanent) {
+            await actor.update({[target]: curVal + value});
           } else {
-            setProperty(actor, `${target}`, curVal + value);
+            setProperty(actor, target, curVal + value);
           }
           break;
         }
         case "Set": {
-          if (permanent === true) {
-            actor.update({[`${target}`]: value});
+          if (isPermanent) {
+            await actor.update({[target]: value});
           } else {
-            setProperty(actor, `${target}`, value);
+            setProperty(actor, target, value);
           }
           break;
         }
@@ -488,29 +427,29 @@ const CUSTOM_FUNCTIONS = {
             return true;
           }
           if (value === true) { return true; }
-          if (permanent === true) {
-            actor.update({[`${target}`]: value});
+          if (isPermanent) {
+            await actor.update({[target]: value});
           } else {
-            setProperty(actor, `${target}`, value);
+            setProperty(actor, target, value);
           }
         }
       }
     }
     return true;
   },
-  async ModifyChange(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
-    let {filter, effect, target, value, permanent} = data;
+    let {filter, mode, target, value} = data;
     value = U.castToScalar(String(value));
-    if (!filter || !effect || !target) {
+    if (!filter || !target) {
       throw new Error(`Invalid data for ModifyChange: ${JSON.stringify(data)}`);
     }
 
     return true;
   },
-  async PromptForData(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  async PromptForData(this: K4Change, actor: K4Actor, data: K4Change.Schema.PromptForData): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
@@ -535,24 +474,24 @@ const CUSTOM_FUNCTIONS = {
     if (typeof defaultVal !== "string") {
       throw new Error(`No default value provided for PromptForData: ${JSON.stringify(data)}`);
     }
-    const userOutput = U.castToScalar(await new Promise(async (resolve) => {
-      const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
-      const context: Record<string, SystemScalar> = {
-        title,
-        bodyText: bodyText ?? "",
-        subText: subText ?? ""
-      }
-      const dialogData: Dialog.Data = {
-        title,
-        content: template(context),
-        buttons: {}
-      };
-      dialogData.close = () => resolve(false); // User cancelled the dialog; return false to trigger cancellation logic
+    const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
+    const context: Record<string, SystemScalar> = {
+      title,
+      bodyText: bodyText ?? "",
+      subText:  subText ?? ""
+    };
+    const dialogData: Dialog.Data = {
+      title,
+      content: template(context),
+      buttons: {}
+    };
+    const userOutput = U.castToScalar(await new Promise((resolve) => {
+      dialogData.close = () => { resolve(false); }; // User cancelled the dialog; return false to trigger cancellation logic
       switch (input) {
         case PromptInputType.buttons: {
           const buttonVals = (inputVals ?? "")
             .split("|")
-            .map((val) => U.isNumString(val) ? U.pInt(val) : (U.isBooleanString(val) ? U.pBool(val) : val));
+            .map(U.castToScalar);
           if (!buttonVals.length) {
             throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
           }
@@ -560,21 +499,21 @@ const CUSTOM_FUNCTIONS = {
             return [
               String(val),
               {
-                label: String(val),
-                callback: () => resolve(val)
+                label:    String(val),
+                callback: () => { resolve(val); }
               }
-            ];
+            ] as const;
           });
           // Assign the default value to the first button
           dialogData.default = String(buttonVals[0]);
-          dialogData.buttons = Object.fromEntries(buttonEntries);
+          dialogData.buttons = Object.fromEntries<Record<string, unknown>>(buttonEntries);
           break;
         }
         case PromptInputType.text: {
           dialogData.default = "submit";
           dialogData.buttons = {
             submit: {
-              label: "Submit",
+              label:    "Submit",
               callback: (html) => {
                 const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
                 resolve(inputValue);
@@ -587,22 +526,19 @@ const CUSTOM_FUNCTIONS = {
           dialogData.default = "confirm";
           dialogData.buttons = {
             confirm: {
-              label: "Confirm",
-              callback: () => resolve(true)
+              label:    "Confirm",
+              callback: () => { resolve(true); }
             },
             cancel: {
-              label: "Cancel",
-              callback: () => resolve(false)
+              label:    "Cancel",
+              callback: () => { resolve(false); }
             }
           };
           break;
         }
-        default: {
-          throw new Error(`Invalid input type for PromptForData: ${input}`);
-        }
       }
       new Dialog(dialogData, {
-        classes: [C.SYSTEM_ID, "dialog"],
+        classes: [C.SYSTEM_ID, "dialog"]
       }).render(true);
     }));
     if (userOutput === false) { return false; }
@@ -613,7 +549,7 @@ const CUSTOM_FUNCTIONS = {
     }
     throw new Error(`Unrecognized key for PromptForData: ${key}`);
   },
-  async RequireItem(this: K4Change, actor: K4Actor, data: Record<string, SystemScalar>): Promise<boolean> {
+  RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
@@ -635,11 +571,14 @@ const CUSTOM_FUNCTIONS = {
     }
     return true;
   },
-  async ModifyRoll(this: K4Change, roll: K4Roll, data: Record<string, SystemScalar>): Promise<boolean> {
+  async ModifyRoll(this: K4Change, roll: K4Roll, data: K4Change.Schema.ModifyRoll): Promise<boolean> {
+    if (!this.isInstantiated()) {
+      throw new Error("Custom function ModifyRoll called without a valid K4Change instance.");
+    }
     if (!(roll instanceof K4Roll)) {
       throw new Error(`Invalid roll for ModifyRoll: ${String(roll)}`);
     }
-    let {filter, effect, value} = data as Partial<{
+    let {filter, mode, value} = data as Partial<{
       filter: string,
       mode: string,
       value: SystemScalar
@@ -647,36 +586,36 @@ const CUSTOM_FUNCTIONS = {
     if (!filter || typeof filter !== "string") {
       throw new Error(`Invalid filter for ModifyRoll: ${filter}`);
     }
-    if (!effect || typeof effect !== "string") {
-      throw new Error(`Invalid effect for ModifyRoll: ${effect}`);
+    if (!mode || typeof mode !== "string") {
+      throw new Error(`Invalid effect for ModifyRoll: ${mode}`);
     }
     if (typeof value === "string") {
       if (value === "prompt") {
-        let {title, bodyText, subText, input, inputVals} = data as Partial<{
+        const {title, bodyText, subText, input, inputVals} = data as Partial<{
           title: string,
           bodyText: string,
           subText: string,
           input: string,
           inputVals: string
         }>;
-        let userOutput: SystemScalar = await new Promise(async (resolve) => {
-          const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
-          const context: Record<string, SystemScalar> = {
-            title: title ?? "Input Roll Data",
-            bodyText: bodyText ?? "",
-            subText: subText ?? ""
-          }
-          const dialogData: Dialog.Data = {
-            title: context.title as string,
-            content: template(context),
-            buttons: {}
-          };
-          dialogData.close = () => resolve(false); // User cancelled the dialog; cancel the roll.
+        const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
+        const context: Record<string, SystemScalar> = {
+          title:    title ?? "Input Roll Data",
+          bodyText: bodyText ?? "",
+          subText:  subText ?? ""
+        };
+        const dialogData: Dialog.Data = {
+          title:   context.title as string,
+          content: template(context),
+          buttons: {}
+        };
+        const userOutput: SystemScalar = U.castToScalar(await new Promise((resolve) => {
+          dialogData.close = () => { resolve(false); }; // User cancelled the dialog; cancel the roll.
           switch (input) {
             case PromptInputType.buttons: {
               const buttonVals = (inputVals ?? "")
                 .split("|")
-                .map((val) => U.isNumString(val) ? U.pInt(val) : (U.isBooleanString(val) ? U.pBool(val) : val));
+                .map(U.castToScalar);
               if (!buttonVals.length) {
                 throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
               }
@@ -684,21 +623,21 @@ const CUSTOM_FUNCTIONS = {
                 return [
                   String(val),
                   {
-                    label: String(val),
-                    callback: () => resolve(val)
+                    label:    String(val),
+                    callback: () => {resolve(val)}
                   }
-                ];
+                ] as const;
               });
               // Assign the default value to the first button
               dialogData.default = String(buttonVals[0]);
-              dialogData.buttons = Object.fromEntries(buttonEntries);
+              dialogData.buttons = Object.fromEntries<Record<string, unknown>>(buttonEntries);
               break;
             }
             case PromptInputType.text: {
               dialogData.default = "submit";
               dialogData.buttons = {
                 submit: {
-                  label: "Submit",
+                  label:    "Submit",
                   callback: (html) => {
                     const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
                     resolve(inputValue);
@@ -711,12 +650,12 @@ const CUSTOM_FUNCTIONS = {
               dialogData.default = "confirm";
               dialogData.buttons = {
                 confirm: {
-                  label: "Confirm",
-                  callback: () => resolve(true)
+                  label:    "Confirm",
+                  callback: () => { resolve(true); }
                 },
                 cancel: {
-                  label: "Cancel",
-                  callback: () => resolve(false)
+                  label:    "Cancel",
+                  callback: () => { resolve(false); }
                 }
               };
               break;
@@ -726,12 +665,9 @@ const CUSTOM_FUNCTIONS = {
             }
           }
           new Dialog(dialogData, {
-            classes: [C.SYSTEM_ID, "dialog"],
+            classes: [C.SYSTEM_ID, "dialog"]
           }).render(true);
-        });
-        if (typeof userOutput === "string") {
-          userOutput = U.castToScalar(userOutput);
-        }
+        }));
         if (userOutput === false) {
           return false; // User cancelled dialog; return false to cancel roll.
         }
@@ -741,7 +677,7 @@ const CUSTOM_FUNCTIONS = {
         value = U.castToScalar(getProperty(actor, value.slice(6)));
       }
     }
-    switch (effect) {
+    switch (mode) {
       case "Subtract":
         if (typeof value !== "number") {
           throw new Error(`Invalid value for ModifyRoll 'Subtract': ${value}`);
@@ -753,20 +689,93 @@ const CUSTOM_FUNCTIONS = {
           throw new Error(`Invalid value for ModifyRoll 'Add': ${value}`);
         }
         roll.modifiers.push({
-          id: this.id!,
-          filter: this.filter,
-          label: this.customFunctionData.label as Maybe<string> ?? this.name,
+          id:           this.id,
+          filter:       this.filter,
+          label:        this.customFunctionData.label as Maybe<string> ?? this.name,
           tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
-          tooltipDesc: this.tooltip ?? "",
+          tooltipDesc:  this.tooltip ?? "",
           value,
-          cssClasses: [
+          cssClasses:   [
             value >= 0 ? "k4-theme-gold" : "k4-theme-red"
           ]
         });
+        break;
+      }
+      default: {
+        throw new Error(`Unrecognized mode for ModifyRoll: ${mode}`);
       }
     }
     return true;
+  }
+} as const;
+// #endregion
+
+// #region === DYNAMIC CHANGE GENERATION ===
+type DynamicChangeGenerator = (effect: K4ActiveEffect) => K4Change[];
+const DYNAMIC_CHANGES = {
+  armor: (effect: K4ActiveEffect) => {
+    if (!effect.isOwnedByActor(K4ActorType.pc)) { return []; }
+    if (effect.actor.system.armor === 0) { return []; }
+    return [
+      new K4Change(
+        K4ActiveEffect.BuildChangeData("ModifyRoll", {
+          filter: "Endure Injury",
+          mode: "Add",
+          value: effect.actor.system.armor
+        }), effect
+      )
+    ];
   },
+  wounds: (effect: K4ActiveEffect) => {
+    if (!effect.isOwnedByActor(K4ActorType.pc)) { return []; }
+    return effect.actor.woundModData
+      .map((woundData) => {
+        if (woundData.value === 0) {
+          return undefined;
+        }
+        return new K4Change(
+          K4ActiveEffect.BuildChangeData("ModifyRoll", {
+              filter: woundData.filter,
+              mode: "Add",
+              value: woundData.value
+            }), effect
+        );
+      })
+      .filter(Boolean) as K4Change[];
+  },
+  stability: (effect: K4ActiveEffect) => {
+    if (!effect.isOwnedByActor(K4ActorType.pc)) { return []; }
+    return effect.actor.stabilityModData.map((stabilityData) => {
+      if (stabilityData.value === 0) {
+        return undefined;
+      }
+      return new K4Change(
+        K4ActiveEffect.BuildChangeData("ModifyRoll", {
+            filter: stabilityData.filter,
+            mode: "Add",
+            value: stabilityData.value
+          }), effect
+        );
+      })
+      .filter(Boolean) as K4Change[];
+  },
+  stabilityConditions: (effect: K4ActiveEffect) => {
+    if (!effect.isOwnedByActor(K4ActorType.pc)) { return []; }
+    return effect.actor.stabilityConditionModData
+      .map((stabilityConditionData) => {
+        if (stabilityConditionData.value === 0) {
+          return undefined;
+        }
+        return new K4Change(
+          K4ActiveEffect.BuildChangeData("ModifyRoll", {
+            filter: stabilityConditionData.filter,
+            mode: "Add",
+            value: stabilityConditionData.value
+          }), effect
+        );
+      })
+      .filter(Boolean) as K4Change[];
+  }
 } as const;
 // #endregion
 
@@ -777,50 +786,7 @@ const CUSTOM_FUNCTIONS = {
  */
 class K4Change implements EffectChangeData {
   // #region STATIC METHODS ~
-  /**
-   * Parses a function data string into an object literal.
-   *
-   * == FUNCTION DATA STRING ==
-   * A string definition of a data object that will be passed to the function. Each function must define how to handle this data object.
-   *  - String is comma-delimited with key-value pairs separated by colons.
-   *  - The last key-value pair may contain commas, as long as there are no colons after the last comma.
-   *
-   * @param {string} dataString - The function data string to parse.
-   * @returns {Record<string, string>} - The parsed object literal.
-   */
-  static ParseFunctionDataString(dataString: string): Record<string, SystemScalar> {
-    if (!dataString) { return {}; }
-    dataString = U.trimInner(dataString);
-    const pairs = dataString.match(/([^,]+:[^,]+(?:,[^,]+)*?)(?=(?:,[^:]+:)|$)/g);
-    if (!pairs) {
-      throw new Error(`Invalid function data string format: "${dataString}"`);
-    }
-    // kLog.log("[ParseFunctionDataString]", {dataString, pairs}, 3)
 
-    return pairs.reduce((acc, pair) => {
-
-      let [key, value]: [string, SystemScalar] = pair
-        .split(/:(.+)/) // Split only at the first colon
-        .map((str) => str.trim()) as [string, string];
-
-      // Convert the value to the appropriate type
-      if (U.isNumString(value)) {
-        value = /\./.test(value) ? U.pFloat(value) : U.pInt(value);
-      } else if (U.isBooleanString(value)) {
-        value = U.pBool(value);
-      }
-
-      /** Debugging: Record unique keys and values to CONFIG object */
-      CONFIG.debug.customFunctionParams ??= {};
-      CONFIG.debug.customFunctionParams[key] ??= [];
-      if (!CONFIG.debug.customFunctionParams[key].includes(value)) {
-        CONFIG.debug.customFunctionParams[key].push(value);
-      }
-
-      acc[key] = value;
-      return acc;
-    }, {} as Record<string,SystemScalar>);
-  }
   // #endregion
 
   // #region Effect Change Data Properties ~
@@ -831,7 +797,7 @@ class K4Change implements EffectChangeData {
   // #endregion
 
   // #region GETTERS & SETTERS ~
-  isInstantiated(): this is typeof this & {parentEffect: K4ActiveEffect} {
+  isInstantiated(): this is typeof this & {id: string, parentEffect: K4ActiveEffect} {
     return Boolean(this.parentEffect);
   }
   get id(): Maybe<string> {
@@ -876,9 +842,9 @@ class K4Change implements EffectChangeData {
       && !this.isRollModifier();
   }
   isRollModifier(): this is this & {modData: K4Roll.ModData} {
-    return ["ModifyRoll", "ApplyWounds", "ApplyStability"].includes(this.customFunctionName);
+    return this.customFunctionName === "ModifyRoll";
   }
-  get filter(): "all"|K4Attribute|K4ItemType|string {
+  get filter(): K4Attribute|K4ItemType|string {
     return this.customFunctionData.filter as Maybe<string> ?? "all";
   }
   get name(): string {
@@ -896,46 +862,45 @@ class K4Change implements EffectChangeData {
   _promptedValue?: SystemScalar;
   get finalValue(): Maybe<SystemScalar> {
     const {value} = this.customFunctionData;
-    if (value === undefined) { return undefined; }
     if (value === "prompt") {
       return this._promptedValue;
     }
-    if (!this.isOwnedByActor()) { return value }
+    if (!this.isOwnedByActor()) {
+      if (!U.isSystemScalar(value)) { return undefined; }
+      return value;
+    }
     if (typeof value === "string" && value.startsWith("actor.")) {
-      return getProperty(this.actor, value.slice(6));
+      return U.getProp<SystemScalar>(this.actor, value.slice(6));
     }
-    if (U.isNumString(value)) {
-      return U.pInt(value);
-    }
-    if (U.isBooleanString(value)) {
-      return U.pBool(value);
-    }
-    return value;
+    return U.castToScalar(value);
   }
   get modData(): K4Roll.ModData {
+    if (!this.isInstantiated()) {
+      throw new Error(`Invalid K4Change instance for modData: ${String(this)}`);
+    }
     if (typeof this.finalValue !== "number") {
       throw new Error(`Invalid finalValue for K4Change '${this.finalValue}' (should it be in the status bar?)`);
     }
     return {
-      id: this.id!,
-      filter: this.filter,
-      label: this.customFunctionData.label as Maybe<string> ?? this.name,
+      id:           this.id,
+      filter:       this.filter,
+      label:        this.customFunctionData.label as Maybe<string> ?? this.name,
       tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
-      tooltipDesc: this.tooltip ?? "",
-      value: this.finalValue,
-      cssClasses: [
+      tooltipDesc:  this.tooltip ?? "",
+      value:        this.finalValue,
+      cssClasses:   [
         this.finalValue >= 0 ? "k4-theme-gold" : "k4-theme-red"
       ]
     };
   }
-  isInStatusBar() {
+  isCollapsible() {
     return this.isRollModifier() && typeof this.finalValue === "number" && this.customFunctionData.inStatusBar !== false;
   }  // #endregion
 
   // #region CONSTRUCTOR
   customFunctionName: keyof typeof CUSTOM_FUNCTIONS;
-  customFunction: K4ActiveEffect.CustomFunction;
-  customFunctionData: Record<string, SystemScalar>;
+  customFunction: K4Change.CustomFunc;
+  customFunctionData: K4Change.CustomFunc.AnyData;
   parentEffect?: K4ActiveEffect;
   constructor(data: EffectChangeData, effect?: K4ActiveEffect) {
     const {key, mode, value} = data;
@@ -948,31 +913,29 @@ class K4Change implements EffectChangeData {
     this.key = key;
     this.value = value;
     this.mode = mode;
-    this.customFunctionName = key;
-    this.customFunction = CUSTOM_FUNCTIONS[key].bind(this);
-    this.customFunctionData = K4Change.ParseFunctionDataString(value);
+    this.customFunctionName = key as KeyOf<typeof CUSTOM_FUNCTIONS>;
+    this.customFunction = CUSTOM_FUNCTIONS[this.customFunctionName].bind(this) as K4Change.CustomFunc;
+    this.customFunctionData = JSON.parse(value) as K4Change.CustomFunc.AnyData;
     this.parentEffect = effect;
   }
   // #endregion
 
 
-  async apply(parent: K4Actor): Promise<string|boolean|void>
+  async apply(parent: K4Actor): Promise<string|boolean>
   async apply(parent: K4Roll): Promise<boolean>
-  async apply(parent: K4Actor|K4Roll) {
+  async apply(parent: K4Actor|K4Roll): Promise<string|boolean> {
     const {parentEffect} = this;
-    if (!parent) {
-      throw new Error(`[K4Change.apply] No valid parent found for '${this.customFunctionName}' K4Change of K4ActiveEffect '${this.parentEffect?.name ?? "(Uninstantiated Effect Data)"}'`);
-    }
     if (!parentEffect) {
       throw new Error(`[K4Change.apply] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
     }
     if (parent instanceof K4Actor) {
-      return await (this.customFunction as K4ActiveEffect.CustomFunctionActor)(parent, this.customFunctionData);
+      return this.customFunction(parent, this.customFunctionData);
     }
-    return await (this.customFunction as K4ActiveEffect.CustomFunctionRoll)(parent, this.customFunctionData);
+    return this.customFunction(parent, this.customFunctionData);
   }
 }
 // #endregion
+
 // #region === K4ACTIVEEFFECT CLASS ===
 /**
  * The active effect itself can be applied using Foundry's standard logic, resulting in changes
@@ -993,49 +956,6 @@ class K4Change implements EffectChangeData {
  * iterated through and applied during the roll process.
  */
 class K4ActiveEffect extends ActiveEffect {
-
-  static #isChangeModeCustom(change: EffectChangeData): boolean { return change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM; }
-  static #getChangesWith(changeData: K4Change.Data[], param: string, value?: SystemScalar): K4Change.Data[] {
-    return changeData
-      .filter((changeData) => this.#isChangeModeCustom(changeData))
-      .filter((changeData) => changeData.value.includes(`${param}:${String(value ?? "")}`));
-  }
-  static #getConflictingChanges(changeData: K4Change.Data[], param: string): K4Change.Data[] {
-    const valueRecord: Record<string, K4Change.Data[]> = {};
-    changeData
-      .filter((changeData) => this.#isChangeModeCustom(changeData))
-      .forEach((changeData) => {
-        const value = K4Change.ParseFunctionDataString(changeData.value)[param];
-        if (value === undefined) { return undefined; }
-        valueRecord[String(value)] = valueRecord[String(value)] ?? [];
-        valueRecord[String(value)].push(changeData);
-      });
-    if (Object.values(valueRecord).length === 0) { return []; }
-    // Find which value has the most changes, and return a flattened array of all OTHER Changes
-    const sortedEntries = Object.entries(valueRecord)
-      .sort((a, b) => b[1].length - a[1].length);
-    if (sortedEntries.length === 0) {
-      throw new Error(`No changes found for parameter '${param}' in effect '${changeData[0].key}'`);
-    }
-    const majorityValue = sortedEntries[0][0];
-    if (majorityValue === undefined) { return []; }
-    delete valueRecord[majorityValue];
-    return Object.values(valueRecord).flat();
-  }
-  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Data[], prop: string): Maybe<T>
-  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Data[], prop: string, defaultVal: T): T
-  static #getEffectPropFromChanges<T extends SystemScalar>(changeData: K4Change.Data[], prop: string, defaultVal?: T): Maybe<T> {
-    let propVal: Maybe<SystemScalar> = undefined;
-    this.#getChangesWith(changeData, prop).forEach((cData) => {
-      const changeVal = K4Change.ParseFunctionDataString(cData.value)[prop];
-      if (propVal === undefined) {
-        propVal = changeVal;
-      } else if (propVal !== changeVal) {
-        throw new Error(`Conflicting values found for effect property '${prop}' in effect '${cData.key}': ${propVal}, ${changeVal}`);
-      }
-    });
-    return propVal ?? defaultVal;
-  }
 
   static #resolveEffectSource(origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData["effectSource"] {
     if (origin instanceof K4Item) {
@@ -1089,178 +1009,194 @@ class K4ActiveEffect extends ActiveEffect {
       };
     }
 
+    if (U.isJQuery(origin)) {
+      // ActiveEffect is being applied by a clicked link. Only claim links in chat messages are supported, so we confirm that:
+      if (!origin.hasClass("claim-link")) {
+        throw new Error(`Invalid origin link for ActiveEffect: ${origin.text()}`);
+      }
+      /**
+       * @todo Implement dataset definitions for defining a claim link within a chat message such that its source can be determined.
+       */
+    }
+
     throw new Error(`Invalid origin type for ActiveEffect: ${String(origin)}`);
   }
-  static #resolveEffectName(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
-    let effectName: Maybe<string> = K4Change.ParseFunctionDataString(this.#getChangesWith(changeData, "label")[0]?.value).label as Maybe<string>;
-    if (effectName || explicitOnly) { return effectName; }
-    if (origin instanceof K4Item) {
-      effectName = origin.name;
-    }
-    if (origin instanceof K4Actor) {
+
+  static #resolveEffectName(effectDataSet: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin, explicitOnly?: false): string
+  static #resolveEffectName(effectDataSet: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin, explicitOnly: true): Maybe<string>
+  static #resolveEffectName(effectDataSet: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
+    const {parentData} = effectDataSet;
+    let effectName: Maybe<string> = parentData.label;
+    if (effectName ?? explicitOnly) { return effectName; }
+
+    if (
+         origin instanceof K4Item
+      || origin instanceof K4Actor
+      || origin instanceof K4Scene
+    ) {
       effectName = origin.name;
     }
     if (origin instanceof K4ChatMessage) {
-      effectName = "Result";
+      throw new Error(`An explicit label must be provided for ActiveEffects created by ChatMessages.`);
     }
-    if (origin instanceof K4Scene) {
-      effectName = origin.name ?? "Scene";
-    }
-    console.warn(`No effect name found in listed changes, defaulting to '${effectName}'`, {changeData, origin});
-    return effectName as string;
+    return effectName;
   }
-  static #groupChangesByEffectName(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin): Record<string, K4Change.Data[]> {
-    const defaultName = this.#resolveEffectName(changeData, origin) as string;
-    return changeData.reduce((acc, cData) => {
-      const effectName = this.#resolveEffectName([cData], origin, true) ?? defaultName;
-      acc[effectName] = acc[effectName] ?? [];
-      acc[effectName].push(cData);
-      return acc;
-    }, {} as Record<string, K4Change.Data[]>);
-  }
-  /**
- * Given a list of changes, will group them by assigned name and validate that they are all compatible with each other.
- */
-  static #ProcessEffectChanges(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin): Array<Tuple<string, K4Change.Data[]>> {
-    // First group changes by effect name
-    const groupedChanges = this.#groupChangesByEffectName(changeData, origin);
 
-    Object.values(groupedChanges).forEach((effectChanges) => {
-      /**
-       * The following function parameters, if present on any change, cannot conflict with the same parameter on another change in the same effect:
-       *  - canToggle, defaultState, resetOn, duration, isUnique, uses, canRefill, fromText
-       */
-      ["canToggle", "defaultState", "resetOn", "duration", "isUnique", "uses", "canRefill", "fromText"].forEach((param) => {
-        const conflictingChanges = this.#getConflictingChanges(effectChanges, param);
-        if (conflictingChanges.length) {
-          throw new Error(`Conflicting changes found for parameter '${param}' in effect '${effectChanges[0].key}': ${conflictingChanges.map((change) => change.value).join(", ")}`);
-        }
-      });
-    });
-
-    return Object.entries(groupedChanges);
-  }
-  /**
-   * Given an array of K4Changes, will extract those function parameters that apply to the parent effect as a whole.
-   * (Any potential conflicts are resolved by the time this function is called.)
-   * @param {K4Change.Data[]} changeData - The array of changes to extract from.
-   * @param {K4ActiveEffect.Origin} origin - The origin of the ActiveEffect.
-   * @returns {K4ActiveEffect.ExtendedData} - The extracted data.
-   */
-  static #ExtractExtendedData(changeData: K4Change.Data[], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
-
-    const canToggle = this.#getEffectPropFromChanges<boolean>(changeData, "canToggle");
-    const label = this.#getEffectPropFromChanges<string>(changeData, "label")
-      ?? this.#resolveEffectName(changeData, origin);
-    if (!label) {
-      throw new Error(`No effect label found in changes: ${JSON.stringify(changeData)}`);
-    }
-    const useMax = this.#getEffectPropFromChanges<number>(changeData, "uses");
-    const uses = U.isDefined(useMax)
-      ? {
-        value: 0,
-        min: 0,
-        max: useMax
-      }
-      : undefined;
-    const canRefill = U.isDefined(uses)
-      ? this.#getEffectPropFromChanges<boolean>(
-        changeData,
-        "canRefill",
-        false
-      )
-      : undefined;
-    const durationDefaultVal = U.isDefined(uses) && !canRefill
-      ? EffectDuration.limited
-      : EffectDuration.ongoing;
-    const duration = this.#getEffectPropFromChanges<EffectDuration>(
-      changeData,
-      "duration",
-      durationDefaultVal
-    );
-    const isUnique = this.#getEffectPropFromChanges<boolean>(
-        changeData,
-        "isUnique",
-        true
-      )
+  static #parseEffectData(data: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
+    const {parentData} = data;
+    const {uses: usageMax, from, dynamic, ...baseExtData} = parentData;
     const effectSource = this.#resolveEffectSource(origin);
-    let fromText = this.#getEffectPropFromChanges<string>(changeData, "fromText");
-    if (!fromText) {
-      if (origin instanceof K4Item) {
-        fromText = `#>item-button text-doclink&data-item-name='${origin.name}'&data-action='open'>${origin.name}<#`;
-      } else {
-        throw new Error(`No fromText found for ActiveEffect: ${label}`);
-      }
+    const label = this.#resolveEffectName(data, origin);
+    let uses: Maybe<ValueMax> = undefined;
+    if (U.isDefined(usageMax) && usageMax > 0) {
+      uses = {
+        min: 0,
+        max: usageMax,
+        value: 0
+      };
     }
-
-    if (canToggle) {
-      const defaultState = this.#getEffectPropFromChanges<boolean>(
-        changeData,
-        "defaultState",
-        true
-      );
-      const resetOnDefaultVal = U.isDefined(uses) ? EffectResetOn.onUse : EffectResetOn.never;
-      const resetOn = this.#getEffectPropFromChanges<EffectResetOn>(
-        changeData,
-        "resetOn",
-        resetOnDefaultVal
-      );
-      const resetTo = this.#getEffectPropFromChanges<boolean>(
-        changeData,
-        "resetTo",
-        defaultState
-      );
-      const statusIcon = this.#getEffectPropFromChanges<string>(
-        changeData,
-        "icon"
-      ) ?? "";
-      const statusLabel = this.#getEffectPropFromChanges<string>(
-        changeData,
-        "statusLabel",
-        ""
-      );
-      const statusTooltip = this.#getEffectPropFromChanges<string>(
-        changeData,
-        "tooltip"
-      );
-      if (U.isUndefined(statusTooltip)) {
-        throw new Error(`No tooltip found for toggleable effect: ${label}`);
+    if (U.isJQuery(origin)) {
+      throw new Error(`No origin ID provided for JQuery-delivered ActiveEffect: ${JSON.stringify(data)}`);
+    }
+    const fromText: string = [
+      "&nbsp;",
+      "(from ",
+      from ?? `#>text-doclink>#${origin.name}<#`,
+      ")"
+    ].join("");
+    if (parentData.canToggle) {
+      let toggleCategory: K4ActiveEffect.ToggleCategory;
+      if (dynamic) {
+        toggleCategory = dynamic;
+      } else if (origin instanceof K4Item) {
+        toggleCategory = origin.type;
+      } else {
+        throw new Error(`No toggle category found for ActiveEffect: ${JSON.stringify(data)}`);
       }
+
+      let resetOn: EffectResetOn;
+      if (parentData.resetOn) {
+        resetOn = parentData.resetOn;
+      } else if (U.isDefined(uses)) {
+        resetOn = EffectResetOn.onUse;
+      } else {
+        resetOn = EffectResetOn.never;
+      }
+
       return {
-        label,
+        ...baseExtData,
+        dynamic,
         canToggle: true,
+        inStatusBar: true,
         isLocked: false,
-        isEnabled: defaultState,
-        defaultState,
+        isEnabled: parentData.defaultState,
+        toggleCategory,
+        statusIcon: parentData.icon ?? `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-neutral.svg`,
         resetOn,
-        resetTo,
-        statusIcon,
-        statusLabel,
-        statusTooltip,
-        duration,
-        isUnique,
+        resetTo: parentData.resetTo ?? parentData.defaultState,
+        label,
         uses,
-        canRefill,
         effectSource,
         fromText
-      }
+      };
     } else {
       return {
-        label,
+        ...baseExtData,
+        dynamic,
         canToggle: false,
-        duration,
-        isUnique,
+        label,
         uses,
-        canRefill,
         effectSource,
         fromText
-      }
+      };
     }
   }
+
+  static BuildEffectData(data?: Partial<K4ActiveEffect.ParentData>): K4ActiveEffect.ParentData {
+    data ??= {};
+    const canToggle = Boolean(data.canToggle);
+    const inStatusBar = canToggle || Boolean(data.inStatusBar);
+    return {
+      canToggle,
+      inStatusBar,
+      dynamic: data.dynamic ?? undefined,
+      label: data.label ?? undefined,
+      uses: data.uses ?? 0,
+      canRefill: (data.uses ?? 0) > 0
+        ? Boolean(data.canRefill)
+        : false,
+      isUnique: data.isUnique ?? true,
+      duration: data.duration ?? EffectDuration.ongoing,
+      defaultState: data.defaultState ?? true,
+      resetOn: canToggle
+        ? (data.resetOn ?? EffectResetOn.never)
+        : undefined,
+      resetTo: canToggle
+        ? (data.resetTo ?? data.defaultState ?? true)
+        : undefined,
+      icon: data.icon ?? undefined,
+      statusLabel: data.statusLabel ?? "",
+      tooltip: data.tooltip ?? undefined,
+      permanent: Boolean(data.permanent)
+    };
+  }
+
+  static BuildChangeData<N extends K4Change.CustomFunc.Name, T extends K4ItemType = K4ItemType>(funcName: N, value: K4Change.CustomFunc.Data<N, T>): EffectChangeData {
+    return {
+      key: funcName,
+      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+      value: JSON.stringify(value),
+      priority: undefined
+    };
+  }
+
+  static async CreateFromBuildData(
+    effectDataSet: ValueOrArray<K4ActiveEffect.BuildData>,
+    origin: K4ActiveEffect.Origin,
+    target?: K4Actor
+  ): Promise<K4ActiveEffect[]> {
+    if (Array.isArray(effectDataSet)) {
+      const effects = await Promise.all(effectDataSet.map((data) => this.CreateFromBuildData(data, origin, target)));
+      return effects.flat();
+    }
+    const effectHost = target ?? origin;
+    if (U.isJQuery(effectHost)) {
+      throw new Error(`No target provided for JQuery-delivered ActiveEffect (derive from ChatMessage?): ${JSON.stringify(effectDataSet)}`);
+    }
+    if (effectHost instanceof K4ChatMessage) {
+      throw new Error(`No target provided for ChatMessage-delivered ActiveEffect (derive from ChatMessage?): ${JSON.stringify(effectDataSet)}`);
+    }
+    if (U.isJQuery(origin)) {
+      throw new Error(`No origin ID provided for JQuery-delivered ActiveEffect: ${JSON.stringify(effectDataSet)}`);
+    }
+    const effectExtendedData = this.#parseEffectData(effectDataSet, origin);
+
+    // If the effect is unique, delete any existing effect with the same name
+    if (effectExtendedData.isUnique) {
+      const existingEffect = effectHost.effects.find((effect) => effect.label === effectExtendedData.label);
+      if (existingEffect) {
+        await existingEffect.delete();
+      }
+    }
+
+    return effectHost.createEmbeddedDocuments("ActiveEffect", [{
+      origin:   origin.uuid,
+      label: effectExtendedData.label,
+      transfer: origin.uuid !== target?.uuid,
+      disabled: false,
+      changes:  effectDataSet.changeData,
+      flags: {
+        kult4th: {
+          data: effectExtendedData
+        }
+      }
+    }]) as unknown as Promise<K4ActiveEffect[]>;
+  }
+
 
   static DoesFilterApplyToMove(filter: string, move: K4Item<K4ItemType.move>): boolean {
     if (filter === "all") { return true; }
-    if (filter === move.parentType) { return true; }
+    if (filter === move.parentType as string) { return true; }
     if (filter === move.name) { return true; }
     if (filter === move.parentName) { return true; }
     return false;
@@ -1270,35 +1206,33 @@ class K4ActiveEffect extends ActiveEffect {
    * Type guard to check if the effect can be toggled.
    * @returns {boolean} - True if the effect can be toggled, false otherwise.
    */
-  canToggle(): this is this & { canToggle: true, eData: K4ActiveEffect.ExtendedToggleData } {
-    return this.flags.kult4th.data.canToggle === true;
+  canToggle(): this is this & { eData: {canToggle: true} } {
+    return this.flags.kult4th.data.canToggle;
   }
-  get defaultState(): boolean { return this.canToggle() ? this.eData.defaultState ?? true : true; }
-  get isLocked(): boolean { return this.canToggle() ? this.eData.isLocked ?? false : false; }
-  set isLocked(value: boolean) { this.setFlag<boolean>("data.isLocked", value);}
-  get isEnabled(): boolean { return this.canToggle() ? this.eData.isEnabled ?? true : true; }
-  get isRelevant(): boolean {
+  get defaultState(): boolean { return this.canToggle() ? this.eData.defaultState : true; }
+  get isLocked(): boolean { return this.canToggle() ? this.eData.isLocked : false; }
+  set isLocked(value: boolean) { void this.setFlag<boolean>("data.isLocked", value);}
+  get isEnabled(): boolean { return this.canToggle() ? this.eData.isEnabled : true; }
+  get isNonZero(): boolean {
     return this.getCustomChanges()
-      .some((change) => Boolean(change.finalValue)
-        && typeof change.finalValue === "number")
+      .some((change) => change.finalValue !== 0);
   }
-  get resetOn(): EffectResetOn { return this.canToggle() ? this.eData.resetOn ?? EffectResetOn.never : EffectResetOn.never; }
-  get resetTo(): boolean { return this.canToggle() ? this.eData.resetTo ?? this.defaultState : this.defaultState; }
-  get toggleCategory(): "wound"|"stability"|K4ItemType {
-    if (this.isApplyingWoundModifiers) { return "wound"; }
-    if (this.isApplyingStabilityModifiers) { return "stability"; }
-    return this.enabledCustomChanges
-      .find((change) => Boolean(change.originItem))?.originItem?.type ?? K4ItemType.move;
+  get resetOn(): EffectResetOn { return this.canToggle() ? this.eData.resetOn : EffectResetOn.never; }
+  get resetTo(): boolean { return this.canToggle() ? this.eData.resetTo : this.defaultState; }
+  get toggleCategory(): K4ActiveEffect.ToggleCategory {
+    if (this.eData.dynamic) { return this.eData.dynamic; }
+    if (this.originItem instanceof K4Item) {
+      return this.originItem.type;
+    }
+    throw new Error(`No origin item found for ActiveEffect: ${this.id}`);
   }
   get statusIcon(): string {
     if (!this.canToggle()) { return ""; }
     if (!this.isOwnedByActor()) { return ""; }
-    if (this.isApplyingWoundModifiers) { return this.actor.woundsIcon; }
-    if (this.isApplyingStabilityModifiers) { return this.actor.stabilityIcon; }
     if (this.eData.statusIcon) { return this.eData.statusIcon; }
     return `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-${this.benefit}.svg`;
   }
-  get statusLabel(): string { return this.canToggle() ? this.eData.statusLabel ?? "" : ""; }
+  get statusLabel(): string { return this.canToggle() ? this.eData.statusLabel : ""; }
   get statusTooltip(): string { return this.canToggle() ? this.eData.statusTooltip ?? "" : ""; }
   get effectDuration(): EffectDuration { return this.eData.duration; }
   get isUnique(): boolean { return this.eData.isUnique; }
@@ -1307,8 +1241,6 @@ class K4ActiveEffect extends ActiveEffect {
   get effectSource(): K4ActiveEffect.Components.EffectSource.Ref { return this.eData.effectSource; }
   get fromText(): string { return this.eData.fromText; }
   get benefit(): "pos"|"neg"|"neutral" {
-    if (this.isApplyingStabilityModifiers) { return "neg"; }
-    if (this.isApplyingWoundModifiers) { return "neg"; }
     const numPosChanges = this.getCustomChanges()
       .filter((change) => typeof change.finalValue === "number" && change.finalValue > 0).length;
     const numNegChanges = this.getCustomChanges()
@@ -1327,34 +1259,34 @@ class K4ActiveEffect extends ActiveEffect {
     }
     return undefined;
   }
-  get toggleValue(): Maybe<string> {
+  get statusValue(): Maybe<string> {
     if (U.isUndefined(this.value)) { return undefined; }
     if (!U.isNumber(this.value)) { return undefined; }
 
     return U.signNum(this.value, "", "+");
   }
-  get toggleValueGlow(): Maybe<string> {
+  get statusValueGlow(): Maybe<string> {
     if (!this.canToggle()) { return undefined; }
     if (U.isUndefined(this.value)) { return undefined; }
     if (this.value > 0) { return "neon-glow-soft-blue"; }
     if (this.value < 0) { return "neon-glow-soft-red"; }
     return "neon-glow-soft-gold";
   }
-  get toggleData(): Maybe<K4ActiveEffect.ToggleData> {
+  get toggleContext(): Maybe<K4ActiveEffect.ToggleContext> {
     if (!this.canToggle()) { return undefined; }
     if (!this.isOwnedByActor()) { return undefined; }
     return {
-      isEnabled: this.isEnabled,
-      defaultState: this.defaultState,
-      resetOn: this.resetOn,
-      resetTo: this.resetTo,
-      isLocked: this.isLocked,
-      statusIcon: this.statusIcon,
-      toggleCategory: this.toggleCategory,
-      statusLabel: this.statusLabel,
-      statusTooltip: this.statusTooltip,
-      toggleValue: this.toggleValue ?? "",
-      toggleValueGlow: this.toggleValueGlow!,
+      isEnabled:       this.isEnabled,
+      defaultState:    this.defaultState,
+      resetOn:         this.resetOn,
+      resetTo:         this.resetTo,
+      isLocked:        this.isLocked,
+      statusIcon:      this.statusIcon,
+      toggleCategory:  this.toggleCategory,
+      statusLabel:     this.statusLabel,
+      statusTooltip:   this.statusTooltip,
+      statusValue:     this.statusValue ?? "",
+      statusValueGlow: this.statusValueGlow ?? ""
     };
   }
 
@@ -1366,69 +1298,22 @@ class K4ActiveEffect extends ActiveEffect {
   doesEffectApply(roll: K4Roll): boolean {
     return this.isEnabled && this.getApplicableRollModifiers(roll).length > 0;
   }
-  static async CreateFromChangeData(
-    changeData: K4Change.Data[],
-    origin: K4ActiveEffect.Origin,
-    target?: K4Actor<K4ActorType.pc>
-  ): Promise<K4ActiveEffect[]> {
-    const effectDeletionIDs: string[] = [];
-    const effectDataSets: Array<K4ActiveEffect.ConstructorData & Record<string, unknown>> = [];
-    const effectHost = target ?? origin;
-
-    // Process the effect changes, validating them and separating them as necessary into multiple effects.
-    const groupedChanges = this.#ProcessEffectChanges(changeData, origin);
-
-    // Iterate through each group of changes, creating an ActiveEffect for each.
-    groupedChanges.forEach(([label, effectChanges]) => {
-      // First we extract the extended data, which will be stored in the effect's flags
-      const extData = this.#ExtractExtendedData(effectChanges, origin)
-
-      // Then we check whether the effect is unique: If so, and an effect with the same name already exists, we remove it before creating the new one.
-      if (extData.isUnique && !(effectHost instanceof K4Scene) && !(effectHost instanceof K4ChatMessage)) {
-        const existingEffect = effectHost.effects.find((effect) => effect.label === label);
-        if (existingEffect) {
-          effectDeletionIDs.push(existingEffect.id!);
-        }
-      }
-      effectDataSets.push({
-        origin: origin.uuid,
-        label,
-        transfer: origin.uuid !== target?.uuid,
-        disabled: false,
-        changes: effectChanges.map((change) => {
-          return {
-            key: change.key,
-            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-            value: change.value
-          };
-        }),
-        flags: {
-          kult4th: {
-            data: extData
-          }
-        }
-      });
-    });
-    await effectHost.deleteEmbeddedDocuments("ActiveEffect", effectDeletionIDs);
-    return effectHost.createEmbeddedDocuments("ActiveEffect", effectDataSets) as unknown as Promise<K4ActiveEffect[]>;
-  }
-
   // #region INITIALIZATION ~
-  static async PreInitialize(): Promise<void> {
+  static PreInitialize() {
     CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
     DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
-    DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, { makeDefault: true });
+    DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, {makeDefault: true});
 
     Hooks.on("createActiveEffect", async (effect: K4ActiveEffect) => {
       kLog.display(`[on CreateActiveEffect] ${effect.label}`, {
         effect,
-        origin: effect.origin,
-        ownedByActor: effect.isOwnedByActor(),
-        hasItemOrigin: effect.hasItemOrigin(),
-        originDoc: effect.origin ? fromUuidSync(effect.origin) : null,
-        isItemOwned: effect.hasItemOrigin() ? effect.originItem.isOwnedItem() : false,
+        origin:             effect.origin,
+        ownedByActor:       effect.isOwnedByActor(),
+        hasItemOrigin:      effect.hasItemOrigin(),
+        originDoc:          effect.origin ? fromUuidSync(effect.origin) : null,
+        isItemOwned:        effect.hasItemOrigin() ? effect.originItem.isOwnedItem() : false,
         requireItemChanges: effect.requireItemChanges,
-        permanentChanges: effect.permanentChanges
+        permanentChanges:   effect.permanentChanges
       });
 
       // If this effect is not embedded in an actor, do nothing
@@ -1441,8 +1326,8 @@ class K4ActiveEffect extends ActiveEffect {
 
       /* === PROCESS CUSTOM CHANGES: STEP 1 - RequireItem Prerequisite Check === */
       // Check for any "RequireItem" changes. If any of them fail, remove both the ActiveEffect and the embedded Item.
-      if (effect.requireItemChanges.some((change) => !change.apply(effect.actor))) {
-        originItem?.delete();
+      if (effect.requireItemChanges.some(async (change) => !(await change.apply(effect.actor)))) {
+        await originItem?.delete();
         return false;
       }
 
@@ -1457,7 +1342,7 @@ class K4ActiveEffect extends ActiveEffect {
       /* === PROCESS CUSTOM CHANGES: STEP 3 - Permanent Effects Check === */
       // If any changes are permanent, apply them now -- they will be filtered out of future applications of the effect,
       // and will not be reversed when the active effect is removed.
-      effect.permanentChanges.forEach((change) => change.apply(effect.actor));
+      await Promise.all(effect.permanentChanges.map((change) => change.apply(effect.actor)));
       return true;
     });
   }
@@ -1487,33 +1372,34 @@ class K4ActiveEffect extends ActiveEffect {
   }
 
   override async delete(options?: DocumentModificationContext) {
-    if (this.isOwnedByActor()) {
-      await this.actor.deleteEmbeddedDocuments("ActiveEffect", [this.id!]);
-      return undefined;
+    if (this.isOwnedByActor() && this.id) {
+      await this.actor.deleteEmbeddedDocuments("ActiveEffect", [this.id]);
+      /**
+       * @todo Have to also implement removal of created items/attacks/etc
+       */
+      return this;
     }
     return super.delete(options);
   }
 
-  async toggleEnabled(value?: boolean, isForcing = false) {
+  async toggleEnabled(value = !this.isEnabled, isForcing = false) {
     if (!this.canToggle()) { return undefined; }
     if (this.isLocked && !isForcing) { return undefined; }
-    const promises: Promise<unknown>[] = [
-      this.setFlag<boolean>("data.isEnabled", value ?? !this.isEnabled)
+    const promises: Array<Promise<unknown>> = [
+      this.setFlag<boolean>("data.isEnabled", value)
     ];
     if (this.isLocked && isForcing) {
       promises.push(this.toggleLock(false));
     }
     return Promise.all(promises);
   }
-  async toggleLock(value?: boolean) {
+  async toggleLock(value = !this.isLocked) {
     if (!this.canToggle()) { return undefined; }
-    return this.setFlag<boolean>("data.isLocked", value ?? !this.isLocked);
+    return this.setFlag<boolean>("data.isLocked", value);
   }
-  async reset(resetTo?: boolean, isForcing = false) {
-    // if (!this.canToggle()) { return undefined; }
+  async reset(resetTo = this.resetTo, isForcing = false) {
     if (this.isLocked && !isForcing) { return undefined; }
-    resetTo ??= this.resetTo;
-    const promises: Promise<unknown>[] = [];
+    const promises: Array<Promise<unknown>> = [];
     if (this.isLocked && isForcing) {
       promises.push(this.toggleLock(false));
     }
@@ -1523,7 +1409,7 @@ class K4ActiveEffect extends ActiveEffect {
     return Promise.all(promises);
   }
   async use() {
-    const promises: Promise<unknown>[] = [];
+    const promises: Array<Promise<unknown>> = [];
 
     if (this.canToggle() && this.resetOn === EffectResetOn.onUse) {
       promises.push(this.reset(this.resetTo, true));
@@ -1547,13 +1433,13 @@ class K4ActiveEffect extends ActiveEffect {
     if (!this.doesEffectApply(roll)) { return undefined; }
     let returnVal = true;
     for (const change of this.getApplicableRollModifiers(roll)) {
-      if (await change.apply(roll) === false) {
+      if (!(await change.apply(roll))) {
         returnVal = false;
         break;
       }
     }
     if (!returnVal) { return false; }
-    this.use();
+    void this.use();
     return returnVal;
   }
 
@@ -1561,20 +1447,18 @@ class K4ActiveEffect extends ActiveEffect {
   isOwned(): this is {origin: string, owner: K4Actor|K4Item} {
     return Boolean(this.origin);
   }
-  isOwnedByActor(): this is {origin: string, owner: K4Actor, actor: K4Actor} {
-    return this.isOwned() && this.origin.startsWith("Actor");
+  isOwnedByActor<T extends K4ActorType = K4ActorType>(type?: T): this is {origin: string, owner: K4Actor<T>, actor: K4Actor<T>} {
+    if (!this.isOwned()) { return false; }
+    if (type && this.owner.type !== type) { return false; }
+    return this.origin.startsWith("Actor");
   }
-  isOwnedByItem(): this is {origin: string, owner: K4Item, originItem: K4Item} {
-    return this.isOwned() && this.origin.startsWith("Item");
+  isOwnedByItem<T extends K4ItemType = K4ItemType>(type?: T): this is {origin: string, owner: K4Item<T>, originItem: K4Item<T>} {
+    if (!this.isOwned()) { return false; }
+    if (type && this.owner.type !== type) { return false; }
+    return this.origin.startsWith("Item");
   }
   hasItemOrigin(): this is {origin: string, owner: K4Actor|K4Item, originItem: K4Item} {
     return this.isOwned() && this.origin.includes("Item");
-  }
-  get isApplyingWoundModifiers(): boolean {
-    return this.getCustomChangeData().some((change) => change.key === "ApplyWounds");
-  }
-  get isApplyingStabilityModifiers(): boolean {
-    return this.getCustomChangeData().some((change) => change.key === "ApplyStability");
   }
   get originItem(): Maybe<K4Item> {
     if (!this.hasItemOrigin()) { return undefined; }
@@ -1588,81 +1472,24 @@ class K4ActiveEffect extends ActiveEffect {
     const [_, actorId] = this.origin.split(".");
     return game.actors.get(actorId);
   }
-  get eData(): K4ActiveEffect.ExtendedData|K4ActiveEffect.ExtendedToggleData {
-    const eData = this.getFlag<K4ActiveEffect.ExtendedData>("data")!;
-    if (this.canToggle()) {
-      return eData as K4ActiveEffect.ExtendedToggleData;
+  get eData(): K4ActiveEffect.ExtendedData {
+    const eData = this.getFlag<K4ActiveEffect.ExtendedData>("data");
+    if (!eData) {
+      throw new Error(`ActiveEffect ${this.id} has no extended data.`);
     }
-    return eData as K4ActiveEffect.ExtendedData;
+    return eData;
   }
 
-  getCustomChangeData(): EffectChangeData[] {
-    return this.changes.filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM);
-  }
   getCustomChanges(): K4Change[] {
-    if (this.isApplyingWoundModifiers) {
-      if (!this.isOwnedByActor()) { return []; }
-      return this.actor.woundModData.map((woundData) => {
-        return new K4Change({
-          key: "ModifyRoll",
-          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: `
-            filter:${woundData.filter},
-            canToggle:false,
-            label:${woundData.label},
-            effect:Add,
-            value:${woundData.value},
-            duration:ongoing,
-            icon:${this.actor.woundsIcon},
-            fromText:#>text-negmod>Wounds<#,
-            tooltip:${woundData.tooltipDesc}
-          `,
-          priority: undefined
-        }, this);
-      })
-    } else if (this.isApplyingStabilityModifiers) {
-      if (!this.isOwnedByActor()) { return []; }
-      return [
-        ...this.actor.stabilityModData.map((stabilityData) => {
-          return new K4Change({
-            key: "ModifyRoll",
-            mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-            value: `
-              filter:${stabilityData.filter},
-              canToggle:true,
-              label:${stabilityData.label},
-              effect:Add,
-              value:${stabilityData.value},
-              duration:ongoing,
-              icon:${this.actor.stabilityIcon},
-              fromText:#>text-negmod>Stability<#,
-              tooltip:${stabilityData.tooltipDesc}
-            `,
-            priority: undefined
-          }, this);
-        }),
-        ...this.actor.stabilityConditionModData.map((conditionData) => {
-            return new K4Change({
-              key: "ModifyRoll",
-              mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-              value: `
-                filter:${conditionData.filter},
-                label:${conditionData.label},
-                effect:Add,
-                value:${conditionData.value},
-                duration:ongoing,
-                icon:${this.actor.stabilityIcon},
-                fromText:#>text-negmod>${conditionData.label}<#,
-                tooltip:${conditionData.tooltipDesc}
-              `,
-              priority: undefined
-            }, this);
-          }),
-      ];
+    const changes: K4Change[] = [];
+    if (this.eData.dynamic) {
+      changes.push(...DYNAMIC_CHANGES[this.eData.dynamic](this));
     }
-    return this.changes
+    changes.push(...this.changes
       .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM)
-      .map((change) => new K4Change(change, this));
+      .map((change) => new K4Change(change, this))
+    );
+    return changes;
   }
   getCustomChange(id: string): Maybe<K4Change> {
     return this.getCustomChanges().find((change) => change.id === id);
@@ -1687,13 +1514,6 @@ class K4ActiveEffect extends ActiveEffect {
   }
   // #endregion
 
-  // #region CONSTRUCTOR
-  constructor(data: K4ActiveEffect.ConstructorData) {
-    super(data);
-  }
-  // #endregion
-
-
   // #region PRIVATE METHODS ~
 
   // #endregion
@@ -1713,41 +1533,41 @@ class K4ActiveEffect extends ActiveEffect {
       throw new Error(`Cannot get flag '${key}' from ActiveEffect with no owner.`);
     }
     await this.owner.updateEmbeddedDocuments("ActiveEffect", [{
-      _id: this.id,
+      _id:                           this.id,
       [`flags.${namespace}.${key}`]: val
     }]);
     return this;
   }
 
   applyToggleListeners(html: JQuery) {
-    if (!this.canToggle()) { return undefined; }
+    if (!this.canToggle()) { return; }
     const button$ = html.find(`[data-target="${this.id}"]`);
     button$
       .on({
         click: async (event: ClickEvent) => {
           event.preventDefault();
-          if (!this.owner) { return undefined; }
-          K4ActiveEffect.onManageActiveEffect(event, this.owner);
+          if (!this.owner) { return; }
+          await K4ActiveEffect.onManageActiveEffect(event, this.owner);
         },
         dblclick: async (event: ClickEvent) => {
           event.preventDefault();
-          if (!this.owner) { return undefined; }
+          if (!this.owner) { return; }
           if (this.isLocked) {
             const {value, max} = this.uses ?? {};
-            if (U.isDefined(value) && value === max) { return undefined; }
-            K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
-            return undefined;
+            if (U.isDefined(value) && value === max) { return; }
+            await K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
+            return;
           }
           await K4ActiveEffect.onManageActiveEffect(event, this.owner, "toggle");
-          K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
+          await K4ActiveEffect.onManageActiveEffect(event, this.owner, "lock");
         },
         contextmenu: async (event: ClickEvent) => {
           event.preventDefault();
-          if (!this.owner) { return undefined; }
+          if (!this.owner) { return; }
           await K4ActiveEffect.onManageActiveEffect(event, this.owner, "reset");
         }
-      })
-    }
+      });
+  }
   // #ENDREGION
 }
 

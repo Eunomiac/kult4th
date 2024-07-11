@@ -1,6 +1,8 @@
+// @ts-nocheck This is an unused, archived file being hacked apart for its contents.
+/* eslint-disable */
+// NOSONAR
 // #region IMPORTS ~
 import C from "../scripts/constants.js";
-import K4ActiveEffect, {K4Change, EffectSourceType, EffectDuration, EffectResetOn} from "./K4ActiveEffect.js";
 // #endregion
 
 // #region TYPES ~
@@ -12,9 +14,7 @@ namespace K4ActiveEffectSheet {
 // #region === K4MODIFIER CLASS ===
 class K4ActiveEffectSheet extends ActiveEffectConfig {
   // #region INITIALIZATION ~
-  static async Initialize() {
 
-  }
   // #endregion
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -25,9 +25,7 @@ class K4ActiveEffectSheet extends ActiveEffectConfig {
     }) as DocumentSheetOptions;
   }
   // #region CONSTRUCTOR ~
-  constructor(object: K4ActiveEffect, options: Partial<DocumentSheetOptions>) {
-    super(object, options)
-  }
+
   // #endregion
 
   // #region GETTERS & SETTERS ~
@@ -67,141 +65,6 @@ export type WeaponTags =
 
 export type FunctionalWeaponTags =
 "ignore_armor";
-
-namespace Changes {
-
-  export interface Definition {
-    key: keyof typeof
-
-  }
-
-
-  /**
-   * These properties can only appear in the first element of a ChangeDefs.List.
-   */
-//   interface ParentProperties {
-//     canToggle?: boolean = false, // Whether the user can toggle this effect on/off
-//     label?: string = "<Effect Name>", // The principal name of the Effect. Appears in tooltips and in chat roll results.
-//     uses?: number = 0, // Number of uses of the effect before it is disabled or requires refill (0 = infinite).
-//     canRefill?: boolean = false, // Whether the effect's uses can be refilled or if it should be deleted when uses = max
-//     isUnique?: boolean = true, // Whether the effect is unique (only one copy can be on any Actor at a time)
-//     duration?: EffectDuration = EffectDuration.ongoing, // If/when the effect should be automatically removed ("ongoing" for never)
-//     defaultState?: boolean = true, // Whether a toggleable effect is enabled by default
-//     resetOn?: EffectResetOn = EffectResetOn.never, // When the effect should reset to its default state (or resetTo)
-//     resetTo?: boolean = defaultState, // Overrides the default state when the effect resets
-//     icon?: string = ""; // The icon to display on the status bar
-//     statusLabel?: string = ""; // The label to display on the status bar
-//     tooltip: string; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
-//     permanent?: boolean = false; // Whether the effect should permanently apply its effects upon creation
-//   }
-// }
-
-
-namespace CustomFunctions {
-  export namespace Parameters {
-    // export interface FOR_PARENT { // Can appear on ANY change; are extracted and applied to parent effect
-    //   canToggle?: boolean = false, // Whether the user can toggle this effect on/off
-    //   label?: string = "<Effect Name>", // The principal name of the Effect. Appears in tooltips and in chat roll results.
-    //   uses?: number = 0, // Number of uses of the effect before it is disabled or requires refill (0 = infinite).
-    //   canRefill?: boolean = false, // Whether the effect's uses can be refilled or if it should be deleted when uses = max
-    //   isUnique?: boolean = true, // Whether the effect is unique (only one copy can be on any Actor at a time)
-    //   duration?: EffectDuration = EffectDuration.ongoing, // If/when the effect should be automatically removed ("ongoing" for never)
-    //   defaultState?: boolean = true, // Whether a toggleable effect is enabled by default
-    //   resetOn?: EffectResetOn = EffectResetOn.never, // When the effect should reset to its default state (or resetTo)
-    //   resetTo?: boolean = defaultState, // Overrides the default state when the effect resets
-    //   icon?: string = ""; // The icon to display on the status bar
-    //   statusLabel?: string = ""; // The label to display on the status bar
-    //   tooltip: string; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
-    //   permanent?: boolean = false; // Whether the effect should permanently apply its effects upon creation
-    // }
-    // export interface RequireItem {
-    //   filter: string, // Name of required item
-    //   value: string // Name of item that requires the above item
-    // }
-    // export interface PromptForData {
-    //   title: string,
-    //   bodyText: string,
-    //   subText: string,
-    //   target: string, // FlagDotKey to store data on active effect
-    //   input: "text", // Type of input requested
-    //   default?: string, // Default value if prompt window closed; leave out to cancel addition of effect if no answer given.
-    // }
-
-    // export interface CreateAttack {
-    //   filter: string, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL pipe-delimited filters must apply (create a new change for "or" filters)
-    //   from: string, // Name of move/advantage/disadvantage/gear/etc. that is the source of the attack
-    //   name: string, // Name of the attack
-    //   range: "arm"|"room"|"field"|"horizon" // Range of the attack. Pipe-delimited if multiple ranges apply.
-    //   harm: number, // The harm value of the attack
-    //   special: string, // Any special rules associated with the attack
-    //   tags: string // Pipe-delimited list of tags to apply to the attack
-    // }
-    // export interface ModifyAttack {
-    //   filter: string, // Filter to determine the type(s) of attacks to modify. Refer to TAGS on the ATTACK (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL pipe-delimited filters must apply (create a new change for "or" filters)
-    //   target: string, // Dotkey target of property to modify (e.g. "harm")
-    //   mode: CustomFunctions.Effects.ModifyAttack, // Mode of the custom function to use
-    //   value: string, // Value to apply to the modification (exclude manual "from" entry; will create dynamically)
-    //   from: string, // Name of move/advantage/disadvantage/gear/etc. that is the source of the effect
-    // }
-    // export interface ModifyTracker {
-    //   filter: string,
-    //   value: number,
-    //   permanent: true,
-    //   alertHeader?: string, // Can include %actor.<property key>% to reference actor properties
-    //   alertBody?: string // Can include %actor.<property key>% to reference actor properties
-    // }
-
-    // export interface ModifyMove {
-    //   filter: string, // Name of move to modify
-    //   target: string, // Dotkey target of property to modify (e.g. "systems.lists.questions.items")
-    //   mode: CustomFunctions.Effects.ModifyMove, // Mode of the custom function to use
-    //   from: string, // Name of move/advantage/disadvantage/gear/etc. that is the source of the effect
-    //   value: string, // Value to apply to the modification (exclude manual "from" entry; will create dynamically)
-    // }
-
-    // export interface ModifyProperty {
-    //   filter: string, // Almost always "actor"
-    //   target: string, // Dotkey target of property to modify (e.g. "system.modifiers.wounds_critical.1.all")
-    //   mode: CustomFunctions.Effects.ModifyProperty, // Mode of the custom function to use
-    //   value: SystemScalar, // Value to apply to the modification
-    //   permanent: boolean // Whether the modification is permanent or reverses when effect is disabled
-    // }
-
-    // export interface ModifyRoll {
-    //   filter: string, // Filter determining which types of rolls to apply the effect to ("all"/"advantage"/"disadvantage"/move name)
-    //   mode: CustomFunctions.Effects.ModifyRoll, // Mode of the custom function to use
-    //   value: string, // Value to apply to the roll. Can be a number, "prompt", or "actor.<property key>"
-    //   from: string, // Name of move/advantage/disadvantage/gear/etc. that is the source of the effect
-    //   duration: "ongoing" | "scene" | "session", // How long the effect lasts
-    //   icon: string, // Icon to display for the effect
-    //   tooltip: string, // Tooltip to display for the effect
-
-    // }
-  }
-  export namespace Effects {
-    export type ModifyMove =
-      "PushElement"
-      |"AppendText";
-    export type ModifyAttack =
-      "ChangeAttribute"
-    export type ModifyProperty =
-      "Set";
-    export type ModifyRoll =
-      "Add";
-
-  }
-}
-
-namespace CUSTOMFUNCTIONPARAMETERS {
-  RequireItem: {
-  },
-  PromptForData: {
-  }
-  }
-}
-
-
-
 
 const CUSTOMFUNCEXAMPLES = {
   "Analyst": [

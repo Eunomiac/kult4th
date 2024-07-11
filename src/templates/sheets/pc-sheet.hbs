@@ -45,7 +45,7 @@
       <section class="subsection modifiers">
         {{> "systems/kult4th/templates/components/status-bar-modifiers.hbs" collapsedRollModifiers=actor.collapsedRollModifiers}}
         <div class="toggle-modifier-strip">
-        {{#each actor.system.toggleableEffects}}
+        {{#each actor.system.statusBarEffects}}
         {{> "systems/kult4th/templates/components/modifier-toggle.hbs"}}
         {{/each}}
         </div>

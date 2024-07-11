@@ -3,10 +3,11 @@ import K4ActiveEffect, {EffectDuration, EffectResetOn, K4Change, PromptInputType
 import {
   K4ItemType,
   K4ItemSubType,
-  K4ItemRange,
-  K4WeaponClass,
-  K4RollResult
+  K4ItemRange
 } from "../documents/K4Item.js";
+
+console.log("Loading item-data.ts");
+console.log("K4ItemType in item-data.ts:", K4ItemType);
 // #region Types & Enums ~
 namespace ITEM_DATA {
   export interface Schema<T extends K4ItemType = K4ItemType> {
@@ -18,51 +19,14 @@ namespace ITEM_DATA {
 }
 // #endregion
 
-function BuildEffectData(data?: Partial<K4ActiveEffect.SourceData>): K4ActiveEffect.SourceData {
-  data ??= {};
-  const canToggle = Boolean(data.canToggle);
-  const inStatusBar = canToggle || Boolean(data.inStatusBar);
-  return {
-    canToggle,
-    inStatusBar,
-    label: data.label ?? undefined,
-    uses: data.uses ?? 0,
-    canRefill: (data.uses ?? 0) > 0
-      ? Boolean(data.canRefill)
-      : false,
-    isUnique: data.isUnique ?? true,
-    duration: data.duration ?? EffectDuration.ongoing,
-    defaultState: data.defaultState ?? true,
-    resetOn: canToggle
-      ? (data.resetOn ?? EffectResetOn.never)
-      : undefined,
-    resetTo: canToggle
-      ? (data.resetTo ?? data.defaultState ?? true)
-      : undefined,
-    icon: data.icon ?? undefined,
-    statusLabel: data.statusLabel ?? "",
-    tooltip: data.tooltip ?? undefined,
-    permanent: Boolean(data.permanent)
-  };
-}
-
-function BuildChangeData<N extends K4Change.FuncName, T extends K4ItemType = K4ItemType>(funcName: N, value: K4Change.FuncData<N, T>): EffectChangeData {
-  return {
-    key: funcName,
-    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-    value: JSON.stringify(value),
-    priority: undefined
-  };
-}
-
 const ITEM_DATA: {
-  advantage: ITEM_DATA.Schema<K4ItemType.advantage>[],
-  disadvantage: ITEM_DATA.Schema<K4ItemType.disadvantage>[],
-  darksecret: ITEM_DATA.Schema<K4ItemType.darksecret>[],
-  weapon: ITEM_DATA.Schema<K4ItemType.weapon>[],
-  gear: ITEM_DATA.Schema<K4ItemType.gear>[],
-  move: ITEM_DATA.Schema<K4ItemType.move>[],
-  relation: ITEM_DATA.Schema<K4ItemType.relation>[]
+  advantage: Array<ITEM_DATA.Schema<K4ItemType.advantage>>,
+  disadvantage: Array<ITEM_DATA.Schema<K4ItemType.disadvantage>>,
+  darksecret: Array<ITEM_DATA.Schema<K4ItemType.darksecret>>,
+  weapon: Array<ITEM_DATA.Schema<K4ItemType.weapon>>,
+  gear: Array<ITEM_DATA.Schema<K4ItemType.gear>>,
+  move: Array<ITEM_DATA.Schema<K4ItemType.move>>,
+  relation: Array<ITEM_DATA.Schema<K4ItemType.relation>>
 } = {
   advantage: [
     {
@@ -195,7 +159,7 @@ const ITEM_DATA: {
                   "hold": 0,
                   "effects": [
                     {
-                      "parentData": BuildEffectData({
+                      "parentData": K4ActiveEffect.BuildEffectData({
                         permanent: true,
                         alertAll: [
                           "<h2>%insert.actor.name% Refuses to Give In!</h2>",
@@ -203,7 +167,7 @@ const ITEM_DATA: {
                         ].join("")
                       }),
                       "changeData": [
-                        BuildChangeData("ModifyTracker", {
+                        K4ActiveEffect.BuildChangeData("ModifyTracker", {
                           filter: "Time",
                           target: "value",
                           mode: "Add",
@@ -225,14 +189,14 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              "parentData": BuildEffectData({
+              "parentData": K4ActiveEffect.BuildEffectData({
                 alertUser: [
                   "<h2>Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span></h2>",
                   "<p>You must take the 'Condemned' Disadvantage before you can take this Advantage.</p>"
                 ].join("")
               }),
               "changeData": [
-                BuildChangeData("RequireItem", {
+                K4ActiveEffect.BuildChangeData("RequireItem", {
                   filter: "Condemned"
                 })
               ]
@@ -268,15 +232,15 @@ const ITEM_DATA: {
           ],
           "effects": [
             {
-              "parentData": BuildEffectData(),
+              "parentData": K4ActiveEffect.BuildEffectData(),
               "changeData": [
-                BuildChangeData("ModifyMove", {
+                K4ActiveEffect.BuildChangeData("ModifyMove", {
                   filter: "Read a Person",
                   target: "system.lists.questions.items",
                   mode: "PushElement",
                   value: "What are you afraid of?"
                 }),
-                BuildChangeData("ModifyMove", {
+                K4ActiveEffect.BuildChangeData("ModifyMove", {
                   filter: "Read a Person",
                   target: "system.lists.questions.items",
                   mode: "PushElement",
@@ -922,24 +886,24 @@ const ITEM_DATA: {
                   "result": "The person is a friend (#>text-keyword>Relation +1<#).",
                   "effects": [
                     {
-                      "parentData": BuildEffectData({
+                      "parentData": K4ActiveEffect.BuildEffectData({
                         isUnique: false
                       }),
                       "changeData": [
-                        BuildChangeData("PromptForData", {
+                        K4ActiveEffect.BuildChangeData("PromptForData", {
                           title: "Describe Your Friend",
                           bodyText: "What is your friend's name?",
                           target: "FLAGS.name",
                           input: PromptInputType.text
                         }),
-                        BuildChangeData("PromptForData", {
+                        K4ActiveEffect.BuildChangeData("PromptForData", {
                           title: "Describe Your Friend",
                           bodyText: "What is your friend's field of study?",
                           subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
                           target: "FLAGS.field",
                           input: PromptInputType.text
                         }),
-                        BuildChangeData("CreateItem", {
+                        K4ActiveEffect.BuildChangeData("CreateItem", {
                           type: K4ItemType.relation,
                           name: "%FLAGS.name%",
                           img: "icons/mystery-man.svg",
@@ -961,24 +925,24 @@ const ITEM_DATA: {
                   "result": "The person is an acquaintance (#>text-keyword>Relation +0<#).",
                   "effects": [
                     {
-                      "parentData": BuildEffectData({
+                      "parentData": K4ActiveEffect.BuildEffectData({
                         isUnique: false
                       }),
                       "changeData": [
-                        BuildChangeData("PromptForData", {
+                        K4ActiveEffect.BuildChangeData("PromptForData", {
                           title: "Describe Your Acquaintance",
                           bodyText: "What is your contact's name?",
                           target: "FLAGS.name",
                           input: PromptInputType.text
                         }),
-                        BuildChangeData("PromptForData", {
+                        K4ActiveEffect.BuildChangeData("PromptForData", {
                           title: "Describe Your Acquaintance",
                           bodyText: "What is your contact's field of study?",
                           subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
                           target: "FLAGS.field",
                           input: PromptInputType.text
                         }),
-                        BuildChangeData("CreateItem", {
+                        K4ActiveEffect.BuildChangeData("CreateItem", {
                           type: K4ItemType.relation,
                           name: "%FLAGS.name%",
                           img: "icons/mystery-man.svg",
@@ -1000,24 +964,24 @@ const ITEM_DATA: {
                   "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#).",
                   "effects": [
                     {
-                      "parentData": BuildEffectData({
+                      "parentData": K4ActiveEffect.BuildEffectData({
                         isUnique: false
                       }),
                       "changeData": [
-                        BuildChangeData("PromptForData", {
+                        K4ActiveEffect.BuildChangeData("PromptForData", {
                           title: "Describe Your Contact",
                           bodyText: "What is your contact's name?",
                           target: "FLAGS.name",
                           input: PromptInputType.text
                         }),
-                        BuildChangeData("PromptForData", {
+                        K4ActiveEffect.BuildChangeData("PromptForData", {
                           title: "Describe Your Contact",
                           bodyText: "What is your contact's field of study?",
                           subText: "<em>(Don't forget to describe how you got to know one another, and to work with the GM and other players to determine the nature of the enmity between you.)</em>",
                           target: "FLAGS.field",
                           input: PromptInputType.text
                         }),
-                        BuildChangeData("CreateItem", {
+                        K4ActiveEffect.BuildChangeData("CreateItem", {
                           type: K4ItemType.relation,
                           name: "%FLAGS.name%",
                           img: "icons/mystery-man.svg",
@@ -1992,15 +1956,15 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
                 value: "What sort of person are you?"
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
@@ -2041,35 +2005,35 @@ const ITEM_DATA: {
           "outro": "Whenever you #>item-button text-doclink&data-item-name='Investigate'&data-action='open'>Investigate<# something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("PromptForData", {
+              K4ActiveEffect.BuildChangeData("PromptForData", {
                 title: "What is your first Field of Expertise?",
                 target: "FLAGS.field_1",
                 input: PromptInputType.text,
                 bodyText: "You may choose any sufficiently-broad area of academic study.",
                 subText: "<em><strong>Examples:</strong> Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</em>"
               }),
-              BuildChangeData("PromptForData", {
+              K4ActiveEffect.BuildChangeData("PromptForData", {
                 title: "What is your second Field of Expertise?",
                 target: "FLAGS.field_2",
                 input: PromptInputType.text,
                 bodyText: "You may choose any sufficiently-broad area of academic study.",
                 subText: "<em><strong>Examples:</strong> Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</em>"
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may ask an additional question, any question you want."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may ask an additional question, any question you want."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.results.failure.result",
                 mode: "AppendText",
@@ -2096,21 +2060,21 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.failure.result",
                 mode: "AppendText",
@@ -2208,14 +2172,14 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData({
+            "parentData": K4ActiveEffect.BuildEffectData({
               alertUser: [
                 "<h2>Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span></h2>",
                 "<p>You must take the 'Condemned' Disadvantage before you can take this Advantage.</p>"
               ].join("")
             }),
             "changeData": [
-              BuildChangeData("RequireItem", {
+              K4ActiveEffect.BuildChangeData("RequireItem", {
                 filter: "Condemned"
               })
             ]
@@ -2441,7 +2405,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData({
+            "parentData": K4ActiveEffect.BuildEffectData({
               canToggle: false,
               inStatusBar: true,
               duration: EffectDuration.ongoing,
@@ -2449,7 +2413,7 @@ const ITEM_DATA: {
               tooltip: "Applies <em>+1 ongoing</em> to all #>text-keyword>Endure Injury<# rolls."
             }),
             "changeData": [
-              BuildChangeData("ModifyRoll", {
+              K4ActiveEffect.BuildChangeData("ModifyRoll", {
                 filter: "Endure Injury",
                 mode: "Add",
                 value: 1
@@ -2953,9 +2917,9 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("CreateAttack", {
+              K4ActiveEffect.BuildChangeData("CreateAttack", {
                 filter: "sword",
                 name: "Riposte",
                 tags: ["close_combat", "edged", "sword"],
@@ -3465,22 +3429,22 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyAttack", {
+              K4ActiveEffect.BuildChangeData("ModifyAttack", {
                 filter: "close_combat",
                 target: "attribute",
                 mode: "Set",
                 value: K4Attribute.coolness
               }),
-              BuildChangeData("CreateAttack", {
+              K4ActiveEffect.BuildChangeData("CreateAttack", {
                 filter: "close_combat",
                 name: "Launching Attack",
                 range: K4ItemRange.room,
                 harm: 2,
                 tags: ["close_combat", "ranged"]
               }),
-              BuildChangeData("CreateAttack", {
+              K4ActiveEffect.BuildChangeData("CreateAttack", {
                 filter: "close_combat",
                 name: "Precision Attack",
                 range: K4ItemRange.arm,
@@ -3488,7 +3452,7 @@ const ITEM_DATA: {
                 tags: ["close_combat", "ignore_armor"],
                 special: "Ignores armor."
               }),
-              BuildChangeData("CreateAttack", {
+              K4ActiveEffect.BuildChangeData("CreateAttack", {
                 filter: "close_combat",
                 name: "Tripping Attack",
                 range: K4ItemRange.arm,
@@ -4433,39 +4397,39 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyProperty", {
+              K4ActiveEffect.BuildChangeData("ModifyProperty", {
                 filter: "actor",
                 mode: "Set",
                 target: "system.modifiers.wounds_critical.1.all",
                 value: 0
               }),
-              BuildChangeData("ModifyProperty", {
+              K4ActiveEffect.BuildChangeData("ModifyProperty", {
                 filter: "actor",
                 mode: "Set",
                 target: "system.modifiers.wounds_serious.1.all",
                 value: 0
               }),
-              BuildChangeData("ModifyProperty", {
+              K4ActiveEffect.BuildChangeData("ModifyProperty", {
                 filter: "actor",
                 mode: "Set",
                 target: "system.modifiers.wounds_serious.2.all",
                 value: 0
               }),
-              BuildChangeData("ModifyProperty", {
+              K4ActiveEffect.BuildChangeData("ModifyProperty", {
                 filter: "actor",
                 mode: "Set",
                 target: "system.modifiers.wounds_serious.3.all",
                 value: 0
               }),
-              BuildChangeData("ModifyProperty", {
+              K4ActiveEffect.BuildChangeData("ModifyProperty", {
                 filter: "actor",
                 mode: "Set",
                 target: "system.modifiers.wounds_serious.4.all",
                 value: 0
               }),
-              BuildChangeData("ModifyProperty", {
+              K4ActiveEffect.BuildChangeData("ModifyProperty", {
                 filter: "actor",
                 mode: "Set",
                 target: "system.modifiers.wounds_seriouscritical.1.all",
@@ -4685,21 +4649,21 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
                 value: "Which organizations, groups, or people of interest may be connected to this?"
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
                 value: "Is there a connection between this and another event?"
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
@@ -5784,11 +5748,11 @@ const ITEM_DATA: {
                 "triggered": {
                   "result": "",
                   "effects": [{
-                    "parentData": BuildEffectData({
+                    "parentData": K4ActiveEffect.BuildEffectData({
                       uses: 1
                     }),
                     "changeData": [
-                      BuildChangeData("CreateAttack", {
+                      K4ActiveEffect.BuildChangeData("CreateAttack", {
                         filter: "close_combat",
                         name: "Surprise Strike",
                         range: K4ItemRange.arm,
@@ -6153,15 +6117,15 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Observe a Situation",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
                 value: "What weaknesses do they have I can use to my advantage?"
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Observe a Situation",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
@@ -6429,27 +6393,27 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%You may ask one additional question (3 total)."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%You may ask one additional question (2 total)."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.failure.result",
                 mode: "AppendText",
                 value: "%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
@@ -6484,15 +6448,15 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyAttack", {
+              K4ActiveEffect.BuildChangeData("ModifyAttack", {
                 filter: "firearm",
                 mode: "Set",
                 target: "attribute",
                 value: K4Attribute.coolness
               }),
-              BuildChangeData("CreateAttack", {
+              K4ActiveEffect.BuildChangeData("CreateAttack", {
                 filter: "firearm",
                 range: K4ItemRange.room,
                 harm: 4,
@@ -6500,7 +6464,7 @@ const ITEM_DATA: {
                 tags: ["ranged", "firearm"],
                 name: "Two in the Chest, One in the Head"
               }),
-              BuildChangeData("CreateAttack", {
+              K4ActiveEffect.BuildChangeData("CreateAttack", {
                 filter: "firearm",
                 range: K4ItemRange.room,
                 harm: 4,
@@ -6613,21 +6577,21 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Observe a Situation",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Observe a Situation",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
                 value: "%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
               }),
-              BuildChangeData("ModifyChange", {
+              K4ActiveEffect.BuildChangeData("ModifyChange", {
                 filter: "Observe a Situation",
                 target: "system.results.completeSuccess.effects",
                 changeFilter: "Acting On Observations",
@@ -6635,7 +6599,7 @@ const ITEM_DATA: {
                 changeTarget: "value",
                 value: 2
               }),
-              BuildChangeData("ModifyChange", {
+              K4ActiveEffect.BuildChangeData("ModifyChange", {
                 filter: "Observe a Situation",
                 target: "system.results.partialSuccess.effects",
                 changeFilter: "Acting On Observations",
@@ -6672,15 +6636,15 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
                 value: "Are you hiding anything from me?"
               }),
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.lists.questions.items",
                 mode: "PushElement",
@@ -6874,9 +6838,9 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyAttack", {
+              K4ActiveEffect.BuildChangeData("ModifyAttack", {
                 filter: "firearm",
                 target: "harm",
                 mode: "Add",
@@ -7302,9 +7266,9 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("ModifyMove", {
+              K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Keep It Together",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
@@ -8852,9 +8816,9 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              "parentData": BuildEffectData({permanent: true}),
+              "parentData": K4ActiveEffect.BuildEffectData({permanent: true}),
               "changeData": [
-                BuildChangeData("ModifyProperty", {
+                K4ActiveEffect.BuildChangeData("ModifyProperty", {
                   filter: "actor",
                   mode: "Downgrade",
                   target: "system.stability.value",
@@ -8863,9 +8827,9 @@ const ITEM_DATA: {
               ]
             },
             {
-              "parentData": BuildEffectData(),
+              "parentData": K4ActiveEffect.BuildEffectData(),
               "changeData": [
-                BuildChangeData("ModifyProperty", {
+                K4ActiveEffect.BuildChangeData("ModifyProperty", {
                   filter: "actor",
                   mode: "Set",
                   target: "system.stability.max",
@@ -9780,9 +9744,9 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData(),
             "changeData": [
-              BuildChangeData("CreateTracker", {
+              K4ActiveEffect.BuildChangeData("CreateTracker", {
                 name: "Time",
                 imgFolder: "systems/kult4th/assets/icons/trackers/condemned/",
                 target: "FLAGS.timeTracker",
@@ -9825,7 +9789,7 @@ const ITEM_DATA: {
                 "partialSuccess": {
                   "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll.",
                   "effects": [{
-                    "parentData": BuildEffectData({
+                    "parentData": K4ActiveEffect.BuildEffectData({
                       canToggle: false,
                       inStatusBar: true,
                       label: "Depression",
@@ -9835,7 +9799,7 @@ const ITEM_DATA: {
                       from: "a roll to manage #>text-doclink>Depression<#"
                     }),
                     "changeData": [
-                      BuildChangeData("ModifyRoll", {
+                      K4ActiveEffect.BuildChangeData("ModifyRoll", {
                         filter: "all",
                         mode: "Add",
                         value: -1
@@ -9846,7 +9810,7 @@ const ITEM_DATA: {
                 "failure": {
                   "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
                   "effects": [{
-                    "parentData": BuildEffectData({
+                    "parentData": K4ActiveEffect.BuildEffectData({
                       permanent: true,
                       alertAll: [
                         "<h2>%insert.actor.name% Grows Less Stable</h2>",
@@ -9854,7 +9818,7 @@ const ITEM_DATA: {
                       ].join("")
                     }),
                     "changeData": [
-                      BuildChangeData("ModifyProperty", {
+                      K4ActiveEffect.BuildChangeData("ModifyProperty", {
                         filter: "actor",
                         mode: "Add",
                         target: "system.stability.value",
@@ -11248,7 +11212,7 @@ const ITEM_DATA: {
               "questions"
             ],
             "effects": [{
-              "parentData": BuildEffectData({
+              "parentData": K4ActiveEffect.BuildEffectData({
                 canToggle: true,
                 inStatusBar: true,
                 label: "Acting On Observations",
@@ -11264,7 +11228,7 @@ const ITEM_DATA: {
                 from: "an #>text-doclink>Observe a Situation<# roll"
               }),
               "changeData": [
-                BuildChangeData("ModifyRoll", {
+                K4ActiveEffect.BuildChangeData("ModifyRoll", {
                   filter: "all",
                   mode: "Add",
                   value: 1
@@ -11280,7 +11244,7 @@ const ITEM_DATA: {
               "questions"
             ],
             "effects": [{
-              "parentData": BuildEffectData({
+              "parentData": K4ActiveEffect.BuildEffectData({
                 canToggle: true,
                 inStatusBar: true,
                 label: "Acting On Observations",
@@ -11296,7 +11260,7 @@ const ITEM_DATA: {
                 from: "an #>text-doclink>Observe a Situation<# roll"
               }),
               "changeData": [
-                BuildChangeData("ModifyRoll", {
+                K4ActiveEffect.BuildChangeData("ModifyRoll", {
                   filter: "all",
                   mode: "Add",
                   value: 1
@@ -11349,7 +11313,7 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              "parentData": BuildEffectData({
+              "parentData": K4ActiveEffect.BuildEffectData({
                 canToggle: false,
                 inStatusBar: true,
                 label: "Armor",
@@ -11358,7 +11322,7 @@ const ITEM_DATA: {
                 from: "worn gear"
               }),
               "changeData": [
-                BuildChangeData("ModifyRoll", {
+                K4ActiveEffect.BuildChangeData("ModifyRoll", {
                   filter: "Endure Injury",
                   mode: "Add",
                   value: "actor.system.armor"
@@ -11366,9 +11330,9 @@ const ITEM_DATA: {
               ]
             },
             {
-              "parentData": BuildEffectData(),
+              "parentData": K4ActiveEffect.BuildEffectData(),
               "changeData": [
-                BuildChangeData("ModifyRoll", {
+                K4ActiveEffect.BuildChangeData("ModifyRoll", {
                   filter: "Endure Injury",
                   mode: "Subtract",
                   value: "prompt",

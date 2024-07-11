@@ -48,20 +48,20 @@ enum K4ItemRange {
 /** Namespace for PACK types */
 namespace PACKS {
   export interface ByType {
-    [K4ItemType.advantage]: ITEM_DATA.Schema<K4ItemType.advantage>[];
-    [K4ItemType.disadvantage]: ITEM_DATA.Schema<K4ItemType.disadvantage>[];
-    [K4ItemType.move]: ITEM_DATA.Schema<K4ItemType.move>[];
-    [K4ItemType.darksecret]: ITEM_DATA.Schema<K4ItemType.darksecret>[];
-    [K4ItemType.relation]: ITEM_DATA.Schema<K4ItemType.relation>[];
-    [K4ItemType.gear]: ITEM_DATA.Schema<K4ItemType.gear>[];
-    [K4ItemType.weapon]: ITEM_DATA.Schema<K4ItemType.weapon>[];
+    [K4ItemType.advantage]: Array<ITEM_DATA.Schema<K4ItemType.advantage>>;
+    [K4ItemType.disadvantage]: Array<ITEM_DATA.Schema<K4ItemType.disadvantage>>;
+    [K4ItemType.move]: Array<ITEM_DATA.Schema<K4ItemType.move>>;
+    [K4ItemType.darksecret]: Array<ITEM_DATA.Schema<K4ItemType.darksecret>>;
+    [K4ItemType.relation]: Array<ITEM_DATA.Schema<K4ItemType.relation>>;
+    [K4ItemType.gear]: Array<ITEM_DATA.Schema<K4ItemType.gear>>;
+    [K4ItemType.weapon]: Array<ITEM_DATA.Schema<K4ItemType.weapon>>;
   }
   export interface SubItems {
     subItems: K4SubItem.Schema[];
-    subMoves: K4SubItem.Schema<K4ItemType.move>[];
+    subMoves: Array<K4SubItem.Schema<K4ItemType.move>>;
   }
   export interface ParentItems {
-    parentItems: ITEM_DATA.Schema<K4Item.Types.Parent>[];
+    parentItems: Array<ITEM_DATA.Schema<K4Item.Types.Parent>>;
   }
   export interface BasicPlayerMoves {
     basicPlayerMoves: Array<ITEM_DATA.Schema<K4ItemType.move> & Record<string, unknown>>;
@@ -136,7 +136,7 @@ const PACKS: PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems
       ...this[K4ItemType.gear]
     ]);
   },
-  get subMoves(): K4SubItem.Schema<K4ItemType.move>[] {
+  get subMoves(): Array<K4SubItem.Schema<K4ItemType.move>> {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -210,7 +210,7 @@ function getType(val: unknown): string {
       isNumString = true;
     } else if (["true", "false"].includes(val.toLowerCase())) {
       return "bool-string";
-    } else if (/ /.test(val)) {
+    } else if (val.includes(' ')) {
       return "phrase-string";
     } else {
       return "word-string";
@@ -311,7 +311,7 @@ function getUniqueValuesForSystemKey(itemDataArray: ITEM_DATA.Schema[], key: Val
     return valsByKey;
   }
   const uniqueValues: unknown[] = [];
-  const isFlattening = /\./.test(key);
+  const isFlattening = key.includes('.');
   itemDataArray.forEach((schema) => {
     const flatSubItemSystem = isFlattening ? flattenObject(schema.system) : schema.system;
     if (key in flatSubItemSystem) {
@@ -399,7 +399,7 @@ function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, opti
  * @param {K4SubItem.Types[]} [subTypes=[K4ItemType.move]] - The sub-item types to extract.
  * @returns {Array<K4SubItem.Schema>} - The extracted sub-item schemas.
  */
-function extractSubItemSchemas(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.move]): K4SubItem.Schema<K4ItemType.move>[] {
+function extractSubItemSchemas(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.move]): Array<K4SubItem.Schema<K4ItemType.move>> {
   return itemDataArray
     .filter((item): item is ITEM_DATA.Schema<K4Item.Types.Parent> =>
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.weapon, K4ItemType.gear]
@@ -495,10 +495,10 @@ function getUniqueValuesForSubItemKey(
   const subItemDataArray = extractSubItemSchemas(itemDataArray);
   if (Array.isArray(key)) {
     return Object.entries(
-      key.reduce((acc, thisKey) => {
+      key.reduce<Record<string, unknown[]>>((acc, thisKey) => {
         acc[thisKey] = getUniqueValuesForSubItemKey(itemDataArray, thisKey);
         return acc;
-      }, {} as Record<string, unknown[]>)
+      }, {})
     );
   }
   return getUniqueValuesForSystemKey(subItemDataArray as ITEM_DATA.Schema[], key);
@@ -595,7 +595,7 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
           delete newItemData[key as keyof typeof newItemData]
       });
       if (FOLDER_NAME_MAP[itemData.type as K4ItemType]) {
-        newItemData.folder = game.folders?.getName(FOLDER_NAME_MAP[itemData.type as K4ItemType] as string)?.id ?? null;
+        newItemData.folder = game.folders?.getName(FOLDER_NAME_MAP[itemData.type as K4ItemType]!)?.id ?? null;
       }
       return newItemData;
     });
@@ -608,14 +608,14 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
 async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   const itemSchemas = parseItemSchemasForCreation(PACKS.all);
   function clearActorItems(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
-    if (!actor) { return new Promise((resolve) => resolve(true as unknown)); }
+    if (!actor) { return new Promise((resolve) => { resolve(true as unknown); }); }
     // Filter actor's items to exclude K4SubItems, as their removal is taken care of by their parent item
     const mainItems = actor.items.contents.filter((i) => !i.isSubItem());
     // Delete all the remaining items
     return Promise.all(mainItems.map((item) => item.delete()));
   }
   function clearActorEffects(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
-    if (!actor) { return new Promise((resolve) => resolve(true as unknown)); }
+    if (!actor) { return new Promise((resolve) => { resolve(true as unknown); }); }
     return actor.deleteEmbeddedDocuments("ActiveEffect", Array.from(actor.effects.keys()));
   }
   async function clearActor(actor: K4Actor<K4ActorType.pc>) {
@@ -649,7 +649,7 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
  * @param items Array of items to analyze.
  * @returns Array of items forming the representative subset.
  */
-function findRepresentativeSubset(items: Record<string, unknown>[]): Record<string, unknown>[] {
+function findRepresentativeSubset(items: Array<Record<string, unknown>>): Array<Record<string, unknown>> {
   /**
    * Helper function to determine if a value is non-empty.
    * @param value The value to check.
@@ -692,7 +692,7 @@ function findRepresentativeSubset(items: Record<string, unknown>[]): Record<stri
  * @param masterSet Array of all items to analyze.
  * @returns True if the subset covers all keys with non-empty values in the master set, false otherwise.
  */
-function checkSubsetCoverage(subset: Record<string, unknown>[], masterSet: Record<string, unknown>[]): boolean {
+function checkSubsetCoverage(subset: Array<Record<string, unknown>>, masterSet: Array<Record<string, unknown>>): boolean {
   /**
    * Helper function to determine if a value is non-empty.
    * @param value The value to check.
@@ -730,7 +730,7 @@ function checkSubsetCoverage(subset: Record<string, unknown>[], masterSet: Recor
  * @param allItems Array of all items to analyze.
  * @returns Object where each key is an item name and the value is an array of keys that no other items share.
  */
-function findUniqueKeys(subset: Record<string, unknown>[], allItems: Record<string, unknown>[]): Record<string, string[]> {
+function findUniqueKeys(subset: Array<Record<string, unknown>>, allItems: Array<Record<string, unknown>>): Record<string, string[]> {
   /**
    * Helper function to determine if a value is non-empty.
    * @param value The value to check.
