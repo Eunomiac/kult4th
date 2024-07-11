@@ -76,6 +76,8 @@ namespace PACKS {
   }
 }
 
+type PACKS = PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems & PACKS.BasicPlayerMoves & PACKS.All;
+
 enum ReportOn {
   UniqueValues = "UniqueValues",
   SubTypes = "SubTypes"
@@ -102,7 +104,7 @@ type AnySchema = ITEM_DATA.Schema | K4SubItem.Schema;
 
 // #region PACKS Object ~
 /** PACKS object containing various item schemas */
-const PACKS: PACKS.ByType & PACKS.BySubType & PACKS.SubItems & PACKS.ParentItems & PACKS.BasicPlayerMoves & PACKS.All = {
+const PACKS: PACKS = {
   /** SUBITEM NAMING CONVENTIONS
    *
    * activeRolled -- these moves are rolled, and their name should complete the sentence "X rolls Y to <subItem.name>"
@@ -781,9 +783,8 @@ function findUniqueKeys(subset: Array<Record<string, unknown>>, allItems: Array<
 }
 // #ENDREGION
 
-export default BUILD_ITEMS_FROM_DATA;
-
 export {
+  BUILD_ITEMS_FROM_DATA,
   PACKS,
   getUniqueValuesForSystemKey,
   getItemSystemReport,

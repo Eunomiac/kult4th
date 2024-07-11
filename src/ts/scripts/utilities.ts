@@ -1,16 +1,16 @@
 import {gsap, MotionPathPlugin} from "../libraries";
 
-// #region â–®â–®â–®â–®â–®â–®â–® [HELPERS] Internal Functions, Data & References Used by Utility Functions â–®â–®â–®â–®â–®â–®â–® ~
+// #region ▒▒▒▒▒▒▒ [HELPERS] Internal Functions, Data & References Used by Utility Functions ▒▒▒▒▒▒▒ ~
 
 // _noCapWords -- Patterns matching words that should NOT be capitalized when converting to TITLE case.
 const _noCapWords = "a|above|after|an|and|at|below|but|by|down|for|for|from|in|nor|of|off|on|onto|or|out|so|the|to|under|up|with|yet"
   .split("|")
-  .map((word) => new RegExp(`\\b${word}\\b`, "gui"));
+  .map((word) => new RegExp(`\\b${String(word)}\\b`, "gui"));
 
 // _capWords -- Patterns matching words that should ALWAYS be capitalized when converting to SENTENCE case.
 const _capWords = [
   "I", /[^a-z]{3,}|[.0-9]/gu
-].map((word) => (Object.prototype.toString.call(word).includes('RegExp') ? word : new RegExp(`\\b${word}\\b`, "gui"))) as RegExp[];
+].map((word) => (Object.prototype.toString.call(word).includes('RegExp') ? word : new RegExp(`\\b${String(word)}\\b`, "gui"))) as RegExp[];
 
 // _loremIpsumText -- Boilerplate lorem ipsum
 const _loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies
@@ -115,38 +115,39 @@ const _ordinals = {
 } as const;
 const _romanNumerals = {
   grouped: [
-    ["", "â… ", "â…¡", "â…¢", "â…£", "â…¤", "â…¥", "â…¦", "â…§", "â…¨"],
-    ["", "â…©", "â…©â…©", "â…©â…©â…©", "â…©â…¬", "â…¬", "â…¬â…©", "â…¬â…©â…©", "â…¬â…©â…©â…©", "â…©â…­"],
-    ["", "â…­", "â…­â…­", "â…­â…­â…­", "â…­â…®", "â…®", "â…®â…­", "â…®â…­â…­", "â…®â…­â…­â…­", "â…­â…¯"],
-    ["", "â…¯", "â…¯â…¯", "â…¯â…¯â…¯", "â…¯â†", "â†", "â†â…¯", "â†â…¯â…¯", "â†â…¯â…¯â…¯", "â†â†‚"],
-    ["", "â†‚", "â†‚â†‚", "â†‚â†‚â†‚", "â†‚â†‡", "â†‡", "â†‡â†‚", "â†‡â†‚â†‚", "â†‡â†‚â†‚â†‚", "â†‡â†ˆ"],
-    ["", "â†ˆ", "â†ˆâ†ˆ", "â†ˆâ†ˆâ†ˆ"]
+    ["", "\u2160", "\u2161", "\u2162", "\u2163", "\u2164", "\u2165", "\u2166", "\u2167", "\u2168", "\u2169", "\u216A", "\u216B"],
+    ["", "\u2169", "\u2169\u2169", "\u2169\u2169\u2169", "\u2169\u216C", "\u216C", "\u216C\u2169", "\u216C\u2169\u2169", "\u216C\u2169\u2169\u2169", "\u2169\u216D"],
+    ["", "\u216D", "\u216D\u216D", "\u216D\u216D\u216D", "\u216D\u216E", "\u216E", "\u216E\u216D", "\u216E\u216D\u216D", "\u216E\u216D\u216D\u216D", "\u216D\u216F"],
+    ["", "\u216F", "\u216F\u216F", "\u216F\u216F\u216F", "\u216F\u2181", "\u2181", "\u2181\u216F", "\u2181\u216F\u216F", "\u2181\u216F\u216F\u216F", "\u2181\u2182"],
+    ["", "\u2182", "\u2182\u2182", "\u2182\u2182\u2182", "\u2182\u2187", "\u2187", "\u2187\u2182", "\u2187\u2182\u2182", "\u2187\u2182\u2182\u2182", "\u2187\u2188"],
+    ["", "\u2188", "\u2188\u2188", "\u2188\u2188\u2188"]
   ],
   ungrouped: [
-    ["", "â… ", "â… â… ", "â… â… â… ", "â… â…¤", "â…¤", "â…¤â… ", "â…¤â… â… ", "â…¤â… â… â… ", "â… â…©"],
-    ["", "â…©", "â…©â…©", "â…©â…©â…©", "â…©â…¬", "â…¬", "â…¬â…©", "â…¬â…©â…©", "â…¬â…©â…©â…©", "â…©â…­"],
-    ["", "â…­", "â…­â…­", "â…­â…­â…­", "â…­â…®", "â…®", "â…®â…­", "â…®â…­â…­", "â…®â…­â…­â…­", "â…­â…¯"],
-    ["", "â…¯", "â…¯â…¯", "â…¯â…¯â…¯", "â…¯â†", "â†", "â†â…¯", "â†â…¯â…¯", "â†â…¯â…¯â…¯", "â†â†‚"],
-    ["", "â†‚", "â†‚â†‚", "â†‚â†‚â†‚", "â†‚â†‡", "â†‡", "â†‡â†‚", "â†‡â†‚â†‚", "â†‡â†‚â†‚â†‚", "â†‡â†ˆ"],
-    ["", "â†ˆ", "â†ˆâ†ˆ", "â†ˆâ†ˆâ†ˆ"]
+    ["", "\u2160", "\u2160\u2160", "\u2160\u2160\u2160", "\u2160\u2164", "\u2164", "\u2164\u2160", "\u2164\u2160\u2160", "\u2164\u2160\u2160\u2160", "\u2160\u2169"],
+    ["", "\u2169", "\u2169\u2169", "\u2169\u2169\u2169", "\u2169\u216C", "\u216C", "\u216C\u2169", "\u216C\u2169\u2169", "\u216C\u2169\u2169\u2169", "\u2169\u216D"],
+    ["", "\u216D", "\u216D\u216D", "\u216D\u216D\u216D", "\u216D\u216E", "\u216E", "\u216E\u216D", "\u216E\u216D\u216D", "\u216E\u216D\u216D\u216D", "\u216D\u216F"],
+    ["", "\u216F", "\u216F\u216F", "\u216F\u216F\u216F", "\u216F\u2181", "\u2181", "\u2181\u216F", "\u2181\u216F\u216F", "\u2181\u216F\u216F\u216F", "\u2181\u2182"],
+    ["", "\u2182", "\u2182\u2182", "\u2182\u2182\u2182", "\u2182\u2187", "\u2187", "\u2187\u2182", "\u2187\u2182\u2182", "\u2187\u2182\u2182\u2182", "\u2187\u2188"],
+    ["", "\u2188", "\u2188\u2188", "\u2188\u2188\u2188"]
   ]
 } as const;
 const UUIDLOG: Array<[string, string, number]> = [];
 
-// #endregion â–®â–®â–®â–®[HELPERS]â–®â–®â–®â–®
+// #endregion ▒▒▒▒[HELPERS]▒▒▒▒
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ INITIALIZATION â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
-const Initialize = async () => {
+// #region █████████████████ INITIALIZATION ███████████████████████
+const Initialize = () => {
   Object.assign(globalThis, {_backTrace: {} });
 };
-// #endregion â–„â–„â–„â–„â–„ INITIALIZATION â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ INITIALIZATION ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ GETTERS: Basic Data Lookup & Retrieval â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
-// @ts-expect-error Leauge of foundry developers is wrong about user not being on game.
+// #region ████████ GETTERS: Basic Data Lookup & Retrieval ████████ ~
+// @ts-expect-error League of foundry developers is wrong about user not being on game.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
 const GMID = (): string | false => game.user.find((user) => user.isGM)?.id ?? false;
-// #endregion â–„â–„â–„â–„â–„ GETTERS â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ GETTERS ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████ ~
 const isNumString = <T>(ref: T): ref is T & NumString =>
   typeof ref === "string" && /^-?\d*\.?\d+$/.test(ref);
 const isBooleanString = <T>(ref: T): ref is T & BoolString => typeof ref === "string"
@@ -157,7 +158,7 @@ const isArray = <T>(ref: T): ref is T & Array<ValOf<T>> => Array.isArray(ref);
 const isSimpleObj = <T>(ref: T): ref is T & Record<Key, ValOf<T>> => ref === Object(ref) && !isArray(ref);
 const isNumber = <T>(ref: T): ref is T & number => typeof ref === "number" && !isNaN(ref);
 const isInt = <T>(ref: T): ref is T & number => isNumber(ref) && ref % 1 === 0;
-const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && `${ref}`.includes('.');
+const isFloat = <T>(ref: T): ref is T & Float => isNumber(ref) && String(ref).includes('.');
 const isPosInt = <T>(ref: T): ref is T & number => isInt(ref) && ref >= 0;
 const isPosFloat = <T>(ref: T): ref is T & PosFloat => isFloat(ref) && ref >= 0;
 
@@ -202,18 +203,17 @@ function assertNonNullType<T>(
 
   // Check if the value is undefined
   if (val === undefined) {
-    throw new Error(`Value ${valStr} is undefined!`);
+    throw new Error(`Value ${String(valStr)} is undefined!`);
   }
 
   // If the type is a string, compare the typeof the value to the type string.
   if (typeof type === "string") {
-    // eslint-disable-next-line valid-typeof
     if (typeof val !== type) {
-      throw new Error(`Value ${valStr} is not a ${type}!`);
+      throw new Error(`Value ${String(valStr)} is not a ${String(type)}!`);
     }
   } else if (!(val instanceof type)) {
     // If the type is a function (constructor), check if the value is an instance of the type.
-    throw new Error(`Value ${valStr} is not a ${type.name}!`);
+    throw new Error(`Value ${String(valStr)} is not a ${String(type.name)}!`);
   }
 }
 
@@ -382,9 +382,9 @@ const getKey = <T>(key: Key, obj: Record<Key, T>): T | null => {
 const FILTERS = {
   IsInstance: ((classRef: unknown) => ((item: unknown) => typeof classRef === "function" && item instanceof classRef))
 };
-// #endregion â–„â–„â–„â–„â–„ TYPES â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ TYPES ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ BOOLEAN: Combining & Manipulating Boolean Tests â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+// #region ████████ BOOLEAN: Combining & Manipulating Boolean Tests ████████
 
 // A combining test function that accepts an array of unknown values and a single-value test function. It will return 'true' if the test function passes for all values.
 const checkAll = <T>(items: T[], test: (item: T) => boolean): boolean => items.every(test);
@@ -395,16 +395,16 @@ const checkAny = <T>(items: T[], test: (item: T) => boolean): boolean => items.s
 // A combining test function that accepts an array of unknown values and a single-value test function. It will return 'true' if the test function fails for all values.
 const checkAllFail = <T>(items: T[], test: (item: T) => boolean): boolean => !checkAny(items, test);
 
-// #endregion â–„â–„â–„â–„â–„ BOOLEAN â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ BOOLEAN ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ STRINGS: String Parsing, Manipulation, Conversion, Regular Expressions â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Case Conversion]â–‘â–‘â–‘â–‘ Upper, Lower, Sentence & Title Case â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #region ████████ STRINGS: String Parsing, Manipulation, Conversion, Regular Expressions ████████
+// #region ■■■■■■■[Case Conversion]■■■■ Upper, Lower, Sentence & Title Case ■■■■■■■ ~
 const uCase = (str: unknown): Uppercase<string> => String(str).toUpperCase() as Uppercase<string>;
 const lCase = (str: unknown): Lowercase<string> => String(str).toLowerCase() as Lowercase<string>;
 const sCase = (str: unknown): Capitalize<string> => {
   if (typeof str === "object") { throw new Error("Cannot convert object to sentence case.");}
   let [first, ...rest] = String(str).split(/\s+/);
-  first = testRegExp(first, _capWords) ? first : `${uCase(first.charAt(0))}${lCase(first.slice(1))}`;
+  first = testRegExp(first, _capWords) ? first : `${String(uCase(first.charAt(0)))}${String(lCase(first.slice(1)))}`;
   if (hasItems(rest)) {
     rest = rest.map((word) => (testRegExp(word, _capWords) ? word : lCase(word)));
   }
@@ -413,12 +413,12 @@ const sCase = (str: unknown): Capitalize<string> => {
 const tCase = (str: unknown): Capitalize<string> => String(str).split(/\s/)
   .map((word, i) => (i && testRegExp(word, _noCapWords) ? lCase(word) : sCase(word)))
   .join(" ").trim() as Capitalize<string>;
-// #endregion â–‘â–‘â–‘â–‘[Case Conversion]â–‘â–‘â–‘â–‘
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[RegExp]â–‘â–‘â–‘â–‘ Regular Expressions â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #endregion ■■■■[Case Conversion]■■■■
+// #region ■■■■■■■[RegExp]■■■■ Regular Expressions ■■■■■■■ ~
 const testRegExp = (str: unknown, patterns: Array<RegExp | string> = [], flags = "gui", isTestingAll = false) => patterns
   .map((pattern) => (pattern instanceof RegExp
     ? pattern
-    : new RegExp(`\\b${pattern}\\b`, flags)))[isTestingAll ? "every" : "some"]((pattern) => pattern.test(`${str}`));
+    : new RegExp(`\\b${String(pattern)}\\b`, flags)))[isTestingAll ? "every" : "some"]((pattern) => pattern.test(String(str)));
 const regExtract = (ref: unknown, pattern: string | RegExp, flags?: string) => {
   /* Wrapper around String.match() that removes the need to worry about match()'s different handling of the 'g' flag.
       - IF your pattern contains unescaped parentheses -> Returns Array of all matching groups.
@@ -435,38 +435,38 @@ const regExtract = (ref: unknown, pattern: string | RegExp, flags?: string) => {
   }
   flags = splitFlags.join("");
   pattern = new RegExp(pattern, flags);
-  const matches = RegExp(pattern).exec(`${ref}`) || [];
+  const matches = RegExp(pattern).exec(String(ref)) ?? [];
   return isGrouping ? Array.from(matches) : matches.pop();
 };
 
-// #endregion â–‘â–‘â–‘â–‘[RegExp]â–‘â–‘â–‘â–‘
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Formatting]â–‘â–‘â–‘â–‘ Hyphenation, Pluralization, "a"/"an" Fixing â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
-// const hyphenate = (str: unknown) => (/^<|\u00AD|\u200B/.test(`${str}`) ? `${str}` : _hyph(`${str}`));
-const unhyphenate = (str: StringLike) => `${str}`.replace(/[\u00AD\u200B]/gu, "");
-const parseArticles = (str: StringLike) => `${str}`.replace(/\b([aA])\s([aeiouAEIOU])/gu, "$1n $2");
+// #endregion ■■■■[RegExp]■■■■
+// #region ■■■■■■■[Formatting]■■■■ Hyphenation, Pluralization, "a"/"an" Fixing ■■■■■■■ ~
+// const hyphenate = (str: unknown) => (/^<|\u00AD|\u200B/.test(`${String(str)}`) ? `${String(str)}` : _hyph(`${String(str)}`));
+const unhyphenate = (str: StringLike) => String(str).replace(/[\u00AD\u200B]/gu, "");
+const parseArticles = (str: StringLike) => String(str).replace(/\b([aA])\s([aeiouAEIOU])/gu, "$1n $2");
 const pluralize = (singular: string, num = 2, plural?: string) => {
   if (pFloat(num) === 1) {return singular;}
-  return plural ?? `${singular.replace(/y$/, "ie").replace(/s$/, "se")}s`;
+  return plural ?? `${String(singular.replace(/y$/, "ie").replace(/s$/, "se"))}s`;
 };
 const oxfordize = (items: Array<number | string>, useOxfordComma = true, andString = "and") => {
   if (items.length === 0) {return "";}
-  if (items.length === 1) {return `${items[0]}`;}
+  if (items.length === 1) {return String(items[0]);}
   const lastItem = items.pop();
   return [
     items.join(", "),
     useOxfordComma ? "," : "",
-    ` ${andString} `,
+    ` ${String(andString)} `,
     lastItem
   ].join("");
 };
 const ellipsize = (text: unknown, maxLength: number): string => {
   const str = String(text);
-  return str.length > maxLength ? `${str.slice(0, maxLength - 3)}â€¦` : str;
+  return str.length > maxLength ? `${String(str.slice(0, maxLength - 3))}\u2926` : str;
 };
 const pad = (text: unknown, minLength: number, delim = " "): string => {
-  const str = `${text}`;
+  const str = String(text);
   if (str.length < minLength) {
-    return `${delim.repeat(minLength - str.length)}${str}`;
+    return `${String(delim.repeat(minLength - str.length))}${String(str)}`;
   }
   return str;
 };
@@ -474,7 +474,7 @@ const pad = (text: unknown, minLength: number, delim = " "): string => {
  * Given a string, returns the string with exterior whitespace trimmed and interior whitespace collapsed to a single space.
  */
 const trimInner = (text: string): string => text.replace(/\s+/gu, " ").trim();
-const toKey = (text: string): string => (text ?? "").toLowerCase().replace(/ /g, "-").replace(/default/, "DEFAULT");
+const toKey = (text: string): string => text.toLowerCase().replace(/ /g, "-").replace(/default/, "DEFAULT");
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
 const signNum = (num: number, delim = "", zeroSign = "+") => {
   let sign;
@@ -486,21 +486,21 @@ const signNum = (num: number, delim = "", zeroSign = "+") => {
   } else {
     sign = "+";
   }
-  return `${sign}${delim}${Math.abs(parsedNum)}`;
+  return `${String(sign)}${String(delim)}${String(Math.abs(parsedNum))}`;
 };
 const padNum = (num: number, numDecDigits: number, includePlus = false) => {
   const prefix = (includePlus && num >= 0) ? "+" : "";
-  const [leftDigits, rightDigits] = `${pFloat(num)}`.split(/\./);
+  const [leftDigits, rightDigits] = String(pFloat(num)).split(/\./);
   if (getType(rightDigits) === "int") {
     if (rightDigits.length > numDecDigits) {
-      return `${prefix}${pFloat(num, numDecDigits)}`;
+      return `${String(prefix)}${String(pFloat(num, numDecDigits))}`;
     } else if (rightDigits.length < numDecDigits) {
-      return `${prefix}${leftDigits}.${rightDigits}${"0".repeat(numDecDigits - rightDigits.length)}`;
+      return `${String(prefix)}${String(leftDigits)}.${String(rightDigits)}${String("0".repeat(numDecDigits - rightDigits.length))}`;
     } else {
-      return `${prefix}${pFloat(num)}`;
+      return `${String(prefix)}${String(pFloat(num))}`;
     }
   }
-  return `${prefix}${leftDigits}.${"0".repeat(numDecDigits)}`;
+  return `${String(prefix)}${String(leftDigits)}.${String("0".repeat(numDecDigits))}`;
 };
 
 const stringifyNum = (num: number | string): NumString => {
@@ -511,20 +511,20 @@ const stringifyNum = (num: number | string): NumString => {
   const stringyNum = lCase(parsedNum).replace(/[^\d.e+-]/g, "");
   const base = regExtract(stringyNum, /^-?[\d.]+/) as string | undefined;
   const exp = pInt(regExtract(stringyNum, /e([+-]?\d+)$/) as string | undefined);
-  if (typeof base !== "string") { return `${parsedNum}`; }
-  if (typeof exp !== "number") { return `${parsedNum}`; }
+  if (typeof base !== "string") { return String(parsedNum) as NumString; }
+  if (typeof exp !== "number") { return String(parsedNum) as NumString; }
   let baseInts = regExtract(base, /^-?(\d+)/);
   let baseDecs = regExtract(base, /\.(\d+)/);
-  if (!isArray(baseInts)) { return `${parsedNum}`; }
-  if (!isArray(baseDecs)) { return `${parsedNum}`; }
+  if (!isArray(baseInts)) { return String(parsedNum) as NumString; }
+  if (!isArray(baseDecs)) { return String(parsedNum) as NumString; }
   const lastBaseInt = baseInts.pop();
   const lastBaseDec = baseDecs.pop();
-  if (typeof lastBaseInt !== "string") { return `${parsedNum}` }
-  if (typeof lastBaseDec !== "string") { return `${parsedNum}` }
+  if (typeof lastBaseInt !== "string") { return String(parsedNum) as NumString; }
+  if (typeof lastBaseDec !== "string") { return String(parsedNum) as NumString; }
   baseInts = lastBaseInt.replace(/^0+/, "");
   baseDecs = lCase(lastBaseDec).replace(/0+$/, "");
-  if (isUndefined(baseInts)) { return `${parsedNum}` }
-  if (isUndefined(baseDecs)) { return `${parsedNum}` }
+  if (isUndefined(baseInts)) { return String(parsedNum) as NumString; }
+  if (isUndefined(baseDecs)) { return String(parsedNum) as NumString; }
   const numFinalInts = Math.max(0, baseInts.length + exp);
   const numFinalDecs = Math.max(0, baseDecs.length - exp);
   const finalInts = [
@@ -565,9 +565,9 @@ const verbalizeNum = (num: number | string) => {
     if (digits.length === 3) {
       const hundreds = digits.shift();
       if (isUndefined(hundreds)) {
-        throw new Error(`[U.verbalizeNum] Undefined digit in trio '${digits.join("")}'.`);
+        throw new Error(`[U.verbalizeNum] Undefined digit in trio '${String(digits.join(""))}'.`);
       }
-      result += hundreds > 0 ? `${_numberWords.ones[hundreds]} hundred` : "";
+      result += hundreds > 0 ? `${String(_numberWords.ones[hundreds])} hundred` : "";
       if (hundreds && (digits[0] || digits[1])) {
         result += " and ";
       }
@@ -576,8 +576,8 @@ const verbalizeNum = (num: number | string) => {
       result += _numberWords.ones[pInt(digits.join(""))];
     } else {
       const tens = _numberWords.tens[pInt(digits.shift())];
-      const ones = pInt(digits[0]) > 0 ? `-${_numberWords.ones[pInt(digits[0])]}` : "";
-      result += `${tens}${ones}`;
+      const ones = pInt(digits[0]) > 0 ? `-${String(_numberWords.ones[pInt(digits[0])])}` : "";
+      result += `${String(tens)}${String(ones)}`;
     }
     return result;
   };
@@ -595,7 +595,7 @@ const verbalizeNum = (num: number | string) => {
     if (thisTrio) {
       const theseWords = parseThreeDigits(thisTrio);
       if (theseWords) {
-        intStrings.push(`${theseWords} ${getTier(intArray.length)}`);
+        intStrings.push(`${String(theseWords)} ${String(getTier(intArray.length))}`);
       }
     }
   }
@@ -615,22 +615,22 @@ const ordinalizeNum = (num: string | number, isReturningWords = false) => {
   if (isReturningWords) {
     const [numText, suffix]: RegExpMatchArray = RegExp(/.*?[-\s]?(\w*)$/i).exec(lCase(verbalizeNum(num))) ?? ["", ""];
     return numText.replace(
-      new RegExp(`${suffix}$`),
-      suffix in _ordinals ? _ordinals[suffix as KeyOf<typeof _ordinals>] : `${suffix}th`
+      new RegExp(`${String(suffix)}$`),
+      suffix in _ordinals ? _ordinals[suffix as KeyOf<typeof _ordinals>] : `${String(suffix)}th`
     );
   }
-  if (/(\.)|(1[1-3]$)/.test(`${num}`)) {
-    return `${num}th`;
+  if (/(\.)|(1[1-3]$)/.test(String(num))) {
+    return `${String(num)}th`;
   }
-  return `${num}${["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][
-    pInt(`${num}`.charAt(`${num}`.length - 1))
+  return `${String(num)}${["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][
+    pInt(String(num).charAt(String(num).length - 1))
   ]
   }`;
 };
 const romanizeNum = (num: number, isUsingGroupedChars = true) => {
-  if (isFloat(num)) {throw new Error(`Error: Can't Romanize Floats (${num})`);}
-  if (num >= 400000) {throw new Error(`Error: Can't Romanize >= 400,000 (${num})`);}
-  if (num < 0) {throw new Error(`Error: Can't Romanize Negative Numbers (${num})`);}
+  if (isFloat(num)) {throw new Error(`Error: Can't Romanize Floats (${String(num)})`);}
+  if (num >= 400000) {throw new Error(`Error: Can't Romanize >= 400,000 (${String(num)})`);}
+  if (num < 0) {throw new Error(`Error: Can't Romanize Negative Numbers (${String(num)})`);}
   if (num === 0) {return "0";}
   const romanRef = _romanNumerals[isUsingGroupedChars ? "grouped" : "ungrouped"];
   const romanNum = [...stringifyNum(num).split("")]
@@ -639,12 +639,14 @@ const romanizeNum = (num: number, isUsingGroupedChars = true) => {
     .reverse()
     .join("");
   return isUsingGroupedChars
-    ? romanNum.replace(/â…©â… /gu, "â…ª").replace(/â…©â…¡/gu, "â…«")
+    ? romanNum
+      .replace(/\b\u2169\u2160\u2160\b/gu, "\u216B")
+      .replace(/\b\u2169\u2160\b/gu, "\u216A")
     : romanNum;
 };
 // #endregion _______ Numbers _______
-// #endregion â–‘â–‘â–‘â–‘[Formatting]â–‘â–‘â–‘â–‘
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Content]â–‘â–‘â–‘â–‘ Lorem Ipsum, Random Content Generation, Randum UUID â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #endregion ■■■■[Formatting]■■■■
+// #region ■■■■■■■[Content]■■■■ Lorem Ipsum, Random Content Generation, Randum UUID ■■■■■■■ ~
 const loremIpsum = (numWords = 200) => {
   const lrWordList = _loremIpsumText.split(/\n?\s+/g);
   const words = [...lrWordList[randNum(0, lrWordList.length - 1)]];
@@ -652,7 +654,7 @@ const loremIpsum = (numWords = 200) => {
     words.push(...lrWordList);
   }
   words.length = numWords;
-  return `${sCase(words.join(" ")).trim().replace(/[^a-z\s]*$/ui, "")}.`;
+  return `${String(sCase(words.join(" ")).trim().replace(/[^a-z\s]*$/ui, ""))}.`;
 };
 const randString = (length = 5) => Array.from({length})
   .map(() => String.fromCharCode(randInt(...["a", "z"].map((char) => char.charCodeAt(0)) as [number, number])))
@@ -663,17 +665,17 @@ const getUID = (id: string): string => {
     0,
     ...UUIDLOG.filter(([genericID]) => genericID.startsWith(id)).map(([, , num]) => num)
   ) + 1;
-  const uuid = indexNum === 1 ? id : `${id}_${indexNum}`;
+  const uuid = indexNum === 1 ? id : `${String(id)}_${String(indexNum)}`;
   UUIDLOG.push([id, uuid, indexNum]);
-  kLog.log(`UUIDify(${id}) --> [${uuid}, ${indexNum}]`);
+  kLog.log(`UUIDify(${String(id)}) --> [${String(uuid)}, ${String(indexNum)}]`);
   Object.assign(globalThis, {UUIDLOG});
   return uuid;
 };
 const getID = (): IDString => randomID() as IDString;
-// #endregion â–‘â–‘â–‘â–‘[Content]â–‘â–‘â–‘â–‘
-// #endregion â–„â–„â–„â–„â–„ STRINGS â–„â–„â–„â–„â–„
+// #endregion ■■■■[Content]■■■■
+// #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ SEARCHING: Searching Various Data Types w/ Fuzzy Matching â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
 const fuzzyMatch = (val1: unknown, val2: unknown): boolean => {
   const [str1, str2] = [val1, val2].map((val) => lCase(String(val).replace(/[^a-zA-Z0-9.+-]/g, "").trim()));
   return str1.length > 0 && str1 === str2;
@@ -683,20 +685,20 @@ const isIn = (needle: unknown, haystack: unknown[] = [], fuzziness = 0) => {
 
   // STEP ONE: POPULATE SEARCH TESTS ACCORDING TO FUZZINESS SETTING
   const SearchTests = [
-    (ndl: unknown, item: unknown) => new RegExp(`^${ndl}$`, "gu").test(`${item}`),
-    (ndl: unknown, item: unknown) => new RegExp(`^${ndl}$`, "gui").test(`${item}`)
+    (ndl: unknown, item: unknown) => new RegExp(`^${String(ndl)}$`, "gu").test(String(item)),
+    (ndl: unknown, item: unknown) => new RegExp(`^${String(ndl)}$`, "gui").test(String(item))
   ];
   if (fuzziness >= 1) {
     const fuzzyTests = [
-      (ndl: unknown, item: unknown) => new RegExp(`^${ndl}`, "gui").test(`${item}`),
-      (ndl: unknown, item: unknown) => new RegExp(`${ndl}$`, "gui").test(`${item}`),
-      (ndl: unknown, item: unknown) => new RegExp(`${ndl}`, "gui").test(`${item}`),
-      (ndl: unknown, item: unknown) => new RegExp(`${item}`, "gui").test(`${ndl}`)
+      (ndl: unknown, item: unknown) => new RegExp(`^${String(ndl)}`, "gui").test(String(item)),
+      (ndl: unknown, item: unknown) => new RegExp(`${String(ndl)}$`, "gui").test(String(item)),
+      (ndl: unknown, item: unknown) => new RegExp(String(ndl), "gui").test(String(item)),
+      (ndl: unknown, item: unknown) => new RegExp(String(item), "gui").test(String(ndl))
     ];
     SearchTests.push(...fuzzyTests);
     if (fuzziness >= 2) {
       SearchTests.push(...fuzzyTests
-        .map((func) => (ndl: unknown, item: unknown) => func(`${ndl}`.replace(/\W/g, ""), `${item}`.replace(/\W/gu, ""))));
+        .map((func) => (ndl: unknown, item: unknown) => func(String(ndl).replace(/\W/g, ""), String(item).replace(/\W/gu, ""))));
       if (fuzziness >= 3) {
         SearchTests.push(() => false); // Have to implement Fuse matching
       }
@@ -704,7 +706,7 @@ const isIn = (needle: unknown, haystack: unknown[] = [], fuzziness = 0) => {
   }
 
   // STEP TWO: PARSE NEEDLE & CONSTRUCT SEARCHABLE HAYSTACK.
-  const searchNeedle = `${needle}`;
+  const searchNeedle = String(needle);
   const searchStack = (() => {
     if (isArray(haystack)) {
       return [...haystack] as unknown[];
@@ -715,7 +717,7 @@ const isIn = (needle: unknown, haystack: unknown[] = [], fuzziness = 0) => {
     try {
       return Array.from(haystack);
     } catch{
-      throw new Error(`Haystack type must be [list, array], not ${typeof haystack}: ${JSON.stringify(haystack)}`);
+      throw new Error(`Haystack type must be [list, array], not ${String(typeof haystack)}: ${String(JSON.stringify(haystack))}`);
     }
   })();
   if (!isArray(searchStack)) {return false;}
@@ -727,7 +729,7 @@ const isIn = (needle: unknown, haystack: unknown[] = [], fuzziness = 0) => {
     if (!testFunc) {
       return false;
     }
-    matchIndex = searchStack.findIndex((item) => testFunc(searchNeedle, `${item}`));
+    matchIndex = searchStack.findIndex((item) => testFunc(searchNeedle, String(item)));
   }
   if (isPosInt(matchIndex)) {
     return isList(haystack) ? Object.values(haystack)[matchIndex] : haystack[matchIndex];
@@ -735,9 +737,9 @@ const isIn = (needle: unknown, haystack: unknown[] = [], fuzziness = 0) => {
   return false;
 };
 const isInExact = (needle: unknown, haystack: unknown[]) => isIn(needle, haystack, 0);
-// #endregion â–„â–„â–„â–„â–„ SEARCHING â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ SEARCHING ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ NUMBERS: Number Casting, Mathematics, Conversion â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████ ~
 const randNum = (min: number, max: number, snap = 0): number => gsap.utils.random(min, max, snap);
 const randInt = (min: number, max: number) => randNum(min, max, 1);
 const coinFlip = () => randNum(0, 1, 1) === 1;
@@ -747,7 +749,7 @@ const cycleAngle = (angle: number, range: [number, number] = [0, 360]) => cycleN
 const roundNum = (num: number, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
 const sum = (...nums: Array<number | number[]>) => Object.values(nums.flat()).reduce((num, tot) => tot + num, 0);
 const average = (...nums: Array<number | number[]>) => sum(...nums) / nums.flat().length;
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Positioning]â–‘â–‘â–‘â–‘ Relationships On 2D Cartesian Plane â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #region ■■■■■■■[Positioning]■■■■ Relationships On 2D Cartesian Plane ■■■■■■■ ~
 const getDistance = ({x: x1, y: y1}: Point, {x: x2, y: y2}: Point) => (((x1 - x2) ** 2) + ((y1 - y2) ** 2)) ** 0.5;
 const getAngle = (
   {x: x1, y: y1}: Point,
@@ -779,30 +781,35 @@ const getBoundingRectangle = (
 
   // Iterate over the array of shapes.
   for (const shape of arrayOfShapes) {
+    let {size, width, height, radius, x, y} = shape;
     // Calculate the minimum and maximum x and y coordinates for the current shape.
     let shapeMinX; let shapeMinY; let shapeMaxX; let shapeMaxY;
-    if (shape.radius !== undefined) {
+
+    if (radius !== undefined) {
       // The shape is a circle.
-      shapeMinX = shape.x - shape.radius;
-      shapeMinY = shape.y - shape.radius;
-      shapeMaxX = shape.x + shape.radius;
-      shapeMaxY = shape.y + shape.radius;
-    } else if (shape.size !== undefined) {
+      shapeMinX = x - radius;
+      shapeMinY = y - radius;
+      shapeMaxX = x + radius;
+      shapeMaxY = y + radius;
+
+    } else if (size !== undefined) {
       // The shape is a square.
-      shapeMinX = (shape.x - shape.size) / 2;
-      shapeMinY = (shape.y - shape.size) / 2;
-      shapeMaxX = (shape.x + shape.size) / 2;
-      shapeMaxY = (shape.y + shape.size) / 2;
-    } else if (shape.width !== undefined || shape.height !== undefined) {
+      shapeMinX = (x - size) / 2;
+      shapeMinY = (y - size) / 2;
+      shapeMaxX = (x + size) / 2;
+      shapeMaxY = (y + size) / 2;
+
+    } else if (width !== undefined || height !== undefined) {
+
       // The shape is a rectangle (or possibly a square).
-      shape.width ??= shape.height;
-      shape.height ??= shape.width;
-      shapeMinX = (shape.x - (shape.width!)) / 2;
-      shapeMinY = (shape.y - (shape.height!)) / 2;
-      shapeMaxX = (shape.x + (shape.width!)) / 2;
-      shapeMaxY = (shape.y + (shape.height!)) / 2;
+      width = width ?? height!;
+      height = height ?? width;
+      shapeMinX = (x - width) / 2;
+      shapeMinY = (y - height) / 2;
+      shapeMaxX = (x + width) / 2;
+      shapeMaxY = (y + height) / 2;
     } else {
-      throw new Error(`[getBoundingRectangle] Error: shape must be a circle, square, or rectangle, not ${JSON.stringify(shape)}`);
+      throw new Error(`[getBoundingRectangle] Error: shape must be a circle, square, or rectangle, not ${String(JSON.stringify(shape))}`);
     }
 
     // Update the overall minimum and maximum x and y coordinates.
@@ -813,20 +820,20 @@ const getBoundingRectangle = (
   }
 
   // Calculate the width and height of the smallest rectangle.
-  const width = maxX - minX;
-  const height = maxY - minY;
+  const sWidth = maxX - minX;
+  const sHeight = maxY - minY;
 
   // Calculate the center of the rectangle.
-  const x = (minX + width) / 2;
-  const y = (minY + height) / 2;
+  const sX = (minX + sWidth) / 2;
+  const sY = (minY + sHeight) / 2;
 
   // Return the position (center) and size of the smallest rectangle.
-  return {x, y, width, height};
+  return {x: sX, y: sY, width: sWidth, height: sHeight};
 };
-// #endregion â–‘â–‘â–‘â–‘[Positioning]â–‘â–‘â–‘â–‘
-// #endregion â–„â–„â–„â–„â–„ NUMBERS â–„â–„â–„â–„â–„
+// #endregion ■■■■[Positioning]■■■■
+// #endregion ▄▄▄▄▄ NUMBERS ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ARRAYS: Array Manipulation â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ ARRAYS: Array Manipulation ████████ ~
 const randElem = <Type>(array: Type[]): Type => gsap.utils.random(array);
 const randIndex = (array: unknown[]): number => randInt(0, array.length - 1);
 const makeIntRange = (min: number, max: number) => {
@@ -838,13 +845,12 @@ const makeIntRange = (min: number, max: number) => {
 };
 const makeCycler = (array: unknown[], index = 0): Generator => {
   // Given an array and a starting index, returns a generator function that can be used
-  // to iterate over the array indefinitely, or wrap out-of-bounds index values
+  // to iterate over the array indefinitely, wrapping out-of-bounds index values
   const wrapper = gsap.utils.wrap(array);
   index--;
   return (function*() {
-    while (true) {
-      index++;
-      yield wrapper(index);
+    for (let i = index + 1; ; i++) {
+      yield wrapper(i);
     }
   })();
 };
@@ -964,90 +970,76 @@ const shuffle = (array: unknown[]) => {
   return array;
 };
 const toArray = gsap.utils.toArray;
-// #endregion â–„â–„â–„â–„â–„ ARRAYS â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ ARRAYS ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ OBJECTS: Manipulation of Simple Key/Val Objects â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████ ~
 
 const checkVal = ({k, v}: {k?: unknown, v?: unknown}, checkTest: checkTest) => {
   if (isFunc(checkTest)) {
     if (isDefined(v)) {return checkTest(v, k);}
     return checkTest(k);
   }
-  return (new RegExp(`${checkTest}`)).test(`${v}`);
+  return (new RegExp(String(checkTest))).test(String(v));
 };
 /**
  * Given an array or list and a search function, will remove the first matching element and return it.
  * @param {Index} obj The array or list to be searched.
  * @param {testFunc<keyFunc | valFunc> | number | string} checkTest The search function.
- * @returns {unknown | false} - The removed element or false if no element was found.
+ * @returns {unknown | undefined} - The removed element (undefined if none was found)
  */
 const remove = (obj: Index, checkTest: testFunc | number | string) => {
   if (isArray(obj)) {
     const index = obj.findIndex((v) => checkVal({v}, checkTest));
     if (index >= 0) {
-      return removeElementFromArray(obj, index);
+      return obj.splice(index, 1)[0];
     }
+    return undefined;
   } else if (isList(obj)) {
-    const [remKey] = Object.entries(obj).find(([k, v]) => checkVal({k, v}, checkTest)) ?? [];
+    const [remKey, remVal] = Object.entries(obj)
+      .find(([k, v]) => checkVal({k, v}, checkTest)) ?? [];
     if (remKey) {
-      return removeElementFromList(obj, remKey);
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete obj[remKey];
     }
+    return remVal;
+  }
+  return undefined;
+};
+
+/**
+ * Replaces the first matching element in an array or list with the provided value.
+ *
+ * @param {Index} obj - The array or list to be searched.
+ * @param {checkTest} checkTest - The search function or value to match.
+ * @param {unknown} repVal - The value to replace the matched element with.
+ * @returns {boolean} - True if the replace action succeeded, false otherwise.
+ */
+const replace = (obj: Index, checkTest: checkTest, repVal: unknown): boolean => {
+  let repKey: string | number | undefined;
+
+  // If the object is a list
+  if (isList(obj)) {
+    // Find the key of the first matching element
+    [repKey] = Object.entries(obj).find(([k, v]) => checkVal({ k, v }, checkTest)) ?? [undefined];
+    if (repKey === undefined) {
+      return false;
+    }
+    obj[repKey] = repVal;
+    return true;
+  }
+  // If the object is an array
+  if (isArray(obj)) {
+    // Find the index of the first matching element
+    repKey = obj.findIndex((v) => checkVal({ v }, checkTest));
+    if (repKey === -1) {
+      return false;
+    }
+    obj[repKey] = repVal;
+    return true;
   }
   return false;
 };
 
-/**
- * Removes an element from an array at a given index and returns it.
- * @param {unknown[]} array The array to remove the element from.
- * @param {number} index The index of the element to remove.
- * @returns {unknown} - The removed element.
- */
-const removeElementFromArray = (array: unknown[], index: number) => {
-  let remVal;
-  for (let i = 0; i <= array.length; i++) {
-    if (i === index) {
-      remVal = array.shift();
-    } else {
-      array.push(array.shift());
-    }
-  }
-  return remVal;
-};
-
-/**
- * Removes an element from a list at a given key and returns it.
- * @param {List} list The list to remove the element from.
- * @param {string} key The key of the element to remove.
- * @returns {unknown} - The removed element.
- */
-const removeElementFromList = (list: List, key: string) => {
-  const remVal = list[key];
-  delete list[key];
-  return remVal;
-};
-const replace = (obj: Index, checkTest: checkTest, repVal: unknown) => {
-  // As remove, except instead replaces the element with the provided value.
-  // Returns true/false to indicate whether the replace action succeeded.
-  let repKey;
-  if (isList(obj)) {
-    [repKey] = Object.entries(obj).find((v) => checkVal({v}, checkTest)) || [false];
-    if (repKey === false) {return false;}
-  } else if (isArray(obj)) {
-    repKey = obj.findIndex((v) => checkVal({v}, checkTest));
-    if (repKey === -1) {return false;}
-  }
-  if (typeof repKey !== "number") {
-    repKey = `${repKey}`;
-  }
-  if (typeof repVal === "function") {
-    // @ts-expect-error Need to figure out how to properly define testFunc<keyFunc | valFunc> (keyFunc/valFunc types?)
-    obj[repKey] = repVal(obj[repKey], repKey);
-  } else {
-    // @ts-expect-error Need to figure out how to properly define testFunc<keyFunc | valFunc> (keyFunc/valFunc types?)
-    obj[repKey] = repVal;
-  }
-  return true;
-};
 /**
  * Cleans an object or value by removing specified values recursively.
  *
@@ -1061,15 +1053,19 @@ const objClean = <T>(data: T, remVals: UncleanValues[] = [undefined, null, "", {
   const remStrings = remVals.map((rVal) => JSON.stringify(rVal));
   if (remStrings.includes(JSON.stringify(data)) || remVals.includes(data as ValOf<typeof remVals>)) {return "KILL";}
   if (Array.isArray(data)) {
-    const newData = data.map((elem) => objClean(elem, remVals))
+    const newData = data.map((elem: unknown) => objClean(elem, remVals))
       .filter((elem) => elem !== "KILL") as T;
-    return Array.isArray(newData) && newData.length ? newData : "KILL";
+    return Array.isArray(newData) && newData.length
+      ? newData
+      : "KILL";
   }
   if (data && typeof data === "object" && JSON.stringify(data).startsWith("{")) {
     const newData = Object.entries(data)
-      .map(([key, val]) => [key, objClean(val, remVals)])
+      .map(([key, val]) => [key, objClean<unknown>(val, remVals)] as const)
       .filter(([, val]) => val !== "KILL");
-    return newData.length ? Object.fromEntries(newData) : "KILL";
+    return newData.length
+      ? Object.fromEntries<unknown>(newData) as T | Partial<T>
+      : "KILL";
   }
   return data;
 };
@@ -1172,6 +1168,27 @@ const objSize = (obj: unknown) => {
   return 1;
 };
 
+
+/**
+ * This function returns the key and value testing functions for various object search functions.
+ * @param {testFunc<keyFunc> | testFunc<valFunc> | false} keyFunc The testing function for keys.
+ * @param {testFunc<valFunc>} [valFunc] The testing function for values.
+ * @returns {[testFunc<keyFunc>, testFunc<valFunc>]} The key and value testing functions.
+ */
+const getKeyValFunc = (
+  keyFunc: testFunc<keyFunc|valFunc> | false,
+  valFunc?: testFunc<valFunc>
+): [testFunc<keyFunc>, testFunc<valFunc>] => {
+  if (!valFunc) {
+    valFunc = (keyFunc || (() => true)) as testFunc<valFunc>;
+    keyFunc = () => true;
+  }
+  return [
+    keyFunc as testFunc<keyFunc>,
+    valFunc
+  ];
+}
+
 /**
  * This function is an object-equivalent of Array.findIndex() function.
  * It accepts check functions for both keys and/or values.
@@ -1188,18 +1205,15 @@ function objFindKey<Type extends Index>(
   keyFunc: testFunc<keyFunc> | testFunc<valFunc> | false,
   valFunc?: testFunc<valFunc>
 ): KeyOf<Type> | false {
-  // If valFunc is not provided, assume keyFunc is meant to be valFunc
-  if (!valFunc) {
-    valFunc = keyFunc as testFunc<valFunc>;
-    keyFunc = false;
-  }
+
+  const [kFunc, vFunc] = getKeyValFunc(keyFunc, valFunc);
+
   // If obj is an array, find the index of the first element that passes the test
-  if (isArray(obj)) {return obj.findIndex(valFunc);}
-  // Define the testing functions for keys and values
-  const kFunc = (keyFunc || (() => true)) as testFunc<keyFunc>;
-  const vFunc = valFunc || (() => true);
+  if (isArray(obj)) {return obj.findIndex(vFunc);}
+
   // Find the first entry that passes the test
-  const validEntry = Object.entries(obj).find(([k, v]) => kFunc(k, v) && vFunc(v, k));
+  const validEntry = Object.entries(obj)
+    .find(([k, v]) => kFunc(k, v) && vFunc(v, k));
   // If an entry passes the test, return its key
   if (validEntry) {
     return validEntry[0] as KeyOf<Type>;
@@ -1223,12 +1237,11 @@ const objFilter = <Type extends Index>(
   valFunc?: testFunc<valFunc>,
   isMutating = false
 ): Type => {
-  if (!valFunc) {
-    valFunc = keyFunc as testFunc<valFunc>;
-    keyFunc = false;
-  }
+
+  const [kFunc, vFunc] = getKeyValFunc(keyFunc, valFunc);
+
   if (isArray(obj)) {
-    const keptValues = obj.filter(valFunc);
+    const keptValues = obj.filter(vFunc);
     if (isMutating) {
       obj.splice(0, obj.length, ...keptValues);
       return obj;
@@ -1236,12 +1249,11 @@ const objFilter = <Type extends Index>(
     return keptValues as Type;
   }
 
-  const kFunc = (keyFunc || (() => true)) as testFunc<keyFunc>;
-  const vFunc = valFunc || (() => true);
   if (isMutating) {
     const entriesToRemove = Object.entries(obj)
       .filter(([key, val]: [string, unknown]) => !(kFunc(key, val) && vFunc(val, key)));
     for (const [key] of entriesToRemove) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete obj[key as KeyOf<Type>];
     }
     return obj;
@@ -1270,7 +1282,7 @@ const objClone = <T>(obj: T, isStrictlySafe = false): T => {
   const cloneArray = <aT extends unknown[]>(arr: aT): aT => [...arr] as aT;
   const cloneObject = <oT>(o: oT): oT => ({...o});
   try {
-    return JSON.parse(JSON.stringify(obj));
+    return JSON.parse(JSON.stringify(obj)) as T;
   } catch(err) {
     if (isStrictlySafe) {throw err;}
     if (Array.isArray(obj)) {return cloneArray(obj as T extends unknown[] ? T : never);}
@@ -1335,9 +1347,10 @@ function objMerge<Tx, Ty>(
       // are arrays, concatenate source value to target value
       (target[key as KeyOf<typeof target>] as unknown[]).push(...val);
     } else if (val !== null && typeof val === "object") {
-    // If source value is an object and not null, merge it into target value
+      // If source value is an object and not null, merge it into target value
       if (isUndefined(targetVal) && !(val instanceof Application)) {
-        target[key as KeyOf<typeof target>] = new (Object.getPrototypeOf(val).constructor)();
+        const valPrototype = Object.getPrototypeOf(val) as ConstructorOf<typeof val>;
+        target[key as KeyOf<typeof target>] = new valPrototype() as Tx[KeyOf<Tx>];
       }
       target[key as KeyOf<typeof target>] = objMerge(
         target[key as KeyOf<typeof target>],
@@ -1392,7 +1405,7 @@ function objDiff<
 
   for (const key of onlyObj2Keys) {
     // If the second object has a key that the first does not, add it to the diff with a "-=" prefix
-    diff[`-=${key}`] = obj2[key];
+    diff[`-=${String(key)}`] = obj2[key];
   }
   return diff;
 }
@@ -1432,7 +1445,7 @@ const objFlatten = <ST>(obj: Index<ST>): Record<string, ST> => {
   for (const [key, val] of Object.entries(obj)) {
     if ((isArray(val) || isList(val)) && hasItems(val)) {
       for (const [subKey, subVal] of Object.entries(objFlatten(val)) as Array<[string, ST]>) {
-        flatObj[`${key}.${subKey}`] = subVal;
+        flatObj[`${String(key)}.${String(subKey)}`] = subVal;
       }
     } else {
       flatObj[key] = val;
@@ -1489,7 +1502,7 @@ function objFreezeProps<T>(data: Partial<T>, ...keysOrSchema: Array<keyof T> | [
     const schema = firstArg as T;
     for (const key in schema) {
       if (data[key as keyof T] === undefined) {
-        throw new Error(`Missing value for ${key}`);
+        throw new Error(`Missing value for ${String(key)}`);
       }
     }
   } else {
@@ -1504,10 +1517,10 @@ function objFreezeProps<T>(data: Partial<T>, ...keysOrSchema: Array<keyof T> | [
   // Return the data as type T
   return data as T;
 }
-// #endregion â–„â–„â–„â–„â–„ OBJECTS â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ OBJECTS ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ FUNCTIONS: Function Wrapping, Queuing, Manipulation â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
-const getDynamicFunc = (funcName: string, func: (...args: unknown[]) => unknown, context: object) => {
+// #region ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████ ~
+const getDynamicFunc = (funcName: string, func: (...args: unknown[]) => unknown, context?: object) => {
   if (typeof func === "function") {
     const dFunc = {[funcName](...args: unknown[]) {return func(...args);}}[funcName];
     return context ? dFunc.bind(context) : dFunc;
@@ -1517,13 +1530,13 @@ const getDynamicFunc = (funcName: string, func: (...args: unknown[]) => unknown,
 
 const withLog = (fn: (...args: unknown[]) => unknown) => {
   return (...args: unknown[]) => {
-    console.log(`calling ${fn.name}`);
+    console.log(`calling ${String(fn.name)}`);
     return fn(...args);
   };
 };
-// #endregion â–„â–„â–„â–„â–„ FUNCTIONS â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ FUNCTIONS ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ HTML: Parsing HTML Code, Manipulating DOM Objects â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████ ~
 
 const changeContainer = (elem: HTMLElement, container: HTMLElement, isCloning = false): HTMLElement => {
   elem = $(elem)[0];
@@ -1577,7 +1590,7 @@ const adjustTextContainerAspectRatio = (
   if (!maxWidth) {
     textContainer.style.setProperty("width", "max-content", "important");
   } else {
-    textContainer.style.setProperty("width", `${maxWidth}px`, "important");
+    textContainer.style.setProperty("width", `${String(maxWidth)}px`, "important");
   }
 
   /**
@@ -1586,7 +1599,7 @@ const adjustTextContainerAspectRatio = (
    *
    * @returns {boolean} - Returns false if the new font size is below the minimum font size, indicating no further adjustments should be made.
    */
-  function recurAdjustment(): boolean|void {
+  function recurAdjustment(): boolean {
     // Ensure textContainer is an HTMLElement for each recursive call
     textContainer = $(textContainer)[0];
     // Calculate new font size and line height as 80% of their current values
@@ -1597,10 +1610,11 @@ const adjustTextContainerAspectRatio = (
       return false;
     }
     // Apply the new font size and line height
-    textContainer.style.fontSize = `${newFontSize}px`;
-    textContainer.style.lineHeight = `${newLineHeight}px`;
+    textContainer.style.fontSize = `${String(newFontSize)}px`;
+    textContainer.style.lineHeight = `${String(newLineHeight)}px`;
     // Recursively call adjustTextContainerAspectRatio with updated parameters
     adjustTextContainerAspectRatio(textContainer, targetRatio, lineCount ?? maxHeight, maxWidth, minFontSize);
+    return true;
   }
 
   // Get computed styles of the text container
@@ -1656,7 +1670,7 @@ const adjustTextContainerAspectRatio = (
   if (!isAtMaxLineCount && maxWidth && bestWidth > maxWidth && recurAdjustment()) { return undefined; }
 
   // Apply the best width to the text container
-  textContainer.style.setProperty("width", `${bestWidth}px`, "important");
+  textContainer.style.setProperty("width", `${String(bestWidth)}px`, "important");
 };
 
 /**
@@ -1675,7 +1689,7 @@ const getMutableRect = (rect: DOMRect): MutableRect => ({
   left:   rect.left
 });
 
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[SVG]â–‘â–‘â–‘â–‘ SVG Generation & Manipulation â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #region ■■■■■■■[SVG]■■■■ SVG Generation & Manipulation ■■■■■■■ ~
 const getRawCirclePath = (r: number, {x: xO, y: yO}: Point = {x: 0, y: 0}): Array<Array<number | string>> => {
   [r, xO, yO] = [r, xO, yO].map((val) => roundNum(val, 2));
   const [b1, b2] = [0.4475 * r, (1 - 0.4475) * r];
@@ -1690,7 +1704,7 @@ const getRawCirclePath = (r: number, {x: xO, y: yO}: Point = {x: 0, y: 0}): Arra
 };
 const drawCirclePath = (radius: number, origin: Point) => {
   const [[xT, yT, ...segments]] = getRawCirclePath(radius, origin);
-  const path: Array<number | string> = [`m ${xT} ${yT}`];
+  const path: Array<number | string> = [`m ${String(xT)} ${String(yT)}`];
   segments.forEach((coord, i) => {
     if (i % 6 === 0) {path.push("c");}
     path.push(coord);
@@ -1698,9 +1712,9 @@ const drawCirclePath = (radius: number, origin: Point) => {
   path.push("z");
   return path.join(" ");
 };
-// #endregion â–‘â–‘â–‘â–‘[SVG]â–‘â–‘â–‘â–‘
+// #endregion ■■■■[SVG]■■■■
 
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[Colors]â–‘â–‘â–‘â–‘ Color Manipulation â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #region ■■■■■■■[Colors]■■■■ Color Manipulation ■■■■■■■ ~
 const getColorVals = (
   red?: HexColor | RGBColor | ValueOrList<number>,
   green?: number,
@@ -1736,14 +1750,14 @@ const getRGBString = (red: string | number, green?: number, blue?: number, alpha
   if (isRGBColor(red) || isHexColor(red)) {
     [red, green, blue, alpha] = getColorVals(red) ?? [];
   }
-  if ([red, green, blue].every((color) => /^[.\d]+$/.test(`${color}`))) {
+  if ([red, green, blue].every((color) => /^[.\d]+$/.test(String(color)))) {
     let colorString = "rgb";
     const colors = [red, green, blue];
-    if (/^[.\d]+$/.test(`${alpha}`)) {
+    if (/^[.\d]+$/.test(String(alpha))) {
       colors.push(alpha! >= 1 ? pInt(alpha) : pFloat(alpha, 2));
       colorString += "a";
     }
-    return `${colorString}(${colors.join(", ")})` as RGBColor;
+    return `${String(colorString)}(${String(colors.join(", "))})` as RGBColor;
   }
   return undefined;
 };
@@ -1751,14 +1765,17 @@ const getHEXString = (red: string | number, green?: number, blue?: number): HexC
 
   function componentToHex(c: string | number): string {
     const hex = c.toString(16);
-    return hex.length === 1 ? `0${hex}` : hex;
+    return hex.length === 1 ? `0${String(hex)}` : hex;
   }
   if (isHexColor(red)) {return red;}
   if (isRGBColor(red)) {
     [red, green, blue] = getColorVals(red) ?? [];
   }
-  if ([red, green, blue].every(isDefined) && [red, green, blue].every((color) => isPosInt(color) || isNumString(color))) {
-    return `#${componentToHex(red ?? 0)}${componentToHex(green ?? 0)}${componentToHex(blue ?? 0)}` as HexColor;
+  if (
+       [red, green, blue].every(isDefined)
+    && [red, green, blue].every((color) => isPosInt(color) || isNumString(color))
+  ) {
+    return `#${String(componentToHex(red))}${String(componentToHex(green ?? 0))}${String(componentToHex(blue ?? 0))}` as HexColor;
   }
   return undefined;
 };
@@ -1775,9 +1792,9 @@ const getRandomColor = () => getRGBString(
   gsap.utils.random(0, 255, 1),
   gsap.utils.random(0, 255, 1)
 )!;
-// #endregion â–‘â–‘â–‘â–‘[Colors]â–‘â–‘â–‘â–‘
+// #endregion ■■■■[Colors]■■■■
 
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[DOM]â–‘â–‘â–‘â–‘ DOM Manipulation â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #region ■■■■■■■[DOM]■■■■ DOM Manipulation ■■■■■■■ ~
 const getSiblings = (elem: Node) => {
   const siblings: HTMLElement[] = [];
   // If no parent, return no sibling
@@ -1791,7 +1808,7 @@ const getSiblings = (elem: Node) => {
 
   return siblings;
 };
-// #endregion â–‘â–‘â–‘â–‘[DOM]â–‘â–‘â–‘â–‘
+// #endregion ■■■■[DOM]■■■■
 
 const escapeHTML = <T = unknown>(str: T): T => (typeof str === "string"
   ? str
@@ -1845,14 +1862,14 @@ function compareComputedStyles(savedStyles: string|List<string>, newElement: Ele
       const oldStyle = savedStylesData[prop];
       const newStyle = newStyles[prop];
       if (oldStyle !== newStyle) {
-          differences.push(`Property: ${prop}, Old: ${oldStyle}, New: ${newStyle}`);
+          differences.push(`Property: ${String(prop)}, Old: ${String(oldStyle)}, New: ${String(newStyle)}`);
       }
   });
 
   return differences;
 }
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ PERFORMANCE: Performance Testing & Metrics â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+// #region ████████ PERFORMANCE: Performance Testing & Metrics ████████
 /**
  * Test the performance of a function (synchronous or asynchronous).
  * The function will be called repeatedly for 10 seconds, and the total and average execution times will be logged.
@@ -1876,7 +1893,7 @@ const testFuncPerformance = (
       // If 10 seconds have passed, calculate the total and average time and log them
       const elapsedTime = performance.now() - start;
       const timePerCall = roundNum(elapsedTime / tally / 4000, 4);
-      kLog.log("performance", `[TestPerformance] Function Ran ${tally} Times in ${roundNum(elapsedTime / 1000, 4)}s, Averaging ${timePerCall}s per Call`);
+      kLog.log("performance", `[TestPerformance] Function Ran ${String(tally)} Times in ${String(roundNum(elapsedTime / 1000, 4))}s, Averaging ${String(timePerCall)}s per Call`);
     }
   };
 
@@ -1885,7 +1902,7 @@ const testFuncPerformance = (
     const result = func(...params); // Call 'func' with the provided parameters
     if (result instanceof Promise) {
       // If 'func' is asynchronous, wait for the Promise to resolve before handling the result
-      result.then(handleResult);
+      void result.then(handleResult);
     } else {
       // If 'func' is synchronous, handle the result immediately
       handleResult();
@@ -1896,7 +1913,7 @@ const testFuncPerformance = (
 };
 // #endregion
 
-// #region â–‘â–‘â–‘â–‘â–‘â–‘â–‘[GreenSock]â–‘â–‘â–‘â–‘ Wrappers for GreenSock Functions â–‘â–‘â–‘â–‘â–‘â–‘â–‘ ~
+// #region ■■■■■■■[GreenSock]■■■■ Wrappers for GreenSock Functions ■■■■■■■ ~
 const set = (targets: gsap.TweenTarget, vars: gsap.TweenVars): gsap.core.Tween => gsap.set(targets, vars);
 function get(target: gsap.TweenTarget, property: keyof gsap.CSSProperties & string, unit: string): number;
 function get(target: gsap.TweenTarget, property: keyof gsap.CSSProperties & string): string | number;
@@ -1912,7 +1929,7 @@ function get(target: gsap.TweenTarget, property: keyof gsap.CSSProperties & stri
     if (typeof propVal === "string") {
       return pFloat(propVal);
     }
-    throw new Error(`Unable to extract property '${property}' in '${unit}' units from ${target}`);
+    throw new Error(`Unable to extract property '${String(property)}' in '${String(unit)}' units from ${String(target)}`);
   }
   return gsap.getProperty(target, property);
 }
@@ -1960,11 +1977,11 @@ const reverseRepeatingTimeline = (tl: gsap.core.Timeline): gsap.core.Timeline =>
   }
   return tl;
 };
-// #endregion â–‘â–‘â–‘â–‘[GreenSock]â–‘â–‘â–‘â–‘
+// #endregion ■■■■[GreenSock]■■■■
 
-// #endregion â–„â–„â–„â–„â–„ HTML â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ASYNC: Async Functions, Asynchronous Flow Control â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████ ~
 const sleep = (duration: number): Promise<void> => new Promise(
   (resolve) => {
     setTimeout(resolve, duration >= 100 ? duration : duration * 1000);
@@ -1990,24 +2007,21 @@ const sleep = (duration: number): Promise<void> => new Promise(
  * @param {any} waitForTarget - Any value. If not a Promise or GSAP animation, the function resolves immediately.
  * @returns {Promise<void>} A promise that resolves immediately.
  */
-function waitFor(waitForTarget: Array<Promise<unknown>|GsapAnimation>): Promise<void>;
-function waitFor(waitForTarget: Promise<unknown>|GsapAnimation|undefined): Promise<void>;
-function waitFor(waitForTarget: unknown): Promise<void>;
 function waitFor(waitForTarget: unknown): Promise<void> {
   return new Promise<void>(
     (resolve, reject) => {
       if (waitForTarget instanceof Promise
         || waitForTarget instanceof gsap.core.Animation) {
-        waitForTarget.then(() => { resolve(); }).catch(reject);
+        waitForTarget.then(() => { resolve(); }).catch((error: unknown) => { reject(error instanceof Error ? error : new Error(String(error))); });
       } else if (Array.isArray(waitForTarget)) {
-        Promise.all(waitForTarget.map((target) => waitFor(target))).then(() => { resolve(); }).catch(reject);
+        Promise.all(waitForTarget.map((target) => waitFor(target))).then(() => { resolve(); }).catch((error: unknown) => { reject(error instanceof Error ? error : new Error(String(error))); });
       } else {
         resolve();
       }
     }
   );
 }
-// #endregion â–„â–„â–„â–„â–„ ASYNC â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ ASYNC ▄▄▄▄▄
 
 const EventHandlers = {
   onSelectChange: async (inst: EntitySheet, event: SelectChangeEvent) => {
@@ -2049,7 +2063,7 @@ const EventHandlers = {
   }
 };
 
-// #region â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ FOUNDRY: Requires Configuration of System ID in constants.ts â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ~
+// #region ████████ FOUNDRY: Requires Configuration of System ID in constants.ts ████████ ~
 
 const isDocID = (ref: unknown): ref is IDString => typeof ref === "string" && /^[A-Za-z0-9]{16}$/.test(ref);
 
@@ -2086,16 +2100,16 @@ const parseDocRefToUUID = (ref: unknown): UUIDString => {
     if (doc && "uuid" in doc) {
       return doc.uuid as UUIDString;
     }
-    throw new Error(`[U.parseDocRefToUUID] Unable to find document with id '${ref}'`);
+    throw new Error(`[U.parseDocRefToUUID] Unable to find document with id '${String(ref)}'`);
   } else if (ref && typeof ref === "object" && "uuid" in ref && typeof ref.uuid === "string") {
     return ref.uuid as UUIDString;
   }
-  throw new Error(`[U.parseDocRefToUUID] Unrecognized reference: '${ref}'`);
+  throw new Error(`[U.parseDocRefToUUID] Unrecognized reference: '${String(ref)}'`);
 };
 
 const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
   if (/[a-z]/.test(locRef)) { // Reference contains lower-case characters: add system ID namespacing to dot notation
-    locRef = locRef.replace(new RegExp(`^(${game.system.id}.)*`), `${game.system.id}.`);
+    locRef = locRef.replace(new RegExp(`^(${String(game.system.id)}.)*`), `${String(game.system.id)}.`);
   }
   if (typeof game.i18n.localize(locRef) === "string") {
     for (const [key, val] of Object.entries(formatDict)) {
@@ -2108,7 +2122,7 @@ const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
 
 const getSetting = <T = unknown>(setting: string, submenu?: string): Maybe<T> => {
   const settingPath = [submenu, setting].filter(isDefined).join(".");
-  if (game.settings.settings.has(`${game.system.id}.${settingPath}`)) {
+  if (game.settings.settings.has(`${String(game.system.id)}.${String(settingPath)}`)) {
     return game.settings.get(game.system.id, settingPath) as T;
   }
   return undefined;
@@ -2123,7 +2137,7 @@ function getTemplatePath(subFolder: string, fileName: string[]): string[]
  */
 function getTemplatePath(subFolder: string, fileName: string | string[]) {
   if (typeof fileName === "string") {
-    return `systems/${game.system.id}/templates/${subFolder}/${fileName.replace(/\..*$/, "")}.hbs`;
+    return `systems/${String(game.system.id)}/templates/${String(subFolder)}/${String(fileName.replace(/\..*$/, ""))}.hbs`;
   }
   return fileName.map((fName) => getTemplatePath(subFolder, fName));
 }
@@ -2139,7 +2153,7 @@ function getTemplatePath(subFolder: string, fileName: string | string[]) {
  */
 function displayImageSelector(
   callback: (path: string) => void,
-  pathRoot = `systems/${game.system.id}/assets`,
+  pathRoot = `systems/${String(game.system.id)}/assets`,
   position: {top: number | null, left: number | null} = {top: 200, left: 200}
 ) {
   const fp = new FilePicker({
@@ -2153,16 +2167,16 @@ function displayImageSelector(
   return fp.browse(pathRoot);
 }
 
-// #endregion â–„â–„â–„â–„â–„ FOUNDRY â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ FOUNDRY ▄▄▄▄▄
 
 export default {
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ INITIALIZATION â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // █████████████████ INITIALIZATION ███████████████████████
   Initialize,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ GETTERS: Basic Data Lookup & Retrieval â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ GETTERS: Basic Data Lookup & Retrieval ████████
   GMID, getUID, getID,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ TYPES: Type Checking, Validation, Conversion, Casting â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████
   isNumber, isNumString, isBooleanString, isSystemScalar, isSimpleObj, isList, isArray, isFunc, isInt, isFloat, isPosInt, isIterable,
   isHTMLString, isJQuery, isRGBColor, isHexColor,
   isUndefined, isDefined, isEmpty, hasItems, isInstance: isInstanceOf,
@@ -2173,38 +2187,38 @@ export default {
 
   FILTERS,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ BOOLEAN: Combining & Manipulating Boolean Tests â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ BOOLEAN: Combining & Manipulating Boolean Tests ████████
   checkAll, checkAny, checkAllFail,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ REGEXP: Regular Expressions, Replacing, Matching â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ REGEXP: Regular Expressions, Replacing, Matching ████████
   testRegExp,
   regExtract,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ STRINGS: String Parsing, Manipulation, Conversion â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
-  // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ Case Conversion â–‘â–‘â–‘â–‘â–‘â–‘â–‘
+  // ████████ STRINGS: String Parsing, Manipulation, Conversion ████████
+  // ■■■■■■■ Case Conversion ■■■■■■■
   uCase, lCase, sCase, tCase,
-  // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ Formatting â–‘â–‘â–‘â–‘â–‘â–‘â–‘
+  // ■■■■■■■ Formatting ■■■■■■■
   /* hyphenate, */ unhyphenate, pluralize, oxfordize, ellipsize, pad, trimInner,
   toKey,
   parseArticles,
   signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
-  // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ Content â–‘â–‘â–‘â–‘â–‘â–‘â–‘
+  // ■■■■■■■ Content ■■■■■■■
   loremIpsum, randString, randWord,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ SEARCHING: Searching Various Data Types w/ Fuzzy Matching â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
   fuzzyMatch, isIn, isInExact,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ NUMBERS: Number Casting, Mathematics, Conversion â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████
   randNum, randInt,
   coinFlip,
   cycleNum, cycleAngle, roundNum, clampNum,
   sum, average,
-  // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ Positioning â–‘â–‘â–‘â–‘â–‘â–‘â–‘
+  // ■■■■■■■ Positioning ■■■■■■■
   getDistance,
   getAngle, getAngleDelta,
   getBoundingRectangle,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ARRAYS: Array Manipulation â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ ARRAYS: Array Manipulation ████████
   randElem, randIndex,
   makeIntRange,
   makeCycler,
@@ -2213,16 +2227,16 @@ export default {
   subGroup, shuffle,
   toArray,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ OBJECTS: Manipulation of Simple Key/Val Objects â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
   remove, replace, partition, zip,
   objClean, objSize, objMap, objFindKey, objFilter, objForEach, objCompact,
   objClone, objMerge, objDiff, objExpand, objFlatten, objNullify,
   objFreezeProps,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ FUNCTIONS: Function Wrapping, Queuing, Manipulation â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
   getDynamicFunc, withLog,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ HTML: Parsing HTML Code, Manipulating DOM Objects â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
   changeContainer, adjustTextContainerAspectRatio, getMutableRect,
 
   getRawCirclePath, drawCirclePath,
@@ -2235,21 +2249,21 @@ export default {
 
   extractComputedStyles, compareComputedStyles,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ PERFORMANCE & DEBUG: Debugging Functions, Performance Testing & Metrics â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ PERFORMANCE & DEBUG: Debugging Functions, Performance Testing & Metrics ████████
   testFuncPerformance,
 
-  // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ GreenSock â–‘â–‘â–‘â–‘â–‘â–‘â–‘
+  // ■■■■■■■ GreenSock ■■■■■■■
   gsap, get, set, getGSAngleDelta, getNearestLabel, reverseRepeatingTimeline, /* to, from, fromTo, */
 
   /* TextPlugin, Flip, */ MotionPathPlugin,
 
-  // â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ASYNC: Async Functions, Asynchronous Flow Control â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+  // ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████
   sleep, waitFor,
 
   // EVENT HANDLERS
   EventHandlers,
 
-  // â–‘â–‘â–‘â–‘â–‘â–‘â–‘ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) â–‘â–‘â–‘â–‘â–‘â–‘â–‘
+  // ■■■■■■■ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) ■■■■■■■
   isDocID, isDocUUID, isDotKey, isTargetKey, isTargetFlagKey,
   getProp,
 
@@ -2259,4 +2273,4 @@ export default {
 
 
 } as const;
-// #endregion â–„â–„â–„â–„â–„ EXPORTS â–„â–„â–„â–„â–„
+// #endregion ▄▄▄▄▄ EXPORTS ▄▄▄▄▄

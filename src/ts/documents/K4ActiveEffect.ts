@@ -127,6 +127,8 @@ namespace K4Change {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of rolls this change applies to. Can be "all", an item type, a specific item name, or the attribute rolled. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters).
       mode: Modes.ModifyRoll, // Mode of the custom function to use
       value: SystemScalar // Value to apply to the modification
+      changeLabel?: string // Optional override to effect's label when showing this change in a roll result report.
+      changeTooltip?: string // Optional override to effect's tooltip when showing this change in a roll result report.
     }
     export interface ModifyProperty {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of attacks to modify. Almost always "actor". Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -180,12 +182,12 @@ namespace K4Change {
     export type AnyData = Schema.Any;
   }
 
-  export type CustomFunc = (this: K4Change, actor: K4Actor|K4Roll, data: Schema.Any) => Promise<boolean>;
+  export type CustomFunc = (this: K4Change, actor: K4Actor|K4Roll, data: Schema.Any, isPermanent?: boolean) => Promise<boolean>;
 }
 namespace K4ActiveEffect {
   export type OriginTypes = Exclude<K4ItemType, K4ItemType.darksecret>;
   export type Origin = K4Item<OriginTypes>|K4Actor<K4ActorType.pc>|K4Scene|K4ChatMessage|JQuery;
-  export type ToggleCategory = keyof typeof DYNAMIC_CHANGES|K4ItemType;
+  export type StatusBarCategory = keyof typeof DYNAMIC_CHANGES|K4ItemType;
   // export type CustomFunctionActor = (
   //   this: K4Change,
   //   parent: K4Actor,
@@ -206,8 +208,6 @@ namespace K4ActiveEffect {
   }
 
   export interface ParentData {
-    label?: string, // The principal name of the Effect. Appears in tooltips and in chat roll results.  If undefined, effect takes the name of its origin item.
-    dynamic?: keyof typeof DYNAMIC_CHANGES, // A list of dynamically-generated changes that should be refreshed each time the effect is applied. Possible values: "wounds", "stability", "stabilityConditions"
     canToggle: boolean, // Whether the user can toggle this effect on/off
     inStatusBar: boolean, // Whether the effect should be displayed in the status bar (default = false UNLESS canToggle = true)
     uses: number, // Number of uses of the effect before it is disabled or requires refill (0 = infinite).
@@ -215,12 +215,16 @@ namespace K4ActiveEffect {
     isUnique: boolean, // Whether the effect is unique (only one copy can be on any Actor at a time)
     duration: EffectDuration, // If/when the effect should be automatically removed ("ongoing" for never)
     defaultState: boolean, // Whether a toggleable effect is enabled by default
-    resetOn?: EffectResetOn, // When the effect should reset to its default state (or resetTo)
-    resetTo?: boolean, // Overrides the default state when the effect resets
-    icon?: string, // The icon to display on the status bar. If undefined, takes icon of origin item.
+    resetOn: EffectResetOn, // When the effect should reset to its default state (or resetTo)
+    resetTo: boolean, // Overrides the default state when the effect resets
     statusLabel: string; // The label to display on the status bar (default = "")
-    tooltip?: string; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
+    tooltip: string; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
     permanent: boolean; // Whether the effect should permanently apply its effects upon creation
+
+    label?: string, // The principal name of the Effect. Appears in tooltips and in chat roll results. If undefined, effect takes the name of its origin item.
+    dynamic?: keyof typeof DYNAMIC_CHANGES, // A list of dynamically-generated changes that should be refreshed each time the effect is applied. Possible values: "wounds", "stability", "stabilityConditions", "armor"
+    statusCategory?: StatusBarCategory, // Optional override of automatically-determined category of the effect, used to group similar effects in the actor's character sheet
+    icon?: string, // The icon to display on the status bar. If undefined, takes icon of origin item.
     from?: string, // Optional override for the default "#>text-keyword>{sourceName}<#" component (is prefixed with 'from')
     alertUser?: string, // Optional alert to display to actor's owner when the change is applied (in formatForKult or HTML)
     alertAll?: string // Optional alert to display to all players when the change is applied (in formatForKult or HTML). If alertUser is also set, will not display the global alert to user.
@@ -255,13 +259,20 @@ namespace K4ActiveEffect {
         fromText: string; // A reference to the source of the effect in FormatForKult form
       }
 
-      export interface ToggleData {
-        isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
-        isEnabled: boolean; // Whether the effect is active and should be applied to rolls (default = defaultState)
-        toggleCategory: ToggleCategory; // The category of the effect, used to group similar effects in the actor's character sheet
+      export interface StatusBarData {
+        canToggle: boolean, // Whether the effect can be toggled
+        isEnabled: boolean, // Whether the effect is active and should be applied to rolls
+        inStatusBar: true, // Whether the effect should be displayed in the status bar
+        benefit?: "pos"|"neg"|"neutral"; // The benefit of the effect
         statusIcon: string; // The icon to display on the toggle modifier button.
         statusLabel: string; // The label to display next to the toggle button in the actor's character sheet (default = "")
+        statusBarCategory: StatusBarCategory; // The category of the effect, used to group similar effects in the actor's character sheet
         statusTooltip?: string; // Optional override of 'tooltip' for the toggle button tooltip, if different from chat message tooltip
+      }
+
+      export interface ToggleData extends Omit<StatusBarData, "canToggle"> {
+        canToggle: true;
+        isLocked: boolean; // Whether the effect has been manually locked to its current state, ignoring 'resetOn'.
         defaultState: boolean; // Whether the effect is enabled by default when applied. (default = true)
         resetOn: EffectResetOn; // The conditions under which the effect is reset to its default state (default = "never")
         resetTo: boolean; // The state to which the effect is reset when resetOn conditions are met (default = defaultState)
@@ -276,15 +287,24 @@ namespace K4ActiveEffect {
       }
 
       /**
-       * Interface for effects that cannot be toggled.
+       * Interface for effects that cannot be toggled but appear in the status bar.
        */
-      export interface CannotToggle extends Base {
+      export interface CannotToggle extends Base, StatusBarData {
         canToggle: false;
+        inStatusBar: true;
+      }
+
+      /**
+       * Interface for effects that don't appear in the status bar (and can't be toggled).
+       */
+      export interface NoStatusBar extends Base {
+        canToggle: false;
+        inStatusBar: false;
       }
     }
   }
 
-  export type ExtendedData = Components.Effect.CanToggle|Components.Effect.CannotToggle;
+  export type ExtendedData = Components.Effect.CanToggle|Components.Effect.CannotToggle|Components.Effect.NoStatusBar;
 
   export type Data = ActiveEffectData & {
     flags: {
@@ -294,83 +314,95 @@ namespace K4ActiveEffect {
     }
   }
 
-  export interface ToggleContext extends Components.Effect.ToggleData {
-    statusValue: string; // The value displayed next to the toggle button in the actor's character sheet (default = "")
-    statusValueGlow: string; // The neon glow class to be applied to any value shown (default = "")
+  namespace StatusContext {
+    interface Base extends Components.Effect.StatusBarData {
+      id: string; // The id of the effect
+      benefit: "pos"|"neg"|"neutral"; // The benefit of the effect
+      isLeftMod: boolean; // Whether this mod is singled out on the left side of the modifier strip
+    }
+    export interface CannotToggle extends Base {
+      statusValue: string; // The value displayed next to the toggle button in the actor's character sheet (default = "")
+      statusValueGlow: string; // The neon glow class to be applied to any value shown (default = "")
+    }
+    export type CanToggle = Components.Effect.ToggleData & CannotToggle;
   }
+
+  export type StatusContext = StatusContext.CannotToggle | StatusContext.CanToggle;
 }
 // #endregion
 // #endregion --
 
 // #region === CUSTOM FUNCTIONS FOR MODE EffectMode.Custom ===
+
+async function applyUpdate(doc: UpdateableDoc, key: Key, value: unknown, isPermanent: boolean) {
+  kLog.log(`Updating document with key: ${String(key)}, value: ${String(value)}, isPermanent: ${String(isPermanent)}`, { doc, key, value, isPermanent });
+  if (isPermanent) {
+    await doc.update({[key]: value});
+  } else {
+    setProperty(doc, String(key), value);
+  }
+}
+
 const CUSTOM_FUNCTIONS = {
-  async CreateAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateAttack): Promise<boolean> {
+  async CreateAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateAttack, isPermanent = false): Promise<boolean> {
 
     return Promise.resolve(true);
   },
-  async CreateItem(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateItem<K4ItemType>): Promise<boolean> {
+  async CreateItem(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateItem<K4ItemType>, isPermanent = false): Promise<boolean> {
 
     return Promise.resolve(true);
   },
-  async CreateTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateTracker): Promise<boolean> {
+  async CreateTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateTracker, isPermanent = false): Promise<boolean> {
 
     return Promise.resolve(true);
   },
-  async ModifyTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyTracker): Promise<boolean> {
+  async ModifyTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyTracker, isPermanent = false): Promise<boolean> {
 
     return Promise.resolve(true);
   },
-  async ModifyAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyAttack): Promise<boolean> {
+  async ModifyAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyAttack, isPermanent = false): Promise<boolean> {
 
     return Promise.resolve(true);
   },
-  ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): boolean {
+  ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove, isPermanent = false): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {filter, target, mode, value, text, fromText} = data as Partial<{
-      filter: string,
-      mode: string,
-      target?: string,
-      value?: SystemScalar,
-      text?: string,
-      fromText?: string
-    }>;
-    if (!filter || !mode) {
+    const {filter, target, mode, value} = data;
+    if (!filter) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
     }
-    actor.getItemsByFilter(K4ItemType.move, filter)
-      .forEach((move) => {
-        switch (mode) {
-          case "PushElement": {
-            if (!target) {
-              throw new Error(`No target provided for PushElement: ${JSON.stringify(data)}`);
+    [filter].flat(1).forEach((f) => {
+      actor.getItemsByFilter(K4ItemType.move, f)
+        .forEach((move): void => {
+          switch (mode) {
+            case "PushElement": {
+              if (!target) {
+                throw new Error(`No target provided for PushElement: ${JSON.stringify(data)}`);
+              }
+              const targetArray = U.getProp<SystemScalar[]>(move, target);
+              if (!Array.isArray(targetArray)) {
+                throw new Error(`Invalid target array for PushElement: '${target}'`);
+              }
+              if (U.isUndefined(value)) { return undefined; }
+              targetArray.push(value);
+              setProperty(move, target, targetArray);
+              break;
             }
-            const targetArray = U.getProp<SystemScalar[]>(move, target);
-            if (!Array.isArray(targetArray)) {
-              throw new Error(`Invalid target array for PushElement: '${target}'`);
+            case "AppendText": {
+              if (!target) {
+                throw new Error(`No target provided for AppendText: ${JSON.stringify(data)}`);
+              }
+              const targetString = U.getProp<string>(move, target);
+              if (typeof targetString !== "string") {
+                throw new Error(`Invalid target for AppendText: '${target}'`);
+              }
+              setProperty(move, target, targetString + String(value));
+              break;
             }
-            if (U.isUndefined(value)) { return undefined; }
-            targetArray.push(value);
-            setProperty(move, target, targetArray);
-            break;
           }
-          case "AppendText": {
-            if (!target) {
-              throw new Error(`No target provided for AppendText: ${JSON.stringify(data)}`);
-            }
-            const targetString = U.getProp<string>(move, target);
-            if (typeof targetString !== "string") {
-              throw new Error(`Invalid target for AppendText: '${target}'`);
-            }
-            setProperty(move, target, targetString + (text ?? ""));
-            break;
-          }
-          default: {
-            throw new Error(`Unrecognized effect for ModifyMove: '${mode}'`);
-          }
-        }
-      });
+        });
+    });
     return true;
   },
   async ModifyProperty(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyProperty, isPermanent = false): Promise<boolean> {
@@ -386,58 +418,34 @@ const CUSTOM_FUNCTIONS = {
       const curVal = U.castToScalar(getProperty(actor, target));
       switch (mode) {
         case "Subtract":
-          if (typeof value !== "number") {
-            throw new Error(`Invalid value for ModifyProperty 'Subtract': ${value}`);
-          }
-          if (typeof curVal !== "number") {
-            throw new Error(`Invalid actor value (curVal) for ModifyProperty 'Subtract': ${curVal}`);
-          }
-          if (value === 0) { return true; }
-          value = -1 * value;
-          // falls through
         case "Add": {
-          if (typeof value !== "number") {
-            throw new Error(`Invalid value for ModifyProperty 'Add': ${value}`);
+          if (typeof value !== "number" || typeof curVal !== "number") {
+            throw new Error(`Invalid values for ModifyProperty 'Add': current = '${curVal}', value = '${value}'`);
           }
-          if (typeof curVal !== "number") {
-            throw new Error(`Invalid actor value (curVal) for ModifyProperty 'Add': ${curVal}`);
-          }
-          if (value === 0) { return true; }
-          if (isPermanent) {
-            await actor.update({[target]: curVal + value});
+          if (mode === "Subtract") {
+            value = curVal - value;
           } else {
-            setProperty(actor, target, curVal + value);
+            value = curVal + value;
           }
           break;
         }
-        case "Set": {
-          if (isPermanent) {
-            await actor.update({[target]: value});
-          } else {
-            setProperty(actor, target, value);
-          }
-          break;
-        }
+        case "Set": break;
         case "Downgrade": {
-          if (value === curVal) { return true; }
           if (typeof value === "string") {
             throw new Error(`Invalid string value for Downgrade: '${value}'`);
-          }
-          if (typeof curVal === "number" && typeof value === "number" && value > curVal) {
+          } else if (typeof value === "boolean") {
+            value = Boolean(curVal) && value;
+          } else if (typeof curVal === "number" && value > curVal) {
             return true;
-          }
-          if (value === true) { return true; }
-          if (isPermanent) {
-            await actor.update({[target]: value});
-          } else {
-            setProperty(actor, target, value);
           }
         }
       }
+      await applyUpdate(actor as UpdateableDoc, target, value, isPermanent);
+      return true;
     }
-    return true;
+    throw new Error(`Unrecognized filter for ModifyProperty: ${String(filter)}`);
   },
-  ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange): boolean {
+  ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange, isPermanent = false): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
@@ -449,20 +457,12 @@ const CUSTOM_FUNCTIONS = {
 
     return true;
   },
-  async PromptForData(this: K4Change, actor: K4Actor, data: K4Change.Schema.PromptForData): Promise<boolean> {
+  async PromptForData(this: K4Change, actor: K4Actor, data: K4Change.Schema.PromptForData, isPermanent = false): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {title, key, input, inputVals, default: defaultVal, bodyText, subText} = data as Partial<{
-      title: string,
-      key: string,
-      input: PromptInputType,
-      default: SystemScalar,
-      inputVals?: string,
-      bodyText?: string,
-      subText?: string
-    }>;
-    if (typeof key !== "string") {
+    const {title, target, input, inputVals, default: defaultVal, bodyText, subText} = data;
+    if (typeof target !== "string") {
       throw new Error(`No key provided for PromptForData: ${JSON.stringify(data)}`);
     }
     if (typeof title !== "string") {
@@ -477,7 +477,7 @@ const CUSTOM_FUNCTIONS = {
     const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
     const context: Record<string, SystemScalar> = {
       title,
-      bodyText: bodyText ?? "",
+      bodyText,
       subText:  subText ?? ""
     };
     const dialogData: Dialog.Data = {
@@ -489,9 +489,7 @@ const CUSTOM_FUNCTIONS = {
       dialogData.close = () => { resolve(false); }; // User cancelled the dialog; return false to trigger cancellation logic
       switch (input) {
         case PromptInputType.buttons: {
-          const buttonVals = (inputVals ?? "")
-            .split("|")
-            .map(U.castToScalar);
+          const buttonVals = inputVals?.map(U.castToScalar) ?? [];
           if (!buttonVals.length) {
             throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
           }
@@ -542,62 +540,40 @@ const CUSTOM_FUNCTIONS = {
       }).render(true);
     }));
     if (userOutput === false) { return false; }
-    if (key.startsWith("flags")) {
-      const flagKey = key.split(".").slice(1).join(".");
+    if (target.startsWith("flags")) {
+      const flagKey = target.split(".").slice(1).join(".");
       await actor.setFlag(C.SYSTEM_ID, flagKey, userOutput);
       return true;
     }
-    throw new Error(`Unrecognized key for PromptForData: ${key}`);
+    throw new Error(`Unrecognized key for PromptForData: ${target}`);
   },
-  RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem): boolean {
+  RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem, isPermanent = false): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {filter, for: target} = data as Partial<{
-      filter: string,
-      for: string
-    }>;
+    const {filter} = data;
     if (typeof filter !== "string") {
       throw new Error(`No filter provided for RequireItem: ${JSON.stringify(data)}`);
-    }
-    if (typeof target !== "string") {
-      throw new Error(`No for provided for RequireItem: ${JSON.stringify(data)}`);
     }
     const items = actor.getItemsByFilter(filter);
     if (items.length === 0) {
       // The required item is not found. Alert the user, and return false.
-      ui.notifications.error(`You currently lack "${filter}", which is a prerequisite for gaining "${target}"`);
+      ui.notifications.error(`You currently lack "${filter}", which is a prerequisite for gaining "${this.parentEffect?.eData.label ?? this.name}"`);
       return false;
     }
     return true;
   },
-  async ModifyRoll(this: K4Change, roll: K4Roll, data: K4Change.Schema.ModifyRoll): Promise<boolean> {
+  async ModifyRoll(this: K4Change, roll: K4Roll, data: K4Change.Schema.ModifyRoll, isPermanent = false): Promise<boolean> {
     if (!this.isInstantiated()) {
       throw new Error("Custom function ModifyRoll called without a valid K4Change instance.");
     }
     if (!(roll instanceof K4Roll)) {
       throw new Error(`Invalid roll for ModifyRoll: ${String(roll)}`);
     }
-    let {filter, mode, value} = data as Partial<{
-      filter: string,
-      mode: string,
-      value: SystemScalar
-    }>;
-    if (!filter || typeof filter !== "string") {
-      throw new Error(`Invalid filter for ModifyRoll: ${filter}`);
-    }
-    if (!mode || typeof mode !== "string") {
-      throw new Error(`Invalid effect for ModifyRoll: ${mode}`);
-    }
+    let {filter, mode, value, changeLabel, changeTooltip} = data;
     if (typeof value === "string") {
       if (value === "prompt") {
-        const {title, bodyText, subText, input, inputVals} = data as Partial<{
-          title: string,
-          bodyText: string,
-          subText: string,
-          input: string,
-          inputVals: string
-        }>;
+        const {title, bodyText, subText, input, inputVals} = data;
         const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
         const context: Record<string, SystemScalar> = {
           title:    title ?? "Input Roll Data",
@@ -613,9 +589,7 @@ const CUSTOM_FUNCTIONS = {
           dialogData.close = () => { resolve(false); }; // User cancelled the dialog; cancel the roll.
           switch (input) {
             case PromptInputType.buttons: {
-              const buttonVals = (inputVals ?? "")
-                .split("|")
-                .map(U.castToScalar);
+              const buttonVals = inputVals?.map(U.castToScalar) ?? [];
               if (!buttonVals.length) {
                 throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
               }
@@ -691,18 +665,14 @@ const CUSTOM_FUNCTIONS = {
         roll.modifiers.push({
           id:           this.id,
           filter:       this.filter,
-          label:        this.customFunctionData.label as Maybe<string> ?? this.name,
-          tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
-          tooltipDesc:  this.tooltip ?? "",
+          label:        changeLabel ?? this.customFunctionData.label as Maybe<string> ?? this.parentEffect.eData.label,
+          tooltip:      changeTooltip ?? this.tooltip,
           value,
           cssClasses:   [
             value >= 0 ? "k4-theme-gold" : "k4-theme-red"
           ]
         });
         break;
-      }
-      default: {
-        throw new Error(`Unrecognized mode for ModifyRoll: ${mode}`);
       }
     }
     return true;
@@ -770,7 +740,9 @@ const DYNAMIC_CHANGES = {
           K4ActiveEffect.BuildChangeData("ModifyRoll", {
             filter: stabilityConditionData.filter,
             mode: "Add",
-            value: stabilityConditionData.value
+            value: stabilityConditionData.value,
+            changeLabel: stabilityConditionData.label,
+            changeTooltip: stabilityConditionData.tooltip
           }), effect
         );
       })
@@ -833,7 +805,7 @@ class K4Change implements EffectChangeData {
     return ["RequireItem"].includes(this.customFunctionName);
   }
   get isPermanentChange(): boolean {
-    return this.customFunctionData.permanent === true;
+    return this.parentEffect?.eData.permanent === true;
   }
   get isSystemModifier(): boolean {
     return !this.isPromptOnCreate
@@ -851,13 +823,25 @@ class K4Change implements EffectChangeData {
     if (["wounds", "stability"].includes(String(this.customFunctionData.value))) {
       return U.tCase(this.customFunctionData.value);
     }
-    return this.customFunctionData.name as Maybe<string>
+    return this.customFunctionData.changeLabel as Maybe<string>
+      ?? this.customFunctionData.label as Maybe<string>
+      ?? this.customFunctionData.name as Maybe<string>
+      ?? this.parentEffect?.label
       ?? this.originItem?.name
       ?? "";
   }
-  get tooltip(): Maybe<string> {
-    if (typeof this.customFunctionData.tooltip !== "string") { return undefined; }
-    return this.customFunctionData.tooltip;
+  get tooltip(): string {
+    let tooltipText: string = this.customFunctionData.changeTooltip as Maybe<string>
+      ?? this.customFunctionData.tooltip as Maybe<string>
+      ?? this.parentEffect?.eData.tooltip
+      ?? "";
+    if (!tooltipText.includes('<p>')) {
+      tooltipText = [
+        `<h2>${this.customFunctionData.label as Maybe<string> ?? this.parentEffect?.eData.label ?? this.name}</h2>`,
+        `<p>${tooltipText}</p>`
+      ].join("");
+    }
+    return tooltipText;
   }
   _promptedValue?: SystemScalar;
   get finalValue(): Maybe<SystemScalar> {
@@ -885,8 +869,7 @@ class K4Change implements EffectChangeData {
       id:           this.id,
       filter:       this.filter,
       label:        this.customFunctionData.label as Maybe<string> ?? this.name,
-      tooltipLabel: this.customFunctionData.label as Maybe<string> ?? this.name,
-      tooltipDesc:  this.tooltip ?? "",
+      tooltip:      this.tooltip,
       value:        this.finalValue,
       cssClasses:   [
         this.finalValue >= 0 ? "k4-theme-gold" : "k4-theme-red"
@@ -929,7 +912,7 @@ class K4Change implements EffectChangeData {
       throw new Error(`[K4Change.apply] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
     }
     if (parent instanceof K4Actor) {
-      return this.customFunction(parent, this.customFunctionData);
+      return this.customFunction(parent, this.customFunctionData, parentEffect.eData.permanent);
     }
     return this.customFunction(parent, this.customFunctionData);
   }
@@ -1064,46 +1047,57 @@ class K4ActiveEffect extends ActiveEffect {
       from ?? `#>text-doclink>#${origin.name}<#`,
       ")"
     ].join("");
-    if (parentData.canToggle) {
-      let toggleCategory: K4ActiveEffect.ToggleCategory;
-      if (dynamic) {
-        toggleCategory = dynamic;
+    if (parentData.inStatusBar) {
+      let statusBarCategory: K4ActiveEffect.StatusBarCategory;
+      if (parentData.statusCategory) {
+        statusBarCategory = parentData.statusCategory;
+      } else if (dynamic) {
+        statusBarCategory = dynamic;
       } else if (origin instanceof K4Item) {
-        toggleCategory = origin.type;
+        statusBarCategory = origin.type;
       } else {
         throw new Error(`No toggle category found for ActiveEffect: ${JSON.stringify(data)}`);
       }
 
-      let resetOn: EffectResetOn;
-      if (parentData.resetOn) {
-        resetOn = parentData.resetOn;
-      } else if (U.isDefined(uses)) {
-        resetOn = EffectResetOn.onUse;
-      } else {
-        resetOn = EffectResetOn.never;
-      }
+      if (parentData.canToggle) {
 
-      return {
-        ...baseExtData,
-        dynamic,
-        canToggle: true,
-        inStatusBar: true,
-        isLocked: false,
-        isEnabled: parentData.defaultState,
-        toggleCategory,
-        statusIcon: parentData.icon ?? `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-neutral.svg`,
-        resetOn,
-        resetTo: parentData.resetTo ?? parentData.defaultState,
-        label,
-        uses,
-        effectSource,
-        fromText
-      };
+        return {
+          ...baseExtData,
+          dynamic,
+          canToggle: true,
+          inStatusBar: true,
+          isLocked: false,
+          isEnabled: parentData.defaultState,
+          statusBarCategory,
+          statusIcon: parentData.icon ?? `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-neutral.svg`,
+          statusLabel: parentData.statusLabel,
+          statusTooltip: parentData.tooltip,
+          label,
+          uses,
+          effectSource,
+          fromText
+        };
+      } else {
+        return {
+          ...baseExtData,
+          dynamic,
+          canToggle: false,
+          inStatusBar: true,
+          isEnabled: true,
+          statusBarCategory,
+          statusIcon: parentData.icon ?? `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-neutral.svg`,
+          label,
+          uses,
+          effectSource,
+          fromText
+        };
+      }
     } else {
       return {
         ...baseExtData,
         dynamic,
         canToggle: false,
+        inStatusBar: false,
         label,
         uses,
         effectSource,
@@ -1116,11 +1110,12 @@ class K4ActiveEffect extends ActiveEffect {
     data ??= {};
     const canToggle = Boolean(data.canToggle);
     const inStatusBar = canToggle || Boolean(data.inStatusBar);
+    if (U.isUndefined(data.tooltip) && inStatusBar) {
+      throw new Error(`No tooltip provided for status bar ActiveEffect: ${JSON.stringify(data)}`);
+    }
     return {
       canToggle,
       inStatusBar,
-      dynamic: data.dynamic ?? undefined,
-      label: data.label ?? undefined,
       uses: data.uses ?? 0,
       canRefill: (data.uses ?? 0) > 0
         ? Boolean(data.canRefill)
@@ -1128,16 +1123,18 @@ class K4ActiveEffect extends ActiveEffect {
       isUnique: data.isUnique ?? true,
       duration: data.duration ?? EffectDuration.ongoing,
       defaultState: data.defaultState ?? true,
-      resetOn: canToggle
-        ? (data.resetOn ?? EffectResetOn.never)
-        : undefined,
-      resetTo: canToggle
-        ? (data.resetTo ?? data.defaultState ?? true)
-        : undefined,
-      icon: data.icon ?? undefined,
+      resetOn: data.resetOn ?? ((data.uses ?? 0) > 0 ? EffectResetOn.onUse : EffectResetOn.never),
+      resetTo: data.resetTo ?? data.defaultState ?? true,
       statusLabel: data.statusLabel ?? "",
-      tooltip: data.tooltip ?? undefined,
-      permanent: Boolean(data.permanent)
+      tooltip: data.tooltip ?? "",
+      permanent: Boolean(data.permanent),
+
+      label: data.label ?? undefined,
+      dynamic: data.dynamic ?? undefined,
+      icon: data.icon ?? undefined,
+      from: data.from ?? undefined,
+      alertUser: data.alertUser ?? undefined,
+      alertAll: data.alertAll ?? undefined
     };
   }
 
@@ -1209,6 +1206,9 @@ class K4ActiveEffect extends ActiveEffect {
   canToggle(): this is this & { eData: {canToggle: true} } {
     return this.flags.kult4th.data.canToggle;
   }
+  inStatusBar(): this is this & { eData: {inStatusBar: true} } {
+    return this.flags.kult4th.data.inStatusBar;
+  }
   get defaultState(): boolean { return this.canToggle() ? this.eData.defaultState : true; }
   get isLocked(): boolean { return this.canToggle() ? this.eData.isLocked : false; }
   set isLocked(value: boolean) { void this.setFlag<boolean>("data.isLocked", value);}
@@ -1219,7 +1219,7 @@ class K4ActiveEffect extends ActiveEffect {
   }
   get resetOn(): EffectResetOn { return this.canToggle() ? this.eData.resetOn : EffectResetOn.never; }
   get resetTo(): boolean { return this.canToggle() ? this.eData.resetTo : this.defaultState; }
-  get toggleCategory(): K4ActiveEffect.ToggleCategory {
+  get statusBarCategory(): K4ActiveEffect.StatusBarCategory {
     if (this.eData.dynamic) { return this.eData.dynamic; }
     if (this.originItem instanceof K4Item) {
       return this.originItem.type;
@@ -1227,13 +1227,14 @@ class K4ActiveEffect extends ActiveEffect {
     throw new Error(`No origin item found for ActiveEffect: ${this.id}`);
   }
   get statusIcon(): string {
-    if (!this.canToggle()) { return ""; }
     if (!this.isOwnedByActor()) { return ""; }
+    if (!this.inStatusBar()) { return ""; }
+    if (this.eData.icon) { return this.eData.icon; }
     if (this.eData.statusIcon) { return this.eData.statusIcon; }
-    return `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-${this.benefit}.svg`;
+    return this.originItem?.img ?? `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-${this.benefit}.svg`;
   }
-  get statusLabel(): string { return this.canToggle() ? this.eData.statusLabel : ""; }
-  get statusTooltip(): string { return this.canToggle() ? this.eData.statusTooltip ?? "" : ""; }
+  get statusLabel(): string { return this.inStatusBar() ? this.eData.statusLabel : ""; }
+  get statusTooltip(): string { return this.inStatusBar() ? (this.eData.statusTooltip ?? this.eData.tooltip) : ""; }
   get effectDuration(): EffectDuration { return this.eData.duration; }
   get isUnique(): boolean { return this.eData.isUnique; }
   get uses(): Maybe<ValueMax> { return this.eData.uses; }
@@ -1251,7 +1252,7 @@ class K4ActiveEffect extends ActiveEffect {
     return "neutral";
   }
   get value(): Maybe<number> {
-    if (!this.canToggle()) { return undefined; }
+    if (!this.inStatusBar()) { return undefined; }
     const valueChanges = this.getCustomChanges()
       .filter((change): change is K4Change & {finalValue: number} => typeof change.finalValue === "number");
     if (valueChanges.length === 1) {
@@ -1259,34 +1260,56 @@ class K4ActiveEffect extends ActiveEffect {
     }
     return undefined;
   }
-  get statusValue(): Maybe<string> {
-    if (U.isUndefined(this.value)) { return undefined; }
-    if (!U.isNumber(this.value)) { return undefined; }
+  get statusValue(): string {
+    if (U.isUndefined(this.value)) { return ""; }
+    if (!U.isNumber(this.value)) { return ""; }
 
     return U.signNum(this.value, "", "+");
   }
-  get statusValueGlow(): Maybe<string> {
-    if (!this.canToggle()) { return undefined; }
-    if (U.isUndefined(this.value)) { return undefined; }
+  get statusValueGlow(): string {
+    if (!this.inStatusBar()) { return ""; }
+    if (U.isUndefined(this.value)) { return "neon-glow-soft-gold"; }
     if (this.value > 0) { return "neon-glow-soft-blue"; }
     if (this.value < 0) { return "neon-glow-soft-red"; }
     return "neon-glow-soft-gold";
   }
-  get toggleContext(): Maybe<K4ActiveEffect.ToggleContext> {
-    if (!this.canToggle()) { return undefined; }
-    if (!this.isOwnedByActor()) { return undefined; }
+  get statusBarContext(): Maybe<K4ActiveEffect.StatusContext> {
+    if (!this.isInstantiated()) { return; }
+    if (!this.inStatusBar()) { return; }
+    if (!this.isOwnedByActor()) { return; }
+    if (this.canToggle()) {
+      return {
+        id:              this.id,
+        canToggle:       true,
+        inStatusBar:     true,
+        isEnabled:       this.isEnabled,
+        defaultState:    this.defaultState,
+        resetOn:         this.resetOn,
+        resetTo:         this.resetTo,
+        isLocked:        this.isLocked,
+        benefit:         this.benefit,
+        statusIcon:      this.statusIcon,
+        statusBarCategory:  this.statusBarCategory,
+        isLeftMod: ["stability", "wounds", "stabilityConditions", "armor"].includes(this.statusBarCategory),
+        statusLabel:     this.statusLabel,
+        statusTooltip:   this.statusTooltip,
+        statusValue:     this.statusValue,
+        statusValueGlow: this.statusValueGlow
+      };
+    }
     return {
+      id:              this.id,
+      canToggle:       false,
+      inStatusBar:     true,
       isEnabled:       this.isEnabled,
-      defaultState:    this.defaultState,
-      resetOn:         this.resetOn,
-      resetTo:         this.resetTo,
-      isLocked:        this.isLocked,
+      benefit:         this.benefit,
       statusIcon:      this.statusIcon,
-      toggleCategory:  this.toggleCategory,
+      statusBarCategory:  this.statusBarCategory,
+      isLeftMod: ["stability", "wounds", "stabilityConditions", "armor"].includes(this.statusBarCategory),
       statusLabel:     this.statusLabel,
       statusTooltip:   this.statusTooltip,
-      statusValue:     this.statusValue ?? "",
-      statusValueGlow: this.statusValueGlow ?? ""
+      statusValue:     this.statusValue,
+      statusValueGlow: this.statusValueGlow
     };
   }
 
@@ -1444,6 +1467,9 @@ class K4ActiveEffect extends ActiveEffect {
   }
 
   // #region GETTERS & SETTERS ~
+  isInstantiated(): this is typeof this & {id: string} {
+    return Boolean(this.id);
+  }
   isOwned(): this is {origin: string, owner: K4Actor|K4Item} {
     return Boolean(this.origin);
   }

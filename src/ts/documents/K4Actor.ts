@@ -209,7 +209,7 @@ class K4Actor extends Actor {
           canToggle: false,
           inStatusBar: true,
           icon: "systems/kult4th/assets/icons/wounds/wound-serious.svg",
-          tooltip: "Your wounds affect your ability to fight and survive, while suffering clouds your mind. (<em><strong>Note:</strong> Suppress wounds individually to exclude them from applying to your next roll.)</em>"
+          tooltip: "<center><h2>Wounds</h2></center><p>Your wounds affect your ability to fight and survive, while suffering clouds your mind.</p><p>(<em><strong>Note:</strong> Suppress wounds individually to exclude them from applying to your next roll.)</em></p>"
         }),
         changeData: []
       }, this))
@@ -223,7 +223,7 @@ class K4Actor extends Actor {
           canToggle: false,
           inStatusBar: true,
           icon: "systems/kult4th/assets/icons/modifiers/stability-critical.svg",
-          tooltip: "Your mental stability affects your ability to act and think clearly, even as it liberates you from the Illusion."
+          tooltip: "<center><h2>Stability</h2></center><p>Your mental stability affects your ability to act and think clearly, even as it liberates you from the Illusion.</p>"
         }),
         changeData: []
       }, this));
@@ -237,7 +237,7 @@ class K4Actor extends Actor {
           canToggle: false,
           inStatusBar: true,
           icon: "systems/kult4th/assets/icons/conditions/stability.svg",
-          tooltip: "Recent traumas have afflicted you with one or more Stability Conditions, which may or may not apply to any given roll. (<em><strong>Note:</strong> Suppress stability conditions individually to exclude them from applying to your next roll.)</em>"
+          tooltip: "<center><h2>Stability Conditions</h2></center><p>Recent traumas have afflicted you with one or more Stability Conditions, which may or may not apply to any given roll.</p><p>(<em><strong>Note:</strong> Suppress Stability Conditions individually to exclude them from applying to your next roll.)</em></p>"
         }),
         changeData: []
       }, this));
@@ -248,10 +248,11 @@ class K4Actor extends Actor {
         parentData: K4ActiveEffect.BuildEffectData({
           label: "Armor",
           dynamic: "armor",
+          statusCategory: "armor",
           canToggle: false,
           inStatusBar: true,
           icon: "systems/kult4th/assets/icons/modifiers/armor.svg",
-          tooltip: "You are wearing armor that protects you from harm, conferring a bonus to your #>text-doclink>Endure Injury<# rolls."
+          tooltip: "<center><h2>Armor</h2></center><p>You are wearing armor that protects you from harm, conferring a bonus to your #>text-doclink>Endure Injury<# rolls.</p>"
         }),
         changeData: []
       }, this));
@@ -458,8 +459,10 @@ class K4Actor extends Actor {
         filter,
         value,
         label: "Wounds",
-        tooltipLabel,
-        tooltipDesc,
+        tooltip: [
+          `<h2>${tooltipLabel}</h2>`,
+          `<p>${tooltipDesc}</p>`
+        ].join(""),
         cssClasses: ["k4-theme-red"]
       });
     }
@@ -497,8 +500,10 @@ class K4Actor extends Actor {
         filter,
         value,
         label: "Stability",
-        tooltipLabel,
-        tooltipDesc,
+        tooltip: [
+          `<h2>${tooltipLabel}</h2>`,
+          `<p>${tooltipDesc}</p>`
+        ].join(""),
         cssClasses: ["k4-theme-red"]
       });
     }
@@ -515,8 +520,10 @@ class K4Actor extends Actor {
           filter,
           value,
           label: condition.label,
-          tooltipLabel: condition.label,
-          tooltipDesc: condition.description,
+          tooltip: [
+            `<h2>${condition.label}</h2>`,
+            `<p>${condition.description}</p>`
+          ].join(""),
           cssClasses: ["k4-theme-blue"]
         });
       }
@@ -1240,7 +1247,7 @@ class K4Actor extends Actor {
         critical: this.system.modifiers.wounds_critical.length,
         total: (this.system.modifiers.wounds_serious.length + this.system.modifiers.wounds_critical.length)
       };
-      this.system.armor = this.gear.reduce((acc, gear) => acc + (gear.system.armor ?? 0), 0);
+      this.system.armor = 1 + this.gear.reduce((acc, gear) => acc + (gear.system.armor ?? 0), 0);
 
       if (this.system.stability.value > this.system.stability.max) {
         this.system.stability.value = this.system.stability.max;

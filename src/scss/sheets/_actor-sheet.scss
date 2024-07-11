@@ -566,16 +566,11 @@ img {
               pointer-events: none;
             }
 
-            // top: 110px;
-            // left: 102px;
 
             $status-height: 80px;
             $border-width: 1px;
 
-            // position: absolute;
             height: $status-height;
-            // width: 776px;
-            // border:  solid var(--K4-GOLD);
             outline: $border-width solid var(--K4-GOLD);
 
 
@@ -618,7 +613,6 @@ img {
             /* #region  STABILITY PANEL FROM CODE PEN */
             .stability {
 
-              // position: absolute;
               $ar: math.div(1024, 514);
               height: $status-height;
               width: $status-height * $ar;
@@ -680,7 +674,6 @@ img {
 
                 #glitch {
                   transform-origin: 15% center;
-                  // opacity: 0;
                 }
 
 
@@ -732,11 +725,11 @@ img {
 
                 .label-text {
                   position: relative;
-                  color: var(--K4-gold);
+                  color: var(--K4-GOLD);
                   filter: drop-shadow(5px 5px 5px black);
                   font-size: 38px;
                   text-transform: uppercase;
-                  font-family: Ravenscroft;
+                  font-family: var(--font-decorative-alt);
                 }
               }
 
@@ -805,30 +798,19 @@ img {
                 position: absolute;
                 height: 80px;
                 width: 150px;
-                // right: 0;
                 left: 0px;
                 overflow: hidden;
-                // rotate: 45deg;
 
                 svg {
                   position: absolute;
                   top: -100px;
                   left: -45px;
-                  // right: -150px;
                   height: 160px;
                   width: 160px;
                   transform-origin: 50% 50%;
                   rotate: 235deg;
                   fill: var(--K4-dGOLD);
                   filter: drop-shadow(-1px 1px 0px var(--K4-dBLACK));
-                  // transform: translate(-50%, -50%);
-                  // scale: 1 -1;
-                  // rotate: 30deg;
-                  // rotate: 55deg;
-                  // rotate: 66deg;
-
-                  // rotate: -30deg;
-                  // rotate: -200deg;
                 }
 
                 &.edges-1 svg {
@@ -869,7 +851,6 @@ img {
                 right: 2px;
                 bottom: 2px;
                 font-size: 12px;
-                text-shadow: none;
                 color: var(--K4-gGOLD);
                 text-shadow:
                   1px 1px 0px var(--K4-dGOLD);
@@ -887,7 +868,7 @@ img {
             position: relative;
 
             .modifiers-report,
-            .toggle-modifier-strip {
+            .modifier-strip {
               min-height: 21px;
               display: flex;
               flex-direction: row;
@@ -965,18 +946,18 @@ img {
               }
             }
 
-            .toggle-modifier-strip {
+            .modifier-strip {
               justify-content: flex-end;
-              gap: 10px;
+              gap: 5px;
               padding: 0px 10px;
               background: transparent;
               min-height: 20px;
               position: relative;
 
-              .toggle-modifier {
+              .modifier {
                 height: 20px;
                 max-width: 200px;
-                min-width: 40px;
+                min-width: 50px;
                 position: relative;
                 transform-origin: center center;
                 flex-shrink: 0;
@@ -986,12 +967,12 @@ img {
                 align-items: center;
                 border-radius: 5px;
 
-                &.no-value, &.stability-modifier {
+                &.no-value {
                   height: 20px;
                   width: 40px;
-                  .toggle-modifier-label {
+                  .modifier-label {
                     display: none;
-                    .toggle-modifier-value {
+                    .modifier-value {
                       display: none;
                     }
                   }
@@ -999,7 +980,7 @@ img {
                     position: static !important;
                     transform: none !important;
                   }
-                  .toggle-modifier-button {
+                  .modifier-button {
                     padding: 0;
                     padding-left: 0;
                     padding-right: 0;
@@ -1012,32 +993,34 @@ img {
                   --K4-color-primary: var(--K4-WHITE);
                   --K4-value-color: var(--K4-bWHITE);
                 }
-                &.stability-modifier {
+
+                &.left-modifier {
+                  --mod-step: 55px;
                   position: absolute;
-                  left: 10px;
+                  left: 0px;
+                }
+                // &.left-modifier + .left-modifier { left: calc(var(--mod-step) * 1); }
+                // &.left-modifier + .left-modifier + .left-modifier { left: calc(var(--mod-step) * 2); }
+                // &.left-modifier + .left-modifier + .left-modifier + .left-modifier { left: calc(var(--mod-step) * 3); }
 
-                  .toggle-modifier-button {
-                    background: var(--K4-dRED);
+                &.stability-modifier,
+                &.stabilityConditions-modifier,
+                &.wounds-modifier {
+                  display: none;
+
+                  .modifier-button {
+                    --K4-color-primary: var(--K4-GOLD) !important;
                   }
+                  background: var(--K4-dRED);
+                }
 
-                  + .wound-modifier {
-                    left: 60px;
+                &.armor-modifier {
+                  .modifier-button {
+                    --K4-color-primary: var(--K4-gGOLD) !important;
                   }
                 }
 
-                &.wound-modifier {
-                  position: absolute;
-                  left: 10px;
-                  --K4-color-primary: var(--K4-gRED);
-                  --K4-value-color: var(--K4-bWHITE);
-
-                  + .stability-modifier {
-                    left: 60px;
-                  }
-                }
-
-
-                .toggle-modifier-button {
+                .modifier-button {
                   --shadow-size: 3px;
                   &.pos-mod {
                     --K4-color-primary: var(--K4-gBLUE);
@@ -1063,37 +1046,28 @@ img {
                   justify-content: center;
                   align-items: center;
                   padding: 0 5px;
-                  // padding-left: $modifiers-height + 5px;
-                  // padding-right: 5px;
                   box-shadow: 0 0 var(--shadow-size) var(--K4-color-primary);
 
                   &[data-state="disabled"] {
                     --K4-color-primary: var(--K4-dGREY);
                     --shadow-size: 3px;
                     filter: saturate(0);
-                    // scale: 0.8;
-                    .toggle-modifier-label {
-                      .toggle-modifier-name {
-                        // color: var(--K4-BLACK);
-                      }
-                      .toggle-modifier-value {
+                    .modifier-label {
+                      .modifier-value {
                         color: var(--K4-dGREY);
                         text-shadow: none;
                         animation: none;
                       }
                     }
-                    .icon-container {
-                      .icon-mask {  }
-                    }
                   }
 
-                  .toggle-modifier-label {
-                    .toggle-modifier-name {
+                  .modifier-label {
+                    .modifier-name {
                       font-size: $rem-12;
                       line-height: $rem-14;
                       display: none;
                     }
-                    .toggle-modifier-value {
+                    .modifier-value {
                       color: var(--K4-bWHITE);
                       line-height: #{$modifiers-height};
 
@@ -1103,10 +1077,6 @@ img {
                     --K4-icon-size: #{$modifiers-height};
                     background: transparent;
                     order: -1;
-                    // position: absolute;
-                    // transform: translate(0%, -50%);
-                    // top: 50%;
-                    // left: 3px;
                     .icon-mask {
                       height: 100%;
                       width: 100%;

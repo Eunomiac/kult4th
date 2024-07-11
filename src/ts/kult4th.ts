@@ -18,13 +18,28 @@ import registerDebugger from "./scripts/logger.js";
 
 import InitializeLibraries, {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
-import BUILD_ITEMS_FROM_DATA, {PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, getMutationDiffReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} from "./scripts/data.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
+// #endregion
+
+// #region === TYPES === ~
+interface SVGGradientStopParams {
+  offset: number,
+  color: string,
+  opacity: number;
+}
+type SVGGradientStop = SVGGradientStopParams & Record<string, number | string>;
+interface SVGGradientDef {
+  id: string,
+  x: [number, number],
+  y: [number, number],
+  stops: Array<SVGGradientStop | string>;
+}
+interface GradientDef {fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>;}
 // #endregion
 
 registerDebugger();
 
-Hooks.once("init", async () => {
+Hooks.on("init", async () => {
   // Register settings (including debug settings necessary for kLog)
   registerSettings();
   // Announce initialization process in console
@@ -36,14 +51,30 @@ Hooks.once("init", async () => {
   // Initialize Tooltips Overlay
   InitializeTooltips($("body"));
 
+  // Dynamically import data.js
+  const {BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, getMutationDiffReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} = await import("./scripts/data.js");
+
+  // Assign to globalThis for dev purposes
+  Object.assign(globalThis, {
+    PACKS,
+    getItemSystemReport,
+    getSubItemSystemReport,
+    getUniqueValuesForSystemKey,
+    getUniqueEffects: () => getUniqueValuesForSystemKey(PACKS.all, "rules.effects"),
+    getMutationDiffReport,
+    findRepresentativeSubset,
+    checkSubsetCoverage,
+    findUniqueKeys,
+    BUILD_ITEMS_FROM_DATA
+  });
+
   // PreInitialize all classes that have a PreInitialize method
-  [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
-    .filter((doc): doc is typeof doc & { PreInitialize: () => Promise<void> } => "PreInitialize" in doc)
-    .forEach(async (doc) => {
-      kLog.display(`PreInitializing ${doc.name}...`, 0);
-      await doc.PreInitialize()
-      kLog.display(`PreInitialized ${doc.name}.`);
-    });
+  const ClassesToPreinitialize = [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
+    .filter((doc): doc is typeof doc & {PreInitialize: (context?: Record<string, unknown>) => Promise<void>;} => "PreInitialize" in doc);
+
+  await Promise.all(ClassesToPreinitialize
+    .map((doc) => doc.PreInitialize({PACKS}))
+  );
 
   // Define the "K4" namespace within the CONFIG object, and assign basic system configuration package.
   CONFIG.K4 = K4Config;
@@ -53,28 +84,15 @@ Hooks.once("init", async () => {
 
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
-  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc] });
+  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc]});
 
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
-  await preloadTemplates().catch(kLog.error);
+  await preloadTemplates().catch((error: unknown) => {kLog.error(String(error));});
 
   // #region ████████ STYLING: Create Style Definitions for SVG Files & Color Palette ████████ ~
   const svgDefTemplate = await getTemplate(U.getTemplatePath("globals", "svg-defs"));
-  interface SVGGradientStopParams {
-    offset: number,
-    color: string,
-    opacity: number
-  }
-  type SVGGradientStop = SVGGradientStopParams & Record<string, number|string>;
-  interface SVGGradientDef {
-    id: string,
-    x: [number, number],
-    y: [number, number],
-    stops: Array<SVGGradientStop | string>
-  }
-  interface GradientDef { fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>; }
 
   const svgDefs: Record<string, Array<Partial<SVGGradientDef>>> = {
     linearGradients: Object.values(U.objMap(
@@ -187,14 +205,14 @@ Hooks.once("init", async () => {
       (({fill, stroke}: GradientDef, iType: K4ItemType) => {
         return {
           fill: {
-            id:    `fill-${iType}`,
-            x:     [0, 1],
-            y:     [0, 1],
-            ...fill ?? {},
+            id: `fill-${iType}`,
+            x: [0, 1],
+            y: [0, 1],
+            ...fill,
             stops: (fill.stops ?? []).map((stop, i, stops) => {
               return ({
-                offset:  U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
-                color:   typeof stop === "string" ? stop : stop.color,
+                offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                color: typeof stop === "string" ? stop : stop.color,
                 opacity: 1,
                 ...(typeof stop === "string" ? {} : stop)
               });
@@ -204,14 +222,14 @@ Hooks.once("init", async () => {
               : fill.stops)
           },
           stroke: {
-            id:    `stroke-${iType}`,
-            x:     [0, 1],
-            y:     [0, 1],
-            ...stroke ?? {},
+            id: `stroke-${iType}`,
+            x: [0, 1],
+            y: [0, 1],
+            ...stroke,
             stops: (stroke.stops ?? []).map((stop, i, stops) => {
               return {
-                offset:  U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
-                color:   typeof stop === "string" ? stop : stop.color,
+                offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                color: typeof stop === "string" ? stop : stop.color,
                 opacity: 1,
                 ...(typeof stop === "string" ? {} : stop)
               };
@@ -226,7 +244,7 @@ Hooks.once("init", async () => {
       K4ItemType,
       {
         fill: Partial<SVGGradientDef>,
-        stroke: Partial<SVGGradientDef>
+        stroke: Partial<SVGGradientDef>;
       }
     >).map((defs) => Object.values(defs)).flat()
   };
@@ -239,7 +257,7 @@ Hooks.once("init", async () => {
 });
 
 
-Hooks.once("ready", () => {
+Hooks.on("ready", () => {
   // $("body").removeClass("system-kult4th");
 
   // If user is GM, add "gm-user" class to #interface
@@ -268,19 +286,7 @@ Hooks.once("ready", () => {
     getContrastingColor,
     formatStringForKult,
     ACTOR, ITEM, EMBED, ACTORSHEET,
-    ENTITIES:   [ACTOR, ITEM, EMBED],
-    PACKS,
-    getItemSystemReport,
-    getSubItemSystemReport,
-    getUniqueValuesForSystemKey,
-    getUniqueEffects: () => {
-      return getUniqueValuesForSystemKey(PACKS.all, "rules.effects")
-    },
-    getMutationDiffReport,
-    findRepresentativeSubset,
-    checkSubsetCoverage,
-    findUniqueKeys,
-    BUILD_ITEMS_FROM_DATA
+    ENTITIES: [ACTOR, ITEM, EMBED]
   });
   /*!DEVCODE*/
 });
@@ -310,8 +316,9 @@ async function preloadTemplates() {
       "toggle-box",
       "edges-blade-container",
       "stability-shards-overlay",
-      "modifier-toggle",
-      "status-bar-modifiers"
+      "collapsed-modifiers-strip",
+      "modifier-toggleable",
+      "modifier-untoggleable"
     ]),
     ...U.getTemplatePath("partials", [
       "item-block",

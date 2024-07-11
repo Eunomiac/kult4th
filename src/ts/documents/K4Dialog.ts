@@ -10,9 +10,7 @@ import U from "../scripts/utilities.js";
 // #endregion
 // #region TYPES ~
 namespace K4Dialog {
-  export interface Data extends Dialog.Data {
-
-  }
+  export type Data = Dialog.Data;
 }
 // #endregion
 // #region INTERFACE AUGMENTATION ~

@@ -1,5 +1,5 @@
 <div
-  class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}} {{~#if display}} tooltip-trigger{{/if}}"
+  class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}} {{~#if tooltip}} tooltip-trigger{{/if}}"
   data-type={{type}}
   {{~#if dataset}}{{#each dataset as |val key|}}
     data-{{key}}="{{val}}"

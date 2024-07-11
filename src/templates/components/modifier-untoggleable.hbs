@@ -1,0 +1,17 @@
+<div class="modifier {{~#if isLeftMod}} left-modifier{{/if}} {{statusBarCategory}}-modifier {{#unless statusValue}}no-value{{/unless}} {{~#if statusTooltip}} tooltip-trigger{{/if}}" data-state="{{#if isEnabled}}enabled{{else}}disabled{{/if}}">
+  <button class="modifier-button {{benefit}}-mod" data-state="{{#if isEnabled}}enabled{{else}}disabled{{/if}}">
+    <span class="modifier-label">
+      <span class="modifier-name">{{statusLabel}}</span>
+      {{#if statusValue}}
+      <span class="modifier-value {{statusValueGlow}}">{{statusValue}}</span>
+      {{/if}}
+    </span>
+    <div class="icon-container">
+      <div class="icon-mask" style="mask:url({{statusIcon}}) no-repeat center;-webkit-mask:url({{statusIcon}}) no-repeat center;"></div>
+    </div>
+  </button>
+  {{#if statusTooltip}}
+  <span class="tooltip modifier-tooltip">{{{formatForKult statusTooltip}}}</span>
+  {{/if}}
+  <span class="toggle-mod-bg"></span>
+</div>

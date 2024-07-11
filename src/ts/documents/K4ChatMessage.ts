@@ -604,7 +604,7 @@ const CHILD_TIMELINES = {
 
 
         .to(msgSource, {opacity: 0, duration: 0.5, ease: "power2.out"}, 0)
-        .set(msgSource, {borderTopColor: C.Colors.gGOLD, borderBottomColor: C.Colors.gGOLD, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-gold.webp') repeat repeat center center/100px 100px"}, 0.5)
+        .set(msgSource, {borderTopColor: C.Colors.gGOLD, borderBottomColor: C.Colors.gGOLD, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-gold.webp') repeat repeat center center/300px"}, 0.5)
         .to(msgSource, {opacity: 1, duration: 0.5, ease: "power2.out"}, 0.5)
 
         .fromTo(msgSourceName$, {
@@ -657,7 +657,7 @@ const CHILD_TIMELINES = {
         .to(msgIconBase$, {autoAlpha: 0, duration: 1}, 0)
 
         .to(msgSource, {opacity: 0, duration: 0.5, ease: "power2.out"}, 0)
-        .set(msgSource, {borderTopColor: C.Colors.gRED, borderBottomColor: C.Colors.gRED, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-red.webp') repeat repeat center center/100px 100px"}, 0.5)
+        .set(msgSource, {borderTopColor: C.Colors.gRED, borderBottomColor: C.Colors.gRED, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-red.webp') repeat repeat center center/300px"}, 0.5)
         .to(msgSource, {opacity: 1, duration: 0.5, ease: "power2.out"}, 0.5)
         .fromTo(msgSourceName$, {
           textShadow: "0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0)"},  {

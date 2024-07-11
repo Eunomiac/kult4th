@@ -5,6 +5,7 @@ import {
   ItemDataSchema as _ItemDataSchema,
   ItemDataSource as _ItemDataSource
 } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
+import _Document from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
 import {ItemData as _ItemData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import {ConfiguredDocumentClass as _ConfiguredDocumentClass} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import {ChatMessageDataConstructorData as _ChatMessageConstructorData} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
@@ -33,6 +34,18 @@ declare global {
     ContainedDocumentConstructor extends foundry.abstract.DocumentConstructor,
     ParentDocumentData extends foundry.abstract.AnyDocumentData
   > extends _EmbeddedCollection<ContainedDocumentConstructor, ParentDocumentData> { }
+
+  export type FoundryDoc<
+    ConcreteDocumentData extends foundry.abstract.AnyDocumentData = foundry.abstract.AnyDocumentData,
+    Parent extends foundry.abstract.Document<unknown, unknown> | null = null,
+    ConcreteMetadata extends foundry.abstract.Metadata<unknown> = foundry.abstract.Metadata<unknown>
+  > = _Document<ConcreteDocumentData, Parent, ConcreteMetadata>;
+  export class FoundryDoc<
+    ConcreteDocumentData extends foundry.abstract.AnyDocumentData = foundry.abstract.AnyDocumentData,
+    Parent extends foundry.abstract.Document<unknown, unknown> | null = null,
+    ConcreteMetadata extends foundry.abstract.Metadata<unknown> = foundry.abstract.Metadata<unknown>
+  > extends _Document<ConcreteDocumentData, Parent, ConcreteMetadata> { }
+
   export type ItemDataBaseProperties = _ItemDataBaseProperties;
   export type ItemDataConstructorData = _ItemDataConstructorData;
   export type ItemDataSchema = _ItemDataSchema;
@@ -40,7 +53,7 @@ declare global {
   export type ItemData = _ItemData;
   export type ConfiguredDocumentClass = _ConfiguredDocumentClass;
   export type ChatMessageDataConstructorData = _ChatMessageConstructorData;
-  export interface Context extends _Context {};
+  export type Context = _Context;
   export type ActiveEffectDataConstructorData = _ActiveEffectDataConstructorData;
   export type ActiveEffectData = _ActiveEffectData;
   export type EffectChangeData = import("@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData").EffectChangeDataProperties;

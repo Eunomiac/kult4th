@@ -34,8 +34,7 @@ declare global {
       filter: "all"|K4ItemType.advantage|K4ItemType.disadvantage|string,
       value: number,
       label: string,
-      tooltipLabel: string,
-      tooltipDesc: string,
+      tooltip: string,
       cssClasses: string[]
     }
 

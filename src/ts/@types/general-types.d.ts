@@ -215,6 +215,8 @@ declare global {
     -readonly [P in keyof T]: T[P];
   };
 
+  // Represents any document with update methods
+  type UpdateableDoc = FoundryDoc;
 
   // Represents an Actor or Item document
   type EntityDoc = ActorDoc | ItemDoc;

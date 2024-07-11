@@ -43,10 +43,14 @@
         </div>
       </section>
       <section class="subsection modifiers">
-        {{> "systems/kult4th/templates/components/status-bar-modifiers.hbs" collapsedRollModifiers=actor.collapsedRollModifiers}}
-        <div class="toggle-modifier-strip">
+        {{> "systems/kult4th/templates/components/collapsed-modifiers-strip.hbs" collapsedRollModifiers=actor.collapsedRollModifiers}}
+        <div class="modifier-strip">
         {{#each actor.system.statusBarEffects}}
-        {{> "systems/kult4th/templates/components/modifier-toggle.hbs"}}
+        {{#if canToggle}}
+        {{> "systems/kult4th/templates/components/modifier-toggleable.hbs" statusBarContext }}
+        {{else}}
+        {{> "systems/kult4th/templates/components/modifier-untoggleable.hbs" statusBarContext }}
+        {{/if}}
         {{/each}}
         </div>
       </section>

@@ -114,7 +114,6 @@
 
       &.not-animating.roll-success {
         * {
-          // --K4-chat-border-image: #{to-url("chat/border-bgold.svg")};
           --K4-chat-border-image: #{to-url("chat/border-success.webp")};
           --K4-color-primary: var(--K4-gGOLD);
           --roll-result-fg: var(--K4-gGOLD);
@@ -126,7 +125,7 @@
             .icon-container.icon-fail { visibility: hidden; }
           }
           .roll-source-header {
-            background: transparent #{to-url("backgrounds/texture-gold.webp")} repeat repeat center center/100px 100px;
+            background: transparent #{to-url("backgrounds/texture-gold.webp")} repeat repeat center center/300px;
             border-color: var(--K4-gGOLD);
             .roll-source-name .roll-source-text {
               color: var(--K4-dBLACK);
@@ -175,7 +174,6 @@
             .roll-source-header,
             .roll-total,
             .result-entry {
-              // filter: brightness(0.85) grayscale(0.25) contrast(1.15);
               .icon-container.icon-base,
               .icon-container.icon-success,
               .icon-container.icon-fail { visibility: hidden; }
@@ -199,7 +197,7 @@
             .icon-container.icon-success { visibility: hidden; }
           }
           .roll-source-header {
-            background: transparent #{to-url("backgrounds/texture-red.webp")} repeat repeat center center/100px 100px;
+            background: transparent #{to-url("backgrounds/texture-red.webp")} repeat repeat center center/300px;
             border-color: var(--K4-gRED);
             .roll-source-name .roll-source-text {
               color: var(--K4-dBLACK);

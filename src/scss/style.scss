@@ -38,7 +38,6 @@ $assetPath: '/assets';
   }
 
 	.app.window-app {
-    // @import 'globals/colors';
 		@import 'globals/app';
 
 		&.k4-sheet {
@@ -95,12 +94,6 @@ $assetPath: '/assets';
     }
     #ui-right {
       #sidebar {
-        #sidebar-tabs {
-          .item[data-tab="scenes"],
-          .item[data-tab="compendium"] {
-            // display: block;
-          }
-        }
         #chat {
           #chat-controls {
             pointer-events: auto;

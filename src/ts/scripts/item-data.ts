@@ -11312,25 +11312,25 @@ const ITEM_DATA: {
           "outro": "%insert.rollPrompt% #>text-posmod>+Armor<# #>text-negmod>−Harm<#.",
           "listRefs": [],
           "effects": [
+            // {
+            //   "parentData": K4ActiveEffect.BuildEffectData({
+            //     canToggle: false,
+            //     inStatusBar: true,
+            //     label: "Armor",
+            //     icon: "systems/kult4th/assets/icons/modifiers/armor.svg",
+            //     tooltip: "Your armor reduces the amount of Harm you take from an injury.",
+            //     from: "worn gear"
+            //   }),
+            //   "changeData": [
+            //     K4ActiveEffect.BuildChangeData("ModifyRoll", {
+            //       filter: "Endure Injury",
+            //       mode: "Add",
+            //       value: "actor.system.armor"
+            //     })
+            //   ]
+            // },
             {
-              "parentData": K4ActiveEffect.BuildEffectData({
-                canToggle: false,
-                inStatusBar: true,
-                label: "Armor",
-                icon: "systems/kult4th/assets/icons/modifiers/armor.svg",
-                tooltip: "Your armor reduces the amount of Harm you take from an injury.",
-                from: "worn gear"
-              }),
-              "changeData": [
-                K4ActiveEffect.BuildChangeData("ModifyRoll", {
-                  filter: "Endure Injury",
-                  mode: "Add",
-                  value: "actor.system.armor"
-                })
-              ]
-            },
-            {
-              "parentData": K4ActiveEffect.BuildEffectData(),
+              "parentData": K4ActiveEffect.BuildEffectData({label: "Harm", tooltip: "The Harm you are enduring is subtracted from your roll."}),
               "changeData": [
                 K4ActiveEffect.BuildChangeData("ModifyRoll", {
                   filter: "Endure Injury",
