@@ -861,7 +861,7 @@
 #tinymce .text-negmod,
 #tinymce .text-keyword,
 #tinymce .text-attributename,
-#tinymce .text-doclink,
+#tinymce .text-docLink,
 #tinymce .text-edgename,
 #tinymce .text-gmtext,
 #tinymce .text-resultlabel,
@@ -870,7 +870,7 @@
 #tinymce .mce-content-body .text-negmod,
 #tinymce .mce-content-body .text-keyword,
 #tinymce .mce-content-body .text-attributename,
-#tinymce .mce-content-body .text-doclink,
+#tinymce .mce-content-body .text-docLink,
 #tinymce .mce-content-body .text-edgename,
 #tinymce .mce-content-body .text-gmtext,
 #tinymce .mce-content-body .text-resultlabel {
@@ -885,15 +885,15 @@
 #tinymce .mce-content-body .text-attributename {
   --K4-color-primary: var(--K4-color-keyword);
 }
-#tinymce .text-doclink,
-#tinymce .mce-content-body .text-doclink {
+#tinymce .text-docLink,
+#tinymce .mce-content-body .text-docLink {
   color: var(--K4-color-keyword-bright);
   font-style: italic;
   cursor: pointer;
   pointer-events: auto !important;
 }
-#tinymce .text-doclink:hover,
-#tinymce .mce-content-body .text-doclink:hover {
+#tinymce .text-docLink:hover,
+#tinymce .mce-content-body .text-docLink:hover {
   filter: saturate(0.5) brightness(3);
 }
 #tinymce .text-sourceref, #tinymce .text-sourceref + .text-tag,

@@ -360,7 +360,7 @@
 	.text-negmod,
 	.text-keyword,
 	.text-attributename,
-	.text-doclink,
+	.text-docLink,
 	.text-edgename,
 	.text-gmtext,
 	.text-resultlabel {
@@ -375,7 +375,7 @@
     --K4-color-primary: var(--K4-color-keyword);
 		// color: var(--K4-color-keyword);
 	}
-	.text-doclink {
+	.text-docLink {
 		color: var(--K4-color-keyword-bright);
 		font-style: italic;
     cursor: pointer;

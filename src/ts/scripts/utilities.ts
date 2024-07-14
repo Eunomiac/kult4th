@@ -344,21 +344,21 @@ const pBool = (
   return true;
 };
 
-const castToScalar = (val: unknown): SystemScalar => {
-  if (["number", "boolean"].includes(typeof val)) { return val as number|boolean; }
+const castToScalar = <T extends SystemScalar = SystemScalar>(val: unknown): T => {
+  if (["number", "boolean"].includes(typeof val)) { return val as number|boolean as T; }
   if (typeof val === "string") {
     if (isNumString(val)) {
       const numVal = pFloat(val);
       if (isInt(numVal)) {
-        return pInt(val);
+        return pInt(val) as T;
       }
-      return numVal;
+      return numVal as T;
     }
     if (isBooleanString(val)) {
-      return pBool(val);
+      return pBool(val) as T;
     }
   }
-  return String(val);
+  return String(val) as T;
 }
 
 

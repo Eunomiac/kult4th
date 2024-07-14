@@ -278,7 +278,11 @@ declare global {
         results: Record<K4RollResult, K4Item.Components.ResultData>;
       };
     };
-    export type HaveRules<T extends Types.HaveRules = Types.HaveRules> = K4Item<T>;
+    export type HaveRules<T extends Types.HaveRules = Types.HaveRules> = K4Item<T> & {
+      system: System<T> & {
+        rules: K4Item<T>["system"]["rules"]
+      }
+    };
     export type HaveResults<T extends Types.HaveResults = Types.HaveResults> = K4Item<T>;
     export type HaveMainEffects<T extends Types.HaveMainEffects = Types.HaveMainEffects> = K4Item<T> & {
       system: System<T> & {
@@ -357,6 +361,8 @@ class K4Item extends Item {
   isStaticItem(): this is K4Item.Static {return this.system.subType === K4ItemSubType.activeStatic;}
   isPassiveItem(): this is K4Item.Passive {return this.system.subType === K4ItemSubType.passive;}
   hasRules(): this is K4Item.HaveRules {return "rules" in this.system;}
+  hasOwnRules(): this is K4Item.HaveRules {return this.hasRules() && Object.values(this.system.rules)
+    .some((rule: ValueOrArray<string>|K4ActiveEffect.BuildData[]) => rule.length > 0);}
   hasResults(): this is K4Item.HaveResults { return "results" in this.system;}
   hasCreateEffects(): this is K4Item.HaveMainEffects {
     return Boolean(this.hasRules()
@@ -384,6 +390,16 @@ class K4Item extends Item {
     const parentItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Item.Parent>;
 
     return parentItem ?? null;
+  }
+  get rulesSummary(): K4Item.Components.RulesData["rules"] | undefined {
+    if (this.hasOwnRules()) { return this.system.rules; }
+    if (this.isParentItem()) {
+      const subItemData = this.system.subItems.find((subItem) => "rules" in subItem.system);
+      if (subItemData?.system.rules) {
+        return subItemData.system.rules;
+      }
+    }
+    return undefined;
   }
 
   get subItems(): Array<K4Item & K4SubItem> {

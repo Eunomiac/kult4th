@@ -4,7 +4,7 @@ import C, {StabilityConditions} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType, K4ConditionType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
-import K4Dialog from "./K4Dialog.js";
+import K4Dialog, {PromptInputType} from "./K4Dialog.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 import K4Roll from "./K4Roll.js";
 import {gsap} from "../libraries.js";
@@ -1180,33 +1180,53 @@ class K4PCSheet extends ActorSheet {
     html.find("button.condition-add")
     .each(function() {
       $(this).on("click", async () => {
-        const type = U.lCase(await K4Dialog.AskWithButtons(
-          "Condition Type",
-          Object.values(K4ConditionType).map((cType) => U.tCase(cType)).join("|"),
-          "Select the type of condition to add:"
-        )) as K4ConditionType;
+        const type = await K4Dialog.GetUserInput<string>(
+          {
+            title: "Condition Type",
+            bodyText: "Select the type of condition to add:"
+          }, {
+            input: PromptInputType.buttons,
+            inputVals: Object.values(K4ConditionType)
+              .map((cType) => U.tCase(cType))
+          });
+        if (U.isUndefined(type)) {
+          return;
+        }
         switch (type) {
           case K4ConditionType.stability: {
-            const label: string = U.tCase(await K4Dialog.AskForText(
-              "Condition Label",
-              "Enter the label for the new Stability condition:",
-              "(Preconfigured Conditions: 'Angry', 'Sad', 'Scared', 'Guilt-Ridden', 'Obsessed', 'Distracted', 'Haunted')"
-            )).trim();
+            const label: string|false = await K4Dialog.GetUserInput(
+              {
+                title: "Condition Label",
+                bodyText: "Enter the label for the new Stability condition:",
+                subText: "(Preconfigured Conditions: 'Angry', 'Sad', 'Scared', 'Guilt-Ridden', 'Obsessed', 'Distracted', 'Haunted')"
+              }, {
+                input: PromptInputType.text
+              }
+            );
+            if (!label) { return; }
             const preconfiguredData = StabilityConditions[U.lCase(label) as keyof typeof StabilityConditions];
             let {description, modDef} = preconfiguredData as Maybe<{description: string, modDef: K4Roll.ModDefinition}> ?? {};
             if (U.isUndefined(description)) {
-              description = await K4Dialog.AskForText(
-                "Condition Description",
-                `Briefly describe the effects of the '${label}' condition on your mental state:`,
-                "E.g. 'You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.'"
-              );
+              description = (await K4Dialog.GetUserInput<string>(
+                {
+                  title: "Condition Description",
+                  bodyText: `Briefly describe the effects of the '${label}' condition on your mental state:`,
+                  subText: "E.g. 'You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.'"
+                }, {
+                  input: PromptInputType.text
+                }
+              )) || undefined;
             }
             if (U.isUndefined(modDef)) {
-              const modDefString = await K4Dialog.AskForText(
-                "Condition Modifiers",
-                "Define what and by how much the condition modifies. Multiple modifiers can be separated by a comma.",
-                "E.g. 'all: -2, disadvantage: -1, See Through the Illusion: 3'",
-                "all:-1"
+              const modDefString = await K4Dialog.GetUserInput<string>(
+                {
+                  title: "Condition Modifiers",
+                  bodyText: "Define what and by how much the condition modifies. Multiple modifiers can be separated by a comma.",
+                  subText: "E.g. 'all: -2, disadvantage: -1, See Through the Illusion: 3'"
+                }, {
+                  input: PromptInputType.text,
+                  defaultVal: "all:-1"
+                }
               );
               modDef = Object.fromEntries(modDefString
                 .split(/\s*,\s*/)
@@ -1221,6 +1241,11 @@ class K4PCSheet extends ActorSheet {
               description,
               modDef
             }).catch(kLog.error);
+            break;
+          }
+          case K4ConditionType.other: {
+            console.warn("K4ConditionType.other: Unimplemented.");
+            break;
           }
         }
       });
@@ -1425,6 +1450,24 @@ class K4PCSheet extends ActorSheet {
 
     // Activate listeners for editing "content-editable" elements
     this.activateContentEditableListeners(html);
+
+    html.find("#item-test-button").on("click", this._promptItemSelection(
+      Array.from(game.items).filter((item) => item.type === K4ItemType.advantage)
+    ).bind(this));
+  }
+
+  _promptItemSelection(itemList: Array<K4Item>) {
+    return async () => {
+      const item = await K4Dialog.GetUserItemSelection<K4ItemType.advantage>({
+          title: "Select an Advantage",
+          bodyText: "Select an advantage to apply to the actor.",
+          subText: "This is some test subtext.",
+          itemList
+        });
+        if (item) {
+          void this.actor.createEmbeddedDocuments("Item", [item as K4Item & Record<string, unknown>]);
+        }
+    };
   }
 
   activateTab(tabName: string | null) {

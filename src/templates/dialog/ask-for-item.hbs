@@ -1,0 +1,21 @@
+{{log "ask-for-item.hbs" this}}
+<div class="dialog-container item-selection-container">
+  <h1 class="dialog-title">{{title}}</h1>
+  {{#if bodyText}}<p>{{{formatForKult bodyText}}}</p>{{/if}}
+
+  <div class="item-portrait-panel">
+    {{#each itemList}}
+      <div class="item-portrait-button tooltip-trigger" data-item-id="{{id}}">
+        <span class="item-portrait-name">{{name}}</span>
+        <div class="item-portrait-icon" style="mask:url('{{img}}') no-repeat center;-webkit-mask:url('{{img}}') no-repeat center"></div>
+        <div class="tooltip">
+          {{> "systems/kult4th/templates/components/rules-block.hbs" rules=rules}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+  {{!-- Panel --}}
+
+  {{#if subText}}<p class="sub-text">{{{formatForKult subText}}}</p>{{/if}}
+</div>

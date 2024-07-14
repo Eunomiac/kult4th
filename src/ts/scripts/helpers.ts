@@ -11,6 +11,134 @@ export function formatStringForKult(str: string) {
   return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
 }
 
+type ContextType = K4Item | {
+  data: {
+    root: {
+      document?: K4Item|K4Actor;
+      item?: K4Item;
+    }
+  }
+} | {
+  data: {
+    root: K4Item.System;
+  };
+};
+
+export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {
+
+  // Step One: Replace any data object references.
+  str = str.replace(
+    /%([^%.]+)\.([^%]+)%/g,
+    (_, sourceRef: string, dataKey: string) => {
+    kLog.log(`[formatForKult: '${sourceRef}']`, {str, iData, sourceRef, dataKey}, 3);
+    switch (sourceRef) {
+      case "list": {
+        const listItems = U.getProp<string[]>(iData, `system.lists.${dataKey}.items`);
+        if (!listItems) {
+          return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
+        }
+        const returnData = [
+          `<ul class='inline-list list-${dataKey}'>`,
+          ...listItems.map((item) => `<li>${item}</li>`),
+          "</ul>"
+        ].join("");
+        kLog.log("[formatForKult: 'list-results']", returnData, 3);
+        return returnData;
+      }
+      case "insert": {
+        switch (dataKey) {
+          case "break": {
+            return "<p class='break-elem'></p>";
+          }
+          case "rollPrompt": {
+            const name = U.getProp<string>(iData, "name");
+            const attribute = U.getProp<string>(iData, "system.attribute");
+            if (!attribute) {
+              return `<span style='color: red;'>No Such Attribute: ${dataKey}</span>`;
+            }
+            return [
+              "#>text-attributename>",
+              "roll ",
+              `+${attribute ? U.tCase(attribute) : "Unresolved"}`,
+              "<#"
+            ].join("");
+          }
+          default: {
+            let actor: Maybe<K4Actor> = undefined;
+            if (iData instanceof K4Item && iData.isOwned && iData.parent instanceof K4Actor) {
+              actor = iData.parent;
+            } else if (iData instanceof K4Actor) {
+              actor = iData as K4Actor;
+            }
+            if (/^(doc|roll)Link/.test(dataKey)) {
+              const docName = dataKey.split(".").slice(1).join(".");
+              let doc: Maybe<K4Item> = undefined;
+              if (actor) {
+                doc = actor.items.getName(docName);
+              } else {
+                doc = game.items.getName(docName);
+              }
+              if (!doc) {
+                throw new Error(`No such document: ${docName}`);
+              }
+              if (dataKey.startsWith("docLink")) {
+                return `<span class="text-docLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="open">${doc.name}</span>`;
+              }
+              return `<span class="text-rollLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="roll">${doc.name}</span>`;
+            } else if (dataKey.startsWith("FLAGS")) {
+              const [_, effectID, ...flagKeyParts] = dataKey.split(".");
+              const flagKey = flagKeyParts.join(".");
+              if (!actor) {
+                throw new Error("Cannot access flags from a non-actor item");
+              }
+              const effect = actor.effects.get(effectID as IDString);
+              if (!effect) {
+                throw new Error(`No such effect: ${effectID}`);
+              }
+
+              return effect.getFlag(flagKey)!;
+            }
+            return `<span style='color: red;'>No Such Prompt: ${dataKey}</span>`;
+          }
+        }
+      }
+      default: return `<span style='color: red;'>No Such Source: ${sourceRef}.${dataKey}</span>`;
+    }
+  });
+
+  // Step Two: Apply span styling.
+  // str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
+  let prevStr;
+  while (str !== prevStr) {
+    prevStr = str;
+    str = str.replace(/#>([^>&]+)(&[^>]+)?>([^#]+)<#/g, (_, classRefs: Maybe<string>, attrRefs: Maybe<string>, contents: Maybe<string>) => {
+      classRefs = ["text-tag", classRefs ?? ""].join(" ").trim();
+      const htmlParts = [
+        "<span class='",
+        classRefs,
+        "'"
+      ];
+      if (attrRefs) {
+        htmlParts.push(attrRefs.replace(/&/g, " "));
+      }
+      htmlParts.push(...[
+        ">",
+        contents ?? "",
+        "</span>"
+      ]);
+      return htmlParts.join("");
+    });
+  }
+  // str = str.replace(/CHECK/g, "Check: ");
+
+  // // Step Three: Apply final specific fixes to formatting
+  // str = str
+  //   .replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>") // Remove empty <p> elements, except when used as breaks
+  //   .replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
+
+  return str;
+}
+
 const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
   /**
    * Handlebars helper to perform various comparison operations.
@@ -79,8 +207,8 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     args.pop();
     return !Object.values(args).flat().join("");
   },
-  "getDropCap"(content: string): string {
-    if (!content || !content.length) {
+  "getDropCap"(content: Maybe<string>): string {
+    if (!content?.length) {
       return "";
     }
     return `systems/${C.SYSTEM_ID}/assets/chat/dropcaps/${content.slice(0, 1).toUpperCase()}.png`;
@@ -88,125 +216,31 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
   "getRestCaps"(content: string): string {
     return content.slice(1);
   },
-  "dbLog"(...args) {
+  "dbLog"(...args: Tuple<string|number>) {
     args.pop();
     let dbLevel = 5;
-    if ([0,1,2,3,4,5].includes(args[0])) {
-      dbLevel = args.shift();
+    if ([0,1,2,3,4,5].includes(args[0] as number)) {
+      dbLevel = args.shift() as number;
     }
-    kLog.hbsLog(...args, dbLevel);
+    kLog.hbsLog(...(args.map(String) as Tuple<string>), dbLevel);
   },
-  "formatForKult"(str: string, context: List<any> | K4Item) {
-    // Object.assign(globalThis, {formatStringForKult, formatForKult: HandlebarHelpers.formatForKult});
-    const iData = context instanceof K4Item
-      ? context
-      : context.data.root.document ?? context.data.root.item ?? {system: context.data.root};
-    // if (!(iData instanceof K4Item || iData instanceof K4Actor)) {
-    //   kLog.error("Invalid context for formatForKult", {str, context, iData, "this": this});
-    //   throw new Error(`Cannot format ${str}: Invalid context (see log)`);
-    // }
-
-    // Step One: Replace any data object references.
-    str = str.replace(
-      /%([^%.]+)\.([^%]+)%/g,
-      (_, sourceRef: string, dataKey: string) => {
-      switch (sourceRef) {
-        case "data": {
-          kLog.log("[formatForKult: 'data']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
-          return iData.system[dataKey];
-        }
-        case "list": {
-          kLog.log("[formatForKult: 'list']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
-          const listItems: string[] = [];
-          if (dataKey && (dataKey in iData.system.lists)) {
-            listItems.push(...iData.system.lists[dataKey].items);
-          // } else if (dataKey && (dataKey in iData.lists)) {
-          //   listItems.push(...iData.lists[dataKey].items);
-          } else {
-            return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
-          }
-          const returnData = [
-            `<ul class='inline-list list-${dataKey}'>`,
-            ...listItems.map((item) => `<li>${item}</li>`),
-            "</ul>"
-          ].join("");
-          kLog.log("[formatForKult: 'list-results']", returnData, 3);
-          return returnData;
-        }
-        case "insert": {
-          kLog.log("[formatForKult: 'insert']", {str, context, iData, "this": this, sourceRef, dataKey}, 3);
-          switch (dataKey) {
-            case "break": {
-              return "<p class='break-elem'></p>"; // <p></p>";
-            }
-            case "rollPrompt": {
-              return [
-                "#>",
-                "item-button text-attributename",
-                `&data-item-name='${iData.name}'`,
-                "&data-action='roll'",
-                ">",
-                "roll ",
-                `+${U.tCase(iData.system.attribute)}`,
-                "<#"
-              ].join("");
-            }
-            default: {
-              if (dataKey.startsWith("flags")) {
-                const flagParent: Maybe<K4Actor> = iData instanceof K4Item && iData.isOwned && iData.parent instanceof K4Actor
-                  ? iData.parent
-                  : iData instanceof K4Actor
-                    ? iData
-                    : undefined;
-                if (!flagParent) {
-                  throw new Error("Cannot access flags from a non-actor item");
-                }
-                const flagKey = dataKey.split(".").slice(1).join(".");
-
-                // Log the extracted namespace and key for debugging purposes
-                kLog.log("[formatForKult: 'flags-extraction']", { flagKey }, 3);
-
-                return flagParent.getFlag(C.SYSTEM_ID, flagKey);
-              }
-              return `<span style='color: red;'>No Such Prompt: ${dataKey}</span>`;
-            }
-          }
-        }
-        default: return `<span style='color: red;'>No Such Source: ${sourceRef}.${dataKey}</span>`;
-      }
-    });
-
-    // Step Two: Apply span styling.
-    // str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
-    let prevStr;
-    while (str !== prevStr) {
-      prevStr = str;
-      str = str.replace(/#>([^>&]+)(&[^>]+)?>([^#]+)<#/g, (_, classRefs, attrRefs, contents) => {
-        classRefs = ["text-tag", classRefs ?? ""].join(" ").trim();
-        const htmlParts = [
-          "<span class='",
-          classRefs,
-          "'"
-        ];
-        if (attrRefs) {
-          htmlParts.push(attrRefs.replace(/&/g, " "));
-        }
-        htmlParts.push(...[
-          ">",
-          contents,
-          "</span>"
-        ]);
-        return htmlParts.join("");
-      });
+  "formatForKult"(str: string, context: ContextType) {
+    let iData: Maybe<{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}> = undefined;
+    if (context instanceof K4Item) {
+      iData = context;
+    } else if ("document" in context.data.root) {
+      iData = context.data.root.document!;
+    } else if ("item" in context.data.root) {
+      iData = context.data.root.item!;
+    } else {
+      iData = {system: context.data.root as K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any};
     }
-    // str = str.replace(/CHECK/g, "Check: ");
+    kLog.log("[formatForKult]", {str, context, iData, "this": this});
 
-    // // Step Three: Apply final specific fixes to formatting
-    // str = str
-    //   .replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>") // Remove empty <p> elements, except when used as breaks
-    //   .replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
-
-    return str;
+    return formatForKult(
+      str,
+      iData
+    );
   },
   "getImgName": U.toKey,
   "getSVGs"(ref: string) {
@@ -251,5 +285,5 @@ function parsePathTransform({scale = 1, xShift = 0, yShift = 0}: {scale?: number
 }
 
 export function registerHandlebarHelpers() {
-  Object.entries(handlebarHelpers).forEach(([name, func]) => Handlebars.registerHelper(name, func));
+  Object.entries(handlebarHelpers).forEach(([name, func]) => { Handlebars.registerHelper(name, func); });
 }

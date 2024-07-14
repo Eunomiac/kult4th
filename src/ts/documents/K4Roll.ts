@@ -273,7 +273,7 @@ class K4Roll extends Roll {
   // #ENDREGION
   doesFilterApply(filter: K4Roll.ModFilter): boolean {
     if (filter === "all") { return true; }
-    if (this.sourceType === filter) { return true; }
+    if (this.sourceType as Maybe<string> === filter) { return true; }
     if (this.sourceName === filter) { return true; }
     return false;
   }

@@ -5,6 +5,57 @@
   overflow: hidden;
   height: auto !important;
 
+  &.item-selection-dialog {
+    width: 800px !important;
+    .item-portrait-panel {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .item-portrait-button {
+        position: relative;
+        height: 100px;
+        width: 100px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        pointer-events: auto;
+
+        * {
+          pointer-events: none !important;
+        }
+
+        .item-portrait-name,
+        .item-portrait-icon {
+          position: absolute;
+          transform: translate(-50%, -50%);
+          left: 50%;
+          top: 50%;
+        }
+
+        .item-portrait-icon {
+          background: var(--K4-dGREY);
+          height: 100px;
+          width: 100px;
+          filter: blur(5px);
+        }
+
+        .item-portrait-name {
+          text-align: center;
+          z-index: 1;
+          text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 4);
+          font-family: var(--font-primary-smallcaps);
+          font-size: 16px;
+          line-height: 20px;
+          text-transform: lowercase;
+          width: 100px;
+          font-weight: $font-weight-black;
+          color: var(--K4-GREY);
+        }
+      }
+    }
+  }
+
   &.attribute-selection {
 
     .dialog-buttons {

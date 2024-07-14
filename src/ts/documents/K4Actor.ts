@@ -252,7 +252,7 @@ class K4Actor extends Actor {
           canToggle: false,
           inStatusBar: true,
           icon: "systems/kult4th/assets/icons/modifiers/armor.svg",
-          tooltip: "<center><h2>Armor</h2></center><p>You are wearing armor that protects you from harm, conferring a bonus to your #>text-doclink>Endure Injury<# rolls.</p>"
+          tooltip: "<center><h2>Armor</h2></center><p>You are wearing armor that protects you from harm, conferring a bonus to your %insert.docLink.Endure Injury% rolls.</p>"
         }),
         changeData: []
       }, this));
@@ -1053,7 +1053,7 @@ class K4Actor extends Actor {
       })
       .toReversed();
 
-    kLog.log("[collapsedRollModifiers] Status Bar Vals", {changes: this.collapsibleRollChanges, vals: U.objClone(statusBarVals)});
+    // kLog.log("[collapsedRollModifiers] Status Bar Vals", {changes: this.collapsibleRollChanges, vals: U.objClone(statusBarVals)});
 
     // Helper function to add or update the collapsed data
     const addOrUpdate = (
@@ -1114,10 +1114,10 @@ class K4Actor extends Actor {
       }
     });
 
-    kLog.log("[collapsedRollModifiers] Initial Combination Pass", {
-      categoryVals: U.objClone(categoryVals),
-      collapsedModifierData: U.objClone(collapsedModifierData)
-    });
+    // kLog.log("[collapsedRollModifiers] Initial Combination Pass", {
+    //   categoryVals: U.objClone(categoryVals),
+    //   collapsedModifierData: U.objClone(collapsedModifierData)
+    // });
 
     // Filter out any unnecessary values:
     // - remove 'all' if it is zero
@@ -1135,7 +1135,7 @@ class K4Actor extends Actor {
       });
 
 
-    kLog.log("[collapsedRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
+    // kLog.log("[collapsedRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
 
     // Adjust the display names to include "Other" where necessary
     if (filteredModifierData.some(({othering}) => othering.includes("all"))) {
@@ -1157,7 +1157,7 @@ class K4Actor extends Actor {
       }
     }
 
-    kLog.log("[collapsedRollModifiers] Othering Pass", U.objClone(filteredModifierData));
+    // kLog.log("[collapsedRollModifiers] Othering Pass", U.objClone(filteredModifierData));
 
     /** Sort the collapsed and filtered modifier data as follows:
      *
@@ -1178,7 +1178,7 @@ class K4Actor extends Actor {
       filteredModifierData.find(({display}) => /^Any\s*(Other)?\s*Roll/.test(display))
     ].filter(U.isDefined);
 
-    kLog.log("[collapsedRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
+    // kLog.log("[collapsedRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
 
     const isContributingTo = (sourceFilter: string, display: string) => {
       if (sourceFilter === "all") { return true; }

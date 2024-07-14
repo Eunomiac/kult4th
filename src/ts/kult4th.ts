@@ -336,7 +336,8 @@ async function preloadTemplates() {
       "ask-for-harm",
       "ask-for-text",
       "ask-for-buttons",
-      "ask-for-confirm"
+      "ask-for-confirm",
+      "ask-for-item"
     ])
   ];
 

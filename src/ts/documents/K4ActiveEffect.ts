@@ -1,15 +1,17 @@
 // #region IMPORTS ~
 import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
+import {formatForKult} from "../scripts/helpers.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
 import K4Roll from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
 import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
+import K4Dialog, {PromptInputType} from "./K4Dialog.js";
 // #endregion
 
-// #region -- TYPES & ENUMS --
+// #region -- TYPES & ENUMS -- ~
 // #region ENUMS ~
 
 /** == EFFECT SOURCE ==
@@ -48,11 +50,7 @@ enum EffectResetOn {
   onSheetOpen = "onSheetOpen" // The effect is reset to its default state whenever the Actor's character sheet is opened
 }
 
-enum PromptInputType {
-  buttons = "buttons",
-  text = "text",
-  confirm = "confirm"
-}
+
 // #endregion
 // #region TYPES ~
 namespace K4Change {
@@ -95,7 +93,11 @@ namespace K4Change {
     }
     export interface CreateItem<T extends K4ItemType> extends Omit<K4Item.Schema<T>, "type"> {
       type: T, // Type of item being created
+      img: string, // Image to give item being created
       name: string, // Name of item being created
+    }
+    export interface DeleteItem {
+      filter: ValueOrArray<string>, // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
     export interface CreateTracker {
       name: string, // Name of the tracker being created
@@ -104,6 +106,9 @@ namespace K4Change {
       min: number, // Minimum value of the tracker
       max: number, // Maximum value of the tracker
       startValue: number, // Initial value of the tracker
+    }
+    export interface DeleteTracker {
+      filter: ValueOrArray<string>, // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
     export interface ModifyTracker {
       filter: ValueOrArray<string>, // Filter to determine the tracker(s) to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -334,41 +339,119 @@ namespace K4ActiveEffect {
 
 // #region === CUSTOM FUNCTIONS FOR MODE EffectMode.Custom ===
 
-async function applyUpdate(doc: UpdateableDoc, key: Key, value: unknown, isPermanent: boolean) {
+/**
+ * Helper function to apply an update to a document.
+ * If the update is permanent, it will be saved to the document.
+ * Otherwise, it will be temporarily set using setProperty.
+ *
+ * @param {UpdateableDoc} doc - The document to update.
+ * @param {Key} key - The key of the property to update.
+ * @param {unknown} value - The value to set for the property.
+ * @param {boolean} isPermanent - Whether the update is permanent.
+ * @returns {Promise<void>} - A promise that resolves when the update is complete.
+ */
+async function applyUpdate(doc: UpdateableDoc, key: Key, value: unknown, isPermanent: boolean): Promise<void> {
+  // Log the update details for debugging purposes
   kLog.log(`Updating document with key: ${String(key)}, value: ${String(value)}, isPermanent: ${String(isPermanent)}`, { doc, key, value, isPermanent });
+
+  // If the update is permanent, use the document's update method to save the change
   if (isPermanent) {
     await doc.update({[key]: value});
   } else {
+    // Otherwise, use setProperty to temporarily set the value
     setProperty(doc, String(key), value);
   }
 }
 
 const CUSTOM_FUNCTIONS = {
-  async CreateAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateAttack, isPermanent = false): Promise<boolean> {
+  async CreateAttack(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateAttack): Promise<boolean> {
+    const {
+      filter, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      name, // Name of the attack
+      tags, // Tags to apply to the attack
+      range, // Range(s) of the attack.
+      harm, // The harm value of the attack
+      special, // Any special rules associated with the attack
+      ammo, // Ammo usage of the attack
+    } = data;
+    return Promise.resolve(true);
+  },
+  async CreateItem(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateItem<K4ItemType>, isPermanent = false): Promise<boolean> {
+    const {
+      type, // Type of item being created
+      img, // Image to give item being created
+      name, // Name of item being created
+      ...itemData // Item creation data
+    } = data;
+
+    // Check if the item already exists
+    const existingItem = _actor.items.getName(name);
+    if (existingItem) {
+      return true;
+    }
+
+    const newItem = (await _actor.createEmbeddedDocuments("Item", [{
+      name,
+      img,
+      type,
+      system: itemData
+    }])).pop() as K4Item;
+
+    // Log the id of the item to FLAGS.itemToRemove, so it can be deleted later
+    await this.parentEffect?.setFlag<IDString>("itemToRemove", newItem.id);
+
+    return true;
+  },
+  async CreateTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateTracker): Promise<boolean> {
+    // Log a custom id to FLAGS.trackerId
+
+    const {
+      name, // Name of the tracker being created
+      target, // Where to store the tracker data on the active effect
+      imgFolder, // Folder path to the images for the tracker. Must include one .webp folder for each possible value (including min and max), named "0.webp", "1.webp", etc.
+      min, // Minimum value of the tracker
+      max, // Maximum value of the tracker
+      startValue // Initial value of the tracker
+    } = data;
 
     return Promise.resolve(true);
   },
-  async CreateItem(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateItem<K4ItemType>, isPermanent = false): Promise<boolean> {
+  async ModifyTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyTracker, isPermanent = false): Promise<boolean> {
+
+    const {
+      filter, // Filter to determine the tracker(s) to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target, // The property of the tracker data to modify (e.g. "value")
+      mode, // The mode of modification to use
+      value // The value to apply to the modification
+    } = data;
+
 
     return Promise.resolve(true);
   },
-  async CreateTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.CreateTracker, isPermanent = false): Promise<boolean> {
+  async ModifyAttack(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyAttack): Promise<boolean> {
+
+    const {
+      filter, // Filter to determine the type(s) of attacks to modify. Refer to TAGS on the ATTACK (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target, // Dotkey target of property to modify (e.g. "harm")
+      mode, // Mode of the custom function to use
+      value // Value to apply to the modification
+    } = data;
+
 
     return Promise.resolve(true);
   },
-  async ModifyTracker(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyTracker, isPermanent = false): Promise<boolean> {
-
-    return Promise.resolve(true);
-  },
-  async ModifyAttack(this: K4Change, _actor: K4Actor, _data: K4Change.Schema.ModifyAttack, isPermanent = false): Promise<boolean> {
-
-    return Promise.resolve(true);
-  },
-  ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove, isPermanent = false): boolean {
+  ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {filter, target, mode, value} = data;
+
+    const {
+      filter, // Filter to determine the type(s) of attacks to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target, // Dotkey target of property to modify (e.g. "system.lists.questions.items")
+      mode, // Mode of the custom function to use
+      value // Value to apply to the modification
+    } = data;
+
     if (!filter) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
     }
@@ -385,7 +468,10 @@ const CUSTOM_FUNCTIONS = {
                 throw new Error(`Invalid target array for PushElement: '${target}'`);
               }
               if (U.isUndefined(value)) { return undefined; }
-              targetArray.push(value);
+              targetArray.push([
+                value,
+                this.parentEffect!.eData.fromText
+              ].join("&nbsp;"));
               setProperty(move, target, targetArray);
               break;
             }
@@ -397,7 +483,11 @@ const CUSTOM_FUNCTIONS = {
               if (typeof targetString !== "string") {
                 throw new Error(`Invalid target for AppendText: '${target}'`);
               }
-              setProperty(move, target, targetString + String(value));
+              setProperty(move, target, [
+                targetString,
+                String(value),
+                this.parentEffect!.eData.fromText
+              ].join("&nbsp;"));
               break;
             }
           }
@@ -409,7 +499,14 @@ const CUSTOM_FUNCTIONS = {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyProperty: ${String(actor)}`);
     }
-    let {filter, mode, target, value} = data;
+
+    let {
+      filter, // Filter to determine the type(s) of attacks to modify. Almost always "actor". Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      target, // Dotkey target of property to modify (e.g. "system.modifiers.wounds_critical.1.all")
+      mode, // Mode of the custom function to use
+      value // Value to apply to the modification
+    } = data;
+
     value = U.castToScalar(String(value));
     if (!filter || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
@@ -449,7 +546,16 @@ const CUSTOM_FUNCTIONS = {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
-    let {filter, mode, target, value} = data;
+
+    let {
+      filter, // Filter identifying the ORIGIN ITEM bearing the ActiveEffect that contains the Change to be modified
+      target, // Dotkey path ending with "effects", to the array containing the Change to be modified
+      changeFilter, // Filter identifying the Change to be modified within the targeted changeData array
+      mode, // Mode of the custom function to use on the Change
+      changeTarget, // Dotkey path within the Change to the property to modify
+      value // Value to apply to the modification
+    } = data;
+
     value = U.castToScalar(String(value));
     if (!filter || !target) {
       throw new Error(`Invalid data for ModifyChange: ${JSON.stringify(data)}`);
@@ -461,7 +567,17 @@ const CUSTOM_FUNCTIONS = {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {title, target, input, inputVals, default: defaultVal, bodyText, subText} = data;
+
+    const {
+      title,
+      bodyText,
+      subText,
+      target, // where to store data on active effect
+      input, // Type of input requested
+      inputVals, // Values for buttons or other input types
+      default: defaultVal, // Default value if prompt window closed; if undefined, item creation is cancelled
+    } = data;
+
     if (typeof target !== "string") {
       throw new Error(`No key provided for PromptForData: ${JSON.stringify(data)}`);
     }
@@ -471,78 +587,23 @@ const CUSTOM_FUNCTIONS = {
     if (typeof input !== "string") {
       throw new Error(`No input type provided for PromptForData: ${JSON.stringify(data)}`);
     }
-    if (typeof defaultVal !== "string") {
-      throw new Error(`No default value provided for PromptForData: ${JSON.stringify(data)}`);
-    }
-    const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
-    const context: Record<string, SystemScalar> = {
-      title,
-      bodyText,
-      subText:  subText ?? ""
-    };
-    const dialogData: Dialog.Data = {
-      title,
-      content: template(context),
-      buttons: {}
-    };
-    const userOutput = U.castToScalar(await new Promise((resolve) => {
-      dialogData.close = () => { resolve(false); }; // User cancelled the dialog; return false to trigger cancellation logic
-      switch (input) {
-        case PromptInputType.buttons: {
-          const buttonVals = inputVals?.map(U.castToScalar) ?? [];
-          if (!buttonVals.length) {
-            throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
-          }
-          const buttonEntries = buttonVals.map((val) => {
-            return [
-              String(val),
-              {
-                label:    String(val),
-                callback: () => { resolve(val); }
-              }
-            ] as const;
-          });
-          // Assign the default value to the first button
-          dialogData.default = String(buttonVals[0]);
-          dialogData.buttons = Object.fromEntries<Record<string, unknown>>(buttonEntries);
-          break;
-        }
-        case PromptInputType.text: {
-          dialogData.default = "submit";
-          dialogData.buttons = {
-            submit: {
-              label:    "Submit",
-              callback: (html) => {
-                const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
-                resolve(inputValue);
-              }
-            }
-          };
-          break;
-        }
-        case PromptInputType.confirm: {
-          dialogData.default = "confirm";
-          dialogData.buttons = {
-            confirm: {
-              label:    "Confirm",
-              callback: () => { resolve(true); }
-            },
-            cancel: {
-              label:    "Cancel",
-              callback: () => { resolve(false); }
-            }
-          };
-          break;
-        }
+
+    const userInput = await K4Dialog.GetUserInput(
+      {
+        title,
+        bodyText,
+        subText
+      },
+      {
+        input: input as PromptInputType.buttons,
+        inputVals: inputVals!,
+        defaultVal: defaultVal as SystemScalar
       }
-      new Dialog(dialogData, {
-        classes: [C.SYSTEM_ID, "dialog"]
-      }).render(true);
-    }));
-    if (userOutput === false) { return false; }
-    if (target.startsWith("flags")) {
-      const flagKey = target.split(".").slice(1).join(".");
-      await actor.setFlag(C.SYSTEM_ID, flagKey, userOutput);
+    );
+    if (userInput === false) { return false; }
+    if (target.startsWith("FLAGS")) {
+      const flagKey = target.split(".").slice(2).join(".");
+      await this.parentEffect!.setFlag(flagKey, userInput);
       return true;
     }
     throw new Error(`Unrecognized key for PromptForData: ${target}`);
@@ -551,7 +612,9 @@ const CUSTOM_FUNCTIONS = {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    const {filter} = data;
+    const {
+      filter // Name of required item(s)
+    } = data;
     if (typeof filter !== "string") {
       throw new Error(`No filter provided for RequireItem: ${JSON.stringify(data)}`);
     }
@@ -563,85 +626,65 @@ const CUSTOM_FUNCTIONS = {
     }
     return true;
   },
-  async ModifyRoll(this: K4Change, roll: K4Roll, data: K4Change.Schema.ModifyRoll, isPermanent = false): Promise<boolean> {
+  async ModifyRoll(this: K4Change, roll: K4Roll, data: K4Change.Schema.ModifyRoll): Promise<boolean> {
     if (!this.isInstantiated()) {
       throw new Error("Custom function ModifyRoll called without a valid K4Change instance.");
     }
     if (!(roll instanceof K4Roll)) {
       throw new Error(`Invalid roll for ModifyRoll: ${String(roll)}`);
     }
-    let {filter, mode, value, changeLabel, changeTooltip} = data;
+
+    let {
+      filter, // Filter to determine the type(s) of rolls this change applies to. Can be "all", an item type, a specific item name, or the attribute rolled. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters).
+      mode, // Mode of the custom function to use
+      value, // Value to apply to the modification
+      changeLabel, // Optional override to effect's label when showing this change in a roll result report.
+      changeTooltip, // Optional override to effect's tooltip when showing this change in a roll result report.
+
+      /* Parameters for value === "prompt" roll modifiers */
+      title, // Title for the prompt
+      bodyText, // Body text for the prompt
+      subText, // Sub text for the prompt
+      input, // Type of input requested
+      inputVals, // Values for buttons or other input types
+      default: defaultVal, // Default value if prompt window closed; if undefined, item creation is cancelled
+    } = data;
+
+    const filters = [filter].flat();
+
+    if (!filters.some((f) => roll.doesFilterApply(f))) {
+      return true;
+    }
+
     if (typeof value === "string") {
       if (value === "prompt") {
-        const {title, bodyText, subText, input, inputVals} = data;
-        const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
-        const context: Record<string, SystemScalar> = {
-          title:    title ?? "Input Roll Data",
-          bodyText: bodyText ?? "",
-          subText:  subText ?? ""
-        };
-        const dialogData: Dialog.Data = {
-          title:   context.title as string,
-          content: template(context),
-          buttons: {}
-        };
-        const userOutput: SystemScalar = U.castToScalar(await new Promise((resolve) => {
-          dialogData.close = () => { resolve(false); }; // User cancelled the dialog; cancel the roll.
-          switch (input) {
-            case PromptInputType.buttons: {
-              const buttonVals = inputVals?.map(U.castToScalar) ?? [];
-              if (!buttonVals.length) {
-                throw new Error(`Invalid data for PromptForData: ${JSON.stringify(data)}`);
-              }
-              const buttonEntries = buttonVals.map((val) => {
-                return [
-                  String(val),
-                  {
-                    label:    String(val),
-                    callback: () => {resolve(val)}
-                  }
-                ] as const;
-              });
-              // Assign the default value to the first button
-              dialogData.default = String(buttonVals[0]);
-              dialogData.buttons = Object.fromEntries<Record<string, unknown>>(buttonEntries);
-              break;
+        let userOutput: SystemScalar | false = false;
+        if (U.isDefined(defaultVal)) {
+          userOutput = await K4Dialog.GetUserInput(
+            {
+              title: title!,
+              bodyText: bodyText!,
+              subText
+            },
+            {
+              input: input as PromptInputType.buttons,
+              inputVals: inputVals!,
+              defaultVal: defaultVal as SystemScalar
             }
-            case PromptInputType.text: {
-              dialogData.default = "submit";
-              dialogData.buttons = {
-                submit: {
-                  label:    "Submit",
-                  callback: (html) => {
-                    const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
-                    resolve(inputValue);
-                  }
-                }
-              };
-              break;
+          );
+        } else {
+          userOutput = await K4Dialog.GetUserInput(
+            {
+              title: title!,
+              bodyText: bodyText!,
+              subText
+            },
+            {
+              input: input as PromptInputType.buttons,
+              inputVals: inputVals!
             }
-            case PromptInputType.confirm: {
-              dialogData.default = "confirm";
-              dialogData.buttons = {
-                confirm: {
-                  label:    "Confirm",
-                  callback: () => { resolve(true); }
-                },
-                cancel: {
-                  label:    "Cancel",
-                  callback: () => { resolve(false); }
-                }
-              };
-              break;
-            }
-            default: {
-              throw new Error(`Invalid input type for PromptForData: ${input}`);
-            }
-          }
-          new Dialog(dialogData, {
-            classes: [C.SYSTEM_ID, "dialog"]
-          }).render(true);
-        }));
+          );
+        }
         if (userOutput === false) {
           return false; // User cancelled dialog; return false to cancel roll.
         }
@@ -676,7 +719,36 @@ const CUSTOM_FUNCTIONS = {
       }
     }
     return true;
-  }
+  },
+  async DeleteItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteItem): Promise<void> {
+
+    const {
+      filter // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+    } = data;
+
+    const filters = [data.filter].flat();
+    const idsToDelete: IDString[] = [];
+    for (const filter of filters) {
+      idsToDelete.push(
+        ...actor.getItemsByFilter(filter)
+          .map((item) => item.id)
+      )
+    }
+    if (idsToDelete.length === 0) {
+      return;
+    }
+    await actor.deleteEmbeddedDocuments("Item", idsToDelete);
+    return;
+  },
+  async DeleteTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteTracker): Promise<boolean> {
+
+    const {
+      filter // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+    } = data;
+
+    return Promise.resolve(true);
+  },
+
 } as const;
 // #endregion
 
@@ -883,7 +955,20 @@ class K4Change implements EffectChangeData {
   // #region CONSTRUCTOR
   customFunctionName: keyof typeof CUSTOM_FUNCTIONS;
   customFunction: K4Change.CustomFunc;
-  customFunctionData: K4Change.CustomFunc.AnyData;
+  #customFunctionData: K4Change.CustomFunc.AnyData;
+
+  get customFunctionData(): K4Change.CustomFunc.AnyData {
+    if (this.parentEffect?.originItem) {
+      // For each value that is a string, run it through formatForKult, using the embedded origin item as context.
+      for (const [key, val] of Object.entries(this.#customFunctionData)) {
+        if (typeof val === "string") {
+          this.#customFunctionData[key] = formatForKult(val, this.parentEffect.originItem);
+        }
+      }
+    }
+    return this.#customFunctionData;
+  }
+
   parentEffect?: K4ActiveEffect;
   constructor(data: EffectChangeData, effect?: K4ActiveEffect) {
     const {key, mode, value} = data;
@@ -898,11 +983,26 @@ class K4Change implements EffectChangeData {
     this.mode = mode;
     this.customFunctionName = key as KeyOf<typeof CUSTOM_FUNCTIONS>;
     this.customFunction = CUSTOM_FUNCTIONS[this.customFunctionName].bind(this) as K4Change.CustomFunc;
-    this.customFunctionData = JSON.parse(value) as K4Change.CustomFunc.AnyData;
+    this.#customFunctionData = JSON.parse(value) as K4Change.CustomFunc.AnyData;
     this.parentEffect = effect;
   }
   // #endregion
 
+  async updateCustomFunctionData(): Promise<void> {
+    const {parentEffect} = this;
+    if (!parentEffect) {
+      throw new Error(`[K4Change.updateCustomFunctionData] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
+    }
+    const newValue = this.value.replace(/FLAGS/g, `FLAGS.${parentEffect.id}`);
+    if (newValue === this.value) { return; }
+    const {index} = this;
+    if (index === -1) {
+      throw new Error(`[K4Change.updateCustomFunctionData] No valid index found for K4Change with value '${this.value}'`);
+    }
+    this.value = newValue;
+    this.#customFunctionData = JSON.parse(newValue) as K4Change.CustomFunc.AnyData;
+    await parentEffect.updateChangeValue(index, this.value);
+  }
 
   async apply(parent: K4Actor): Promise<string|boolean>
   async apply(parent: K4Roll): Promise<boolean>
@@ -1026,7 +1126,8 @@ class K4ActiveEffect extends ActiveEffect {
   }
 
   static #parseEffectData(data: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
-    const {parentData} = data;
+    const {parentData, changeData} = data;
+
     const {uses: usageMax, from, dynamic, ...baseExtData} = parentData;
     const effectSource = this.#resolveEffectSource(origin);
     const label = this.#resolveEffectName(data, origin);
@@ -1042,9 +1143,8 @@ class K4ActiveEffect extends ActiveEffect {
       throw new Error(`No origin ID provided for JQuery-delivered ActiveEffect: ${JSON.stringify(data)}`);
     }
     const fromText: string = [
-      "&nbsp;",
       "(from ",
-      from ?? `#>text-doclink>#${origin.name}<#`,
+      from ?? `%insert.docLink.${origin.name}%`,
       ")"
     ].join("");
     if (parentData.inStatusBar) {
@@ -1176,7 +1276,7 @@ class K4ActiveEffect extends ActiveEffect {
       }
     }
 
-    return effectHost.createEmbeddedDocuments("ActiveEffect", [{
+    const effect = (await effectHost.createEmbeddedDocuments("ActiveEffect", [{
       origin:   origin.uuid,
       label: effectExtendedData.label,
       transfer: origin.uuid !== target?.uuid,
@@ -1187,7 +1287,11 @@ class K4ActiveEffect extends ActiveEffect {
           data: effectExtendedData
         }
       }
-    }]) as unknown as Promise<K4ActiveEffect[]>;
+    }])).pop() as K4ActiveEffect;
+
+    kLog.log("[CreateFromBuildData]", {effectUUID: effect.uuid, changes: U.objClone(effect.changes)});
+
+    return [effect];
   }
 
 
@@ -1354,6 +1458,11 @@ class K4ActiveEffect extends ActiveEffect {
         return false;
       }
 
+      /* === PROCESS CUSTOM CHANGES: STEP 2 - Add effect's ID to any "FLAGS" targets in the data of each change === */
+      await Promise.all(effect.getCustomChanges()
+        .map(async (change) => change.updateCustomFunctionData())
+      );
+
       /* === PROCESS CUSTOM CHANGES: STEP 2 - PromptForData Check === */
       // PromptForData changes are resolved by querying the User for input when they are embedded within an Actor owned by that User -- i.e. right now.
       // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
@@ -1365,7 +1474,9 @@ class K4ActiveEffect extends ActiveEffect {
       /* === PROCESS CUSTOM CHANGES: STEP 3 - Permanent Effects Check === */
       // If any changes are permanent, apply them now -- they will be filtered out of future applications of the effect,
       // and will not be reversed when the active effect is removed.
-      await Promise.all(effect.permanentChanges.map((change) => change.apply(effect.actor)));
+      await Promise.all(effect.permanentChanges
+        .filter((change) => !change.isPromptOnCreate && !change.isRequireItemCheck)
+        .map((change) => change.apply(effect.actor)));
       return true;
     });
   }
@@ -1563,6 +1674,20 @@ class K4ActiveEffect extends ActiveEffect {
       [`flags.${namespace}.${key}`]: val
     }]);
     return this;
+  }
+
+  async updateChangeValue(index: number, value: string) {
+    if (!this.owner) {
+      throw new Error(`Cannot update change value for ActiveEffect with no owner.`);
+    }
+    if (!this.changes[index]) {
+      throw new Error(`Cannot update change value for ActiveEffect with no change at index ${index}.`);
+    }
+    this.changes[index].value = value;
+    await this.owner.updateEmbeddedDocuments("ActiveEffect", [{
+      _id: this.id,
+      changes: this.changes
+    }]);
   }
 
   applyToggleListeners(html: JQuery) {
