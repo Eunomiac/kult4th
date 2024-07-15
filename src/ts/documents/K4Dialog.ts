@@ -65,10 +65,13 @@ class K4Dialog extends Dialog {
     inputData: K4Dialog.InputData<T>
   ): Promise<T | false> {
     const {input, inputVals, defaultVal} = inputData;
-    const template = await getTemplate(U.getTemplatePath("dialog", `ask-for-${input}`));
+    const content = await renderTemplate(
+      U.getTemplatePath("dialog", `ask-for-${input}`),
+      context
+    );
     const dialogData: Dialog.Data = {
       title:   context.title,
-      content: template(context),
+      content,
       buttons: {}
     };
     return U.castToScalar<T>(await new Promise((resolve) => {
@@ -128,7 +131,6 @@ class K4Dialog extends Dialog {
   }
   #itemSelectionResolveFunc?: (value: K4Item|false) => void;
   static async GetUserItemSelection<T extends K4ItemType>(context: K4Dialog.PromptContext): Promise<K4Item<T> | false> {
-    const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-item"));
     const {itemList: items, ...dialogContext} = context;
     if (!items) {
       throw new Error("No item list provided");
@@ -137,13 +139,16 @@ class K4Dialog extends Dialog {
       name: item.name,
       id: item.id,
       img: item.img,
+      item,
       rules: item.rulesSummary
     }));
-
-
+    const content = await renderTemplate(
+      U.getTemplatePath("dialog", "ask-for-item"),
+      {...dialogContext, itemList: items}
+    );
     const dialogData: Dialog.Data = {
       title:   context.title,
-      content: template({...dialogContext, itemList}),
+      content,
       buttons: {}
     };
     return new Promise<K4Item<T> | false>((resolve) => {

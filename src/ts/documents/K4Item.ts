@@ -733,14 +733,16 @@ class K4Item extends Item {
   chatTemplate = "systems/kult4th/templates/partials/item-block.hbs";
   triggerTemplate = "systems/kult4th/templates/sidebar/result-static.hbs";
   async displayItemSummary(speaker?: string) {
-    const template = await getTemplate(this.chatTemplate);
-    const content = template(this.itemSummaryContext);
+    const content = await renderTemplate(
+      this.chatTemplate,
+      this.itemSummaryContext
+    );
     await K4ChatMessage.create({
       content,
       speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""}),
       flags: {
         kult4th: {
-          cssClasses: [this.chatTheme],
+          cssClasses: [this.chatTheme, "item-summary"],
           isSummary: true,
           isAnimated: false,
           isRoll: false,
@@ -797,9 +799,11 @@ class K4Item extends Item {
     if (this.isEdge()) {
       void this.parent.spendEdge();
     }
-    const template = await getTemplate(this.triggerTemplate);
     const content = K4ChatMessage.CapitalizeFirstLetter(
-      template(this.triggerSummaryContext)
+      await renderTemplate(
+        this.triggerTemplate,
+        this.triggerSummaryContext
+      )
     ).replace(/This Move threatens Hold/g, "This Move Generates Hold");
     const message = (await K4ChatMessage.create({
       content,

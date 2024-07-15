@@ -54,7 +54,6 @@
 
   section.tab.active {
     padding-left: calc(var(--sidebar-horiz-gutter) - var(--scrollbar-width));
-    &#chat { @import 'chat' }
     &:not(#chat) {
       background: linear-gradient(
         to left,

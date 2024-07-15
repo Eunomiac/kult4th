@@ -140,7 +140,7 @@ export function initCanvasStyles() {
       0,
       0.3
     ],
-    fontFamily: "Kultrata",
+    fontFamily: "Ktrata",
     fontSize: 32,
     letterSpacing: 2,
     lineHeight: 32,
@@ -153,5 +153,5 @@ export function initCanvasStyles() {
     wordWrap: true,
     wordWrapWidth: 0.1
   });
-  CONFIG.defaultFontFamily = "Kultrata";
+  CONFIG.defaultFontFamily = "Ktrata";
 }

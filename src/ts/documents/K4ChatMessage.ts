@@ -761,10 +761,11 @@ class K4ChatMessage extends ChatMessage {
   // #region INITIALIZATION ~
   static async GenerateInputPanel(html: JQuery): Promise<void> {
 
-    // Load the template for the chat input control panel
-    const template = await getTemplate(U.getTemplatePath("sidebar", "chat-input-control-panel"));
-    // Convert the template into a jQuery object
-    const buttonHtml = $(template({}));
+  // Convert the template into a jQuery object
+    const buttonHtml = $(await renderTemplate(
+      U.getTemplatePath("sidebar", "chat-input-control-panel"),
+      {}
+    ));
     // Find the chat form in the rendered HTML
     const chatForm = html.find("#chat-form").attr("data-type", "ic");
     // Append the control panel to the chat form

@@ -909,11 +909,13 @@ class K4Actor extends Actor {
    * @returns {Promise<K4Roll.RollableAttribute | null>} The selected attribute or null if no selection is made.
    */
   async askForAttribute(message?: string): Promise<K4Roll.RollableAttribute | null> {
-    const template = await getTemplate(U.getTemplatePath("dialog", "ask-for-attribute"));
-    const content = template({
-      id: this.id,
-      message
-    });
+    const content = await renderTemplate(
+      U.getTemplatePath("dialog", "ask-for-attribute"),
+      {
+        id: this.id,
+        message
+      }
+    );
     const userOutput = await new Promise<{attribute: K4Roll.RollableAttribute;}>((resolve) => {
       new Dialog(
         {

@@ -75,7 +75,10 @@ $assetPath: '/assets';
     }
   }
 	#ui-right {
-		#sidebar { @import 'sidebar/sidebar'; }
+		#sidebar {
+      @import 'sidebar/sidebar';
+      #chat { @import 'sidebar/chat'; }
+    }
 	}
 
   #interface.gm-user {

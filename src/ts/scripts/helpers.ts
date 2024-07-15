@@ -30,7 +30,7 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
   str = str.replace(
     /%([^%.]+)\.([^%]+)%/g,
     (_, sourceRef: string, dataKey: string) => {
-    kLog.log(`[formatForKult: '${sourceRef}']`, {str, iData, sourceRef, dataKey}, 3);
+    // kLog.log(`[formatForKult: '${sourceRef}']`, {str, iData, sourceRef, dataKey}, 3);
     switch (sourceRef) {
       case "list": {
         const listItems = U.getProp<string[]>(iData, `system.lists.${dataKey}.items`);
@@ -42,7 +42,7 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
           ...listItems.map((item) => `<li>${item}</li>`),
           "</ul>"
         ].join("");
-        kLog.log("[formatForKult: 'list-results']", returnData, 3);
+        // kLog.log("[formatForKult: 'list-results']", returnData, 3);
         return returnData;
       }
       case "insert": {
@@ -79,7 +79,8 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
                 doc = game.items.getName(docName);
               }
               if (!doc) {
-                throw new Error(`No such document: ${docName}`);
+                console.warn(`No such document: ${docName}`);
+                return `<span style='color: red;'>No Such Document: ${docName}</span>`;
               }
               if (dataKey.startsWith("docLink")) {
                 return `<span class="text-docLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="open">${doc.name}</span>`;
@@ -235,7 +236,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     } else {
       iData = {system: context.data.root as K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any};
     }
-    kLog.log("[formatForKult]", {str, context, iData, "this": this});
+    // kLog.log("[formatForKult]", {str, context, iData, "this": this});
 
     return formatForKult(
       str,

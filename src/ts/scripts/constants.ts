@@ -150,28 +150,28 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
 };
 
 export const Colors = {
-  GOLD: "rgb(150, 140, 106)",
-  dGOLD: "rgb(65, 61, 46)",
-  bGOLD: "rgb(235, 219, 166)",
-  gGOLD: "rgb(255, 254, 200)",
+  GOLD: "rgb(150, 140, 106)", // #968c6a
+  dGOLD: "rgb(65, 61, 46)", // #413d2e
+  bGOLD: "rgb(235, 219, 166)", // #ebdba6
+  gGOLD: "rgb(255, 254, 200)", // #fffec8
 
-  RED: "rgb(155, 32, 32)",
-  dRED: "rgb(70, 14, 14)",
-  bRED: "rgb(240, 50, 50)",
-  gRED: "rgb(255, 0, 0)",
+  RED: "rgb(155, 32, 32)", // #9b2020
+  dRED: "rgb(70, 14, 14)", // #460e0e
+  bRED: "rgb(240, 50, 50)", // #f03232
+  gRED: "rgb(255, 0, 0)", // #ff0000
 
-  BLUE: "rgb(43, 85, 139)",
-  dBLUE: "rgb(17, 33, 54)",
-  bBLUE: "rgb(69, 137, 224)",
-  gBLUE: "rgb(128, 185, 255)",
+  BLUE: "rgb(43, 85, 139)", // #2b558b
+  dBLUE: "rgb(17, 33, 54)", // #112136
+  bBLUE: "rgb(69, 137, 224)", // #4589e0
+  gBLUE: "rgb(128, 185, 255)", // #80b9ff
 
-  bWHITE: "rgb(255, 255, 255)",
-  WHITE: "rgb(200, 200, 200)",
-  bGREY: "rgb(177, 177, 177)",
-  GREY: "rgb(128, 128, 128)",
-  dGREY: "rgb(78, 78, 78)",
-  BLACK: "rgb(20, 20, 20)",
-  dBLACK: "rgb(0, 0, 0)"
+  bWHITE: "rgb(255, 255, 255)", // #ffffff
+  WHITE: "rgb(200, 200, 200)", // #c8c8c8
+  bGREY: "rgb(177, 177, 177)", // #b1b1b1
+  GREY: "rgb(128, 128, 128)", // #808080
+  dGREY: "rgb(78, 78, 78)", // #4e4e4e
+  BLACK: "rgb(20, 20, 20)", // #141414
+  dBLACK: "rgb(0, 0, 0)" // #000000
 };
 
 export const ColorFilters = {

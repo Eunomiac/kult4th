@@ -22,6 +22,11 @@
     <div class="sheet-header">
 		  <label class="k4-title item-title">{{item.name}}</label>
     </div>
+    {{#if item.parentName}}
+      {{#unless (test item.name "==" item.parentName)}}
+        <label class="k4-from-title">{{item.parentName}}</label>
+      {{/unless}}
+    {{/if}}
 
 		{{#unless (areEmpty item.system.rules.intro item.system.rules.trigger item.system.rules.outro)}}
 			{{> "systems/kult4th/templates/components/rules-block.hbs" rules=item.system.rules}}
@@ -63,7 +68,7 @@
 			<label class="k4-header hold-header neon-glow-strong-red">{{localize "kult4th.item.headings.risksHold" itemType=(case "title" item.type)}}</label>
 			<span class="hold-body">{{{formatForKult item.system.rules.holdText}}}</span>
 		{{/if}}
-
+{{!--
     <div style="position: relative">
     <label class="comp tab-label">
       <a class="comp-control comp-button comp-add effect-control" data-action="create" title="Create Effect">
@@ -96,6 +101,6 @@
         </tr>
       {{/each}}
     </table>
-    </div>
+    </div> --}}
 	</main>
 {{/with}}

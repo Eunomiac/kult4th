@@ -15,6 +15,7 @@ import U from "./scripts/utilities.js";
 import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
+import Handlebars from "handlebars";
 
 import InitializeLibraries, {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
@@ -50,6 +51,8 @@ Hooks.on("init", async () => {
   InitializeLibraries();
   // Initialize Tooltips Overlay
   InitializeTooltips($("body"));
+  // Set Handlebars runtime options
+
 
   // Dynamically import data.js
   const {BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, getMutationDiffReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} = await import("./scripts/data.js");

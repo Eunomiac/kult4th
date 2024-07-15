@@ -334,7 +334,6 @@ class K4Roll extends Roll {
     //   throw new Error("Cannot display a roll that has not been evaluated.");
     // }
     const themeCSSClasses: string[] = [];
-    const template = await getTemplate(U.getTemplatePath("sidebar", "result-rolled"));
     const templateData: K4Roll.Context = {
       cssClass: "",
       dice: this.dice[0].results.map((dResult) => dResult.result) as [number, number],
@@ -391,7 +390,10 @@ class K4Roll extends Roll {
     // }
     templateData.cssClass = cssClasses.join(" ");
     // kLog.log("DISPLAYING ROLL RESULT", {roll, templateData, rollData, options});
-    const content = template(templateData);
+    const content = await renderTemplate(
+      U.getTemplatePath("sidebar", "result-rolled"),
+      templateData
+    );
 
 
     return await K4ChatMessage.create({
