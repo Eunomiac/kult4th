@@ -54,7 +54,7 @@ declare global {
     interface DataBase extends ConstructorDataBase {
       attribute: K4Roll.RollableAttribute,
       attrVal: number,
-      modifiers: Array<K4Roll.ModData>
+      modifiers: K4Roll.ModData[]
     }
 
     interface DataItemSource extends DataBase {
@@ -324,7 +324,7 @@ class K4Roll extends Roll {
 
     super.evaluate({async: false});
 
-    game.dice3d?.showForRoll(this);
+    // game.dice3d.showForRoll(this); // Can't include if disabling canvas.
 
     return await this.displayToChat();
   }
@@ -348,7 +348,7 @@ class K4Roll extends Roll {
       outcome: this.outcome,
       ...(this.source instanceof K4Item && this.source.isActiveItem())
       ? {
-        source: this.source as K4Item.Active,
+        source: this.source,
         sourceType: this.source.parentType,
         sourceName: this.source.name,
         sourceImg: this.source.img ?? ""
@@ -396,7 +396,7 @@ class K4Roll extends Roll {
     );
 
 
-    return await K4ChatMessage.create({
+    return (await K4ChatMessage.create({
       content,
       speaker: K4ChatMessage.getSpeaker(),
       flags: {
@@ -410,7 +410,7 @@ class K4Roll extends Roll {
           isEdge: false
         }
       }
-    }) as K4ChatMessage;
+    }))!;
   }
 }
 

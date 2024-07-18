@@ -315,15 +315,18 @@ declare global {
   type GsapAnimation = gsap.core.Tween | gsap.core.Timeline;
 
   // Represents a valid gsap animation target
-  type TweenTarget = JQuery | gsap.TweenTarget;
-  interface GSAPEffect<Defaults extends gsap.TweenVars> {
-    effect: (
-      targets: TweenTarget,
-      config: Partial<Defaults>
-    ) => GsapAnimation,
-    defaults: Defaults,
-    extendTimeline?: boolean
-  }
+  type TweenTarget = NonNullable<JQuery | gsap.TweenTarget>;
+
+  type GSAPEffectFunction<Schema extends gsap.TweenVars = gsap.TweenVars> = (targets: TweenTarget, config?: Partial<Schema>) => GSAPAnimation;
+  type GSAPEffectFunctionWithDefaults<Schema extends gsap.TweenVars = gsap.TweenVars> = (targets: TweenTarget, config: Schema) => GSAPAnimation;
+
+interface GSAPEffectDefinition<Schema extends gsap.TweenVars = gsap.TweenVars> {
+  name: string,
+  effect: GSAPEffectFunctionWithDefaults<Schema>,
+  defaults: Schema,
+  extendTimeline: boolean
+}
+
 
   // type GsapEffectConfig = typeof gsapEffects[keyof typeof gsapEffects]["defaults"];
   // namespace gsap.core {

@@ -16,6 +16,7 @@ import {formatStringForKult, registerHandlebarHelpers} from "./scripts/helpers.j
 import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/settings.js";
 import registerDebugger from "./scripts/logger.js";
 import Handlebars from "handlebars";
+import K4Alert from "./documents/K4Alert.js";
 
 import InitializeLibraries, {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
@@ -39,6 +40,7 @@ interface GradientDef {fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradien
 // #endregion
 
 registerDebugger();
+let socket: Socket; // ~ SocketLib interface
 
 Hooks.on("init", async () => {
   // Register settings (including debug settings necessary for kLog)
@@ -72,7 +74,7 @@ Hooks.on("init", async () => {
   });
 
   // PreInitialize all classes that have a PreInitialize method
-  const ClassesToPreinitialize = [K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
+  const ClassesToPreinitialize = [K4Alert, K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
     .filter((doc): doc is typeof doc & {PreInitialize: (context?: Record<string, unknown>) => Promise<void>;} => "PreInitialize" in doc);
 
   await Promise.all(ClassesToPreinitialize
@@ -341,8 +343,58 @@ async function preloadTemplates() {
       "ask-for-buttons",
       "ask-for-confirm",
       "ask-for-item"
+    ]),
+    ...U.getTemplatePath("alerts", [
+      "alert-simple"
     ])
   ];
 
   return loadTemplates(templatePaths);
 }
+
+// #region ░░░░░░░[SocketLib]░░░░ SocketLib Initialization ░░░░░░░ ~
+Hooks.once("socketlib.ready", () => {
+  socket = socketlib.registerSystem("kult4th");
+  /* DEVCODE*/Object.assign(
+    globalThis,
+    {socket, socketlib}
+  );/* !DEVCODE*/
+});
+// #endregion ░░░░[SocketLib]░░░░
+
+// #region ░░░░░░░[Dice So Nice]░░░░ Dice So Nice Integration ░░░░░░░ ~
+interface Dice3DController {
+  addSystem: (
+    data: {
+      id: string,
+      name: string
+    },
+    status: string
+  ) => void,
+  addDicePreset: (
+    data: {
+      type: string,
+      labels: string[],
+      system: string,
+      bumpMaps: string[],
+      emissiveMaps: Array<string|undefined>,
+      emissive: string
+    }
+  ) => void
+}
+/*
+Can't include if disabling canvas!
+Hooks.once("diceSoNiceReady", (dice3d: Dice3DController) => {
+  console.warn("Dice So Nice Ready, But Kult4th Theme Not Implemented.");
+  return;
+  dice3d.addSystem({id: "kult4th", name: "Kult: Divinity Lost 4th Edition"}, "preferred");
+  dice3d.addDicePreset({
+    type:         "d6",
+    labels:       [1, 2, 3, 4, 5, 6].map((num) => `systems/kult4th/assets/dice/faces/${num}.webp`),
+    system:       "kult4th",
+    bumpMaps:     [1, 2, 3, 4, 5, 6].map((num) => `systems/kult4th/assets/dice/bump-maps/${num}.webp`),
+    emissiveMaps: [undefined, undefined, undefined, undefined, undefined, "systems/kult4th/assets/dice/emission-maps/6.webp"],
+    emissive:     "#d89300"
+  });
+}); */
+// #endregion ░░░░[Dice So Nice]░░░░

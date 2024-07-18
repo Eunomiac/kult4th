@@ -1,3 +1,31 @@
+/** CONSOLE COMMAND TO FIND DATA WITH MISSING LISTS:
+
+Object.fromEntries(
+Object.entries(PACKS)
+    .filter(([type]) => ["advantage", "disadvantage", "darksecret"].includes(type))
+    .map(([type, typeData]) => {
+        const filteredData = typeData.filter((data) => {
+            // Get defined lists
+            const listNames = Object.keys(data.system.lists ?? {});
+            if (!listNames.length) { return false; }
+            for (const name of listNames) {
+                const valString = Object.entries(data.system.rules ?? [])
+                    .filter(([key, val]) => key !== "listRefs")
+                    .map(([_, val]) => val)
+                    .join("|");
+                if (valString.includes(`list.${name}`)) { return false }
+                if (!(data.system.rules?.listRefs ?? []).includes(name)) { return true; }
+            }
+            return false;
+        });
+
+        // filteredData.sort((a,b) => a.name.localeCompare(b.name));
+
+        return [type, filteredData.map((data) => data.name)]
+    })
+  )
+ */
+
 import {K4Attribute} from "./constants.js";
 import K4ActiveEffect, {EffectDuration, EffectResetOn, K4Change, PromptInputType} from "../documents/K4ActiveEffect.js";
 import {
@@ -34,6 +62,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
       "system": {
+        "shortDesc": "Establish facts and relations when you arrive to new locations in the story.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -42,6 +71,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/worldly.svg",
             "system": {
+              "shortDesc": "Establish facts and relations when you arrive to new locations in the story.",
               "chatName": "Recalls this Place",
               "parentItem": {
                 "name": "Worldly",
@@ -70,6 +100,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
       "system": {
+        "shortDesc": "You know things about the occult.",
         "lists": {
           "options": {
             "name": "Options",
@@ -86,6 +117,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/occult-studies.svg",
             "system": {
+              "shortDesc": "You know things about the occult.",
               "parentItem": {
                 "name": "Occult Studies",
                 "type": K4ItemType.advantage
@@ -124,7 +156,7 @@ const ITEM_DATA: {
           "intro": "#>text-center>You are a student of the occult.<#",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0
@@ -135,6 +167,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
       "system": {
+        "shortDesc": "You mark Time to reroll the dice <em>(requires %insert.docLink.Condemned%)</em>.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -143,6 +176,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
             "system": {
+              "shortDesc": "You mark Time to reroll the dice <em>(requires %insert.docLink.Condemned%)</em>.",
               "chatName": "Refuses to Give In",
               "parentItem": {
                 "name": "To the Last Breath",
@@ -212,6 +246,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/extortionist.svg",
       "system": {
+        "shortDesc": "You can %insert.docLink.Read a Person.Read% others weaknesses.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -259,6 +294,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
       "system": {
+        "shortDesc": "You are a master at blending in.",
         "lists": {
           "options": {
             "name": "Options",
@@ -277,6 +313,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/character-actor.svg",
             "system": {
+              "shortDesc": "You are a master at blending in.",
               "parentItem": {
                 "name": "Character Actor",
                 "type": K4ItemType.advantage
@@ -318,7 +355,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -329,6 +366,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
       "system": {
+        "shortDesc": "Gain #>text-keyword>Stability<# when you take risks or make sacrifices for your code of honor.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -337,6 +375,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
             "system": {
+              "shortDesc": "Gain #>text-keyword>Stability<# when you take risks or make sacrifices for your code of honor.",
               "chatName": "Follows the Code",
               "parentItem": {
                 "name": "Code of Honor",
@@ -365,6 +404,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
       "system": {
+        "shortDesc": "You are good at researching places.",
         "lists": {
           "options": {
             "name": "Options",
@@ -382,6 +422,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/prepared.svg",
             "system": {
+              "shortDesc": "You are good at researching places.",
               "parentItem": {
                 "name": "Prepared",
                 "type": K4ItemType.advantage
@@ -425,7 +466,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move for the location."
         },
         "currentHold": 0,
@@ -436,6 +477,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
       "system": {
+        "shortDesc": "Gain #>text-keyword>Stability<# when you help others at your own expense.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -444,6 +486,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
             "system": {
+              "shortDesc": "Gain #>text-keyword>Stability<# when you help others at your own expense.",
               "chatName": "Sacrifices for Another",
               "parentItem": {
                 "name": "Good Samaritan",
@@ -472,6 +515,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
       "system": {
+        "shortDesc": "You have an artifact with mystical powers.",
         "lists": {
           "powers": {
             "name": "Powers",
@@ -496,6 +540,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
             "system": {
+              "shortDesc": "You have an artifact with mystical powers.",
               "parentItem": {
                 "name": "Artifact",
                 "type": K4ItemType.advantage
@@ -534,7 +579,7 @@ const ITEM_DATA: {
           "intro": "You own a seemingly mundane item, which actually possesses mystical powers.%insert.break%Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).%insert.break%Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: %list.examplepowers%",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["powers"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -545,6 +590,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
       "system": {
+        "shortDesc": "You can sense danger and the right path in front of you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -562,6 +608,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sixth-sense.svg",
             "system": {
+              "shortDesc": "You can sense danger and the right path in front of you.",
               "parentItem": {
                 "name": "Sixth Sense",
                 "type": K4ItemType.advantage
@@ -600,7 +647,7 @@ const ITEM_DATA: {
           "intro": "#>text-center>You have an intuition for things, both good and bad.<#",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -611,6 +658,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/moles.svg",
       "system": {
+        "shortDesc": "You have a number of moles to use when needed.",
         "lists": {
           "options": {
             "name": "Options",
@@ -627,6 +675,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/moles.svg",
             "system": {
+              "shortDesc": "You have a number of moles to use when needed.",
               "parentItem": {
                 "name": "Moles",
                 "type": K4ItemType.advantage
@@ -676,6 +725,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
       "system": {
+        "shortDesc": "You have several romantic relationships to use for resources.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -684,6 +734,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/impostor.svg",
             "system": {
+              "shortDesc": "You have several romantic relationships to use for resources.",
               "parentItem": {
                 "name": "Impostor",
                 "type": K4ItemType.advantage
@@ -724,6 +775,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
       "system": {
+        "shortDesc": "You have <em>+1 on all rolls</em> when trying to make it through overwhelming odds.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -732,6 +784,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
             "system": {
+              "shortDesc": "You have <em>+1 on all rolls</em> when trying to make it through overwhelming odds.",
               "chatName": "Goes Against the Odds",
               "parentItem": {
                 "name": "Desperate",
@@ -760,6 +813,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
       "system": {
+        "shortDesc": "You can inspire awe and obedience in others.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -768,6 +822,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/awe-inspiring.svg",
             "system": {
+              "shortDesc": "You can inspire awe and obedience in others.",
               "parentItem": {
                 "name": "Awe-Inspiring",
                 "type": K4ItemType.advantage
@@ -808,6 +863,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
       "system": {
+        "shortDesc": "You are watched over and protected by a group of mysterious people.",
         "lists": {
           "watchers": {
             "name": "Watchers Gang",
@@ -826,6 +882,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/watchers.svg",
             "system": {
+              "shortDesc": "You are watched over and protected by a group of mysterious people.",
               "chatName": "Invokes the Watchers",
               "parentItem": {
                 "name": "Watchers",
@@ -865,6 +922,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
       "system": {
+        "shortDesc": "You have contacts at universities around the world.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -873,6 +931,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/academic-network.svg",
             "system": {
+              "shortDesc": "You have contacts at universities around the world.",
               "parentItem": {
                 "name": "Academic Network",
                 "type": K4ItemType.advantage
@@ -1026,6 +1085,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
       "system": {
+        "shortDesc": "You can get power over humans by experimenting on them.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -1034,6 +1094,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/implanted-messages.svg",
             "system": {
+              "shortDesc": "You can get power over humans by experimenting on them.",
               "parentItem": {
                 "name": "Implanted Messages",
                 "type": K4ItemType.advantage
@@ -1073,6 +1134,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
       "system": {
+        "shortDesc": "You can use your art to experience visions and lure creatures to you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -1090,6 +1152,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/forbidden-inspiration.svg",
             "system": {
+              "shortDesc": "You can use your art to experience visions and lure creatures to you.",
               "parentItem": {
                 "name": "Forbidden Inspiration",
                 "type": K4ItemType.advantage
@@ -1141,6 +1204,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
       "system": {
+        "shortDesc": "You can create and repair things.",
         "lists": {
           "options": {
             "name": "Options",
@@ -1159,6 +1223,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/inventor.svg",
             "system": {
+              "shortDesc": "You can create and repair things.",
               "parentItem": {
                 "name": "Inventor",
                 "type": K4ItemType.advantage
@@ -1207,6 +1272,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
       "system": {
+        "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (−2)<#.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -1215,6 +1281,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
             "system": {
+              "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (−2)<#.",
               "chatName": "Will Pay Any Price",
               "parentItem": {
                 "name": "At Any Cost",
@@ -1243,6 +1310,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
       "system": {
+        "shortDesc": "You have exceptional control over your body.",
         "lists": {
           "options": {
             "name": "Options",
@@ -1260,6 +1328,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/body-awareness.svg",
             "system": {
+              "shortDesc": "You have exceptional control over your body.",
               "parentItem": {
                 "name": "Body Awareness",
                 "type": K4ItemType.advantage
@@ -1311,6 +1380,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
       "system": {
+        "shortDesc": "You can make others trust you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -1328,6 +1398,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/crafty.svg",
             "system": {
+              "shortDesc": "You can make others trust you.",
               "parentItem": {
                 "name": "Crafty",
                 "type": K4ItemType.advantage
@@ -1376,6 +1447,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
       "system": {
+        "shortDesc": "You can open yourself to visions and communicate with entities from other dimensions.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -1384,6 +1456,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/enhanced-awareness.svg",
             "system": {
+              "shortDesc": "You can open yourself to visions and communicate with entities from other dimensions.",
               "parentItem": {
                 "name": "Enhanced Awareness",
                 "type": K4ItemType.advantage
@@ -1423,6 +1496,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
       "system": {
+        "shortDesc": "You get Edges when you enter dangerous situations.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -1440,6 +1514,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter dangerous situations.",
               "parentItem": {
                 "name": "Daredevil",
                 "type": K4ItemType.advantage
@@ -1481,6 +1556,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter dangerous situations.",
               "chatName": "On a Swivel",
               "parentItem": {
                 "name": "Daredevil",
@@ -1498,6 +1574,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter dangerous situations.",
               "chatName": "Not Today",
               "parentItem": {
                 "name": "Daredevil",
@@ -1515,6 +1592,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/daredevil.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter dangerous situations.",
               "chatName": "Sucker Punch",
               "parentItem": {
                 "name": "Daredevil",
@@ -1545,6 +1623,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
       "system": {
+        "shortDesc": "You can use your calm and cool in the midst of violence and chaos.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -1563,6 +1642,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
+              "shortDesc": "You can use your calm and cool in the midst of violence and chaos.",
               "parentItem": {
                 "name": "Ice Cold",
                 "type": K4ItemType.advantage
@@ -1604,6 +1684,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
+              "shortDesc": "You can use your calm and cool in the midst of violence and chaos.",
               "chatName": "Easy Dodge",
               "parentItem": {
                 "name": "Ice Cold",
@@ -1621,6 +1702,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
+              "shortDesc": "You can use your calm and cool in the midst of violence and chaos.",
               "chatName": "Opportunity Calls",
               "parentItem": {
                 "name": "Ice Cold",
@@ -1638,6 +1720,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
+              "shortDesc": "You can use your calm and cool in the midst of violence and chaos.",
               "chatName": "Patience, Patience",
               "parentItem": {
                 "name": "Ice Cold",
@@ -1655,6 +1738,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ice-cold.svg",
             "system": {
+              "shortDesc": "You can use your calm and cool in the midst of violence and chaos.",
               "chatName": "Clever Trick",
               "parentItem": {
                 "name": "Ice Cold",
@@ -1685,6 +1769,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
       "system": {
+        "shortDesc": "You can perform rituals from written instructions.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -1702,6 +1787,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/dabbler-in-the-occult.svg",
             "system": {
+              "shortDesc": "You can perform rituals from written instructions.",
               "parentItem": {
                 "name": "Dabbler in the Occult",
                 "type": K4ItemType.advantage
@@ -1741,6 +1827,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/bound.svg",
       "system": {
+        "shortDesc": "You can draw powers from an extradimensional entity.",
         "lists": {
           "options": {
             "name": "Options",
@@ -1758,6 +1845,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/bound.svg",
             "system": {
+              "shortDesc": "You can draw powers from an extradimensional entity.",
               "parentItem": {
                 "name": "Bound",
                 "type": K4ItemType.advantage
@@ -1809,6 +1897,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
       "system": {
+        "shortDesc": "You can control animals.",
         "lists": {
           "options": {
             "name": "Options",
@@ -1826,6 +1915,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/animal-speaker.svg",
             "system": {
+              "shortDesc": "You can control animals.",
               "parentItem": {
                 "name": "Animal Speaker",
                 "type": K4ItemType.advantage
@@ -1877,6 +1967,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
       "system": {
+        "shortDesc": "You are deft at running, climbing and jumping.",
         "lists": {
           "options": {
             "name": "Options",
@@ -1894,6 +1985,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/parkour.svg",
             "system": {
+              "shortDesc": "You are deft at running, climbing and jumping.",
               "parentItem": {
                 "name": "Parkour",
                 "type": K4ItemType.advantage
@@ -1945,6 +2037,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/observant.svg",
       "system": {
+        "shortDesc": "You are good at judging someone’s character.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -1988,6 +2081,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/expert.svg",
       "system": {
+        "shortDesc": "You get to ask an additonal question about whatever you want when you %insert.docLink.Investigate% things in your fields of knowledge.",
         "lists": {
           "expertise": {
             "name": "Fields of Expertise",
@@ -2057,6 +2151,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/interrogator.svg",
       "system": {
+        "shortDesc": "You are an expert in %insert.docLink.Read a Person.Reading% when others are lying.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -2098,6 +2193,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
       "system": {
+        "shortDesc": "You gain #>text-keyword>Stability<# when you learn about other dimensions and supernatural entities.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -2106,6 +2202,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
             "system": {
+              "shortDesc": "You gain #>text-keyword>Stability<# when you learn about other dimensions and supernatural entities.",
               "chatName": "Learns Something New",
               "parentItem": {
                 "name": "Thirst for Knowledge",
@@ -2134,6 +2231,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
       "system": {
+        "shortDesc": "You may mark Time to stabilize wounds <em>(requires %insert.docLink.Condemned%)</em>.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -2142,6 +2240,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
+              "shortDesc": "You may mark Time to stabilize wounds <em>(requires %insert.docLink.Condemned%)</em>.",
               "chatName": "Defies Injury",
               "parentItem": {
                 "name": "Sealed Fate",
@@ -2159,6 +2258,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
+              "shortDesc": "You may mark Time to stabilize wounds <em>(requires %insert.docLink.Condemned%)</em>.",
               "chatName": "Defies Death",
               "parentItem": {
                 "name": "Sealed Fate",
@@ -2200,6 +2300,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
       "system": {
+        "shortDesc": "You are good at thinking your way out of danger.",
         "lists": {
           "options": {
             "name": "Options",
@@ -2217,6 +2318,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/quick-thinker.svg",
             "system": {
+              "shortDesc": "You are good at thinking your way out of danger.",
               "parentItem": {
                 "name": "Quick Thinker",
                 "type": K4ItemType.advantage
@@ -2268,6 +2370,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
       "system": {
+        "shortDesc": "You can perform rituals to banish spirits or demons.",
         "lists": {
           "options": {
             "name": "Options",
@@ -2285,6 +2388,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/exorcist.svg",
             "system": {
+              "shortDesc": "You can perform rituals to banish spirits or demons.",
               "parentItem": {
                 "name": "Exorcist",
                 "type": K4ItemType.advantage
@@ -2333,6 +2437,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
       "system": {
+        "shortDesc": "You know things about places.",
         "lists": {
           "options": {
             "name": "Options",
@@ -2351,6 +2456,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/wanderer.svg",
             "system": {
+              "shortDesc": "You know things about places.",
               "parentItem": {
                 "name": "Wanderer",
                 "type": K4ItemType.advantage
@@ -2402,6 +2508,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hardened.svg",
       "system": {
+        "shortDesc": "You take <em>+1 ongoing</em> to %insert.docLink.Endure Injury%.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -2436,6 +2543,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
       "system": {
+        "shortDesc": "You are an expert on penetrating networks.",
         "lists": {
           "complications": {
             "name": "Complications",
@@ -2452,6 +2560,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/hacker.svg",
             "system": {
+              "shortDesc": "You are an expert on penetrating networks.",
               "parentItem": {
                 "name": "Hacker",
                 "type": K4ItemType.advantage
@@ -2491,6 +2600,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
       "system": {
+        "shortDesc": "You can use your art to seduce an NPC.",
         "lists": {
           "options": {
             "name": "Options",
@@ -2515,6 +2625,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fascination.svg",
             "system": {
+              "shortDesc": "You can use your art to seduce an NPC.",
               "parentItem": {
                 "name": "Fascination",
                 "type": K4ItemType.advantage
@@ -2563,6 +2674,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/boss.svg",
       "system": {
+        "shortDesc": "You have a gang of criminal henchmen.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -2580,6 +2692,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/boss.svg",
             "system": {
+              "shortDesc": "You have a gang of criminal henchmen.",
               "parentItem": {
                 "name": "Boss",
                 "type": K4ItemType.advantage
@@ -2619,6 +2732,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
       "system": {
+        "shortDesc": "You are good at distracting NPCs with small talk.",
         "lists": {
           "options": {
             "name": "Options",
@@ -2636,6 +2750,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/fast-talk.svg",
             "system": {
+              "shortDesc": "You are good at distracting NPCs with small talk.",
               "parentItem": {
                 "name": "Fast Talk",
                 "type": K4ItemType.advantage
@@ -2687,6 +2802,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
       "system": {
+        "shortDesc": "You are a master at overhearing information in crowds.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -2705,6 +2821,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/read-a-crowd.svg",
             "system": {
+              "shortDesc": "You are a master at overhearing information in crowds.",
               "parentItem": {
                 "name": "Read a Crowd",
                 "type": K4ItemType.advantage
@@ -2756,6 +2873,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
       "system": {
+        "shortDesc": "Gain #>text-keyword>Stability<# when you create things or carry out experiments.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -2764,6 +2882,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
             "system": {
+              "shortDesc": "Gain #>text-keyword>Stability<# when you create things or carry out experiments.",
               "chatName": "Innovates",
               "parentItem": {
                 "name": "Workaholic",
@@ -2792,6 +2911,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
       "system": {
+        "shortDesc": "You can push yourself to overcome threats and gain Edges.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -2809,6 +2929,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
+              "shortDesc": "You can push yourself to overcome threats and gain Edges.",
               "parentItem": {
                 "name": "Stubborn",
                 "type": K4ItemType.advantage
@@ -2850,6 +2971,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
+              "shortDesc": "You can push yourself to overcome threats and gain Edges.",
               "chatName": "Refuse to Give Up",
               "parentItem": {
                 "name": "Stubborn",
@@ -2867,6 +2989,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
+              "shortDesc": "You can push yourself to overcome threats and gain Edges.",
               "chatName": "Will Over Skill",
               "parentItem": {
                 "name": "Stubborn",
@@ -2884,6 +3007,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/stubborn.svg",
             "system": {
+              "shortDesc": "You can push yourself to overcome threats and gain Edges.",
               "chatName": "Steel Yourself",
               "parentItem": {
                 "name": "Stubborn",
@@ -2914,6 +3038,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(fencing).svg",
       "system": {
+        "shortDesc": "You have competed professionally as a fencer.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -2945,6 +3070,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
       "system": {
+        "shortDesc": "You are good at noticing details on people.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -2964,6 +3090,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/eye-for-detail.svg",
             "system": {
+              "shortDesc": "You are good at noticing details on people.",
               "parentItem": {
                 "name": "Eye for Detail",
                 "type": K4ItemType.advantage
@@ -3015,6 +3142,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/escape-artist.svg",
       "system": {
+        "shortDesc": "You are a master at slipping away when the shit hits the fan.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -3023,6 +3151,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/escape-artist.svg",
             "system": {
+              "shortDesc": "You are a master at slipping away when the shit hits the fan.",
               "parentItem": {
                 "name": "Escape Artist",
                 "type": K4ItemType.advantage
@@ -3062,6 +3191,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/erotic.svg",
       "system": {
+        "shortDesc": "You can use your attractivness to influence others.",
         "lists": {
           "options": {
             "name": "Options",
@@ -3080,6 +3210,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/erotic.svg",
             "system": {
+              "shortDesc": "You can use your attractivness to influence others.",
               "parentItem": {
                 "name": "Erotic",
                 "type": K4ItemType.advantage
@@ -3131,6 +3262,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
       "system": {
+        "shortDesc": "You can heal someone by sacrificing yourself or a victim.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -3139,6 +3271,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lay-on-hands.svg",
             "system": {
+              "shortDesc": "You can heal someone by sacrificing yourself or a victim.",
               "parentItem": {
                 "name": "Lay on Hands",
                 "type": K4ItemType.advantage
@@ -3178,6 +3311,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sneak.svg",
       "system": {
+        "shortDesc": "You can avoid detection when hiding or sneaking.",
         "lists": {
           "options": {
             "name": "Options",
@@ -3195,6 +3329,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sneak.svg",
             "system": {
+              "shortDesc": "You can avoid detection when hiding or sneaking.",
               "parentItem": {
                 "name": "Sneak",
                 "type": K4ItemType.advantage
@@ -3246,6 +3381,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
       "system": {
+        "shortDesc": "You get more viscious when you are wounded.",
         "lists": {
           "options": {
             "name": "Options",
@@ -3262,6 +3398,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/survival-instinct.svg",
             "system": {
+              "shortDesc": "You get more viscious when you are wounded.",
               "parentItem": {
                 "name": "Survival Instinct",
                 "type": K4ItemType.advantage
@@ -3301,6 +3438,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/wayfinder.svg",
       "system": {
+        "shortDesc": "You can let your madness lead you through shortcuts in the city.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -3309,6 +3447,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/wayfinder.svg",
             "system": {
+              "shortDesc": "You can let your madness lead you through shortcuts in the city.",
               "parentItem": {
                 "name": "Wayfinder",
                 "type": K4ItemType.advantage
@@ -3348,6 +3487,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/street-contacts.svg",
       "system": {
+        "shortDesc": "You have contacts among the social outsiders and outcasts.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -3366,6 +3506,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/street-contacts.svg",
             "system": {
+              "shortDesc": "You have contacts among the social outsiders and outcasts.",
               "parentItem": {
                 "name": "Street Contacts",
                 "type": K4ItemType.advantage
@@ -3417,6 +3558,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(melee).svg",
       "system": {
+        "shortDesc": "You are a master in armed close-quarters combat.",
         "lists": {
           "attacks": {
             "name": "Attacks (Melee)",
@@ -3478,6 +3620,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/authority.svg",
       "system": {
+        "shortDesc": "You can use your academic authority to influence others.",
         "lists": {
           "options": {
             "name": "Options",
@@ -3496,6 +3639,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/authority.svg",
             "system": {
+              "shortDesc": "You can use your academic authority to influence others.",
               "parentItem": {
                 "name": "Authority",
                 "type": K4ItemType.advantage
@@ -3547,6 +3691,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/genius.svg",
       "system": {
+        "shortDesc": "You get Edges in life-threatening situations.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -3564,6 +3709,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
+              "shortDesc": "You get Edges in life-threatening situations.",
               "chatName": "Use their Brain",
               "parentItem": {
                 "name": "Genius",
@@ -3606,6 +3752,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
+              "shortDesc": "You get Edges in life-threatening situations.",
               "chatName": "Logical",
               "parentItem": {
                 "name": "Genius",
@@ -3623,6 +3770,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
+              "shortDesc": "You get Edges in life-threatening situations.",
               "chatName": "Quick Thinking",
               "parentItem": {
                 "name": "Genius",
@@ -3640,6 +3788,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/genius.svg",
             "system": {
+              "shortDesc": "You get Edges in life-threatening situations.",
               "chatName": "Rational",
               "parentItem": {
                 "name": "Genius",
@@ -3670,6 +3819,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/driver.svg",
       "system": {
+        "shortDesc": "You are a trained professional at operating motor vehicles.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -3688,6 +3838,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
+              "shortDesc": "You are a trained professional at operating motor vehicles.",
               "parentItem": {
                 "name": "Driver",
                 "type": K4ItemType.advantage
@@ -3729,6 +3880,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
+              "shortDesc": "You are a trained professional at operating motor vehicles.",
               "chatName": "Defensive Driving",
               "parentItem": {
                 "name": "Driver",
@@ -3746,6 +3898,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
+              "shortDesc": "You are a trained professional at operating motor vehicles.",
               "chatName": "Evasive Driving",
               "parentItem": {
                 "name": "Driver",
@@ -3763,6 +3916,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
+              "shortDesc": "You are a trained professional at operating motor vehicles.",
               "chatName": "Deadly Driving",
               "parentItem": {
                 "name": "Driver",
@@ -3780,6 +3934,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/driver.svg",
             "system": {
+              "shortDesc": "You are a trained professional at operating motor vehicles.",
               "chatName": "Reckless Driving",
               "parentItem": {
                 "name": "Driver",
@@ -3810,6 +3965,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/tracer.svg",
       "system": {
+        "shortDesc": "You have intelligence networks to trace things or people with.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -3828,6 +3984,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/tracer.svg",
             "system": {
+              "shortDesc": "You have intelligence networks to trace things or people with.",
               "parentItem": {
                 "name": "Tracer",
                 "type": K4ItemType.advantage
@@ -3868,7 +4025,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3879,6 +4036,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
       "system": {
+        "shortDesc": "You are trained in stabilising wounds.",
         "lists": {
           "options": {
             "name": "Options",
@@ -3904,6 +4062,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
             "system": {
+              "shortDesc": "You are trained in stabilising wounds.",
               "parentItem": {
                 "name": "Battlefield Medicine",
                 "type": K4ItemType.advantage
@@ -3952,6 +4111,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
       "system": {
+        "shortDesc": "You have contacts in the world’s social elite.",
         "lists": {
           "options": {
             "name": "Options",
@@ -3970,6 +4130,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
             "system": {
+              "shortDesc": "You have contacts in the world’s social elite.",
               "parentItem": {
                 "name": "Elite Education",
                 "type": K4ItemType.advantage
@@ -4021,6 +4182,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sniper.svg",
       "system": {
+        "shortDesc": "You are a master at firing at distant targets.",
         "lists": {
           "options": {
             "name": "Options",
@@ -4040,6 +4202,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sniper.svg",
             "system": {
+              "shortDesc": "You are a master at firing at distant targets.",
               "parentItem": {
                 "name": "Sniper",
                 "type": K4ItemType.advantage
@@ -4088,6 +4251,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
       "system": {
+        "shortDesc": "You get Edges when you fight in close combat.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -4112,6 +4276,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close combat.",
               "parentItem": {
                 "name": "Streetfighter",
                 "type": K4ItemType.advantage
@@ -4149,6 +4314,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close combat.",
               "chatName": "Dodge",
               "parentItem": {
                 "name": "Streetfighter",
@@ -4166,6 +4332,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close combat.",
               "chatName": "Flurry of Blows",
               "parentItem": {
                 "name": "Streetfighter",
@@ -4183,6 +4350,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetfighter.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close combat.",
               "chatName": "Dirty Strike",
               "parentItem": {
                 "name": "Streetfighter",
@@ -4213,6 +4381,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
       "system": {
+        "shortDesc": "You are skilled in shadowing and shaking of any stalkers.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -4221,6 +4390,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
+              "shortDesc": "You are skilled in shadowing and shaking of any stalkers.",
               "parentItem": {
                 "name": "Shadow",
                 "type": K4ItemType.advantage
@@ -4249,6 +4419,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/shadow.svg",
             "system": {
+              "shortDesc": "You are skilled in shadowing and shaking of any stalkers.",
               "parentItem": {
                 "name": "Shadow",
                 "type": K4ItemType.advantage
@@ -4288,6 +4459,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/burglar.svg",
       "system": {
+        "shortDesc": "You are an expert in breaking and entering.",
         "lists": {
           "options": {
             "name": "Options",
@@ -4307,6 +4479,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/burglar.svg",
             "system": {
+              "shortDesc": "You are an expert in breaking and entering.",
               "parentItem": {
                 "name": "Burglar",
                 "type": K4ItemType.advantage
@@ -4358,6 +4531,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
       "system": {
+        "shortDesc": "You get <em>+2 ongoing</em> to all rolls against any one who wounds you.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -4366,6 +4540,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
             "system": {
+              "shortDesc": "You get <em>+2 ongoing</em> to all rolls against any one who wounds you.",
               "chatName": "Swears Vengeance",
               "parentItem": {
                 "name": "Eye for an Eye",
@@ -4394,6 +4569,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/gritted-teeth.svg",
       "system": {
+        "shortDesc": "You suffer no penalties to rolls from wounds.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -4453,6 +4629,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/manipulative.svg",
       "system": {
+        "shortDesc": "You can use given favors and learned secrets against people.",
         "lists": {
           "options": {
             "name": "Options",
@@ -4469,6 +4646,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/manipulative.svg",
             "system": {
+              "shortDesc": "You can use given favors and learned secrets against people.",
               "chatName": "Takes Account",
               "parentItem": {
                 "name": "Manipulative",
@@ -4497,6 +4675,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
       "system": {
+        "shortDesc": "You get Edges when you fight with no regard for personal safety.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -4515,6 +4694,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with no regard for personal safety.",
               "parentItem": {
                 "name": "Death Drive",
                 "type": K4ItemType.advantage
@@ -4556,6 +4736,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with no regard for personal safety.",
               "chatName": "Bring 'Em On",
               "parentItem": {
                 "name": "Death Drive",
@@ -4573,6 +4754,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with no regard for personal safety.",
               "chatName": "Savagery",
               "parentItem": {
                 "name": "Death Drive",
@@ -4590,6 +4772,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with no regard for personal safety.",
               "chatName": "Charge",
               "parentItem": {
                 "name": "Death Drive",
@@ -4607,6 +4790,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/death-drive.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with no regard for personal safety.",
               "chatName": "Go Crazy",
               "parentItem": {
                 "name": "Death Drive",
@@ -4637,6 +4821,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/analyst.svg",
       "system": {
+        "shortDesc": "You are good at making connections when you %insert.docLink.Investigate%.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -4687,6 +4872,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
       "system": {
+        "shortDesc": "You have a gang of criminals.",
         "lists": {
           "complications": {
             "name": "Complications",
@@ -4703,6 +4889,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
             "system": {
+              "shortDesc": "You have a gang of criminals.",
               "parentItem": {
                 "name": "Gang Leader",
                 "type": K4ItemType.advantage
@@ -4742,6 +4929,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/streetwise.svg",
       "system": {
+        "shortDesc": "You have contacts in the criminal underworld.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -4760,6 +4948,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/streetwise.svg",
             "system": {
+              "shortDesc": "You have contacts in the criminal underworld.",
               "parentItem": {
                 "name": "Streetwise",
                 "type": K4ItemType.advantage
@@ -4799,6 +4988,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/manhunter.svg",
       "system": {
+        "shortDesc": "You are good at getting information about people.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -4818,6 +5008,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/manhunter.svg",
             "system": {
+              "shortDesc": "You are good at getting information about people.",
               "parentItem": {
                 "name": "Manhunter",
                 "type": K4ItemType.advantage
@@ -4869,6 +5060,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(athletic).svg",
       "system": {
+        "shortDesc": "You have competed professionally in a sport with top athletes.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -4887,6 +5079,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
       "system": {
+        "shortDesc": "You can freeze an NPC with your stare.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -4895,6 +5088,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/deadly-stare.svg",
             "system": {
+              "shortDesc": "You can freeze an NPC with your stare.",
               "parentItem": {
                 "name": "Deadly Stare",
                 "type": K4ItemType.advantage
@@ -4934,6 +5128,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
       "system": {
+        "shortDesc": "You are good in a tight spot.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -4951,6 +5146,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
+              "shortDesc": "You are good in a tight spot.",
               "parentItem": {
                 "name": "Ace Up the Sleeve",
                 "type": K4ItemType.advantage
@@ -4992,6 +5188,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
+              "shortDesc": "You are good in a tight spot.",
               "chatName": "Reveal a Weapon",
               "parentItem": {
                 "name": "Ace Up the Sleeve",
@@ -5009,6 +5206,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
+              "shortDesc": "You are good in a tight spot.",
               "chatName": "Spot a Weakness",
               "parentItem": {
                 "name": "Ace Up the Sleeve",
@@ -5026,6 +5224,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ace-up-the-sleeve.svg",
             "system": {
+              "shortDesc": "You are good in a tight spot.",
               "chatName": "Find an Exit",
               "parentItem": {
                 "name": "Ace Up the Sleeve",
@@ -5056,6 +5255,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/inner-power.svg",
       "system": {
+        "shortDesc": "You harbour an uncontrollable, dangerous power.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -5064,6 +5264,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/inner-power.svg",
             "system": {
+              "shortDesc": "You harbour an uncontrollable, dangerous power.",
               "parentItem": {
                 "name": "Inner Power",
                 "type": K4ItemType.advantage
@@ -5103,6 +5304,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
       "system": {
+        "shortDesc": "You can get information about people.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -5122,6 +5324,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/network-of-contacts.svg",
             "system": {
+              "shortDesc": "You can get information about people.",
               "parentItem": {
                 "name": "Network of Contacts",
                 "type": K4ItemType.advantage
@@ -5173,6 +5376,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/survivalist.svg",
       "system": {
+        "shortDesc": "You are trained in surviving in the wild.",
         "lists": {
           "options": {
             "name": "Options",
@@ -5190,6 +5394,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/survivalist.svg",
             "system": {
+              "shortDesc": "You are trained in surviving in the wild.",
               "parentItem": {
                 "name": "Survivalist",
                 "type": K4ItemType.advantage
@@ -5241,6 +5446,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/officer.svg",
       "system": {
+        "shortDesc": "You get Edges when you fight with allies on your side.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -5259,6 +5465,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with allies on your side.",
               "parentItem": {
                 "name": "Officer",
                 "type": K4ItemType.advantage
@@ -5296,6 +5503,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with allies on your side.",
               "chatName": "\"Attack!\"",
               "parentItem": {
                 "name": "Officer",
@@ -5313,6 +5521,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with allies on your side.",
               "chatName": "\"Coordinate Fire!\"",
               "parentItem": {
                 "name": "Officer",
@@ -5330,6 +5539,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with allies on your side.",
               "chatName": "\"Go For The Head!\"",
               "parentItem": {
                 "name": "Officer",
@@ -5347,6 +5557,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/officer.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight with allies on your side.",
               "chatName": "\"Take Cover!\"",
               "parentItem": {
                 "name": "Officer",
@@ -5377,6 +5588,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
       "system": {
+        "shortDesc": "You are an expert in hiding the tracks of your kills.",
         "lists": {
           "options": {
             "name": "Options",
@@ -5394,6 +5606,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/exit-strategy.svg",
             "system": {
+              "shortDesc": "You are an expert in hiding the tracks of your kills.",
               "parentItem": {
                 "name": "Exit Strategy",
                 "type": K4ItemType.advantage
@@ -5445,6 +5658,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/puppeteer.svg",
       "system": {
+        "shortDesc": "You are good at executing plans with other people as pawns.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -5453,6 +5667,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/puppeteer.svg",
             "system": {
+              "shortDesc": "You are good at executing plans with other people as pawns.",
               "parentItem": {
                 "name": "Puppeteer",
                 "type": K4ItemType.advantage
@@ -5492,6 +5707,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
       "system": {
+        "shortDesc": "You can manipulate others into trusting you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -5517,6 +5733,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/forked-tongue.svg",
             "system": {
+              "shortDesc": "You can manipulate others into trusting you.",
               "parentItem": {
                 "name": "Forked Tongue",
                 "type": K4ItemType.advantage
@@ -5565,6 +5782,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
       "system": {
+        "shortDesc": "You can perform rituals with your followers.",
         "lists": {
           "visions": {
             "name": "Visions",
@@ -5584,6 +5802,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
             "system": {
+              "shortDesc": "You can perform rituals with your followers.",
               "parentItem": {
                 "name": "Cult Leader",
                 "type": K4ItemType.advantage
@@ -5632,6 +5851,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
       "system": {
+        "shortDesc": "You get Edges when you enter combat.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -5650,6 +5870,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter combat.",
               "parentItem": {
                 "name": "Field Agent",
                 "type": K4ItemType.advantage
@@ -5690,6 +5911,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter combat.",
               "chatName": "Take Cover",
               "parentItem": {
                 "name": "Field Agent",
@@ -5707,6 +5929,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter combat.",
               "chatName": "Choke Hold",
               "parentItem": {
                 "name": "Field Agent",
@@ -5724,6 +5947,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter combat.",
               "chatName": "Disarm",
               "parentItem": {
                 "name": "Field Agent",
@@ -5741,6 +5965,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/field-agent.svg",
             "system": {
+              "shortDesc": "You get Edges when you enter combat.",
               "chatName": "Improvised Weapon",
               "parentItem": {
                 "name": "Field Agent",
@@ -5790,6 +6015,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
       "system": {
+        "shortDesc": "You learn to fight enemies better when they wound you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -5807,6 +6033,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/voice-of-pain.svg",
             "system": {
+              "shortDesc": "You learn to fight enemies better when they wound you.",
               "parentItem": {
                 "name": "Voice of Pain",
                 "type": K4ItemType.advantage
@@ -5858,6 +6085,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/collector.svg",
       "system": {
+        "shortDesc": "You know how to find unusual or rare items.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -5866,6 +6094,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/collector.svg",
             "system": {
+              "shortDesc": "You know how to find unusual or rare items.",
               "parentItem": {
                 "name": "Collector",
                 "type": K4ItemType.advantage
@@ -5905,6 +6134,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
       "system": {
+        "shortDesc": "You can charm intelligent, monstrous creatures with your art.",
         "lists": {
           "options": {
             "name": "Options",
@@ -5921,6 +6151,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/snake-charmer.svg",
             "system": {
+              "shortDesc": "You can charm intelligent, monstrous creatures with your art.",
               "parentItem": {
                 "name": "Snake Charmer",
                 "type": K4ItemType.advantage
@@ -5969,6 +6200,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
       "system": {
+        "shortDesc": "You are a skilled researcher.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -5988,6 +6220,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/data-retrieval.svg",
             "system": {
+              "shortDesc": "You are a skilled researcher.",
               "parentItem": {
                 "name": "Data Retrieval",
                 "type": K4ItemType.advantage
@@ -6039,6 +6272,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/divine.svg",
       "system": {
+        "shortDesc": "You can make monsters obey you temporarily.",
         "lists": {
           "options": {
             "name": "Options",
@@ -6055,6 +6289,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/divine.svg",
             "system": {
+              "shortDesc": "You can make monsters obey you temporarily.",
               "parentItem": {
                 "name": "Divine",
                 "type": K4ItemType.advantage
@@ -6106,6 +6341,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
       "system": {
+        "shortDesc": "You are skilled at determing enemies’ strengths and weaknesses.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6149,6 +6385,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/occult-library.svg",
       "system": {
+        "shortDesc": "You have a library about supernatural things.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6167,6 +6404,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/occult-library.svg",
             "system": {
+              "shortDesc": "You have a library about supernatural things.",
               "parentItem": {
                 "name": "Occult Library",
                 "type": K4ItemType.advantage
@@ -6220,6 +6458,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/chameleon.svg",
       "system": {
+        "shortDesc": "You are great at concealing your appearance and imitate others.",
         "lists": {
           "complications": {
             "name": "Complications",
@@ -6236,6 +6475,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/chameleon.svg",
             "system": {
+              "shortDesc": "You are great at concealing your appearance and imitate others.",
               "parentItem": {
                 "name": "Chameleon",
                 "type": K4ItemType.advantage
@@ -6275,6 +6515,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/influential-friends.svg",
       "system": {
+        "shortDesc": "You have friends with power and influence.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -6283,6 +6524,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/influential-friends.svg",
             "system": {
+              "shortDesc": "You have friends with power and influence.",
               "parentItem": {
                 "name": "Influential Friends",
                 "type": K4ItemType.advantage
@@ -6322,6 +6564,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
       "system": {
+        "shortDesc": "You can perceive Kirlian auras and sense the presence of magic.",
         "lists": {
           "options": {
             "name": "Options",
@@ -6339,6 +6582,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/magical-intuition.svg",
             "system": {
+              "shortDesc": "You can perceive Kirlian auras and sense the presence of magic.",
               "parentItem": {
                 "name": "Magical Intuition",
                 "type": K4ItemType.advantage
@@ -6390,6 +6634,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intuitive.svg",
       "system": {
+        "shortDesc": "You get to ask an additional question when you succed in %insert.docLink.Read a Person.Reading% someone.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -6437,6 +6682,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/weapon-master-(firearms).svg",
       "system": {
+        "shortDesc": "You are a master in gunplay.",
         "lists": {
           "attacks": {
             "name": "Attacks (Firearms)",
@@ -6491,6 +6737,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dreamer.svg",
       "system": {
+        "shortDesc": "You can use dreams to meet people or experience past events.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -6499,6 +6746,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/dreamer.svg",
             "system": {
+              "shortDesc": "You can use dreams to meet people or experience past events.",
               "parentItem": {
                 "name": "Dreamer",
                 "type": K4ItemType.advantage
@@ -6538,6 +6786,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
       "system": {
+        "shortDesc": "You get stronger when you fight against your deity’s enemies or protect a sacred object.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -6546,6 +6795,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
             "system": {
+              "shortDesc": "You get stronger when you fight against your deity’s enemies or protect a sacred object.",
               "chatName": "Champions the Divine",
               "parentItem": {
                 "name": "Divine Champion",
@@ -6574,6 +6824,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/instinct.svg",
       "system": {
+        "shortDesc": "You get +2 on your questions when you %insert.docLink.Observe a Situation%.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -6625,6 +6876,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/vigilant.svg",
       "system": {
+        "shortDesc": "You can %insert.docLink.Read a Person.Read% when others hide things from you.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6668,6 +6920,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/scientist.svg",
       "system": {
+        "shortDesc": "You are good at %insert.docLink.Investigate.Investigating% objects or entities.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6695,6 +6948,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
       "system": {
+        "shortDesc": "You are skilled at finding clues at crime scenes.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6716,6 +6970,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/crime-scene-investigator.svg",
             "system": {
+              "shortDesc": "You are skilled at finding clues at crime scenes.",
               "parentItem": {
                 "name": "Crime Scene Investigator",
                 "type": K4ItemType.advantage
@@ -6767,6 +7022,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
       "system": {
+        "shortDesc": "You can draw people to you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -6784,6 +7040,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/magnetic-attraction.svg",
             "system": {
+              "shortDesc": "You can draw people to you.",
               "parentItem": {
                 "name": "Magnetic Attraction",
                 "type": K4ItemType.advantage
@@ -6835,6 +7092,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dead-shot.svg",
       "system": {
+        "shortDesc": "Any #>text-keyword>Harm<# with a firearm is considered #>text-keyword>+1 Harm<#.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -6864,6 +7122,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
       "system": {
+        "shortDesc": "You get Edges when you fight in close quarters.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -6882,6 +7141,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close quarters.",
               "parentItem": {
                 "name": "Martial Arts Expert",
                 "type": K4ItemType.advantage
@@ -6923,6 +7183,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close quarters.",
               "chatName": "Block",
               "parentItem": {
                 "name": "Martial Arts Expert",
@@ -6940,6 +7201,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close quarters.",
               "chatName": "Roundhouse Strike",
               "parentItem": {
                 "name": "Martial Arts Expert",
@@ -6957,6 +7219,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close quarters.",
               "chatName": "Disarm",
               "parentItem": {
                 "name": "Martial Arts Expert",
@@ -6974,6 +7237,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/martial-arts-expert.svg",
             "system": {
+              "shortDesc": "You get Edges when you fight in close quarters.",
               "chatName": "Throw",
               "parentItem": {
                 "name": "Martial Arts Expert",
@@ -7004,6 +7268,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
       "system": {
+        "shortDesc": "You can force people to trust you and seek your company.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7021,6 +7286,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/charismatic-aura.svg",
             "system": {
+              "shortDesc": "You can force people to trust you and seek your company.",
               "parentItem": {
                 "name": "Charismatic Aura",
                 "type": K4ItemType.advantage
@@ -7072,6 +7338,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
       "system": {
+        "shortDesc": "You get Edges when you move fast in combat.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -7089,6 +7356,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
+              "shortDesc": "You get Edges when you move fast in combat.",
               "parentItem": {
                 "name": "Lightning Fast",
                 "type": K4ItemType.advantage
@@ -7130,6 +7398,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
+              "shortDesc": "You get Edges when you move fast in combat.",
               "chatName": "Dodge",
               "parentItem": {
                 "name": "Lightning Fast",
@@ -7147,6 +7416,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
+              "shortDesc": "You get Edges when you move fast in combat.",
               "chatName": "Blinding Speed",
               "parentItem": {
                 "name": "Lightning Fast",
@@ -7164,6 +7434,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/lightning-fast.svg",
             "system": {
+              "shortDesc": "You get Edges when you move fast in combat.",
               "chatName": "Uncanny Precision",
               "parentItem": {
                 "name": "Lightning Fast",
@@ -7194,6 +7465,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
       "system": {
+        "shortDesc": "Your work of art have a great effect on audiences.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7212,6 +7484,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/artistic-talent.svg",
             "system": {
+              "shortDesc": "Your work of art have a great effect on audiences.",
               "parentItem": {
                 "name": "Artistic Talent",
                 "type": K4ItemType.advantage
@@ -7263,6 +7536,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/jaded.svg",
       "system": {
+        "shortDesc": "You can suppress the effects of a <strong>(10–14)</strong> on %insert.docLink.Keep It Together%.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -7292,6 +7566,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-sport-(contact).svg",
       "system": {
+        "shortDesc": "You have competed professionally in a physically-demanding contact sport.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -7310,6 +7585,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
       "system": {
+        "shortDesc": "You know things about alternate planes of existance and creatures from other dimensions.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -7318,6 +7594,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/arcane-researcher.svg",
             "system": {
+              "shortDesc": "You know things about alternate planes of existance and creatures from other dimensions.",
               "chatName": "Ventures Beyond",
               "parentItem": {
                 "name": "Arcane Researcher",
@@ -7346,6 +7623,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/backstab.svg",
       "system": {
+        "shortDesc": "You are dangerous when you attack unprepared victims.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7363,6 +7641,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/backstab.svg",
             "system": {
+              "shortDesc": "You are dangerous when you attack unprepared victims.",
               "parentItem": {
                 "name": "Backstab",
                 "type": K4ItemType.advantage
@@ -7411,6 +7690,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
       "system": {
+        "shortDesc": "You know how to access and search the Dark Net abyss.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7428,6 +7708,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/access-the-dark-net.svg",
             "system": {
+              "shortDesc": "You know how to access and search the Dark Net abyss.",
               "parentItem": {
                 "name": "Access the Dark Net",
                 "type": K4ItemType.advantage
@@ -7467,6 +7748,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
       "system": {
+        "shortDesc": "You can build and disarm bombs.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -7475,6 +7757,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
+              "shortDesc": "You can build and disarm bombs.",
               "parentItem": {
                 "name": "Explosives Expert",
                 "type": K4ItemType.advantage
@@ -7503,6 +7786,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/explosives-expert.svg",
             "system": {
+              "shortDesc": "You can build and disarm bombs.",
               "parentItem": {
                 "name": "Explosives Expert",
                 "type": K4ItemType.advantage
@@ -7542,6 +7826,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
       "system": {
+        "shortDesc": "You can appear defenseless and make others take care of you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7559,6 +7844,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/perpetual-victim.svg",
             "system": {
+              "shortDesc": "You can appear defenseless and make others take care of you.",
               "parentItem": {
                 "name": "Perpetual Victim",
                 "type": K4ItemType.advantage
@@ -7607,6 +7893,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
       "system": {
+        "shortDesc": "Gain #>text-keyword>Stability<# when you sacrifice someone to further your own goals.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -7615,6 +7902,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
             "system": {
+              "shortDesc": "Gain #>text-keyword>Stability<# when you sacrifice someone to further your own goals.",
               "chatName": "Exploits Someone",
               "parentItem": {
                 "name": "Opportunist",
@@ -7643,6 +7931,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
       "system": {
+        "shortDesc": "You take <em>+1 ongoing</em> to revenge when someone ruin your plans.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -7651,6 +7940,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
             "system": {
+              "shortDesc": "You take <em>+1 ongoing</em> to revenge when someone ruin your plans.",
               "chatName": "Will Remember That",
               "parentItem": {
                 "name": "Grudge",
@@ -7679,6 +7969,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/endure-trauma.svg",
       "system": {
+        "shortDesc": "Whenever you reduce #>text-keyword>Stability<#, you always lose 1 fewer level than normal.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -7697,6 +7988,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/rage.svg",
       "system": {
+        "shortDesc": "Go into a rage to gain Edges in combat.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -7714,6 +8006,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
+              "shortDesc": "Go into a rage to gain Edges in combat.",
               "chatName": "Is Enraged",
               "parentItem": {
                 "name": "Rage",
@@ -7734,6 +8027,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
+              "shortDesc": "Go into a rage to gain Edges in combat.",
               "chatName": "Brutal Assault",
               "parentItem": {
                 "name": "Rage",
@@ -7751,6 +8045,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
+              "shortDesc": "Go into a rage to gain Edges in combat.",
               "chatName": "What Pain?",
               "parentItem": {
                 "name": "Rage",
@@ -7768,6 +8063,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/rage.svg",
             "system": {
+              "shortDesc": "Go into a rage to gain Edges in combat.",
               "chatName": "See Only Red",
               "parentItem": {
                 "name": "Rage",
@@ -7796,6 +8092,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
       "system": {
+        "shortDesc": "You can threat people to do what you want.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7814,6 +8111,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
             "system": {
+              "shortDesc": "You can threat people to do what you want.",
               "parentItem": {
                 "name": "Enforcer",
                 "type": K4ItemType.advantage
@@ -7853,6 +8151,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
       "system": {
+        "shortDesc": "You can manipulate crowds.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7872,6 +8171,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/voice-of-insanity.svg",
             "system": {
+              "shortDesc": "You can manipulate crowds.",
               "parentItem": {
                 "name": "Voice of Insanity",
                 "type": K4ItemType.advantage
@@ -7923,6 +8223,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/seducer.svg",
       "system": {
+        "shortDesc": "You can make people fall in love with you.",
         "lists": {
           "options": {
             "name": "Options",
@@ -7942,6 +8243,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/seducer.svg",
             "system": {
+              "shortDesc": "You can make people fall in love with you.",
               "parentItem": {
                 "name": "Seducer",
                 "type": K4ItemType.advantage
@@ -7993,6 +8295,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
       "system": {
+        "shortDesc": "You can use your fame to influence others.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8001,6 +8304,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
             "system": {
+              "shortDesc": "You can use your fame to influence others.",
               "parentItem": {
                 "name": "Notorious",
                 "type": K4ItemType.advantage
@@ -8040,6 +8344,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hunter.svg",
       "system": {
+        "shortDesc": "You are a skilled hunter.",
         "lists": {
           "options": {
             "name": "Options",
@@ -8057,6 +8362,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/hunter.svg",
             "system": {
+              "shortDesc": "You are a skilled hunter.",
               "parentItem": {
                 "name": "Hunter",
                 "type": K4ItemType.advantage
@@ -8108,6 +8414,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
       "system": {
+        "shortDesc": "You can infect others with temporary insanity.",
         "lists": {
           "options": {
             "name": "Options",
@@ -8126,6 +8433,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/contagious-insanity.svg",
             "system": {
+              "shortDesc": "You can infect others with temporary insanity.",
               "parentItem": {
                 "name": "Contagious Insanity",
                 "type": K4ItemType.advantage
@@ -8174,6 +8482,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
       "system": {
+        "shortDesc": "You can scare others to submit.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8182,6 +8491,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
             "system": {
+              "shortDesc": "You can scare others to submit.",
               "parentItem": {
                 "name": "Intimidating",
                 "type": K4ItemType.advantage
@@ -8221,6 +8531,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
       "system": {
+        "shortDesc": "You get Edges when you sacrifice others to save yourself.",
         "lists": {
           "edges": {
             "name": "Edges",
@@ -8238,6 +8549,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
+              "shortDesc": "You get Edges when you sacrifice others to save yourself.",
               "parentItem": {
                 "name": "Ruthless",
                 "type": K4ItemType.advantage
@@ -8275,6 +8587,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
+              "shortDesc": "You get Edges when you sacrifice others to save yourself.",
               "chatName": "Meat Shield",
               "parentItem": {
                 "name": "Ruthless",
@@ -8292,6 +8605,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
+              "shortDesc": "You get Edges when you sacrifice others to save yourself.",
               "chatName": "Nothing But Bait",
               "parentItem": {
                 "name": "Ruthless",
@@ -8309,6 +8623,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/ruthless.svg",
             "system": {
+              "shortDesc": "You get Edges when you sacrifice others to save yourself.",
               "chatName": "Leave Them Behind",
               "parentItem": {
                 "name": "Ruthless",
@@ -8339,6 +8654,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/improviser.svg",
       "system": {
+        "shortDesc": "You are good at winging it out of dangerous situations.",
         "lists": {
           "options": {
             "name": "Options",
@@ -8357,6 +8673,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/improviser.svg",
             "system": {
+              "shortDesc": "You are good at winging it out of dangerous situations.",
               "parentItem": {
                 "name": "Improviser",
                 "type": K4ItemType.advantage
@@ -8407,6 +8724,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
       "system": {
+        "shortDesc": "You have a competitor in the criminal underworld.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8415,6 +8733,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
             "system": {
+              "shortDesc": "You have a competitor in the criminal underworld.",
               "parentItem": {
                 "name": "Competitor",
                 "type": K4ItemType.disadvantage
@@ -8457,6 +8776,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
       "system": {
+        "shortDesc": "You have a mental compulsion.",
         "lists": {
           "options": {
             "name": "Options",
@@ -8482,6 +8802,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/mental-compulsion.svg",
             "system": {
+              "shortDesc": "You have a mental compulsion.",
               "parentItem": {
                 "name": "Mental Compulsion",
                 "type": K4ItemType.disadvantage
@@ -8523,6 +8844,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
       "system": {
+        "shortDesc": "Your sexuality is a destructive, controlling force in your life.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -8540,6 +8862,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/sexual-neurosis.svg",
             "system": {
+              "shortDesc": "Your sexuality is a destructive, controlling force in your life.",
               "parentItem": {
                 "name": "Sexual Neurosis",
                 "type": K4ItemType.disadvantage
@@ -8579,6 +8902,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
       "system": {
+        "shortDesc": "You harbour an overpowering fear of something.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -8587,6 +8911,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/phobia.svg",
             "system": {
+              "shortDesc": "You harbour an overpowering fear of something.",
               "chatName": "Faces Their Fear",
               "parentItem": {
                 "name": "Phobia",
@@ -8615,6 +8940,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
       "system": {
+        "shortDesc": "You suffer from a dangerous physical disease or condition.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8623,6 +8949,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/infirm.svg",
             "system": {
+              "shortDesc": "You suffer from a dangerous physical disease or condition.",
               "parentItem": {
                 "name": "Infirm",
                 "type": K4ItemType.disadvantage
@@ -8662,6 +8989,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
       "system": {
+        "shortDesc": "You are addicted to hard drugs.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8670,6 +8998,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/drug-addict.svg",
             "system": {
+              "shortDesc": "You are addicted to hard drugs.",
               "parentItem": {
                 "name": "Drug Addict",
                 "type": K4ItemType.disadvantage
@@ -8712,6 +9041,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
       "system": {
+        "shortDesc": "You have an overwhelming passion for someone or something.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8720,6 +9050,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/victim-of-passion.svg",
             "system": {
+              "shortDesc": "You have an overwhelming passion for someone or something.",
               "parentItem": {
                 "name": "Victim of Passion",
                 "type": K4ItemType.disadvantage
@@ -8762,6 +9093,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
       "system": {
+        "shortDesc": "You are obsessed by a conspiracy or supernatural phenomenon.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8770,6 +9102,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/obsession.svg",
             "system": {
+              "shortDesc": "You are obsessed by a conspiracy or supernatural phenomenon.",
               "parentItem": {
                 "name": "Obsession",
                 "type": K4ItemType.disadvantage
@@ -8812,6 +9145,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/broken.svg",
       "system": {
+        "shortDesc": "Your #>text-keyword>Stability<# can never increase beyond <em>Distressed</em>.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
@@ -8854,6 +9188,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
       "system": {
+        "shortDesc": "You suffer from recurring nightmares.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8862,6 +9197,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/nightmares.svg",
             "system": {
+              "shortDesc": "You suffer from recurring nightmares.",
               "parentItem": {
                 "name": "Nightmares",
                 "type": K4ItemType.disadvantage
@@ -8901,6 +9237,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
       "system": {
+        "shortDesc": "You carried out an experiment that went terribly wrong.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8909,6 +9246,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/experiment-gone-wrong.svg",
             "system": {
+              "shortDesc": "You carried out an experiment that went terribly wrong.",
               "parentItem": {
                 "name": "Experiment Gone Wrong",
                 "type": K4ItemType.disadvantage
@@ -8951,6 +9289,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
       "system": {
+        "shortDesc": "You have a repressed true identity that resurfaces sometimes.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8959,6 +9298,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/lost-identity.svg",
             "system": {
+              "shortDesc": "You have a repressed true identity that resurfaces sometimes.",
               "parentItem": {
                 "name": "Lost Identity",
                 "type": K4ItemType.disadvantage
@@ -9001,6 +9341,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
       "system": {
+        "shortDesc": "You carry heavy guilt for your past sins.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9009,6 +9350,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/guilt.svg",
             "system": {
+              "shortDesc": "You carry heavy guilt for your past sins.",
               "parentItem": {
                 "name": "Guilt",
                 "type": K4ItemType.disadvantage
@@ -9051,6 +9393,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
       "system": {
+        "shortDesc": "You are haunted by supernatural forces.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9059,6 +9402,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/haunted.svg",
             "system": {
+              "shortDesc": "You are haunted by supernatural forces.",
               "parentItem": {
                 "name": "Haunted",
                 "type": K4ItemType.disadvantage
@@ -9101,6 +9445,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
       "system": {
+        "shortDesc": "You are wanted by the authorities.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9109,6 +9454,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/wanted.svg",
             "system": {
+              "shortDesc": "You are wanted by the authorities.",
               "parentItem": {
                 "name": "Wanted",
                 "type": K4ItemType.disadvantage
@@ -9151,6 +9497,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
       "system": {
+        "shortDesc": "You are hunted by a faceless enemy.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9159,6 +9506,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/stalker.svg",
             "system": {
+              "shortDesc": "You are hunted by a faceless enemy.",
               "parentItem": {
                 "name": "Stalker",
                 "type": K4ItemType.disadvantage
@@ -9201,6 +9549,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
       "system": {
+        "shortDesc": "You are obsessed of taking revenge on someone or an organization.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9209,6 +9558,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/oath-of-revenge.svg",
             "system": {
+              "shortDesc": "You are obsessed of taking revenge on someone or an organization.",
               "parentItem": {
                 "name": "Oath of Revenge",
                 "type": K4ItemType.disadvantage
@@ -9248,6 +9598,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
       "system": {
+        "shortDesc": "You want someone else’s life for yourself.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9256,6 +9607,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
             "system": {
+              "shortDesc": "You want someone else’s life for yourself.",
               "parentItem": {
                 "name": "Jealousy",
                 "type": K4ItemType.disadvantage
@@ -9295,6 +9647,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
       "system": {
+        "shortDesc": "You are part of a harassed minority group.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9303,6 +9656,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/harassed.svg",
             "system": {
+              "shortDesc": "You are part of a harassed minority group.",
               "parentItem": {
                 "name": "Harassed",
                 "type": K4ItemType.disadvantage
@@ -9345,6 +9699,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
       "system": {
+        "shortDesc": "You have an ambitious rival, who will do anything to be in your shoes.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9353,6 +9708,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/rival.svg",
             "system": {
+              "shortDesc": "You have an ambitious rival, who will do anything to be in your shoes.",
               "parentItem": {
                 "name": "Rival",
                 "type": K4ItemType.disadvantage
@@ -9395,6 +9751,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
       "system": {
+        "shortDesc": "Your mind refuses to acknowledge anything except things confirmed by modern science.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -9413,6 +9770,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/rationalist.svg",
             "system": {
+              "shortDesc": "Your mind refuses to acknowledge anything except things confirmed by modern science.",
               "chatName": "Faces the Impossible",
               "parentItem": {
                 "name": "Rationalist",
@@ -9445,6 +9803,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
       "system": {
+        "shortDesc": "You are a fervent adherent of an ideology.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9453,6 +9812,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/fanatic.svg",
             "system": {
+              "shortDesc": "You are a fervent adherent of an ideology.",
               "parentItem": {
                 "name": "Fanatic",
                 "type": K4ItemType.disadvantage
@@ -9492,6 +9852,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
       "system": {
+        "shortDesc": "You are a compulsive liar.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9500,6 +9861,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/liar.svg",
             "system": {
+              "shortDesc": "You are a compulsive liar.",
               "parentItem": {
                 "name": "Liar",
                 "type": K4ItemType.disadvantage
@@ -9542,6 +9904,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
       "system": {
+        "shortDesc": "You are marked by darkness.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9550,6 +9913,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/marked.svg",
             "system": {
+              "shortDesc": "You are marked by darkness.",
               "parentItem": {
                 "name": "Marked",
                 "type": K4ItemType.disadvantage
@@ -9592,6 +9956,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
       "system": {
+        "shortDesc": "You are afflicted by a curse.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9600,6 +9965,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/cursed.svg",
             "system": {
+              "shortDesc": "You are afflicted by a curse.",
               "parentItem": {
                 "name": "Cursed",
                 "type": K4ItemType.disadvantage
@@ -9642,6 +10008,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
       "system": {
+        "shortDesc": "You have made an enemy who does everything in their power to take revenge on you.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9650,6 +10017,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/nemesis.svg",
             "system": {
+              "shortDesc": "You have made an enemy who does everything in their power to take revenge on you.",
               "parentItem": {
                 "name": "Nemesis",
                 "type": K4ItemType.disadvantage
@@ -9692,6 +10060,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
       "system": {
+        "shortDesc": "Your fate is sealed and your Time is ticking down.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -9711,6 +10080,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/condemned.svg",
             "system": {
+              "shortDesc": "Your fate is sealed and your Time is ticking down.",
               "parentItem": {
                 "name": "Condemned",
                 "type": K4ItemType.disadvantage
@@ -9772,6 +10142,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
       "system": {
+        "shortDesc": "You are struggling with depression.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9780,6 +10151,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/depression.svg",
             "system": {
+              "shortDesc": "You are struggling with depression.",
               "parentItem": {
                 "name": "Depression",
                 "type": K4ItemType.disadvantage
@@ -9854,6 +10226,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
       "system": {
+        "shortDesc": "You struggle with psychosis and hallucinations.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9862,6 +10235,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/schizophrenia.svg",
             "system": {
+              "shortDesc": "You struggle with psychosis and hallucinations.",
               "parentItem": {
                 "name": "Schizophrenia",
                 "type": K4ItemType.disadvantage
@@ -9904,6 +10278,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
       "system": {
+        "shortDesc": "You are hated by the public for something you are accused of.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9912,6 +10287,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/bad-reputation.svg",
             "system": {
+              "shortDesc": "You are hated by the public for something you are accused of.",
               "parentItem": {
                 "name": "Bad Reputation",
                 "type": K4ItemType.disadvantage
@@ -9954,6 +10330,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
       "system": {
+        "shortDesc": "You are driven by an unquenchable desire for money and wealth.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9962,6 +10339,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/greedy.svg",
             "system": {
+              "shortDesc": "You are driven by an unquenchable desire for money and wealth.",
               "parentItem": {
                 "name": "Greedy",
                 "type": K4ItemType.disadvantage
@@ -10001,6 +10379,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
       "system": {
+        "shortDesc": "You are an open vessel for spirits and demonic entities.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -10009,6 +10388,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/involuntary-medium.svg",
             "system": {
+              "shortDesc": "You are an open vessel for spirits and demonic entities.",
               "parentItem": {
                 "name": "Involuntary Medium",
                 "type": K4ItemType.disadvantage
@@ -10051,6 +10431,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
       "system": {
+        "shortDesc": "You have repressed an unpleasant event.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -10059,6 +10440,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/repressed-memories.svg",
             "system": {
+              "shortDesc": "You have repressed an unpleasant event.",
               "parentItem": {
                 "name": "Repressed Memories",
                 "type": K4ItemType.disadvantage
@@ -10098,6 +10480,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
       "system": {
+        "shortDesc": "You have fled from someone who kept you as his private property.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -10106,6 +10489,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/owned.svg",
             "system": {
+              "shortDesc": "You have fled from someone who kept you as his private property.",
               "parentItem": {
                 "name": "Owned",
                 "type": K4ItemType.disadvantage
@@ -10148,6 +10532,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
       "system": {
+        "shortDesc": "You ignite unhealthy desires in others.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -10156,6 +10541,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/object-of-desire.svg",
             "system": {
+              "shortDesc": "You ignite unhealthy desires in others.",
               "parentItem": {
                 "name": "Object of Desire",
                 "type": K4ItemType.disadvantage
@@ -10200,6 +10586,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/returned-from-the-other-side.svg",
       "system": {
+        "shortDesc": "You experienced an event where the Illusion shattered completely, and you were the only one who returned.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10233,6 +10620,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/responsible-for-medical-experiments.svg",
       "system": {
+        "shortDesc": "You were responsible for or assisted in shady medical experiments, which ended in horrifying results.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10267,6 +10655,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/heir.svg",
       "system": {
+        "shortDesc": "You have been granted a unique inheritance from relatives or friends.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10299,6 +10688,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/pact-with-dark-forces.svg",
       "system": {
+        "shortDesc": "You have sealed a pact with a powerful entity.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10332,6 +10722,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/victim-of-medical-experiments.svg",
       "system": {
+        "shortDesc": "You were subjected to medical experiments with unexpected outcomes, with or without your consent or knowledge.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10366,6 +10757,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/rootless.svg",
       "system": {
+        "shortDesc": "Your family always moved around, often suddenly, in the middle of the night. Your parents never told you why.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10399,6 +10791,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/occult-experience.svg",
       "system": {
+        "shortDesc": "You have witnessed occult proceedings that changed your view of reality.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10432,6 +10825,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/curse.svg",
       "system": {
+        "shortDesc": "You are afflicted by a curse, knowingly or not, that threatens you and those closest to you.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10465,6 +10859,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/mental-illness.svg",
       "system": {
+        "shortDesc": "You or one of your close relations suffer from mental illness.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10498,6 +10893,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/strange-disappearance.svg",
       "system": {
+        "shortDesc": "Someone close to you disappeared after getting too close to the truth.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10531,6 +10927,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/visitations.svg",
       "system": {
+        "shortDesc": "You have a history of encounters with beings from the other side.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10564,6 +10961,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/guilty-of-crime.svg",
       "system": {
+        "shortDesc": "You feel constant remorse for a crime you have committed.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10598,6 +10996,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/victim-of-crime.svg",
       "system": {
+        "shortDesc": "You have endured a terrible crime, a violation that has marred your entire life.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10631,6 +11030,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/forbidden-knowledge.svg",
       "system": {
+        "shortDesc": "You have uncovered some horrid truth, which brings reality's very nature into question.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10664,6 +11064,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/family-secret.svg",
       "system": {
+        "shortDesc": "Your family has a well-kept secret, which has haunted you for your entire life.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10697,6 +11098,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/guardian.svg",
       "system": {
+        "shortDesc": "You have been chosen to protect an important object, place, or person.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10729,6 +11131,7 @@ const ITEM_DATA: {
       "type": K4ItemType.darksecret,
       "img": "systems/kult4th/assets/icons/darksecret/chosen-one.svg",
       "system": {
+        "shortDesc": "You have been chosen by a god to become its advocate or sacrificial lamb.",
         "lists": {
           "drives": {
             "name": "Suggested Drives",
@@ -10766,6 +11169,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/help-other.svg",
       "system": {
+        "shortDesc": "Help another player character's move.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "rules": {
@@ -10803,6 +11207,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/keep-it-together.svg",
       "system": {
+        "shortDesc": "Keep your mind under control in the face of stress, traumatic experiences, or supernatural forces.",
         "lists": {
           "options": {
             "name": "Options",
@@ -10862,6 +11267,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/investigate.svg",
       "system": {
+        "shortDesc": "Spend some time to investigate something.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -10914,6 +11320,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/engage-in-combat.svg",
       "system": {
+        "shortDesc": "Engage an able opponent in physical combat.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -10963,6 +11370,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/hinder-other.svg",
       "system": {
+        "shortDesc": "Hinder another player character's move.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "rules": {
@@ -11000,6 +11408,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/influence-other-npc.svg",
       "system": {
+        "shortDesc": "Influence an NPC with negotiation, argument, or authority.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -11046,6 +11455,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/read-a-person.svg",
       "system": {
+        "shortDesc": "Read a person's sincerety, motivations, and intentions.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -11100,6 +11510,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/influence-other-pc.svg",
       "system": {
+        "shortDesc": "Influence another player character.",
         "lists": {
           "options": {
             "name": "Options",
@@ -11151,6 +11562,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/act-under-pressure.svg",
       "system": {
+        "shortDesc": "Do something risky, under time pressure, or try to avoid danger.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "rules": {
@@ -11188,6 +11600,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/observe-a-situation.svg",
       "system": {
+        "shortDesc": "Observe a situation to discover details you can use to your advantage.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -11293,6 +11706,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/endure-injury.svg",
       "system": {
+        "shortDesc": "Whenever you would take Harm, roll Endure Injury to find out what happens.",
         "lists": {
           "options": {
             "name": "Consequences",
@@ -11379,6 +11793,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/see-through-the-illusion.svg",
       "system": {
+        "shortDesc": "Find out what you see when you pierce the Illusion.",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -11424,6 +11839,7 @@ const ITEM_DATA: {
       "type": K4ItemType.move,
       "img": "systems/kult4th/assets/icons/move/avoid-harm.svg",
       "system": {
+        "shortDesc": "Evade or otherwise defend against taking Harm.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "rules": {

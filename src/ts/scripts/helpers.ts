@@ -71,21 +71,22 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
               actor = iData as K4Actor;
             }
             if (/^(doc|roll)Link/.test(dataKey)) {
-              const docName = dataKey.split(".").slice(1).join(".");
+              let [docName, docDisplay] = dataKey.split(".").slice(1) as Array<Maybe<string>>;
               let doc: Maybe<K4Item> = undefined;
               if (actor) {
-                doc = actor.items.getName(docName);
+                doc = actor.items.getName(docName ?? "");
               } else {
-                doc = game.items.getName(docName);
+                doc = game.items.getName(docName ?? "");
               }
               if (!doc) {
                 console.warn(`No such document: ${docName}`);
                 return `<span style='color: red;'>No Such Document: ${docName}</span>`;
               }
+              docDisplay ??= doc.name;
               if (dataKey.startsWith("docLink")) {
-                return `<span class="text-docLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="open">${doc.name}</span>`;
+                return `<span class="text-docLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="open">${docDisplay}</span>`;
               }
-              return `<span class="text-rollLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="roll">${doc.name}</span>`;
+              return `<span class="text-rollLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="roll">${docDisplay}</span>`;
             } else if (dataKey.startsWith("FLAGS")) {
               const [_, effectID, ...flagKeyParts] = dataKey.split(".");
               const flagKey = flagKeyParts.join(".");

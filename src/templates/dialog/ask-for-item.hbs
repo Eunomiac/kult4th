@@ -9,7 +9,8 @@
         <span class="item-portrait-name">{{item.name}}</span>
         <div class="item-portrait-icon" style="mask:url('{{item.img}}') no-repeat center;-webkit-mask:url('{{item.img}}') no-repeat center"></div>
         <div class="tooltip">
-          {{> "systems/kult4th/templates/partials/item-block.hbs" this=item item=item}}
+          <h2><center>{{item.name}}</center></h2>
+          {{{formatForKult item.shortDesc}}}
         </div>
       </div>
     {{/each}}

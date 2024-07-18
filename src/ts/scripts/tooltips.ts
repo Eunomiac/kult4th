@@ -1,9 +1,9 @@
 import U from "./utilities.js";
 
 // Define custom effect types
-type TooltipEffectConfig = {
+interface TooltipEffectConfig {
   duration: number;
-};
+}
 
 // Define custom effects
 U.gsap.registerEffect({
@@ -75,25 +75,25 @@ U.gsap.registerEffect({
 });
 
 // Define types
-type TooltipPool = {
+interface TooltipPool {
   elements: JQuery[];
   inUse: Set<JQuery>;
-};
+}
 
-type TooltipAnimation = {
+interface TooltipAnimation {
   timeline: gsap.core.Timeline;
   originalPosition: { x: number; y: number };
-};
+}
 
-type TooltipTriggerInfo = {
+interface TooltipTriggerInfo {
   boundingRect: DOMRect;
   clonedTooltip: JQuery;
-};
+}
 
-type Position = {
+interface Position {
   x: number;
   y: number;
-};
+}
 
 type EffectName = "tooltipFadeUp" | "tooltipFadeDown" | "tooltipFadeLeft" | "tooltipFadeRight";
 
@@ -105,8 +105,8 @@ const REVERSE_TIMESCALE = 2;
 const CLEANUP_INTERVAL = 1000; // milliseconds
 
 let tooltipPool: TooltipPool;
-const activeTooltips: Map<JQuery, TooltipAnimation> = new Map();
-const activeTriggers: Map<JQuery, TooltipTriggerInfo> = new Map();
+const activeTooltips = new Map<JQuery, TooltipAnimation>();
+const activeTriggers = new Map<JQuery, TooltipTriggerInfo>();
 
 const OUTLINE_COLORS = {
   NEW: 'lime',
@@ -122,7 +122,9 @@ const OUTLINE_COLORS = {
  */
 function getTriggerState(trigger$: JQuery): keyof typeof OUTLINE_COLORS | null {
   const outlineColor = trigger$.css('outline-color');
-  return Object.entries(OUTLINE_COLORS).find(([_, color]) => color === outlineColor)?.[0] as keyof typeof OUTLINE_COLORS || null;
+  return Object.entries(OUTLINE_COLORS)
+    .find(([_, color]) => color === outlineColor)?.[0] as Maybe<keyof typeof OUTLINE_COLORS>
+    ?? null;
 }
 
 /**
@@ -131,7 +133,8 @@ function getTriggerState(trigger$: JQuery): keyof typeof OUTLINE_COLORS | null {
  * @param state - The state of the trigger.
  */
 function updateTriggerOutline(trigger$: JQuery, state: keyof typeof OUTLINE_COLORS | null): void {
-  if (!ISDEBUGGING) { return undefined; }
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!ISDEBUGGING) { return undefined; } // ... condition isn't unnecessary, it's just set by constant in this file
   trigger$.css('outline', state ? `2px solid ${OUTLINE_COLORS[state]}` : 'none');
 }
 
@@ -160,7 +163,7 @@ const InitializeTooltips = (html$: JQuery): void => {
   html$.on("mousemove", handleMouseMove);
 
   // Start the periodic cleanup
-  // setInterval(periodicCleanup, CLEANUP_INTERVAL);
+  setInterval(periodicCleanup, CLEANUP_INTERVAL);
 
   // console.log("Tooltip system initialized");
 };
@@ -197,7 +200,7 @@ function createTooltipPool(container: JQuery): TooltipPool {
  * @param event - The mouseenter event.
  */
 function handleTooltipTrigger(event: JQuery.MouseEnterEvent): void {
-  const trigger$ = $(event.currentTarget);
+  const trigger$ = $(event.currentTarget as HTMLElement);
   // console.log(`Tooltip trigger activated for: ${trigger$.attr('class')}`);
 
   // Always remove the 'CLEARED' state when a trigger is activated
@@ -205,7 +208,7 @@ function handleTooltipTrigger(event: JQuery.MouseEnterEvent): void {
     updateTriggerOutline(trigger$, null);
   }
 
-  let tooltipId = trigger$.data('tooltip-id');
+  let tooltipId = trigger$.data('tooltip-id') as string | null;
   let existingTooltip$: JQuery | null = null;
 
   if (tooltipId) {
@@ -268,12 +271,7 @@ function handleTooltipTrigger(event: JQuery.MouseEnterEvent): void {
 function cloneTooltipToOverlay(tooltip$: JQuery): JQuery | null {
   const availableTooltip = tooltipPool.elements.find(
     (element) => !tooltipPool.inUse.has(element)
-  ) || tooltipPool.elements[0]; // Use the first tooltip if none are available
-
-  if (!availableTooltip) {
-    console.warn("No tooltips in the pool");
-    return null;
-  }
+  ) ?? tooltipPool.elements[0]; // Use the first tooltip if none are available
 
   tooltipPool.inUse.add(availableTooltip);
   availableTooltip.html(tooltip$.html()).show();
@@ -341,7 +339,7 @@ function generateTooltipHoverAnimation(
   effectName: EffectName
 ): void {
   const timeline = U.gsap.timeline()
-    .add(U.gsap.effects[effectName](tooltip$))
+    .add((U.gsap.effects[effectName] as GSAPEffectFunction)(tooltip$))
 
   const animation: TooltipAnimation = {
     timeline,

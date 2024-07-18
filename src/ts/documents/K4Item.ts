@@ -52,6 +52,7 @@ declare global {
         }>,
         isEdge?: boolean,
         subType: K4ItemSubType;
+        shortDesc: string;
       }
       export interface ParentItemReference {
         name: string,
@@ -121,7 +122,8 @@ declare global {
           intro?: string
         }>,
         subType: K4ItemSubType;
-        gmNotes?: string
+        gmNotes?: string;
+        shortDesc?: string;
       }
 
       export interface HasSubItems {
@@ -411,6 +413,9 @@ class K4Item extends Item {
   }
   get edges(): Array<K4Item<K4ItemType.move> & K4SubItem> {
     return this.subItems.filter((subItem): subItem is K4Item<K4ItemType.move> & K4SubItem => subItem.isEdge());
+  }
+  get shortDesc(): string {
+    return this.system.shortDesc ?? "";
   }
   // get customChangeData(): K4Change.Source[] {
   //   if (!this.hasMainEffects()) { return []; }

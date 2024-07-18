@@ -1,0 +1,41 @@
+{{log "ALERT SIMPLE" this}}
+
+<div class="k4-alert {{cssClasses}}">
+  <div class="k4-alert-frame alert-frame-top">
+    <div class="alert-border border-top-left">
+      <svg viewBox="{{svgPaths.TOPLEFT.viewBox}}">
+        <path d="{{svgPaths.TOPLEFT.d}}" />
+      </svg>
+    </div>
+    <img src="{{logoImg}}" alt="Kult4th Logo" class="k4-alert-logo">
+    <div class="alert-border border-top-right">
+      <svg viewBox="{{svgPaths.TOPRIGHT.viewBox}}">
+        <path d="{{svgPaths.TOPRIGHT.d}}" />
+      </svg>
+    </div>
+  </div>
+  <div class="k4-alert-frame alert-frame-body">
+    <div class="alert-border border-left">
+      <svg viewBox="{{svgPaths.CHAINS.viewBox}}">
+        <path d="{{svgPaths.CHAINS.d}}" />
+      </svg>
+    </div>
+    <div class="alert-container">
+      <h2 class="k4-alert-header">{{{header}}}</h2>
+      <hr>
+      <p class="k4-alert-body">{{{body}}}</p>
+    </div>
+    <div class="alert-border border-right">
+      <svg viewBox="{{svgPaths.CHAINS.viewBox}}">
+        <path d="{{svgPaths.CHAINS.d}}" />
+      </svg>
+    </div>
+  </div>
+  <div class="k4-alert-frame alert-frame-bottom">
+    <div class="alert-border border-bottom">
+      <svg viewBox="{{svgPaths.BOTTOM.viewBox}}">
+        <path d="{{svgPaths.BOTTOM.d}}" />
+      </svg>
+    </div>
+  </div>
+</div>

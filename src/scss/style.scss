@@ -25,6 +25,7 @@ $assetPath: '/assets';
 	#hud,
 	#board,
 	#pause,
+  #kult-alerts,
   #kult-tooltips,
 	.app.window-app {
 		@import 'globals/text-styles';
@@ -32,6 +33,10 @@ $assetPath: '/assets';
 	}
 
   #controls { overflow: visible; }
+
+  #kult-alerts {
+    @import 'alerts/alerts';
+  }
 
   .editor-content {
     position: static !important;
@@ -75,6 +80,7 @@ $assetPath: '/assets';
     }
   }
 	#ui-right {
+    z-index: 50;
 		#sidebar {
       @import 'sidebar/sidebar';
       #chat { @import 'sidebar/chat'; }

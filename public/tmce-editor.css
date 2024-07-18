@@ -54,155 +54,155 @@
   /* COLOR PALETTE & DEFAULT FOUNDRY OVERRIDES */
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 300; /* Light */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-Light.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-Light.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 400; /* Regular */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-Regular.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-Regular.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 500; /* Medium */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-Medium.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-Medium.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-Semibold.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-Semibold.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 700 800; /* Bold and 800 */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-Bold.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-Bold.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-Black.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-Black.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 300; /* Light */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-LightItalic.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-LightItalic.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 400; /* Regular */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-RegularItalic.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-RegularItalic.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 500; /* Medium */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-MediumItalic.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-MediumItalic.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 600; /* Semi-Bold */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-SemiboldItalic.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-SemiboldItalic.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 700 800; /* Bold and 800 */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-BoldItalic.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-BoldItalic.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Kultrata";
+  font-family: "Ktrata";
   font-weight: 900; /* Black */
   font-style: italic;
-  src: url("/systems/kult4th/assets/fonts/Kultrata-BlackItalic.woff2") format("woff2");
+  src: url("/assets/fonts/Kultrata-BlackItalic.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataHeader";
+  font-family: "KtrataHeader";
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataTitle-Black.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataTitle-Black.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataHeader";
+  font-family: "KtrataHeader";
   font-weight: 100 800; /* All Other Weights */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataTitle-Regular.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataTitle-Regular.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataSC";
+  font-family: "KtrataSmallCaps";
   font-weight: 300; /* Light */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataSC-Light.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataSC-Light.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataSC";
+  font-family: "KtrataSmallCaps";
   font-weight: 400; /* Regular */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataSC-Regular.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataSC-Regular.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataSC";
+  font-family: "KtrataSmallCaps";
   font-weight: 500; /* Medium */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataSC-medium.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataSC-medium.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataSC";
+  font-family: "KtrataSmallCaps";
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataSC-Semibold.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataSC-Semibold.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataSC";
+  font-family: "KtrataSmallCaps";
   font-weight: 700 800; /* Bold and 800 */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataSC-Bold.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataSC-Bold.woff2") format("woff2");
 }
 @font-face {
-  font-family: "KultrataSC";
+  font-family: "KtrataSmallCaps";
   font-weight: 900; /* Black */
   font-style: normal;
-  src: url("/systems/kult4th/assets/fonts/KultrataSC-Black.woff2") format("woff2");
+  src: url("/assets/fonts/KultrataSC-Black.woff2") format("woff2");
 }
 @font-face {
   font-family: Infidel;
-  src: url("/systems/kult4th/assets/fonts/Infidel.woff2") format("woff2");
+  src: url("/assets/fonts/Infidel.woff2") format("woff2");
 }
 @font-face {
   font-family: Sokol;
-  src: url("/systems/kult4th/assets/fonts/Sokol.woff2") format("woff2");
+  src: url("/assets/fonts/Sokol.woff2") format("woff2");
 }
 @font-face {
   font-family: GrandpasScript;
-  src: url("/systems/kult4th/assets/fonts/GrandpasScript-Regular.woff2") format("woff2");
+  src: url("/assets/fonts/GrandpasScript-Regular.woff2") format("woff2");
 }
 @font-face {
   font-family: Leviathan;
-  src: url("/systems/kult4th/assets/fonts/Leviathan.woff2") format("woff2");
+  src: url("/assets/fonts/Leviathan.woff2") format("woff2");
 }
 @font-face {
   font-family: ManoNegra;
-  src: url("/systems/kult4th/assets/fonts/ManoNegra-Regular.woff2") format("woff2");
+  src: url("/assets/fonts/ManoNegra-Regular.woff2") format("woff2");
   font-weight: 100 600; /* All Sub-Bold Weights */
 }
 @font-face {
   font-family: ManoNegra;
-  src: url("/systems/kult4th/assets/fonts/ManoNegra-Bold.woff2") format("woff2");
+  src: url("/assets/fonts/ManoNegra-Bold.woff2") format("woff2");
   font-weight: 700 900; /* Bold, Black */
 }
 #tinymce * {
   /* FOUNDRY OVERRIDES */
-  --font-primary: Kultrata, serif;
-  --font-primary-italics: Kultrata, serif;
+  --font-primary: Ktrata, serif;
+  --font-primary-italics: Ktrata, serif;
   --font-mono: monospace;
   --font-size-11: 11px;
   --font-size-12: 12px;
@@ -217,11 +217,11 @@
   --line-height-16: 16px;
   --line-height-20: 20px;
   --line-height-30: 30px;
-  --font-primary-caps: KultrataHeader, serif;
+  --font-primary-caps: KtrataHeader, serif;
   --font-icon: "Font Awesome 5 Free";
   --font-heading-1: Infidel, sans-serif;
-  --font-heading-2: KultrataHeader, serif;
-  --font-primary-smallcaps: KultrataSC, serif;
+  --font-heading-2: KtrataHeader, serif;
+  --font-primary-smallcaps: KtrataSmallCaps, serif;
   --font-decorative: Sokol, serif;
   --font-decorative-alt: Ravenscroft, serif;
   --font-handwritten: GrandpaScript, serif;
@@ -246,7 +246,6 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-gold.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-default.webp");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -326,7 +325,6 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-gold.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-default.webp");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold-bright.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -342,7 +340,6 @@
   --K4-color-primary: var(--K4-bGOLD);
   --K4-color-contrast: var(--K4-dBLACK);
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-gold.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-bgold.svg");
 }
 #tinymce .k4-theme-white {
   --K4-color-primary: var(--K4-BLACK);
@@ -358,7 +355,6 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-white.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-white.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-white.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -399,7 +395,6 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-white.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-white.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-white.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-gold.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -430,7 +425,6 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-dark.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-dark.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-dark.svg");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-white.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary);
   --K4-strip-main-color-bg: var(--K4-color-contrast);
@@ -465,7 +459,6 @@
   --K4-list-indent: 12px;
   --K4-bg: transparent url("/assets/backgrounds/bg-item-red.webp") no-repeat no-repeat center center / 100% 100%;
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-red.webp") repeat repeat center center/1000px 1000px;
-  --K4-chat-border-image: url("/assets/chat/border-failure.webp");
   --K4-bullet: transparent url("/assets/icons/bullets/bullet-red.svg") no-repeat center center/calc(0.5 * var(--K4-list-indent));
   --K4-strip-main-color-fg: var(--K4-color-primary-bright);
   --K4-strip-main-color-bg: var(--K4-color-contrast);

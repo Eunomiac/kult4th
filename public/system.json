@@ -22,6 +22,7 @@
   "esmodules": [
     "index.js"
 	],
+  "socket": true,
   "styles": [
 		"style.css",
     "tmce-editor.css"
