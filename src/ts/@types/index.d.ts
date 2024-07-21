@@ -1,4 +1,5 @@
 import K4Config from "../scripts/config";
+import K4Roll from "../documents/K4Roll.js";
 
 import "./general-types";
 import "./system-types";
@@ -51,6 +52,7 @@ declare global {
     actors: Collection<ActorDoc>,
     user: UserDoc,
     users: Collection<UserDoc>,
+    rolls: Collection<K4Roll>,
     messages: Collection<ChatMessageDoc>,
     scenes: Scenes,
     model: {

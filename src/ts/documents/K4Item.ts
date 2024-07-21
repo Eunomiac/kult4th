@@ -570,6 +570,12 @@ class K4Item extends Item {
     }
   }
 
+  selectFromList(listRef: string, index: number) {
+    kLog.log(`[K4Item.selectFromList] Selecting "${this.name}" from list "${listRef}" at index ${index}`, {
+      ITEM: this
+    });
+  }
+
   // #endregion
 
   // #region CONTEXTUAL HTML CONSTRUCTION ~

@@ -38,66 +38,100 @@ declare global {
       cssClasses: string[]
     }
 
-    interface ConstructorDataBase {
-      source: K4Roll.Source|string
-    }
-    interface ConstructorDataItemSource extends ConstructorDataBase {
-      source: K4Item.Active|string
-    }
-    interface ConstructorDataAttrSource extends ConstructorDataBase {
-      source: K4Roll.Attribute
-      img: string
-    }
-
-    export type ConstructorData = ConstructorDataItemSource | ConstructorDataAttrSource;
-
-    interface DataBase extends ConstructorDataBase {
-      attribute: K4Roll.RollableAttribute,
-      attrVal: number,
-      modifiers: K4Roll.ModData[]
+    namespace ConstructorData {
+      export interface Base {
+        data?: {
+          id: IDString,
+          actorID: IDString
+        },
+        source: K4Roll.Source|string
+      }
+      export interface ItemSource extends Base {
+        source: K4Item.Active|string
+      }
+      export interface AttrSource extends Base {
+        source: K4Roll.Attribute
+        img: string
+      }
     }
 
-    interface DataItemSource extends DataBase {
-      source: K4Item.Active
+    export type ConstructorData = ConstructorData.ItemSource | ConstructorData.AttrSource;
+
+    namespace Data {
+      export interface Base extends ConstructorData.Base {
+        attribute: K4Roll.RollableAttribute,
+        attrVal: number,
+        modifiers: K4Roll.ModData[]
+      }
+      export interface ItemSource extends Base {
+        source: K4Item.Active
+      }
+      export interface AttrSource extends Base {
+        source: K4Roll.RollableAttribute,
+        img: string
+      }
     }
-    interface DataAttrSource extends DataBase {
-      source: K4Roll.RollableAttribute,
-      img: string
+
+    export type Data = Data.ItemSource | Data.AttrSource;
+
+    namespace Context {
+
+      export interface Base {
+        cssClass: string,
+        dice: [number, number],
+        total: number,
+        source: K4Roll.RollableAttribute|K4Item.Active,
+        attribute: K4Roll.RollableAttribute,
+        attrVal: number,
+        attrType: "active"|"passive"|"zero",
+        modifiers: ModData[],
+        rollerName: string,
+        rollerImg: string,
+        result: K4Item.Components.ResultData,
+        outcome: K4RollResult
+      }
+      export interface ItemSource extends Base {
+        source: K4Item.Active,
+        sourceType: K4ItemType,
+        sourceName: string,
+        sourceImg: string
+      }
+      export interface AttrSource extends Base {
+        source: K4Roll.RollableAttribute
+      }
     }
-    export type Data = DataItemSource | DataAttrSource;
-    interface ContextBase {
-      cssClass: string,
-      dice: [number, number],
-      total: number,
-      source: K4Roll.RollableAttribute|K4Item.Active,
-      attribute: K4Roll.RollableAttribute,
-      attrVal: number,
-      attrType: "active"|"passive"|"zero",
-      modifiers: ModData[],
-      rollerName: string,
-      rollerImg: string,
-      result: K4Item.Components.ResultData,
-      outcome: K4RollResult
+    export type Context = Context.ItemSource | Context.AttrSource;
+
+    export namespace Serialized {
+      export interface Base {
+        class: "K4Roll",
+        source: string,
+        attribute: K4Attribute,
+        formula: string,
+        terms: object[],
+        total?: number,
+        dice: object[],
+        result: string,
+        options: unknown,
+        evaluated: boolean,
+        modifiers: K4Roll.ModData[],
+        data: {
+          id: IDString,
+          actorID: IDString
+        };
+      }
     }
-    interface ContextItemSource extends ContextBase {
-      source: K4Item.Active,
-      sourceType: K4ItemType,
-      sourceName: string,
-      sourceImg: string
-    }
-    interface ContextAttrSource extends ContextBase {
-      source: K4Roll.RollableAttribute
-    }
-    export type Context = ContextItemSource | ContextAttrSource;
   }
 }
 // #endregion
 // #region -- INTERFACE AUGMENTATION ~
-
+interface K4Roll {
+  result: string
+}
 // #endregion
 // #ENDREGION
 
-class K4Roll extends Roll {
+class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
   // #region INITIALIZATION ~
   /**
    * Pre-Initialization of the K4Roll class. This method should be run during the "init" hook.
@@ -120,6 +154,19 @@ class K4Roll extends Roll {
   }
   // #endregion
 
+  static GenerateFromStorage(storedData: K4Roll.Serialized.Base): K4Roll {
+
+    const roll = new K4Roll(storedData as unknown as K4Roll.ConstructorData);
+    roll.modifiers = storedData.modifiers;
+    roll._attribute = storedData.attribute as K4Roll.RollableAttribute;
+    roll.terms = storedData.terms.map((termData) => RollTerm.fromData(termData));
+    roll._dice = storedData.dice.map((dieData) => Die.fromData(dieData)) as DiceTerm[];
+    roll._total = storedData.total;
+    roll._evaluated = storedData.evaluated;
+    // roll.result = storedData.result;
+
+    return roll;
+  }
   static CheckSource(rollData: K4Roll.ConstructorData, actor: K4Actor): {
     type: K4RollType,
     img: string,
@@ -154,7 +201,7 @@ class K4Roll extends Roll {
           attrVal ??= actor.attributes[rollData.source as K4CharAttribute];
           return {
             type: K4RollType.attribute,
-            img: (rollData as K4Roll.ConstructorDataAttrSource).img,
+            img: (rollData as K4Roll.ConstructorData.AttrSource).img,
             attribute: rollData.source,
             attrVal,
             source: rollData.source
@@ -189,6 +236,9 @@ class K4Roll extends Roll {
     throw new Error(`Unable to parse attribute from rollData.source: ${JSON.stringify(rollData.source, null, 2)}`);
   }
   // #region GETTERS & SETTERS ~
+  public get id() {
+    return this.data.id;
+  }
   public actor: K4Actor<K4ActorType.pc>;
   public img: string;
   public _attribute: Promise<K4Roll.RollableAttribute|null>|K4Roll.RollableAttribute;
@@ -249,14 +299,22 @@ class K4Roll extends Roll {
   // #endregion
 
   // #region === CONSTRUCTOR ===
-  constructor(rollData: K4Roll.ConstructorData, actor: K4Actor<K4ActorType.pc>) {
+  constructor(rollData: K4Roll.ConstructorData, actor?: K4Actor<K4ActorType.pc>) {
+    const id = rollData.data?.id ?? U.getID();
+    actor ??= game.actors.get(rollData.data?.actorID ?? "") as Maybe<K4Actor<K4ActorType.pc>>;
+    if (!actor) {
+      throw new Error(`Unable to find actor for roll ${id}`);
+    }
     const {img, type, attribute, attrVal, source} = K4Roll.CheckSource(rollData, actor);
-    super(`2d10 + ${attrVal}`);
+    super(`2d10 + ${attrVal}`, {id, actorID: actor.id});
     this.actor = actor;
     this.img = img;
     this.type = type;
     this._attribute = attribute;
     this.source = source;
+    this.data.id = id;
+    this.data.actorID = actor.id;
+    game.rolls.set(id, this);
     kLog.log("K4Roll created", {rollData, actor, roll: this});
   }
 
@@ -297,7 +355,9 @@ class K4Roll extends Roll {
     return Math.max(0, super.total);
   }
 
-  public async evaluateToChat() {
+  public chatMessage?: K4ChatMessage;
+
+  public async evaluateToChat(): Promise<K4ChatMessage|false> {
 
     // Collect all applicable K4ActiveEffects
     const applicableEffects = this.actor.effects
@@ -326,7 +386,9 @@ class K4Roll extends Roll {
 
     // game.dice3d.showForRoll(this); // Can't include if disabling canvas.
 
-    return await this.displayToChat();
+    this.chatMessage = await this.displayToChat();
+
+    return this.chatMessage;
   }
 
   public async displayToChat() {
@@ -342,7 +404,7 @@ class K4Roll extends Roll {
       attrVal: this.attrVal,
       attrType: this.attribute! in C.Attributes.Active ? "active" : "passive",
       modifiers: this.modifiers,
-      rollerName: this.actor.name ?? U.loc("roll.someone"),
+      rollerName: this.actor.name,
       rollerImg: this.actor.img ?? "",
       result: this.getOutcomeData(),
       outcome: this.outcome,
@@ -395,6 +457,8 @@ class K4Roll extends Roll {
       templateData
     );
 
+    // this._renderedChatMessage =
+
 
     return (await K4ChatMessage.create({
       content,
@@ -407,11 +471,43 @@ class K4Roll extends Roll {
           isRoll: true,
           isTrigger: false,
           rollOutcome: this.outcome,
-          isEdge: false
+          isEdge: false,
+          rollData: this.serializeForStorage()
         }
       }
     }))!;
   }
+
+    /**
+   * Serialize the roll data for storage
+   * @returns {object} Serialized roll data
+   */
+    serializeForStorage(): K4Roll.Serialized.Base {
+      let source: string;
+      if (this.source instanceof K4Item) {
+        source = this.source.id;
+      } else {
+        source = this.source;
+      }
+      return {
+        class: "K4Roll",
+        source,
+        formula: this.formula,
+        modifiers: this.modifiers,
+        attribute: this.attribute as K4Attribute,
+        terms: this.terms.map((term) => term.toJSON()),
+        total: this.total,
+        dice: this.dice.map((die) => die.toJSON()),
+        result: this.result,
+        options: this.options,
+        evaluated: this._evaluated,
+        data: {
+          ...this.data,
+          id: this.id,
+          actorID: this.actor.id
+        }
+      };
+    }
 }
 
 

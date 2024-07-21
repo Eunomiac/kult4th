@@ -17,6 +17,8 @@ import registerSettings, {initTinyMCEStyles, initCanvasStyles} from "./scripts/s
 import registerDebugger from "./scripts/logger.js";
 import Handlebars from "handlebars";
 import K4Alert from "./documents/K4Alert.js";
+import K4Sound from "./documents/K4Sound.js";
+import K4Roll from "./documents/K4Roll.js";
 
 import InitializeLibraries, {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
@@ -43,6 +45,22 @@ registerDebugger();
 let socket: Socket; // ~ SocketLib interface
 
 Hooks.on("init", async () => {
+  // Initialize collection objects
+  game.rolls = new Collection<K4Roll>();
+
+
+  // Define the "K4" namespace within the CONFIG object, and assign basic system configuration package.
+  CONFIG.K4 = K4Config;
+
+  // Register Handlebar Helpers
+  registerHandlebarHelpers();
+
+  Actors.unregisterSheet("core", ActorSheet);
+  Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
+  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc]});
+
+  Items.unregisterSheet("core", ItemSheet);
+  Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
   // Register settings (including debug settings necessary for kLog)
   registerSettings();
   // Announce initialization process in console
@@ -74,25 +92,13 @@ Hooks.on("init", async () => {
   });
 
   // PreInitialize all classes that have a PreInitialize method
-  const ClassesToPreinitialize = [K4Alert, K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
+  const ClassesToPreinitialize = [K4Sound, K4Alert, K4Actor, K4PCSheet, K4NPCSheet, K4Item, K4ItemSheet, K4ChatMessage, K4ActiveEffect]
     .filter((doc): doc is typeof doc & {PreInitialize: (context?: Record<string, unknown>) => Promise<void>;} => "PreInitialize" in doc);
 
   await Promise.all(ClassesToPreinitialize
     .map((doc) => doc.PreInitialize({PACKS}))
   );
 
-  // Define the "K4" namespace within the CONFIG object, and assign basic system configuration package.
-  CONFIG.K4 = K4Config;
-
-  // Register Handlebar Helpers
-  registerHandlebarHelpers();
-
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
-  Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc]});
-
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
 
   await preloadTemplates().catch((error: unknown) => {kLog.error(String(error));});
 
@@ -345,7 +351,8 @@ async function preloadTemplates() {
       "ask-for-item"
     ]),
     ...U.getTemplatePath("alerts", [
-      "alert-simple"
+      "alert-simple",
+      "alert-card"
     ])
   ];
 

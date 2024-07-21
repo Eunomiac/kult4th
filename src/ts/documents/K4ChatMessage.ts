@@ -2,6 +2,7 @@
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor from "./K4Actor.js";
+import K4Item, {K4ItemType} from "./K4Item.js";
 import {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
@@ -17,6 +18,7 @@ namespace K4ChatMessage {
       isTrigger: boolean;
       isEdge: boolean;
       rollOutcome?: K4RollResult;
+      rollData?: K4Roll.Serialized.Base;
     }
   }
 
@@ -35,164 +37,293 @@ interface K4ChatMessage {
 // #endregion
 // #endregion
 
-// interface GSAPEffects {
-//   [key: keyof typeof GSAPEFFECTS]: gsap.core.Timeline
-// }
-const GSAPEFFECTS = {
-  animateFailure: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      const {duration, stagger, ease} = config as {duration: number, stagger: number, ease: string};
-
-      const msg$ = $(target);
-      const msgBgBase$ = msg$.find(".message-bg.bg-base");
-      msg$.find(".message-bg.bg-fail").css("visibility", "visible");
-
-
-      const msgDropCap = msg$.find(".drop-cap");
-      const msgAttrFlare = msg$.find(".roll-term-container[class*='attribute-']");
-      const msgIntro = msg$.find(".roll-char-name, .roll-intro-line");
-      const msgIcon = msg$.find(".icon-container .chat-icon");
-      const msgSource = msg$.find(".roll-source-header");
-      const msgGears = msg$.find(".roll-total-gear > img");
-      const msgTotal = msg$.find(".roll-total-number");
-      const msgOutcomeMain = msg$.find(".roll-outcome .roll-outcome-main");
-      const msgOutcomeSub = msg$.find(".roll-outcome .roll-outcome-sub");
-      const msgTextToRed = msg$.find(".roll-char-name, .roll-intro-line, .text-attributename, .roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
-      const msgTextToBlack = msg$.find(".roll-source-name .roll-source-text");
-      return U.gsap.timeline({ease, clearProps: true})
-        .to(msgBgBase$, {autoAlpha: 0, duration, ease: "power2.inOut"})
-          .fromTo(msgDropCap, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5)", duration}, 0)
-          .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration}, 0)
-          .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(3.5px) sepia(5) brightness(0.65) saturate(5) hue-rotate(-45deg) contrast(2)", duration}, 0)
-          .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(0.75) saturate(2) contrast(1)", duration}, 0)
-          .to(msgIcon, {background: "red", duration, stagger}, stagger)
-          .to(msgSource, {borderTopColor: "red", borderBottomColor: "red", background: "#990000", duration}, 2 * stagger)
-          .fromTo(msgOutcomeMain, {color: "rgb(155, 32, 32)", textShadow: "0 0 4px rgb(0, 0, 0), 0 0 4px rgb(0, 0, 0)"}, {color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5)", duration, onComplete() {
-            msgOutcomeMain.addClass("neon-glow-strong-red");
-            msgOutcomeMain.attr("style", "color: rgb(255, 255, 255); visibility: visible");
-          }}, 2 * stagger)
-          .to(msgOutcomeSub, {color: "red", textShadow: "none", duration}, 2 * stagger)
-          .to(msgTextToRed, {color: "red", duration}, 2 * stagger)
-          .to(msgTextToBlack, {color: "black", duration}, 2 * stagger);
-    },
-    defaults: {
-      duration: 1,
-      stagger: 0,
-      ease: "power3.in"
-    },
-    extendTimeline: true
-  },
-  animateSuccess: {
-    effect: (target: JQuery|HTMLElement, config: Record<string, unknown>) => {
-      return U.gsap.timeline();
-      /*
-      const {duration, stagger, ease} = config as {duration: number, stagger: number, ease: string};
-      var msg$ = $(target);
-      var msgBg = msg$.find(".message-bg");
-      var msgDropCap = msg$.find(".drop-cap");
-      var msgAttrFlare = msg$.find(".roll-term-container[class*='attribute-']");
-      var msgIntro = msg$.find(".roll-char-name, .roll-intro-line");
-      var msgIcon = msg$.find(".icon-container .chat-icon");
-      var msgSource = msg$.find(".roll-source-header");
-      var msgGears = msg$.find(".roll-total-gear > img");
-      var msgTotal = msg$.find(".roll-total-number");
-      var msgOutcomeMain = msg$.find(".roll-outcome .roll-outcome-main");
-      var msgOutcomeSub = msg$.find(".roll-outcome .roll-outcome-sub");
-      var msgTextToRed = msg$.find(".roll-char-name, .roll-intro-line, .text-attributename, .roll-source-source-name .roll-source-text, .roll-dice-results ~ * *");
-      var msgTextToBlack = msg$.find(".roll-source-name .roll-source-text");
-      return U.gsap.timeline({ease, clearProps: true})
-          .fromTo(msgBg, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) hue-rotate(-45deg) saturate(5) contrast(2)", duration}, 0)
-          .fromTo(msgDropCap, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(0) brightness(0.5) saturate(2) hue-rotate(-45deg) saturate(1) contrast(1)", duration}, 0)
-          .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration}, 0)
-          .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(3.5px) sepia(5) brightness(0.65) saturate(5) hue-rotate(-45deg) contrast(2)", duration}, 0)
-          .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(0.75) saturate(2) contrast(1)", duration}, 0)
-          .to(msgIcon, {background: "red", duration, stagger}, stagger)
-          .to(msgSource, {borderTopColor: "red", borderBottomColor: "red", background: "#990000", duration}, 2 * stagger)
-          .fromTo(msgOutcomeMain, {color: "rgb(155, 32, 32)", textShadow: "0 0 4px rgb(0, 0, 0), 0 0 4px rgb(0, 0, 0)"}, {color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5)", duration, onComplete() {
-            msgOutcomeMain.addClass("neon-glow-strong-red");
-            msgOutcomeMain.attr("style", "color: rgb(255, 255, 255)");
-          }}, 2 * stagger)
-          .to(msgOutcomeSub, {color: "red", textShadow: "none", duration}, 2 * stagger)
-          .to(msgTextToRed, {color: "red", duration}, 2 * stagger)
-          .to(msgTextToBlack, {color: "black", duration}, 2 * stagger);
-      */
-    },
-    defaults: {
-      duration: 1,
-      stagger: 0,
-      ease: "power3.in"
-    },
-    extendTimeline: true
+function getStaggerList(stagger?: number | number[], defaultStagger?: number|number[]): number[] {
+  if (Array.isArray(stagger)) {
+    return stagger;
   }
+  const length = Array.isArray(defaultStagger) ? defaultStagger.length : 10;
+  if (typeof stagger === "number") {
+    return (Array.from({length})).fill(stagger) as number[];
+  }
+  if (Array.isArray(defaultStagger)) {
+    return defaultStagger;
+  }
+  if (U.isNumber(defaultStagger)) {
+    return (Array.from({length})).fill(defaultStagger) as number[];
+  }
+  return (Array.from({length})).fill(0) as number[];
 }
 
-const MASTERTIMELINE = (message$: JQuery, msg: K4ChatMessage, stagger?: ValueOrIndex<number>) => {
+const MASTERTIMELINES = {
+  animateRollResult: (message$: JQuery, msg: K4ChatMessage, stagger?: ValueOrArray<number>) => {
+    const staggers = getStaggerList(
+      stagger,
+      [
+        0.5,      // intro line stagger
+        1,        // source line stagger
+        1,        // dice stagger
+        0,        // modifiers stagger
+        0,        // total stagger
+        1.75,      // outcome stagger
+        1,        // window scroll stagger
+        0,        // success/fail stagger
+        0         // results stagger
+      ]
+    );
 
-  stagger ??= [
-    0.5,      // intro line stagger
-    1,        // source line stagger
-    1,        // dice stagger
-    0,        // modifiers stagger
-    0,        // total stagger
-    1.75,      // outcome stagger
-    1,        // window scroll stagger
-    0,        // success/fail stagger
-    0         // results stagger
-  ];
-  if (typeof stagger === "number") {
-    stagger = (new Array(8)).fill(stagger);
+    // Determine the current and maximum height of the message for scrolling purposes
+    const messageContent$ = message$.find(".message-content");
+    const results$ = message$.find(".roll-dice-results ~ div, .roll-dice-results ~ label, .roll-dice-results ~ h2, .roll-dice-results ~ ul li");
+    const curHeight = message$.height() ?? 0;
+    results$.css({
+      display: "block",
+      visibility: "visible",
+      opacity: 0
+    });
+    let endHeight = message$.height() ?? 0;
+    if (endHeight > 800) {
+      messageContent$.css({"--chat-font-size-large": "12px", "--chat-line-height-large": "16px"})
+      endHeight = message$.height() ?? 0;
+    }
+    results$.css({
+      display: "none",
+      visibility: "hidden",
+      opacity: ""
+    });
+    message$.css({minHeight: curHeight, maxHeight: curHeight});
+    messageContent$.css({minHeight: curHeight, maxHeight: curHeight});
+
+    kLog.log(`Current Height: ${curHeight}; End Height: ${endHeight}`);
+
+    const tl = U.gsap.timeline()
+      .add(CHILD_TIMELINES.animateCharName(message$))
+      .add(CHILD_TIMELINES.animateIntroLine(message$), `<+=${staggers[0]}`)
+      .add(CHILD_TIMELINES.animateSource(message$), `<+=${staggers[1] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateDice(message$), `<+=${staggers[2] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateModifiers(message$), `<+=${staggers[3] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateTotal(message$), `<+=${staggers[4] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateOutcome(message$), `<+=${staggers[5] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateWindowSize(message$, curHeight, endHeight), `<+=${staggers[6] ?? U.getLast(staggers)}`);
+
+    if (message$.hasClass("roll-failure")) {
+      tl.add(CHILD_TIMELINES.animateToFailure(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
+    } else if (message$.hasClass("roll-success")) {
+      tl.add(CHILD_TIMELINES.animateToSuccess(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
+    } else if (message$.hasClass("roll-partial")) {
+      tl.add(CHILD_TIMELINES.animateToPartial(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
+    }
+
+    tl.add(CHILD_TIMELINES.animateResults(message$, msg), `<+=${staggers[8] ?? U.getLast(staggers)}`);
+    tl.addLabel("revealed");
+
+    return tl;
+  },
+  animateTriggerResult: (message$: JQuery, msg: K4ChatMessage, stagger?: ValueOrArray<number>) => {
+
+    const staggers = getStaggerList(stagger, [
+      0.5,      // intro line stagger
+      1,        // source line stagger
+      // 1,        // dice stagger
+      // 0,        // modifiers stagger
+      // 0,        // total stagger
+      // 1.75,      // outcome stagger
+      // 1,        // window scroll stagger
+      0,        // success/fail stagger
+      0         // results stagger
+    ]);
+
+    return U.gsap.timeline()
+      .add(CHILD_TIMELINES.animateCharName(message$))
+      .add(CHILD_TIMELINES.animateIntroLine(message$), `<+=${staggers[0]}`)
+      .add(CHILD_TIMELINES.animateSource(message$), `<+=${staggers[1] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateToSuccess(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateResults(message$), `<+=${staggers[8] ?? U.getLast(staggers)}`)
+      .addLabel("revealed");
+  },
+  animateListOptions: (list$: JQuery, msg: K4ChatMessage, stagger?: ValueOrArray<number>) => {
+    // Position any chat key selectors
+    // html$.find("[class*='chat-select-']")
+    //   .each((_, el) => {
+    //     const key$ = $(el);
+    //     const keyImg$ = key$.find(".selection-key");
+    //     const listElem$ = key$.closest("li");
+    //     const list$ = listElem$.closest("ul");
+
+    //     const index = parseInt((key$.attr("class") ?? "").match(/chat-select-(\d+)/)?.[1] ?? "0", 10);
+    //     if (index === 0) {
+    //       throw new Error(`Unable to derive index from key class string '${key$.attr("class")}'.`);
+    //     }
+
+    //     const listRef = (list$.attr("class") ?? "").match(/list-([a-z]+)/)?.[1];
+    //     if (!listRef) {
+    //       throw new Error(`Unable to derive list ref from list class string '${list$.attr("class")}'.`);
+    //     }
+
+    //     const height = 60;
+    //     const width = height * 2;
+    //     const startPosFraction = 0.4;
+
+    //     const colors: Record<string, string> = {};
+
+    //     if (!this.outcome) {
+    //       throw new Error(`Unable to derive outcome for chat key '${key$.text()}'`);
+    //     }
+
+    //     switch (this.outcome) {
+    //       case K4RollResult.completeSuccess: {
+    //         colors.bright = C.Colors.gGOLD;
+    //         colors.med = C.Colors.bGOLD;
+    //         colors.dark = C.Colors.dGOLD;
+    //         break;
+    //       }
+    //       case K4RollResult.partialSuccess: {
+    //         colors.bright = C.Colors.bWHITE;
+    //         colors.med = C.Colors.WHITE;
+    //         colors.dark = C.Colors.BLACK;
+    //         break;
+    //       }
+    //       case K4RollResult.failure: {
+    //         colors.bright = C.Colors.gRED;
+    //         colors.med = C.Colors.bRED;
+    //         colors.dark = C.Colors.dRED;
+    //         break;
+    //       }
+    //     }
+
+    //     U.gsap.set(key$, {
+    //       autoAlpha: 0,
+    //       pointerEvents: "none",
+    //       height,
+    //       width,
+    //       background: "transparent",
+    //       filter: `drop-shadow(0px 0px 5px ${colors.med})`,
+    //       margin: [
+    //         `-${(height / 2) + 5}px`,
+    //         `-${(1 - startPosFraction) * width}px`,
+    //         `-${(height / 2) - 5}px`,
+    //         `-${startPosFraction * width}px`,
+    //       ].join(" ")
+    //     });
+
+    //     const keyImgSrc = U.randElem(Object.values(C.Influences)).imgs.horizKey;
+
+    //     U.gsap.set(keyImg$, {
+    //       background: C.Colors.dBLACK,
+    //       maskImage: `url(${keyImgSrc})`,
+    //       webkitMaskImage: `url(${keyImgSrc})`,
+    //     });
+
+    //     const revealTimeline = U.gsap.timeline({
+    //       paused: true,
+    //       onComplete() {
+    //         U.gsap.set(key$, {pointerEvents: "auto"});
+    //       }
+    //     })
+    //       .fromTo(key$, {
+    //         x: 25,
+    //         autoAlpha: 0
+    //       }, {
+    //         x: 0,
+    //         autoAlpha: 1,
+    //         duration: 0.5,
+    //         ease: "power2.out"
+    //       });
+
+    //     key$.data("revealTimeline", revealTimeline);
+
+    //     const hoverTimeline = U.gsap.timeline({paused: true})
+    //       .to(key$,  {
+    //         x: -10,
+    //         filter: `drop-shadow(0 0 10px ${colors.bright})`,
+    //         duration: 0.5,
+    //         ease: "power2.out",
+    //       })
+    //       .fromTo(keyImg$, {
+    //         background: C.Colors.dBLACK
+    //       }, {
+    //         background: colors.dark,
+    //         duration: 0.5,
+    //         ease: "power2.out"
+    //       }, 0)
+    //       .fromTo(listElem$, {
+    //         filter: "brightness(1)"
+    //       }, {
+    //         filter: "brightness(1.5)",
+    //         duration: 0.5,
+    //         ease: "power2.out"
+    //       }, 0);
+
+    //     key$.data("hoverTimeline", hoverTimeline);
+
+    //     // On mouseover, play the hoverTimeline UNLESS the clickHoldTimeline is playing or reversing
+    //     key$.on("mouseover", () => {
+    //       if (!clickHoldTimeline.isActive()) {
+    //         hoverTimeline.timeScale(1);
+    //         hoverTimeline.play();
+    //       }
+    //     });
+    //     key$.on("mouseleave", () => {
+    //       if (!clickHoldTimeline.isActive()) {
+    //         hoverTimeline.timeScale(2);
+    //         hoverTimeline.reverse();
+    //       }
+    //     });
+
+    //     const clickHoldTimeline = U.gsap.timeline({
+    //       paused: true,
+    //       onStart() {
+    //         // Immediately jump to the end of the hover timeline
+    //         hoverTimeline.progress(1);
+    //       },
+    //       onReverseComplete() {
+    //         // Check if the mouse is still over the key element
+    //         // If not, also reverse the hover timeline.
+    //         if (!$(key$).is(":hover")) {
+    //           hoverTimeline.timeScale(2);
+    //           hoverTimeline.reverse();
+    //         }
+    //       },
+    //       onComplete() {
+    //         U.gsap.set(key$, {pointerEvents: "none"});
+    //         (key$.data("triggerTimeline") as Maybe<GSAPAnimation>)?.play();
+    //       }
+    //     })
+    //       .to(key$, {
+    //         x: -70,
+    //         filter: `drop-shadow(0 0 3px ${colors.bright})`,
+    //         scale: 1.15,
+    //         duration: 2,
+    //         ease: "slow(0.5, 0.8)"
+    //       })
+    //       .to(keyImg$, {
+    //         background: colors.bright,
+    //         duration: 2,
+    //         ease: "slow(0.5, 0.8)"
+    //       }, 0);
+
+    //     key$.data("clickHoldTimeline", clickHoldTimeline);
+
+    //     // On mousedown, play the clickHoldTimeline. On mouseup, reverse it.
+    //     key$.on("mousedown", () => {
+    //       clickHoldTimeline.timeScale(1);
+    //       clickHoldTimeline.play();
+    //     });
+    //     key$.on("mouseup", () => {
+    //       clickHoldTimeline.timeScale(2);
+    //       clickHoldTimeline.reverse();
+    //     });
+
+    //     const triggerTimeline = U.gsap.timeline({
+    //       paused: true,
+    //       onComplete() {
+    //         self.sourceItem?.selectFromList(listRef, index);
+    //       }
+    //     })
+
+    //     key$.data("triggerTimeline", triggerTimeline);
+    //   });
+
   }
-
-  const staggers = stagger as number[];
-
-  // Determine the current and maximum height of the message for scrolling purposes
-  const messageContent$ = message$.find(".message-content");
-  const results$ = message$.find(".roll-dice-results ~ div, .roll-dice-results ~ label, .roll-dice-results ~ h2, .roll-dice-results ~ ul li");
-  const curHeight = message$.height() ?? 0;
-  results$.css({
-    display: "block",
-    visibility: "visible",
-    opacity: 0
-  });
-  let endHeight = message$.height() ?? 0;
-  if (endHeight > 800) {
-    messageContent$.css({"--chat-font-size-large": "12px", "--chat-line-height-large": "16px"})
-    endHeight = message$.height() ?? 0;
-  }
-  results$.css({
-    visibility: "hidden",
-    opacity: ""
-  });
-  message$.css({minHeight: curHeight, maxHeight: curHeight});
-  messageContent$.css({minHeight: curHeight, maxHeight: curHeight});
-
-  const tl = U.gsap.timeline()
-    .add(CHILD_TIMELINES.animateCharName(message$))
-    .add(CHILD_TIMELINES.animateIntroLine(message$), `<+=${staggers[0]}`)
-    .add(CHILD_TIMELINES.animateSource(message$), `<+=${staggers[1] ?? U.getLast(staggers)}`)
-    .add(CHILD_TIMELINES.animateDice(message$), `<+=${staggers[2] ?? U.getLast(staggers)}`)
-    .add(CHILD_TIMELINES.animateModifiers(message$), `<+=${staggers[3] ?? U.getLast(staggers)}`)
-    .add(CHILD_TIMELINES.animateTotal(message$), `<+=${staggers[4] ?? U.getLast(staggers)}`)
-    .add(CHILD_TIMELINES.animateOutcome(message$), `<+=${staggers[5] ?? U.getLast(staggers)}`)
-    .add(CHILD_TIMELINES.animateWindowSize(message$, curHeight, endHeight), `<+=${staggers[6] ?? U.getLast(staggers)}`);
-
-  if (message$.hasClass("roll-failure")) {
-    tl.add(CHILD_TIMELINES.animateToFailure(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
-  } else if (message$.hasClass("roll-success")) {
-    tl.add(CHILD_TIMELINES.animateToSuccess(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
-  } else if (message$.hasClass("roll-partial")) {
-    tl.add(CHILD_TIMELINES.animateToPartial(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`);
-  }
-
-  tl.add(CHILD_TIMELINES.animateResults(message$), `<+=${staggers[8] ?? U.getLast(staggers)}`);
-  tl.addLabel("revealed");
-  tl.call(() => {
-    setTimeout(() => {
-      msg.isAnimated = false;
-    }, 50000)
-  });
-
-  return tl;
 }
 
 const CHILD_TIMELINES = {
@@ -554,9 +685,23 @@ const CHILD_TIMELINES = {
   },
   animateWindowSize(message$: JQuery, curHeight: number, maxHeight: number): gsap.core.Timeline {
     const messageContent$ = message$.find(".message-content");
+    const results$ = message$.find(".roll-dice-results ~ div, .roll-dice-results ~ label, .roll-dice-results ~ h2, .roll-dice-results ~ ul li");
+    // const curHeight = message$.height() ?? 0;
+    // results$.css({
+    //   display: "block",
+    //   visibility: "visible",
+    //   opacity: 0
+    // });
     // Timeline: Expand chat message to its full height
     return U.gsap.timeline()
-      .to([message$, messageContent$], {
+      .set(results$, {
+        display: "block",
+        visibility: "visible",
+        opacity: 0
+      })
+      .fromTo([message$, messageContent$], {
+        maxHeight: curHeight
+      }, {
         maxHeight,
         duration: 1,
         onUpdate() {
@@ -710,7 +855,7 @@ const CHILD_TIMELINES = {
       .to(msgOutcomeSub, {color: C.Colors.WHITE, duration: 1}, 0)
       .to(msgTextToGrey, {color: C.Colors.WHITE, duration: 1}, 0);
 },
-  animateResults(message$: JQuery): gsap.core.Timeline {
+  animateResults(message$: JQuery, msg: K4ChatMessage): gsap.core.Timeline {
 
     const results$ = message$.find([
       ".roll-dice-results ~ div",
@@ -719,12 +864,27 @@ const CHILD_TIMELINES = {
       ".roll-dice-results ~ ul li"
     ].join(", "));
 
+    const keys$ = message$.find("[class*='chat-select-']");
+
     // // Split results$ into lines
     // const splitResultLines = new SplitText(results$, { type: "lines" });
     // // Set results$ to visibility: visible
     // results$.css("visibility", "visible");
 
-    return U.gsap.timeline()
+    return U.gsap.timeline({
+      onComplete: () => {
+
+
+      }
+    })
+      .add(() => {
+        keys$.each((_, key) => {
+          const timeline = $(key).data("revealTimeline") as Maybe<GSAPAnimation>;
+          if (timeline) {
+            timeline.play();
+          }
+        });
+      })
       .fromTo(results$, {
       // .fromTo(splitResultLines.lines, {
         autoAlpha: 0,
@@ -735,25 +895,7 @@ const CHILD_TIMELINES = {
         ease: "power2.out",
         duration: 1,
         stagger: 0.25
-      })
-  }
-}
-
-
-
-const ANIMATIONS = {
-  animateChatTrigger(target: HTMLElement, msg: K4ChatMessage): gsap.core.Timeline {
-    const target$ = $(target);
-
-    return U.gsap.timeline({
-      onComplete() {
-        msg.isAnimated = false;
-      }
-    })
-      .to(target$, { x: -200, duration: 0.5, ease: "bounce"})
-      .to(target$, {x: 0, duration: 0.5, ease: "bounce"})
-      .addLabel("revealed")
-      .addLabel("end");
+      }, 0)
   }
 }
 // #region === K4ChatMessage CLASS ===
@@ -792,9 +934,9 @@ class K4ChatMessage extends ChatMessage {
   }
 
   static RegisterGsapEffects() {
-    Object.entries(GSAPEFFECTS).forEach(([name, effect]) => {
-      U.gsap.registerEffect({name, ...effect});
-    });
+    // Object.entries(GSAPEFFECTS).forEach(([name, effect]) => {
+    //   U.gsap.registerEffect({name, ...effect});
+    // });
   }
 
   static get ChatLog$(): JQuery {
@@ -843,7 +985,7 @@ class K4ChatMessage extends ChatMessage {
     });
 
     // Assign object to the global scope for development purposes
-    Object.assign(globalThis, {MASTERTIMELINE, CHILD_TIMELINES, ANIMATIONS});
+    Object.assign(globalThis, {K4ChatMessage, MASTERTIMELINES, CHILD_TIMELINES});
 
     // Register a hook to run when a chat message is rendered
     Hooks.on("renderChatMessage", async (message: K4ChatMessage, html) => {
@@ -871,9 +1013,11 @@ class K4ChatMessage extends ChatMessage {
   }
   // #endregion
 
-  static override create(data: K4ChatMessage.ConstructorData, context?: DocumentModificationContext): Promise<Maybe<K4ChatMessage>> {
-    return super.create(data as ChatMessageDataConstructorData, context);
-  }
+  // static override create(data: K4ChatMessage.ConstructorData, context?: DocumentModificationContext): Promise<Maybe<K4ChatMessage>> {
+  //   return super.create(data as ChatMessageDataConstructorData, context).then((message) => {
+  //     return message?.setFlag("kult4th", "rollData.data.chatID", message.id);
+  //   });
+  // }
 
 
 
@@ -946,10 +1090,10 @@ class K4ChatMessage extends ChatMessage {
   animate() {
     if (!this.isAnimated) { return undefined; }
     this.freeze(false);
-    if (this.isChatRoll) {
-      this.animationTimeline = MASTERTIMELINE(this.elem$, this);
+    if (this.isChatRoll()) {
+      this.animationTimeline = MASTERTIMELINES.animateRollResult(this.elem$, this);
     } else if (this.isChatTrigger) {
-      this.animationTimeline = ANIMATIONS.animateChatTrigger(this.elem$[0], this);
+      this.animationTimeline = MASTERTIMELINES.animateTriggerResult(this.elem$, this);
     }
   }
   freeze(isPermanent = true) {
@@ -1001,17 +1145,49 @@ class K4ChatMessage extends ChatMessage {
   get isLastMessage(): boolean {
     return this.id === U.getLast(Array.from(game.messages)).id;
   }
-  get isChatRoll(): boolean {
+  isChatRoll(): this is typeof this & {outcome: K4RollResult} {
     return (this.getFlag("kult4th", "isRoll") ?? false) as boolean;
   }
   get isChatTrigger(): boolean {
     return (this.getFlag("kult4th", "isTrigger") ?? false) as boolean;
   }
   get isResult(): boolean {
-    return this.isChatRoll || this.isChatTrigger;
+    return Boolean(this.isChatRoll() || this.isChatTrigger);
+  }
+  get outcome(): Maybe<K4RollResult> {
+    if (this.isChatTrigger) {
+      return K4RollResult.completeSuccess;
+    }
+    if (this.isChatRoll()) {
+      return this.getFlag("kult4th", "rollOutcome") as Maybe<K4RollResult>;
+    }
+    return undefined;
+  }
+  get actorID(): Maybe<string> {
+    return this.speaker.actor
+      ?? this.getFlag("kult4th", "rollData.data.actorID") as Maybe<string>;
   }
   get actor(): Maybe<K4Actor> {
-    return game.actors.get(this.speaker.actor ?? "") as Maybe<K4Actor>;
+    if (!this.actorID) { return undefined; }
+    return game.actors.get(this.actorID);
+  }
+  get sourceItemID(): Maybe<string> {
+    return this.getFlag("kult4th", "rollData.source") as Maybe<string>;
+  }
+  get sourceItem(): Maybe<K4Item> {
+    if (!this.sourceItemID) { return undefined; }
+    const baseItem = game.items.get(this.sourceItemID);
+    if (baseItem) { return baseItem; }
+    if (this.actor) {
+      const ownedItemUUID = `Actor.${this.actorID}.Item.${this.sourceItemID}`;
+      const ownedItem = fromUuidSync(ownedItemUUID);
+      if (ownedItem) { return ownedItem as K4Item; }
+    }
+    return undefined;
+  }
+  get hasChatOptions(): boolean {
+    if (!this.elem$.length) { return false; }
+
   }
   // #endregion
 
@@ -1067,18 +1243,6 @@ class K4ChatMessage extends ChatMessage {
 
   activateListeners(html$?: JQuery) {
     html$ ??= this.elem$;
-    // html$.find(".tooltip").parent()
-    //   .each((_, parent) => {
-    //     K4ActiveEffect.ApplyTooltipListener($(parent));
-    //   });
-
-    /**
-     * @todo Add general-purpose listeners that select for [data-] attributes and apply corresponding event listeners to them.
-     * - data-action="choose-option" (for cases where individual options have effects that must be selected and applied)
-     * - data-action="claim-modifier" (e.g. the target of a Help/Hinder roll can click this to claim the bonus/penalty conferred)
-     * - data-action="change-gm-modifier" (the GM can click this to add a new modifier and then increment it to correct for any errors in roll formulation,
-     *                                       or right-click it to reduce the value. At zero, custom modifier will not be displayed to players.)
-     */
   }
   // #endregion
 

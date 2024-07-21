@@ -27,7 +27,7 @@ Object.entries(PACKS)
  */
 
 import {K4Attribute} from "./constants.js";
-import K4ActiveEffect, {EffectDuration, EffectResetOn, K4Change, PromptInputType} from "../documents/K4ActiveEffect.js";
+import K4ActiveEffect, {UserRef, EffectDuration, EffectResetOn, K4Change, PromptInputType} from "../documents/K4ActiveEffect.js";
 import {
   K4ItemType,
   K4ItemSubType,
@@ -1272,7 +1272,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
       "system": {
-        "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (−2)<#.",
+        "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (&minus;2)<#.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -1281,7 +1281,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
             "system": {
-              "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (−2)<#.",
+              "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (&minus;2)<#.",
               "chatName": "Will Pay Any Price",
               "parentItem": {
                 "name": "At Any Cost",
@@ -1289,7 +1289,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you truly desire something,",
-                "outro": "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>−2<# #>text-keyword>Stability<#."
+                "outro": "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -2955,7 +2955,7 @@ const ITEM_DATA: {
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you push yourself past your breaking point. Decrease #>text-negmod>−2<# #>text-keyword>Stability<#.",
+                  "result": "#>text-keyword>Gain 1 Edge<#, but you push yourself past your breaking point. Decrease #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
                   "listRefs": [
                     "edges"
                   ],
@@ -4049,8 +4049,8 @@ const ITEM_DATA: {
           "complications": {
             "name": "Complications",
             "items": [
-              "You leave cosmetic scars or defects (the patient loses #>text-negmod>−2<# #>text-keyword>Stability<#.",
-              "There are lingering side effects (#>text-negmod>−1<# to all rolls the wound could feasibly affect until it's fully healed).",
+              "You leave cosmetic scars or defects (the patient loses #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
+              "There are lingering side effects (#>text-negmod>&minus;1<# to all rolls the wound could feasibly affect until it's fully healed).",
               "The patient remains knocked out until the GM determines that they awaken."
             ]
           }
@@ -6803,7 +6803,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you fight your deity's enemies or fight to protect a sacred object,",
-                "outro": "you do #>text-mod>+1 Harm<# and take #>text-mod>+1 ongoing<# to %insert.docLink.Endure Injury%.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>−1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
+                "outro": "you do #>text-mod>+1 Harm<# and take #>text-mod>+1 ongoing<# to %insert.docLink.Endure Injury%.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7771,7 +7771,7 @@ const ITEM_DATA: {
                   "result": "You construct a functional bomb."
                 },
                 "partialSuccess": {
-                  "result": "The bomb's blast potential is lower than usual (decrease #>text-keyword>Harm<# dealt by #>text-negmod>−1<#)."
+                  "result": "The bomb's blast potential is lower than usual (decrease #>text-keyword>Harm<# dealt by #>text-negmod>&minus;1<#)."
                 },
                 "failure": {
                   "result": "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. #>text-gmtext>The GM makes a Move<#."
@@ -8014,7 +8014,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "When you choose to awaken your inner rage in combat,",
-                "outro": "lose #>text-negmod>−1<# #>text-keyword>Stability<# and mark 1 Rage.%insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#).%insert.break%Rage lasts until the end of the combat.%insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
+                "outro": "lose #>text-negmod>&minus;1<# #>text-keyword>Stability<# and mark 1 Rage.%insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#).%insert.break%Rage lasts until the end of the combat.%insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
                 "listRefs": [
                   "edges"
                 ]
@@ -8816,10 +8816,10 @@ const ITEM_DATA: {
                   "result": "You control your compulsions and can focus on other things."
                 },
                 "partialSuccess": {
-                  "result": "You become distracted and take #>text-negmod>−1<# #>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
+                  "result": "You become distracted and take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
                 },
                 "failure": {
-                  "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
+                  "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8876,7 +8876,7 @@ const ITEM_DATA: {
                   "result": "You can control your urges."
                 },
                 "partialSuccess": {
-                  "result": "Choose between having sex with the person or reduce your #>text-negmod>−1<# #>text-keyword>Stability<#."
+                  "result": "Choose between having sex with the person or reduce your #>text-negmod>&minus;1<# #>text-keyword>Stability<#."
                 },
                 "failure": {
                   "result": "You cannot resist having sex with the person and the GM chooses one option from the list below: %list.gmoptions%"
@@ -8963,7 +8963,7 @@ const ITEM_DATA: {
                   "result": "Your condition is under control."
                 },
                 "partialSuccess": {
-                  "result": "Your condition triggers, causing pain and daze (#>text-negmod>−1<# to all rolls until the scene ends)."
+                  "result": "Your condition triggers, causing pain and daze (#>text-negmod>&minus;1<# to all rolls until the scene ends)."
                 },
                 "failure": {
                   "result": "Your condition is aggravated with life threatening results (%insert.docLink.Endure Injury% with #>text-keyword>2 Harm<#)."
@@ -9058,7 +9058,7 @@ const ITEM_DATA: {
               "rules": {
                 "trigger": "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (%insert.docLink.Keep It Together% to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (%insert.docLink.Keep It Together% to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>&minus;1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
               },
               "results": {
                 "completeSuccess": {
@@ -9083,7 +9083,7 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>−2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (%insert.docLink.Keep It Together% to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>−1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (%insert.docLink.Keep It Together% to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>&minus;1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
         "currentHold": 0
       }
@@ -9211,7 +9211,7 @@ const ITEM_DATA: {
                   "result": "You sleep in peace."
                 },
                 "partialSuccess": {
-                  "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>−1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (%insert.docLink.Keep It Together%) when you wake up."
+                  "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>&minus;1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (%insert.docLink.Keep It Together%) when you wake up."
                 },
                 "failure": {
                   "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
@@ -9572,7 +9572,7 @@ const ITEM_DATA: {
                   "result": "You remain in control of your vengeful nature and can act rationally."
                 },
                 "partialSuccess": {
-                  "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>−1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
+                  "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
                 },
                 "failure": {
                   "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll %insert.docLink.Keep It Together%. Your obsession cannot be assuaged while the target remains in the same scene with you."
@@ -9621,7 +9621,7 @@ const ITEM_DATA: {
                   "result": "You maintain control over your jealousy."
                 },
                 "partialSuccess": {
-                  "result": "You're afflicted by jealousy and take #>text-negmod>−1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
+                  "result": "You're afflicted by jealousy and take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
                 },
                 "failure": {
                   "result": "Your jealousy takes hold of you. You must %insert.docLink.Keep It Together% to refrain from harming, destroying, or stealing from the subject of your jealousy."
@@ -9826,10 +9826,10 @@ const ITEM_DATA: {
                   "result": "You can keep your emotions in check."
                 },
                 "partialSuccess": {
-                  "result": "You become angry, confused, or frustrated. You take #>text-negmod>−1<# to your next roll."
+                  "result": "You become angry, confused, or frustrated. You take #>text-negmod>&minus;1<# to your next roll."
                 },
                 "failure": {
-                  "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
+                  "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -10066,7 +10066,7 @@ const ITEM_DATA: {
             "name": "GM Options",
             "items": [
               "You mark 1 Time.",
-              "You're tortured by dreams or visions of your fate. Reduce #>text-negmod>−2<# #>text-keyword>Stability<#.",
+              "You're tortured by dreams or visions of your fate. Reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
               "You're haunted by the entity or event that sealed your fate.",
               "Someone in your vicinity is negatively affected by your fate.",
               "Something provides you with false hope of escaping your fate."
@@ -10165,7 +10165,7 @@ const ITEM_DATA: {
                   "result": "You remain in control."
                 },
                 "partialSuccess": {
-                  "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>−1<# to your next roll.",
+                  "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>&minus;1<# to your next roll.",
                   "effects": [{
                     "parentData": K4ActiveEffect.BuildEffectData({
                       canToggle: false,
@@ -10186,7 +10186,7 @@ const ITEM_DATA: {
                   }]
                 },
                 "failure": {
-                  "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>−2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
+                  "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
                   "effects": [{
                     "parentData": K4ActiveEffect.BuildEffectData({
                       permanent: true,
@@ -10353,10 +10353,10 @@ const ITEM_DATA: {
                   "result": "You keep your greed in check."
                 },
                 "partialSuccess": {
-                  "result": "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>−1<# #>text-keyword>ongoing<# to any rolls you make."
+                  "result": "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>&minus;1<# #>text-keyword>ongoing<# to any rolls you make."
                 },
                 "failure": {
-                  "result": "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>−2<# #>text-keyword>Stability<#."
+                  "result": "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -10457,7 +10457,7 @@ const ITEM_DATA: {
                   "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must %insert.docLink.Keep It Together%."
                 },
                 "failure": {
-                  "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>−2<# #>text-keyword>Stability<#."
+                  "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -11212,22 +11212,22 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "You become angry (#>text-negmod>−1<# #>text-keyword>Stability<#).",
-              "You become sad (#>text-negmod>−1<# #>text-keyword>Stability<#).",
-              "You become scared (#>text-negmod>−1<# #>text-keyword>Stability<#).",
-              "You become guilt-ridden (#>text-negmod>−1<# #>text-keyword>Stability<#).",
-              "You become obsessed (#>text-posmod>+1<# #>text-keyword>Relation<# to whatever caused the condition).",
-              "You become distracted (#>text-negmod>−2<# in situations where the condition limits you).",
-              "You will be haunted by the experience at a later time."
+              "#>chat-select-1> <#<span class='selection-text'>You become angry (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
+              "#>chat-select-2> <#<span class='selection-text'>You become sad (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
+              "#>chat-select-3> <#<span class='selection-text'>You become scared (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
+              "#>chat-select-4> <#<span class='selection-text'>You become guilt-ridden (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
+              "#>chat-select-5> <#<span class='selection-text'>You become obsessed (#>text-posmod>+1<# #>text-keyword>Relation<# to whatever caused the condition).</span>",
+              "#>chat-select-6> <#<span class='selection-text'>You become distracted (#>text-negmod>&minus;2<# in situations where the condition limits you).</span>",
+              "#>chat-select-7> <#<span class='selection-text'>You will be haunted by the experience at a later time.</span>"
             ]
           },
           "gmoptions": {
             "name": "GM Options",
             "items": [
-              "You cower powerless in the threat's presence.",
-              "You panic with no control of your actions.",
-              "You suffer emotional trauma (#>text-negmod>−2<# #>text-keyword>Stability<#).",
-              "You suffer life-changing trauma (#>text-negmod>−4<# #>text-keyword>Stability<#)."
+              "#>chat-select-1> <#<span class='selection-text'>You cower powerless in the threat's presence.</span>",
+              "#>chat-select-2> <#<span class='selection-text'>You panic with no control of your actions.</span>",
+              "#>chat-select-3> <#<span class='selection-text'>You suffer emotional trauma (#>text-negmod>&minus;2<# #>text-keyword>Stability<#).</span>",
+              "#>chat-select-4> <#<span class='selection-text'>You suffer life-changing trauma (#>text-negmod>&minus;4<# #>text-keyword>Stability<#).</span>"
             ]
           }
         },
@@ -11247,8 +11247,50 @@ const ITEM_DATA: {
             "hold": 0
           },
           "partialSuccess": {
-            "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>−1<# in situations where this condition would be a hindrance to you. Choose one: %list.options%",
-            "listRefs": [],
+            "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>&minus;1<# in situations where this condition would be a hindrance to you. Choose one:",
+            "listRefs": ["options"],
+            "effects": [
+              {
+                "parentData": K4ActiveEffect.BuildEffectData({
+                  isUnique: false
+                }),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("ChatSelect", {
+                    userSelect: [UserRef.self],
+                    userTarget: [UserRef.self],
+                    listRef: "Options"
+                  }),
+                  // K4ActiveEffect.BuildChangeData("PromptForData", {
+                  //   title: "Describe Your Friend",
+                  //   bodyText: "What is your friend's name?",
+                  //   target: "FLAGS.name",
+                  //   input: PromptInputType.text
+                  // }),
+                  // K4ActiveEffect.BuildChangeData("PromptForData", {
+                  //   title: "Describe Your Friend",
+                  //   bodyText: "What is your friend's field of study?",
+                  //   subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
+                  //   target: "FLAGS.field",
+                  //   input: PromptInputType.text
+                  // }),
+                  // K4ActiveEffect.BuildChangeData("CreateItem", {
+                  //   type: K4ItemType.relation,
+                  //   name: "%insert.FLAGS.name%",
+                  //   img: "systems/kult4th/assets/icons/relation/relation1.svg",
+                  //   system: {
+                  //     concept: "<strong>Expertise:</strong> %insert.FLAGS.field%",
+                  //     lists: {},
+                  //     subType: K4ItemSubType.passive,
+                  //     strength: {
+                  //       min: 0,
+                  //       max: 2,
+                  //       value: 1
+                  //     }
+                  //   }
+                  // })
+                ]
+              }
+            ],
             "edges": 0,
             "hold": 0
           },
@@ -11382,13 +11424,13 @@ const ITEM_DATA: {
         },
         "results": {
           "completeSuccess": {
-            "result": "You may modify the subsequent roll by #>text-negmod>−2<#.",
+            "result": "You may modify the subsequent roll by #>text-negmod>&minus;2<#.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
-            "result": "You may modify the subsequent roll by #>text-negmod>−1<#.",
+            "result": "You may modify the subsequent roll by #>text-negmod>&minus;1<#.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11516,7 +11558,7 @@ const ITEM_DATA: {
             "name": "Options",
             "items": [
               "She's motivated to do what you ask, and recieves #>text-posmod>+1<# for her next roll, if she does it.",
-              "She's worried of the consequences if she doesn't do what you ask, and gets #>text-negmod>−1<# #>text-keyword>Stability<# if she doesn't do it."
+              "She's worried of the consequences if she doesn't do what you ask, and gets #>text-negmod>&minus;1<# #>text-keyword>Stability<# if she doesn't do it."
             ]
           }
         },
@@ -11729,7 +11771,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "",
           "trigger": "When enduring an injury,",
-          "outro": "%insert.rollPrompt% #>text-posmod>+Armor<# #>text-negmod>−Harm<#.",
+          "outro": "%insert.rollPrompt% #>text-posmod>+Armor<# #>text-negmod>&minus;Harm<#.",
           "listRefs": [],
           "effects": [
             // {

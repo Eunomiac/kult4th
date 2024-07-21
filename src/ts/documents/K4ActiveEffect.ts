@@ -2,7 +2,7 @@
 import C, {K4Attribute} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {formatForKult} from "../scripts/helpers.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Actor, {K4ActorType, K4ConditionType} from "./K4Actor.js";
 import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
 import K4Roll from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
@@ -50,6 +50,18 @@ enum EffectResetOn {
   onSheetOpen = "onSheetOpen" // The effect is reset to its default state whenever the Actor's character sheet is opened
 }
 
+/** == USER REF ==
+ * For 'ChatSelect' effects that allow users to select options, the users who should be able to interact with the list keys.
+ */
+enum UserRef {
+  gm = "gm", // the gamemaster
+  self = "self", // The actor-owner of the chat message
+  other = "other", // All other actors
+  any = "any", // Anyone
+  gm_target = "gm_target", // One or more specifically-targeted PC actors, selected via dialog window presnted to the GM.
+  self_target = "self_target", // One or more specifically-targeted PC actors, selected via dialog window presnted to the actor-owner of the chat message.
+}
+
 
 // #endregion
 // #region TYPES ~
@@ -82,6 +94,7 @@ namespace K4Change {
   }
 
   export namespace Schema {
+
     export interface CreateAttack {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       name: string, // Name of the attack
@@ -109,6 +122,27 @@ namespace K4Change {
     }
     export interface DeleteTracker {
       filter: ValueOrArray<string>, // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+    }
+
+    export interface CreateCondition {
+      label: string, // The name of the condition, appearing on hover strips and as headers in tooltips.
+      description: string, // A longer description of the condition -- the bodies of tooltips
+      type: K4ConditionType, // The type of condition
+      modDef: K4Roll.ModDefinition // An object literal of roll modifiers in the form Record<filter, number>
+    }
+
+    export interface DeleteCondition {
+      filter: ValueOrArray<string>, // Filter to determine the type(s) of conditions to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+    }
+    export interface CreateWound {
+      label: string,
+      isCritical: boolean
+    }
+    export interface StabilizeWound {
+      filter: ValueOrArray<string>, // Filter to determine the wound(s) to stabilize. Precede with a '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+    }
+    export interface DeleteWound {
+      filter: ValueOrArray<string>, // Filter to determine the wound(s) to stabilize. Precede with a '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
     export interface ModifyTracker {
       filter: ValueOrArray<string>, // Filter to determine the tracker(s) to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -161,8 +195,14 @@ namespace K4Change {
     export interface RequireItem {
       filter: ValueOrArray<string>, // Name of required item(s)
     }
+    export interface ChatSelect {
+      /* Effect must have this change as its first change. All subsequent changes will be mapped to the referenced list and represent the final applied effect once one of them is selected. */
+      userSelect: UserRef[], // A list of users who should be able to interact with the list keys
+      userTarget: UserRef[], // A list of users who should be the target of the selected effect
+      listRef: string, // A keyword reference to the list on the creating item
+    }
 
-    type AnySchema = CreateAttack|CreateItem<K4ItemType>|CreateTracker|ModifyTracker|ModifyAttack|ModifyMove|ModifyProperty|ModifyChange|PromptForData|RequireItem|ModifyRoll;
+    type AnySchema = CreateAttack|CreateItem<K4ItemType>|CreateTracker|DeleteTracker|CreateCondition|DeleteCondition|CreateWound|StabilizeWound|DeleteWound|ModifyTracker|ModifyAttack|ModifyMove|ModifyProperty|ModifyChange|PromptForData|RequireItem|ModifyRoll|ChatSelect;
 
     export type Any = Record<string, unknown> & AnySchema;
   }
@@ -174,6 +214,12 @@ namespace K4Change {
       N extends "CreateAttack" ? Schema.CreateAttack :
       N extends "CreateItem" ? Schema.CreateItem<T> :
       N extends "CreateTracker" ? Schema.CreateTracker :
+      N extends "DeleteTracker" ? Schema.DeleteTracker :
+      N extends "CreateCondition" ? Schema.CreateCondition :
+      N extends "DeleteCondition" ? Schema.DeleteCondition :
+      N extends "CreateWound" ? Schema.CreateWound :
+      N extends "StabilizeWound" ? Schema.StabilizeWound :
+      N extends "DeleteWound" ? Schema.DeleteWound :
       N extends "ModifyTracker" ? Schema.ModifyTracker :
       N extends "ModifyAttack" ? Schema.ModifyAttack :
       N extends "ModifyMove" ? Schema.ModifyMove :
@@ -182,6 +228,7 @@ namespace K4Change {
       N extends "PromptForData" ? Schema.PromptForData :
       N extends "RequireItem" ? Schema.RequireItem :
       N extends "ModifyRoll" ? Schema.ModifyRoll :
+      N extends "ChatSelect" ? Schema.ChatSelect :
       never;
 
     export type AnyData = Schema.Any;
@@ -402,6 +449,26 @@ const CUSTOM_FUNCTIONS = {
 
     return true;
   },
+  async DeleteItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteItem): Promise<void> {
+
+    const {
+      filter // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+    } = data;
+
+    const filters = [data.filter].flat();
+    const idsToDelete: IDString[] = [];
+    for (const filter of filters) {
+      idsToDelete.push(
+        ...actor.getItemsByFilter(filter)
+          .map((item) => item.id)
+      )
+    }
+    if (idsToDelete.length === 0) {
+      return;
+    }
+    await actor.deleteEmbeddedDocuments("Item", idsToDelete);
+    return;
+  },
   async CreateTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateTracker): Promise<boolean> {
     // Log a custom id to FLAGS.trackerId
 
@@ -414,6 +481,29 @@ const CUSTOM_FUNCTIONS = {
       startValue // Initial value of the tracker
     } = data;
 
+    return Promise.resolve(true);
+  },
+  async DeleteTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteTracker): Promise<boolean> {
+
+    const {
+      filter // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+    } = data;
+
+    return Promise.resolve(true);
+  },
+  async CreateCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateCondition, isPermanent = false): Promise<boolean> {
+    return Promise.resolve(true);
+  },
+  async DeleteCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteCondition, isPermanent = false): Promise<boolean> {
+    return Promise.resolve(true);
+  },
+  async CreateWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateWound, isPermanent = false): Promise<boolean> {
+    return Promise.resolve(true);
+  },
+  async StabilizeWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.StabilizeWound, isPermanent = false): Promise<boolean> {
+    return Promise.resolve(true);
+  },
+  async DeleteWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteWound, isPermanent = false): Promise<boolean> {
     return Promise.resolve(true);
   },
   async ModifyTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyTracker, isPermanent = false): Promise<boolean> {
@@ -720,34 +810,28 @@ const CUSTOM_FUNCTIONS = {
     }
     return true;
   },
-  async DeleteItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteItem): Promise<void> {
-
+  ChatSelect(this: K4Change, roll: K4Roll, data: K4Change.Schema.ChatSelect): Promise<boolean> {
     const {
-      filter // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
+      userSelect,
+      userTarget,
+      listRef
     } = data;
 
-    const filters = [data.filter].flat();
-    const idsToDelete: IDString[] = [];
-    for (const filter of filters) {
-      idsToDelete.push(
-        ...actor.getItemsByFilter(filter)
-          .map((item) => item.id)
-      )
+    // 1) Get the rendered chat message from the roll object.
+    const message = roll.chatMessage;
+    if (!message) {
+      return Promise.resolve(true);
     }
-    if (idsToDelete.length === 0) {
-      return;
-    }
-    await actor.deleteEmbeddedDocuments("Item", idsToDelete);
-    return;
-  },
-  async DeleteTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteTracker): Promise<boolean> {
 
-    const {
-      filter // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
-    } = data;
+    // 2) Determine which users have permission to grab the keys.
+    // 3) Activate and animate the key overlays for all such users (the keys themselves should be auto-included with the #>chat-link<# callout), linking one key to each element of the list according to the formatForKult "#>chat-link-(index)<#" element. Attach click and click-release events to the keys.
+        // These key events, when fired, should use the key index to find the proper change in the parent effect to apply to userTarget
+
+
 
     return Promise.resolve(true);
-  },
+
+  }
 
 } as const;
 // #endregion
@@ -1739,5 +1823,5 @@ interface K4ActiveEffect extends ActiveEffect {
 // #endregion
 // #region EXPORTS ~
 export default K4ActiveEffect;
-export {K4Change, EffectSourceType, EffectDuration, EffectResetOn, PromptInputType};
+export {K4Change, EffectSourceType, EffectDuration, EffectResetOn, PromptInputType, UserRef};
 // #endregion

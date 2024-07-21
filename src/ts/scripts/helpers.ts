@@ -25,7 +25,6 @@ type ContextType = K4Item | {
 };
 
 export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {
-
   // Step One: Replace any data object references.
   str = str.replace(
     /%([^%.]+)\.([^%]+)%/g,
@@ -33,17 +32,15 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
     // kLog.log(`[formatForKult: '${sourceRef}']`, {str, iData, sourceRef, dataKey}, 3);
     switch (sourceRef) {
       case "list": {
-        const listItems = U.getProp<string[]>(iData, `system.lists.${dataKey}.items`);
+        const  listItems = U.getProp<string[]>(iData, `system.lists.${dataKey}.items`);
         if (!listItems) {
           return `<span style='color: red;'>No Such List: ${dataKey}</span>`;
         }
-        const returnData = [
+        return [
           `<ul class='inline-list list-${dataKey}'>`,
           ...listItems.map((item) => `<li>${item}</li>`),
           "</ul>"
         ].join("");
-        // kLog.log("[formatForKult: 'list-results']", returnData, 3);
-        return returnData;
       }
       case "insert": {
         switch (dataKey) {
@@ -123,8 +120,11 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
       if (attrRefs) {
         htmlParts.push(attrRefs.replace(/&/g, " "));
       }
+      htmlParts.push(">");
+      // if (classRefs.includes("chat-select")) {
+      //   htmlParts.push("<span class='selection-key'></span>");
+      // }
       htmlParts.push(...[
-        ">",
         contents ?? "",
         "</span>"
       ]);
@@ -133,7 +133,7 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
   }
   // str = str.replace(/CHECK/g, "Check: ");
 
-  // // Step Three: Apply final specific fixes to formatting
+  // Step Three: Apply final specific fixes to formatting
   // str = str
   //   .replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>") // Remove empty <p> elements, except when used as breaks
   //   .replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block

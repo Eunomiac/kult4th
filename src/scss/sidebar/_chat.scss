@@ -504,7 +504,7 @@
         margin-top: -2px;
         margin-right: -1px;
         min-height: 42px;
-        overflow: hidden;
+        // overflow: visible;
 
         .message-bg {
           position: absolute;
@@ -534,13 +534,15 @@
         }
 
         .kult4th-chat {
+          overflow: hidden;
+
 
           &.wide-drop-cap {
             --chat-intro-header-dropcap-horiz-shift: calc(0.5 * var(--chat-intro-header-dropcap-width) + 20px);
             --chat-intro-header-text-horiz-shift: calc(var(--chat-intro-header-dropcap-horiz-shift) + 20px);
           }
 
-          position: relative;
+          // position: relative;
           z-index: 2;
           font-size: var(--chat-font-size-small);
           line-height: var(--chat-line-height-small);
@@ -898,7 +900,24 @@
           ul.rules-list,
           ul.inline-list {
             --K4-list-indent: 15px;
-            li { text-align: left; }
+            li {
+              text-align: left;
+
+
+            //   [class*='chat-select'] {
+            //     display: inline-block;
+            //     position: relative;
+            //     z-index: -1;
+
+            //     .selection-key {
+            //       display: block;
+            //       position: absolute;
+            //       top: 0;
+            //       left: 0;
+            //       @include image-mask("keys/binah-horiz.webp", 100%, 100%);
+            //     }
+            //   }
+            }
           }
         }
       }

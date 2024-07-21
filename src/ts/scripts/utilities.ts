@@ -2253,7 +2253,7 @@ export default {
   testFuncPerformance,
 
   // ■■■■■■■ GreenSock ■■■■■■■
-  gsap, get, set, getGSAngleDelta, getNearestLabel, reverseRepeatingTimeline, /* to, from, fromTo, */
+  gsap, get, set, getGSAngleDelta, getNearestLabel, reverseRepeatingTimeline,
 
   /* TextPlugin, Flip, */ MotionPathPlugin,
 

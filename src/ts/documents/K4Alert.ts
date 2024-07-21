@@ -1,16 +1,18 @@
 // #region IMPORTS ~
-import C from "../scripts/constants.js";
+import C, {K4Influence} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {AlertPaths} from "../scripts/svgdata.js";
 import K4Actor from "./K4Actor.js";
 import {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
+import K4Sound from "./K4Sound.js"
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
 // #region -- ENUMS ~
 enum AlertType {
-  simple = "simple"
+  simple = "simple",
+  card = "card"
 };
 // #endregion
 // #region -- TYPES ~
@@ -21,14 +23,28 @@ namespace K4Alert {
    * The contextual data passed to the .hbs template
    */
   export namespace Context {
-    export interface Simple {
+    interface Base {
+      skipQueue?: boolean;
+    }
+    export interface Simple extends Base {
       header: string;
       body: string;
       svgPaths?: Record<AlertPathID, {viewBox: string, d: string}>;
       logoImg?: string
     }
+    export interface Card extends Base {
+      name: keyof typeof C["Influences"];
+      type: K4Influence;
+      principle: string;
+      imgs: {
+        tarotCard: string;
+        vertKey: string;
+        horizKey: string;
+      }
+    }
   }
   export type Context<T extends AlertType> = T extends AlertType.simple ? Context.Simple
+    : T extends AlertType.card ? Context.Card
     : never;
 
   /**
@@ -39,8 +55,10 @@ namespace K4Alert {
       displayDuration: number;
     }
     export interface Simple extends Context.Simple, Base { }
+    export interface Card extends Context.Card, Base { }
   }
   export type Data<T extends AlertType> = T extends AlertType.simple ? Data.Simple
+    : T extends AlertType.card ? Data.Card
     : never;
 }
 // #endregion
@@ -58,7 +76,7 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
   {
     name: "fadeShrinkIn",
     effect: (target, config) => {
-      const {duration, ease, startScale} = config;
+      const {duration, ease, startScale, test} = config;
       return U.gsap.timeline()
         .fromTo(target,
           {
@@ -110,6 +128,7 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
     effect: (target, config) => {
       const {duration, ease, height} = config;
       return U.gsap.timeline()
+        .add(() => { K4Sound.play("slow-hit"); })
         .fromTo(target,
           {
             height: 0
@@ -147,11 +166,36 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
       ease: "power3.in"
     },
     extendTimeline: true
+  },
+  {
+    name: "fadeOut",
+    effect: (target, config) => {
+      const {duration, ease} = config;
+      return U.gsap.timeline()
+        .fromTo(target,
+          {
+            opacity: 1
+          }, {
+            opacity: 0,
+            duration,
+            ease
+          }
+        );
+    },
+    defaults: {
+      duration: 0.25,
+      ease: "power3.out"
+    },
+    extendTimeline: true
   }
 ];
 
 
-const ALERTANIMATIONS: Record<AlertType, Record<"in" | "out", GSAPEffectDefinition>> = {
+const ALERTANIMATIONS: Record<AlertType, {
+  in: GSAPEffectDefinition,
+  out: GSAPEffectDefinition,
+  setup?: (target: JQuery, data: K4Alert.Data<AlertType>) => void;
+}> = {
   [AlertType.simple]: {
     in: {
       name: "simpleAlertIn",
@@ -166,13 +210,13 @@ const ALERTANIMATIONS: Record<AlertType, Record<"in" | "out", GSAPEffectDefiniti
         const body$ = target$.find("p");
         const tl = U.gsap.timeline()
           .fadeShrinkIn(target$, {duration, ease: "power2.inOut"})
-          // .fadeShrinkIn(imgLogo$, {startScale: 2, duration, ease: "power2.inOut"}, 0)
           .fadeIn(imgLogo$, {duration: 1}, "<50%")
           .slideDown(container$, {duration: 0.5, height: containerHeight, ease: "power2.in"}, "<50%")
           .fadeIn(heading$, {duration: 0.5}, "<50%")
           .spreadOut(hr$, {endWidth: 500})
           .fadeIn(body$, {}, "<50%")
-        return tl;
+          .add(() => { K4Sound.play("subsonic-stinger"); }, 0.25)
+        return tl as gsap.core.Timeline;
       },
       defaults: {
         duration: 1,
@@ -194,6 +238,38 @@ const ALERTANIMATIONS: Record<AlertType, Record<"in" | "out", GSAPEffectDefiniti
         ease: "power3.out"
       },
       extendTimeline: true
+    }
+  },
+  [AlertType.card]: {
+    in: {
+      name: "cardAlertIn",
+      effect: (target, config) => {
+        const {duration, ease} = config;
+        return U.gsap.timeline()
+          .fadeShrinkIn(target, {duration, ease: "power2.inOut"});
+      },
+      defaults: {
+        duration: 1,
+        ease: "power3.in"
+      },
+      extendTimeline: true
+    },
+    out: {
+      name: "cardAlertOut",
+      effect: (target, config) => {
+        const {duration, ease} = config;
+        return U.gsap.timeline()
+          .fadeOut(target, {duration, ease: "power2.inOut"});
+      },
+      defaults: {
+        duration: 0.5,
+        ease: "power3.out"
+      },
+      extendTimeline: true
+    },
+    setup: (target$, data) => {
+      const container$ = target$.find(".alert-frame-body");
+      const containerHeight = container$.height() ?? 0;
     }
   }
 };
@@ -299,22 +375,6 @@ class K4Alert<T extends AlertType> {
     });
     overlay.append(sampleAlert);
 
-    // Create a few simple alerts to test queueing and append it to the overlay for dev purposes
-    setTimeout(() => {
-      this.Alert({
-        header: "Alert",
-        body: "This is a test alert.",
-      });
-      this.Alert({
-        header: "Alert Number Two",
-        body: "This is another test alert, made a bit longer to test the extremes of width.",
-      });
-      this.Alert({
-        header: "Alert Number Three",
-        body: "This is a test alert, made a bit longer to test the extremes of width.",
-      });
-    }, 2000);
-
     Object.assign(globalThis, {
       K4Alert
     });
@@ -339,6 +399,11 @@ class K4Alert<T extends AlertType> {
       data = args[1] as K4Alert.Context<T>;
     }
     const alert = new K4Alert(type, data);
+    kLog.log("Alert", type, data, alert);
+    if (data.skipQueue) {
+      void alert.run();
+      return;
+    }
     K4Alert.AlertQueue.add(alert);
     K4Alert.RunQueue();
   }
@@ -454,6 +519,7 @@ class K4Alert<T extends AlertType> {
     }
     // return;
     if (!this.hasTimeline()) {
+      const animations = ALERTANIMATIONS[this.type];
       kLog.log("No timeline, creating");
       const self = this;
       this._timeline = U.gsap.timeline(

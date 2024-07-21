@@ -156,6 +156,69 @@
       text-align: center;
       margin: 10px 0 15px 0;
     }
+
+    &.alert-card {
+      width: 400px;
+
+      .alert-card-name h2 {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 0%;
+        left: 50%;
+        z-index: 1;
+        text-align: center;
+        font-family: Sokol;
+        font-size: 124px;
+        font-weight: normal;
+        white-space: nowrap;
+        vertical-align: top;
+        letter-spacing: 5px;
+        line-height: 124px;
+        text-shadow: build-text-shadow(5px, var(--K4-gRED), 6);
+        color: var(--K4-dBLACK);
+        &::first-letter {
+          font-size: 200px;
+          vertical-align: top;
+          line-height: 160px;
+        }
+      }
+      .alert-card-description {
+        position: absolute;
+        transform: translate(-50%, 0%);
+        left: 50%;
+        bottom: -25%;
+        font-family: var(--font-body-1);
+        font-size: 20px;
+        line-height: 20px;
+        color: var(--K4-dBLACK);
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        z-index: 1;
+        text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 6);
+      }
+      .alert-card-image-influence-key {
+        position: absolute;
+        transform-origin: center center;
+        scale: 1.5;
+        width: 200px;
+        left: 100px;
+        height: auto;
+        fill: var(--K4-GOLD);
+      }
+      .alert-card-image-tarot {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        width: auto;
+        height: 100%;
+        fill: var(--K4-GOLD);
+        z-index: 0;
+        opacity: 0.25;
+        filter: blur(5px);
+      }
+    }
   }
 }
 
