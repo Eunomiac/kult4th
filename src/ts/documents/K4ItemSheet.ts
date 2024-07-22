@@ -72,7 +72,7 @@ export default class K4ItemSheet extends ItemSheet {
         if (element.css("text-align") === "justify") {
           return "left";
         }
-        if (["left", "center", "right"].includes(element.css("text-align") ?? "")) {
+        if (["left", "center", "right"].includes(element.css("text-align"))) {
           return element.css("text-align") as "left"|"center"|"right";
         }
         throw new Error(`Invalid text alignment: ${element.css("text-align")}`);
@@ -149,10 +149,10 @@ export default class K4ItemSheet extends ItemSheet {
       // Quick active effects control for dev purposes
       html.find(".effect-control").on("click", (ev) => {
         if ( self.item.isOwned ) {
-          ui.notifications?.warn(game.i18n.localize("BITD.EffectWarning"));
+          ui.notifications.warn(game.i18n.localize("BITD.EffectWarning"));
           return undefined;
         }
-        K4ActiveEffect.onManageActiveEffect(ev, self.item);
+        void K4ActiveEffect.onManageActiveEffect(ev, self.item);
       });
 
 
@@ -160,11 +160,11 @@ export default class K4ItemSheet extends ItemSheet {
       function createOpenLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
+            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
             $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
               .find((item) => item.type === K4ItemType.move && item.name === iName)
-              ?.sheet?.render(true));
+              ?.sheet.render(true));
           }
         }
       }
@@ -172,11 +172,11 @@ export default class K4ItemSheet extends ItemSheet {
       function createTriggerLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
+            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
             $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
               .find((item) => item.type === K4ItemType.move && item.name === iName)
-              ?.sheet?.render(true));
+              ?.sheet.render(true));
           }
         }
       }
@@ -184,9 +184,9 @@ export default class K4ItemSheet extends ItemSheet {
       function createRollLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling (Embedded) ${iName}`));
+            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Rolling (Embedded) ${iName}`); });
           } else {
-            $(elem).on("click", () => kLog.log(`${self.actor?.name} Rolling ${iName}`));
+            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Rolling ${iName}`); });
           }
         }
       }
@@ -194,9 +194,9 @@ export default class K4ItemSheet extends ItemSheet {
       function createChatLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting (Embedded) ${iName}`));
+            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Chatting (Embedded) ${iName}`); });
           } else {
-            $(elem).on("click", () => kLog.log(`${self.actor?.name} Chatting ${iName}`));
+            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Chatting ${iName}`); });
           }
         }
       }
@@ -204,9 +204,9 @@ export default class K4ItemSheet extends ItemSheet {
       function createDeleteLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting (Embedded) ${iName}`));
+            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Deleting (Embedded) ${iName}`); });
           } else {
-            $(elem).on("click", () => kLog.log(`${self.actor?.name} Deleting ${iName}`));
+            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Deleting ${iName}`); });
           }
         }
       }

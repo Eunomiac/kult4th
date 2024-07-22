@@ -1,7 +1,7 @@
 // #region IMPORTS ~
 import C, {K4Influence} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import {AlertPaths} from "../scripts/svgdata.js";
+import {AlertPaths, InfluenceKeys, SVGPathData} from "../scripts/svgdata.js";
 import K4Actor from "./K4Actor.js";
 import {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
@@ -14,6 +14,14 @@ enum AlertType {
   simple = "simple",
   card = "card"
 };
+enum AlertTarget {
+  gm = "gm", // The alert is shown to the GM.
+  self = "self", // The alert is shown to the current user.
+  all = "all", // The alert is shown to all connected users.
+  players = "players", // The alert is shown to all users except the GM.
+  other = "other", // The alert is shown to all users except the current user.
+  otherPlayers = "otherPlayers" // The alert is shown to all users except the current user and the GM.
+}
 // #endregion
 // #region -- TYPES ~
 namespace K4Alert {
@@ -24,28 +32,30 @@ namespace K4Alert {
    */
   export namespace Context {
     interface Base {
+      type: AlertType;
+      target: AlertTarget;
       skipQueue?: boolean;
     }
     export interface Simple extends Base {
+      type: AlertType.simple,
       header: string;
       body: string;
-      svgPaths?: Record<AlertPathID, {viewBox: string, d: string}>;
+      svgPaths?: Record<string, SVGPathData>;
       logoImg?: string
     }
     export interface Card extends Base {
+      type: AlertType.card,
       name: keyof typeof C["Influences"];
-      type: K4Influence;
+      category: K4Influence;
       principle: string;
-      imgs: {
-        tarotCard: string;
-        vertKey: string;
-        horizKey: string;
-      }
+      img: string;
+      keySVG: SVGPathData;
     }
   }
-  export type Context<T extends AlertType> = T extends AlertType.simple ? Context.Simple
-    : T extends AlertType.card ? Context.Card
-    : never;
+  // export type Context<T extends AlertType> = T extends AlertType.simple ? Context.Simple
+  //   : T extends AlertType.card ? Context.Card
+  //   : never;
+  export type Context = Context.Simple | Context.Card;
 
   /**
    * The data passed to the K4Alert constructor
@@ -54,12 +64,17 @@ namespace K4Alert {
     interface Base {
       displayDuration: number;
     }
-    export interface Simple extends Context.Simple, Base { }
-    export interface Card extends Context.Card, Base { }
+    export interface Simple extends Context.Simple, Base {
+      type: AlertType.simple;
+    }
+    export interface Card extends Context.Card, Base {
+      type: AlertType.card;
+    }
   }
-  export type Data<T extends AlertType> = T extends AlertType.simple ? Data.Simple
+  export type TypedData<T extends AlertType> = T extends AlertType.simple ? Data.Simple
     : T extends AlertType.card ? Data.Card
     : never;
+  export type Data = Data.Simple | Data.Card;
 }
 // #endregion
 // #endregion
@@ -72,8 +87,8 @@ namespace K4Alert {
 } */
 
 // #region === GSAP ANIMATIONS ===
-const GSAPEFFECTS: GSAPEffectDefinition[] = [
-  {
+const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
+  fadeShrinkIn: {
     name: "fadeShrinkIn",
     effect: (target, config) => {
       const {duration, ease, startScale, test} = config;
@@ -100,7 +115,7 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
     },
     extendTimeline: true
   },
-  {
+  spreadOut: {
     name: "spreadOut",
     effect: (target, config) => {
       const {startWidth, endWidth, duration, ease} = config;
@@ -123,7 +138,7 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
     },
     extendTimeline: true
   },
-  {
+  slideDown: {
     name: "slideDown",
     effect: (target, config) => {
       const {duration, ease, height} = config;
@@ -146,7 +161,7 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
     },
     extendTimeline: true
   },
-  {
+  fadeIn: {
     name: "fadeIn",
     effect: (target, config) => {
       const {duration, ease} = config;
@@ -167,7 +182,7 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
     },
     extendTimeline: true
   },
-  {
+  fadeOut: {
     name: "fadeOut",
     effect: (target, config) => {
       const {duration, ease} = config;
@@ -188,13 +203,17 @@ const GSAPEFFECTS: GSAPEffectDefinition[] = [
     },
     extendTimeline: true
   }
-];
+} as const;
+
+// type EffectsTimeline = gsap.core.Timeline &
+
+const timeline = U.gsap.timeline as (vars?: gsap.TimelineVars | undefined) => (gsap.core.Timeline & Record<keyof typeof GSAPEFFECTS, GSAPEffectDefinition["effect"]>);
 
 
 const ALERTANIMATIONS: Record<AlertType, {
   in: GSAPEffectDefinition,
   out: GSAPEffectDefinition,
-  setup?: (target: JQuery, data: K4Alert.Data<AlertType>) => void;
+  setup?: (target: JQuery, data: K4Alert.Data) => void;
 }> = {
   [AlertType.simple]: {
     in: {
@@ -208,7 +227,9 @@ const ALERTANIMATIONS: Record<AlertType, {
         const heading$ = target$.find("h2");
         const hr$ = target$.find("hr");
         const body$ = target$.find("p");
-        const tl = U.gsap.timeline()
+
+        /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
+        const tl = U.timeline()
           .fadeShrinkIn(target$, {duration, ease: "power2.inOut"})
           .fadeIn(imgLogo$, {duration: 1}, "<50%")
           .slideDown(container$, {duration: 0.5, height: containerHeight, ease: "power2.in"}, "<50%")
@@ -217,6 +238,7 @@ const ALERTANIMATIONS: Record<AlertType, {
           .fadeIn(body$, {}, "<50%")
           .add(() => { K4Sound.play("subsonic-stinger"); }, 0.25)
         return tl as gsap.core.Timeline;
+        /* eslint-enable */
       },
       defaults: {
         duration: 1,
@@ -245,8 +267,10 @@ const ALERTANIMATIONS: Record<AlertType, {
       name: "cardAlertIn",
       effect: (target, config) => {
         const {duration, ease} = config;
+        /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
         return U.gsap.timeline()
-          .fadeShrinkIn(target, {duration, ease: "power2.inOut"});
+          .fadeShrinkIn(target, {duration, ease: "power2.inOut"}) as gsap.core.Timeline;
+        /* eslint-enable */
       },
       defaults: {
         duration: 1,
@@ -258,8 +282,10 @@ const ALERTANIMATIONS: Record<AlertType, {
       name: "cardAlertOut",
       effect: (target, config) => {
         const {duration, ease} = config;
+        /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
         return U.gsap.timeline()
-          .fadeOut(target, {duration, ease: "power2.inOut"});
+          .fadeOut(target, {duration, ease: "power2.inOut"}) as gsap.core.Timeline;
+        /* eslint-enable */
       },
       defaults: {
         duration: 0.5,
@@ -267,7 +293,7 @@ const ALERTANIMATIONS: Record<AlertType, {
       },
       extendTimeline: true
     },
-    setup: (target$, data) => {
+    setup: (target$, _data) => {
       const container$ = target$.find(".alert-frame-body");
       const containerHeight = container$.height() ?? 0;
     }
@@ -284,7 +310,7 @@ const ALERTANIMATIONS: Record<AlertType, {
  * @template T - The type of items to be stored in the set.
  */
 class OrderedSet<T> {
-  private items: T[] = [];
+  private readonly items: T[] = [];
 
   /**
    * Adds a unique item to the set. If the item already exists, it will not be added again.
@@ -348,7 +374,7 @@ class OrderedSet<T> {
 }
 
 // #region === K4Alert CLASS ===
-class K4Alert<T extends AlertType> {
+class K4Alert {
   // #region INITIALIZATION ~
   /**
   * Pre-Initialization of the K4Alert class. This method should be run during the "init" hook.
@@ -364,7 +390,7 @@ class K4Alert<T extends AlertType> {
     $("body").append(overlay);
 
     // Register GSAP Effects
-    GSAPEFFECTS.forEach((effect) => {
+    Object.values(GSAPEFFECTS).forEach((effect) => {
       U.gsap.registerEffect(effect);
     });
 
@@ -384,22 +410,11 @@ class K4Alert<T extends AlertType> {
   static get Overlay$(): JQuery {
     return $("#kult-alerts");
   }
-  static AlertQueue: OrderedSet<K4Alert<AlertType>> = new OrderedSet<K4Alert<AlertType>>();
+  static AlertQueue: OrderedSet<K4Alert> = new OrderedSet<K4Alert>();
 
-  static Alert<T extends AlertType = AlertType.simple>(data: K4Alert.Context<T>): void
-  static Alert<T extends AlertType>(type: T, data: K4Alert.Context<T>): void
-  static Alert<T extends AlertType = AlertType.simple>(...args: unknown[]): void {
-    let type: T;
-    let data: K4Alert.Context<T>;
-    if (args.length === 1) {
-      type = AlertType.simple as T;
-      data = args[0] as K4Alert.Context<T>;
-    } else {
-      type = args[0] as T;
-      data = args[1] as K4Alert.Context<T>;
-    }
-    const alert = new K4Alert(type, data);
-    kLog.log("Alert", type, data, alert);
+  static Alert(data: Partial<K4Alert.Data>): void {
+    const alert = new K4Alert(data);
+    kLog.log("Alert", data, alert);
     if (data.skipQueue) {
       void alert.run();
       return;
@@ -447,25 +462,36 @@ class K4Alert<T extends AlertType> {
     return `systems/kult4th/assets/chat/dropcaps/${content.slice(0, 1).toUpperCase()}.png`;
   }
 
-  static GetDefaultData<T extends AlertType>(type: T): K4Alert.Data<T> {
+  static GetDefaultData<T extends AlertType>(type: T): K4Alert.TypedData<T> {
     switch (type) {
       case AlertType.simple: {
         return {
+          type,
+          target: AlertTarget.all,
+          skipQueue: false,
           header: "",
           body: "",
           displayDuration: 5,
           svgPaths: AlertPaths,
           logoImg: "systems/kult4th/assets/alerts/logo-bird.webp"
-        } as K4Alert.Data<T>;
+        } as K4Alert.Data.Simple & K4Alert.TypedData<T>;
       }
+      case AlertType.card: {
+        return {
+          type,
+          target: AlertTarget.all,
+          skipQueue: false,
+          ...C.Influences.Kether
+        } as K4Alert.Data.Card & K4Alert.TypedData<T>;
+      }
+      default: return undefined as never;
     }
-    return undefined as never;
   }
   // #endregion
 
   // #region GETTERS & SETTERS ~
-  _type: T;
-  _context: K4Alert.Context<T>;
+  _type: AlertType;
+  _context: K4Alert.Context;
   _displayDuration: number;
   _timeline: Maybe<GSAPAnimation>;
   _element: Maybe<JQuery>;
@@ -473,7 +499,7 @@ class K4Alert<T extends AlertType> {
   get type(): AlertType {
     return this._type;
   }
-  get context(): K4Alert.Context<T> {
+  get context(): K4Alert.Context {
     return this._context;
   }
   get displayDuration(): number {
@@ -495,13 +521,13 @@ class K4Alert<T extends AlertType> {
   // #endregion
 
   // #region CONSTRUCTOR
-  constructor(type: T, data: Partial<K4Alert.Data<T>|K4Alert.Context<T>>) {
-    this._type = type;
+  constructor(data: Partial<K4Alert.Data>) {
+    this._type = data.type ?? AlertType.simple;
     const {displayDuration, ...contextData} = {
       ...K4Alert.GetDefaultData(this._type),
       ...data
-    } as K4Alert.Context<T> & {displayDuration: number};
-    this._context = contextData as unknown as K4Alert.Context<T>;
+    };
+    this._context = contextData as K4Alert.Context;
     this._displayDuration = displayDuration!;
   }
   // #endregion
@@ -531,8 +557,8 @@ class K4Alert<T extends AlertType> {
           }
         }
       )
-        .add(ALERTANIMATIONS[this.type].in.effect(this._element!, ALERTANIMATIONS[this.type].in.defaults))
-        .add(ALERTANIMATIONS[this.type].out.effect(this._element!, ALERTANIMATIONS[this.type].out.defaults), `>+=${this.displayDuration}`);
+        .add(animations.in.effect(this._element!, animations.in.defaults))
+        .add(animations.out.effect(this._element!, animations.out.defaults), `>+=${this.displayDuration}`);
       kLog.log("Timeline created", this._timeline);
     }
     kLog.log("Alert ready");
@@ -546,4 +572,5 @@ class K4Alert<T extends AlertType> {
 
 // #region EXPORTS ~
 export default K4Alert;
+export {AlertType, AlertTarget};
 // #endregion

@@ -64,6 +64,20 @@ export enum K4Influence {
   archon = "archon",
   deathAngel = "deathAngel"
 }
+export enum K4ConditionType {
+  stability = "stability",
+  other = "other"
+}
+export enum K4WoundType {
+  serious = "serious",
+  critical = "critical",
+  stableserious = "stableserious",
+  stablecritical = "stablecritical"
+}
+
+
+
+
 export const Archetypes = {
   Asleep: {
     [Archetype.sleeper]: "Sleeper"
@@ -409,223 +423,143 @@ const C = {
   Influences: {
     "Kether": {
       name: "Kether",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Hierarchy",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/kether-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/kether.webp",
-        keySVG: InfluenceKeys.Kether,
-        tarotCard: "systems/kult4th/assets/tarot/major-3-kether.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-3-kether.webp",
+      keySVG: InfluenceKeys.Kether
     },
     "Chokmah": {
       name: "Chokmah",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Submission",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/chokmah-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/chokmah.webp",
-        keySVG: InfluenceKeys.Chokmah,
-        tarotCard: "systems/kult4th/assets/tarot/major-4-chokmah.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-4-chokmah.webp",
+      keySVG: InfluenceKeys.Chokmah
     },
     "Binah": {
       name: "Binah",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Community",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/binah-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/binah.webp",
-        keySVG: InfluenceKeys.Binah,
-        tarotCard: "systems/kult4th/assets/tarot/major-5-binah.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-5-binah.webp",
+      keySVG: InfluenceKeys.Binah
     },
     "Chesed": {
       name: "Chesed",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Safety",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/chesed-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/chesed.webp",
-        keySVG: InfluenceKeys.Chesed,
-        tarotCard: "systems/kult4th/assets/tarot/major-6-chesed.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-6-chesed.webp",
+      keySVG: InfluenceKeys.Chesed
     },
     "Geburah": {
       name: "Geburah",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Law",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/geburah-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/geburah.webp",
-        keySVG: InfluenceKeys.Geburah,
-        tarotCard: "systems/kult4th/assets/tarot/major-7-geburah.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-7-geburah.webp",
+      keySVG: InfluenceKeys.Geburah
     },
     "Tiphareth": {
       name: "Tiphareth",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Allure",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/tiphareth-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/tiphareth.webp",
-        keySVG: InfluenceKeys.Tiphareth,
-        tarotCard: "systems/kult4th/assets/tarot/major-8-tiphareth.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-8-tiphareth.webp",
+      keySVG: InfluenceKeys.Tiphareth
     },
     "Netzach": {
       name: "Netzach",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Victory",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/netzach-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/netzach.webp",
-        keySVG: InfluenceKeys.Netzach,
-        tarotCard: "systems/kult4th/assets/tarot/major-9-netzach.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-9-netzach.webp",
+      keySVG: InfluenceKeys.Netzach
     },
     "Hod": {
       name: "Hod",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Honor",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/hod-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/hod.webp",
-        keySVG: InfluenceKeys.Hod,
-        tarotCard: "systems/kult4th/assets/tarot/major-10-hod.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-10-hod.webp",
+      keySVG: InfluenceKeys.Hod
     },
     "Yesod": {
       name: "Yesod",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Avarice",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/yesod-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/yesod.webp",
-        keySVG: InfluenceKeys.Yesod,
-        tarotCard: "systems/kult4th/assets/tarot/major-11-yesod.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-11-yesod.webp",
+      keySVG: InfluenceKeys.Yesod
     },
     "Malkuth": {
       name: "Malkuth",
-      type: K4Influence.archon,
+      category: K4Influence.archon,
       principle: "Conformity",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/malkuth-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/malkuth.webp",
-        keySVG: InfluenceKeys.Malkuth,
-        tarotCard: "systems/kult4th/assets/tarot/major-12-malkuth.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-12-malkuth.webp",
+      keySVG: InfluenceKeys.Malkuth
     },
     "Thaumiel": {
       name: "Thaumiel",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Power",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/thaumiel-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/thaumiel.webp",
-        keySVG: InfluenceKeys.Thaumiel,
-        tarotCard: "systems/kult4th/assets/tarot/major-13-thaumiel.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-13-thaumiel.webp",
+      keySVG: InfluenceKeys.Thaumiel
     },
     "Chagidiel": {
       name: "Chagidiel",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Abuse",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/chagidiel-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/chagidiel.webp",
-        keySVG: InfluenceKeys.Chagidiel,
-        tarotCard: "systems/kult4th/assets/tarot/major-14-chagidiel.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-14-chagidiel.webp",
+      keySVG: InfluenceKeys.Chagidiel
     },
     "Sathariel": {
       name: "Sathariel",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Exclusion",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/sathariel-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/sathariel.webp",
-        keySVG: InfluenceKeys.Sathariel,
-        tarotCard: "systems/kult4th/assets/tarot/major-15-sathariel.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-15-sathariel.webp",
+      keySVG: InfluenceKeys.Sathariel
     },
     "Gamichicoth": {
       name: "Gamichicoth",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Fear",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/gamichicoth-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/gamichicoth.webp",
-        keySVG: InfluenceKeys.Gamichicoth,
-        tarotCard: "systems/kult4th/assets/tarot/major-16-gamichicoth.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-16-gamichicoth.webp",
+      keySVG: InfluenceKeys.Gamichicoth
     },
     "Golab": {
       name: "Golab",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Torment",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/golab-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/golab.webp",
-        keySVG: InfluenceKeys.Golab,
-        tarotCard: "systems/kult4th/assets/tarot/major-17-golab.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-17-golab.webp",
+      keySVG: InfluenceKeys.Golab
     },
     "Togarini": {
       name: "Togarini",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Compulsion",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/togarini-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/togarini.webp",
-        keySVG: InfluenceKeys.Togarini,
-        tarotCard: "systems/kult4th/assets/tarot/major-18-togarini.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-18-togarini.webp",
+      keySVG: InfluenceKeys.Togarini
     },
     "Hareb-Serap": {
       name: "Hareb-Serap",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Conflict",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/hareb-serap-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/hareb-serap.webp",
-        keySVG: InfluenceKeys["Hareb-Serap"],
-        tarotCard: "systems/kult4th/assets/tarot/major-19-hareb-serap.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-19-hareb-serap.webp",
+      keySVG: InfluenceKeys["Hareb-Serap"]
     },
     "Samael": {
       name: "Samael",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Vengeance",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/samael-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/samael.webp",
-        keySVG: InfluenceKeys.Samael,
-        tarotCard: "systems/kult4th/assets/tarot/major-20-samael.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-20-samael.webp",
+      keySVG: InfluenceKeys.Samael
     },
     "Gamaliel": {
       name: "Gamaliel",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Desire",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/gamaliel-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/gamaliel.webp",
-        keySVG: InfluenceKeys.Gamaliel,
-        tarotCard: "systems/kult4th/assets/tarot/major-21-gamaliel.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-21-gamaliel.webp",
+      keySVG: InfluenceKeys.Gamaliel
     },
     "Nahemoth": {
       name: "Nahemoth",
-      type: K4Influence.deathAngel,
+      category: K4Influence.deathAngel,
       principle: "Discord",
-      imgs: {
-        horizKey: "systems/kult4th/assets/keys/nahemoth-horiz.webp",
-        vertKey: "systems/kult4th/assets/keys/nahemoth.webp",
-        keySVG: InfluenceKeys.Nahemoth,
-        tarotCard: "systems/kult4th/assets/tarot/major-22-nahemoth.webp"
-      }
+      img: "systems/kult4th/assets/tarot/major-22-nahemoth.webp",
+      keySVG: InfluenceKeys.Nahemoth
     }
   },
   Themes: {

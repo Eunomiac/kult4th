@@ -30,6 +30,7 @@ namespace K4ChatMessage {
 // #endregion
 // #region -- INTERFACE AUGMENTATION ~
 interface K4ChatMessage {
+  get id(): IDString;
   speaker: {
     actor?: string
   }
@@ -137,193 +138,9 @@ const MASTERTIMELINES = {
       .add(CHILD_TIMELINES.animateIntroLine(message$), `<+=${staggers[0]}`)
       .add(CHILD_TIMELINES.animateSource(message$), `<+=${staggers[1] ?? U.getLast(staggers)}`)
       .add(CHILD_TIMELINES.animateToSuccess(message$), `<+=${staggers[7] ?? U.getLast(staggers)}`)
-      .add(CHILD_TIMELINES.animateResults(message$), `<+=${staggers[8] ?? U.getLast(staggers)}`)
+      .add(CHILD_TIMELINES.animateResults(message$, msg), `<+=${staggers[8] ?? U.getLast(staggers)}`)
       .addLabel("revealed");
   },
-  animateListOptions: (list$: JQuery, msg: K4ChatMessage, stagger?: ValueOrArray<number>) => {
-    // Position any chat key selectors
-    // html$.find("[class*='chat-select-']")
-    //   .each((_, el) => {
-    //     const key$ = $(el);
-    //     const keyImg$ = key$.find(".selection-key");
-    //     const listElem$ = key$.closest("li");
-    //     const list$ = listElem$.closest("ul");
-
-    //     const index = parseInt((key$.attr("class") ?? "").match(/chat-select-(\d+)/)?.[1] ?? "0", 10);
-    //     if (index === 0) {
-    //       throw new Error(`Unable to derive index from key class string '${key$.attr("class")}'.`);
-    //     }
-
-    //     const listRef = (list$.attr("class") ?? "").match(/list-([a-z]+)/)?.[1];
-    //     if (!listRef) {
-    //       throw new Error(`Unable to derive list ref from list class string '${list$.attr("class")}'.`);
-    //     }
-
-    //     const height = 60;
-    //     const width = height * 2;
-    //     const startPosFraction = 0.4;
-
-    //     const colors: Record<string, string> = {};
-
-    //     if (!this.outcome) {
-    //       throw new Error(`Unable to derive outcome for chat key '${key$.text()}'`);
-    //     }
-
-    //     switch (this.outcome) {
-    //       case K4RollResult.completeSuccess: {
-    //         colors.bright = C.Colors.gGOLD;
-    //         colors.med = C.Colors.bGOLD;
-    //         colors.dark = C.Colors.dGOLD;
-    //         break;
-    //       }
-    //       case K4RollResult.partialSuccess: {
-    //         colors.bright = C.Colors.bWHITE;
-    //         colors.med = C.Colors.WHITE;
-    //         colors.dark = C.Colors.BLACK;
-    //         break;
-    //       }
-    //       case K4RollResult.failure: {
-    //         colors.bright = C.Colors.gRED;
-    //         colors.med = C.Colors.bRED;
-    //         colors.dark = C.Colors.dRED;
-    //         break;
-    //       }
-    //     }
-
-    //     U.gsap.set(key$, {
-    //       autoAlpha: 0,
-    //       pointerEvents: "none",
-    //       height,
-    //       width,
-    //       background: "transparent",
-    //       filter: `drop-shadow(0px 0px 5px ${colors.med})`,
-    //       margin: [
-    //         `-${(height / 2) + 5}px`,
-    //         `-${(1 - startPosFraction) * width}px`,
-    //         `-${(height / 2) - 5}px`,
-    //         `-${startPosFraction * width}px`,
-    //       ].join(" ")
-    //     });
-
-    //     const keyImgSrc = U.randElem(Object.values(C.Influences)).imgs.horizKey;
-
-    //     U.gsap.set(keyImg$, {
-    //       background: C.Colors.dBLACK,
-    //       maskImage: `url(${keyImgSrc})`,
-    //       webkitMaskImage: `url(${keyImgSrc})`,
-    //     });
-
-    //     const revealTimeline = U.gsap.timeline({
-    //       paused: true,
-    //       onComplete() {
-    //         U.gsap.set(key$, {pointerEvents: "auto"});
-    //       }
-    //     })
-    //       .fromTo(key$, {
-    //         x: 25,
-    //         autoAlpha: 0
-    //       }, {
-    //         x: 0,
-    //         autoAlpha: 1,
-    //         duration: 0.5,
-    //         ease: "power2.out"
-    //       });
-
-    //     key$.data("revealTimeline", revealTimeline);
-
-    //     const hoverTimeline = U.gsap.timeline({paused: true})
-    //       .to(key$,  {
-    //         x: -10,
-    //         filter: `drop-shadow(0 0 10px ${colors.bright})`,
-    //         duration: 0.5,
-    //         ease: "power2.out",
-    //       })
-    //       .fromTo(keyImg$, {
-    //         background: C.Colors.dBLACK
-    //       }, {
-    //         background: colors.dark,
-    //         duration: 0.5,
-    //         ease: "power2.out"
-    //       }, 0)
-    //       .fromTo(listElem$, {
-    //         filter: "brightness(1)"
-    //       }, {
-    //         filter: "brightness(1.5)",
-    //         duration: 0.5,
-    //         ease: "power2.out"
-    //       }, 0);
-
-    //     key$.data("hoverTimeline", hoverTimeline);
-
-    //     // On mouseover, play the hoverTimeline UNLESS the clickHoldTimeline is playing or reversing
-    //     key$.on("mouseover", () => {
-    //       if (!clickHoldTimeline.isActive()) {
-    //         hoverTimeline.timeScale(1);
-    //         hoverTimeline.play();
-    //       }
-    //     });
-    //     key$.on("mouseleave", () => {
-    //       if (!clickHoldTimeline.isActive()) {
-    //         hoverTimeline.timeScale(2);
-    //         hoverTimeline.reverse();
-    //       }
-    //     });
-
-    //     const clickHoldTimeline = U.gsap.timeline({
-    //       paused: true,
-    //       onStart() {
-    //         // Immediately jump to the end of the hover timeline
-    //         hoverTimeline.progress(1);
-    //       },
-    //       onReverseComplete() {
-    //         // Check if the mouse is still over the key element
-    //         // If not, also reverse the hover timeline.
-    //         if (!$(key$).is(":hover")) {
-    //           hoverTimeline.timeScale(2);
-    //           hoverTimeline.reverse();
-    //         }
-    //       },
-    //       onComplete() {
-    //         U.gsap.set(key$, {pointerEvents: "none"});
-    //         (key$.data("triggerTimeline") as Maybe<GSAPAnimation>)?.play();
-    //       }
-    //     })
-    //       .to(key$, {
-    //         x: -70,
-    //         filter: `drop-shadow(0 0 3px ${colors.bright})`,
-    //         scale: 1.15,
-    //         duration: 2,
-    //         ease: "slow(0.5, 0.8)"
-    //       })
-    //       .to(keyImg$, {
-    //         background: colors.bright,
-    //         duration: 2,
-    //         ease: "slow(0.5, 0.8)"
-    //       }, 0);
-
-    //     key$.data("clickHoldTimeline", clickHoldTimeline);
-
-    //     // On mousedown, play the clickHoldTimeline. On mouseup, reverse it.
-    //     key$.on("mousedown", () => {
-    //       clickHoldTimeline.timeScale(1);
-    //       clickHoldTimeline.play();
-    //     });
-    //     key$.on("mouseup", () => {
-    //       clickHoldTimeline.timeScale(2);
-    //       clickHoldTimeline.reverse();
-    //     });
-
-    //     const triggerTimeline = U.gsap.timeline({
-    //       paused: true,
-    //       onComplete() {
-    //         self.sourceItem?.selectFromList(listRef, index);
-    //       }
-    //     })
-
-    //     key$.data("triggerTimeline", triggerTimeline);
-    //   });
-
-  }
 }
 
 const CHILD_TIMELINES = {
@@ -864,27 +681,12 @@ const CHILD_TIMELINES = {
       ".roll-dice-results ~ ul li"
     ].join(", "));
 
-    const keys$ = message$.find("[class*='chat-select-']");
-
     // // Split results$ into lines
     // const splitResultLines = new SplitText(results$, { type: "lines" });
     // // Set results$ to visibility: visible
     // results$.css("visibility", "visible");
 
-    return U.gsap.timeline({
-      onComplete: () => {
-
-
-      }
-    })
-      .add(() => {
-        keys$.each((_, key) => {
-          const timeline = $(key).data("revealTimeline") as Maybe<GSAPAnimation>;
-          if (timeline) {
-            timeline.play();
-          }
-        });
-      })
+    return U.gsap.timeline({})
       .fromTo(results$, {
       // .fromTo(splitResultLines.lines, {
         autoAlpha: 0,
@@ -1185,10 +987,6 @@ class K4ChatMessage extends ChatMessage {
     }
     return undefined;
   }
-  get hasChatOptions(): boolean {
-    if (!this.elem$.length) { return false; }
-
-  }
   // #endregion
 
   // #region HTML PARSING
@@ -1243,6 +1041,185 @@ class K4ChatMessage extends ChatMessage {
 
   activateListeners(html$?: JQuery) {
     html$ ??= this.elem$;
+  }
+
+  isDisplayingList(listRef: string): boolean {
+    return this.elem$.find(`ul.list-${listRef}`).length > 0;
+  }
+
+  applySelectionListener(listRef: string, listIndex: number, canSelect: User[], onSelect: () => Promise<void>) {
+    if (!this.isDisplayingList(listRef)) {
+      throw new Error(`Attempt to add listeners to '${listRef}', but message ${this.id} is not displaying '${listRef}'.`);
+    }
+    const ul$ = this.elem$.find(`ul.list-${listRef}`);
+    const container$ = ul$.closest(".message-content");
+    const liSiblings = Array.from(ul$.children("li"));
+    const li = U.pullIndex(liSiblings, listIndex);
+    if (!li) {
+      throw new Error(`Unable to find li element at index ${listIndex} of list ${listRef} in message ${this.id}.`);
+    }
+    const li$ = $(li);
+    const liSiblings$ = $(liSiblings);
+    const colors: Record<string, string> = {};
+    switch (this.outcome) {
+      case K4RollResult.completeSuccess: {
+        colors.bright = C.Colors.gGOLD;
+        colors.med = C.Colors.bGOLD;
+        colors.dark = C.Colors.dGOLD;
+        break;
+      }
+      case K4RollResult.partialSuccess: {
+        colors.bright = C.Colors.bWHITE;
+        colors.med = C.Colors.WHITE;
+        colors.dark = C.Colors.BLACK;
+        break;
+      }
+      case K4RollResult.failure: {
+        colors.bright = C.Colors.gRED;
+        colors.med = C.Colors.bRED;
+        colors.dark = C.Colors.dRED;
+        break;
+      }
+      default: {
+        throw new Error(`Unable to derive outcome for chat message '${this.id}'`);
+      }
+    }
+    // Initialize CSS styles
+    U.gsap.set(li$, {
+      pointerEvents: "auto",
+      position: "relative",
+      opacity: 0,
+      filter: "brightness(0.5) blur(10px)",
+      scale: 1
+    });
+    U.gsap.set(container$, {
+      overflow: "visible"
+    });
+
+    const listTimeline = U.gsap.timeline({paused: true})
+      .addLabel("hidden")
+      .to(li$,
+      {
+        opacity: 1,
+        filter: "brightness(1) blur(0px)",
+        duration: 1,
+        ease: "power2.out"
+      }, 0)
+      .addLabel("start")
+      .addLabel("blurred", 0.5)
+      .to(li$,
+      {
+        x: -10,
+        filter: "brightness(2) blur(0px)",
+        scale: 1.1,
+        duration: 0.5,
+        ease: "power2.inOut"
+      })
+      .addLabel("hovered")
+      .to(li$,
+        {
+        x: -70,
+        background: "rgba(0, 0, 0, 1)",
+        scale: 1.5,
+        onStart() {
+          liSiblings$.each((_, el) => {
+            const timeline = $(el).data("timeline") as gsap.core.Timeline;
+            timeline.tweenTo("blurred");
+          });
+        },
+        onReverseComplete() {
+          liSiblings$.each((_, el) => {
+            const timeline = $(el).data("timeline") as gsap.core.Timeline;
+            timeline.tweenTo("start");
+          });
+        },
+        onComplete() {
+          liSiblings$.each((_, el) => {
+            const timeline = $(el).data("timeline") as gsap.core.Timeline;
+            timeline.tweenTo("hidden");
+          });
+          $([li$, liSiblings$]).css("pointer-events", "none");
+        },
+        duration: 2,
+        ease: "slow"
+      })
+      .addLabel("holdComplete")
+      .to(li$,
+        {
+        x: -120,
+        scale: 2,
+        filter: "brightness(5) blur(5px)",
+        onComplete(this: gsap.core.Timeline) {
+          liSiblings$.each((_, el) => {
+            const timeline = $(el).data("timeline") as gsap.core.Timeline;
+            timeline.tweenTo("blurred");
+          });
+          listTimeline.seek("start");
+          li$.css("pointer-events", "none");
+          void onSelect();
+        },
+        duration: 0.5,
+        ease: "power2.out"
+      })
+      .to(li$,
+      {
+        opacity: 0,
+        ease: "power2.out",
+        duration: 0.5
+      }, ">-=0.5")
+      .addLabel("triggerComplete");
+
+    listTimeline.seek("start");
+
+    li$.data("timeline", listTimeline);
+
+    kLog.log("animateListOptions", {
+      liSiblings$,
+      li$,
+      listTimeline,
+      listRef,
+      listIndex,
+      label: listTimeline.currentLabel()
+    });
+
+    li$.on("mouseenter", () => {
+      // Only play timeline if the timeline is at or after the "start" label
+      if (["start", "hovered"].includes(listTimeline.currentLabel())) {
+        listTimeline.timeScale(1);
+        listTimeline.reversed(false);
+        void listTimeline.tweenTo("hovered")
+          .then(() => listTimeline.pause());
+      }
+    });
+    li$.on("mouseleave", () => {
+      // Only reverse the timeline if the timeline is at or after the "start" or "hovered" labels
+      if (["start", "hovered"].includes(listTimeline.currentLabel())) {
+        listTimeline.timeScale(2);
+        listTimeline.reversed(true);
+        void listTimeline.tweenTo("start")
+          .then(() => listTimeline.pause());
+      }
+    });
+    li$.on("mousedown", () => {
+      // Do nothing if timeline is already at or past "holdComplete"
+      if (listTimeline.currentLabel() === "holdComplete") {
+        return;
+      }
+      listTimeline.timeScale(1);
+      listTimeline.reversed(false);
+      void listTimeline.tweenTo("triggerComplete")
+        .then(() => listTimeline.pause());
+    });
+    li$.on("mouseup", () => {
+      // Do nothing unless timeline is at or past "hovered"
+      if (listTimeline.currentLabel() !== "hovered") {
+        return;
+      }
+      listTimeline.timeScale(2);
+      listTimeline.reversed(true);
+      void listTimeline.tweenTo("hovered")
+        .then(() => listTimeline.pause());
+    });
   }
   // #endregion
 

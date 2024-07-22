@@ -1,8 +1,8 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C, {StabilityConditions} from "../scripts/constants.js";
+import C, {StabilityConditions, K4ConditionType} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import K4Actor, {K4ActorType, K4ConditionType} from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4Dialog, {PromptInputType} from "./K4Dialog.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
@@ -589,7 +589,9 @@ class K4PCSheet extends ActorSheet {
      * Critical Stress: 1-4
      * Broken: 0
      */
-    const tl = gsap.timeline({paused: true})
+
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
+    return gsap.timeline({paused: true})
       .fromTo(shards$, {fill: C.Colors.bGOLD, stroke: C.Colors.bGOLD}, {fill: C.Colors.bGOLD, stroke: C.Colors.bGOLD, duration: 0}, 0)
       .fromTo(anim$, {filter: "brightness(0) saturate(1.5)"}, {filter: "brightness(0) saturate(1.5)", duration: 0}, 0)
     // COMPOSED (GOLD)
@@ -639,9 +641,8 @@ class K4PCSheet extends ActorSheet {
       .breakShard(html, {stability: 1})
       .to(anim$, {filter: "brightness(10) saturate(1.5)", duration: 0.5, ease: "sine"}, "<")
       .to(shards$, {fill: C.Colors.gRED, stroke: C.Colors.gRED, duration: 0.5}, "<")
-    .addLabel("stability1");
-
-    return tl;
+    .addLabel("stability1") as gsap.core.Timeline;
+    /* eslint-enable */
   }
   _stabilityShardsTimeline: gsap.core.Timeline|undefined = undefined;
   get stabilityShardsTimeline(): gsap.core.Timeline {
@@ -660,8 +661,6 @@ class K4PCSheet extends ActorSheet {
     );
     // console.log(`[${stability}] ${distVals[stability]}s`);
     return distVals[stability];
-  }
-  refreshGlitchRepeatDelay(stability: number = this.actor.system.stability.value) {
   }
   #buildGlitchTimeline(html: JQuery) {
     const glitch$ = html.find("#shards-svg #glitch");
@@ -832,27 +831,27 @@ class K4PCSheet extends ActorSheet {
   - sets the `--num-modifier-rows` on the `.tab.front` element to the number of rows (with or without the minimal class) */
   resizeModifierReport(html: JQuery) {
     // Get the width of the container element
-    const container = html.find(".tab.front.active");
-    if (!container[0]) { return undefined; }
-    const formWidth = container.width() ?? Infinity;
-    const report = html.find(".modifiers-report");
-    if (!report[0]) { return undefined; }
-    report.removeClass("minimal");
-    report.css("width", "");
-    const modReportWidth = report.width() ?? 0;
-    let height = report.height();
+    const container$ = html.find(".tab.front.active");
+    if (!container$.length) { return undefined; }
+    const formWidth = container$.width() ?? Infinity;
+    const report$ = html.find(".modifiers-report");
+    if (!report$.length) { return undefined; }
+    report$.removeClass("minimal");
+    report$.css("width", "");
+    const modReportWidth = report$.width() ?? 0;
+    let height = report$.height();
     if (modReportWidth > formWidth) {
-      report.css("width", formWidth);
-      height = report.height();
+      report$.css("width", formWidth);
+      height = report$.height();
     }
     if (!height) { return undefined; }
     let rows = Math.floor(height / 20);
     if (rows > 1) {
-      report.addClass("minimal");
-      height = report.height()!;
+      report$.addClass("minimal");
+      height = report$.height()!;
       const newRows = Math.floor(height / 20);
       if (newRows === rows) {
-        report.removeClass("minimal");
+        report$.removeClass("minimal");
       } else {
         rows = newRows;
       }
@@ -948,7 +947,7 @@ class K4PCSheet extends ActorSheet {
       if (clickStatus) { return; }
       clickStatus = true;
       buttonContainer$.off("dblclick");
-      this.changeStability(-1 as number);
+      void this.changeStability(-1 as number);
     };
     const clickCheck = (event: DoubleClickEvent) => {
       event.preventDefault();
@@ -969,7 +968,7 @@ class K4PCSheet extends ActorSheet {
       click:       clickCheck.bind(this),
       contextmenu: (event) => {
         event.preventDefault();
-        this.changeStability(1 as number);
+        void this.changeStability(1 as number);
       }
     });
   }
@@ -1020,7 +1019,9 @@ class K4PCSheet extends ActorSheet {
     .each(function() {
       const itemName = $(this).attr("data-item-name");
       if (itemName) {
-        $(this).on("click", () => self.actor.roll(itemName));
+        $(this).on({
+          click: () => { void self.actor.roll(itemName); }
+        });
       }
     });
 
@@ -1029,7 +1030,9 @@ class K4PCSheet extends ActorSheet {
     .each(function() {
       const itemName = $(this).attr("data-item-name");
       if (itemName) {
-        $(this).on("click", () => self.actor.trigger(itemName));
+        $(this).on({
+          click: () => { void self.actor.trigger(itemName); }
+        });
       }
     });
 
@@ -1038,7 +1041,9 @@ class K4PCSheet extends ActorSheet {
     .each(function() {
       const itemName = $(this).attr("data-item-name");
       if (itemName) {
-        $(this).on("click", () => self.actor.name && self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name));
+        $(this).on({
+          click: () => { void self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name); }
+        });
       }
     });
 
@@ -1047,7 +1052,9 @@ class K4PCSheet extends ActorSheet {
   .each(function() {
     const itemName = $(this).attr("data-item-name");
     if (itemName) {
-      $(this).on("click", () => self.actor.dropItemByName(itemName));
+      $(this).on({
+        click: () => { void self.actor.dropItemByName(itemName); }
+      });
     }
   });
   }
@@ -1115,9 +1122,11 @@ class K4PCSheet extends ActorSheet {
     // Add click listeners for wound-add buttons to add a new wound
     html.find("button.wound-add")
       .each(function() {
-        $(this).on("click", () => {
-          // kLog.log("Adding Wound. Button:", this);
-          self.actor.addWound().catch(kLog.error);
+        $(this).on({
+          click: () => {
+            // kLog.log("Adding Wound. Button:", this);
+            void self.actor.addWound().catch((err: unknown) => { kLog.error(String(err)); });
+          }
         });
       });
 
@@ -1125,9 +1134,11 @@ class K4PCSheet extends ActorSheet {
     html.find("button.wound-delete")
       .each(function() {
         const woundID = $(this).data("woundId") as IDString;
-        $(this).on("click", () => {
-          // kLog.log(`Deleting Wound ${woundID}. Button:`, this);
-          self.actor.removeWound(woundID).catch(kLog.error);
+        $(this).on({
+          click: () => {
+            // kLog.log(`Deleting Wound ${woundID}. Button:`, this);
+            void self.actor.removeWound(woundID).catch((err: unknown) => { kLog.error(String(err)); });
+          }
         });
       });
 
@@ -1136,7 +1147,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const woundID = $(this).data("target") as IDString;
         if (woundID) {
-          $(this).on("click", () => self.actor.toggleWound(woundID, "type"));
+          $(this).on({
+            click: () => { void self.actor.toggleWound(woundID, "type"); }
+          });
         }
       });
 
@@ -1145,7 +1158,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const woundID = $(this).data("target") as IDString;
         if (woundID) {
-          $(this).on("click", () => self.actor.resetWoundName(woundID));
+          $(this).on({
+            click: () => { void self.actor.resetWoundName(woundID); }
+          });
         }
       });
 
@@ -1154,7 +1169,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const woundID = $(this).data("target") as IDString;
         if (woundID) {
-          $(this).on("click", () => self.actor.toggleWound(woundID, "stabilized"));
+          $(this).on({
+            click: () => { void self.actor.toggleWound(woundID, "stabilized"); }
+          });
         }
       });
 
@@ -1163,7 +1180,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const woundID = $(this).data("target") as IDString;
         if (woundID) {
-          $(this).on("click", () => self.actor.removeWound(woundID));
+          $(this).on({
+            click: () => { void self.actor.removeWound(woundID); }
+          });
         }
       });
 
@@ -1172,80 +1191,84 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const woundID = $(this).data("target") as IDString;
         if (woundID) {
-          $(this).on("click", () => self.actor.toggleWound(woundID, "applying"));
+          $(this).on({
+            click: () => { void self.actor.toggleWound(woundID, "applying"); }
+          });
         }
       });
 
     // Add click listeners for condition-add buttons to add a new condition
     html.find("button.condition-add")
     .each(function() {
-      $(this).on("click", async () => {
-        const type = await K4Dialog.GetUserInput<string>(
-          {
-            title: "Condition Type",
-            bodyText: "Select the type of condition to add:"
-          }, {
-            input: PromptInputType.buttons,
-            inputVals: Object.values(K4ConditionType)
-              .map((cType) => U.tCase(cType))
-          });
-        if (U.isUndefined(type)) {
-          return;
-        }
-        switch (type) {
-          case K4ConditionType.stability: {
-            const label: string|false = await K4Dialog.GetUserInput(
-              {
-                title: "Condition Label",
-                bodyText: "Enter the label for the new Stability condition:",
-                subText: "(Preconfigured Conditions: 'Angry', 'Sad', 'Scared', 'Guilt-Ridden', 'Obsessed', 'Distracted', 'Haunted')"
-              }, {
-                input: PromptInputType.text
-              }
-            );
-            if (!label) { return; }
-            const preconfiguredData = StabilityConditions[U.lCase(label) as keyof typeof StabilityConditions];
-            let {description, modDef} = preconfiguredData as Maybe<{description: string, modDef: K4Roll.ModDefinition}> ?? {};
-            if (U.isUndefined(description)) {
-              description = (await K4Dialog.GetUserInput<string>(
+      $(this).on({
+        click: async () => {
+          const type = await K4Dialog.GetUserInput<string>(
+            {
+              title: "Condition Type",
+              bodyText: "Select the type of condition to add:"
+            }, {
+              input: PromptInputType.buttons,
+              inputVals: Object.values(K4ConditionType)
+                .map((cType) => U.tCase(cType))
+            });
+          if (U.isUndefined(type)) {
+            return;
+          }
+          switch (type) {
+            case K4ConditionType.stability: {
+              const label: string|false = await K4Dialog.GetUserInput(
                 {
-                  title: "Condition Description",
-                  bodyText: `Briefly describe the effects of the '${label}' condition on your mental state:`,
-                  subText: "E.g. 'You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.'"
+                  title: "Condition Label",
+                  bodyText: "Enter the label for the new Stability condition:",
+                  subText: "(Preconfigured Conditions: 'Angry', 'Sad', 'Scared', 'Guilt-Ridden', 'Obsessed', 'Distracted', 'Haunted')"
                 }, {
                   input: PromptInputType.text
                 }
-              )) || undefined;
-            }
-            if (U.isUndefined(modDef)) {
-              const modDefString = await K4Dialog.GetUserInput<string>(
-                {
-                  title: "Condition Modifiers",
-                  bodyText: "Define what and by how much the condition modifies. Multiple modifiers can be separated by a comma.",
-                  subText: "E.g. 'all: -2, disadvantage: -1, See Through the Illusion: 3'"
-                }, {
-                  input: PromptInputType.text,
-                  defaultVal: "all:-1"
-                }
               );
-              modDef = Object.fromEntries(modDefString
-                .split(/\s*,\s*/)
-                .map((mod) => {
-                  const [key, val] = mod.split(/\s*:\s*/);
-                  return [key, U.pInt(val)];
-                }));
+              if (!label) { return; }
+              const preconfiguredData = StabilityConditions[U.lCase(label) as keyof typeof StabilityConditions];
+              let {description, modDef} = preconfiguredData as Maybe<{description: string, modDef: K4Roll.ModDefinition}> ?? {};
+              if (U.isUndefined(description)) {
+                description = (await K4Dialog.GetUserInput<string>(
+                  {
+                    title: "Condition Description",
+                    bodyText: `Briefly describe the effects of the '${label}' condition on your mental state:`,
+                    subText: "E.g. 'You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.'"
+                  }, {
+                    input: PromptInputType.text
+                  }
+                )) || undefined;
+              }
+              if (U.isUndefined(modDef)) {
+                const modDefString = await K4Dialog.GetUserInput<string>(
+                  {
+                    title: "Condition Modifiers",
+                    bodyText: "Define what and by how much the condition modifies. Multiple modifiers can be separated by a comma.",
+                    subText: "E.g. 'all: -2, disadvantage: -1, See Through the Illusion: 3'"
+                  }, {
+                    input: PromptInputType.text,
+                    defaultVal: "all:-1"
+                  }
+                );
+                modDef = Object.fromEntries(modDefString
+                  .split(/\s*,\s*/)
+                  .map((mod) => {
+                    const [key, val] = mod.split(/\s*:\s*/);
+                    return [key, U.pInt(val)];
+                  }));
+              }
+              self.actor.addCondition({
+                type,
+                label,
+                description,
+                modDef
+              }).catch((err: unknown) => { kLog.error(String(err)); });
+              break;
             }
-            self.actor.addCondition({
-              type,
-              label,
-              description,
-              modDef
-            }).catch(kLog.error);
-            break;
-          }
-          case K4ConditionType.other: {
-            console.warn("K4ConditionType.other: Unimplemented.");
-            break;
+            case K4ConditionType.other: {
+              console.warn("K4ConditionType.other: Unimplemented.");
+              break;
+            }
           }
         }
       });
@@ -1257,7 +1280,7 @@ class K4PCSheet extends ActorSheet {
         const conditionID = $(this).data("conditionId") as IDString;
         $(this).on("click", () => {
           // kLog.log(`Deleting condition ${conditionID}. Button:`, this);
-          self.actor.removeCondition(conditionID).catch(kLog.error);
+          self.actor.removeCondition(conditionID).catch((err: unknown) => { kLog.error(String(err)); });
         });
       });
 
@@ -1266,7 +1289,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const conditionID = $(this).data("target") as IDString;
         if (conditionID) {
-          $(this).on("click", () => self.actor.toggleCondition(conditionID));
+          $(this).on({
+            click: () => { void self.actor.toggleCondition(conditionID); }
+          });
         }
       });
 
@@ -1275,7 +1300,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const conditionID = $(this).data("target") as IDString;
         if (conditionID) {
-          $(this).on("click", () => self.actor.resetConditionName(conditionID));
+          $(this).on({
+            click: () => { void self.actor.resetConditionName(conditionID); }
+          });
         }
       });
 
@@ -1284,7 +1311,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         const conditionID = $(this).data("target") as IDString;
         if (conditionID) {
-          $(this).on("click", () => self.actor.removeCondition(conditionID));
+          $(this).on({
+            click: () => { void self.actor.removeCondition(conditionID); }
+          });
         }
       });
   }
@@ -1296,7 +1325,9 @@ class K4PCSheet extends ActorSheet {
     // Add click listeners for close buttons in the header to close the sheet
     html.find(".header-button.close")
       .each(function() {
-        $(this).on("click", () => self.actor.sheet.close());
+        $(this).on({
+          click: () => { void self.actor.sheet.close(); }
+        });
       });
 
     // Add click listeners for minimize buttons in the header to toggle minimize/maximize state
@@ -1304,9 +1335,9 @@ class K4PCSheet extends ActorSheet {
       .each(function() {
         $(this).on("click", () => {
           if (self._minimized) {
-            self.maximize().catch(kLog.error);
+            self.maximize().catch((err: unknown) => { kLog.error(String(err)); });
           } else {
-            self.minimize().catch(kLog.error);
+            self.minimize().catch((err: unknown) => { kLog.error(String(err)); });
           }
         });
       });
@@ -1341,15 +1372,13 @@ class K4PCSheet extends ActorSheet {
         .on("focus", (focusEvent) => {
           self.unClamp(focusEvent.currentTarget);
           const element = focusEvent.currentTarget;
-          if (element) {
-            const range = document.createRange(); // Create a new range
-            const selection = window.getSelection(); // Get the current selection
+          const range = document.createRange(); // Create a new range
+          const selection = window.getSelection(); // Get the current selection
 
-            if (selection) {
-              selection.removeAllRanges(); // Clear any existing selections
-              range.selectNodeContents(element); // Select the contents of the element
-              selection.addRange(range); // Add the range to the selection
-            }
+          if (selection) {
+            selection.removeAllRanges(); // Clear any existing selections
+            range.selectNodeContents(element); // Select the contents of the element
+            selection.addRange(range); // Add the range to the selection
           }
         })
         .on("blur", (blurEvent) => {
@@ -1375,7 +1404,7 @@ class K4PCSheet extends ActorSheet {
           const dataField = $(currentTarget).data("field") as string;
           const curData = getProperty(self.actor, dataField) as string;
           if (curData !== elemText) {
-            self.actor.update({[dataField]: elemText}).catch(kLog.error);
+            self.actor.update({[dataField]: elemText}).catch((err: unknown) => { kLog.error(String(err)); });
           }
         });
     });
@@ -1451,12 +1480,14 @@ class K4PCSheet extends ActorSheet {
     // Activate listeners for editing "content-editable" elements
     this.activateContentEditableListeners(html);
 
-    html.find("#item-test-button").on("click", this._promptItemSelection(
-      Array.from(game.items).filter((item) => item.type === K4ItemType.advantage)
-    ).bind(this));
+    html.find("#item-test-button").on({
+      click: this._promptItemSelection(
+        Array.from(game.items).filter((item) => item.type === K4ItemType.advantage)
+      ).bind(this)
+    });
   }
 
-  _promptItemSelection(itemList: Array<K4Item>) {
+  _promptItemSelection(itemList: K4Item[]) {
     return async () => {
       const item = await K4Dialog.GetUserItemSelection<K4ItemType.advantage>({
           title: "Select an Advantage",
@@ -1474,7 +1505,7 @@ class K4PCSheet extends ActorSheet {
     tabName ??= "front";
     const curTab = (this.actor.getFlag("kult4th", "sheetTab") ?? "front") as string;
     if (tabName && tabName !== curTab) {
-      this.actor.setFlag("kult4th", "sheetTab", tabName).catch(kLog.error);
+      this.actor.setFlag("kult4th", "sheetTab", tabName).catch((err: unknown) => { kLog.error(String(err)); });
     }
   }
 }

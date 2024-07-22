@@ -175,8 +175,8 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
     source: K4Roll.Source
   } {
     if (typeof rollData.source === "string") {
-      let attrVal: number;
-      switch (rollData.source) {
+      let attrVal: Maybe<number> = undefined;
+      switch (rollData.source as K4Attribute & string) {
         case K4Attribute.ask: {
           throw new Error("Need to implement ask-for-attribute prompt in K4Actor, where it can be awaited.")
           /* return {
@@ -188,6 +188,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
         }
         case K4Attribute.zero:
           attrVal = 0;
+          // falls through
         case K4Attribute.charisma:
         case K4Attribute.coolness:
         case K4Attribute.fortitude:
@@ -202,9 +203,9 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
           return {
             type: K4RollType.attribute,
             img: (rollData as K4Roll.ConstructorData.AttrSource).img,
-            attribute: rollData.source,
+            attribute: rollData.source as K4Roll.RollableAttribute,
             attrVal,
-            source: rollData.source
+            source: rollData.source as K4Attribute
           };
         }
         default: {

@@ -18,7 +18,7 @@ export default function registerSettings() {
       max: 5,
       step: 1
     },
-    "onChange": () => kLog.log(`Logging level set to ${U.getSetting("debug")}`, 0)
+    "onChange": () => { kLog.log(`Logging level set to ${String(U.getSetting("debug"))}`, 0); }
   });
   game.settings.register("kult4th", "gears", {
     "name": U.loc("system.settings.displayGearsTitle"),

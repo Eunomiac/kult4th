@@ -16,18 +16,18 @@ const getStackTrace = (regExpFilters: RegExp[] = []) => {
   }
   return null;
 };
-const k4Logger = (type: KeyOf<typeof STYLES> = "base", ...content: [string, ...any[]]) => {
+const k4Logger = (type: KeyOf<typeof STYLES> = "base", ...content: [string, ...unknown[]]) => {
   const [message, ...data] = content;
-  const dbLevel: 0|1|2|3|4|5 = (data.length > 0 && [0,1,2,3,4,5].includes(U.getLast(data)))
-    ? data.pop()
+  const dbLevel: 0|1|2|3|4|5 = (data.length > 0 && [0,1,2,3,4,5].includes(U.getLast(data) as number))
+    ? data.pop() as 0|1|2|3|4|5
     : 3;
-  if (U.getSetting("debug") as 0|1|2|3|4|5 < dbLevel) { return }
+  if (U.getSetting<0|1|2|3|4|5>("debug")! < dbLevel) { return }
   const stackTrace = type === "display"
     ? null
     : getStackTrace(type === "handlebars" ? [/scripts\/handlebars/] : []);
   const styleLine = Object.entries({
     ...STYLES.base,
-    ...STYLES[type] ?? {}
+    ...STYLES[type]
   }).map(([prop, val]) => `${prop}: ${val};`).join(" ");
 
   const logFunc = stackTrace
@@ -94,10 +94,10 @@ const STYLES = {
   }
 };
 const kLog = {
-  display: (...content: [string, ...any[]]) => k4Logger("display", ...content),
-  log: (...content: [string, ...any[]]) => k4Logger("base", ...content),
-  error: (...content: [string, ...any[]]) => k4Logger("error", ...content),
-  hbsLog: (...content: [string, ...any[]]) => k4Logger("handlebars", ...content)
+  display: (...content: [string, ...unknown[]]) => { k4Logger("display", ...content); },
+  log: (...content: [string, ...unknown[]]) => { k4Logger("base", ...content); },
+  error: (...content: [string, ...unknown[]]) => { k4Logger("error", ...content); },
+  hbsLog: (...content: [string, ...unknown[]]) => { k4Logger("handlebars", ...content); },
 };
 
 const registerDebugger = () => {

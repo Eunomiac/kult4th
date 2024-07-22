@@ -939,7 +939,7 @@ function pullElement<T>(array: T[], checkFunc: T|((_v: T, _i?: number, _a?: T[])
   return array.splice(index, 1).pop();
 }
 
-const pullIndex = (array: unknown[], index: number) => pullElement(array, (_: unknown, i: number) => i === index);
+const pullIndex = <T>(array: T[], index: number) => pullElement<T>(array, (_, i) => i === index);
 const subGroup = (array: unknown[], groupSize: number) => {
   const subArrays = [];
   while (array.length > groupSize) {
@@ -1914,6 +1914,9 @@ const testFuncPerformance = (
 // #endregion
 
 // #region ■■■■■■■[GreenSock]■■■■ Wrappers for GreenSock Functions ■■■■■■■ ~
+const timeline = gsap.timeline as typeof gsap["timeline"] & Record<string, (targets: gsap.TweenTarget, vars: gsap.TweenVars) => gsap.core.Timeline>;
+
+
 const set = (targets: gsap.TweenTarget, vars: gsap.TweenVars): gsap.core.Tween => gsap.set(targets, vars);
 function get(target: gsap.TweenTarget, property: keyof gsap.CSSProperties & string, unit: string): number;
 function get(target: gsap.TweenTarget, property: keyof gsap.CSSProperties & string): string | number;
@@ -2253,7 +2256,7 @@ export default {
   testFuncPerformance,
 
   // ■■■■■■■ GreenSock ■■■■■■■
-  gsap, get, set, getGSAngleDelta, getNearestLabel, reverseRepeatingTimeline,
+  gsap, timeline, get, set, getGSAngleDelta, getNearestLabel, reverseRepeatingTimeline,
 
   /* TextPlugin, Flip, */ MotionPathPlugin,
 

@@ -158,15 +158,15 @@ const PACKS: PACKS = {
   },
   get [K4ItemSubType.activeRolled](): K4SubItem.Schema[] {
     return this.subItems
-      .filter((move) => move.system.subType === K4ItemSubType.activeRolled);
+      .filter((move) => (move.system.subType as K4ItemSubType) === K4ItemSubType.activeRolled);
   },
   get [K4ItemSubType.activeStatic](): K4SubItem.Schema[] {
     return this.subMoves
-      .filter((move) => move.system.subType === K4ItemSubType.activeStatic);
+      .filter((move) => (move.system.subType as K4ItemSubType) === K4ItemSubType.activeStatic);
   },
   get [K4ItemSubType.passive](): ITEM_DATA.Schema[] {
     return this.all
-      .filter((move) => move.system.subType === K4ItemSubType.passive);
+      .filter((move) => (move.system.subType as K4ItemSubType) === K4ItemSubType.passive);
   }
 };
 // #endregion
@@ -264,7 +264,7 @@ function getType(val: unknown): string {
 function getUniqueSystemKeys(itemDataArray: Array<ITEM_DATA.Schema | K4SubItem.Schema>, isExpanding = false): Record<string, unknown> {
   const uniqueEntries: Array<Tuple<string, string[]>> = [];
   itemDataArray.forEach((item) => {
-    const flatSystem = flattenObject(item.system);
+    const flatSystem = flattenObject(item.system) as Record<string, unknown>;
     Object.keys(flatSystem).forEach((thisKey) => {
       const thisType = getType(flatSystem[thisKey]);
       if (thisType === "object") {
@@ -291,10 +291,8 @@ function getUniqueSystemKeys(itemDataArray: Array<ITEM_DATA.Schema | K4SubItem.S
   // Construct the data object, still with flattened keys
   const dataObject = Object.fromEntries(parsedSubItemEntries);
 
-  return isExpanding ? expandObject(dataObject) : dataObject;
+  return isExpanding ? (expandObject(dataObject) as Record<string, unknown>) : dataObject;
 }
-
-
 
 /**
  * Gets unique values for a given key from an array of item data.
@@ -315,7 +313,7 @@ function getUniqueValuesForSystemKey(itemDataArray: ITEM_DATA.Schema[], key: Val
   const uniqueValues: unknown[] = [];
   const isFlattening = key.includes('.');
   itemDataArray.forEach((schema) => {
-    const flatSubItemSystem = isFlattening ? flattenObject(schema.system) : schema.system;
+    const flatSubItemSystem = isFlattening ? (flattenObject(schema.system) as Record<string, unknown>) : schema.system;
     if (key in flatSubItemSystem) {
       let thisValue = flatSubItemSystem[key as keyof typeof flatSubItemSystem];
       if (Array.isArray(thisValue)) {
@@ -335,7 +333,7 @@ function getUniqueValuesForSystemKey(itemDataArray: ITEM_DATA.Schema[], key: Val
  * @param {boolean} [isExpanding=false] - Whether to expand the keys.
  * @returns {Record<string, string>} - The report object.
  */
-function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, options: REPORTS.Config = {}): Record<string, string> {
+function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, options: REPORTS.Config = {}): Record<string, unknown> {
 
   const VAL_TYPES_TO_LIST = [
     "small-posInt",
@@ -353,7 +351,7 @@ function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, opti
     case ReportOn.UniqueValues:
       mapFunction = <V = string>([key, val]: Tuple<string, unknown>) => [
         key,
-        VAL_TYPES_TO_LIST.includes(`${val}`)
+        VAL_TYPES_TO_LIST.includes(String(val))
           ? getUniqueValuesForSystemKey(itemDataArray, key).join(", ")
           : val
       ] as Tuple<string, V>;
@@ -362,15 +360,15 @@ function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, opti
       mapFunction = <V = Partial<Record<K4ItemSubType, REPORTS.CountReport>>>([key]: Tuple<string, unknown>) => {
         const returnData = {
           [K4ItemSubType.activeRolled]: countSchemasWithSystemKey(
-            itemDataArray.filter((is) => is.system.subType === K4ItemSubType.activeRolled),
+            itemDataArray.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.activeRolled),
             key
           ),
           [K4ItemSubType.activeStatic]: countSchemasWithSystemKey(
-            itemDataArray.filter((is) => is.system.subType === K4ItemSubType.activeStatic),
+            itemDataArray.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.activeStatic),
             key
           ),
           [K4ItemSubType.passive]: countSchemasWithSystemKey(
-            itemDataArray.filter((is) => is.system.subType === K4ItemSubType.passive),
+            itemDataArray.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.passive),
             key
           )
         };
@@ -380,6 +378,7 @@ function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, opti
           K4ItemSubType.passive
         ].forEach((subType) => {
           if (returnData[subType].count === 0) {
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete returnData[subType];
           }
         });
@@ -392,7 +391,7 @@ function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, opti
     Object.entries(keyTypeData)
       .map(([key, val]) => mapFunction([key, val]))
   );
-  return options.isExpanding !== false ? expandObject(reportObject) : reportObject;
+  return options.isExpanding !== false ? (expandObject(reportObject) as Record<string, unknown>): reportObject;
 }
 
 /**
@@ -406,17 +405,7 @@ function extractSubItemSchemas(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, su
     .filter((item): item is ITEM_DATA.Schema<K4Item.Types.Parent> =>
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.weapon, K4ItemType.gear]
         .includes(item.type))
-    .map((parentItem) => {
-      if (!parentItem.system) {
-        console.error(`No system data found for ${parentItem.name}`, parentItem);
-        return [];
-      }
-      if (!parentItem.system.subItems) {
-        console.error(`No subItems found for ${parentItem.name}`, parentItem);
-        return [];
-      }
-      return parentItem.system.subItems.filter((subItem) => subTypes.includes(subItem.type));
-    })
+    .map((parentItem) => parentItem.system.subItems.filter((subItem) => subTypes.includes(subItem.type)))
     .flat();
 }
 
@@ -439,7 +428,7 @@ function countSchemasWithSystemKey(schemaArray: AnySchema[], key: string): REPOR
   const returnData: REPORTS.CountReport = {count: 0, total: schemaArray.length};
 
   schemaArray.forEach((schema) => {
-    const flatSchema = flattenObject(schema.system);
+    const flatSchema = flattenObject(schema.system) as Record<string, unknown>;
     let schemaName: string;
     if (schema.name) {
       schemaName = schema.name;
@@ -530,7 +519,7 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
     case ReportOn.UniqueValues:
       mapFunction = <V = string>([key, val]: Tuple<string, unknown>) => [
         key,
-        VAL_TYPES_TO_LIST.includes(`${val}`)
+        VAL_TYPES_TO_LIST.includes(String(val))
           ? getUniqueValuesForSubItemKey(itemDataArray, key).join(", ")
           : val
       ] as Tuple<string, V>;
@@ -539,11 +528,11 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
       mapFunction = <V = Partial<Record<K4ItemSubType, REPORTS.CountReport>>>([key, val]: Tuple<string, unknown>) => {
         const returnData = {
           [K4ItemSubType.activeRolled]: countSchemasWithSystemKey(
-            extractedSubItemSchemas.filter((is) => is.system.subType === K4ItemSubType.activeRolled),
+            extractedSubItemSchemas.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.activeRolled),
             key
           ),
           [K4ItemSubType.activeStatic]: countSchemasWithSystemKey(
-            extractedSubItemSchemas.filter((is) => is.system.subType === K4ItemSubType.activeStatic),
+            extractedSubItemSchemas.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.activeStatic),
             key
           )
         };
@@ -552,6 +541,7 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
           K4ItemSubType.activeStatic
         ] as const).forEach((subType) => {
           if (returnData[subType].count === 0) {
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete returnData[subType];
           }
         });
@@ -564,7 +554,7 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
     Object.entries(keyTypeData)
       .map(([key, val]) => mapFunction([key, val]))
   );
-  return options.isExpanding !== false ? expandObject(reportObject) : reportObject;
+  return options.isExpanding !== false ? (expandObject(reportObject) as Record<string, unknown>) : reportObject;
 }
 
 function getMutationDiffReport() {
@@ -594,6 +584,7 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
       const newItemData = duplicate(itemData) as ITEM_DATA.Schema & {folder: string|null};
       ["_id", "folder", "sort", "permission", "flags"]
         .forEach((key) => {
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete newItemData[key as keyof typeof newItemData]
       });
       if (FOLDER_NAME_MAP[itemData.type as K4ItemType]) {
@@ -610,14 +601,12 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
 async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   const itemSchemas = parseItemSchemasForCreation(PACKS.all);
   function clearActorItems(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
-    if (!actor) { return new Promise((resolve) => { resolve(true as unknown); }); }
     // Filter actor's items to exclude K4SubItems, as their removal is taken care of by their parent item
     const mainItems = actor.items.contents.filter((i) => !i.isSubItem());
     // Delete all the remaining items
     return Promise.all(mainItems.map((item) => item.delete()));
   }
   function clearActorEffects(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
-    if (!actor) { return new Promise((resolve) => { resolve(true as unknown); }); }
     return actor.deleteEmbeddedDocuments("ActiveEffect", Array.from(actor.effects.keys()));
   }
   async function clearActor(actor: K4Actor<K4ActorType.pc>) {
@@ -668,7 +657,7 @@ function findRepresentativeSubset(items: Array<Record<string, unknown>>): Array<
   const keyMap = new Map<string, Record<string, unknown>>();
 
   items.forEach(item => {
-      const flatItem = flattenObject(item);
+      const flatItem = flattenObject(item) as Record<string, unknown>;
       Object.entries(flatItem).forEach(([key, value]) => {
           if (isNonEmpty(value)) {
               if (!keyMap.has(key)) {
@@ -705,18 +694,18 @@ function checkSubsetCoverage(subset: Array<Record<string, unknown>>, masterSet: 
   }
 
   // Flatten each item in the subset
-  const flattenedSubset = subset.map(item => flattenObject(item));
+  const flattenedSubset = subset.map(item => flattenObject(item) as Record<string, unknown>);
 
   // Iterate through each item in the master set
   for (const masterItem of masterSet) {
-      const flatMasterItem = flattenObject(masterItem);
+      const flatMasterItem = flattenObject(masterItem) as Record<string, unknown>;
 
       // Check if every key with a non-empty value in the master item is covered by at least one item in the subset
       for (const [key, value] of Object.entries(flatMasterItem)) {
           if (isNonEmpty(value)) {
               const isCovered = flattenedSubset.some(flatSubsetItem => isNonEmpty(flatSubsetItem[key]));
               if (!isCovered) {
-                  console.log(`Key "${key}" with value "${value}" in master item "${masterItem.name}" is not covered by the subset.`);
+                  console.log(`Key "${key}" with value "${String(value)}" in master item "${String(masterItem.name)}" is not covered by the subset.`);
                   return false;
               }
           }
@@ -743,7 +732,7 @@ function findUniqueKeys(subset: Array<Record<string, unknown>>, allItems: Array<
   }
 
   // Flatten each item in the entire dataset
-  const flattenedAllItems = allItems.map(item => flattenObject(item));
+  const flattenedAllItems = allItems.map(item => flattenObject(item) as Record<string, unknown>);
 
   // Collect all keys and their occurrences across the entire dataset
   const keyOccurrences = new Map<string, number>();
@@ -760,7 +749,7 @@ function findUniqueKeys(subset: Array<Record<string, unknown>>, allItems: Array<
   });
 
   // Flatten each item in the subset
-  const flattenedSubset = subset.map(item => flattenObject(item));
+  const flattenedSubset = subset.map(item => flattenObject(item) as Record<string, unknown>);
 
   // Find unique keys for each item in the subset
   const uniqueKeysRecord: Record<string, string[]> = {};

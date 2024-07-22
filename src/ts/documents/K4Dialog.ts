@@ -21,6 +21,7 @@ namespace K4Dialog {
   export interface PromptContext<T extends K4ItemType = K4ItemType> {
     title: string;
     bodyText: string;
+    user?: User; // The user to whom the prompt is shown, defaults to current user
     subText?: string;
     itemList?: Array<K4Item<T>>;
   }
@@ -58,12 +59,18 @@ namespace K4Dialog {
 
 class K4Dialog extends Dialog {
 
-  static async GetUserInput<T extends SystemScalar>(context: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal?: never}): Promise<T | false>
-  static async GetUserInput<T extends SystemScalar>(context: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal: T}): Promise<T>
+  static async GetUserInput<T extends SystemScalar>(promptContext: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal?: never}): Promise<T | false>
+  static async GetUserInput<T extends SystemScalar>(promptContext: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal: T}): Promise<T>
   static async GetUserInput<T extends SystemScalar>(
-    context: K4Dialog.PromptContext,
+    promptContext: K4Dialog.PromptContext,
     inputData: K4Dialog.InputData<T>
   ): Promise<T | false> {
+    const {user, ...context} = promptContext;
+    if (user?.id && user.id !== game.user.id) {
+      kLog.error(`[GetUserInput] User '${user.name}' supplied in client session of user '${game.user.name}': Need to implement socketlib.`);
+      return false;
+    }
+
     const {input, inputVals, defaultVal} = inputData;
     const content = await renderTemplate(
       U.getTemplatePath("dialog", `ask-for-${input}`),

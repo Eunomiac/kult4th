@@ -18,6 +18,7 @@ namespace K4Sound {
 // #endregion
 
 // #region === K4Sound CLASS ===
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class K4Sound {
   static readonly Sounds: Partial<Record<string, HTMLAudioElement>> = {
     "slow-hit": new Audio("systems/kult4th/assets/sounds/Slow Hit 02.wav"),

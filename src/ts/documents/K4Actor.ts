@@ -3,7 +3,7 @@ import K4Item, {K4ItemType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ActiveEffect, {} from "./K4ActiveEffect.js";
-import C, {K4Attribute, Archetype, K4Stability} from "../scripts/constants.js";
+import C, {K4Attribute, Archetype, K4Stability, K4ConditionType, K4WoundType} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 // #endregion
 
@@ -12,21 +12,6 @@ import U from "../scripts/utilities.js";
 enum K4ActorType {
   pc = "pc",
   npc = "npc"
-}
-enum K4RollType {
-  zero = "zero",
-  attribute = "attribute",
-  move = "move"
-}
-enum K4WoundType {
-  serious = "serious",
-  critical = "critical",
-  stableserious = "stableserious",
-  stablecritical = "stablecritical"
-}
-enum K4ConditionType {
-  stability = "stability",
-  other = "other"
 }
 // #endregion
 // #region -- TYPES ~
@@ -156,6 +141,7 @@ declare global {
 // #region -- AUGMENTED INTERFACE ~
 interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get id(): IDString;
+  get uuid(): UUIDString;
   get name(): string;
   get type(): Type;
   get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
@@ -1331,9 +1317,6 @@ class K4Actor extends Actor {
 export default K4Actor;
 
 export {
-  K4ActorType,
-  K4RollType,
-  K4WoundType,
-  K4ConditionType
+  K4ActorType
 };
 // #endregion

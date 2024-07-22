@@ -28,7 +28,7 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
   // Step One: Replace any data object references.
   str = str.replace(
     /%([^%.]+)\.([^%]+)%/g,
-    (_, sourceRef: string, dataKey: string) => {
+    (_, sourceRef: string, dataKey: string): string => {
     // kLog.log(`[formatForKult: '${sourceRef}']`, {str, iData, sourceRef, dataKey}, 3);
     switch (sourceRef) {
       case "list": {
@@ -67,6 +67,13 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
             } else if (iData instanceof K4Actor) {
               actor = iData as K4Actor;
             }
+            if (dataKey.startsWith("actor")) {
+              if (!actor) {
+                return `<span style='color: red;'>Could Not Resolve Actor for ${dataKey}</span>`;
+              }
+              const dotKey = dataKey.slice(5);
+              return U.getProp(actor, dotKey) ?? "";
+            }
             if (/^(doc|roll)Link/.test(dataKey)) {
               let [docName, docDisplay] = dataKey.split(".").slice(1) as Array<Maybe<string>>;
               let doc: Maybe<K4Item> = undefined;
@@ -84,7 +91,8 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
                 return `<span class="text-docLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="open">${docDisplay}</span>`;
               }
               return `<span class="text-rollLink" data-doc-id="${doc.id}" data-doc-name="${doc.name}" data-action="roll">${docDisplay}</span>`;
-            } else if (dataKey.startsWith("FLAGS")) {
+            }
+            if (dataKey.startsWith("FLAGS")) {
               const [_, effectID, ...flagKeyParts] = dataKey.split(".");
               const flagKey = flagKeyParts.join(".");
               if (!actor) {

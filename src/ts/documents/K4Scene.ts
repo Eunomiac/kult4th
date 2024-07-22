@@ -19,6 +19,8 @@ declare global {
 // #region -- INTERFACE AUGMENTATION ~
 interface K4Scene {
   get name(): string;
+  get id(): IDString;
+  get uuid(): UUIDString;
 }
 // #endregion
 // #ENDREGION

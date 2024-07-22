@@ -1,6 +1,6 @@
 import SVGDATA from "../scripts/svgdata.ts";
+import {K4WoundType, K4ConditionType} from "../scripts/constants.js";
 import {K4ItemType} from "../documents/K4Item.ts";
-import {K4WoundType, K4ConditionType} from "../documents/K4Actor.ts";
 
 
 declare global {

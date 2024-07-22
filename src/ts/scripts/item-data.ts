@@ -26,13 +26,14 @@ Object.entries(PACKS)
   )
  */
 
-import {K4Attribute} from "./constants.js";
+import {K4Attribute, K4ConditionType} from "./constants.js";
 import K4ActiveEffect, {UserRef, EffectDuration, EffectResetOn, K4Change, PromptInputType} from "../documents/K4ActiveEffect.js";
 import {
   K4ItemType,
   K4ItemSubType,
   K4ItemRange
 } from "../documents/K4Item.js";
+import {AlertType, AlertTarget} from "../documents/K4Alert.js";
 
 console.log("Loading item-data.ts");
 console.log("K4ItemType in item-data.ts:", K4ItemType);
@@ -193,15 +194,19 @@ const ITEM_DATA: {
                   "hold": 0,
                   "effects": [
                     {
-                      "parentData": K4ActiveEffect.BuildEffectData({
-                        permanent: true,
-                        alertAll: [
-                          "<h2>%insert.actor.name% Refuses to Give In!</h2>",
-                          "<p>They sacrifice Time to reroll the dice.</p>"
-                        ].join("")
-                      }),
+                      "parentData": K4ActiveEffect.BuildEffectData({}),
                       "changeData": [
                         K4ActiveEffect.BuildChangeData("ModifyTracker", {
+                          permanent: true,
+                          alerts: [
+                            {
+                              type: AlertType.simple,
+                              target: AlertTarget.all,
+                              header: "%insert.actor.name% Refuses to Give In!",
+                              body: "They sacrifice Time to reroll the dice.",
+                              logoImg: "%insert.actor.img%"
+                            }
+                          ],
                           filter: "Time",
                           target: "value",
                           mode: "Add",
@@ -223,14 +228,18 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              "parentData": K4ActiveEffect.BuildEffectData({
-                alertUser: [
-                  "<h2>Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span></h2>",
-                  "<p>You must take the 'Condemned' Disadvantage before you can take this Advantage.</p>"
-                ].join("")
-              }),
+              "parentData": K4ActiveEffect.BuildEffectData({}),
               "changeData": [
                 K4ActiveEffect.BuildChangeData("RequireItem", {
+                  alerts: [
+                    {
+                      type: AlertType.simple,
+                      target: AlertTarget.self,
+                      header: "Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span>",
+                      body: "You must take the '#>text-keyword>Condemned<# Disadvantage before you can take #>text-keyword>To the Last Breath<#.",
+                      logoImg: ""
+                    }
+                  ],
                   filter: "Condemned"
                 })
               ]
@@ -267,7 +276,7 @@ const ITEM_DATA: {
           ],
           "effects": [
             {
-              "parentData": K4ActiveEffect.BuildEffectData(),
+              "parentData": K4ActiveEffect.BuildEffectData({}),
               "changeData": [
                 K4ActiveEffect.BuildChangeData("ModifyMove", {
                   filter: "Read a Person",
@@ -945,18 +954,19 @@ const ITEM_DATA: {
                   "result": "The person is a friend (#>text-keyword>Relation +1<#).",
                   "effects": [
                     {
-                      "parentData": K4ActiveEffect.BuildEffectData({
-                        isUnique: false,
-                        permanent: true
-                      }),
+                      "parentData": K4ActiveEffect.BuildEffectData({isUnique: false}),
                       "changeData": [
                         K4ActiveEffect.BuildChangeData("PromptForData", {
+                          filter: "player",
+                          permanent: true,
                           title: "Describe Your Friend",
                           bodyText: "What is your friend's name?",
                           target: "FLAGS.name",
                           input: PromptInputType.text
                         }),
                         K4ActiveEffect.BuildChangeData("PromptForData", {
+                          filter: "player",
+                          permanent: true,
                           title: "Describe Your Friend",
                           bodyText: "What is your friend's field of study?",
                           subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
@@ -986,18 +996,19 @@ const ITEM_DATA: {
                   "result": "The person is an acquaintance (#>text-keyword>Relation +0<#).",
                   "effects": [
                     {
-                      "parentData": K4ActiveEffect.BuildEffectData({
-                        isUnique: false,
-                        permanent: true
-                      }),
+                      "parentData": K4ActiveEffect.BuildEffectData({isUnique: false}),
                       "changeData": [
                         K4ActiveEffect.BuildChangeData("PromptForData", {
+                          filter: "player",
+                          permanent: true,
                           title: "Describe Your Acquaintance",
                           bodyText: "What is your contact's name?",
                           target: "FLAGS.name",
                           input: PromptInputType.text
                         }),
                         K4ActiveEffect.BuildChangeData("PromptForData", {
+                          filter: "player",
+                          permanent: true,
                           title: "Describe Your Acquaintance",
                           bodyText: "What is your contact's field of study?",
                           subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
@@ -1027,18 +1038,19 @@ const ITEM_DATA: {
                   "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#).",
                   "effects": [
                     {
-                      "parentData": K4ActiveEffect.BuildEffectData({
-                        isUnique: false,
-                        permanent: true
-                      }),
+                      "parentData": K4ActiveEffect.BuildEffectData({isUnique: false}),
                       "changeData": [
                         K4ActiveEffect.BuildChangeData("PromptForData", {
+                          filter: "player",
+                          permanent: true,
                           title: "Describe Your Contact",
                           bodyText: "What is your contact's name?",
                           target: "FLAGS.name",
                           input: PromptInputType.text
                         }),
                         K4ActiveEffect.BuildChangeData("PromptForData", {
+                          filter: "player",
+                          permanent: true,
                           title: "Describe Your Contact",
                           bodyText: "What is your contact's field of study?",
                           subText: "<em>(Don't forget to describe how you got to know one another, and to work with the GM and other players to determine the nature of the enmity between you.)</em>",
@@ -2055,7 +2067,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
@@ -2105,9 +2117,11 @@ const ITEM_DATA: {
           "outro": "Whenever you %insert.docLink.Investigate% something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("PromptForData", {
+                filter: "player",
+                permanent: true,
                 title: "What is your first Field of Expertise?",
                 target: "FLAGS.field_1",
                 input: PromptInputType.text,
@@ -2115,6 +2129,8 @@ const ITEM_DATA: {
                 subText: "<em><strong>Examples:</strong> Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</em>"
               }),
               K4ActiveEffect.BuildChangeData("PromptForData", {
+                filter: "player",
+                permanent: true,
                 title: "What is your second Field of Expertise?",
                 target: "FLAGS.field_2",
                 input: PromptInputType.text,
@@ -2161,7 +2177,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
@@ -2277,19 +2293,25 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData({
-              alertUser: [
-                "<h2>Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span></h2>",
-                "<p>You must take the 'Condemned' Disadvantage before you can take this Advantage.</p>"
-              ].join("")
-            }),
-            "changeData": [
-              K4ActiveEffect.BuildChangeData("RequireItem", {
-                filter: "Condemned"
-              })
-            ]
-          }],
+          "effects": [
+            {
+              "parentData": K4ActiveEffect.BuildEffectData({}),
+              "changeData": [
+                K4ActiveEffect.BuildChangeData("RequireItem", {
+                  alerts: [
+                    {
+                      type: AlertType.simple,
+                      target: AlertTarget.self,
+                      header: "Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span>",
+                      body: "You must take the '#>text-keyword>Condemned<# Disadvantage before you can take #>text-keyword>Sealed Fate<#.",
+                      logoImg: ""
+                    }
+                  ],
+                  filter: "Condemned"
+                })
+              ]
+            }
+          ],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2518,10 +2540,8 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData({
+            "parentData": K4ActiveEffect.BuildEffectData({inStatusBar: true,
               canToggle: false,
-              inStatusBar: true,
-              duration: EffectDuration.ongoing,
               icon: "systems/kult4th/assets/icons/advantage/hardened.svg",
               tooltip: "Applies <em>+1 ongoing</em> to all #>text-keyword>Endure Injury<# rolls."
             }),
@@ -3048,7 +3068,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("CreateAttack", {
                 filter: "sword",
@@ -3577,7 +3597,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyAttack", {
                 filter: "close_combat",
@@ -4579,7 +4599,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyProperty", {
                 filter: "actor",
@@ -4840,7 +4860,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
@@ -5980,7 +6000,8 @@ const ITEM_DATA: {
                   "result": "",
                   "effects": [{
                     "parentData": K4ActiveEffect.BuildEffectData({
-                      uses: 1
+                      uses: 1,
+                      duration: EffectDuration.limited
                     }),
                     "changeData": [
                       K4ActiveEffect.BuildChangeData("CreateAttack", {
@@ -6359,7 +6380,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Observe a Situation",
@@ -6644,7 +6665,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
@@ -6700,7 +6721,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyAttack", {
                 filter: "firearm",
@@ -6834,7 +6855,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Observe a Situation",
@@ -6894,7 +6915,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
@@ -7102,7 +7123,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyAttack", {
                 filter: "firearm",
@@ -7546,7 +7567,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Keep It Together",
@@ -9156,19 +9177,15 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              "parentData": K4ActiveEffect.BuildEffectData({permanent: true}),
+              "parentData": K4ActiveEffect.BuildEffectData({}),
               "changeData": [
                 K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                  permanent: true,
                   filter: "actor",
                   mode: "Downgrade",
                   target: "system.stability.value",
                   value: 6
-                })
-              ]
-            },
-            {
-              "parentData": K4ActiveEffect.BuildEffectData(),
-              "changeData": [
+                }),
                 K4ActiveEffect.BuildChangeData("ModifyProperty", {
                   filter: "actor",
                   mode: "Set",
@@ -10120,7 +10137,7 @@ const ITEM_DATA: {
           "outro": "",
           "listRefs": [],
           "effects": [{
-            "parentData": K4ActiveEffect.BuildEffectData(),
+            "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [
               K4ActiveEffect.BuildChangeData("CreateTracker", {
                 name: "Time",
@@ -10173,6 +10190,7 @@ const ITEM_DATA: {
                       label: "Depression",
                       icon: "systems/kult4th/assets/icons/disadvantage/depression.svg",
                       uses: 1,
+                      duration: EffectDuration.limited,
                       tooltip: "A temporary penalty to your next roll due to anxiety, decreased self-confidence, or lack of will.",
                       from: "a roll to manage #>text-docLink>Depression<#"
                     }),
@@ -10188,15 +10206,19 @@ const ITEM_DATA: {
                 "failure": {
                   "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
                   "effects": [{
-                    "parentData": K4ActiveEffect.BuildEffectData({
-                      permanent: true,
-                      alertAll: [
-                        "<h2>%insert.actor.name% Grows Less Stable</h2>",
-                        "<p>%insert.actor.name% succumbs to depression, reducing Stability by 2.</p>"
-                      ].join("")
-                    }),
+                    "parentData": K4ActiveEffect.BuildEffectData({}),
                     "changeData": [
                       K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                        permanent: true,
+                        alerts: [
+                          {
+                            type: AlertType.simple,
+                            target: AlertTarget.all,
+                            header: "%insert.actor.name% Loses Stability",
+                            body: "%insert.actor.name% succumbs to depression, taking #>text-negmod>&minus;2 Stability<#.",
+                            logoImg: "%insert.actor.img%"
+                          }
+                        ],
                         filter: "actor",
                         mode: "Add",
                         target: "system.stability.value",
@@ -11212,22 +11234,22 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "#>chat-select-1> <#<span class='selection-text'>You become angry (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
-              "#>chat-select-2> <#<span class='selection-text'>You become sad (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
-              "#>chat-select-3> <#<span class='selection-text'>You become scared (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
-              "#>chat-select-4> <#<span class='selection-text'>You become guilt-ridden (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).</span>",
-              "#>chat-select-5> <#<span class='selection-text'>You become obsessed (#>text-posmod>+1<# #>text-keyword>Relation<# to whatever caused the condition).</span>",
-              "#>chat-select-6> <#<span class='selection-text'>You become distracted (#>text-negmod>&minus;2<# in situations where the condition limits you).</span>",
-              "#>chat-select-7> <#<span class='selection-text'>You will be haunted by the experience at a later time.</span>"
+              "You become angry (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
+              "You become sad (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
+              "You become scared (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
+              "You become guilt-ridden (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
+              "You become obsessed (#>text-posmod>+1<# #>text-keyword>Relation<# to whatever caused the condition).",
+              "You become distracted (#>text-negmod>&minus;2<# in situations where the condition limits you).",
+              "You will be haunted by the experience at a later time."
             ]
           },
           "gmoptions": {
             "name": "GM Options",
             "items": [
-              "#>chat-select-1> <#<span class='selection-text'>You cower powerless in the threat's presence.</span>",
-              "#>chat-select-2> <#<span class='selection-text'>You panic with no control of your actions.</span>",
-              "#>chat-select-3> <#<span class='selection-text'>You suffer emotional trauma (#>text-negmod>&minus;2<# #>text-keyword>Stability<#).</span>",
-              "#>chat-select-4> <#<span class='selection-text'>You suffer life-changing trauma (#>text-negmod>&minus;4<# #>text-keyword>Stability<#).</span>"
+              "You cower powerless in the threat's presence.",
+              "You panic with no control of your actions.",
+              "You suffer emotional trauma (#>text-negmod>&minus;2<# #>text-keyword>Stability<#).",
+              "You suffer life-changing trauma (#>text-negmod>&minus;4<# #>text-keyword>Stability<#)."
             ]
           }
         },
@@ -11250,44 +11272,247 @@ const ITEM_DATA: {
             "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>&minus;1<# in situations where this condition would be a hindrance to you. Choose one:",
             "listRefs": ["options"],
             "effects": [
-              {
-                "parentData": K4ActiveEffect.BuildEffectData({
-                  isUnique: false
+              { // "options"[0]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "options",
+                    listIndex: 0,
+                    userSelectors: [UserRef.self],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("CreateCondition", {
+                    permanent: true,
+                    label: "Angry",
+                    type: K4ConditionType.stability,
+                    description: "You blame someone or something in your vicinity for whatever happened, and may lash out against them or harbor resentment.",
+                    modDef: {all: -1}
+                  }),
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Is Angry",
+                        body: "%insert.actor.name% takes #>text-negmod>&minus;1 Stability<# and gains the #>text-keyword>Angry<# Stability Condition.",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    filter: "actor",
+                    mode: "Add",
+                    target: "system.stability.value",
+                    value: -1
+                  })
+                ]
+              },
+              { // "options"[1]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "options",
+                    listIndex: 1,
+                    userSelectors: [UserRef.self],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("CreateCondition", {
+                    permanent: true,
+                    label: "Saddened",
+                    type: K4ConditionType.stability,
+                    description: "You feel sorrow or grief over what happened. You might want to seek solitude or the comfort of a loved one.",
+                    modDef: {all: -1}
+                  }),
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Is Saddened",
+                        body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Saddened<# Stability Condition.",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    filter: "actor",
+                    mode: "Add",
+                    target: "system.stability.value",
+                    value: -1
+                  })
+                ]
+              },
+              { // "options"[2]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "options",
+                    listIndex: 2,
+                    userSelectors: [UserRef.self],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("CreateCondition", {
+                    permanent: true,
+                    label: "Scared",
+                    type: K4ConditionType.stability,
+                    description: "You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.",
+                    modDef: {all: -1}
+                  }),
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Is Frightened",
+                        body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Scared<# Stability Condition.",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    filter: "actor",
+                    mode: "Add",
+                    target: "system.stability.value",
+                    value: -1
+                  })
+                ]
+              },
+              { // "options"[3]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "options",
+                    listIndex: 3,
+                    userSelectors: [UserRef.self],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("CreateCondition", {
+                    permanent: true,
+                    label: "Guilt-Ridden",
+                    type: K4ConditionType.stability,
+                    description: "You blame yourself for what transpired, and seek forgiveness from those around you.",
+                    modDef: {all: -1}
+                  }),
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Feels Guilty",
+                        body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Guilt-Ridden<# Stability Condition.",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    filter: "actor",
+                    mode: "Add",
+                    target: "system.stability.value",
+                    value: -1
+                  })
+                ]
+              },
+              { // "options"[4]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "options",
+                    listIndex: 4,
+                    userSelectors: [UserRef.self],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("PromptForData", {
+                    filter: "player",
+                    permanent: true,
+                    title: "The Object of Your Obsession",
+                    bodyText: "Supply a name for the object of your obsession.",
+                    subText: "<em>(If you are increasing the value of an existing Relation, make sure the names are the same.)</em>",
+                    target: "FLAGS.name",
+                    input: PromptInputType.text
+                  }),
+                  K4ActiveEffect.BuildChangeData("CreateItem", {
+                    permanent: true,
+                    type: K4ItemType.relation,
+                    name: "%insert.FLAGS.name%",
+                    img: "systems/kult4th/assets/icons/relation/relation1.svg",
+                    system: {
+                      concept: "",
+                      lists: {},
+                      subType: K4ItemSubType.passive,
+                      strength: {
+                        min: 0,
+                        max: 2,
+                        value: 1
+                      }
+                    }
+                  }),
+                  K4ActiveEffect.BuildChangeData("CreateCondition", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Is Obsessed",
+                        body: "%insert.actor.name% gains the #>text-keyword>Obsessed<# Stability Condition, and gains #>text-posmod>+1 Relation<# towards #>text-keyword>%insert.FLAGS.name%<#.",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    label: "Obsessed",
+                    type: K4ConditionType.stability,
+                    description: "You are paradoxically enthralled by whatever initially caused you stress (#>text-posmod>%insert.FLAGS.name%<#), now finding it attractive and compelling. You may feel compelled to seek it out or to study it intensely.",
+                    modDef: {all: -1}
+                  })
+                ]
+              },
+              { // "options"[5]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "options",
+                    listIndex: 5,
+                    userSelectors: [UserRef.self],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("CreateCondition", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Is Distracted",
+                        body: "%insert.actor.name% gains the #>text-keyword>Distracted<# Stability Condition (#>text-negmod>&minus;2<# to all rolls when relevant).",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    label: "Distracted",
+                    type: K4ConditionType.stability,
+                    description: "You are confused and sidetracked by what threatens you. You cannot stop looking at it, and are inattentive to everything else around you. You take #>text-negmod>&minus;2<# to all rolls in situations where being distracted is an obstacle.",
+                    modDef: {all: -2}
+                  })
+                ]
+              },
+              { // "options"[6]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "options",
+                    listIndex: 6,
+                    userSelectors: [UserRef.self],
+                    userTargets: [UserRef.self]
+                  },
                 }),
                 "changeData": [
-                  K4ActiveEffect.BuildChangeData("ChatSelect", {
-                    userSelect: [UserRef.self],
-                    userTarget: [UserRef.self],
-                    listRef: "Options"
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Will Regret This ...",
+                        body: "%insert.actor.name% will be haunted by this at a later time. #>text-gmtext>The GM gets 1 Hold.#<",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    filter: "gmtracker",
+                    target: "system.player-notes.%insert.actor.id%",
+                    mode: "PushElement",
+                    value: "Haunted Condition"
                   }),
-                  // K4ActiveEffect.BuildChangeData("PromptForData", {
-                  //   title: "Describe Your Friend",
-                  //   bodyText: "What is your friend's name?",
-                  //   target: "FLAGS.name",
-                  //   input: PromptInputType.text
-                  // }),
-                  // K4ActiveEffect.BuildChangeData("PromptForData", {
-                  //   title: "Describe Your Friend",
-                  //   bodyText: "What is your friend's field of study?",
-                  //   subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
-                  //   target: "FLAGS.field",
-                  //   input: PromptInputType.text
-                  // }),
-                  // K4ActiveEffect.BuildChangeData("CreateItem", {
-                  //   type: K4ItemType.relation,
-                  //   name: "%insert.FLAGS.name%",
-                  //   img: "systems/kult4th/assets/icons/relation/relation1.svg",
-                  //   system: {
-                  //     concept: "<strong>Expertise:</strong> %insert.FLAGS.field%",
-                  //     lists: {},
-                  //     subType: K4ItemSubType.passive,
-                  //     strength: {
-                  //       min: 0,
-                  //       max: 2,
-                  //       value: 1
-                  //     }
-                  //   }
-                  // })
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    filter: "gmtracker",
+                    target: "system.player-hold.%insert.actor.id%.value",
+                    mode: "Add",
+                    value: 1
+                  })
                 ]
               }
             ],
@@ -11295,8 +11520,116 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "The strain is too much for your mind to handle. The GM chooses your reaction: %list.gmoptions%",
-            "listRefs": [],
+            "result": "The strain is too much for your mind to handle. The GM chooses your reaction:",
+            "listRefs": ["gmoptions"],
+            "effects": [
+              { // "gmoptions"[0]
+                "parentData": K4ActiveEffect.BuildEffectData({
+                  onChatSelection: {
+                    listRef: "gmoptions",
+                    listIndex: 0,
+                    userSelectors: [UserRef.gm],
+                    userTargets: [UserRef.self]
+                  },
+                  isUnique: false
+                }),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("Alert", {
+                    type: AlertType.simple,
+                    target: AlertTarget.other,
+                    header: "%insert.actor.name% Cowers in Fear!",
+                    body: "%insert.actor.name% cowers powerless in the threat's presence.",
+                    logoImg: "%insert.actor.img%"
+                  }),
+                  K4ActiveEffect.BuildChangeData("Alert", {
+                    type: AlertType.simple,
+                    target: AlertTarget.self,
+                    header: "You Cower in Fear!",
+                    body: "You cower, powerless, in the threat's presence.",
+                    logoImg: "%insert.actor.img%"
+                  })
+                ]
+              },
+              { // "gmoptions"[1]
+                "parentData": K4ActiveEffect.BuildEffectData({
+                  onChatSelection: {
+                    listRef: "gmoptions",
+                    listIndex: 1,
+                    userSelectors: [UserRef.gm],
+                    userTargets: [UserRef.self]
+                  },
+                  isUnique: false
+                }),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("Alert", {
+                    type: AlertType.simple,
+                    target: AlertTarget.other,
+                    header: "%insert.actor.name% Panics!",
+                    body: "%insert.actor.name% panics, losing control of their actions.",
+                    logoImg: "%insert.actor.img%"
+                  }),
+                  K4ActiveEffect.BuildChangeData("Alert", {
+                    type: AlertType.simple,
+                    target: AlertTarget.self,
+                    header: "You Panic!",
+                    body: "You panic, losing control of your actions to the GM.",
+                    logoImg: "%insert.actor.img%"
+                  })
+                ]
+              },
+              { // "gmoptions"[2]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "gmoptions",
+                    listIndex: 2,
+                    userSelectors: [UserRef.gm],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Suffers Emotional Trauma",
+                        body: "%insert.actor.name% takes #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    filter: "actor",
+                    mode: "Add",
+                    target: "system.stability.value",
+                    value: -2
+                  })
+                ]
+              },
+              { // "gmoptions"[3]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "gmoptions",
+                    listIndex: 3,
+                    userSelectors: [UserRef.gm],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("ModifyProperty", {
+                    permanent: true,
+                    alerts: [
+                      {
+                        type: AlertType.simple,
+                        target: AlertTarget.all,
+                        header: "%insert.actor.name% Suffers Life-Changing Trauma!",
+                        body: "%insert.actor.name% takes #>text-negmod>&minus;4<# #>text-keyword>Stability<#.",
+                        logoImg: "%insert.actor.img%"
+                      }
+                    ],
+                    filter: "actor",
+                    mode: "Add",
+                    target: "system.stability.value",
+                    value: -4
+                  })
+                ]
+              }
+            ],
             "edges": 0,
             "hold": 0
           }

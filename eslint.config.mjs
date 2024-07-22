@@ -43,6 +43,7 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off",
       "@typescript-eslint/no-this-alias": [
         "error",
         {

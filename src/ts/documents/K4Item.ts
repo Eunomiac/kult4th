@@ -297,6 +297,7 @@ declare global {
 // #region -- AUGMENTED INTERFACE ~
 interface K4Item<T extends K4ItemType = K4ItemType> {
   get id(): IDString;
+  get uuid(): UUIDString;
   get name(): string;
   get type(): T;
   get sheet(): K4Item["_sheet"] & K4ItemSheet;
@@ -475,7 +476,7 @@ class K4Item extends Item {
         // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).
         kLog.display(`[Primary K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" PRIMARY: Embedding ActiveEffect on ITEM`, this);
         await Promise.all(this.system.rules.effects
-          .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(effectDataSet, this))
+          .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(effectDataSet, this as K4ActiveEffect.Origin))
         );
       } else if (this.effects.size === 0) {
         const {parent} = this;
@@ -488,7 +489,11 @@ class K4Item extends Item {
           actor: this.parent
         });
         await Promise.all(this.system.rules.effects
-          .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(effectDataSet, this, parent))
+          .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(
+            effectDataSet,
+            this as K4ActiveEffect.Origin,
+            parent as K4Item<K4ItemType.gmtracker> | K4Actor<K4ActorType.pc>
+          ))
         );
       }
     }
@@ -568,12 +573,6 @@ class K4Item extends Item {
         await this.update({"system.currentHold": newHold});
       }
     }
-  }
-
-  selectFromList(listRef: string, index: number) {
-    kLog.log(`[K4Item.selectFromList] Selecting "${this.name}" from list "${listRef}" at index ${index}`, {
-      ITEM: this
-    });
   }
 
   // #endregion
@@ -764,7 +763,7 @@ class K4Item extends Item {
     });
   }
 
-  async applyResult(result: Maybe<K4Item.Components.ResultData>) {
+  async applyResult(result: Maybe<K4Item.Components.ResultData>, message: K4ChatMessage) {
     if (!result) { return; }
     if (!this.isOwnedItem()) { return; }
     const {edges, hold, effects} = result;
@@ -778,10 +777,16 @@ class K4Item extends Item {
     if (effects?.length) {
       await K4ActiveEffect.CreateFromBuildData(
         effects,
-        this as K4Item<K4ActiveEffect.OriginTypes>,
-        this.parent
+        message,
+        this.parent as K4Item<K4ItemType.gmtracker> | K4Actor<K4ActorType.pc>
       );
     }
+  }
+
+  selectFromList(listRef: string, index: number) {
+    kLog.log(`[K4Item.selectFromList] Selecting "${this.name}" from list "${listRef}" at index ${index}`, {
+      ITEM: this
+    });
   }
 
   async rollItem(speaker?: string) {
@@ -800,7 +805,7 @@ class K4Item extends Item {
       kLog.display("Awaiting Animations Promise...");
       await message.animationsPromise;
       kLog.display("Animation Complete!");
-      await this.applyResult(roll.getOutcomeData());
+      await this.applyResult(roll.getOutcomeData(), message);
     }
   }
 
@@ -833,8 +838,8 @@ class K4Item extends Item {
     if (!message) {
       throw new Error("No message found for triggered Item result");
     }
-    void this.applyResult(this.system.results.triggered);
     await message.animationsPromise;
+    void this.applyResult(this.system.results.triggered, message);
   }
 }
 // #ENDREGION

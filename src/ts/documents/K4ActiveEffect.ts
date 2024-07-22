@@ -1,14 +1,15 @@
 // #region IMPORTS ~
-import C, {K4Attribute} from "../scripts/constants.js";
+import C, {K4Attribute, K4ConditionType} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {formatForKult} from "../scripts/helpers.js";
-import K4Actor, {K4ActorType, K4ConditionType} from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
-import K4Roll from "./K4Roll.js";
+import K4Roll, {K4RollResult} from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
 import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import K4Dialog, {PromptInputType} from "./K4Dialog.js";
+import K4Alert, {AlertType, AlertTarget} from "./K4Alert.js";
 // #endregion
 
 // #region -- TYPES & ENUMS -- ~
@@ -83,7 +84,8 @@ namespace K4Change {
       "Add"|
       "Subtract"|
       "Set"|
-      "Downgrade";
+      "Downgrade"|
+      "PushElement";
     export type ModifyRoll =
       "Add"|
       "Subtract";
@@ -95,7 +97,14 @@ namespace K4Change {
 
   export namespace Schema {
 
-    export interface CreateAttack {
+    interface Base {
+      permanent?: boolean, // Whether the change's effects should apply once, permanently, and not be removed when the effect is removed.
+      alerts?: Array<Partial<K4Alert.Data>> // Optional array of data objects defining alerts that will be fired when this change is appled.
+                                            // Alerts with the same user-targets will be run sequentially.
+    }
+
+    export type Alert = Partial<K4Alert.Data>;
+    export interface CreateAttack extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       name: string, // Name of the attack
       tags: ValueOrArray<string> // Tags to apply to the attack
@@ -104,15 +113,15 @@ namespace K4Change {
       special?: string, // Any special rules associated with the attack
       ammo?: number, // Ammo usage of the attack
     }
-    export interface CreateItem<T extends K4ItemType> extends Omit<K4Item.Schema<T>, "type"> {
+    export interface CreateItem<T extends K4ItemType> extends Base, Omit<K4Item.Schema<T>, "type"> {
       type: T, // Type of item being created
       img: string, // Image to give item being created
       name: string, // Name of item being created
     }
-    export interface DeleteItem {
+    export interface DeleteItem extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
-    export interface CreateTracker {
+    export interface CreateTracker extends Base {
       name: string, // Name of the tracker being created
       target: `FLAGS.${string}` // Where to store the tracker data on the active effect
       imgFolder: string, // Folder path to the images for the tracker. Must include one .webp folder for each possible value (including min and max), named "0.webp", "1.webp", etc.
@@ -120,62 +129,70 @@ namespace K4Change {
       max: number, // Maximum value of the tracker
       startValue: number, // Initial value of the tracker
     }
-    export interface DeleteTracker {
+    export interface DeleteTracker extends Base {
       filter: ValueOrArray<string>, // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
 
-    export interface CreateCondition {
+    export interface CreateCondition extends Base {
       label: string, // The name of the condition, appearing on hover strips and as headers in tooltips.
       description: string, // A longer description of the condition -- the bodies of tooltips
       type: K4ConditionType, // The type of condition
       modDef: K4Roll.ModDefinition // An object literal of roll modifiers in the form Record<filter, number>
     }
 
-    export interface DeleteCondition {
+    export interface DeleteCondition extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of conditions to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
-    export interface CreateWound {
+    export interface CreateWound extends Base {
       label: string,
       isCritical: boolean
     }
-    export interface StabilizeWound {
+    export interface StabilizeWound extends Base {
       filter: ValueOrArray<string>, // Filter to determine the wound(s) to stabilize. Precede with a '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
-    export interface DeleteWound {
+    export interface DeleteWound extends Base {
       filter: ValueOrArray<string>, // Filter to determine the wound(s) to stabilize. Precede with a '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
-    export interface ModifyTracker {
+    export interface ModifyTracker extends Base {
       filter: ValueOrArray<string>, // Filter to determine the tracker(s) to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       target: string, // The property of the tracker data to modify (e.g. "value")
       mode: Modes.ModifyTracker, // The mode of modification to use
       value: SystemScalar, // The value to apply to the modification
     }
-    export interface ModifyAttack {
+    export interface ModifyAttack extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of attacks to modify. Refer to TAGS on the ATTACK (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       target: string, // Dotkey target of property to modify (e.g. "harm")
       mode: Modes.ModifyAttack, // Mode of the custom function to use
       value: SystemScalar, // Value to apply to the modification
     }
-    export interface ModifyMove {
+    export interface ModifyMove extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of attacks to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       target: string, // Dotkey target of property to modify (e.g. "system.lists.questions.items")
       mode: Modes.ModifyMove, // Mode of the custom function to use
       value: SystemScalar, // Value to apply to the modification
     }
-    export interface ModifyRoll extends Partial<Omit<PromptForData, "target">> {
+    export interface ModifyRoll extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of rolls this change applies to. Can be "all", an item type, a specific item name, or the attribute rolled. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters).
       mode: Modes.ModifyRoll, // Mode of the custom function to use
       value: SystemScalar // Value to apply to the modification
       changeLabel?: string // Optional override to effect's label when showing this change in a roll result report.
       changeTooltip?: string // Optional override to effect's tooltip when showing this change in a roll result report.
+
+      // Optional properties for "prompt" values
+      title?: string,
+      bodyText?: string,
+      subText?: string,
+      input?: PromptInputType, // Type of input requested
+      inputVals?: SystemScalar[], // Values for buttons or other input types
+      default?: string, // Default value if prompt window closed; if undefined, item creation is cancelled
     }
-    export interface ModifyProperty {
+    export interface ModifyProperty extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of attacks to modify. Almost always "actor". Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       target: string, // Dotkey target of property to modify (e.g. "system.modifiers.wounds_critical.1.all")
       mode: Modes.ModifyProperty, // Mode of the custom function to use
-      value: SystemScalar, // Value to apply to the modification
+      value: unknown, // Value to apply to the modification
     }
-    export interface ModifyChange {
+    export interface ModifyChange extends Base {
       filter: ValueOrArray<string>, // Filter identifying the ORIGIN ITEM bearing the ActiveEffect that contains the Change to be modified
       target: string, // Dotkey path ending with "effects", to the array containing the Change to be modified
       changeFilter: ValueOrArray<string>, // Filter identifying the Change to be modified within the targeted changeData array
@@ -183,7 +200,8 @@ namespace K4Change {
       changeTarget: string, // Dotkey path within the Change to the property to modify
       value: SystemScalar, // Value to apply to the modification
     }
-    export interface PromptForData {
+    export interface PromptForData extends Base {
+      filter: ValueOrArray<"player"|"gm">, // To whom the prompt window is shown.
       title: string,
       bodyText: string,
       subText?: string,
@@ -192,17 +210,17 @@ namespace K4Change {
       inputVals?: SystemScalar[], // Values for buttons or other input types
       default?: string, // Default value if prompt window closed; if undefined, item creation is cancelled
     }
-    export interface RequireItem {
+    export interface RequireItem extends Base {
       filter: ValueOrArray<string>, // Name of required item(s)
     }
-    export interface ChatSelect {
+    export interface ChatSelect extends Base {
       /* Effect must have this change as its first change. All subsequent changes will be mapped to the referenced list and represent the final applied effect once one of them is selected. */
       userSelect: UserRef[], // A list of users who should be able to interact with the list keys
       userTarget: UserRef[], // A list of users who should be the target of the selected effect
       listRef: string, // A keyword reference to the list on the creating item
     }
 
-    type AnySchema = CreateAttack|CreateItem<K4ItemType>|CreateTracker|DeleteTracker|CreateCondition|DeleteCondition|CreateWound|StabilizeWound|DeleteWound|ModifyTracker|ModifyAttack|ModifyMove|ModifyProperty|ModifyChange|PromptForData|RequireItem|ModifyRoll|ChatSelect;
+    export type AnySchema = Alert|CreateAttack|CreateItem<K4ItemType>|CreateTracker|DeleteTracker|CreateCondition|DeleteCondition|CreateWound|StabilizeWound|DeleteWound|ModifyTracker|ModifyAttack|ModifyMove|ModifyProperty|ModifyChange|PromptForData|RequireItem|ModifyRoll|ChatSelect;
 
     export type Any = Record<string, unknown> & AnySchema;
   }
@@ -211,6 +229,7 @@ namespace K4Change {
     export type Name = keyof typeof CUSTOM_FUNCTIONS;
 
     export type Data<N extends keyof typeof CUSTOM_FUNCTIONS, T extends K4ItemType = K4ItemType> =
+      N extends "Alert" ? Schema.Alert :
       N extends "CreateAttack" ? Schema.CreateAttack :
       N extends "CreateItem" ? Schema.CreateItem<T> :
       N extends "CreateTracker" ? Schema.CreateTracker :
@@ -237,9 +256,19 @@ namespace K4Change {
   export type CustomFunc = (this: K4Change, actor: K4Actor|K4Roll, data: Schema.Any, isPermanent?: boolean) => Promise<boolean>;
 }
 namespace K4ActiveEffect {
-  export type OriginTypes = Exclude<K4ItemType, K4ItemType.darksecret>;
-  export type Origin = K4Item<OriginTypes>|K4Actor<K4ActorType.pc>|K4Scene|K4ChatMessage|JQuery;
   export type StatusBarCategory = keyof typeof DYNAMIC_CHANGES|K4ItemType;
+
+  export type Origin =
+     K4Item<K4ItemType.move>
+    |K4Item<K4ItemType.advantage>
+    |K4Item<K4ItemType.disadvantage>
+    |K4Item<K4ItemType.gear>
+    |K4Item<K4ItemType.weapon>
+    |K4Item<K4ItemType.gmtracker>
+    |K4Actor<K4ActorType.pc>
+    |K4Scene
+    |K4ChatMessage;
+
   // export type CustomFunctionActor = (
   //   this: K4Change,
   //   parent: K4Actor,
@@ -258,6 +287,12 @@ namespace K4ActiveEffect {
     parentData: ParentData,
     changeData: EffectChangeData[]
   }
+  export interface ChatSelectionData {
+    listRef: string, // Must match a key in its parent item's system.lists
+    listIndex: number, // The index in the lists array corresponding to the element this Effect is attached to
+    userSelectors: UserRef[], // An array of User-types that can interact with and select this element
+    userTargets: UserRef[] // An array of User-types that will have this effect transferred to them on selection
+  }
 
   export interface ParentData {
     canToggle: boolean, // Whether the user can toggle this effect on/off
@@ -271,32 +306,37 @@ namespace K4ActiveEffect {
     resetTo: boolean, // Overrides the default state when the effect resets
     statusLabel: string; // The label to display on the status bar (default = "")
     tooltip: string; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
-    permanent: boolean; // Whether the effect should permanently apply its effects upon creation
 
     label?: string, // The principal name of the Effect. Appears in tooltips and in chat roll results. If undefined, effect takes the name of its origin item.
     dynamic?: keyof typeof DYNAMIC_CHANGES, // A list of dynamically-generated changes that should be refreshed each time the effect is applied. Possible values: "wounds", "stability", "stabilityConditions", "armor"
     statusCategory?: StatusBarCategory, // Optional override of automatically-determined category of the effect, used to group similar effects in the actor's character sheet
     icon?: string, // The icon to display on the status bar. If undefined, takes icon of origin item.
     from?: string, // Optional override for the default "#>text-keyword>{sourceName}<#" component (is prefixed with 'from')
-    alertUser?: string, // Optional alert to display to actor's owner when the change is applied (in formatForKult or HTML)
-    alertAll?: string // Optional alert to display to all players when the change is applied (in formatForKult or HTML). If alertUser is also set, will not display the global alert to user.
+
+    onChatSelection?: ChatSelectionData // If present, ActiveEffect is linked to an element in a list on its source document. When that document renders results (rolled or triggered) to chat, the Effect will attach a listener to its list element for the appropriate Users, should it appear. If that element is selected by a User, the effect will transfer to the target(s), deleting this property in the process and thus behaving in all ways like a normal Effect from then on.
   }
 
 
   export namespace Components {
     export namespace EffectSource {
       interface Base {
-        type: EffectSourceType
+        type: EffectSourceType;
+        docUUID: UUIDString;
       }
 
       interface DocSource extends Base {
-        type: Exclude<EffectSourceType, EffectSourceType.moveResult|EffectSourceType.claimedResult>,
-        uuid: string
+        type: Exclude<EffectSourceType, EffectSourceType.moveResult|EffectSourceType.claimedResult>
       }
       interface ResultSource extends Base {
-        type: EffectSourceType.moveResult|EffectSourceType.claimedResult
+        type: EffectSourceType.moveResult;
+        chatID: IDString;
       }
-      export type Ref = DocSource|ResultSource;
+      interface ClaimedSource extends Base {
+        type: EffectSourceType.claimedResult;
+        chatID: IDString;
+        index: number;
+      }
+      export type Ref = DocSource|ResultSource|ClaimedSource;
     }
     export namespace Effect {
       /**
@@ -410,8 +450,25 @@ async function applyUpdate(doc: UpdateableDoc, key: Key, value: unknown, isPerma
   }
 }
 
+/**
+ * Convenience function to fire any alerts associated with data passed to a custom function.
+ *
+ * @param {K4Change.Schema.Any} data - The custom function data to process for alerts
+ * @returns {void}
+ */
+function fireAlerts(data: K4Change.Schema.AnySchema) {
+  if ("alerts" in data && data.alerts) {
+    data.alerts.forEach((alertData) => { K4Alert.Alert(alertData) });
+  }
+}
+
 const CUSTOM_FUNCTIONS = {
+  async Alert(this: K4Change, actor: K4Actor, data: K4Change.Schema.Alert): Promise<boolean> {
+    fireAlerts({alerts: [data]} as K4Change.Schema.AnySchema);
+    return Promise.resolve(true);
+  },
   async CreateAttack(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateAttack): Promise<boolean> {
+    fireAlerts(data);
     const {
       filter, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       name, // Name of the attack
@@ -423,7 +480,8 @@ const CUSTOM_FUNCTIONS = {
     } = data;
     return Promise.resolve(true);
   },
-  async CreateItem(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateItem<K4ItemType>, isPermanent = false): Promise<boolean> {
+  async CreateItem(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateItem<K4ItemType>): Promise<boolean> {
+    fireAlerts(data);
     const {
       type, // Type of item being created
       img, // Image to give item being created
@@ -450,6 +508,7 @@ const CUSTOM_FUNCTIONS = {
     return true;
   },
   async DeleteItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteItem): Promise<void> {
+    fireAlerts(data);
 
     const {
       filter // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -470,6 +529,7 @@ const CUSTOM_FUNCTIONS = {
     return;
   },
   async CreateTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateTracker): Promise<boolean> {
+    fireAlerts(data);
     // Log a custom id to FLAGS.trackerId
 
     const {
@@ -484,6 +544,7 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   async DeleteTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteTracker): Promise<boolean> {
+    fireAlerts(data);
 
     const {
       filter // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -491,22 +552,28 @@ const CUSTOM_FUNCTIONS = {
 
     return Promise.resolve(true);
   },
-  async CreateCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateCondition, isPermanent = false): Promise<boolean> {
+  async CreateCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateCondition): Promise<boolean> {
+    fireAlerts(data);
     return Promise.resolve(true);
   },
-  async DeleteCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteCondition, isPermanent = false): Promise<boolean> {
+  async DeleteCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteCondition): Promise<boolean> {
+    fireAlerts(data);
     return Promise.resolve(true);
   },
-  async CreateWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateWound, isPermanent = false): Promise<boolean> {
+  async CreateWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateWound): Promise<boolean> {
+    fireAlerts(data);
     return Promise.resolve(true);
   },
-  async StabilizeWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.StabilizeWound, isPermanent = false): Promise<boolean> {
+  async StabilizeWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.StabilizeWound): Promise<boolean> {
+    fireAlerts(data);
     return Promise.resolve(true);
   },
-  async DeleteWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteWound, isPermanent = false): Promise<boolean> {
+  async DeleteWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteWound): Promise<boolean> {
+    fireAlerts(data);
     return Promise.resolve(true);
   },
-  async ModifyTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyTracker, isPermanent = false): Promise<boolean> {
+  async ModifyTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyTracker): Promise<boolean> {
+    fireAlerts(data);
 
     const {
       filter, // Filter to determine the tracker(s) to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -519,6 +586,7 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   async ModifyAttack(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyAttack): Promise<boolean> {
+    fireAlerts(data);
 
     const {
       filter, // Filter to determine the type(s) of attacks to modify. Refer to TAGS on the ATTACK (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -531,11 +599,13 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): boolean {
+    fireAlerts(data);
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
 
     const {
+      permanent,
       filter, // Filter to determine the type(s) of attacks to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       target, // Dotkey target of property to modify (e.g. "system.lists.questions.items")
       mode, // Mode of the custom function to use
@@ -562,7 +632,7 @@ const CUSTOM_FUNCTIONS = {
                 value,
                 this.parentEffect!.eData.fromText
               ].join("&nbsp;"));
-              setProperty(move, target, targetArray);
+              void applyUpdate(move as UpdateableDoc, target, targetArray, permanent ?? false);
               break;
             }
             case "AppendText": {
@@ -573,11 +643,11 @@ const CUSTOM_FUNCTIONS = {
               if (typeof targetString !== "string") {
                 throw new Error(`Invalid target for AppendText: '${target}'`);
               }
-              setProperty(move, target, [
+              void applyUpdate(move as UpdateableDoc, target, [
                 targetString,
                 String(value),
                 this.parentEffect!.eData.fromText
-              ].join("&nbsp;"));
+              ].join("&nbsp;"), permanent ?? false);
               break;
             }
           }
@@ -585,29 +655,32 @@ const CUSTOM_FUNCTIONS = {
     });
     return true;
   },
-  async ModifyProperty(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyProperty, isPermanent = false): Promise<boolean> {
+  async ModifyProperty(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyProperty): Promise<boolean> {
+    fireAlerts(data);
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyProperty: ${String(actor)}`);
     }
 
     let {
+      permanent, // Whether change should be permanently applied
       filter, // Filter to determine the type(s) of attacks to modify. Almost always "actor". Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       target, // Dotkey target of property to modify (e.g. "system.modifiers.wounds_critical.1.all")
       mode, // Mode of the custom function to use
       value // Value to apply to the modification
     } = data;
 
-    value = U.castToScalar(String(value));
     if (!filter || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
     }
     if (filter === "actor") {
-      const curVal = U.castToScalar(getProperty(actor, target));
+      let curVal: unknown = U.getProp<unknown>(actor, target);
       switch (mode) {
         case "Subtract":
         case "Add": {
+          value = U.castToScalar(value);
+          curVal = U.castToScalar(curVal);
           if (typeof value !== "number" || typeof curVal !== "number") {
-            throw new Error(`Invalid values for ModifyProperty 'Add': current = '${curVal}', value = '${value}'`);
+            throw new Error(`Invalid values for ModifyProperty 'Add': current = '${curVal as SystemScalar}', value = '${value as SystemScalar}'`);
           }
           if (mode === "Subtract") {
             value = curVal - value;
@@ -618,21 +691,38 @@ const CUSTOM_FUNCTIONS = {
         }
         case "Set": break;
         case "Downgrade": {
+          value = U.castToScalar(value);
+          curVal = U.castToScalar(curVal);
           if (typeof value === "string") {
             throw new Error(`Invalid string value for Downgrade: '${value}'`);
           } else if (typeof value === "boolean") {
             value = Boolean(curVal) && value;
-          } else if (typeof curVal === "number" && value > curVal) {
+          } else if (typeof curVal === "number" && typeof value === "number" && value > curVal) {
             return true;
           }
+          break;
+        }
+        case "PushElement": {
+          if (Array.isArray(curVal)) {
+            value = [
+              ...curVal.map(U.castToScalar),
+              U.castToScalar(value)
+            ];
+            break;
+          }
+          throw new Error(`Target of 'PushElement' operation must be an array, but '${target}' is a '${typeof curVal}'.`)
         }
       }
-      await applyUpdate(actor as UpdateableDoc, target, value, isPermanent);
+      await applyUpdate(actor as UpdateableDoc, target, value, permanent ?? false);
       return true;
+    }
+    if (filter === "gm") {
+      kLog.log(``)
     }
     throw new Error(`Unrecognized filter for ModifyProperty: ${String(filter)}`);
   },
-  ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange, isPermanent = false): boolean {
+  ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange): boolean {
+    fireAlerts(data);
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
@@ -653,12 +743,13 @@ const CUSTOM_FUNCTIONS = {
 
     return true;
   },
-  async PromptForData(this: K4Change, actor: K4Actor, data: K4Change.Schema.PromptForData, isPermanent = false): Promise<boolean> {
+  async PromptForData(this: K4Change, actor: K4Actor, data: K4Change.Schema.PromptForData): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
 
     const {
+      filter, // Either 'player' or 'gm'
       title,
       bodyText,
       subText,
@@ -694,14 +785,16 @@ const CUSTOM_FUNCTIONS = {
     if (target.startsWith("FLAGS")) {
       const flagKey = target.split(".").slice(2).join(".");
       await this.parentEffect!.setFlag(flagKey, userInput);
+      fireAlerts(data);
       return true;
     }
     throw new Error(`Unrecognized key for PromptForData: ${target}`);
   },
-  RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem, isPermanent = false): boolean {
+  RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem): boolean {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
+    fireAlerts(data);
     const {
       filter // Name of required item(s)
     } = data;
@@ -711,7 +804,14 @@ const CUSTOM_FUNCTIONS = {
     const items = actor.getItemsByFilter(filter);
     if (items.length === 0) {
       // The required item is not found. Alert the user, and return false.
-      ui.notifications.error(`You currently lack "${filter}", which is a prerequisite for gaining "${this.parentEffect?.eData.label ?? this.name}"`);
+      K4Alert.Alert({
+        type: AlertType.simple,
+        target: AlertTarget.self,
+        skipQueue: false,
+        header: `Missing Prerequisite: '${filter}'`,
+        displayDuration: 5,
+        body: `You currently lack #>text-keyword>${filter}<#, which is a prerequisite for gaining #>text-keyword>${this.name}<#`
+      });
       return false;
     }
     return true;
@@ -808,31 +908,9 @@ const CUSTOM_FUNCTIONS = {
         break;
       }
     }
+    fireAlerts(data);
     return true;
-  },
-  ChatSelect(this: K4Change, roll: K4Roll, data: K4Change.Schema.ChatSelect): Promise<boolean> {
-    const {
-      userSelect,
-      userTarget,
-      listRef
-    } = data;
-
-    // 1) Get the rendered chat message from the roll object.
-    const message = roll.chatMessage;
-    if (!message) {
-      return Promise.resolve(true);
-    }
-
-    // 2) Determine which users have permission to grab the keys.
-    // 3) Activate and animate the key overlays for all such users (the keys themselves should be auto-included with the #>chat-link<# callout), linking one key to each element of the list according to the formatForKult "#>chat-link-(index)<#" element. Attach click and click-release events to the keys.
-        // These key events, when fired, should use the key index to find the proper change in the parent effect to apply to userTarget
-
-
-
-    return Promise.resolve(true);
-
   }
-
 } as const;
 // #endregion
 
@@ -961,7 +1039,7 @@ class K4Change implements EffectChangeData {
     return ["RequireItem"].includes(this.customFunctionName);
   }
   get isPermanentChange(): boolean {
-    return this.parentEffect?.eData.permanent === true;
+    return this.customFunctionData.permanent === true;
   }
   get isSystemModifier(): boolean {
     return !this.isPromptOnCreate
@@ -979,10 +1057,16 @@ class K4Change implements EffectChangeData {
     if (["wounds", "stability"].includes(String(this.customFunctionData.value))) {
       return U.tCase(this.customFunctionData.value);
     }
-    return this.customFunctionData.changeLabel as Maybe<string>
-      ?? this.customFunctionData.label as Maybe<string>
-      ?? this.customFunctionData.name as Maybe<string>
-      ?? this.parentEffect?.label
+    if (typeof this.customFunctionData.changeLabel === "string") {
+      return this.customFunctionData.changeLabel;
+    }
+    if (typeof this.customFunctionData.label === "string") {
+      return this.customFunctionData.label;
+    }
+    if (typeof this.customFunctionData.name === "string") {
+      return this.customFunctionData.name;
+    }
+    return this.parentEffect?.label
       ?? this.originItem?.name
       ?? "";
   }
@@ -1096,7 +1180,7 @@ class K4Change implements EffectChangeData {
       throw new Error(`[K4Change.apply] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
     }
     if (parent instanceof K4Actor) {
-      return this.customFunction(parent, this.customFunctionData, parentEffect.eData.permanent);
+      return this.customFunction(parent, this.customFunctionData, this.isPermanentChange);
     }
     return this.customFunction(parent, this.customFunctionData);
   }
@@ -1124,66 +1208,96 @@ class K4Change implements EffectChangeData {
  */
 class K4ActiveEffect extends ActiveEffect {
 
-  static #resolveEffectSource(origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData["effectSource"] {
+  static #resolveEffectSource(origin: K4ActiveEffect.Origin, chatSelectIndex?: number): K4ActiveEffect.ExtendedData["effectSource"] {
+
+    /** K4ActiveEffect.Origin:
+     *
+     *  K4Item<K4ItemType.move>
+     *  K4Item<K4ItemType.advantage>
+     *  K4Item<K4ItemType.disadvantage>
+     *  K4Item<K4ItemType.gear>
+     *  K4Item<K4ItemType.weapon>
+     *  K4Item<K4ItemType.gmtracker>
+     *
+     *  K4Actor<K4ActorType.pc>
+     *
+     *  K4Scene
+     *
+     *  K4ChatMessage;
+     */
+
+    /**
+     *   ownedItem = "ownedItem", // The Effect is applied by an item owned by the Actor. REMOVAL: the item is removed from the Actor.
+          moveResult = "moveResult", // The Effect was applied by a move result, either triggered or rolled. REMOVAL: Must be specified (default = single-use, toggleable effect)
+          claimedResult = "claimedResult", // The Effect was applied by clicking on an effect link in a move result chat card. REMOVAL: Must be specified (default = single-use, toggleable effect)
+          scene = "scene", // The Effect was applied by a K4Scene document to all actors present. REMOVAL: when the Scene ends.
+          actor = "actor", // The Effect is created by the Actor and applied directly when the Actor is created. REMOVAL: Never.
+          gm = "gm" // The Effect is applied by the GM manually to selected actors via the GM Screen. REMOVAL: no automatic removal; manually controlled by the GM
+     */
+
     if (origin instanceof K4Item) {
       if (origin.is(K4ItemType.gmtracker)) {
         // GM Tracker effect applied by GM
         return {
           type: EffectSourceType.gm,
-          uuid: origin.uuid
+          docUUID: origin.uuid
         };
       }
       if (origin.is(
         K4ItemType.move,
         K4ItemType.advantage,
         K4ItemType.disadvantage,
-        K4ItemType.relation,
-        K4ItemType.weapon,
-        K4ItemType.gear
+        K4ItemType.gear,
+        K4ItemType.weapon
       )) {
         // Origin is an item that will transfer its effects to an owning actor.
         return {
           type: EffectSourceType.ownedItem,
-          uuid: origin.uuid
+          docUUID: origin.uuid
         };
       }
-      throw new Error(`Invalid origin item type for ActiveEffect: ${origin.type}`);
     }
 
     if (origin instanceof K4Actor) {
       // ActiveEffect is being created directly on an Actor
       return {
         type: EffectSourceType.actor,
-        uuid: origin.uuid
+        docUUID: origin.uuid
       };
     }
 
     if (origin instanceof K4ChatMessage) {
-      if (origin.isResult) {
-        // ActiveEffect is being applied by the result of a rolled or triggered move, to the actor who rolled/triggered the move
+      if (!origin.isResult) {
+        throw new Error(`Chat message ${origin.id} is not a Result and cannot create an ActiveEffect.`);
+      }
+      // ActiveEffect is being applied by the result of a rolled or triggered move
+      const docUUID = origin.sourceItem?.uuid;
+      if (!docUUID) {
+        throw new Error(`Unable to derive sourceItem from chat message '${origin.id}'`);
+      }
+      if (U.isNumber(chatSelectIndex)) {
+        // ActiveEffect is being applied by the selection of a list element in a chat result
         return {
-          type: EffectSourceType.moveResult
+          type: EffectSourceType.claimedResult,
+          docUUID,
+          chatID: origin.id,
+          index: chatSelectIndex
         };
       }
-      throw new Error(`Chat message ${origin.id} is not a Result and cannot create an ActiveEffect.`);
+      // Otherwise, effect is being applied automatically
+      return {
+        type: EffectSourceType.moveResult,
+        docUUID,
+        chatID: origin.id
+      };
     }
 
     if (origin instanceof K4Scene) {
       // ActiveEFfect is being applied by a K4Scene to actors present in that scene.
       return {
         type: EffectSourceType.scene,
-        uuid: origin.uuid
+        docUUID: origin.uuid
       };
-    }
-
-    if (U.isJQuery(origin)) {
-      // ActiveEffect is being applied by a clicked link. Only claim links in chat messages are supported, so we confirm that:
-      if (!origin.hasClass("claim-link")) {
-        throw new Error(`Invalid origin link for ActiveEffect: ${origin.text()}`);
-      }
-      /**
-       * @todo Implement dataset definitions for defining a claim link within a chat message such that its source can be determined.
-       */
     }
 
     throw new Error(`Invalid origin type for ActiveEffect: ${String(origin)}`);
@@ -1209,11 +1323,43 @@ class K4ActiveEffect extends ActiveEffect {
     return effectName;
   }
 
+  /* eslint-disable-next-line @typescript-eslint/require-await */
+  static async #resolveUserSelectors(ref: UserRef, origin: K4ChatMessage): Promise<User[]> {
+    const {users} = game;
+    if (ref === UserRef.any) {
+      return Array.from(users);
+    }
+    if (ref === UserRef.gm) {
+      return users.filter((user) => user.isGM);
+    }
+    const curUser = users.get(origin.user?.id ?? "");
+    if (!curUser) {
+      throw new Error(`Unable to derive user from chat message '${origin.id}'.`);
+    }
+    if (ref === UserRef.self) {
+      return [curUser];
+    }
+    if (ref === UserRef.other) {
+      return users.filter((user) => user.id !== curUser.id);
+    }
+    throw new Error(`Resolution of user reference '${ref}' is not yet implemented.`);
+  }
+
+  static async #resolveUserTargets(ref: UserRef, origin: K4ChatMessage): Promise<Array<K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>>> {
+    const users = await this.#resolveUserSelectors(ref, origin);
+    return users.map((user) => {
+      if (user.isGM) {
+        kLog.error("This should return a reference to the singleton GMTracker K4Item, currently unimplemented.");
+      }
+      return user.character as K4Actor<K4ActorType.pc>;
+    });
+  }
+
   static #parseEffectData(data: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
     const {parentData, changeData} = data;
 
-    const {uses: usageMax, from, dynamic, ...baseExtData} = parentData;
-    const effectSource = this.#resolveEffectSource(origin);
+    const {uses: usageMax, from, dynamic, onChatSelection, ...baseExtData} = parentData;
+    const effectSource = this.#resolveEffectSource(origin, onChatSelection?.listIndex);
     const label = this.#resolveEffectName(data, origin);
     let uses: Maybe<ValueMax> = undefined;
     if (U.isDefined(usageMax) && usageMax > 0) {
@@ -1223,9 +1369,7 @@ class K4ActiveEffect extends ActiveEffect {
         value: 0
       };
     }
-    if (U.isJQuery(origin)) {
-      throw new Error(`No origin ID provided for JQuery-delivered ActiveEffect: ${JSON.stringify(data)}`);
-    }
+
     const fromText: string = [
       "(from ",
       from ?? `%insert.docLink.${origin.name}%`,
@@ -1311,14 +1455,11 @@ class K4ActiveEffect extends ActiveEffect {
       resetTo: data.resetTo ?? data.defaultState ?? true,
       statusLabel: data.statusLabel ?? "",
       tooltip: data.tooltip ?? "",
-      permanent: Boolean(data.permanent),
 
       label: data.label ?? undefined,
       dynamic: data.dynamic ?? undefined,
       icon: data.icon ?? undefined,
-      from: data.from ?? undefined,
-      alertUser: data.alertUser ?? undefined,
-      alertAll: data.alertAll ?? undefined
+      from: data.from ?? undefined
     };
   }
 
@@ -1334,23 +1475,56 @@ class K4ActiveEffect extends ActiveEffect {
   static async CreateFromBuildData(
     effectDataSet: ValueOrArray<K4ActiveEffect.BuildData>,
     origin: K4ActiveEffect.Origin,
-    target?: K4Actor
+    target?: K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>
   ): Promise<K4ActiveEffect[]> {
     if (Array.isArray(effectDataSet)) {
       const effects = await Promise.all(effectDataSet.map((data) => this.CreateFromBuildData(data, origin, target)));
       return effects.flat();
     }
-    const effectHost = target ?? origin;
-    if (U.isJQuery(effectHost)) {
-      throw new Error(`No target provided for JQuery-delivered ActiveEffect (derive from ChatMessage?): ${JSON.stringify(effectDataSet)}`);
+    const effectExtendedData = this.#parseEffectData(effectDataSet, origin);
+
+    if (origin instanceof K4ChatMessage && effectDataSet.parentData.onChatSelection) {
+      /** SPECIAL CASE: CHAT SELECTION EFFECT
+       *
+       * This effect, though originating from a rolled or triggered chat result, is not built or applied at this time.
+       * Instead, listeners enabling selection of the corresponding list element are created on the chat message HTML.
+       * Only when that listener resolves will this method be called again to build the corresponding effect.       *
+       */
+      const {onChatSelection: {listRef, listIndex, userSelectors, userTargets}, ...parentData} = effectDataSet.parentData;
+
+      // If the chat message isn't displaying the list referenced by the effect, abort creation.
+      if (!origin.isDisplayingList(listRef)) { return []; }
+
+      const canSelect: User[] = (await Promise.all(
+        userSelectors.map((uRef) => K4ActiveEffect.#resolveUserSelectors(uRef, origin))
+      )).flat();
+
+      const onSelect = async () => {
+        const targets: Array<K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>> = (await Promise.all(
+          userTargets.map((uRef) => K4ActiveEffect.#resolveUserTargets(uRef, origin))
+        )).flat();
+        await Promise.all(
+          targets.map((target) => K4ActiveEffect.CreateFromBuildData({
+            parentData,
+            changeData: effectDataSet.changeData
+          }, origin, target))
+        )
+      };
+
+      origin.applySelectionListener(
+        listRef,
+        listIndex,
+        canSelect,
+        onSelect
+      );
+
+      return [];
     }
+
+    const effectHost = target ?? origin;
     if (effectHost instanceof K4ChatMessage) {
       throw new Error(`No target provided for ChatMessage-delivered ActiveEffect (derive from ChatMessage?): ${JSON.stringify(effectDataSet)}`);
     }
-    if (U.isJQuery(origin)) {
-      throw new Error(`No origin ID provided for JQuery-delivered ActiveEffect: ${JSON.stringify(effectDataSet)}`);
-    }
-    const effectExtendedData = this.#parseEffectData(effectDataSet, origin);
 
     // If the effect is unique, delete any existing effect with the same name
     if (effectExtendedData.isUnique) {
@@ -1362,7 +1536,7 @@ class K4ActiveEffect extends ActiveEffect {
 
     const effect = (await effectHost.createEmbeddedDocuments("ActiveEffect", [{
       origin:   origin.uuid,
-      label: effectExtendedData.label,
+      label:    effectExtendedData.label,
       transfer: origin.uuid !== target?.uuid,
       disabled: false,
       changes:  effectDataSet.changeData,
@@ -1462,9 +1636,9 @@ class K4ActiveEffect extends ActiveEffect {
     return "neon-glow-soft-gold";
   }
   get statusBarContext(): Maybe<K4ActiveEffect.StatusContext> {
-    if (!this.isInstantiated()) { return; }
-    if (!this.inStatusBar()) { return; }
-    if (!this.isOwnedByActor()) { return; }
+    if (!this.isInstantiated()) { return undefined; }
+    if (!this.inStatusBar()) { return undefined; }
+    if (!this.isOwnedByActor()) { return undefined; }
     if (this.canToggle()) {
       return {
         id:              this.id,

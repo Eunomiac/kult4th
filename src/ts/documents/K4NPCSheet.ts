@@ -309,9 +309,11 @@ class K4NPCSheet extends ActorSheet {
 
     hoverTimelines.forEach(([target, anim]) => {
       $(target)
-        .on("mouseenter", () => anim.reversed(false))
-        .on("mouseleave", () => anim.reversed(true));
-    });
+        .on({
+          mouseenter: () => { anim.reversed(false); },
+          mouseleave: () => { anim.reversed(true); }
+        });
+      });
 
   }
 }
