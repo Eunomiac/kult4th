@@ -854,19 +854,19 @@ class K4ChatMessage extends ChatMessage {
     }
 
     return new Promise((resolve) => {
-      kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
+      // kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
       void this.timelinePromise.then(() => {
-        kLog.display("Timeline Promise Resolved!");
+        // kLog.display("Timeline Promise Resolved!");
         const timeline = this.animationTimeline;
         if (!timeline) { return undefined; }
         const labelTime = timeline.labels.revealed;
         const watchLabel = () => {
           if (timeline.time() >= labelTime) {
-            kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
+            // kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
             resolve();
             return undefined;
           }
-          kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
+          // kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
           setTimeout(watchLabel, 250);
         };
         watchLabel();

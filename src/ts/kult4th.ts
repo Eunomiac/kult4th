@@ -73,7 +73,6 @@ Hooks.on("init", async () => {
   InitializeTooltips($("body"));
   // Set Handlebars runtime options
 
-
   // Dynamically import data.js
   const {BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, getMutationDiffReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} = await import("./scripts/data.js");
 

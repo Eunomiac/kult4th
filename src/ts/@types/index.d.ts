@@ -1,5 +1,6 @@
 import K4Config from "../scripts/config";
 import K4Roll from "../documents/K4Roll.js";
+import {DebugReport} from "../scripts/logger.js";
 
 import "./general-types";
 import "./system-types";
@@ -65,7 +66,9 @@ declare global {
     debug: {
       logging: boolean,
       hooks: boolean,
-      customFunctionParams: Record<string, SystemScalar[]>
+      customFunctionParams: Record<string, SystemScalar[]>,
+      openReport: Maybe<string>,
+      openReports: Maybe<Record<string, DebugReport>>
     },
     TinyMCE: TinyMCEConfig,
     K4: typeof K4Config,
@@ -73,6 +76,8 @@ declare global {
       mode: number
     }
   }
+
+  const ACTOR: K4Actor;
 
   const cqApi: {
     reprocess: () => void,
@@ -85,7 +90,10 @@ declare global {
     display: (...content: [string, ...unknown[]]) => void,
     log: (...content: [string, ...unknown[]]) => void,
     error: (...content: [string, ...unknown[]]) => void,
-    hbsLog: (...content: [string, ...unknown[]]) => void
+    hbsLog: (...content: [string, ...unknown[]]) => void,
+    openReport: (name: string, title?: string, dbLevel?: number) => void,
+    report: (name: string, ...content: [string, ...unknown[]]) => void,
+    closeReport: (name: string) => void,
   };
 
   interface SourceConfig {

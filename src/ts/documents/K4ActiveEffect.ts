@@ -450,25 +450,12 @@ async function applyUpdate(doc: UpdateableDoc, key: Key, value: unknown, isPerma
   }
 }
 
-/**
- * Convenience function to fire any alerts associated with data passed to a custom function.
- *
- * @param {K4Change.Schema.Any} data - The custom function data to process for alerts
- * @returns {void}
- */
-function fireAlerts(data: K4Change.Schema.AnySchema) {
-  if ("alerts" in data && data.alerts) {
-    data.alerts.forEach((alertData) => { K4Alert.Alert(alertData) });
-  }
-}
-
 const CUSTOM_FUNCTIONS = {
   async Alert(this: K4Change, actor: K4Actor, data: K4Change.Schema.Alert): Promise<boolean> {
-    fireAlerts({alerts: [data]} as K4Change.Schema.AnySchema);
+    K4Alert.Alert(data);
     return Promise.resolve(true);
   },
   async CreateAttack(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateAttack): Promise<boolean> {
-    fireAlerts(data);
     const {
       filter, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       name, // Name of the attack
@@ -480,8 +467,7 @@ const CUSTOM_FUNCTIONS = {
     } = data;
     return Promise.resolve(true);
   },
-  async CreateItem(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateItem<K4ItemType>): Promise<boolean> {
-    fireAlerts(data);
+  async CreateItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateItem<K4ItemType>): Promise<boolean> {
     const {
       type, // Type of item being created
       img, // Image to give item being created
@@ -490,12 +476,12 @@ const CUSTOM_FUNCTIONS = {
     } = data;
 
     // Check if the item already exists
-    const existingItem = _actor.items.getName(name);
+    const existingItem = actor.items.getName(name);
     if (existingItem) {
       return true;
     }
 
-    const newItem = (await _actor.createEmbeddedDocuments("Item", [{
+    const newItem = (await actor.createEmbeddedDocuments("Item", [{
       name,
       img,
       type,
@@ -508,7 +494,6 @@ const CUSTOM_FUNCTIONS = {
     return true;
   },
   async DeleteItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteItem): Promise<void> {
-    fireAlerts(data);
 
     const {
       filter // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -528,8 +513,7 @@ const CUSTOM_FUNCTIONS = {
     await actor.deleteEmbeddedDocuments("Item", idsToDelete);
     return;
   },
-  async CreateTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateTracker): Promise<boolean> {
-    fireAlerts(data);
+  async CreateTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateTracker): Promise<boolean> {
     // Log a custom id to FLAGS.trackerId
 
     const {
@@ -544,7 +528,6 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   async DeleteTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteTracker): Promise<boolean> {
-    fireAlerts(data);
 
     const {
       filter // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -552,28 +535,22 @@ const CUSTOM_FUNCTIONS = {
 
     return Promise.resolve(true);
   },
-  async CreateCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateCondition): Promise<boolean> {
-    fireAlerts(data);
+  async CreateCondition(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateCondition): Promise<boolean> {
     return Promise.resolve(true);
   },
-  async DeleteCondition(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteCondition): Promise<boolean> {
-    fireAlerts(data);
+  async DeleteCondition(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteCondition): Promise<boolean> {
     return Promise.resolve(true);
   },
-  async CreateWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.CreateWound): Promise<boolean> {
-    fireAlerts(data);
+  async CreateWound(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateWound): Promise<boolean> {
     return Promise.resolve(true);
   },
-  async StabilizeWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.StabilizeWound): Promise<boolean> {
-    fireAlerts(data);
+  async StabilizeWound(this: K4Change, actor: K4Actor, data: K4Change.Schema.StabilizeWound): Promise<boolean> {
     return Promise.resolve(true);
   },
-  async DeleteWound(this: K4Change, _actor: K4Actor, data: K4Change.Schema.DeleteWound): Promise<boolean> {
-    fireAlerts(data);
+  async DeleteWound(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteWound): Promise<boolean> {
     return Promise.resolve(true);
   },
-  async ModifyTracker(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyTracker): Promise<boolean> {
-    fireAlerts(data);
+  async ModifyTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyTracker): Promise<boolean> {
 
     const {
       filter, // Filter to determine the tracker(s) to modify. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -585,8 +562,7 @@ const CUSTOM_FUNCTIONS = {
 
     return Promise.resolve(true);
   },
-  async ModifyAttack(this: K4Change, _actor: K4Actor, data: K4Change.Schema.ModifyAttack): Promise<boolean> {
-    fireAlerts(data);
+  async ModifyAttack(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyAttack): Promise<boolean> {
 
     const {
       filter, // Filter to determine the type(s) of attacks to modify. Refer to TAGS on the ATTACK (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
@@ -599,7 +575,6 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): boolean {
-    fireAlerts(data);
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
@@ -656,7 +631,6 @@ const CUSTOM_FUNCTIONS = {
     return true;
   },
   async ModifyProperty(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyProperty): Promise<boolean> {
-    fireAlerts(data);
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyProperty: ${String(actor)}`);
     }
@@ -722,7 +696,6 @@ const CUSTOM_FUNCTIONS = {
     throw new Error(`Unrecognized filter for ModifyProperty: ${String(filter)}`);
   },
   ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange): boolean {
-    fireAlerts(data);
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
@@ -785,7 +758,6 @@ const CUSTOM_FUNCTIONS = {
     if (target.startsWith("FLAGS")) {
       const flagKey = target.split(".").slice(2).join(".");
       await this.parentEffect!.setFlag(flagKey, userInput);
-      fireAlerts(data);
       return true;
     }
     throw new Error(`Unrecognized key for PromptForData: ${target}`);
@@ -794,7 +766,6 @@ const CUSTOM_FUNCTIONS = {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
-    fireAlerts(data);
     const {
       filter // Name of required item(s)
     } = data;
@@ -908,7 +879,6 @@ const CUSTOM_FUNCTIONS = {
         break;
       }
     }
-    fireAlerts(data);
     return true;
   }
 } as const;
@@ -1039,12 +1009,16 @@ class K4Change implements EffectChangeData {
     return ["RequireItem"].includes(this.customFunctionName);
   }
   get isPermanentChange(): boolean {
-    return this.customFunctionData.permanent === true;
+    return this.isAlert || this.customFunctionData.permanent === true;
+  }
+  get isAlert(): boolean {
+    return this.customFunctionName === "Alert";
   }
   get isSystemModifier(): boolean {
     return !this.isPromptOnCreate
       && !this.isRequireItemCheck
       && !this.isPermanentChange
+      && !this.isAlert
       && !this.isRollModifier();
   }
   isRollModifier(): this is this & {modData: K4Roll.ModData} {
@@ -1148,28 +1122,22 @@ class K4Change implements EffectChangeData {
     }
     this.key = key;
     this.value = value;
+    this.parentEffect = effect;
     this.mode = mode;
     this.customFunctionName = key as KeyOf<typeof CUSTOM_FUNCTIONS>;
     this.customFunction = CUSTOM_FUNCTIONS[this.customFunctionName].bind(this) as K4Change.CustomFunc;
-    this.#customFunctionData = JSON.parse(value) as K4Change.CustomFunc.AnyData;
-    this.parentEffect = effect;
+
+    this.#customFunctionData = this.#parseCustomFunctionData(value);
   }
   // #endregion
 
-  async updateCustomFunctionData(): Promise<void> {
+  #parseCustomFunctionData(value: string): K4Change.CustomFunc.AnyData {
     const {parentEffect} = this;
     if (!parentEffect) {
-      throw new Error(`[K4Change.updateCustomFunctionData] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
+      throw new Error(`[K4Change.#parseCustomFunctionData] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
     }
-    const newValue = this.value.replace(/FLAGS/g, `FLAGS.${parentEffect.id}`);
-    if (newValue === this.value) { return; }
-    const {index} = this;
-    if (index === -1) {
-      throw new Error(`[K4Change.updateCustomFunctionData] No valid index found for K4Change with value '${this.value}'`);
-    }
-    this.value = newValue;
-    this.#customFunctionData = JSON.parse(newValue) as K4Change.CustomFunc.AnyData;
-    await parentEffect.updateChangeValue(index, this.value);
+    value = value.replace(/FLAGS(?!\.[\w-]{16}\.)/g, `FLAGS.${parentEffect.id}`);
+    return JSON.parse(value) as K4Change.CustomFunc.AnyData;
   }
 
   async apply(parent: K4Actor): Promise<string|boolean>
@@ -1318,7 +1286,7 @@ class K4ActiveEffect extends ActiveEffect {
       effectName = origin.name;
     }
     if (origin instanceof K4ChatMessage) {
-      throw new Error(`An explicit label must be provided for ActiveEffects created by ChatMessages.`);
+      return origin.sourceItem?.name;
     }
     return effectName;
   }
@@ -1349,7 +1317,7 @@ class K4ActiveEffect extends ActiveEffect {
     const users = await this.#resolveUserSelectors(ref, origin);
     return users.map((user) => {
       if (user.isGM) {
-        kLog.error("This should return a reference to the singleton GMTracker K4Item, currently unimplemented.");
+        kLog.error(`This should return a reference to the singleton GMTracker K4Item, currently unimplemented. Returning default Actor instead: ${(ACTOR as K4Actor).name}`);
       }
       return user.character as K4Actor<K4ActorType.pc>;
     });
@@ -1459,7 +1427,8 @@ class K4ActiveEffect extends ActiveEffect {
       label: data.label ?? undefined,
       dynamic: data.dynamic ?? undefined,
       icon: data.icon ?? undefined,
-      from: data.from ?? undefined
+      from: data.from ?? undefined,
+      onChatSelection: data.onChatSelection ?? undefined
     };
   }
 
@@ -1481,7 +1450,14 @@ class K4ActiveEffect extends ActiveEffect {
       const effects = await Promise.all(effectDataSet.map((data) => this.CreateFromBuildData(data, origin, target)));
       return effects.flat();
     }
+
+    const reportName = `Effect ${origin.name ?? target?.name}`;
+
+    kLog.openReport(reportName, `Creating Effect from '${origin.name}'`);
+    kLog.log(reportName, "Initial Parameters", {effectDataSet, origin, target});
+
     const effectExtendedData = this.#parseEffectData(effectDataSet, origin);
+    kLog.log(reportName, "After #parseEffectData", {effectExtendedData});
 
     if (origin instanceof K4ChatMessage && effectDataSet.parentData.onChatSelection) {
       /** SPECIAL CASE: CHAT SELECTION EFFECT
@@ -1518,12 +1494,14 @@ class K4ActiveEffect extends ActiveEffect {
         onSelect
       );
 
+      kLog.closeReport(reportName);
+
       return [];
     }
 
-    const effectHost = target ?? origin;
+    let effectHost = target ?? origin;
     if (effectHost instanceof K4ChatMessage) {
-      throw new Error(`No target provided for ChatMessage-delivered ActiveEffect (derive from ChatMessage?): ${JSON.stringify(effectDataSet)}`);
+      effectHost = effectHost.actor as K4Actor<K4ActorType.pc>;
     }
 
     // If the effect is unique, delete any existing effect with the same name
@@ -1716,11 +1694,6 @@ class K4ActiveEffect extends ActiveEffect {
         return false;
       }
 
-      /* === PROCESS CUSTOM CHANGES: STEP 2 - Add effect's ID to any "FLAGS" targets in the data of each change === */
-      await Promise.all(effect.getCustomChanges()
-        .map(async (change) => change.updateCustomFunctionData())
-      );
-
       /* === PROCESS CUSTOM CHANGES: STEP 2 - PromptForData Check === */
       // PromptForData changes are resolved by querying the User for input when they are embedded within an Actor owned by that User -- i.e. right now.
       // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
@@ -1733,7 +1706,10 @@ class K4ActiveEffect extends ActiveEffect {
       // If any changes are permanent, apply them now -- they will be filtered out of future applications of the effect,
       // and will not be reversed when the active effect is removed.
       await Promise.all(effect.permanentChanges
-        .filter((change) => !change.isPromptOnCreate && !change.isRequireItemCheck)
+        .filter((change) =>
+          !change.isPromptOnCreate
+          && !change.isRequireItemCheck
+          && !effect.eData.onChatSelection)
         .map((change) => change.apply(effect.actor)));
       return true;
     });
@@ -1839,18 +1815,18 @@ class K4ActiveEffect extends ActiveEffect {
   isInstantiated(): this is typeof this & {id: string} {
     return Boolean(this.id);
   }
-  isOwned(): this is {origin: string, owner: K4Actor|K4Item} {
-    return Boolean(this.origin);
+  isOwned(): this is {origin: string, parent: K4Actor|K4Item} {
+    return Boolean(this.parent);
   }
-  isOwnedByActor<T extends K4ActorType = K4ActorType>(type?: T): this is {origin: string, owner: K4Actor<T>, actor: K4Actor<T>} {
+  isOwnedByActor<T extends K4ActorType = K4ActorType>(type?: T): this is {origin: string, parent: K4Actor<T>, actor: K4Actor<T>} {
     if (!this.isOwned()) { return false; }
-    if (type && this.owner.type !== type) { return false; }
-    return this.origin.startsWith("Actor");
+    if (type && this.parent.type !== type) { return false; }
+    return this.parent instanceof K4Actor;
   }
   isOwnedByItem<T extends K4ItemType = K4ItemType>(type?: T): this is {origin: string, owner: K4Item<T>, originItem: K4Item<T>} {
     if (!this.isOwned()) { return false; }
-    if (type && this.owner.type !== type) { return false; }
-    return this.origin.startsWith("Item");
+    if (type && this.parent.type !== type) { return false; }
+    return this.parent instanceof K4Item;
   }
   hasItemOrigin(): this is {origin: string, owner: K4Actor|K4Item, originItem: K4Item} {
     return this.isOwned() && this.origin.includes("Item");
@@ -1864,8 +1840,9 @@ class K4ActiveEffect extends ActiveEffect {
   }
   get actor(): Maybe<K4Actor> {
     if (!this.isOwnedByActor()) { return undefined; }
-    const [_, actorId] = this.origin.split(".");
-    return game.actors.get(actorId);
+    return this.parent;
+    // const [_, actorId] = this.origin.split(".");
+    // return game.actors.get(actorId);
   }
   get eData(): K4ActiveEffect.ExtendedData {
     const eData = this.getFlag<K4ActiveEffect.ExtendedData>("data");
