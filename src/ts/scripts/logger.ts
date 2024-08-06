@@ -236,9 +236,9 @@ const kLog = {
   closeReport
 };
 
-const registerDebugger = () => {
+const registerConsoleLogger = () => {
   Object.assign(globalThis, {kLog});
 };
 
-export default registerDebugger;
+export default registerConsoleLogger;
 export type {DebugReport};

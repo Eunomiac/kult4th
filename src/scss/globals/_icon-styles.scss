@@ -21,14 +21,14 @@
 
     &.icon-gold,
     &.icon-advantage  {
-      --K4-icon-fill: url(#fill-gold);
-      --K4-icon-stroke: url(#stroke-gold);
+      --K4-icon-fill: url(#fill-bgold);
+      --K4-icon-stroke: url(#stroke-bgold);
       --K4-icon-outline-color: var(--K4-gGOLD);
       --K4-icon-bg-color: var(--K4-BLACK);
     }
 
     &.icon-move {
-      --K4-icon-fill: url(#fill-white);
+      --K4-icon-fill: url(#fill-gold);
       --K4-icon-stroke: url(#stroke-black);
       --K4-icon-outline-color: var(--K4-BLACK);
     }

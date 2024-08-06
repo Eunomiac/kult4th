@@ -5,6 +5,12 @@ import {DebugReport} from "../scripts/logger.js";
 import "./general-types";
 import "./system-types";
 import "./league-types";
+import {
+  Socket,
+  SocketLib
+} from "./socketlib";
+
+type STest = typeof socketlib;
 
 declare module "virtual:colors" {
   export const Colors: Record<string, string>;
@@ -31,7 +37,11 @@ interface ClampResponse {
   clamped: string | undefined;
 }
 
+
 declare global {
+  const socketlib: SocketLib;
+  const socket: Socket;
+
   function fromUuidSync(uuid: string, options?: {
     relative?: Document,
     invalid?: boolean,

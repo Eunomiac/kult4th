@@ -740,7 +740,31 @@ const isInExact = (needle: unknown, haystack: unknown[]) => isIn(needle, haystac
 // #endregion ▄▄▄▄▄ SEARCHING ▄▄▄▄▄
 
 // #region ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████ ~
-const randNum = (min: number, max: number, snap = 0): number => gsap.utils.random(min, max, snap);
+// reusable function. Feed in min, max, an ease, and an optional snap value.
+// It returns a random float between min and max, weighted according to the ease you provide,
+// and snapped to the nearest multiple of the snap value if provided.
+function weightedRandom(min: number, max: number, ease: string, snap?: number): () => number {
+  return gsap.utils.pipe(
+      Math.random,            // random number between 0 and 1
+      gsap.parseEase(ease),   // apply the ease
+      gsap.utils.mapRange(0, 1, min, max), // map to the range [min, max]
+      (value: number) => snap ? Math.round(value / snap) * snap : value // snap to the nearest multiple if snap is provided
+  );
+}
+
+// Overload signatures for randNum
+function randNum(min: number, max: number, snap?: number, ease?: string): number; // Optional snap
+function randNum(min: number, max: number, ease?: string, snap?: number): number; // Ease only
+// Implementation of randNum
+function randNum(min: number, max: number, arg3?: string|number, arg4?: string|number): number {
+  const snap = [arg3, arg4].find((arg) => typeof arg === "number") ?? undefined;
+  const ease = [arg3, arg4].find((arg) => typeof arg === "string") ?? "none";
+
+  if (ease !== "none") {
+    return weightedRandom(min, max, ease, snap)(); // Call weightedRandom if ease is provided
+  }
+  return gsap.utils.random(min, max, snap); // Use gsap's random function if no ease is provided
+}
 const randInt = (min: number, max: number) => randNum(min, max, 1);
 const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num: number, [min = 0, max = Infinity] = []): number => gsap.utils.wrap(min, max, num);
@@ -939,6 +963,16 @@ function pullElement<T>(array: T[], checkFunc: T|((_v: T, _i?: number, _a?: T[])
   return array.splice(index, 1).pop();
 }
 
+function pullElements<T>(array: T[], checkFunc: T|((_v: T, _i?: number, _a?: T[]) => boolean)): T[] {
+  const elems: T[] = [];
+  let elem: Maybe<T> = pullElement(array, checkFunc);
+  while (isDefined(elem)) {
+    elems.push(elem);
+    elem = pullElement(array, checkFunc);
+  }
+  return elems.filter((e): e is T => isDefined(e));
+}
+
 const pullIndex = <T>(array: T[], index: number) => pullElement<T>(array, (_, i) => i === index);
 const subGroup = (array: unknown[], groupSize: number) => {
   const subArrays = [];
@@ -1072,7 +1106,8 @@ const objClean = <T>(data: T, remVals: UncleanValues[] = [undefined, null, "", {
 
 // Given an object and a predicate function, returns array of two objects:
 //   one with entries that pass, one with entries that fail.
-const partition = <Type>(obj: Type[], predicate: testFunc<valFunc> = () => true): [Type[], Type[]] => [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const partition = <Type>(obj: Type[], predicate: testFunc<valFunc<any>> = () => true): [Type[], Type[]] => [
   objFilter(obj, predicate),
   objFilter(obj, (v: unknown, k: Key | undefined) => !predicate(v, k))
 ];
@@ -1712,6 +1747,17 @@ const drawCirclePath = (radius: number, origin: Point) => {
   path.push("z");
   return path.join(" ");
 };
+function positionAlongCircle(index: number, maxIndex: number, origin: Point, radius: number): Point {
+
+  // Calculate the angle in radians for this index
+  const angle = (index / maxIndex) * 2 * Math.PI;
+
+  // Calculate x and y coordinates
+  const x = origin.x + radius * Math.cos(angle);
+  const y = origin.y + radius * Math.sin(angle);
+
+  return { x, y };
+}
 // #endregion ■■■■[SVG]■■■■
 
 // #region ■■■■■■■[Colors]■■■■ Color Manipulation ■■■■■■■ ~
@@ -2226,7 +2272,7 @@ export default {
   makeIntRange,
   makeCycler,
   unique, group, sample,
-  getLast, removeFirst, pullElement, pullIndex,
+  getLast, removeFirst, pullElement, pullElements, pullIndex,
   subGroup, shuffle,
   toArray,
 
@@ -2242,7 +2288,7 @@ export default {
   // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
   changeContainer, adjustTextContainerAspectRatio, getMutableRect,
 
-  getRawCirclePath, drawCirclePath,
+  getRawCirclePath, drawCirclePath, positionAlongCircle,
 
   getColorVals, getRGBString, getHEXString, getContrastingColor, getRandomColor,
 

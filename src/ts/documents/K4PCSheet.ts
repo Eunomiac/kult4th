@@ -1,17 +1,395 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C, {StabilityConditions, K4ConditionType} from "../scripts/constants.js";
+import C, {K4Attribute, StabilityConditions, K4ConditionType, K4Stability, Archetype, ArchetypeTier, Archetypes} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
+import {Dragger, InertiaPlugin} from "../libraries.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4Dialog, {PromptInputType} from "./K4Dialog.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 import K4Roll from "./K4Roll.js";
 import {gsap} from "../libraries.js";
+import K4DebugDisplay from "./K4DebugDisplay.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
+namespace ArchetypeCarousel {
+  export interface TraitData {
+    name: string,
+    img: string,
+    tooltip: string,
+    isSelected: boolean,
+    isMandatory: boolean,
+    isSetByLock: boolean
+  }
+
+  export interface StringData {
+    value: string,
+    examples: string[],
+    isValueAnExample: boolean,
+    isSetByLock: boolean
+  }
+
+  export interface ArchetypeData {
+    label: string,
+    img: string,
+    tier: ArchetypeTier,
+    [K4ItemType.advantage]: Partial<Record<K4Attribute, Record<string, TraitData>>>,
+    [K4ItemType.disadvantage]: Record<string, TraitData>,
+    [K4ItemType.darksecret]: Record<string, TraitData>,
+    description: string,
+    occupation: StringData,
+    looks: {
+      clothes: StringData,
+      face: StringData,
+      eyes: StringData,
+      body: StringData
+    },
+    isSelected: boolean,
+  }
+
+  export type Data = Partial<Record<Archetype, ArchetypeData>>;
+}
+
+interface InitContext {
+  archetypeCarousel: ArchetypeCarousel.Data,
+  selectedArchetype: Maybe<Archetype>,
+  [K4ItemType.advantage]: Maybe<Partial<Record<K4Attribute, Record<string, ArchetypeCarousel.TraitData>>>>,
+  [K4ItemType.disadvantage]: Maybe<Record<string, ArchetypeCarousel.TraitData>>,
+  [K4ItemType.darksecret]: Maybe<Record<string, ArchetypeCarousel.TraitData>>,
+  occupation: Maybe<ArchetypeCarousel.StringData>,
+  looks: {
+    clothes: Maybe<ArchetypeCarousel.StringData>,
+    face: Maybe<ArchetypeCarousel.StringData>,
+    eyes: Maybe<ArchetypeCarousel.StringData>,
+    body: Maybe<ArchetypeCarousel.StringData>
+  }
+}
+
+export function getDistanceFromSelected(index: number, selected: number, totalItems: number) {
+  // Calculate the distance between the given index and the selected index
+  const distance = Math.abs(index - selected);
+  // Normalize the distance by the total number of items to get a value between 0 and 1
+  const normalizedDistance = distance / totalItems;
+  // Since the carousel wraps around, we need to adjust the distance if it's more than half of the total items
+  const adjustedDistance = normalizedDistance > 0.5 ? 1 - normalizedDistance : normalizedDistance;
+  return 2 * adjustedDistance // (normalized to between 0 and 1;
+}
+
+export function getYRotFromIndex(index: number, total: number) {
+  return U.gsap.utils.mapRange(0, total, 0, 360, index);
+}
+
+export function getIndexFromYRot(rotationY: number, total: number) {
+  return U.gsap.utils.clamp(0, total - 1, U.pInt(U.gsap.utils.mapRange(0, 360, 0, total, rotationY)));
+}
+
+export function getYRotFromXPos(x: number, total: number, max: number) {
+  return U.gsap.utils.mapRange(-max, max, 0, 360, x);
+}
+
+export function getXPosFromYRot(rotationY: number, total: number, max: number) {
+  return U.gsap.utils.mapRange(0, 360, -max, max, rotationY);
+}
+
+export function getXPosFromIndex(index: number, total: number, max: number) {
+  return U.gsap.utils.mapRange(0, total, -max, max, index);
+}
+
+export function getIndexFromXPos(x: number, total: number, max: number) {
+  return U.gsap.utils.clamp(0, total - 1, U.pInt(U.gsap.utils.mapRange(-max, max, 0, total, x)));
+}
+
+function getArchetypeFromIndex(index: number) {
+  return Object.keys(VALIDARCHETYPES)[index] as Archetype;
+}
+
+function getElementFromArchetype(context$: JQuery, archetype: Archetype) {
+  return context$.find(`[data-archetype=${archetype}]`);
+}
+
+function getElementFromIndex(context$: JQuery, index: number) {
+  const archetype = getArchetypeFromIndex(index);
+  return getElementFromArchetype(context$, archetype);
+}
+
+
+let VALIDARCHETYPES = Object.fromEntries(Object.entries(Archetypes).filter(([_, archetype]) => [ArchetypeTier.awake].includes(archetype.tier)));
+const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
+  revealCarousel: {
+    name: "revealCarousel",
+    effect: (carouselScene$, config) => {
+      const items$ = $(carouselScene$ as JQuery).find(".archetype-carousel-item");
+      const tl = U.gsap.timeline();
+      tl.from(carouselScene$, {
+        autoAlpha: 0,
+        y: 300,
+        filter: "blur(100px)",
+        ease: "power3.in",
+        duration: 2
+      })
+        .from(items$, {
+          autoAlpha: 0,
+          y: 0,
+          ease: "power3.in",
+          duration: 2,
+          stagger: {
+            amount: 3,
+            from: "center",
+            ease: "slow(0.2, 0.2, false)"
+          }
+        }, 0);
+      return tl;
+    },
+    defaults: {},
+    extendTimeline: true
+  },
+  highlightArchetype: {
+    name: "highlightArchetype",
+    effect: (archetype, config) => {
+      const archetype$ = $(archetype as HTMLElement|JQuery);
+      const {duration, scale, ease} = config as gsap.TweenVars & {duration: number, scale: number, ease: string};
+
+      return U.gsap.timeline()
+        .to(archetype$, {
+          filter: "brightness(1) invert(0) blur(0px) brightness(1.25)",
+          scale,
+          duration,
+          ease
+        });
+    },
+    defaults: {
+      scale: 1.2,
+      duration: 0.3,
+      ease: "power2"
+    },
+    extendTimeline: true
+  },
+  fadeArchetype: {
+    name: "fadeArchetype",
+    effect: (archetype, config) => {
+      const archetype$ = $(archetype as HTMLElement|JQuery);
+      const index = U.pInt(archetype$.data("index"));
+      const carousel$ = archetype$.closest(".archetype-carousel");
+      const items$ = carousel$.find(".archetype-carousel-item");
+
+      const {duration, ease} = config as gsap.TweenVars & {duration: number, ease: string};
+
+      // This is not the selected archetype; we need to look at yRot and get index of selected archetype from that
+      const yRot = U.get(archetype$, "rotationY") as number;
+      const selIndex = getIndexFromYRot(yRot, items$.length);
+      const distFromSelected = getDistanceFromSelected(index, selIndex, items$.length);
+
+      const tl = U.gsap.timeline();
+
+      if (distFromSelected > 0.5) {
+        const blur = U.gsap.utils.mapRange(0.5, 1, 5, 9, distFromSelected);
+        const brightness = U.gsap.utils.mapRange(0.5, 1, 0.25, 0.01, distFromSelected);
+        tl.to(archetype$, {
+          filter: `brightness(0) invert(1) blur(${blur}px) brightness(${brightness}) saturate(${1-Math.sqrt(distFromSelected)})`,
+          duration,
+          ease
+        });
+      } else if (distFromSelected > 0.25) {
+        const blur = U.gsap.utils.mapRange(0.25, 0.5, 2, 6, distFromSelected);
+        const brightness = U.gsap.utils.mapRange(0.25, 0.5, 0.5, 0.25, distFromSelected);
+        tl.to(archetype$, {
+          filter: `brightness(1) invert(0) blur(${blur}px) brightness(${brightness}) saturate(${1-Math.sqrt(distFromSelected)})`,
+          duration,
+          ease
+        });
+      } else {
+        const brightness = U.gsap.utils.mapRange(0, 0.25, 1.25, 1, distFromSelected);
+        tl.to(archetype$, {
+          filter: `brightness(1) invert(0) blur(0px) brightness(${brightness}) saturate(${1-Math.sqrt(distFromSelected)})`,
+          duration,
+          ease
+        });
+      }
+      return tl;
+    },
+    defaults: {
+      duration: 0.25,
+      ease: "back"
+    },
+    extendTimeline: true
+  }
+}
+
 const ANIMATIONS = {
+  archetypeTimeline(archetype$: JQuery) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    return (U.gsap.timeline({paused: true})
+      .addLabel("dark")
+      .fromTo(archetype$, {
+        filter: "brightness(0) invert(1) blur(8px) brightness(0)"
+      }, {
+        filter: "brightness(1) invert(0) blur(0px) brightness(1)",
+        duration: 1,
+        ease: "power2"
+      })
+      .addLabel("light")
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      .highlightArchetype(archetype$, {
+        duration: 1,
+        scale: 1.2,
+        ease: "power2"
+      }) as gsap.core.Timeline)
+      .addLabel("selected")
+      .seek(1);
+  },
+  async archetypeCarouselTimeline(carouselScene$: JQuery, itemWidth: number, actor: K4Actor): Promise<gsap.core.Timeline> {
+
+    kLog.log("TEST", {VALIDARCHETYPES});
+    VALIDARCHETYPES = Object.fromEntries(Object.entries(Archetypes).filter(([_, archetype]) => [ArchetypeTier.aware].includes(archetype.tier)));
+
+    const container$ = carouselScene$.closest(".pc-initialization");
+    const carousel$ = carouselScene$.find(".archetype-carousel");
+    const items$ = carousel$.find(".archetype-carousel-item");
+    let selArchetypeIndex = Object.keys(VALIDARCHETYPES)
+      .findIndex((archetype) => archetype as Archetype === actor.archetype);
+
+    await U.gsap.set(carouselScene$, {
+      opacity: 0,
+      visibility: "visible"
+    });
+
+    const totalItems = Object.keys(VALIDARCHETYPES).length;
+    const angleStep = 360 / totalItems;
+    const radius = Math.round((itemWidth / 2) / Math.tan(Math.PI / totalItems));
+
+    await U.gsap.set(carousel$, {
+      z: -1 * radius
+    });
+
+    await Promise.all(items$.map((i, item) => {
+      const archTimeline = ANIMATIONS.archetypeTimeline($(item));
+      $(item).data("archetypeTimeline", archTimeline);
+      const distFromSelected = getDistanceFromSelected(i, selArchetypeIndex, totalItems);
+      archTimeline.seek(1 - distFromSelected);
+      return U.gsap.set(item, {
+        transform: `rotateY(${-1 * getYRotFromIndex(i, totalItems)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i, totalItems)}deg)`
+      });
+    }));
+
+    const draggerContainer$ = container$.find(".archetype-carousel-dragger");
+    const dragger$ = draggerContainer$.find(".archetype-carousel-drag-handle");
+
+    kLog.log("Testing Draggable Components", {draggerContainer$, dragger$});
+
+    await U.gsap.set(carouselScene$, { opacity: 1, visibility: "visible" });
+
+    // Calculate the maximum drag distance
+    const maxDistance = 0.5 * draggerContainer$.width()!;
+
+    // Calculate the bounds
+    const bounds = {
+      minX: -maxDistance,
+      maxX: maxDistance
+    };
+
+    const updateDebugInfo = (x: number) => {
+      const newIndex = U.gsap.utils.clamp(0, totalItems, Math.round(((x + maxDistance) / Math.abs(2 * maxDistance)) * totalItems) % totalItems);
+      const archetype = Object.keys(VALIDARCHETYPES)[newIndex];
+      const elementIndex = carousel$.find(`[data-archetype=${archetype}]`).data("index") as number;
+
+      K4DebugDisplay.updateArchetypeInfo(archetype, selArchetypeIndex, newIndex, elementIndex);
+    };
+
+    const updateRotation = (x: number) => {
+      const rotation = getYRotFromXPos(x, totalItems, maxDistance);
+      gsap.set(carousel$, { rotationX: 0, rotationY: rotation, rotationZ: 0 });
+      items$.each((_i, item) => {
+        gsap.set(item, { rotationY: -rotation });
+        if (selArchetypeIndex !== _i) {
+          const distFromSelected = getDistanceFromSelected(_i, selArchetypeIndex, totalItems);
+          ($(item).data("archetypeTimeline") as gsap.core.Timeline).seek(1 - distFromSelected);
+        }
+      });
+    };
+    // Function to update rotation based on drag position
+    const snapToNearestArchetype = (x: number, isCompleting = false) => {
+      const newIndex = getIndexFromXPos(x, totalItems, maxDistance);
+      if (newIndex !== selArchetypeIndex) {
+        const oldElem = getElementFromIndex(carousel$, selArchetypeIndex);
+        const newElem = getElementFromIndex(carousel$, newIndex);
+        const oldTimeline = ($(oldElem).data("archetypeTimeline") as gsap.core.Timeline);
+        const newTimeline = ($(newElem).data("archetypeTimeline") as gsap.core.Timeline);
+        oldTimeline.tweenTo("light", {duration: 0.25});
+        newTimeline.tweenTo("selected", {duration: 0.25});
+        oldElem.attr("data-is-selected", "false");
+        newElem.attr("data-is-selected", "true");
+        actor.archetype = Object.keys(VALIDARCHETYPES)[newIndex] as Archetype;
+        selArchetypeIndex = newIndex;
+        K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
+      }
+      return getXPosFromIndex(newIndex, totalItems, maxDistance);
+    };
+
+    const dragger = Dragger.create(dragger$, {
+      type: "x",
+      // trigger: ".archetype-carousel-item",
+      inertia: true,
+      snap: {
+        x: (value) => snapToNearestArchetype(value)
+      },
+      onDrag: function(this: Dragger) {
+        updateRotation(this.x);
+        this.applyBounds(bounds);
+        snapToNearestArchetype(this.x);
+        // if (snappedX !== this.x) {
+        //   gsap.to(this.target, { x: snappedX, duration: 0.2, ease: "power2.out" });
+        // }
+        updateDebugInfo(this.x);
+        K4DebugDisplay.updateDraggerInfo(this, actor);
+      },
+      onThrowUpdate: function(this: Dragger) {
+        updateRotation(this.x);
+        this.applyBounds(bounds);
+        snapToNearestArchetype(this.x);
+        updateDebugInfo(this.x);
+      },
+      onDragEnd: function(this: Dragger) {
+        updateRotation(snapToNearestArchetype(this.x, true));
+      },
+      onThrowComplete: function(this: Dragger) {
+        updateRotation(snapToNearestArchetype(this.x, true));
+      }
+    });
+
+
+    kLog.log("Dragger Created", {dragger, draggerContainer$, dragger$});
+
+    // Set initial position of the proxy
+    // gsap.set(proxy, { x: (selArchetypeIndex / totalItems) * maxDistance });
+
+    // Update debug info on each frame
+    gsap.ticker.add(() => {
+      const x = gsap.getProperty(dragger$[0], "x") as number;
+      updateDebugInfo(x);
+      K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), actor);
+    });
+
+    // Update rotation on window resize
+    window.addEventListener("resize", () => {
+      const newMaxDistance = window.innerWidth / 2;
+      const currentRotation = gsap.getProperty(carousel$, "rotationY") as number;
+      const newX = (currentRotation / 180) * newMaxDistance;
+      gsap.set(dragger$, { x: newX });
+      updateRotation(newX);
+    });
+
+    const startX = getXPosFromIndex(selArchetypeIndex, totalItems, maxDistance);
+    updateRotation(startX);
+    U.gsap.set(dragger$, { x: startX });
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    await U.gsap.effects.revealCarousel(carouselScene$, {});
+
+    const tl = gsap.timeline({ paused: true });
+
+    return tl;
+  },
   _glitchText(_target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
 
     const tl = gsap.timeline({
@@ -499,6 +877,14 @@ const ANIMATIONS = {
 
 class K4PCSheet extends ActorSheet {
   static PreInitialize() {
+
+    Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
+
+    gsap.registerPlugin(Dragger, InertiaPlugin);
+    // Register GSAP Effects
+    Object.values(GSAPEFFECTS).forEach((effect) => {
+      U.gsap.registerEffect(effect);
+    });
     gsap.registerEffect({
       name:   "breakShard",
       effect: (stabilityContainer$: JQuery, config: {stability: number}) => {
@@ -751,27 +1137,21 @@ class K4PCSheet extends ActorSheet {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-actor-sheet", "k4-theme-dgold"],
       tabs:    [
-        {navSelector: ".tabs", contentSelector: ".tab-content", initial: "bio"}
+        {navSelector: ".tabs", contentSelector: ".tab-content", initial: "front"}
       ]
     });
   }
-  override get template() { return `systems/kult4th/templates/sheets/${this.actor.type}-sheet.hbs`; }
+  isTestingPCInitialization = true;
+  override get template() {
+    if (this.isTestingPCInitialization && this.actor.is(K4ActorType.pc) && !this.actor.getFlag("kult4th", "isInitialized")) {
+      return "systems/kult4th/templates/sheets/pc-initialization.hbs";
+    }
+    return `systems/kult4th/templates/sheets/${this.actor.type}-sheet.hbs`;
+  }
 
   hoverTimeline?: GsapAnimation;
   hoverTimelineTarget?: HTMLElement;
@@ -779,6 +1159,14 @@ class K4PCSheet extends ActorSheet {
 
   override async getData() {
     const baseContext = await super.getData();
+
+    if (this.isTestingPCInitialization && this.actor.is(K4ActorType.pc) && !this.actor.getFlag("kult4th", "isInitialized")) {
+      return {
+        ...baseContext,
+        ...this.archetypeControlHubContext()
+      };
+    }
+
     const context = {
       ...baseContext,
       baseMoves:       this.actor.basicMoves,
@@ -799,6 +1187,249 @@ class K4PCSheet extends ActorSheet {
     /*!DEVCODE*/
     return context;
   }
+
+
+  getTraitData(traitName: string, traitType: K4ItemType, archetype?: Archetype, isIgnoringLock = false): Maybe<ArchetypeCarousel.TraitData> {
+    // Strip "!" prefix (marking mandatory trait) so traitName can retrieve item
+    traitName = traitName.replace(/^!/g, "");
+    archetype = archetype ?? this.actor.archetype;
+    if (!archetype) { return undefined; }
+    const traitItem = game.items.getName(traitName);
+    if (!traitItem) {
+      throw new Error(`Trait item "${traitName}" not found`);
+    }
+
+    const tData: ArchetypeCarousel.TraitData = {
+      name: traitName,
+      img: traitItem.img ?? "",
+      tooltip: traitItem.shortDesc,
+      isSelected: false,
+      isMandatory: false,
+      isSetByLock: false
+    };
+
+    // First get locked value, if one exists, then get the value from the archetype if it's not locked
+    const lockedValue = this.actor.getFlag("kult4th", `locked.${traitType}.${traitName}`) as Maybe<boolean>;
+    if (lockedValue && !isIgnoringLock) {
+      tData.isSelected = true;
+      tData.isSetByLock = true;
+    } else {
+      const archetypeValue = this.actor.getFlag("kult4th", `${archetype}.${traitType}.${traitName}`) as Maybe<boolean>;
+      tData.isSelected = archetypeValue ?? false;
+    }
+
+    const archetypeData = Archetypes[archetype];
+
+    if (!(traitType in archetypeData)) {
+      throw new Error(`Archetype ${archetype} does not have a ${traitType} section`);
+    }
+
+    const archetypeTraits = archetypeData[traitType as KeyOf<typeof archetypeData>] as string[];
+
+    // Check whether trait is mandatory for this archetype. If so, set isMandatory.
+    const nameIfMandatory = `!${traitName}`;
+
+    if (archetypeTraits.includes(nameIfMandatory)) {
+      tData.isMandatory = true;
+      tData.isSelected = true;
+    }
+
+    return tData;
+  }
+
+  getArchetypeTraitData(traitType: K4ItemType & KeyOf<typeof Archetypes[Archetype]>, archetype: Archetype, attribute?: K4Attribute) {
+    if (![
+      K4ItemType.advantage,
+      K4ItemType.disadvantage,
+      K4ItemType.darksecret
+    ].includes(traitType)) {
+      throw new Error(`Invalid trait type ${traitType} for getArchetypeTraitData`);
+    }
+    const archetypeTData = Archetypes[archetype][traitType];
+
+    // If an attribute was passed, filter the archetypeTData by that attribute, then convert to Record<name, data>
+    if (attribute) {
+      return Object.fromEntries(archetypeTData
+        .filter((traitName) => this.getTraitAttribute(traitName) === attribute)
+        .map((traitName) => [traitName, this.getTraitData(traitName, traitType, archetype)])
+      ) as Record<string, ArchetypeCarousel.TraitData>;
+    }
+
+    // For advantages, we need to group each data object by attribute
+    if (traitType === K4ItemType.advantage) {
+      return Object.fromEntries(
+        (Object.keys(K4Attribute) as K4Attribute[])
+          .map((attrName): [K4Attribute, Record<string, ArchetypeCarousel.TraitData>] => [attrName, this.getArchetypeTraitData(traitType, archetype, attrName)] as [K4Attribute, Record<string, ArchetypeCarousel.TraitData>])
+          .filter(([_, data]) => !U.isEmpty(data))) as Partial<Record<K4Attribute, Record<string, ArchetypeCarousel.TraitData>>>;
+    }
+
+    // Otherwise, we just return the Record<string, TraitData> object
+    return Object.fromEntries(archetypeTData
+        .map((traitName) => [traitName, this.getTraitData(traitName, traitType, archetype)])
+      ) as Record<string, ArchetypeCarousel.TraitData>;
+  }
+
+  getStringData(dotKey: string, archetype?: Archetype, isIgnoringLock = false, isReturningLockedOnly = false): Maybe<ArchetypeCarousel.StringData> {
+    archetype = archetype ?? this.actor.archetype;
+    if (!archetype) { return undefined; }
+
+    const sData: ArchetypeCarousel.StringData = {
+      value: "",
+      examples: U.getProp<string[]>(Archetypes[archetype], dotKey) ?? [],
+      isValueAnExample: false,
+      isSetByLock: false
+    };
+
+    // First get locked value, if one exists and isn't being ignored, then get the value from the archetype if it's not locked
+    const lockedValue = this.actor.getFlag("kult4th", `locked.${dotKey}`) as Maybe<string>;
+    if (lockedValue && !isIgnoringLock) {
+      sData.value = lockedValue;
+      sData.isSetByLock = true;
+    } else {
+      sData.value = this.actor.getFlag("kult4th", `${archetype}.${dotKey}`) as Maybe<string> ?? "";
+    }
+
+    // Finally check whether value is an example
+    sData.isValueAnExample = sData.examples.includes(sData.value);
+
+    // If isReturningLockedOnly is true, return the locked value only
+    if (isReturningLockedOnly) {
+      return lockedValue ? sData : undefined;
+    }
+
+    return sData;
+  }
+
+  getTraitAttribute (traitName: string): K4Attribute {
+    const traitItem = game.items.getName(traitName);
+    if (!traitItem) {
+      throw new Error(`Trait item "${traitName}" not found`);
+    }
+    if ("attribute" in traitItem.system) {
+      return traitItem.system.attribute;
+    }
+    return K4Attribute.zero;
+  }
+
+  getArchetypeCarouselData(): ArchetypeCarousel.Data {
+    // First filter Archetypes for those tiers allowed in settings
+    /**
+     * @todo Implement settings to allow multiple Archetype Tiers
+     * (currently defaulting to "aware" only)
+     */
+    const allowedTiers: ArchetypeTier[] = [ArchetypeTier.aware];
+    return Object.fromEntries(
+      (Object.entries(Archetypes) as Array<Tuple<Archetype, ValueOf<typeof Archetypes>>>)
+        .filter(([_archetype, {tier}]) => allowedTiers.includes(tier))
+        // Map data to match ArchetypeCarousel.Data
+        .map(([archetype, data]: [Archetype, ValueOf<typeof Archetypes>]) => [
+          archetype,
+          {
+            label: data.label,
+            tier: data.tier,
+            img: `systems/kult4th/assets/archetypes/${archetype}.png`,
+            [K4ItemType.advantage]: this.getArchetypeTraitData(K4ItemType.advantage, archetype),
+            [K4ItemType.disadvantage]: this.getArchetypeTraitData(K4ItemType.disadvantage, archetype),
+            [K4ItemType.darksecret]: this.getArchetypeTraitData(K4ItemType.darksecret, archetype),
+            description: data.description,
+            occupation: this.getStringData("occupation", archetype, true),
+            looks: {
+              clothes: this.getStringData("looks.clothes", archetype, true),
+              face: this.getStringData("looks.face", archetype, true),
+              eyes: this.getStringData("looks.eyes", archetype, true),
+              body: this.getStringData("looks.body", archetype, true)
+            },
+            isSelected: this.actor.archetype === archetype
+          }
+        ])
+    );
+  }
+
+  getLockedArchetypeData(): DeepPartial<Pick<ArchetypeCarousel.ArchetypeData, K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | "occupation" | "looks">> {
+    return {
+      [K4ItemType.advantage]: this.actor.archetype ? this.getArchetypeTraitData(K4ItemType.advantage, this.actor.archetype) : undefined,
+      [K4ItemType.disadvantage]: this.actor.archetype ? this.getArchetypeTraitData(K4ItemType.disadvantage, this.actor.archetype) : undefined,
+      [K4ItemType.darksecret]: this.actor.archetype ? this.getArchetypeTraitData(K4ItemType.darksecret, this.actor.archetype) : undefined,
+      occupation: this.getStringData("occupation", undefined, false, true),
+      looks: {
+        clothes: this.getStringData("looks.clothes", undefined, false, true),
+        face: this.getStringData("looks.face", undefined, false, true),
+        eyes: this.getStringData("looks.eyes", undefined, false, true),
+        body: this.getStringData("looks.body", undefined, false, true)
+      }
+    };
+  }
+
+  archetypeControlHubContext(): InitContext {
+
+    /**
+     * flagSpace: {
+     *   [arch: Archetype]: {
+     *     isSelected: boolean,
+     *     K4ItemType.advantage: Record<advantageName, boolean>,
+     *     K4ItemType.disadvantage: Record<advantageName, boolean>,
+     *     occupation: string,
+     *     looks: {
+     *       clothes: string,
+     *       face: string,
+     *       eyes: string,
+     *       body: string
+     *     }
+     *   },
+     *   locked: {
+     *     K4ItemType.advantage: Record<advantageName, boolean> // (obviously will only appear if Archetype doesn't filter it out)
+     *   }
+     * }
+     *
+     *
+     * (CONTEXT) {
+     *   selectedArchetype: Archetype,
+     *   K4ItemType.advantage: {
+     *     K4Attribute.violence: {
+     *       [advantageName]: {
+     *          name: string,
+     *          img: string,
+     *          tooltip: string,
+     *          isSelected: boolean,
+     *          isSetByLock: boolean
+     *       }
+     *     }
+     *   },
+     *
+     *
+     *   occupation: {
+     *     value: string,
+     *     examples: string[],
+     *     isValueAnExample: boolean,
+     *     isSetByLock: boolean
+     *   }
+     *
+     *
+     * }
+     */
+    const selectedArchetype = this.actor.archetype;
+
+    return {
+      archetypeCarousel: this.getArchetypeCarouselData(),
+      selectedArchetype,
+      [K4ItemType.advantage]: selectedArchetype ? this.getArchetypeTraitData(K4ItemType.advantage, selectedArchetype) : undefined,
+      [K4ItemType.disadvantage]: (selectedArchetype
+        ? this.getArchetypeTraitData(K4ItemType.disadvantage, selectedArchetype)
+        : undefined) as Maybe<Record<string, ArchetypeCarousel.TraitData>>,
+      [K4ItemType.darksecret]: (selectedArchetype
+        ? this.getArchetypeTraitData(K4ItemType.darksecret, selectedArchetype)
+        : undefined) as Maybe<Record<string, ArchetypeCarousel.TraitData>>,
+      occupation: this.getStringData("occupation", selectedArchetype),
+      looks: {
+        clothes: this.getStringData("looks.clothes", selectedArchetype),
+        face: this.getStringData("looks.face", selectedArchetype),
+        eyes: this.getStringData("looks.eyes", selectedArchetype),
+        body: this.getStringData("looks.body", selectedArchetype)
+      }
+    };
+  }
+
+
 
   override setPosition(posData: Partial<Application.Position>) {
     super.setPosition(posData);
@@ -860,6 +1491,10 @@ class K4PCSheet extends ActorSheet {
   }
 
 
+  async activateCarouselListeners(html: JQuery) {
+    const carouselScene$ = html.find(".archetype-staging");
+    await ANIMATIONS.archetypeCarouselTimeline(carouselScene$, 200, this.actor);
+  }
   activateNavMenuListeners(html: JQuery): Array<Tuple<HTMLElement, GsapAnimation>> {
     const self = this;
     const hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>> = [];
@@ -1014,49 +1649,64 @@ class K4PCSheet extends ActorSheet {
       }
     });
 
-  // Add click listeners for elements with data-action="roll" to roll item actions
-  html.find("*[data-action=\"roll\"]")
-    .each(function() {
-      const itemName = $(this).attr("data-item-name");
-      if (itemName) {
-        $(this).on({
-          click: () => { void self.actor.roll(itemName); }
-        });
-      }
-    });
-
-  // Add click listeners for elements with data-action="trigger" to trigger item actions
-  html.find("*[data-action=\"trigger\"]")
-    .each(function() {
-      const itemName = $(this).attr("data-item-name");
-      if (itemName) {
-        $(this).on({
-          click: () => { void self.actor.trigger(itemName); }
-        });
-      }
-    });
-
-  // Add click listeners for elements with data-action="chat" to display item summaries in chat
-  html.find("*[data-action=\"chat\"]")
-    .each(function() {
-      const itemName = $(this).attr("data-item-name");
-      if (itemName) {
-        $(this).on({
-          click: () => { void self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name); }
-        });
-      }
-    });
-
-  // Add click listeners for elements with data-action="drop" to drop items
-  html.find("*[data-action=\"drop\"]")
-  .each(function() {
-    const itemName = $(this).attr("data-item-name");
-    if (itemName) {
-      $(this).on({
-        click: () => { void self.actor.dropItemByName(itemName); }
+    // Add click listeners for elements with data-action="roll" to roll item actions
+    html.find("*[data-action=\"roll\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on({
+            click: () => { void self.actor.roll(itemName); }
+          });
+        }
       });
-    }
-  });
+
+    // Add click listeners for elements with data-action="trigger" to trigger item actions
+    html.find("*[data-action=\"trigger\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on({
+            click: () => { void self.actor.trigger(itemName); }
+          });
+        }
+      });
+
+    // Add click listeners for elements with data-action="chat" to display item summaries in chat
+    html.find("*[data-action=\"chat\"]")
+      .each(function() {
+        const itemName = $(this).attr("data-item-name");
+        if (itemName) {
+          $(this).on({
+            click: () => { void self.actor.getItemByName(itemName)?.displayItemSummary(self.actor.name); }
+          });
+        }
+      });
+
+    // Add click listeners for elements with data-action="drop" to drop items
+    html.find("*[data-action=\"drop\"]")
+    .each(function() {
+      const itemName = $(this).attr("data-item-name");
+      if (itemName) {
+        $(this).on({
+          click: () => { void self.actor.dropItemByName(itemName); }
+        });
+        return;
+      }
+      const conditionID = $(this).attr("data-condition-id");
+      if (conditionID) {
+        $(this).on({
+          click: () => { void self.actor.removeCondition(conditionID as IDString); }
+        });
+        return;
+      }
+      const woundID = $(this).attr("data-wound-id");
+      if (woundID) {
+        $(this).on({
+          click: () => { void self.actor.removeWound(woundID as IDString); }
+        });
+        return;
+      }
+    });
   }
   activateHoverListeners(hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>>) {
     hoverTimelines.forEach(([target, anim]) => {
@@ -1409,6 +2059,91 @@ class K4PCSheet extends ActorSheet {
         });
     });
   }
+
+  get twitchyEyeSize(): number {
+    switch (this.actor.stabilityLevel) {
+      case K4Stability.composed: return 0;
+      case K4Stability.moderate: return U.randInt(1, 1);
+      case K4Stability.serious: return U.randInt(1, 2);
+      case K4Stability.broken: return U.randInt(2, 3);
+    }
+    return 0;
+  }
+  get twitchyEyeIntensity(): number {
+    switch (this.actor.stabilityLevel) {
+      case K4Stability.composed: return 0;
+      case K4Stability.moderate: return U.randInt(1, 1);
+      case K4Stability.serious: return U.randInt(2, 3);
+      case K4Stability.broken: return 3;
+    }
+    return 0;
+  }
+  _twitchyEyeCurPos = 0;
+  get twitchyEyePosition(): number {
+    let pos = U.randInt(1, 10);
+    while (pos === this._twitchyEyeCurPos) {
+      pos = U.randInt(1, 10);
+    }
+    this._twitchyEyeCurPos = pos;
+    return this._twitchyEyeCurPos;
+  }
+  get twitchyEyeClassString(): string {
+    return [
+      `size-${this.twitchyEyeSize}`,
+      `intensity-${this.twitchyEyeIntensity}`,
+      `position-${this.twitchyEyePosition}`
+    ].join(" ");
+  }
+
+  flashTwitchyEye(html: JQuery) {
+    const self = this;
+    const eyeContainer$ = html.find("#twitchy-eye");
+    const eyeImg$ = eyeContainer$.find("img");
+    const tabContent$ = eyeContainer$.closest(".tab-content");
+
+    if (U.gsap.isTweening(eyeContainer$) || U.gsap.isTweening(tabContent$) || U.gsap.isTweening(eyeImg$)) { return; }
+
+    eyeContainer$.attr("class", this.twitchyEyeClassString);
+    const repeatDelay = U.randNum(0.5, this.twitchyEyeIntensity + 1, "power2.in");
+    kLog.log(`Repeat Delay: ${U.pFloat(repeatDelay, 3)}`);
+
+    U.gsap.timeline({
+      repeat: 1,
+      repeatDelay,
+      yoyo: true
+    })
+      .fromTo(tabContent$, {background: "rgba(0, 0, 0, 0)" }, {
+        background: C.Colors.dBLACK,
+        duration: 0.5,
+        ease: "power2.out"
+      })
+      .fromTo(eyeContainer$, {opacity: 0}, {
+        opacity: 1,
+        duration: 0.25,
+        ease: "power2.out"
+      }, 0.25);
+  }
+
+  _twitchyEyeTimer: Maybe<NodeJS.Timeout> = undefined;
+  startTwitchyEyeTimer(html: JQuery) {
+    if (this._twitchyEyeTimer) {
+      clearTimeout(this._twitchyEyeTimer);
+    }
+    if (this.actor.stabilityLevel === K4Stability.composed) {
+      return;
+    }
+    const stability = this.actor.stability;
+    const ONE_MINUTE = 6;
+    const period = stability * ONE_MINUTE;
+
+    this._twitchyEyeTimer = setTimeout(() => {
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (currentTime % period === 0) {
+        this.flashTwitchyEye(html);
+      }
+      this.startTwitchyEyeTimer(html);
+    }, 1000);
+  }
   override activateListeners(html: JQuery) {
 
     // Call the parent class's activateListeners method to ensure any inherited listeners are also activated
@@ -1480,11 +2215,18 @@ class K4PCSheet extends ActorSheet {
     // Activate listeners for editing "content-editable" elements
     this.activateContentEditableListeners(html);
 
+    // Activate interval timer for twitchy-eye effect
+    this.startTwitchyEyeTimer(html);
+
     html.find("#item-test-button").on({
       click: this._promptItemSelection(
         Array.from(game.items).filter((item) => item.type === K4ItemType.advantage)
       ).bind(this)
     });
+
+    if (this.actor.is(K4ActorType.pc) && !this.actor.getFlag("kult4th", "isInitialized")) {
+      void this.activateCarouselListeners(html);
+    }
   }
 
   _promptItemSelection(itemList: K4Item[]) {

@@ -4,6 +4,7 @@ import U from "./utilities.js";
 import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
 import K4Actor from "../documents/K4Actor.js";
 import K4Item from "../documents/K4Item.js";
+import K4ChatMessage from "../documents/K4ChatMessage.js";
 // #endregion
 
 export function formatStringForKult(str: string) {
@@ -48,7 +49,6 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
             return "<p class='break-elem'></p>";
           }
           case "rollPrompt": {
-            const name = U.getProp<string>(iData, "name");
             const attribute = U.getProp<string>(iData, "system.attribute");
             if (!attribute) {
               return `<span style='color: red;'>No Such Attribute: ${dataKey}</span>`;
@@ -56,7 +56,7 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
             return [
               "#>text-attributename>",
               "roll ",
-              `+${attribute ? U.tCase(attribute) : "Unresolved"}`,
+              `+${attribute ? U.tCase(attribute) : "Attribute"}`,
               "<#"
             ].join("");
           }
@@ -66,12 +66,15 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
               actor = iData.parent;
             } else if (iData instanceof K4Actor) {
               actor = iData as K4Actor;
+            } else if (iData instanceof K4ChatMessage) {
+              actor = iData.actor;
             }
             if (dataKey.startsWith("actor")) {
               if (!actor) {
                 return `<span style='color: red;'>Could Not Resolve Actor for ${dataKey}</span>`;
               }
-              const dotKey = dataKey.slice(5);
+              const dotKey = dataKey.slice(6);
+              kLog.log(`[formatForKult] With dataKey '${dataKey}', actor '${actor.name}' and dotKey '${dotKey}', returning: '${U.getProp<string>(actor, dotKey) ?? ""}'`)
               return U.getProp(actor, dotKey) ?? "";
             }
             if (/^(doc|roll)Link/.test(dataKey)) {
@@ -283,7 +286,8 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     }
 
     throw new Error(`No such SVG path: '${String(ref)}'`);
-  }
+  },
+  "stringify": (ref: Record<string, unknown>): string => JSON.stringify(ref, null, 2)
 };
 
 function parsePathTransform({scale = 1, xShift = 0, yShift = 0}: {scale?: number, xShift?: number, yShift?: number}): string {

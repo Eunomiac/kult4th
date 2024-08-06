@@ -469,6 +469,7 @@ class K4Item extends Item {
 
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     super._onCreate(...args);
+    if (!game.user.isGM) { return; }
 
     // If this has Change data in its system.rules schema, prepare a K4ActiveEffect to carry those Changes
     if (this.hasMainEffects()) {
@@ -666,8 +667,8 @@ class K4Item extends Item {
       }
     );
 
-    // Drop Button IF User has write permissions AND item isn't a SubItem AND item isn't a Basic Move
-    if (this.isOwnedByUser() && !this.isSubItem() && !this.isBasicMove()) {
+    // Drop Button IF User has write permissions AND item isn't a SubItem AND item isn't a Basic Move AND sheet is unlocked
+    if (this.isOwnedByUser() && !this.isSubItem() && !this.isBasicMove() && this.actor.is(K4ActorType.pc) && !this.actor.system.isSheetLocked) {
       stripData.buttons.push({
         icon: "hover-strip-button-drop",
         dataset: {
@@ -764,32 +765,32 @@ class K4Item extends Item {
   }
 
   async applyResult(result: Maybe<K4Item.Components.ResultData>, message: K4ChatMessage) {
-    if (!result) { return; }
-    if (!this.isOwnedItem()) { return; }
+    if (!result) { return Promise.all([]); }
+    if (!this.isOwnedItem()) { return Promise.all([]); }
     const {edges, hold, effects} = result;
-    /* Apply Hold, add Edges, and create Effects Here */
+    /* Apply Hold, add Edges, build result-applied effects */
+    const resultPromises: Array<Promise<unknown>> = []
     if (edges) {
-      void this.actor.updateEdges(edges, this);
+      resultPromises.push(this.actor.updateEdges(edges, this));
     }
     if (hold) {
-      void this.updateHold(hold);
+      resultPromises.push(this.updateHold(hold));
     }
     if (effects?.length) {
-      await K4ActiveEffect.CreateFromBuildData(
-        effects,
+      const immediateEffects = effects.filter((buildData) => {
+        if ("onChatSelection" in buildData.parentData) { return false; }
+        return true;
+      })
+      resultPromises.push(K4ActiveEffect.CreateFromBuildData(
+        immediateEffects,
         message,
         this.parent as K4Item<K4ItemType.gmtracker> | K4Actor<K4ActorType.pc>
-      );
+      ));
     }
+    return Promise.all(resultPromises);
   }
 
-  selectFromList(listRef: string, index: number) {
-    kLog.log(`[K4Item.selectFromList] Selecting "${this.name}" from list "${listRef}" at index ${index}`, {
-      ITEM: this
-    });
-  }
-
-  async rollItem(speaker?: string) {
+  async rollItem() {
     if (!this.hasResults()) {return;}
     if (!this.isOwnedItem()) {return;}
     if (!this.parent.is(K4ActorType.pc)) { return; }

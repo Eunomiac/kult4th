@@ -28,7 +28,8 @@
 			border-radius: 30px;
 			filter: drop-shadow(10px 10px 10px var(--K4-BLACK));
       height: auto;
-      min-height: 150px;
+      min-height: var(--K4-sheet-min-height);
+      min-width: var(--K4-sheet-min-width);
 
 			.header-icon {
 				$icon-size: 80px;

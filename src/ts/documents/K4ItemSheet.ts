@@ -1,7 +1,7 @@
 // #region IMPORTS ~
 import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
-import K4Actor from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import {K4ItemType} from "./K4Item";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
@@ -11,10 +11,13 @@ type K4ItemSheetOptions = DocumentSheetOptions & {
 };
 export default class K4ItemSheet extends ItemSheet {
 
+  static PreInitialize() {
+    Items.registerSheet("kult4th", K4ItemSheet, {makeDefault: true});
+  }
+
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes:   [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-item-sheet"],
-      template:  "systems/kult4th/templates/sheets/item-sheet.hbs",
       height:    590 * 0.75,
       width:     384 * 0.75,
       resizable: false
@@ -23,6 +26,12 @@ export default class K4ItemSheet extends ItemSheet {
 
   public isUnlocked = false;
   override get item(): K4Item { return super.item; }
+  override get template() {
+    if (this.type === K4ItemType.gmtracker) {
+      return "systems/kult4th/templates/sheets/gmtracker-sheet.hbs";
+    }
+    return "systems/kult4th/templates/sheets/item-sheet.hbs";
+  }
   get type() { return this.item.type; }
   get subType() { return this.item.system.subType; }
   get subItems() { return this.item.subItems; }
@@ -44,11 +53,33 @@ export default class K4ItemSheet extends ItemSheet {
         this.options.classes.push("k4-theme-red");
         break;
       }
+      case K4ItemType.gmtracker: {
+        this.options.classes.push("k4-gmtracker-sheet");
+        break;
+      }
       default: {
         this.options.classes.push("k4-theme-white");
         break;
       }
     }
+  }
+
+  override async getData() {
+    const context = await super.getData();
+    if (this.item.type === K4ItemType.gmtracker) {
+      Object.assign(
+        context,
+        {
+          playerCharacters: Object.fromEntries(
+            Array.from(game.actors)
+              .filter((actor) => actor.type === K4ActorType.pc)
+              .map((actor) => [actor.id, actor])
+          )
+        }
+      );
+      kLog.log("[Gm Sheet Context]", {context});
+    }
+    return context;
   }
 
   override activateListeners(html: JQuery): void {
@@ -63,7 +94,8 @@ export default class K4ItemSheet extends ItemSheet {
 
       const height = html.height() ?? 0;
 
-      if (height > 450 || html.find(".k4-header").length > 0) {
+      if (itemDoc.type !== K4ItemType.gmtracker
+        && (height > 450 || html.find(".k4-header").length > 0)) {
         html.parent().addClass("wide-content");
       }
 

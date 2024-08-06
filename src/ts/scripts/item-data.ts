@@ -11482,7 +11482,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: AlertTarget.all,
                     header: "%insert.actor.name% Will Regret This ...",
-                    body: "%insert.actor.name% will be haunted by this at a later time. #>text-gmtext>The GM gets 1 Hold.#<",
+                    body: "%insert.actor.name% will be haunted by this at a later time. #>text-gmtext>The GM gets 1 Hold.<#",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("ModifyProperty", {
@@ -12089,23 +12089,6 @@ const ITEM_DATA: {
           "outro": "%insert.rollPrompt% #>text-posmod>+Armor<# #>text-negmod>&minus;Harm<#.",
           "listRefs": [],
           "effects": [
-            // {
-            //   "parentData": K4ActiveEffect.BuildEffectData({
-            //     canToggle: false,
-            //     inStatusBar: true,
-            //     label: "Armor",
-            //     icon: "systems/kult4th/assets/icons/modifiers/armor.svg",
-            //     tooltip: "Your armor reduces the amount of Harm you take from an injury.",
-            //     from: "worn gear"
-            //   }),
-            //   "changeData": [
-            //     K4ActiveEffect.BuildChangeData("ModifyRoll", {
-            //       filter: "Endure Injury",
-            //       mode: "Add",
-            //       value: "actor.system.armor"
-            //     })
-            //   ]
-            // },
             {
               "parentData": K4ActiveEffect.BuildEffectData({label: "Harm", tooltip: "The Harm you are enduring is subtracted from your roll."}),
               "changeData": [
@@ -12132,6 +12115,39 @@ const ITEM_DATA: {
           "partialSuccess": {
             "result": "You are still standing, but the GM picks one condition: %list.gmoptions%",
             "listRefs": [],
+            "effects": [
+              { // "gmoptions"[2]
+                "parentData": K4ActiveEffect.BuildEffectData({onChatSelection: {
+                    listRef: "gmoptions",
+                    listIndex: 2,
+                    userSelectors: [UserRef.gm],
+                    userTargets: [UserRef.self]
+                }}),
+                "changeData": [
+                  K4ActiveEffect.BuildChangeData("PromptForData", {
+                    filter: "gm",
+                    permanent: true,
+                    title: "Assign Serious Wound",
+                    bodyText: "Provide a name for the #>text-keyword>Serious Wound<#.",
+                    subText: "(It should fit the sentence '&lt;name&gt; suffers a &lt;wound&gt;')",
+                    target: "FLAGS.woundName",
+                    input: PromptInputType.text
+                  }),
+                  K4ActiveEffect.BuildChangeData("Alert", {
+                    type: AlertType.simple,
+                    target: AlertTarget.all,
+                    header: "%insert.actor.name% is Seriously Wounded",
+                    body: "%insert.actor.name% suffers a #>text-keyword>%insert.FLAGS.woundName%<#.",
+                    logoImg: "%insert.actor.img%"
+                  }),
+                  K4ActiveEffect.BuildChangeData("CreateWound", {
+                    permanent: true,
+                    label: "%insert.FLAGS.woundName%",
+                    isCritical: false
+                  })
+                ]
+              }
+            ],
             "edges": 0,
             "hold": 0
           },

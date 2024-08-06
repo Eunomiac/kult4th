@@ -1,0 +1,14 @@
+<div class="panel panel-player-character">
+  <div class="panel-bg">
+    <img src="{{img}}" />
+  </div>
+  <div class="attribute-summary">
+    {{#each attributeData}}
+    <div class="attribute-box attribute-{{key}} attribute-{{value}} tooltip-trigger">
+      <span class="attribute-name">{{name}}</span>
+      <span class="attribute-value">{{signNum value}}</span>
+      <span class="tooltip">{{name}}</span>
+    </div>
+    {{/each}}
+  </div>
+</div>

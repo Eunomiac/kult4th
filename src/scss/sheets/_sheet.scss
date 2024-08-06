@@ -1,6 +1,8 @@
 & {
 	--K4-sheet-min-height: 500px;
 	--K4-sheet-min-width: 500px;
+	--K4-sheet-max-height: 95vh;
+	--K4-sheet-max-width: 95vw;
 	--K4-sheet-padding-horiz: 0px;
 	--K4-sheet-padding-vert: 0px;
 	--K4-sheet-padding-top: var(--K4-sheet-padding-vert);
@@ -32,9 +34,12 @@
 
 	min-width: var(--K4-sheet-min-width);
 	min-height: var(--K4-sheet-min-height);
+	max-width: var(--K4-sheet-max-width);
+	max-height: var(--K4-sheet-max-height);
 	overflow: visible;
 	filter: none;
-	margin: 0;
+	// margin: 0 0 120px 0;
+  // padding: 0 0 -120px 0;
 	background: none;
 
 	.window-header {
@@ -69,8 +74,9 @@
 		position: relative;
 		display: block !important;
 		overflow: visible;
-		height: 100%;
+		height: fit-content;
 		width: 100%;
+    // margin-bottom: 40px;
 		padding:
 			var(--K4-sheet-padding-top)
 			var(--K4-sheet-padding-right)
@@ -96,8 +102,9 @@
 			grid-template-rows: var(--K4-sheet-header-height) 1fr;
 			grid-template-columns: 1fr;
       height: 100%;
+      max-height: 100%;
 
-			> * {
+			> *, > * > * {
 				position: relative;
 			}
 
@@ -106,6 +113,17 @@
 				overflow: hidden;
 				z-index: 1;
 			}
+
+      .tab-background {
+        position: absolute;
+        grid-area: main;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+      }
 
 			.tab-content {
 				grid-area: main;
@@ -134,7 +152,99 @@
 						var(--K4-subsection-padding-bottom)
 						var(--K4-subsection-padding-left);
 				}
+
+        #twitchy-eye {
+          position: absolute;
+          transform: translate(-50%, -50%);
+          height: 200px;
+          width: 600px;
+          z-index: 0;
+          display: block;
+
+          &.size-1 { height: 100px; }
+          &.size-2 { height: 175px; }
+          &.size-3 { height: 250px; }
+
+          &.intensity-1 { filter: brightness(1) sepia(0) hue-rotate(-45deg) saturate(1); }
+          &.intensity-2 { filter: brightness(2) sepia(0) hue-rotate(-45deg) saturate(1); }
+          &.intensity-3 { filter: sepia(4) saturate(3) brightness(1) hue-rotate(-45deg) saturate(3); }
+
+          &.position-1 { top: 60px; left: 700px; }
+          &.position-2 { top: 125px; left: 500px; }
+          &.position-3 { top: 260px; left: 50px; }
+          &.position-4 { top: 330px; left: 110px; }
+          &.position-5 { top: 570px; left: 170px; }
+          &.position-6 { top: 320px; left: 430px; }
+          &.position-7 { top: 520px; left: 450px; }
+          &.position-8 { top: 520px; left: 650px; }
+          &.position-9 { top: 350px; left: 550px; }
+          &.position-10 { top: 450px; left: 725px; }
+
+          img {
+            display: block;
+            position: absolute;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            // opacity: 0;
+          }
+        }
 			}
+
+
+      .sheet-lock-container {
+        --sheet-lock-size: 32px;
+        position: absolute;
+        top: 40px;
+        right: -25px;
+        font-size: var(--sheet-lock-size);
+        height: var(--sheet-lock-size);
+        width: var(--sheet-lock-size);
+        cursor: pointer;
+        transform-origin: center;
+        transform: scale(0.8);
+        transition: 0.25s;
+
+        &:hover {
+          transform: scale(1);
+
+          i {
+            opacity: 1;
+          }
+        }
+
+        input {
+          position: absolute;
+          top: 0;
+          left: 0;
+          appearance: none;
+          margin: 0;
+          padding: 0;
+          height: var(--sheet-lock-size);
+          width: var(--sheet-lock-size);
+        }
+
+        i {
+          position: absolute;
+          color: var(--K4-GREY);
+          text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 5);
+          top: 0;
+          left: 0;
+          pointer-events: none;
+          margin: 0;
+          padding: 0;
+          height: var(--sheet-lock-size);
+          width: var(--sheet-lock-size);
+          opacity: 0.5;
+          transition: 0.25s;
+
+          &.fa-lock-open {
+            color: var(--K4-bRED);
+            opacity: 1;
+          }
+        }
+      }
 		}
 
 		.tab:not(.active) {
@@ -265,7 +375,6 @@
 			}
 		}
 
-
 	}
 
 	.window-resizable-handle {
@@ -298,6 +407,20 @@
 			}
 		}
 	}
+
+  .dev-box {
+    --K4-color-primary: lime;
+    pointer-events: auto;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    transform-origin: top left;
+    transform: scale(0.8);
+    background: rgba(0, 0, 0, 0.65);
+    height: calc(100% / 0.8);
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
 
 	&.minimized {
 

@@ -123,35 +123,35 @@ export function initTinyMCEStyles() {
 
 }
 
-export function initCanvasStyles() {
-  CONFIG.canvasTextStyle = new PIXI.TextStyle({
-    align: "center",
-    dropShadow: true,
-    dropShadowAngle: U.degToRad(45),
-    dropShadowBlur: 8,
-    dropShadowColor: C.Colors.BLACK,
-    dropShadowDistance: 4,
-    fill: [
-      C.Colors.bGOLD,
-      C.Colors.GOLD
-    ],
-    fillGradientType: 1,
-    fillGradientStops: [
-      0,
-      0.3
-    ],
-    fontFamily: "Ktrata",
-    fontSize: 32,
-    letterSpacing: 2,
-    lineHeight: 32,
-    lineJoin: "round",
-    padding: 4,
-    stroke: C.Colors.dGOLD,
-    strokeThickness: 3,
-    trim: true,
-    whiteSpace: "normal",
-    wordWrap: true,
-    wordWrapWidth: 0.1
-  });
-  CONFIG.defaultFontFamily = "Ktrata";
-}
+// export function initCanvasStyles() {
+//   CONFIG.canvasTextStyle = new PIXI.TextStyle({
+//     align: "center",
+//     dropShadow: true,
+//     dropShadowAngle: U.degToRad(45),
+//     dropShadowBlur: 8,
+//     dropShadowColor: C.Colors.BLACK,
+//     dropShadowDistance: 4,
+//     fill: [
+//       C.Colors.bGOLD,
+//       C.Colors.GOLD
+//     ],
+//     fillGradientType: 1,
+//     fillGradientStops: [
+//       0,
+//       0.3
+//     ],
+//     fontFamily: "Ktrata",
+//     fontSize: 32,
+//     letterSpacing: 2,
+//     lineHeight: 32,
+//     lineJoin: "round",
+//     padding: 4,
+//     stroke: C.Colors.dGOLD,
+//     strokeThickness: 3,
+//     trim: true,
+//     whiteSpace: "normal",
+//     wordWrap: true,
+//     wordWrapWidth: 0.1
+//   });
+//   CONFIG.defaultFontFamily = "Ktrata";
+// }

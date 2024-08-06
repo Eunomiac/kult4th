@@ -476,6 +476,28 @@
         }
       }
 
+      &[class*="chat-selected-"] {
+        .message-content {
+          .kult4th-chat {
+            ul {
+              li {
+                filter: var(--chat-select-list-filter, blur(3px)) !important;
+              }
+            }
+          }
+        }
+        &.chat-selected-0 li:nth-child(1) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-1 li:nth-child(2) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-2 li:nth-child(3) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-3 li:nth-child(4) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-4 li:nth-child(5) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-5 li:nth-child(6) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-6 li:nth-child(7) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-7 li:nth-child(8) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-8 li:nth-child(9) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+        &.chat-selected-9 li:nth-child(10) { --chat-select-list-filter: "blur(0px) brightness(2)"; }
+      }
+
       .message-header {
         opacity: 0;
         transition: 0.25s;

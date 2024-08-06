@@ -1,5 +1,5 @@
 // #region IMPORTS ~
-import C, {K4Attribute, K4ConditionType} from "../scripts/constants.js";
+import C, {K4Attribute, K4ConditionType, K4WoundType} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {formatForKult} from "../scripts/helpers.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
@@ -201,7 +201,7 @@ namespace K4Change {
       value: SystemScalar, // Value to apply to the modification
     }
     export interface PromptForData extends Base {
-      filter: ValueOrArray<"player"|"gm">, // To whom the prompt window is shown.
+      filter: "player"|"gm", // To whom the prompt window is shown.
       title: string,
       bodyText: string,
       subText?: string,
@@ -450,9 +450,48 @@ async function applyUpdate(doc: UpdateableDoc, key: Key, value: unknown, isPerma
   }
 }
 
+/**
+ * Recursively iterates through all values in the provided data object.
+ * Whenever a string is found, it replaces it with the return value of `formatForKult`.
+ *
+ * @param {Record<string, unknown>} data - The data object to parse.
+ * @param {K4Actor} actor - The actor to use for formatting strings.
+ * @returns {Promise<void>} - A promise that resolves when the parsing is complete.
+ */
+async function parseData<T extends K4Change.Schema.AnySchema>(data: T, actor: K4Actor): Promise<T> {
+  /**
+   * Helper function to recursively parse a schema object against an actor document, resolving all %insert.actor...% calls and passing all strings through formatForKult().
+   *
+   * @param {unknown} value - The current value to parse.
+   * @returns {Promise<unknown>} - A promise that resolves to the parsed value.
+   */
+  async function recursiveParse(value: unknown): Promise<unknown> {
+    if (typeof value === "string") {
+      // If the value is a string, format it using formatForKult
+      return formatForKult(value, actor);
+    } else if (Array.isArray(value)) {
+      // If the value is an array, recursively parse each element
+      return Promise.all(value.map(recursiveParse));
+    } else if (value && typeof value === "object") {
+      // If the value is an object, recursively parse each property
+      const entries = await Promise.all(
+        Object.entries(value).map(async ([key, val]) => [key, await recursiveParse(val)])
+      );
+      return Object.fromEntries(entries) as unknown;
+    }
+    // If the value is neither a string, array, nor object, return it as is
+    return value;
+  }
+
+  // Start the recursive parsing with the provided data object
+  return recursiveParse(data) as Promise<T>;
+}
+
+
 const CUSTOM_FUNCTIONS = {
   async Alert(this: K4Change, actor: K4Actor, data: K4Change.Schema.Alert): Promise<boolean> {
-    K4Alert.Alert(data);
+    data = await parseData(data, actor);
+    await Promise.all(K4Alert.Alert(data, actor.user?.id as Maybe<IDString>));
     return Promise.resolve(true);
   },
   async CreateAttack(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateAttack): Promise<boolean> {
@@ -464,7 +503,7 @@ const CUSTOM_FUNCTIONS = {
       harm, // The harm value of the attack
       special, // Any special rules associated with the attack
       ammo, // Ammo usage of the attack
-    } = data;
+    } = await parseData(data, actor);
     return Promise.resolve(true);
   },
   async CreateItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateItem<K4ItemType>): Promise<boolean> {
@@ -473,7 +512,7 @@ const CUSTOM_FUNCTIONS = {
       img, // Image to give item being created
       name, // Name of item being created
       ...itemData // Item creation data
-    } = data;
+    } = await parseData(data, actor);
 
     // Check if the item already exists
     const existingItem = actor.items.getName(name);
@@ -497,7 +536,7 @@ const CUSTOM_FUNCTIONS = {
 
     const {
       filter // Filter to determine the type(s) of items to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
-    } = data;
+    } = await parseData(data, actor);
 
     const filters = [data.filter].flat();
     const idsToDelete: IDString[] = [];
@@ -523,7 +562,7 @@ const CUSTOM_FUNCTIONS = {
       min, // Minimum value of the tracker
       max, // Maximum value of the tracker
       startValue // Initial value of the tracker
-    } = data;
+    } = await parseData(data, actor);
 
     return Promise.resolve(true);
   },
@@ -531,23 +570,33 @@ const CUSTOM_FUNCTIONS = {
 
     const {
       filter // Filter to determine the tracker(s) to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
-    } = data;
+    } = await parseData(data, actor);
 
     return Promise.resolve(true);
   },
   async CreateCondition(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateCondition): Promise<boolean> {
+    data = await parseData(data, actor);
+    await actor.addCondition(data);
     return Promise.resolve(true);
   },
   async DeleteCondition(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteCondition): Promise<boolean> {
+    data = await parseData(data, actor);
     return Promise.resolve(true);
   },
   async CreateWound(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateWound): Promise<boolean> {
+    const {label, isCritical} = await parseData(data, actor);
+    await actor.addWound(
+      isCritical ? K4WoundType.critical : K4WoundType.serious,
+      label
+    )
     return Promise.resolve(true);
   },
   async StabilizeWound(this: K4Change, actor: K4Actor, data: K4Change.Schema.StabilizeWound): Promise<boolean> {
+    data = await parseData(data, actor);
     return Promise.resolve(true);
   },
   async DeleteWound(this: K4Change, actor: K4Actor, data: K4Change.Schema.DeleteWound): Promise<boolean> {
+    data = await parseData(data, actor);
     return Promise.resolve(true);
   },
   async ModifyTracker(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyTracker): Promise<boolean> {
@@ -557,7 +606,7 @@ const CUSTOM_FUNCTIONS = {
       target, // The property of the tracker data to modify (e.g. "value")
       mode, // The mode of modification to use
       value // The value to apply to the modification
-    } = data;
+    } = await parseData(data, actor);
 
 
     return Promise.resolve(true);
@@ -569,12 +618,12 @@ const CUSTOM_FUNCTIONS = {
       target, // Dotkey target of property to modify (e.g. "harm")
       mode, // Mode of the custom function to use
       value // Value to apply to the modification
-    } = data;
+    } = await parseData(data, actor);
 
 
     return Promise.resolve(true);
   },
-  ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): boolean {
+  async ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
@@ -585,7 +634,7 @@ const CUSTOM_FUNCTIONS = {
       target, // Dotkey target of property to modify (e.g. "system.lists.questions.items")
       mode, // Mode of the custom function to use
       value // Value to apply to the modification
-    } = data;
+    } = await parseData(data, actor);
 
     if (!filter) {
       throw new Error(`Invalid data for ModifyMove: ${JSON.stringify(data)}`);
@@ -641,7 +690,7 @@ const CUSTOM_FUNCTIONS = {
       target, // Dotkey target of property to modify (e.g. "system.modifiers.wounds_critical.1.all")
       mode, // Mode of the custom function to use
       value // Value to apply to the modification
-    } = data;
+    } = await parseData(data, actor);
 
     if (!filter || !target) {
       throw new Error(`Invalid data for ModifyProperty: ${JSON.stringify(data)}`);
@@ -690,12 +739,13 @@ const CUSTOM_FUNCTIONS = {
       await applyUpdate(actor as UpdateableDoc, target, value, permanent ?? false);
       return true;
     }
-    if (filter === "gm") {
-      kLog.log(``)
+    if (filter === "gmtracker") {
+      kLog.log("ModifyPropert filter 'gmtracker' not implemented. Data: ", {actor, data});
+      return true;
     }
     throw new Error(`Unrecognized filter for ModifyProperty: ${String(filter)}`);
   },
-  ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange): boolean {
+  async ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
@@ -707,7 +757,7 @@ const CUSTOM_FUNCTIONS = {
       mode, // Mode of the custom function to use on the Change
       changeTarget, // Dotkey path within the Change to the property to modify
       value // Value to apply to the modification
-    } = data;
+    } = await parseData(data, actor);
 
     value = U.castToScalar(String(value));
     if (!filter || !target) {
@@ -730,7 +780,7 @@ const CUSTOM_FUNCTIONS = {
       input, // Type of input requested
       inputVals, // Values for buttons or other input types
       default: defaultVal, // Default value if prompt window closed; if undefined, item creation is cancelled
-    } = data;
+    } = await parseData(data, actor);
 
     if (typeof target !== "string") {
       throw new Error(`No key provided for PromptForData: ${JSON.stringify(data)}`);
@@ -742,8 +792,18 @@ const CUSTOM_FUNCTIONS = {
       throw new Error(`No input type provided for PromptForData: ${JSON.stringify(data)}`);
     }
 
+    const user = filter === "gm"
+      ? game.users.find((user) => user.isGM)
+      : actor.user;
+    if (!user) {
+      throw new Error(`[Prompt for Data] Unable to resolve user from filter '${filter}'.`)
+    }
+
+
+
     const userInput = await K4Dialog.GetUserInput(
       {
+        user,
         title,
         bodyText,
         subText
@@ -762,27 +822,27 @@ const CUSTOM_FUNCTIONS = {
     }
     throw new Error(`Unrecognized key for PromptForData: ${target}`);
   },
-  RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem): boolean {
+  async RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem): Promise<boolean> {
     if (!(actor instanceof K4Actor)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     const {
       filter // Name of required item(s)
-    } = data;
+    } = await parseData(data, actor);
     if (typeof filter !== "string") {
       throw new Error(`No filter provided for RequireItem: ${JSON.stringify(data)}`);
     }
     const items = actor.getItemsByFilter(filter);
     if (items.length === 0) {
       // The required item is not found. Alert the user, and return false.
-      K4Alert.Alert({
+      await Promise.all(K4Alert.Alert({
         type: AlertType.simple,
         target: AlertTarget.self,
         skipQueue: false,
         header: `Missing Prerequisite: '${filter}'`,
         displayDuration: 5,
         body: `You currently lack #>text-keyword>${filter}<#, which is a prerequisite for gaining #>text-keyword>${this.name}<#`
-      });
+      }));
       return false;
     }
     return true;
@@ -809,7 +869,7 @@ const CUSTOM_FUNCTIONS = {
       input, // Type of input requested
       inputVals, // Values for buttons or other input types
       default: defaultVal, // Default value if prompt window closed; if undefined, item creation is cancelled
-    } = data;
+    } = await parseData(data, roll.actor);
 
     const filters = [filter].flat();
 
@@ -819,10 +879,15 @@ const CUSTOM_FUNCTIONS = {
 
     if (typeof value === "string") {
       if (value === "prompt") {
+        const {user} = roll.actor;
+        if (!user) {
+          throw new Error(`Rolling Actor '${roll.actor.name}' has no user!`);
+        }
         let userOutput: SystemScalar | false = false;
         if (U.isDefined(defaultVal)) {
           userOutput = await K4Dialog.GetUserInput(
             {
+              user,
               title: title!,
               bodyText: bodyText!,
               subText
@@ -1176,7 +1241,7 @@ class K4Change implements EffectChangeData {
  */
 class K4ActiveEffect extends ActiveEffect {
 
-  static #resolveEffectSource(origin: K4ActiveEffect.Origin, chatSelectIndex?: number): K4ActiveEffect.ExtendedData["effectSource"] {
+  static ResolveEffectSource(origin: K4ActiveEffect.Origin, chatSelectIndex?: number): K4ActiveEffect.ExtendedData["effectSource"] {
 
     /** K4ActiveEffect.Origin:
      *
@@ -1271,10 +1336,9 @@ class K4ActiveEffect extends ActiveEffect {
     throw new Error(`Invalid origin type for ActiveEffect: ${String(origin)}`);
   }
 
-  static #resolveEffectName(effectDataSet: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin, explicitOnly?: false): string
-  static #resolveEffectName(effectDataSet: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin, explicitOnly: true): Maybe<string>
-  static #resolveEffectName(effectDataSet: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
-    const {parentData} = effectDataSet;
+  static ResolveEffectLabel(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin, explicitOnly?: false): string
+  static ResolveEffectLabel(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin, explicitOnly: true): Maybe<string>
+  static ResolveEffectLabel(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
     let effectName: Maybe<string> = parentData.label;
     if (effectName ?? explicitOnly) { return effectName; }
 
@@ -1291,44 +1355,31 @@ class K4ActiveEffect extends ActiveEffect {
     return effectName;
   }
 
-  /* eslint-disable-next-line @typescript-eslint/require-await */
-  static async #resolveUserSelectors(ref: UserRef, origin: K4ChatMessage): Promise<User[]> {
-    const {users} = game;
-    if (ref === UserRef.any) {
-      return Array.from(users);
-    }
-    if (ref === UserRef.gm) {
-      return users.filter((user) => user.isGM);
-    }
-    const curUser = users.get(origin.user?.id ?? "");
-    if (!curUser) {
-      throw new Error(`Unable to derive user from chat message '${origin.id}'.`);
-    }
-    if (ref === UserRef.self) {
-      return [curUser];
-    }
-    if (ref === UserRef.other) {
-      return users.filter((user) => user.id !== curUser.id);
-    }
-    throw new Error(`Resolution of user reference '${ref}' is not yet implemented.`);
-  }
-
-  static async #resolveUserTargets(ref: UserRef, origin: K4ChatMessage): Promise<Array<K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>>> {
-    const users = await this.#resolveUserSelectors(ref, origin);
-    return users.map((user) => {
-      if (user.isGM) {
-        kLog.error(`This should return a reference to the singleton GMTracker K4Item, currently unimplemented. Returning default Actor instead: ${(ACTOR as K4Actor).name}`);
-      }
-      return user.character as K4Actor<K4ActorType.pc>;
-    });
-  }
-
-  static #parseEffectData(data: K4ActiveEffect.BuildData, origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
-    const {parentData, changeData} = data;
-
+  /**
+   * Parses the parent data of an ActiveEffect to generate its extended data.
+   *
+   * This method takes the parent data of an ActiveEffect and the origin of the effect as input.
+   * It processes the parent data to determine the effect's source, label, uses, and other properties.
+   * The method returns an object of type `K4ActiveEffect.ExtendedData`, which represents the extended data of the ActiveEffect.
+   *
+   * The method first extracts the effect source from the origin using the `#resolveEffectSource` method.
+   * It then determines the effect's label using the `#resolveEffectName` method.
+   * The method also processes the `uses` property of the parent data to determine the effect's usage limits.
+   * Additionally, it constructs a string indicating the source of the effect using the `from` property of the parent data.
+   *
+   * If the effect is meant to be displayed in the status bar, the method sets up the necessary properties for its display.
+   * This includes determining the status bar category, toggle state, and other display properties.
+   *
+   * The method returns an object of type `K4ActiveEffect.ExtendedData`, which includes all the processed properties.
+   *
+   * @param {K4ActiveEffect.BuildData["parentData"]} parentData - The parent data of the ActiveEffect.
+   * @param {K4ActiveEffect.Origin} origin - The origin of the ActiveEffect.
+   * @returns {K4ActiveEffect.ExtendedData} The extended data of the ActiveEffect.
+   */
+  static ParseParentData(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
     const {uses: usageMax, from, dynamic, onChatSelection, ...baseExtData} = parentData;
-    const effectSource = this.#resolveEffectSource(origin, onChatSelection?.listIndex);
-    const label = this.#resolveEffectName(data, origin);
+    const effectSource = this.ResolveEffectSource(origin, onChatSelection?.listIndex);
+    const label = this.ResolveEffectLabel(parentData, origin);
     let uses: Maybe<ValueMax> = undefined;
     if (U.isDefined(usageMax) && usageMax > 0) {
       uses = {
@@ -1352,7 +1403,7 @@ class K4ActiveEffect extends ActiveEffect {
       } else if (origin instanceof K4Item) {
         statusBarCategory = origin.type;
       } else {
-        throw new Error(`No toggle category found for ActiveEffect: ${JSON.stringify(data)}`);
+        statusBarCategory = K4ItemType.move;
       }
 
       if (parentData.canToggle) {
@@ -1402,45 +1453,29 @@ class K4ActiveEffect extends ActiveEffect {
     }
   }
 
-  static BuildEffectData(data?: Partial<K4ActiveEffect.ParentData>): K4ActiveEffect.ParentData {
-    data ??= {};
-    const canToggle = Boolean(data.canToggle);
-    const inStatusBar = canToggle || Boolean(data.inStatusBar);
-    if (U.isUndefined(data.tooltip) && inStatusBar) {
-      throw new Error(`No tooltip provided for status bar ActiveEffect: ${JSON.stringify(data)}`);
-    }
-    return {
-      canToggle,
-      inStatusBar,
-      uses: data.uses ?? 0,
-      canRefill: (data.uses ?? 0) > 0
-        ? Boolean(data.canRefill)
-        : false,
-      isUnique: data.isUnique ?? true,
-      duration: data.duration ?? EffectDuration.ongoing,
-      defaultState: data.defaultState ?? true,
-      resetOn: data.resetOn ?? ((data.uses ?? 0) > 0 ? EffectResetOn.onUse : EffectResetOn.never),
-      resetTo: data.resetTo ?? data.defaultState ?? true,
-      statusLabel: data.statusLabel ?? "",
-      tooltip: data.tooltip ?? "",
-
-      label: data.label ?? undefined,
-      dynamic: data.dynamic ?? undefined,
-      icon: data.icon ?? undefined,
-      from: data.from ?? undefined,
-      onChatSelection: data.onChatSelection ?? undefined
-    };
-  }
-
-  static BuildChangeData<N extends K4Change.CustomFunc.Name, T extends K4ItemType = K4ItemType>(funcName: N, value: K4Change.CustomFunc.Data<N, T>): EffectChangeData {
-    return {
-      key: funcName,
-      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-      value: JSON.stringify(value),
-      priority: undefined
-    };
-  }
-
+  /**
+   * Converts a set ('effectDataSet') of BuildData objects into an array of K4ActiveEffects, when
+   * given an Origin-type document ('origin') and an optional target PC or GMTracker target ('target')
+   * to enable dynamic parsing of each generic BuildData object against the dynamic origin and target documents.
+   *
+   * Each BuildData object is parsed via K4ActiveEffect.#parseEffectData(data: BuildData, origin: Origin)
+   *
+   *
+   * Creates an array of K4ActiveEffect instances from the provided effectDataSet, origin, and target.
+   * If the effectDataSet is an array, it will create an array of K4ActiveEffect instances.
+   * If the effectDataSet is a single object, it will create a single K4ActiveEffect instance.
+   * If the origin is a K4ChatMessage, it will create the effect for the actor of the chat message.
+   * If the effect is unique, it will delete any existing effect with the same name.
+   * The effect will be created with the provided effectDataSet, origin, and target.
+   * If the effect is linked to an element in a list on its source document, it will attach a listener to its list element for the appropriate Users.
+   * If that element is selected by a User, the effect will transfer to the target(s), deleting this property in the process and thus behaving in all ways like a normal Effect from then on.
+   * The created effects will be returned as an array.
+   *
+   * @param {ValueOrArray<K4ActiveEffect.BuildData>} effectDataSet - The data to build the effects from.
+   * @param {K4ActiveEffect.Origin} origin - The origin of the effects.
+   * @param {K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>} [target] - The target of the effects. If not provided, the origin will be used as the target.
+   * @returns {Promise<K4ActiveEffect[]>} - A promise that resolves with an array of the created K4ActiveEffect instances.
+   */
   static async CreateFromBuildData(
     effectDataSet: ValueOrArray<K4ActiveEffect.BuildData>,
     origin: K4ActiveEffect.Origin,
@@ -1451,53 +1486,10 @@ class K4ActiveEffect extends ActiveEffect {
       return effects.flat();
     }
 
-    const reportName = `Effect ${origin.name ?? target?.name}`;
+    // kLog.log(reportName, "Initial Parameters", {effectDataSet, origin, target});
 
-    kLog.openReport(reportName, `Creating Effect from '${origin.name}'`);
-    kLog.log(reportName, "Initial Parameters", {effectDataSet, origin, target});
-
-    const effectExtendedData = this.#parseEffectData(effectDataSet, origin);
-    kLog.log(reportName, "After #parseEffectData", {effectExtendedData});
-
-    if (origin instanceof K4ChatMessage && effectDataSet.parentData.onChatSelection) {
-      /** SPECIAL CASE: CHAT SELECTION EFFECT
-       *
-       * This effect, though originating from a rolled or triggered chat result, is not built or applied at this time.
-       * Instead, listeners enabling selection of the corresponding list element are created on the chat message HTML.
-       * Only when that listener resolves will this method be called again to build the corresponding effect.       *
-       */
-      const {onChatSelection: {listRef, listIndex, userSelectors, userTargets}, ...parentData} = effectDataSet.parentData;
-
-      // If the chat message isn't displaying the list referenced by the effect, abort creation.
-      if (!origin.isDisplayingList(listRef)) { return []; }
-
-      const canSelect: User[] = (await Promise.all(
-        userSelectors.map((uRef) => K4ActiveEffect.#resolveUserSelectors(uRef, origin))
-      )).flat();
-
-      const onSelect = async () => {
-        const targets: Array<K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>> = (await Promise.all(
-          userTargets.map((uRef) => K4ActiveEffect.#resolveUserTargets(uRef, origin))
-        )).flat();
-        await Promise.all(
-          targets.map((target) => K4ActiveEffect.CreateFromBuildData({
-            parentData,
-            changeData: effectDataSet.changeData
-          }, origin, target))
-        )
-      };
-
-      origin.applySelectionListener(
-        listRef,
-        listIndex,
-        canSelect,
-        onSelect
-      );
-
-      kLog.closeReport(reportName);
-
-      return [];
-    }
+    const effectExtendedData = this.ParseParentData(effectDataSet.parentData, origin);
+    // kLog.log(reportName, "After #parseEffectData", {effectExtendedData});
 
     let effectHost = target ?? origin;
     if (effectHost instanceof K4ChatMessage) {
@@ -1564,7 +1556,7 @@ class K4ActiveEffect extends ActiveEffect {
     if (this.originItem instanceof K4Item) {
       return this.originItem.type;
     }
-    throw new Error(`No origin item found for ActiveEffect: ${this.id}`);
+    return K4ItemType.move;
   }
   get statusIcon(): string {
     if (!this.isOwnedByActor()) { return ""; }
@@ -1668,6 +1660,7 @@ class K4ActiveEffect extends ActiveEffect {
     DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, {makeDefault: true});
 
     Hooks.on("createActiveEffect", async (effect: K4ActiveEffect) => {
+      if (!game.user.isGM) { return; }
       kLog.display(`[on CreateActiveEffect] ${effect.label}`, {
         effect,
         origin:             effect.origin,
@@ -1687,9 +1680,15 @@ class K4ActiveEffect extends ActiveEffect {
 
       const originItem = fromUuidSync(effect.origin) as Maybe<K4Item>;
 
+      /* === PROCESS CUSTOM CHANGES - Apply & Filter Changes by Custom Function Needs === */
+      let k4Changes: K4Change[] = [...effect.getCustomChanges()];
+      let onceChanges: K4Change[] = [];
+      kLog.log("Changes Step 0", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
       /* === PROCESS CUSTOM CHANGES: STEP 1 - RequireItem Prerequisite Check === */
-      // Check for any "RequireItem" changes. If any of them fail, remove both the ActiveEffect and the embedded Item.
-      if (effect.requireItemChanges.some(async (change) => !(await change.apply(effect.actor)))) {
+      // Filter out and run now any "RequireItem" changes. If any of them fail, remove both the ActiveEffect and the embedded Item.
+      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isRequireItemCheck))
+      kLog.log("Changes Step 1 (RequireItem)", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
+      if (onceChanges.some(async (change) => !(await change.apply(effect.actor)))) {
         await originItem?.delete();
         return false;
       }
@@ -1698,19 +1697,26 @@ class K4ActiveEffect extends ActiveEffect {
       // PromptForData changes are resolved by querying the User for input when they are embedded within an Actor owned by that User -- i.e. right now.
       // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
       // (Note: The "PromptForData" function will only run once; if the data it is seeking is already written to the actor's flags, it will do nothing.)
-      for (const change of effect.promptForDataChanges) {
+      kLog.log("Changes Step 2 (PromptForData)", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
+      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isPromptOnCreate))
+      for (const change of onceChanges) {
         await change.apply(effect.actor);
       }
 
       /* === PROCESS CUSTOM CHANGES: STEP 3 - Permanent Effects Check === */
-      // If any changes are permanent, apply them now -- they will be filtered out of future applications of the effect,
-      // and will not be reversed when the active effect is removed.
-      await Promise.all(effect.permanentChanges
-        .filter((change) =>
-          !change.isPromptOnCreate
-          && !change.isRequireItemCheck
-          && !effect.eData.onChatSelection)
+      // If any changes are permanent, apply them now and remove them from the effects array.
+      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isPermanentChange && !effect.eData.onChatSelection))
+      kLog.log("Changes Step 3 (PermanentChanges)", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
+      await Promise.all(onceChanges
         .map((change) => change.apply(effect.actor)));
+
+      // If the number of remaining effects is zero, delete the effect.
+      if (k4Changes.length === 0) {
+        return false;
+      }
+
+      // Otherwise, update the new active effect with the filtered change list.
+      await effect.update({"changes": k4Changes});
       return true;
     });
   }
@@ -1856,11 +1862,12 @@ class K4ActiveEffect extends ActiveEffect {
     const changes: K4Change[] = [];
     if (this.eData.dynamic) {
       changes.push(...DYNAMIC_CHANGES[this.eData.dynamic](this));
+    } else {
+      changes.push(...this.changes
+        .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM)
+        .map((change) => new K4Change(change, this))
+      );
     }
-    changes.push(...this.changes
-      .filter((change) => change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM)
-      .map((change) => new K4Change(change, this))
-    );
     return changes;
   }
   getCustomChange(id: string): Maybe<K4Change> {
@@ -1955,6 +1962,45 @@ class K4ActiveEffect extends ActiveEffect {
       });
   }
   // #ENDREGION
+
+  static BuildEffectData(data?: Partial<K4ActiveEffect.ParentData>): K4ActiveEffect.ParentData {
+    data ??= {};
+    const canToggle = Boolean(data.canToggle);
+    const inStatusBar = canToggle || Boolean(data.inStatusBar);
+    if (U.isUndefined(data.tooltip) && inStatusBar) {
+      throw new Error(`No tooltip provided for status bar ActiveEffect: ${JSON.stringify(data)}`);
+    }
+    return {
+      canToggle,
+      inStatusBar,
+      uses: data.uses ?? 0,
+      canRefill: (data.uses ?? 0) > 0
+        ? Boolean(data.canRefill)
+        : false,
+      isUnique: data.isUnique ?? true,
+      duration: data.duration ?? EffectDuration.ongoing,
+      defaultState: data.defaultState ?? true,
+      resetOn: data.resetOn ?? ((data.uses ?? 0) > 0 ? EffectResetOn.onUse : EffectResetOn.never),
+      resetTo: data.resetTo ?? data.defaultState ?? true,
+      statusLabel: data.statusLabel ?? "",
+      tooltip: data.tooltip ?? "",
+
+      label: data.label ?? undefined,
+      dynamic: data.dynamic ?? undefined,
+      icon: data.icon ?? undefined,
+      from: data.from ?? undefined,
+      onChatSelection: data.onChatSelection ?? undefined
+    };
+  }
+
+  static BuildChangeData<N extends K4Change.CustomFunc.Name, T extends K4ItemType = K4ItemType>(funcName: N, value: K4Change.CustomFunc.Data<N, T>): EffectChangeData {
+    return {
+      key: funcName,
+      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+      value: JSON.stringify(value),
+      priority: undefined
+    };
+  }
 }
 
 // #region -- INTERFACE AUGMENTATION ~

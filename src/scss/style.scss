@@ -5,6 +5,11 @@ $assetPath: '/assets';
 @import 'globals/root';
 
 .vtt.game.system-kult4th {
+
+  background: var(--K4-BLACK);
+  background-image: none;
+  box-shadow: none;
+
 	@import 'globals/colors';
   @import 'globals/tooltips';
 
@@ -53,6 +58,10 @@ $assetPath: '/assets';
 			}
 			&.k4-item-sheet {
 				@import 'sheets/item-sheet';
+
+        &.k4-gmtracker-sheet {
+          @import 'sheets/gmtracker-sheet';
+        }
 			}
 		}
 		&.dialog {

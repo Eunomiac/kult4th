@@ -110,7 +110,8 @@
 			"edges": {
 				"sourceName": "",
 				"value": 0
-			}
+			},
+      "isSheetLocked": false
 		},
 		"npc": {}
 	},
@@ -235,7 +236,8 @@
 			"armor": 0
 		},
     "gmtracker": {
-      "templates": ["base", "hasSubItems"]
+      "templates": ["base", "hasSubItems"],
+      "collapsedColumns": {}
     }
 	}
 }

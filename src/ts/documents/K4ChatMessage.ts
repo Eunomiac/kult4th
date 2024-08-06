@@ -1,10 +1,10 @@
 // #region IMPORTS ~
 import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import K4Actor from "./K4Actor.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
 import {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
+import K4ActiveEffect, {UserRef} from "./K4ActiveEffect.js";
 // #endregion
 
 // #region TYPES ~
@@ -19,6 +19,13 @@ namespace K4ChatMessage {
       isEdge: boolean;
       rollOutcome?: K4RollResult;
       rollData?: K4Roll.Serialized.Base;
+      chatSelectListeners?: Record<
+        string, // the listRef
+        {
+          // The necessary parameters to run the listener and construct the onSelect() callback
+        }
+      >,
+      chatSelectValue?: number // The index of the selected value
     }
   }
 
@@ -115,7 +122,16 @@ const MASTERTIMELINES = {
     }
 
     tl.add(CHILD_TIMELINES.animateResults(message$, msg), `<+=${staggers[8] ?? U.getLast(staggers)}`);
+
+    if (msg.onSelectEffectData.length && !msg.wasOnSelectSelected) {
+      tl.call(() => { void msg.applySelectionListeners(); })
+    } else {
+      tl.call(() => {
+        msg.addClass(["not-animating"]);
+      }, [], ">+=5")
+    }
     tl.addLabel("revealed");
+
 
     return tl;
   },
@@ -795,9 +811,6 @@ class K4ChatMessage extends ChatMessage {
       // Apply custom CSS classes to the chat message based on its flags
       message.applyFlagCSSClasses(html);
 
-      // Apply listeners
-      message.activateListeners(html);
-
       // Introduce a brief pause to let the DOM settle
       await U.sleep(500);
 
@@ -814,14 +827,6 @@ class K4ChatMessage extends ChatMessage {
     });
   }
   // #endregion
-
-  // static override create(data: K4ChatMessage.ConstructorData, context?: DocumentModificationContext): Promise<Maybe<K4ChatMessage>> {
-  //   return super.create(data as ChatMessageDataConstructorData, context).then((message) => {
-  //     return message?.setFlag("kult4th", "rollData.data.chatID", message.id);
-  //   });
-  // }
-
-
 
   animationTimeline?: gsap.core.Timeline;
   get timelinePromise(): Promise<void> {
@@ -878,19 +883,21 @@ class K4ChatMessage extends ChatMessage {
   }
 
   get isAnimated(): boolean {
-    return this.getFlag("kult4th", "isAnimated") as boolean;
+    return !((this.getFlag("kult4th", "cssClasses") ?? []) as string[]).includes("not-animating");
   }
   set isAnimated(value: boolean) {
-    void this.setFlag("kult4th", "isAnimated", value);
-    if (!value) {
+    if (value) {
+      this.remClass("not-animating");
+      if (!this.animationTimeline) {
+        this.animate();
+      }
+    } else {
       this.addClass("not-animating");
     }
   }
 
-
-
   animate() {
-    if (!this.isAnimated) { return undefined; }
+    if (!this.isAnimated) { return; }
     this.freeze(false);
     if (this.isChatRoll()) {
       this.animationTimeline = MASTERTIMELINES.animateRollResult(this.elem$, this);
@@ -903,12 +910,12 @@ class K4ChatMessage extends ChatMessage {
     if (isPermanent) {
       this.addClass("not-animating");
     }
-    if (!this.isAnimated) { return undefined; }
+    if (!this.isAnimated) { return; }
     if (!this.animationTimeline) {
       if (isPermanent) {
         this.isAnimated = false;
       }
-      return undefined;
+      return;
     }
     this.animationTimeline.seek("end");
     this.animationTimeline.kill();
@@ -928,6 +935,38 @@ class K4ChatMessage extends ChatMessage {
       return ""
     };
     return `systems/kult4th/assets/chat/dropcaps/${content.slice(0, 1).toUpperCase()}.png`;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async #resolveUserSelectors(ref: UserRef): Promise<User[]> {
+    const {users} = game;
+    if (ref === UserRef.any) {
+      return Array.from(users);
+    }
+    if (ref === UserRef.gm) {
+      return users.filter((user) => user.isGM);
+    }
+    const curUser = users.get(this.user?.id ?? "");
+    if (!curUser) {
+      throw new Error(`Unable to derive user from chat message '${this.id}'.`);
+    }
+    if (ref === UserRef.self) {
+      return [curUser];
+    }
+    if (ref === UserRef.other) {
+      return users.filter((user) => user.id !== curUser.id);
+    }
+    throw new Error(`Resolution of user reference '${ref}' is not yet implemented.`);
+  }
+
+  async #resolveUserTargets(ref: UserRef): Promise<Array<K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>>> {
+    const users = await this.#resolveUserSelectors(ref);
+    return users.map((user) => {
+      if (user.isGM) {
+        kLog.error(`This should return a reference to the singleton GMTracker K4Item, currently unimplemented. Returning default Actor instead: ${(ACTOR as K4Actor).name}`);
+      }
+      return user.character as K4Actor<K4ActorType.pc>;
+    });
   }
   // #endregion
 
@@ -1027,30 +1066,74 @@ class K4ChatMessage extends ChatMessage {
     // Serialize the modified DOM back to a string
     return doc.body.innerHTML;
   }
-  addClass(cls: string, html?: JQuery) {
-    void this.setFlag("kult4th", "cssClasses", U.unique([...this.cssClasses, cls]))
-        .then(() => { this.applyFlagCSSClasses(html); });
+  addClass(cls: ValueOrArray<string>, html?: JQuery) {
+    const classes = [cls].flat();
+    const curClasses = this.getFlag("kult4th", "cssClasses") as string[];
+    if (classes.some((newCls) => !curClasses.includes(newCls))) {
+      void this.setFlag("kult4th", "cssClasses", U.unique([...this.cssClasses, ...classes]))
+          .then(() => { this.applyFlagCSSClasses(html); });
+    }
   }
-  remClass(cls: string, html?: JQuery) {
-    void this.setFlag("kult4th", "cssClasses", this.cssClasses.filter((c) => c !== cls))
-        .then(() => { this.applyFlagCSSClasses(html); });
+  remClass(cls: ValueOrArray<string>, html?: JQuery) {
+    const remClasses = [cls].flat();
+    const curClasses = this.getFlag("kult4th", "cssClasses") as string[];
+    if (remClasses.some((remCls) => curClasses.includes(remCls))) {
+      void this.setFlag("kult4th", "cssClasses", this.cssClasses.filter((c) => !remClasses.includes(c)))
+          .then(() => { this.applyFlagCSSClasses(html); });
+    }
   }
   applyFlagCSSClasses(html?: JQuery) {
     (html ?? this.elem$).addClass(this.cssClasses.join(" "));
   }
-
-  activateListeners(html$?: JQuery) {
-    html$ ??= this.elem$;
+  get onSelectEffectData(): K4ActiveEffect.BuildData[] {
+    if (!this.outcome) { return []; }
+    if (!this.sourceItem?.hasResults()) { return []; }
+    const theseResults = this.sourceItem.system.results[this.outcome];
+    if (!theseResults || !("effects" in theseResults)) { return []; }
+    const {effects} = theseResults;
+    if (!effects) { return []; }
+    return effects
+      .filter((effect) => this.isDisplayingList(effect.parentData.onChatSelection?.listRef ?? "NULL"))
   }
-
+  get wasOnSelectSelected(): boolean {
+    return this.cssClasses.some((cls) => cls.includes("chat-selected-"));
+  }
   isDisplayingList(listRef: string): boolean {
     return this.elem$.find(`ul.list-${listRef}`).length > 0;
   }
+  async applySelectionListeners() {
+    return Promise.all(
+      this.onSelectEffectData.map(async (buildData) => {
+        if (!buildData.parentData.onChatSelection) { return; }
+        const {onChatSelection: {listRef, listIndex, userSelectors, userTargets}, ...parentData} = buildData.parentData;
+        const selectorUserIDs = (await Promise.all(
+          userSelectors.map((uRef) => this.#resolveUserSelectors(uRef))
+        )).flat().map((user) => user.id!).filter(Boolean);
 
-  applySelectionListener(listRef: string, listIndex: number, canSelect: User[], onSelect: () => Promise<void>) {
-    if (!this.isDisplayingList(listRef)) {
-      throw new Error(`Attempt to add listeners to '${listRef}', but message ${this.id} is not displaying '${listRef}'.`);
-    }
+        // If this user isn't eligible to select from the list, don't apply selectors.
+        if (!selectorUserIDs.includes(game.user.id!)) { return; }
+
+        // Otherwise, create the callback function that will be triggered if this element is selected
+        const onSelect = async () => {
+          const targets: Array<K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>> = (await Promise.all(
+            userTargets.map((uRef) => this.#resolveUserTargets(uRef))
+          )).flat();
+          await Promise.all(
+            targets.map((target) => K4ActiveEffect.CreateFromBuildData({
+              parentData,
+              changeData: buildData.changeData
+            }, this, target))
+          )
+        };
+
+        // Then apply the selection listener
+        this.applySelectionListener(listRef, listIndex, onSelect);
+      })
+    );
+  }
+
+  applySelectionListener(listRef: string, listIndex: number, onSelect: () => Promise<void>) {
+    const self = this;
     const ul$ = this.elem$.find(`ul.list-${listRef}`);
     const container$ = ul$.closest(".message-content");
     const liSiblings = Array.from(ul$.children("li"));
@@ -1123,20 +1206,26 @@ class K4ChatMessage extends ChatMessage {
         scale: 1.5,
         onStart() {
           liSiblings$.each((_, el) => {
-            const timeline = $(el).data("timeline") as gsap.core.Timeline;
-            timeline.tweenTo("blurred");
+            const timeline = $(el).data("timeline") as Maybe<gsap.core.Timeline>;
+            if (timeline) {
+              timeline.tweenTo("blurred");
+            }
           });
         },
         onReverseComplete() {
           liSiblings$.each((_, el) => {
-            const timeline = $(el).data("timeline") as gsap.core.Timeline;
-            timeline.tweenTo("start");
+            const timeline = $(el).data("timeline") as Maybe<gsap.core.Timeline>;
+            if (timeline) {
+              timeline.tweenTo("start");
+            }
           });
         },
         onComplete() {
           liSiblings$.each((_, el) => {
-            const timeline = $(el).data("timeline") as gsap.core.Timeline;
-            timeline.tweenTo("hidden");
+            const timeline = $(el).data("timeline") as Maybe<gsap.core.Timeline>;
+            if (timeline) {
+              timeline.tweenTo("hidden");
+            }
           });
           $([li$, liSiblings$]).css("pointer-events", "none");
         },
@@ -1151,12 +1240,16 @@ class K4ChatMessage extends ChatMessage {
         filter: "brightness(5) blur(5px)",
         onComplete(this: gsap.core.Timeline) {
           liSiblings$.each((_, el) => {
-            const timeline = $(el).data("timeline") as gsap.core.Timeline;
-            timeline.tweenTo("blurred");
+            const timeline = $(el).data("timeline") as Maybe<gsap.core.Timeline>;
+            if (timeline) {
+              timeline.tweenTo("blurred");
+            }
           });
           listTimeline.seek("start");
           li$.css("pointer-events", "none");
-          void onSelect();
+          onSelect().then(() => {
+            self.addClass(["not-animating", `chat-selected-${listIndex}`]);
+          }).catch((err: unknown) => { throw new Error(String(err)); });
         },
         duration: 0.5,
         ease: "power2.out"

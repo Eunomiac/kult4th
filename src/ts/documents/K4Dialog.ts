@@ -3,6 +3,7 @@ import C from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
+import K4Socket from "./K4Socket.js";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
@@ -56,8 +57,80 @@ namespace K4Dialog {
 // #endregion
 // #endregion
 
-
 class K4Dialog extends Dialog {
+
+  public static readonly SocketFunctions: Record<string, SocketFunction> = {
+    "GetUserInput": async (
+      context: K4Dialog.PromptContext,
+      inputData: K4Dialog.InputData
+    ) => {
+
+      const {input, inputVals, defaultVal} = inputData;
+      const content = await renderTemplate(
+        U.getTemplatePath("dialog", `ask-for-${input}`),
+        context
+      );
+      const dialogData: Dialog.Data = {
+        title:   context.title,
+        content,
+        buttons: {}
+      };
+      return U.castToScalar(await new Promise((resolve) => {
+        dialogData.close = () => { resolve(defaultVal ?? false); }; // User cancelled or rejected the dialog; return defaultValue or false
+        switch (input) {
+          case PromptInputType.buttons: {
+            const buttonVals = inputVals.map(U.castToScalar);
+            if (!buttonVals.length) {
+              throw new Error(`Invalid data for PromptForData: ${JSON.stringify(dialogData)}`);
+            }
+            const buttonEntries = buttonVals.map((val) => {
+              return [
+                String(val),
+                {
+                  label:    String(val),
+                  callback: () => {resolve(val)}
+                }
+              ] as const;
+            });
+            // Assign the default value to defaultVal or the first button
+            dialogData.default = String(defaultVal ?? buttonVals[0]);
+            dialogData.buttons = Object.fromEntries<Record<string, unknown>>(buttonEntries);
+            break;
+          }
+          case PromptInputType.text: {
+            dialogData.default = "submit";
+            dialogData.buttons = {
+              submit: {
+                label:    "Submit",
+                callback: (html) => {
+                  const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
+                  resolve(inputValue);
+                }
+              }
+            };
+            break;
+          }
+          case PromptInputType.confirm: {
+            dialogData.default = "confirm";
+            dialogData.buttons = {
+              confirm: {
+                label:    "Confirm",
+                callback: () => { resolve(true); }
+              },
+              cancel: {
+                label:    "Cancel",
+                callback: () => { resolve(defaultVal ?? false); }
+              }
+            };
+            break;
+          }
+        }
+        void new K4Dialog(dialogData, {
+          classes: [C.SYSTEM_ID, "dialog"]
+        }).render(true)
+      }));
+    }
+  }
 
   static async GetUserInput<T extends SystemScalar>(promptContext: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal?: never}): Promise<T | false>
   static async GetUserInput<T extends SystemScalar>(promptContext: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal: T}): Promise<T>
@@ -65,77 +138,15 @@ class K4Dialog extends Dialog {
     promptContext: K4Dialog.PromptContext,
     inputData: K4Dialog.InputData<T>
   ): Promise<T | false> {
+    promptContext.user ??= game.user;
     const {user, ...context} = promptContext;
-    if (user?.id && user.id !== game.user.id) {
-      kLog.error(`[GetUserInput] User '${user.name}' supplied in client session of user '${game.user.name}': Need to implement socketlib.`);
-      return false;
-    }
-
-    const {input, inputVals, defaultVal} = inputData;
-    const content = await renderTemplate(
-      U.getTemplatePath("dialog", `ask-for-${input}`),
-      context
+    return K4Socket.Call<T>(
+      "GetUserInput",
+      user.id as IDString,
+      context, inputData
     );
-    const dialogData: Dialog.Data = {
-      title:   context.title,
-      content,
-      buttons: {}
-    };
-    return U.castToScalar<T>(await new Promise((resolve) => {
-      dialogData.close = () => { resolve(defaultVal ?? false); }; // User cancelled or rejected the dialog; return defaultValue or false
-      switch (input) {
-        case PromptInputType.buttons: {
-          const buttonVals = inputVals.map(U.castToScalar);
-          if (!buttonVals.length) {
-            throw new Error(`Invalid data for PromptForData: ${JSON.stringify(dialogData)}`);
-          }
-          const buttonEntries = buttonVals.map((val) => {
-            return [
-              String(val),
-              {
-                label:    String(val),
-                callback: () => {resolve(val)}
-              }
-            ] as const;
-          });
-          // Assign the default value to defaultVal or the first button
-          dialogData.default = String(defaultVal ?? buttonVals[0]);
-          dialogData.buttons = Object.fromEntries<Record<string, unknown>>(buttonEntries);
-          break;
-        }
-        case PromptInputType.text: {
-          dialogData.default = "submit";
-          dialogData.buttons = {
-            submit: {
-              label:    "Submit",
-              callback: (html) => {
-                const inputValue = ($(html).find('input[name="input"]').val() as string).trim();
-                resolve(inputValue);
-              }
-            }
-          };
-          break;
-        }
-        case PromptInputType.confirm: {
-          dialogData.default = "confirm";
-          dialogData.buttons = {
-            confirm: {
-              label:    "Confirm",
-              callback: () => { resolve(true); }
-            },
-            cancel: {
-              label:    "Cancel",
-              callback: () => { resolve(defaultVal ?? false); }
-            }
-          };
-          break;
-        }
-      }
-      void new K4Dialog(dialogData, {
-        classes: [C.SYSTEM_ID, "dialog"]
-      }).render(true)
-    }));
   }
+
   #itemSelectionResolveFunc?: (value: K4Item|false) => void;
   static async GetUserItemSelection<T extends K4ItemType>(context: K4Dialog.PromptContext): Promise<K4Item<T> | false> {
     const {itemList: items, ...dialogContext} = context;

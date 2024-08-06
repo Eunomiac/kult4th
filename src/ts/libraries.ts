@@ -1,24 +1,22 @@
 // Import Tagify from its development-time location
 import Tagify from "@yaireo/tagify";
 // Import GSAP and its plugins from Foundry's provided path
-import {gsap, RoughEase, ExpoScaleEase, SlowMo, CustomEase, CustomWiggle, Flip, Observer, Draggable, MotionPathPlugin, PixiPlugin, TextPlugin, MorphSVGPlugin, SplitText, GSDevTools} from "gsap/all";
+import {gsap, Draggable as Dragger, InertiaPlugin, RoughEase, ExpoScaleEase, SlowMo, EasePack, Flip, Observer, MotionPathPlugin, PixiPlugin, TextPlugin, MorphSVGPlugin, SplitText, GSDevTools} from "gsap/all";
 
 // Import type data from third-party modules
 
 
 export default function InitializeLibraries() {
-  gsap.registerPlugin(RoughEase, ExpoScaleEase, SlowMo, CustomEase, CustomWiggle, Flip, Observer, Draggable, MotionPathPlugin, PixiPlugin, TextPlugin, MorphSVGPlugin, SplitText, GSDevTools);
+  gsap.registerPlugin(RoughEase, Dragger, InertiaPlugin, ExpoScaleEase, SlowMo, EasePack, Flip, Observer, MotionPathPlugin, PixiPlugin, TextPlugin, MorphSVGPlugin, SplitText, GSDevTools);
   gsap.config({nullTargetWarn: false});
   Object.assign(globalThis, {
     gsap,
     RoughEase,
     ExpoScaleEase,
     SlowMo,
-    CustomEase,
-    CustomWiggle,
     Flip,
     Observer,
-    Draggable,
+    Dragger,
     MotionPathPlugin,
     PixiPlugin,
     TextPlugin,
@@ -35,7 +33,8 @@ export {gsap};
 export {RoughEase, ExpoScaleEase, SlowMo};
 export {Flip};
 export {Observer};
-export {Draggable};
+export {Dragger};
+export {InertiaPlugin};
 export {MotionPathPlugin};
 export {PixiPlugin};
 export {TextPlugin};

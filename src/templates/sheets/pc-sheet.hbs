@@ -1,12 +1,14 @@
+{{log "PC SHEET CONTEXT" this}}
 <form class="actor-sheet kult4th-form {{cssClass}} actor-pc" autocomplete="off">
 
   {{> "systems/kult4th/templates/components/pc-header.hbs" }}
 
-  {{log "PC SHEET CONTEXT" this}}
-  {{log "curTab" curTab}}
-  {{log "curTab = front" (eq curTab "front")}}
-  {{log "curTab = bio" (eq curTab "bio")}}
+  <div class="tab-background">
+  </div>
   <main class="tab-content">
+    <div id="twitchy-eye">
+      <img src="systems/kult4th/assets/animations/twitchy-eye.gif" />
+    </div>
     <section class="tab front {{~#if (eq curTab "front")}} active{{/if}}" data-group="primary" data-tab="front">
       <section class="subsection dramatic-hooks">
         <label class="hook-label">{{case "title" (localize "kult4th.sheet.hooks")}}:</label>
@@ -109,11 +111,19 @@
 
     <section class="tab assets {{~#if (eq curTab "assets")}} active{{/if}}" data-group="primary" data-tab="assets">
     </section>
+
     <section class="tab notes {{~#if (eq curTab "notes")}} active{{/if}}" data-group="primary" data-tab="notes">
     </section>
+
     <section class="tab advancement {{~#if (eq curTab "advancement")}} active{{/if}}" data-group="primary"
       data-tab="advancement"></section>
   </main>
+
+  <div class="sheet-lock-container">
+    <input type="checkbox" name="system.isSheetLocked" {{checked actor.system.isSheetLocked}} />
+    <i class="fa-solid fa-lock{{#unless actor.system.isSheetLocked}}-open{{/unless}}"></i>
+  </div>
+
 </form>
 
 <div class="gear-container gear-huge gear-kether-huge">

@@ -53,6 +53,12 @@ export enum Archetype {
   timeAndSpaceMagician = "timeAndSpaceMagician",
   sleeper = "sleeper"
 }
+export enum ArchetypeTier {
+  asleep = "asleep",
+  aware = "aware",
+  enlightened = "enlightened",
+  awake = "awake"
+}
 export enum K4Stability {
   composed = "composed",
   moderate = "moderate",
@@ -75,47 +81,941 @@ export enum K4WoundType {
   stablecritical = "stablecritical"
 }
 
-
-
-
 export const Archetypes = {
-  Asleep: {
-    [Archetype.sleeper]: "Sleeper"
+  [Archetype.sleeper]: {
+    label: "Sleeper",
+    tier: ArchetypeTier.asleep,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
   },
-  Aware: {
-    [Archetype.academic]: "Academic",
-    [Archetype.agent]: "Agent",
-    [Archetype.artist]: "Artist",
-    [Archetype.avenger]: "Avenger",
-    [Archetype.broken]: "Broken",
-    [Archetype.careerist]: "Careerist",
-    [Archetype.criminal]: "Criminal",
-    [Archetype.cursed]: "Cursed",
-    [Archetype.deceiver]: "Deceiver",
-    [Archetype.descendant]: "Descendant",
-    [Archetype.detective]: "Detective",
-    [Archetype.doll]: "Doll",
-    [Archetype.drifter]: "Drifter",
-    [Archetype.fixer]: "Fixer",
-    [Archetype.occultist]: "Occultist",
-    [Archetype.prophet]: "Prophet",
-    [Archetype.ronin]: "Ronin",
-    [Archetype.scientist]: "Scientist",
-    [Archetype.seeker]: "Seeker",
-    [Archetype.veteran]: "Veteran"
+  [Archetype.academic]: {
+    label: "Academic",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],
+    [K4ItemType.disadvantage]: ["Nightmares", "Obsession", "Phobia", "Repressed Memories", "Rationalist", "Stalker"],
+    [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Returned from the Other Side", "Strange Disappearance"],
+    description: "The Academic studies the world from her desk. Everything is interconnected via logical rules of causality, yet she suspects something must be wrong. Pieces refuse to fall into the safe, predictable patterns of common scientific models. Worse, shadowy forces silence new and alternative fields of research. Those who question the scientific establishment and its rational worldview risk disgrace and the destruction of their research, reputation, and revenue. Does she dare to look for the truth?",
+    occupation: ["Professor", "Student", "Ph.D. Candidate", "Teacher", "Public Servant", "Advisor", "Politician", "Author", "Television Show Host", "Aristocrat", "Researcher", "Psychologist", "Archaeologist", "Dilettante", "Antiquarian"],
+    looks: {
+      clothes: ["tweed", "carefree", "ill-fitting", "mottled", "proper", "suit", "casual", "nerdy", "old-fashioned"],
+      face: ["childish", "round", "ravaged", "tired", "pale", "square", "disproportionate", "narrow", "beaky", "ugly", "handsome", "aged", "bearded"],
+      eyes: ["skeptical", "arrogant", "analytical", "disinterested", "curious", "shy", "intelligent", "distracted", "authoritarian", "glasses-framed", "tired"],
+      body: ["thin", "chubby", "tall", "wispy", "bent", "weak", "athletic", "out of shape", "slow", "angular", "rigid", "impaired", "large bellied", "fat", "short", "compact", "hairy"]
+    },
+    relations: [
+      {
+        description: "One of the characters studied at the same campus as you, and you became good friends. Take +1 Relation with each other.",
+        in: 1,
+        out: 1
+      },
+      {
+        description: "One of the characters is your relative.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters met you at a seminar.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "You hired one of the characters as an assistant for a research project.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is your lover. Take Relation +1 or +2 with them.",
+        in: "1|2",
+        out: ""
+      }
+    ]
   },
-  Enlightened: {
-    [Archetype.abomination]: "Abomination",
-    [Archetype.deathMagician]: "Death Magician",
-    [Archetype.disciple]: "Disciple",
-    [Archetype.dreamMagician]: "Dream Magician",
-    [Archetype.madnessMagician]: "Madness Magician",
-    [Archetype.passionMagician]: "Passion Magician",
-    [Archetype.revenant]: "Revenant",
-    [Archetype.timeAndSpaceMagician]: "Time and Space Magician"
+  [Archetype.agent]: {
+    label: "Agent",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Moles", "Burglar", "Analyst", "Explosives Expert", "Tracer", "Quick Thinker", "Field Agent", "Endure Trauma"],
+    [K4ItemType.disadvantage]: ["Lost Identity", "Nightmares", "Obsession", "Rival", "Stalker", "Wanted"],
+    [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Strange Disappearance", "Victim of Medical Experiments"],
+    description: [
+      "The Agent does whatever is necessary to protect and serve her employer's best interests.",
+      "People are simply resources to be used, abused, and expended. Anyone standing in the way must be removed. She gathers and analyzes information at an almost impossible speed. Threats demand rapid responses, and sometimes there are no good choices.",
+      "The Agent's job means accepting great costs, usually in the form of dangers, but also an ever-growing debt to those sacrificed for the greater good.",
+      "When this burden finally becomes too heavy, The Agent's exits have likely already closed, and 'good' and 'evil' have lost all meaning."
+    ].join("<br/><br/>"),
+    occupation: ["Open-Source Officer", "Case Officer", "Counterterrorism Analyst", "Analytic Methodologist", "Special Agent", "Security Professional", "Operations Officer", "Collection Management Officer", "Handler", "Infiltrator", "Spy", "Sleeper Agent"],
+    looks: {
+      clothes: ["suit", "everyday wear", "military uniform", "camo", "trenchcoat", "streetwear", "practical"],
+      face: ["scarred", "inconspicuous", "innocent", "grim", "one-eyed", "expressionless", "tense", "wrinkled", "stern", "smiling", "chomping", "squarejawed", "handsome"],
+      eyes: ["penetrating", "kind", "hardened", "avoidant", "piercing", "suspicious", "curious", "indifferent", "intelligent", "guilt-laden", "empty"],
+      body: ["in shape", "chubby", "large", "emaciated", "flexible", "hard", "sinewy", "average", "right", "short", "quick", "feline", "curled", "mutilated", "scarred", "trembling"]
+    },
+    relations: [
+      {
+        description: "One of the characters has been your informant for several years. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      },
+      {
+        description: "One of the characters is an old friend of yours. Take +1 Relation with each other.",
+        in: 1,
+        out: 1
+      },
+      {
+        description: "One of the characters is your lover. They take +2 Relation with you, and you choose what Relation you have with them.",
+        in: "0|1|2",
+        out: 2
+      },
+      {
+        description: "One of the characters is your colleague. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.artist]: {
+    label: "Artist",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Artistic Talent", "Fascination", "Notorious", "Observant", "Body Awareness", "Enhanced Awareness", "Forbidden Inspiration", "Snake Charmer"],
+    [K4ItemType.disadvantage]: ["Cursed", "Depression", "Drug Addict", "Nightmares", "Schizophrenia", "Victim of Passion"],
+    [K4ItemType.darksecret]: ["Curse", "Heir", "Mental Illness", "Pact with Dark Forces", "Victim of Crime"],
+    description: [
+      "The Artist exists only to create, to give themselves, body and soul, over to the arts. They express this desire through many mediums.",
+      "A hypnotic painting, music trapping the audience in pure ecstasy, books spellbinding their readers, or a model's sculpted flesh are all the purview of The Artist.",
+      "Artists have the ability to speak to the souls of others by inviting them into their own, but this ability always comes at a price.",
+      "The price is paid by The Artist themselves, be it their sanity or strength."
+    ].join("<br/><br/>"),
+    occupation: ["Author", "Dancer", "Actor", "Painter", "Videographer", "Photographer", "Designer", "Model", "Musician", "Singer", "Personal Trainer", "Cosmetologist", "Television Host", "Director", "Reporter", "Blogger"],
+    looks: {
+      clothes: ["new age", "gothic", "metal", "peacockish", "designer", "bohemian", "worn", "normcore"],
+      face: ["haggard", "cute", "pretty", "captivating", "beautiful", "ascetic", "tired", "expressive"],
+      eyes: ["easy", "cheerful", "crystal clear", "magnetic", "profound", "burned out", "hypnotizing", "passionate"],
+      body: ["cute", "agile", "robust", "emaciated", "sexy", "lanky", "sensual", "warped", "graceful", "voluptuous"]
+    },
+    relations: [
+      {
+        description: "One of the characters is involved in your art. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters hurt you.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is infatuated with you. They take +2 Relation with you.",
+        in: "",
+        out: 2
+      },
+      {
+        description: "One of the characters commissioned a work of art from you. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      }
+    ]
+  },
+  [Archetype.avenger]: {
+    label: "Avenger",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Animal Speaker", "Instinct", "Enhanced Awareness", "Intimidating", "Survival Instinct", "Code of Honor", "Eye for an Eye", "Rage"],
+    [K4ItemType.disadvantage]: ["!Oath of Revenge", "Mental Compulsion", "Nightmares", "Schizophrenia", "Stalker", "Wanted"],
+    [K4ItemType.darksecret]: ["Guardian", "Returned from the Other Side", "Strange Disappearance", "Victim of Crime", "Victim of Medical Experiments"],
+    description: [
+      "The Avenger has been robbed of something dear to them, be it their loved one, job, family, humanity, honor, memories, or life goals.",
+      "Regardless of what was taken from them, its loss can only be paid for in blood.",
+      "The only thing remaining is revenge, and The Avenger isn't about to let anything or anyone get in their way, regardless of consequences."
+    ].join("<br/><br/>"),
+    occupation: ["Homemaker", "Police Officer", "Panhandler", "Unemployed", "Student", "Criminal", "Conspiracy Theorist", "Refugee", "Prison Escapee", "Prize Fighter", "Widow(er)", "Washed-Up Celebrity", "Failed Businessperson", "Science Experiment On The Run"],
+    looks: {
+      clothes: ["leather", "survival", "filthy", "mismatched", "coat-covered", "casual", "worn"],
+      face: ["haggard", "sharp", "neotenic", "scarred", "bony", "thin", "mutilated", "dour"],
+      eyes: ["ruthless", "frosty", "indifferent", "desolate", "sorrow-filled", "tired", "mad", "dark"],
+      body: ["robust", "deformed", "plump", "mutilated", "slender", "animalistic", "bony", "emaciated", "willowy", "massive", "strong", "youthful"]
+    },
+    relations: [
+      {
+        description: "You have entrusted one of the characters with a secret, which could put you away in prison if revealed.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters tried to help you fulfill your oath of revenge. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters has ties to the target of your revenge.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is connected to your past life somehow.",
+        in: "",
+        out: ""
+      }
+    ]
+  },
+  [Archetype.broken]: {
+    label: "Broken",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Street Contacts", "Intuitive", "Daredevil", "Contagious Insanity", "Enhanced Awareness", "Magical Intuition", "Sixth Sense", "Wayfinder"],
+    [K4ItemType.disadvantage]: ["!Broken", "Drug Addict", "Involuntary Medium", "Obsession", "Schizophrenia", "Stalker"],
+    [K4ItemType.darksecret]: ["Forbidden Knowledge", "Mental Illness", "Occult Experience", "Returned from the Other Side", "Victim of Medical Experiments"],
+    description: [
+      "The Broken has gazed into the Abyss and escaped with their mind in tatters.",
+      "They could be a homeless person who subconsciously performs rituals to forgotten gods, the mental patient who became a test subject for experimental medications, or the sinner who was physically dragged down into hell, yet somehow managed to escape back to the land of the living.",
+      "The Broken views things and sees through the Illusion in ways others do not.",
+      "In exchange for their irreparable trauma, they've been granted unique insights about the Truth.",
+      "The question is, how far can they trust their own senses?"
+    ].join("<br/><br/>"),
+    occupation: ["Homeless", "Escaped Mental Patient", "Street Peddler", "Street Performer", "Fence", "Thief", "Police", "Drug Dealer", "Addict", "Street Artist", "Freelance Journalist", "Tattoo Artist", "Abuse Survivor", "Normal Person In The Wrong Place At The Wrong Time"],
+    looks: {
+      clothes: ["hobo", "streetwear ", "ripped suit", "strange", "ragged and worn", "alternative", "casual", "kinky", "formal", "amulets and fetishes", "dirty"],
+      face: ["haggard", "tattooed", "bony", "wild beard and long hair", "grimacing", "cheerful", "sorrowful", "dirty", "scarred", "apprehensive"],
+      eyes: ["obscured", "staring", "desolate", "deranged", "frightened", "anxious", "furious", "unfocused", "fearless", "darting", "intense", "carefree"],
+      body: ["jerky", "crouching", "feral", "skinny", "large", "tattooed", "scarred", "hairy", "misshapen", "obese", "tall and gangly", "dirty", "unsteady"]
+    },
+    relations: [
+      {
+        description: "One of the characters is trying to get you back on your feet again. Take +1 Relation with each other.",
+        in: 1,
+        out: 1
+      },
+      {
+        description: "One of the characters is your closest friend. Take +2 Relation with them.",
+        in: 2,
+        out: ""
+      },
+      {
+        description: "One of the characters was the reason you were broken. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "You are angry with one of the characters. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.careerist]: {
+    label: "Careerist",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Awe-Inspiring", "Influential Friends", "Network of Contacts", "Notorious", "Daredevil", "Puppeteer", "At Any Cost", "Opportunist"],
+    [K4ItemType.disadvantage]: ["Cursed", "Greedy", "Haunted", "Liar", "Rationalist", "Rival"],
+    [K4ItemType.darksecret]: ["Curse", "Guilty of Crime", "Occult Experience", "Pact with Dark Forces", "Responsible for Medical Experiments"],
+    description: [
+      "The Careerist is the consummate brown-nosing backstabber.",
+      "Most remain stuck in a cubicle farm, performing the same mundane tasks day after day, while the ruthless few climb upwards in the corporate hierarchy.",
+      "Potentially, The Careerist could also run their own company, fighting for survival against corporate giants.",
+      "In a world where nothing is off limits when it comes to advancing one's career, success necessitates being willing to do whatever it takes."
+    ].join("<br/><br/>"),
+    occupation: ["Lawyer", "Businessman", "Office Worker", "Director", "Ceo", "Consultant", "Bureaucrat", "Politician", "Jet Setter", "Yuppie", "Salesman", "Trainee", "Aristocrat"],
+    looks: {
+      clothes: ["cheap suit", "tailored suit", "chinos and shirt", "latest fashion", "casual", "polo and khakis", "expensive"],
+      face: ["pretty", "sharp", "round and sweaty", "dominant", "chiseled", "ruthless", "beautiful", "boring", "flat"],
+      eyes: ["attentive", "penetrating", "ruthless", "weary", "cunning", "sharp", "warm", "authoritarian"],
+      body: ["slim", "sexy", "lanky", "chubby", "big", "small", "in shape", "thin", "voluptuous"]
+    },
+    relations: [
+      {
+        description: "One of the characters assisted you with removing a company rival. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters knows your Dark Secret.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters also works for your boss.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "You are in love with one of the characters. Take +2 Relation with them.",
+        in: 2,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.criminal]: {
+    label: "Criminal",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Streetwise", "Burglar", "Escape Artist", "Sixth Sense", "Deadly Stare", "Enforcer", "Gang Leader", "Streetfighter"],
+    [K4ItemType.disadvantage]: ["Bad Reputation", "Drug Addict", "Harassed", "Nemesis", "Sexual Neurosis", "Wanted"],
+    [K4ItemType.darksecret]: ["Family Secret", "Forbidden Knowledge", "Guilty of Crime", "Occult Experience", "Victim of Crime"],
+    description: [
+      "Mobsters, gang members, thieves, drug dealers, and hitmen are all driven by two things: their quest for money and all the shit they've endured during their lives.",
+      "For a precious few, their criminality grants them the life of luxury.",
+      "But for most, they only catch a fleeting glimpse of wealth before someone bigger and meaner takes it all away from them.",
+      "It's a dog-eat-dog world."
+    ].join("<br/><br/>"),
+    occupation: ["Thief", "Robber", "Dealer", "Gang Member", "Homeless", "Prize Fighter", "Corrupt Cop", "Enforcer", "Club Owner", "Extortionist", "Hitman", "Face Of The Operation", "Getaway Driver", "Con Artist", "Mobster", "Dealer", "Muscle For Hire"],
+    looks: {
+      clothes: ["streetwear", "suit", "biker", "gangsta", "casual", "tracksuit", "exclusively- cut", "worn"],
+      face: ["hard", "handsome", "scarred", "battered", "dishonest", "cruel"],
+      eyes: ["grim", "calculating", "ruthless", "cold", "mad", "piggish", "dark", "suspicious"],
+      body: ["muscular", "lanky", "enormous", "top-heavy", "graceful", "truncated", "maimed", "broken", "plump", "stocky", "wiry"]
+    },
+    relations: [
+      {
+        description: "One of the characters hid you from the police or others who were after you. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters is indebted to you.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is connected to one of your rivals.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters knew you from before your criminal dealings. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.cursed]: {
+    label: "Cursed",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Occult Studies", "Bound", "Magical Intuition", "Death Drive", "Ruthless", "Desperate", "Sealed Fate", "To the Last Breath"],
+    [K4ItemType.disadvantage]: ["!Condemned", "Drug Addict", "Greedy", "Haunted", "Nightmares", "Stalker"],
+    [K4ItemType.darksecret]: ["Chosen One", "Curse", "Occult Experience", "Pact with Dark Forces", "Returned from the Other Side"],
+    description: [
+      "The Cursed is living on borrowed time.",
+      "They might be the unfortunate victim of a deadly disease or the target of a higher power's rage.",
+      "Usually, however, The Cursed has sealed their own fate by selling their soul for fortune and fame.",
+      "Now their time is almost up, and The Cursed has realized life itself is the most worthwhile thing they possess.",
+      "No price is too high to pay for The Cursed to thwart their destiny, even if it means sacrificing others."
+    ].join("<br/><br/>"),
+    occupation: ["Occultist", "Cult Escapee", "Police Officer", "CEO", "Detective", "Military Officer", "Gangster", "Politician", "Disability Collector", "Amateur Magician", "Celebrity", "Jailbird", "Businessman", "Playboy", "Refugee", "Researcher", "Internet Celebrity"],
+    looks: {
+      clothes: ["brand name", "unique", "tailored suit", "unconcerned", "trenchcoat and suit", "heavy metal", "designer", "tattered and stained", "uniform", "all black", "foreign", "business casual", "blood-soaked"],
+      face: ["haggard", "emaciated", "sharp", "model", "tanned", "smiling", "scarred", "branded", "fleshy", "pale", "flushed", "masculine", "sorrowful", "sickly"],
+      eyes: ["desperate", "devious", "hard", "surrendered", "fearless", "burned", "intimidated", "beautiful", "shades", "dark", "tired", "stubborn", "hopeful"],
+      body: ["sickly", "well-trained", "tanned", "taut", "shaky", "trembling", "weak", "attractive", "muscular", "slender", "corpulent", "curvy", "crippled", "cowering", "towering", "straight-backed", "dejected"]
+    },
+    relations: [
+      {
+        description: "One of the characters knows the fate awaiting you. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "You utilized your prior success to help one of the other characters. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      },
+      {
+        description: "One of the characters is assisting you in avoiding your fate. Take +2 Relation with each other.",
+        in: 2,
+        out: 2
+      },
+      {
+        description: "One of the characters is standing in your way, preventing you from avoiding your fate (determine how together).",
+        in: "",
+        out: ""
+      }
+    ]
+  },
+  [Archetype.deceiver]: {
+    label: "Deceiver",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Erotic", "Impostor", "Seducer", "Backstab", "Eye for Detail", "Intuitive", "Grudge", "Manipulative"],
+    [K4ItemType.disadvantage]: ["Cursed", "Greedy", "Liar", "Nemesis", "Sexual Neurosis", "Wanted"],
+    [K4ItemType.darksecret]: ["Heir", "Mental Illness", "Occult Experience", "Pact with Dark Forces", "Victim of Crime"],
+    description: [
+      "You were in love. You finally met Mr. Right. Your future was certain, the wedding was planned, and everyone felt you were perfect for each other. Then one day, your beloved disappeared along with your bank account and all your jewelry.",
+      "You were another target of the Deceiver.",
+      "Deceivers are manipulative people who fool others into trusting them to deprive them of money or services. They are masters of masking their true intentions and feelings, and can become exactly the person their victims want.",
+      "Deceivers leave a trail of bitter enemies in their wake. When their past catches up to them, it often ends in tragedy."
+    ].join("<br/><br/>"),
+    occupation: ["Model", "Between Jobs", "Catfisher", "Lover", "Escort", "Heir(Ess)", "Jetsetter", "Party Animal", "Secretary", "Party Planner", "Marriage Swindler", "Con Artist", "Gigolo", "Scammer", "Thief", "Snitch", "Pornstar"],
+    looks: {
+      clothes: ["tight-fitting", "designer", "sexy", "revealing", "bohemian", "stylish", "trendy", "proper", "peacockish", "exclusively-cut", "distressed", "attention-grabbing"],
+      face: ["elfin", "handsome", "neotenic", "youthful", "chiseled", "defined", "soft", "round", "gorgeous", "innocent", "dignified", "cheerful"],
+      eyes: ["mischievous", "twinkling", "intense", "vulnerable", "innocent", "pretty", "understanding", "friendly", "large", "penetrating", "warm"],
+      body: ["slim", "sexy", "masculine", "curvy", "towering", "sensual", "voluptuous", "petite", "toned", "youthful", "hearty", "tall", "short", "thin", "wiry"]
+    },
+    relations: [
+      {
+        description: "One of the characters helped you kill one of your many enemies. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters met you during a rare moment when you were your true self.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is your current victim. They take +2 Relation with you.",
+        in: "",
+        out: 2
+      },
+      {
+        description: "One of the characters is attracted to you. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      }
+    ]
+  },
+  [Archetype.descendant]: {
+    label: "Descendant",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Influential Friends", "Intuitive", "Occult Library", "Artifact", "Bound", "Enhanced Awareness", "Inner Power", "Watchers"],
+    [K4ItemType.disadvantage]: ["Cursed", "Haunted", "Nightmares", "Phobia", "Repressed Memories", "Stalker"],
+    [K4ItemType.darksecret]: ["Chosen One", "Family Secret", "Heir", "Occult Experience", "Pact with Dark Forces"],
+    description: [
+      "Blood, soul and heritage weigh heavy on The Descendant's shoulders.",
+      "She is an offspring of some mythic ancestor, a now dead family, a lost god, chosen by a dark cult or maybe the heir of some unknown power. It is the past that haunts The Descendant – the Sins of the Fathers. It may be dark pacts, servitude to demons, or a still lingering upbringing filled with abuse and violence.",
+      "No matter where The Descendant goes or hides, her past will eventually catch up to her."
+    ].join("<br/><br/>"),
+    occupation: ["Antiquarian", "Aristocrat", "Author", "Homeless", "Tattoo Artist", "Occultist", "Sect Escapee", "Preacher", "Heir", "Unemployed", "Office Worker", "Craftsman", "Forester"],
+    looks: {
+      clothes: ["old fashioned", "casual", "ragged and worn", "tailored suit", "layer upon layer", "odd", "black"],
+      face: ["childish", "sharp", "sorrowful", "scarred", "dishonest", "sickly", "pretty", "pronounced", "tense", "round"],
+      eyes: ["tired", "indifferent", "anxious", "intense", "suspicious", "fearless", "innocent", "restless", "cunning", "sad"],
+      body: ["weak", "strong", "bony", "small", "sickly", "slender", "athletic", "big", "spindly", "hunched", "stiff", "lean"]
+    },
+    relations: [
+      {
+        description: "One of the characters grew up alongside you. Take +2 Relation to one another.",
+        in: 2,
+        out: 2
+      },
+      {
+        description: "You are secretly in love with one of the characters. Take +2 Relation to them.",
+        in: 2,
+        out: ""
+      },
+      {
+        description: "One of the characters is your contact person.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is intertwined with your dark secrets. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.detective]: {
+    label: "Detective",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Fast Talk", "Interrogator", "Instinct", "Read a Crowd", "Shadow", "Crime Scene Investigator", "Dreamer", "Enhanced Awareness"],
+    [K4ItemType.disadvantage]: ["Drug Addict", "Infirm", "Nightmares", "Repressed Memories", "Stalker"],
+    [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guilty of Crime", "Occult Experience", "Returned from the Other Side", "Strange Disappearance"],
+    description: [
+      "Be they the disillusioned private eye in their office shrouded in clouds of cigarette smoke or the hardened investigator on the homicide unit, The Detective is motivated by their desperate need to find answers.",
+      "Meanwhile, their families disintegrate, friends abandon them, and they fall into a spiral of darkness and addiction.",
+      "Their 'noble' search leads them down lonely and dangerous paths best left untrodden."
+    ].join("<br/><br/>"),
+    occupation: ["Beat Cop", "Private Eye", "Lawyer", "Investigator", "Security Guard", "Investigative Journalist", "Intelligence Officer", "Detective", "Medium", "Hacker", "Cryptologist", "Conspiracy Theorist"],
+    looks: {
+      clothes: ["suit", "tweed", "trendy", "casual", "severe", "business", "shabby"],
+      face: ["friendly", "sharp", "round", "sweaty", "innocent", "determined", "tired"],
+      eyes: ["empathic", "indifferent", "squinty", "sharp", "suspicious", "warm", "concerned"],
+      body: ["spindly", "fat", "wiry", "stout", "stocky", "muscled"]
+    },
+    relations: [
+      {
+        description: "One of the characters saved you from a dangerous situation. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "You helped one of the characters solve a mystery. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      },
+      {
+        description: "One of the characters is your coworker. Take +1 Relation with them and they take +1 Relation with you.",
+        in: 1,
+        out: 1
+      },
+      {
+        description: "One of the characters is your informant. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.doll]: {
+    label: "Doll",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Perpetual Victim", "Backstab", "Ice Cold", "Sneak", "Divine", "Magnetic Attraction", "Endure Trauma", "Gritted Teeth"],
+    [K4ItemType.disadvantage]: ["!Object of Desire", "Harassed", "Owned", "Phobia", "Sexual Neurosis", "Stalker"],
+    [K4ItemType.darksecret]: ["Chosen One", "Guilty of Crime", "Occult Experience", "Victim of Crime", "Victim of Medical Experiments"],
+    description: [
+      "In the shadows, The Doll stands ready. The Doll strives to break free, to be human again, and assume control of her own life while others strive to possess her.",
+      "She has lived a life in submission, as an outcast, a prisoner, a freak, or a trophy.",
+      "Feelings of emptiness and tragedy reside within her, as well as dreams of hope, love, and happiness – dreams which are shattered over and over again."
+    ].join("<br/><br/>"),
+    occupation: ["Child Beauty Contestant", "Model", "Stripper", "Trophy Wife", "Gigolo", "Actor", "Escaped Experiment", "High School Prom Queen", "Vlogger", "Reality TV Celebrity", "Pornstar", "Escort", "Abuse Survivor", "Imprisoned Innocent", "Trafficking Victim"],
+    looks: {
+      clothes: ["revealing", "frilly and fluffy ", "sexy", "strange", "trendy", "impractical", "spectacular", "gothic", "ornate", "bohemian", "bright", "innocent", "ripped", "sharp clothing"],
+      face: ["pretty", "smiling", "sad", "childish", "black and blue", "chiseled", "reassuring", "made-up", "androgynous", "happy"],
+      eyes: ["innocent", "beautiful", "spellbinding", "multicolored", "frightened", "purple", "pale", "sapphire blue", "emerald green", "yellow-gold", "hungry", "dispassionate", "large", "veiled", "devastated", "flirtatious"],
+      body: ["frail", "attractive", "small", "graceful", "petite", "curvaceous", "athletic", "dignified", "lean and fit", "slender", "willowy", "androgynous", "tall"]
+    },
+    relations: [
+      {
+        description: "One of the characters is in love with you. They take +2 Relation with you.",
+        in: "",
+        out: 2
+      },
+      {
+        description: "You are secretly in love with one of the characters. Take +2 Relation with them.",
+        in: 2,
+        out: ""
+      },
+      {
+        description: "One of the characters liberated you. Take +1 Relation with each other.",
+        in: 1,
+        out: 1
+      },
+      {
+        description: "One of the characters is jealous of you.",
+        in: "",
+        out: ""
+      }
+    ]
+  },
+  [Archetype.drifter]: {
+    label: "Drifter",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Street Contacts", "Driver", "Improviser", "Character Actor", "Vigilant", "Wanderer", "Artifact", "Enhanced Awareness"],
+    [K4ItemType.disadvantage]: ["Cursed", "Harassed", "Haunted", "Schizophrenia", "Stalker", "Wanted"],
+    [K4ItemType.darksecret]: ["Curse", "Family Secret", "Mental Illness", "Returned from the Other Side", "Rootless"],
+    description: [
+      "The Drifter never stays in one place long enough to feel at home. The road is their home. It could be an uncontrollable urge to never put down roots, or a reaction to pursuers always on their heels.",
+      "The Drifter has learned to live with whatever fits in their backpack or the back of their car. What is important to others lacks meaning to The Drifter, who never gets attached to anything. Other vagabonds and outcasts are their friends and allies. They seek refuge in rundown motels, boxcars, abandoned homes, and other makeshift shelters.",
+      "The eternal question for those who meet them is: what are you running from?"
+    ].join("<br/><br/>"),
+    occupation: ["Homeless", "Vagabond", "Runaway", "In Witness Protection", "Draft Dodger", "Small-Time Crook", "Backpacker", "Refugee", "Prison Escapee", "Traveling Salesman", "Courier", "Day Laborer", "Outsider"],
+    looks: {
+      clothes: ["worn", "odd", "biker", "ripped", "practical", "street", "wilderness survival", "layer upon layer", "wrong season", "cheap suit", "hobo clothing"],
+      face: ["ravaged", "innocent", "weathered", "pronounced", "filthy", "friendly", "tough", "tattooed", "scarred", "memorable"],
+      eyes: ["cloudy", "tired", "restless", "blind", "one-eyed", "bloodshot", "tense", "suspicious", "fearful", "cheerful", "sarcastic", "intelligent"],
+      body: ["wiry", "bony", "hobbled", "fast", "dirty", "scarred", "big", "small", "slim", "androgynous", "tall", "disproportionate", "laid back", "tense", "malformed", "twisted", "tattooed", "animalistic"]
+    },
+    relations: [
+      {
+        description: "One of the characters lets you stay with them sometimes. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters is an old friend. Take +2 Relation with them.",
+        in: 2,
+        out: ""
+      },
+      {
+        description: "One of the characters is someone you know in the underworld.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters gives you occasional jobs.",
+        in: "",
+        out: ""
+      }
+    ]
+  },
+  [Archetype.fixer]: {
+    label: "Fixer",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Forked Tongue", "Streetwise", "Ace Up the Sleeve", "Backstab", "Boss", "Extortionist", "Sixth Sense", "Occult Library", "Dabbler in the Occult", "Dreamer", "Enhanced Awareness", "Exorcist", "Magical Intuition", "Thirst for Knowledge"],
+    [K4ItemType.disadvantage]: ["Competitor", "Cursed", "Greedy", "Jealousy", "Liar", "Stalker"],
+    [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guilty of Crime", "Heir", "Pact with Dark Forces", "Victim of Crime"],
+    description: [
+      "The Fixer has all the contacts, and uses them to make quick cash. Drugs, weapons, illegal prizefights, antiques, cars, apartments – The Fixer can set you up with whatever you need. But everything she sells comes with a catch. Once The Fixer gets their hooks in you she'll never let you go.",
+      "As long as there's money involved The Fixer doesn't care about the stakes, and the more successful she is, the more enemies she makes along the way.",
+      "In the underworld, there are always people hungrily watching you, waiting for the right moment, and willing to step over your body to take your place."
+    ].join("<br/><br/>"),
+    occupation: ["Mafia Boss", "Business Person", "Real Estate Agent", "Dealer", "Restaurateur", "Club Owner", "Fence", "Loan Shark", "Bookie", "Advisor", "Extortionist", "Criminal", "Consigliere"],
+    looks: {
+      clothes: ["suit", "street", "leather", "casual", "bizarre", "luxury", "sportswear clothing"],
+      face: ["pleasant", "good-looking", "attractive", "bony", "smashed", "innocent", "meaty", "open"],
+      eyes: ["cheerful", "calculating", "cold", "servile", "cunning", "tough", "confused", "evaluating"],
+      body: ["broad", "athletic", "skinny", "sensual", "skipped leg day", "tall and wiry", "stocky"]
+    },
+    relations: [
+      {
+        description: "One of the characters endured a beating to get you out of a bind. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters is indebted to you.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters works for you.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is a business contact.",
+        in: "",
+        out: ""
+      }
+    ]
+  },
+  [Archetype.occultist]: {
+    label: "Occultist",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Crafty", "Occult Library", "Dabbler in the Occult", "Dreamer", "Enhanced Awareness", "Exorcist", "Magical Intuition", "Thirst for Knowledge"],
+    [K4ItemType.disadvantage]: ["Guilt", "Haunted", "Involuntary Medium", "Nightmares", "Repressed Memories", "Stalker"],
+    [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Pact with Dark Forces", "Visitations"],
+    description: [
+      "The Occultist seeks the answers to life's mysteries through occult theories.",
+      "Ancient tomes, mad sect leaders, and obscure internet forums speak of different dimensions, magical rituals, otherworldly creatures, and powers that can turn men into gods. The Occultist has discovered enough information to begin experimenting with these forces, but not nearly enough to give them any degree of control.",
+      "Magic always comes at a high price, and The Occultist's account is coming due. 42 Chapter"
+    ].join("<br/><br/>"),
+    occupation: ["Antiquarian", "Medium", "Exorcist", "Linguist", "Unemployed", "Theologian", "Professor", "Morgue Employee", "Teenager", "Student", "Bureaucrat", "Disability Collector", "Librarian", "Recent Convert", "Thelemic"],
+    looks: {
+      clothes: ["all black", "suit and trenchcoat", "hippie", "occult symbolism", "casual", "spiritual", "flashy", "shimmery", "tattered", "new age", "peculiar", "discreet", "spectacular"],
+      face: ["big bushy beard", "long black hair and pale skin", "bony", "disfigured", "worn", "pretty", "tense", "pallid", "indifferent", "scornful", "bored", "wrinkled or aged"],
+      eyes: ["hollow", "lucid", "mad", "piercing", "arresting", "interrogating", "distant", "tired", "defeated", "power-hungry", "sad"],
+      body: ["emaciated", "scarred", "broken", "towering", "trembling", "tattooed", "burned", "wispy", "hunched", "lanky", "obese", "stiff", "inviting"]
+    },
+    relations: [
+      {
+        description: "One of the characters participated in one of your rituals.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters is your friend. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters assists you with acquiring books, information, and artifacts. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters hates you for doing something to them, despite your love for them. Take +2 Relation with them.",
+        in: 2,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.prophet]: {
+    label: "Prophet",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Charismatic Aura", "Cult Leader", "Enhanced Awareness", "Exorcist", "Lay on Hands", "Voice of Insanity", "Divine Champion", "Good Samaritan"],
+    [K4ItemType.disadvantage]: ["Cursed", "Fanatic", "Harassed", "Involuntary Medium", "Sexual Neurosis", "Stalker"],
+    [K4ItemType.darksecret]: ["Chosen One", "Forbidden Knowledge", "Guardian", "Occult Experience", "Visitations"],
+    description: [
+      "Faith and religion bestow power, whether you're a priest, pastor, imam, rabbi, or other sect leader.",
+      "The Prophet may have chosen to serve their god, but it could also be a path they've been forced to walk by their family or congregation from an early age. Being on the inside of a religious association provides access to community and a sense of higher purpose.",
+      "However, the shadows cast by the Divine's light often hide abuse of power, occultism, perverted doctrine, forced marriages, and the worship of false gods."
+    ].join("<br/><br/>"),
+    occupation: ["Priest", "Pastor", "Imam", "Rabbi", "Sect Leader", "Sect Member", "Sect Escapee", "Prophet", "Medium", "Witch", "Preacher", "Healer", "Missionary", "Seer", "Cultist", "Idolater", "Iconoclast", "Elder", "Oracle", "Guru"],
+    looks: {
+      clothes: ["suit", "clerical robes", "orthodox", "organic materials", "bohemian", "casual", "coat and hat", "street", "strange", "worn"],
+      face: ["handsome", "smooth", "attractive", "childlike", "dominant", "narrow", "aristocratic", "open", "ascetic"],
+      eyes: ["cheerful", "deep", "mad", "wise", "forgiving", "mesmerizing", "piercing", "passionate"],
+      body: ["large", "slender", "thin", "small", "spindly", "sickly", "plump", "firm", "energetic", "voluptuous"]
+    },
+    relations: [
+      {
+        description: "One of the characters shares your faith.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters denied your god.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "You saved one of the other character's immortal soul. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      },
+      {
+        description: "One of the characters is your lover. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.ronin]: {
+    label: "Ronin",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Weapon Master (Melee)", "Weapon Master (Firearms)", "Chameleon", "Exit Strategy", "Manhunter", "Sixth Sense", "Lightning Fast", "Sniper", "Jaded"],
+    [K4ItemType.disadvantage]: ["Cursed", "Haunted", "Marked", "Nemesis", "Nightmares", "Wanted"],
+    [K4ItemType.darksecret]: ["Curse", "Guardian", "Occult Experience", "Victim of Medical Experiments", "Visitations"],
+    description: [
+      "The Ronin always teeters at the edge of a bottomless pit.",
+      "When you've run out of options, you hire The Ronin to solve the problem. They perform any task where compassion and morality are liabilities, and where mistakes mean prison, death, or worse. The Ronin can never trust anyone. Yesterday's employers are tomorrow's potential targets.",
+      "Once The Ronin's hunt has begun, there is no escape for their prey."
+    ].join("<br/><br/>"),
+    occupation: ["Contract Killer", "Hitman", "Special Agent", "Special Ops", "Military Experiment", "Sniper", "Spree Killer"],
+    looks: {
+      clothes: ["suit", "discreet", "black", "worn", "concealing", "extravagant", "fashionable", "practical"],
+      face: ["emaciated", "expressionless", "mundane", "friendly", "scarred", "tough", "pretty", "smooth"],
+      eyes: ["grim", "appraising", "cool", "obscured", "melancholy", "merciless", "challenging"],
+      body: ["graceful", "athletic", "small", "scarred", "strong", "massive", "wiry", "emaciated", "toned", "battered"]
+    },
+    relations: [
+      {
+        description: "One of the characters knows who you really are. Take +1 Relation with each other.",
+        in: 1,
+        out: 1
+      },
+      {
+        description: "One of the characters knows your deepest fear.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters owes their life to you. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      },
+      {
+        description: "You harbor a secret passion for one of the character's partner. Take +2 Relation with that partner.",
+        in: 2,
+        out: ""
+      }
+    ]
+  },
+  [Archetype.scientist]: {
+    label: "Scientist",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Battlefield Medicine", "Inventor", "Scientist", "Enhanced Awareness", "Genius", "Implanted Messages", "Arcane Researcher", "Workaholic"],
+    [K4ItemType.disadvantage]: ["Bad Reputation", "Experiment Gone Wrong", "Fanatic", "Mental Compulsion", "Repressed Memories", "Wanted"],
+    [K4ItemType.darksecret]: ["Forbidden Knowledge", "Mental Illness", "Responsible for Medical Experiments", "Returned from the Other Side", "Victim of Medical Experiments"],
+    description: [
+      "The Scientist explores the unknown in the hope of finding answers to the questions of life and the universe.",
+      "Her research often leads to dangerous experiments, where the fabric between our dimension and others is temporarily blown aside. In psychology, medicine, physics, chemistry, and various parasciences, these experiments often lead to terrible consequences.",
+      "They might call her mad, but she knows this is because they refuse to see the Truth."
+    ].join("<br/><br/>"),
+    occupation: ["Doctor", "Psychologist", "Surgeon", "Inventor", "Engineer", "Technician", "Therapist", "Physicist"],
+    looks: {
+      clothes: ["suit", "worn and dirty", "casual", "practical", "coat and hat", "peculiar", "lab coat", "stained", "neat", "durable"],
+      face: ["worn", "square", "scarred", "bony", "round and sweaty", "pronounced", "exhausted", "ravaged", "serious"],
+      eyes: ["calculating", "dead", "squinting", "burning", "mad", "confused", "commanding"],
+      body: ["frail", "angular", "stocky", "overweight", "emaciated", "skinny", "slender", "tall", "hunched", "strange"]
+    },
+    relations: [
+      {
+        description: "One of the characters received help from you. They take +1 Relation with you.",
+        in: "",
+        out: 1
+      },
+      {
+        description: "One of the characters knows details of your dreams.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters volunteered for one of your experiments. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters is involved in your research.",
+        in: "",
+        out: ""
+      }
+    ]
+  },
+  [Archetype.seeker]: {
+    label: "Seeker",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Parkour", "Access the Dark Net", "Keen-Eyed", "Hacker", "Prepared", "Enhanced Awareness", "Stubborn", "Endure Trauma"],
+    [K4ItemType.disadvantage]: ["Cursed", "Haunted", "Nightmares", "Repressed Memories", "Stalker", "Wanted"],
+    [K4ItemType.darksecret]: ["Family Secret", "Forbidden Knowledge", "Guardian", "Occult Experience", "Strange Disappearance"],
+    description: [
+      "Seekers are explorers of modern, ancient, and forgotten urban myths. They are bloggers, hackers, and storytellers of the Modern Age.",
+      "On the Internet, faceless voices whisper of lies and conspiracies. In abandoned subway stations, someone leaves messages in seemingly meaningless graffiti. If you dig deep enough you'll find the Truth, but most of us cannot see through the thick fog of misinformation, and we become hopelessly lost in the tempest of propaganda, pornography, and mindless entertainment. The Seeker knows how to use the Internet to uncover secrets under stones best left unturned.",
+      "For the Seeker, no price is too great to find the Truth and expose it for public consumption."
+    ].join("<br/><br/>"),
+    occupation: ["Student", "Unemployed", "Blogger", "Hacker", "Activist", "Academic", "Researcher", "Parapsychologist", "Author", "Journalist", "Thief", "Medium", "Conspiracy Theorist"],
+    looks: {
+      clothes: ["nerdy", "second-hand", "leather", "alternative", "casual", "durable", "smelly", "comfortable", "stained or ripped"],
+      face: ["wrinkled", "lively", "cute", "neotenic", "pale", "grim", "smashed", "innocent"],
+      eyes: ["clear", "hard", "tired", "bloodshot", "doubtful", "curious", "avoidant", "suspicious", "evaluating"],
+      body: ["lanky", "sinewy", "robust", "fragile", "hefty", "deformed", "wispy", "chubby", "bent", "short", "youthful"]
+    },
+    relations: [
+      {
+        description: "You entrusted one of the characters with a secret, which could put you away in prison.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "You look up to one of the characters. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters saved your life. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "You have discovered one of the characters in the act of something criminal, obscene, or extremely shameful.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "You befriended one of the characters in the process of assisting them with some supernatural trouble. Give her +1 Relation with you.",
+        in: "",
+        out: 1
+      }
+    ]
+  },
+  [Archetype.veteran]: {
+    label: "Veteran",
+    tier: ArchetypeTier.aware,
+    [K4ItemType.advantage]: ["Hunter", "Instinct", "Survivalist", "Voice of Pain", "Martial Arts Expert", "Officer", "Dead Shot", "Hardened"],
+    [K4ItemType.disadvantage]: ["Drug Addict", "Haunted", "Nightmares", "Phobia", "Repressed Memories", "Stalker"],
+    [K4ItemType.darksecret]: ["Guilty of Crime", "Returned from the Other Side", "Victim of Crime", "Victim of Medical Experiments", "Visitations"],
+    description: [
+      "The Veteran has seen death up close. She has spent a major part of her life in combat, weapon in hand, and adrenaline coursing through her veins.",
+      "She might be an infantry soldier crouching in an Afghanistan foxhole, a SWAT officer carrying out frequent missions against heavily armed criminals, or a civilian from a country devastated by war, now a refugee but still tortured by memories of the conflict."
+    ].join("<br/><br/>"),
+    occupation: ["Special Agent", "Military Soldier", "Street Soldier", "Mercenary", "Mma Fighter", "Military Officer", "Security Guard", "Body Guard", "Hitman", "War Refugee", "Military Police", "Retiree", "Homeless Vet"],
+    looks: {
+      clothes: ["street", "athletic wear", "blood-stained", "casual", "camo", "uniform", "practical"],
+      face: ["hard", "coarse", "scarred", "weathered", "fragile", "harsh", "disfigured"],
+      eyes: ["hardened", "dead", "desolate", "burning", "sorrowful", "angry", "commanding"],
+      body: ["compact", "hardy", "scarred", "huge", "hefty", "limber", "tall", "muscular", "sinewy", "strong", "brutalized"]
+    },
+    relations: [
+      {
+        description: "One of the characters assisted you when you were in need. Take +1 Relation with them.",
+        in: 1,
+        out: ""
+      },
+      {
+        description: "One of the characters followed you into battle. Take +1 Relation with each other.",
+        in: 1,
+        out: 1
+      },
+      {
+        description: "One of the characters listened to your war stories.",
+        in: "",
+        out: ""
+      },
+      {
+        description: "One of the characters has seen you lose control.",
+        in: "",
+        out: ""
+      }
+    ]
+  },
+  [Archetype.abomination]: {
+    label: "Abomination",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
+  },
+  [Archetype.deathMagician]: {
+    label: "Death Magician",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
+  },
+  [Archetype.disciple]: {
+    label: "Disciple",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
+  },
+  [Archetype.dreamMagician]: {
+    label: "Dream Magician",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
+  },
+  [Archetype.madnessMagician]: {
+    label: "Madness Magician",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
+  },
+  [Archetype.passionMagician]: {
+    label: "Passion Magician",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
+  },
+  [Archetype.revenant]: {
+    label: "Revenant",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
+  },
+  [Archetype.timeAndSpaceMagician]: {
+    label: "Time and Space Magician",
+    tier: ArchetypeTier.enlightened,
+    [K4ItemType.advantage]: [],
+    [K4ItemType.disadvantage]: [],
+    [K4ItemType.darksecret]: [],
+    description: "",
+    occupation: [],
+    looks: {},
+    relations: []
   }
 } as const;
-
 
 export const Attributes = {
   Active: {
@@ -133,18 +1033,18 @@ export const Attributes = {
     [K4Attribute.reflexes]: {}
   }
 } as const;
-export const HarmButtons = (resolve: (value: {harm: number}) => void) => {
-  const harmButtons: Record<string,Dialog.Button> = {};
+export const HarmButtons = (resolve: (value: {harm: number;}) => void) => {
+  const harmButtons: Record<string, Dialog.Button> = {};
   for (let harm = 1; harm <= 5; harm++) {
     harmButtons[harm] = {
       label: `${String(harm)} Harm`,
-      callback: () => { resolve({harm}) }
+      callback: () => {resolve({harm});}
     };
   }
   return harmButtons;
-}
-export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAttribute}) => void) => {
-  const attrButtons: Record<string,Dialog.Button> = {};
+};
+export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAttribute;}) => void) => {
+  const attrButtons: Record<string, Dialog.Button> = {};
   [
     K4Attribute.zero,
     K4Attribute.willpower,
@@ -161,7 +1061,7 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
     attrButtons[attr] = {
       label: U.loc(`trait.${attr}`),
       callback: () => {
-        resolve({attribute: attr as K4Roll.RollableAttribute})
+        resolve({attribute: attr as K4Roll.RollableAttribute});
       }
     };
   });
@@ -190,7 +1090,7 @@ export const Colors = {
   GREY: "rgb(128, 128, 128)", // #808080
   dGREY: "rgb(78, 78, 78)", // #4e4e4e
   BLACK: "rgb(20, 20, 20)", // #141414
-  dBLACK: "rgb(0, 0, 0)" // #000000
+  dBLACK: "rgb(0, 0, 0)"// #000000
 };
 
 export const ColorFilters = {
@@ -211,7 +1111,7 @@ export const ColorFilters = {
   dGREY: "hue-rotate(deg) saturate() brightness()",
   BLACK: "hue-rotate(deg) saturate() brightness()",
   dBLACK: "hue-rotate(deg) saturate() brightness()"
-}
+};
 export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
   if (colorVal in Colors) {
     return colorVal as KeyOf<typeof Colors>;
@@ -222,7 +1122,7 @@ export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
   }
   return false;
 }
-export function getContrastingColor(colorVal: string, contrastLevel = 1 as number, bgShade: "light"|"dark" = "dark") {
+export function getContrastingColor(colorVal: string, contrastLevel = 1 as number, bgShade: "light"| "dark"= "dark") {
   let colorName = getColorName(colorVal);
   if (!colorName) {
     console.error(`Unable to find official contrast for ${colorVal}: Generating one instead.`);
@@ -272,7 +1172,7 @@ export const StabilityConditions: Record<
   string,
   {
     description: string,
-    modDef: Record<string, number>
+    modDef: Record<string, number>;
   }
 > = {
   angry: {
@@ -324,7 +1224,7 @@ export const RegExpPatterns = {
     "\\bObserve a Situation\\b",
     "\\bRead a Person\\b",
     "\\bSee Through the Illusion\\b"
-  ].map((patStr: string|RegExp) => patStr instanceof RegExp
+  ].map((patStr: string | RegExp) => patStr instanceof RegExp
     ? patStr
     : new RegExp(`(${patStr})`, "g")),
   Keywords: [
@@ -336,7 +1236,7 @@ export const RegExpPatterns = {
     "[^ :a-z()]+ ongoing\\b",
     "\\b(Serious |Critical |\\d+ )?Wounds?\\b",
     "(\\d+\\s+|\\b[Oo]ne\\s+)?\\bExperience"
-  ].map((patStr: string|RegExp) => patStr instanceof RegExp
+  ].map((patStr: string | RegExp) => patStr instanceof RegExp
     ? patStr
     : new RegExp(`(${patStr})`, "g")),
   GMText: [
@@ -347,44 +1247,11 @@ export const RegExpPatterns = {
 
 
 const C = {
-  get game() { return game },
+  get game() {return game;},
   SYSTEM_ID: "kult4th",
   SYSTEM_NAME: "Kult: Divinity Lost",
   SYSTEM_FULL_NAME: "Kult: Divinity Lost (4th Edition)",
   TEMPLATE_ROOT: "systems/kult4th/templates",
-  awareArchetypes: Archetypes.Aware,
-  awareArchetypeAdvantages: {
-    academic: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],
-    agent: ["Moles", "Burglar", "Analyst", "Explosives Expert", "Tracer", "Quick Thinker", "Field Agent", "Endure Trauma"],
-    artist: ["Artistic Talent", "Fascination", "Notorious", "Observant", "Body Awareness", "Enhanced Awareness", "Forbidden Inspiration", "Snake Charmer"],
-    avenger: ["MANDATORY:Oath of Revenge", "Animal Speaker", "Instinct", "Enhanced Awareness", "Intimidating", "Survival Instinct", "Code of Honor", "Eye for an Eye", "Rage"],
-    broken: ["MANDATORY:Broken", "Street Contacts", "Intuitive", "Daredevil", "Contagious Insanity", "Enhanced Awareness", "Magical Intuition", "Sixth Sense", "Wayfinder"],
-    careerist: ["Awe-inspiring", "Influential Friends", "Network of Contacts", "Notorious", "Daredevil", "Puppeteer", "At Any Cost", "Opportunist"],
-    criminal: ["Streetwise", "Burglar", "Escape Artist", "Sixth Sense", "Deadly Stare", "Enforcer", "Gang Leader", "Streetfighter"],
-    cursed: ["MANDATORY:Condemned", "Occult Studies", "Bound", "Magical Intuition", "Death Drive", "Ruthless", "Desperate", "Sealed fate", "To the Last Breath"],
-    deceiver: ["Erotic", "Impostor", "Seducer", "Backstab", "Eye for Detail", "Intuitive", "Grudge", "Manipulative"],
-    descendant: ["Influential Friends", "Intuitive", "Occult Library", "Artifact", "Bound", "Enhanced Awareness", "Inner Power", "Watchers"],
-    detective: ["Fast Talk", "Interrogator", "Instinct", "Read a Crowd", "Shadow", "Crime Scene Investigator", "Dreamer", "Enhanced Awareness"],
-    doll: ["MANDATORY:Object of Desire", "Perpetual Victim", "Backstab", "Ice cold", "Sneak", "Divine", "Magnetic Attraction", "Endure Trauma", "Gritted Teeth"],
-    drifter: ["Street Contacts", "Driver", "Improviser", "Character Actor", "Vigilant", "Wanderer", "Artifact", "Enhanced Awareness"],
-    fixer: ["Forked Tongue", "Streetwise", "Ace Up the Sleeve", "Backstab", "Boss", "Extortionist", "Sixth Sense", "Occult Library", "Dabbler in the Occult", "Dreamer", "Enhanced Awareness", "Exorcist", "Magical Intuition", "Thirst for Knowledge"],
-    prophet: ["Charismatic Aura", "Cult Leader", "Enhanced Awareness", "Exorcist", "Lay on Hands", "Voice of Insanity", "Divine Champion", "Good Samaritan"],
-    ronin: ["Weapon Master (Melee)", "Weapon Master (Firearms)", "Chameleon", "Exit Strategy", "Manhunter", "Sixth Sense", "Lightning Fast", "Sniper", "Jaded"],
-    scientist: ["Battlefield Medicine", "Inventor", "Scientist", "Enhanced Awareness", "Genius", "Implanted Messages", "Arcane Researcher", "Workaholic"],
-    seeker: ["Parkour", "Access the Dark Net", "Keen-eyed", "Hacker", "Prepared", "Enhanced Awareness", "Stubborn", "Endure Trauma"],
-    veteran: ["Hunter", "Instinct", "Survivalist", "Voice of Pain", "Martial Arts Expert", "Officer", "Dead shot", "Hardened"]
-  },
-  enlightenedArchetypes: Archetypes.Enlightened,
-  enlightenedArchetypeAdvantages: {
-    abomination: ["Dark Vision", "Natural Weapons", "Immunity", "Quick", "Invulnerability", "Regenerate", "Memories of Past Lives", "Unnaturally Strong", "Cannibalism", "Sensitivity", "Hunting Instincts", "Uncontrolled Shapeshifting", "Inhuman Appearance"],
-    deathMagician: ["MANDATORY:Perform a Ritual", "MANDATORY:Initiate", "Adept", "Improviser", "A Second Chance", "Journeyman", "Dark Aura", "Master", "Experienced", "Talisman", "MANDATORY:Field of Expertise"],
-    disciple: ["Divine Strength", "Opener of Ways", "Experienced", "Summoner", "Manipulate the Illusion", "Templars", "Master of Rites", "Unyielding", "MANDATORY:Bound to a Higher Power"],
-    dreamMagician: [],
-    madnessMagician: [],
-    passionMagician: [],
-    revenant: ["Bewitching", "Memories of Past Lives", "Commanding Voice", "Mind Manipulator", "Ethereal", "Telekinesis", "Invulnerability", "Bloodthirst", "Sensitivity", "Controlled by External Force", "Symbol Bondage"],
-    timeAndSpaceMagician: []
-  },
   Attributes, AttributeButtons, HarmButtons,
   AttrList: [...Object.keys(Attributes.Passive), ...Object.keys(Attributes.Active)],
   BasicMoves: [
@@ -563,21 +1430,16 @@ const C = {
     }
   },
   Themes: {
-    [K4ItemType.advantage]: "k4-theme-gold",
+    [K4ItemType.advantage]: "k4-theme-bgold",
     [K4ItemType.disadvantage]: "k4-theme-red",
     [K4ItemType.darksecret]: "k4-theme-dark",
-    [K4ItemType.relation]: "k4-theme-gold",
-    [K4ItemType.weapon]: "k4-theme-gold",
-    [K4ItemType.gear]: "k4-theme-gold",
-    [K4ItemType.move]: "k4-theme-black",
+    [K4ItemType.relation]: "k4-theme-blue",
+    [K4ItemType.weapon]: "k4-theme-red",
+    [K4ItemType.gear]: "k4-theme-white",
+    [K4ItemType.move]: "k4-theme-gold",
     [K4ItemType.gmtracker]: "k4-theme-black",
     edge: "k4-theme-blue"
   }
 };
-
-Object.assign(C, {
-  awareArchetypes: Object.keys(C.awareArchetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim()),
-  enlightenedArchetypes: Object.keys(C.enlightenedArchetypeAdvantages).map((key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`.replace(/([A-Z])/g, " $1").trim())
-});
 
 export default C;

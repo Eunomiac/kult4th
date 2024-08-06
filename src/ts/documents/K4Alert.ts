@@ -6,9 +6,11 @@ import K4Actor from "./K4Actor.js";
 import {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 import K4Sound from "./K4Sound.js"
+import {formatForKult} from "../scripts/helpers.js";
+import K4Socket from "./K4Socket.js";
 // #endregion
 
-// #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
+// #region === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
 // #region -- ENUMS ~
 enum AlertType {
   simple = "simple",
@@ -33,7 +35,7 @@ namespace K4Alert {
   export namespace Context {
     interface Base {
       type: AlertType;
-      target: AlertTarget;
+      target: AlertTarget|IDString|UUIDString;
       skipQueue?: boolean;
     }
     export interface Simple extends Base {
@@ -205,11 +207,6 @@ const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
   }
 } as const;
 
-// type EffectsTimeline = gsap.core.Timeline &
-
-const timeline = U.gsap.timeline as (vars?: gsap.TimelineVars | undefined) => (gsap.core.Timeline & Record<keyof typeof GSAPEFFECTS, GSAPEffectDefinition["effect"]>);
-
-
 const ALERTANIMATIONS: Record<AlertType, {
   in: GSAPEffectDefinition,
   out: GSAPEffectDefinition,
@@ -376,6 +373,35 @@ class OrderedSet<T> {
 // #region === K4Alert CLASS ===
 class K4Alert {
   // #region INITIALIZATION ~
+
+  public static readonly SocketFunctions: Record<string, SocketFunction> = {
+    "Alert": (data: Partial<K4Alert.Data>) => {
+      const thisAlert = new K4Alert(data);
+      kLog.log("Alert", data, thisAlert);
+      if (data.skipQueue) {
+        void thisAlert.run();
+        return;
+      }
+      const {context} = thisAlert;
+
+      function isRepeatAlert(ctext: K4Alert.Context): boolean {
+        const queuedAlertsOfType = Array.from(K4Alert.AlertQueue.values())
+          .filter((al) => al.type === ctext.type)
+          .map((al) => al.context as K4Alert.Context.Simple);
+        if (!queuedAlertsOfType.length) { return false; }
+        if ([AlertType.simple].includes(ctext.type)) {
+          return queuedAlertsOfType
+            .some((al) => [AlertType.simple].includes(al.type) && al.body === (ctext as K4Alert.Context.Simple).body);
+        }
+        return false;
+      }
+
+      if (isRepeatAlert(context)) { return; }
+      K4Alert.AlertQueue.add(thisAlert);
+      K4Alert.RunQueue();
+    }
+  }
+
   /**
   * Pre-Initialization of the K4Alert class. This method should be run during the "init" hook.
   *
@@ -410,17 +436,60 @@ class K4Alert {
   static get Overlay$(): JQuery {
     return $("#kult-alerts");
   }
-  static AlertQueue: OrderedSet<K4Alert> = new OrderedSet<K4Alert>();
+  static readonly AlertQueue: OrderedSet<K4Alert> = new OrderedSet<K4Alert>();
 
-  static Alert(data: Partial<K4Alert.Data>): void {
-    const alert = new K4Alert(data);
-    kLog.log("Alert", data, alert);
-    if (data.skipQueue) {
-      void alert.run();
-      return;
+  static ParseData(data: K4Alert.Data, docs: Record<string, FoundryDoc> = {}): K4Alert.Data {
+    switch (data.type) {
+      case AlertType.simple: {
+        // Must parse header, body, and logoImg for "%insert.<doc>.<dotkey>%" values and resolve them.
+        // For now we'll just use formatForKult with the actor doc, and hope that's enough!
+        const {actor} = docs;
+        if (!(actor instanceof K4Actor)) { return data; }
+        data.header = formatForKult(data.header, actor);
+        data.body = formatForKult(data.body, actor);
+        if (data.logoImg) {
+          data.logoImg = formatForKult(data.logoImg, actor);
+        }
+        break;
+      }
+      default: break;
     }
-    K4Alert.AlertQueue.add(alert);
-    K4Alert.RunQueue();
+    return data;
+  }
+
+  static #resolveUserTarget(target: Maybe<AlertTarget|IDString|UUIDString>, selfUserID?: IDString): User[] {
+    const selfUser = selfUserID ? game.users.get(selfUserID) ?? game.user : game.user;
+    if (!target) { return [selfUser]; }
+    if (U.isDocID(target)) {
+      return [game.users.get(target) ?? undefined].filter(Boolean) as User[];
+    } else if (U.isDocUUID(target)) {
+      return [(fromUuidSync(target) ?? undefined) as Maybe<User>]
+        .filter(Boolean) as User[];
+    }
+    const allUsers = Array.from(game.users);
+    const [
+      gmUsers,
+      playerUsers
+    ] = U.partition<User>(allUsers, (user) => (user as User).isGM);
+    switch (target) {
+      case AlertTarget.all: return allUsers;
+      case AlertTarget.gm: return gmUsers;
+      case AlertTarget.other: return allUsers.filter((user) => user.id !== selfUser.id);
+      case AlertTarget.otherPlayers: return playerUsers.filter((user) => user.id !== selfUser.id);
+      case AlertTarget.players: return playerUsers;
+      case AlertTarget.self: return [selfUser];
+    }
+  }
+
+  static Alert(fullData: Partial<K4Alert.Data>, selfUserID?: IDString) {
+    const {target, ...data} = fullData;
+    const userTargets = this.#resolveUserTarget(target, selfUserID);
+    kLog.log(`target: ${target} -> Users: ${userTargets.map((user) => user.name).join(", ")}`);
+    return userTargets.map((user) => K4Socket.Call(
+        "Alert",
+        user.id as IDString,
+        data
+      ))
   }
 
   static RunQueue() {

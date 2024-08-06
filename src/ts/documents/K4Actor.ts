@@ -79,6 +79,7 @@ declare global {
           sourceName: string,
           value: SmallInt;
         };
+        isSheetLocked: boolean;
       }
 
       export type NPC = K4Actor.Components.Base
@@ -259,6 +260,18 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region GETTERS ~
+  get user(): Maybe<User> {
+    return game.users.find((user) => user.character?.id === this.id)
+  }
+  get archetype(): Maybe<Archetype> {
+    return this.is(K4ActorType.pc) ? this.system.archetype : undefined;
+  }
+  set archetype(archetype: Archetype) {
+    if (!this.is(K4ActorType.pc)) {return;}
+    void this.update({
+      "system.archetype": archetype
+    }, {render: false});
+  }
   // #region -- Embedded Item Search & Retrieval Methods ~
 
   /**
@@ -574,6 +587,17 @@ class K4Actor extends Actor {
         } else {
           stripData.stripClasses.push("strip-disabled");
         }
+        if (this.is(K4ActorType.pc) && !this.system.isSheetLocked) {
+          stripData.buttons.push({
+            icon: "hover-strip-button-drop",
+            dataset: {
+              "wound-id": strip.id,
+              action: "drop"
+            },
+            tooltip: "DROP"
+          });
+        }
+
         return stripData;
       });
     const conditionStrips: HoverStripData[] = Object.values(this.conditions)
@@ -612,6 +636,16 @@ class K4Actor extends Actor {
         } else {
           stripData.stripClasses.push("strip-disabled");
         }
+        if (this.is(K4ActorType.pc) && !this.system.isSheetLocked) {
+          stripData.buttons.push({
+            icon: "hover-strip-button-drop",
+            dataset: {
+              "condition-id": strip.id,
+              action: "drop"
+            },
+            tooltip: "DROP"
+          });
+        }
         return stripData;
       });
 
@@ -643,7 +677,7 @@ class K4Actor extends Actor {
     if (!this.is(K4ActorType.pc)) {return K4Stability.composed;}
     return [
       K4Stability.broken,
-      K4Stability.critical,
+      K4Stability.broken,
       K4Stability.critical,
       K4Stability.critical,
       K4Stability.critical,
@@ -655,9 +689,7 @@ class K4Actor extends Actor {
       K4Stability.composed
     ][this.stability];
   }
-  /* filter
-     Also add pulse animations to teh roll result chat message -- "Violence" and attrflare should pulse, then name, then dice staggered
-     */
+
   get attributeData() {
     if (this.is(K4ActorType.pc)) {
       const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as K4CharAttribute[];
@@ -1041,7 +1073,7 @@ class K4Actor extends Actor {
       })
       .toReversed();
 
-    // kLog.log("[collapsedRollModifiers] Status Bar Vals", {changes: this.collapsibleRollChanges, vals: U.objClone(statusBarVals)});
+    kLog.log("[collapsedRollModifiers] Status Bar Vals", {changes: this.collapsibleRollChanges, vals: U.objClone(statusBarVals)});
 
     // Helper function to add or update the collapsed data
     const addOrUpdate = (
@@ -1102,10 +1134,10 @@ class K4Actor extends Actor {
       }
     });
 
-    // kLog.log("[collapsedRollModifiers] Initial Combination Pass", {
-    //   categoryVals: U.objClone(categoryVals),
-    //   collapsedModifierData: U.objClone(collapsedModifierData)
-    // });
+    kLog.log("[collapsedRollModifiers] Initial Combination Pass", {
+      categoryVals: U.objClone(categoryVals),
+      collapsedModifierData: U.objClone(collapsedModifierData)
+    });
 
     // Filter out any unnecessary values:
     // - remove 'all' if it is zero
@@ -1123,7 +1155,7 @@ class K4Actor extends Actor {
       });
 
 
-    // kLog.log("[collapsedRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
+    kLog.log("[collapsedRollModifiers] Filtering Out Zeroes", U.objClone(filteredModifierData));
 
     // Adjust the display names to include "Other" where necessary
     if (filteredModifierData.some(({othering}) => othering.includes("all"))) {
@@ -1145,7 +1177,7 @@ class K4Actor extends Actor {
       }
     }
 
-    // kLog.log("[collapsedRollModifiers] Othering Pass", U.objClone(filteredModifierData));
+    kLog.log("[collapsedRollModifiers] Othering Pass", U.objClone(filteredModifierData));
 
     /** Sort the collapsed and filtered modifier data as follows:
      *
@@ -1166,7 +1198,7 @@ class K4Actor extends Actor {
       filteredModifierData.find(({display}) => /^Any\s*(Other)?\s*Roll/.test(display))
     ].filter(U.isDefined);
 
-    // kLog.log("[collapsedRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
+    kLog.log("[collapsedRollModifiers] Collapsed Modifier Data", {moveModifierData, sortedModifierData});
 
     const isContributingTo = (sourceFilter: string, display: string) => {
       if (sourceFilter === "all") { return true; }
@@ -1271,6 +1303,7 @@ class K4Actor extends Actor {
 
   override async _onCreate(...params: Parameters<Actor["_onCreate"]>) {
     super._onCreate(...params);
+    if (!game.user.isGM) { return; }
     if (this.type !== K4ActorType.pc) {return;}
 
     // Set the default tab for the character sheet

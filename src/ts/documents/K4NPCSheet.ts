@@ -195,6 +195,9 @@ const ANIMATIONS = {
   }
 };
 class K4NPCSheet extends ActorSheet {
+  static PreInitialize() {
+    Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc]});
+  }
 
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
