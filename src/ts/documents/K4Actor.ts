@@ -13,6 +13,14 @@ enum K4ActorType {
   pc = "pc",
   npc = "npc"
 }
+
+enum K4CharGenPhase {
+  archetype = "archetype",
+  attributesAndTraits = "attributesAndTraits",
+  details = "details",
+  relations = "relations",
+  finished = "finished"
+}
 // #endregion
 // #region -- TYPES ~
 declare global {
@@ -51,6 +59,7 @@ declare global {
     */
     export namespace SourceSchema {
       export interface PC extends K4Actor.Components.Base {
+        charGenPhase: K4CharGenPhase,
         archetype: Archetype,
         history: string,
         dramaticHooks: [
@@ -262,6 +271,27 @@ class K4Actor extends Actor {
   // #region GETTERS ~
   get user(): Maybe<User> {
     return game.users.find((user) => user.character?.id === this.id)
+  }
+  get charGenPhase(): K4CharGenPhase {
+    if (!this.is(K4ActorType.pc)) {
+      throw new Error("Cannot get charGenPhase for NPCs");
+    }
+    return this.system.charGenPhase;
+  }
+  get nextCharGenPhase(): K4CharGenPhase {
+    if (!this.is(K4ActorType.pc)) {
+      throw new Error("Cannot get nextCharGenPhase for NPCs");
+    }
+    if (this.charGenPhase === K4CharGenPhase.finished) {
+      return K4CharGenPhase.finished;
+    }
+    const phases = Object.values(K4CharGenPhase);
+    const currentIndex = phases.indexOf(this.charGenPhase);
+    const nextIndex = currentIndex + 1;
+    return phases[nextIndex];
+  }
+  get isFinishedCharGen(): boolean {
+    return this.charGenPhase === K4CharGenPhase.finished;
   }
   get archetype(): Maybe<Archetype> {
     return this.is(K4ActorType.pc) ? this.system.archetype : undefined;
@@ -1350,6 +1380,7 @@ class K4Actor extends Actor {
 export default K4Actor;
 
 export {
-  K4ActorType
+  K4ActorType,
+  K4CharGenPhase
 };
 // #endregion

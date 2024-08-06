@@ -355,6 +355,12 @@ $isDebug: false;
       position: fixed;
       top: 0;
       left: 0;
+      // Define a radial gradient for the background
+      background: var(--K4-BLACK) radial-gradient(at 50% 50%, var(--K4-dGREY) 40%, var(--K4-BLACK) 45%);
+      background-size: 100% 35%;
+      background-position: 50% 47%;
+      background-repeat: no-repeat;
+      z-index: 9999;
 
       .archetype-carousel-dragger {
         position: absolute;
@@ -395,13 +401,6 @@ $isDebug: false;
 
 
       * { box-sizing: border-box; }
-
-      // Define a radial gradient for the background
-      background: var(--K4-BLACK) radial-gradient(at 50% 50%, var(--K4-dGREY) 40%, var(--K4-BLACK) 45%);
-      background-size: 100% 35%;
-      background-position: 50% 47%;
-      background-repeat: no-repeat;
-      z-index: 9999;
 
       .archetype-staging {
 
@@ -445,18 +444,20 @@ $isDebug: false;
 
 
             .archetype-carousel-the {
+              visibility: hidden;
               position: absolute;
               font-family: var(--font-heading-1);
               white-space: nowrap;
               font-size: $rem-24;
               transform: translate(-50%, 0%);
               top: 175px;
-              left: 0%;
+              left: 30%;
               z-index: 2;
               text-shadow: build-text-shadow(4px, var(--K4-dBLACK), 8);
 
             }
             .archetype-carousel-name {
+              visibility: hidden;
               position: absolute;
               font-family: var(--font-heading-1);
               white-space: nowrap;
@@ -464,12 +465,13 @@ $isDebug: false;
               color: var(--K4-gGOLD);
               transform: translate(-50%, 0%);
               top: 190px;
-              left: 50%;
+              left: 30%;
               z-index: 2;
               text-shadow: build-text-shadow(6px, var(--K4-dBLACK), 8);
             }
 
             .archetype-description {
+              visibility: hidden;
               position: absolute;
               transform: translate(-50%, 0%);
               top: 250px;
@@ -489,6 +491,13 @@ $isDebug: false;
                 visibility: hidden;
               }
             }
+            &[data-is-selected="true"] {
+              .archetype-carousel-the,
+              .archetype-carousel-name,
+              .archetype-description {
+                visibility: visible;
+              }
+            }
 
             img {
               max-height: 50vh;
@@ -506,6 +515,124 @@ $isDebug: false;
 
         .archetype-carousel-panel {
           display: none;
+        }
+      }
+
+      .archetype-panels {
+        visibility: hidden;
+        position: absolute;
+        top: 60vh;
+        left: 0;
+        height: 40vh;
+        width: 100vw;
+        pointer-events: none;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 30px;
+
+        .archetype-panel {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+
+          h3 {
+            text-align: center;
+            color: var(--K4-color-primary-bright);
+            font-family: var(--font-primary-smallcaps);
+            font-size: $rem-18;
+            text-transform: lowercase;
+          }
+
+          &.archetype-panel-advantages {
+            gap: 5px;
+            h3 {
+              margin-left: -15px;
+            }
+          }
+
+          .archetype-sub-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            &[data-attribute="reason"],
+            &[data-attribute="intuition"] {
+              order: 0;
+            }
+
+            &[data-attribute="perception"] {
+              order: 1;
+            }
+
+            &[data-attribute="coolness"],
+            &[data-attribute="violence"] {
+              order: 2;
+            }
+
+            &[data-attribute="charisma"] {
+              order: 3;
+            }
+
+            &[data-attribute="soul"] {
+              order: 4;
+            }
+
+            &[data-attribute="zero"] {
+              order: 5;
+            }
+
+            .archetype-sub-panel-title {
+              font-size: $rem-10;
+              font-family: var(--font-primary-smallcaps);
+              text-transform: lowercase;
+              // color: var(--K4-bWHITE);
+              margin-left: -15px;
+              border-bottom: 1px solid var(--K4-color-primary-bright);
+              filter: brightness(1.5) saturate(5);
+
+            }
+            .archetype-trait-container {
+              display: flex;
+              flex-direction: row;
+              gap: 5px;
+
+              &[data-is-mandatory="true"] {
+                border-bottom: 2px solid var(--K4-color-primary-bright);
+                border-top: 2px solid var(--K4-color-primary-bright);
+                margin-bottom: 10px;
+              }
+
+
+              .icon-container {
+                --K4-icon-size: 30px;
+                background: transparent;
+                clip-path: none;
+                order: -1;
+                .icon-mask {
+                  height: 100%;
+                  width: 100%;
+                  background: var(--K4-color-primary-bright);
+                }
+
+              }
+
+              .archetype-trait-name {
+                font-size: $rem-14;
+                line-height: 30px;
+                color: var(--K4-color-primary-bright);
+
+                &.neon-glow-strong-red {
+                  color: var(--K4-bWHITE);
+                  font-size: $rem-24;
+                  text-transform: lowercase;
+                  line-height: 27px;
+                  font-family: var(--font-primary-smallcaps);
+                }
+              }
+            }
+          }
         }
       }
 

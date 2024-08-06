@@ -87,7 +87,7 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
               }
               if (!doc) {
                 console.warn(`No such document: ${docName}`);
-                return `<span style='color: red;'>No Such Document: ${docName}</span>`;
+                return `<span class="text-docLink" data-doc-name="${docName}" data-action="open">${docName}</span>`;
               }
               docDisplay ??= doc.name;
               if (dataKey.startsWith("docLink")) {

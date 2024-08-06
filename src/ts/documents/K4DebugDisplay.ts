@@ -4,17 +4,20 @@ import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-inferrable-types
+const IS_DEBUGGING: boolean = false;
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class K4DebugDisplay {
   private static displays = new Map<string, JQuery>();
 
   static Initialize(): void {
+    if (!IS_DEBUGGING) { return };
     this.createDisplay("archetypeInfo", "Archetype Info");
     this.createDisplay("draggerInfo", "Dragger Info");
   }
 
   private static createDisplay(id: string, title: string): void {
+    if (!IS_DEBUGGING) { return };
 
     this.displays.set(id, $("<span />"));
 
@@ -41,6 +44,7 @@ class K4DebugDisplay {
   }
 
   static updateArchetypeInfo(archetype: string, selectedIndex: number, arrayIndex: number, elementIndex: number): void {
+    if (!IS_DEBUGGING) { return };
     const display = this.displays.get("archetypeInfo");
     if (display) {
       // if (archetype) {
@@ -55,6 +59,7 @@ class K4DebugDisplay {
   }
 
   static updateDraggerInfo(dragger: Maybe<Dragger>, actor: K4Actor): void {
+    if (!IS_DEBUGGING) { return };
     if (!dragger) return;
     const dragger$ = $(dragger.target);
     const container$ = dragger$.closest(".pc-initialization");

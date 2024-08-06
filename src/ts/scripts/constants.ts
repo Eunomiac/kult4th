@@ -99,7 +99,12 @@ export const Archetypes = {
     [K4ItemType.advantage]: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],
     [K4ItemType.disadvantage]: ["Nightmares", "Obsession", "Phobia", "Repressed Memories", "Rationalist", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Returned from the Other Side", "Strange Disappearance"],
-    description: "The Academic studies the world from her desk. Everything is interconnected via logical rules of causality, yet she suspects something must be wrong. Pieces refuse to fall into the safe, predictable patterns of common scientific models. Worse, shadowy forces silence new and alternative fields of research. Those who question the scientific establishment and its rational worldview risk disgrace and the destruction of their research, reputation, and revenue. Does she dare to look for the truth?",
+    description: [
+      "The Academic studies the world from her desk.",
+      "Everything is interconnected via logical rules of causality, yet she suspects something must be wrong. Pieces refuse to fall into the safe, predictable patterns of common scientific models. Worse, shadowy forces silence new and alternative fields of research.",
+      "Those who question the scientific establishment and its rational worldview risk disgrace and the destruction of their research, reputation, and revenue.",
+      "Does she dare to look for the truth?"
+    ].join("<br/><br/>"),
     occupation: ["Professor", "Student", "Ph.D. Candidate", "Teacher", "Public Servant", "Advisor", "Politician", "Author", "Television Show Host", "Aristocrat", "Researcher", "Psychologist", "Archaeologist", "Dilettante", "Antiquarian"],
     looks: {
       clothes: ["tweed", "carefree", "ill-fitting", "mottled", "proper", "suit", "casual", "nerdy", "old-fashioned"],
@@ -639,7 +644,7 @@ export const Archetypes = {
   [Archetype.fixer]: {
     label: "Fixer",
     tier: ArchetypeTier.aware,
-    [K4ItemType.advantage]: ["Forked Tongue", "Streetwise", "Ace Up the Sleeve", "Backstab", "Boss", "Extortionist", "Sixth Sense", "Occult Library", "Dabbler in the Occult", "Dreamer", "Enhanced Awareness", "Exorcist", "Magical Intuition", "Thirst for Knowledge"],
+    [K4ItemType.advantage]: ["Forked Tongue", "Streetwise", "Ace Up the Sleeve", "Backstab", "Boss", "Extortionist", "Sixth Sense", "Worldly"],
     [K4ItemType.disadvantage]: ["Competitor", "Cursed", "Greedy", "Jealousy", "Liar", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guilty of Crime", "Heir", "Pact with Dark Forces", "Victim of Crime"],
     description: [
@@ -686,7 +691,7 @@ export const Archetypes = {
     description: [
       "The Occultist seeks the answers to life's mysteries through occult theories.",
       "Ancient tomes, mad sect leaders, and obscure internet forums speak of different dimensions, magical rituals, otherworldly creatures, and powers that can turn men into gods. The Occultist has discovered enough information to begin experimenting with these forces, but not nearly enough to give them any degree of control.",
-      "Magic always comes at a high price, and The Occultist's account is coming due. 42 Chapter"
+      "Magic always comes at a high price, and The Occultist's account is coming due."
     ].join("<br/><br/>"),
     occupation: ["Antiquarian", "Medium", "Exorcist", "Linguist", "Unemployed", "Theologian", "Professor", "Morgue Employee", "Teenager", "Student", "Bureaucrat", "Disability Collector", "Librarian", "Recent Convert", "Thelemic"],
     looks: {
