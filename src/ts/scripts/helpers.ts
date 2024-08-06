@@ -46,7 +46,7 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
       case "insert": {
         switch (dataKey) {
           case "break": {
-            return "<p class='break-elem'></p>";
+            return "<br /><br />";
           }
           case "rollPrompt": {
             const attribute = U.getProp<string>(iData, "system.attribute");

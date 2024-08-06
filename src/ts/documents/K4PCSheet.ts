@@ -86,12 +86,12 @@ export function getIndexFromYRot(rotationY: number, total: number) {
   return U.gsap.utils.clamp(0, total - 1, U.pInt(U.gsap.utils.mapRange(360, 0, 0, total, rotationY)));
 }
 
-export function getYRotFromXPos(x: number, total: number, max: number) {
+export function getYRotFromXPos(x: number, max: number) {
   // x = U.gsap.utils.wrap(-max, max, x);
   return U.gsap.utils.mapRange(max, -max, 360, 0, x);
 }
 
-export function getXPosFromYRot(rotationY: number, total: number, max: number) {
+export function getXPosFromYRot(rotationY: number, max: number) {
   return U.gsap.utils.mapRange(360, 0, max, -max, rotationY);
 }
 
@@ -122,7 +122,7 @@ let VALIDARCHETYPES = Object.fromEntries(Object.entries(Archetypes).filter(([_, 
 const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
   revealCarousel: {
     name: "revealCarousel",
-    effect: (carouselScene$, config) => {
+    effect: (carouselScene$) => {
       const items$ = $(carouselScene$ as JQuery).find(".archetype-carousel-item");
       const tl = U.gsap.timeline();
       tl.from(carouselScene$, {
@@ -198,6 +198,51 @@ const ANIMATIONS = {
     archetypeAdvantages$.css("visibility", "visible");
     archetypeDisadvantages$.css("visibility", "visible");
     archetypeDarkSecrets$.css("visibility", "visible");
+
+    // Assign listeners to each of the trait elements
+    [
+      archetypeAdvantages$,
+      archetypeDisadvantages$,
+      archetypeDarkSecrets$
+    ].forEach((container) => {
+      container.find(".archetype-trait-container").each((_i, cont) => {
+        const container$ = $(cont);
+        const trait = container$.attr("data-trait");
+        const isSelected = container$.attr("data-is-selected") === "true";
+        const isMandatory = container$.attr("data-is-mandatory") === "true";
+
+        container$.on({
+          click: () => {
+            if (isMandatory) { return; }
+            if (isSelected) {
+              kLog.log("[K4PCSheet] deselect", {container: cont, trait$});
+              return;
+            } else {
+              kLog.log("[K4PCSheet] select", {container: cont, trait$});
+              return;
+            }
+          },
+          contextmenu: async () => {
+            const traitItem = game.items.getName(trait!) as Maybe<K4Item>;
+            if (!traitItem) { return; }
+            // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
+            const highestZIndex = Math.max(...$("body").find(".k4-item-sheet").map((_i, sheet) =>
+              U.pInt($(sheet).css("z-index"))
+            ).toArray());
+            if (!traitItem.sheet.rendered) {
+              traitItem.sheet.render(true);
+              await U.sleep(250);
+            }
+            traitItem.sheet.element.css("z-index", highestZIndex + 1);
+          }
+        })
+        const trait$ = $(cont).find(".archetype-trait");
+        trait$.on("click", () => {
+          kLog.log("[K4PCSheet] archetypeAdvantages$", {container: cont, trait$});
+        });
+      });
+    });
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return (U.gsap.timeline({paused: true})
       .addLabel("dark")
@@ -303,7 +348,7 @@ const ANIMATIONS = {
     };
 
     const updateRotation = (x: number) => {
-      const rotation = getYRotFromXPos(x, totalItems, maxDistance);
+      const rotation = getYRotFromXPos(x, maxDistance);
       gsap.set(carousel$, { rotationX: 0, rotationY: rotation, rotationZ: 0 });
       items$.each((_i, item) => {
         gsap.set(item, { rotationY: -rotation });
@@ -318,13 +363,7 @@ const ANIMATIONS = {
     // Function to update rotation based on drag position
     const snapToNearestArchetype = (x: number, isCompleting = false) => {
       const newIndex = getIndexFromXPos(x, totalItems, maxDistance);
-      const oldElem = getElementFromIndex(carousel$, selArchetypeIndex);
-      const newElem = getElementFromIndex(carousel$, newIndex);
-      const newTimeline = ($(newElem).data("archetypeTimeline") as gsap.core.Timeline);
       if (newIndex !== selArchetypeIndex) {
-        const oldTimeline = ($(oldElem).data("archetypeTimeline") as gsap.core.Timeline);
-        // oldTimeline.tweenTo("light", {duration: 2});
-        // newTimeline.tweenTo("light", {duration: 2});
         actor.archetype = Object.keys(VALIDARCHETYPES)[newIndex] as Archetype;
         K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
       }
@@ -340,9 +379,6 @@ const ANIMATIONS = {
             void thisTimeline.tweenTo("selected", {duration: 2});
           }
         });
-
-
-
       }
       selArchetypeIndex = newIndex;
       return getXPosFromIndex(newIndex, totalItems, maxDistance);
@@ -405,14 +441,14 @@ const ANIMATIONS = {
       K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), actor);
     });
 
-    // Update rotation on window resize
-    window.addEventListener("resize", () => {
-      const newMaxDistance = window.innerWidth / 2;
-      const currentRotation = gsap.getProperty(carousel$, "rotationY") as number;
-      const newX = (currentRotation / 180) * newMaxDistance;
-      gsap.set(dragger$, { x: newX });
-      updateRotation(newX);
-    });
+    // // Update rotation on window resize
+    // window.addEventListener("resize", () => {
+    //   const newMaxDistance = window.innerWidth / 2;
+    //   const currentRotation = gsap.getProperty(carousel$[0], "rotationY") as number;
+    //   const newX = (currentRotation / 180) * newMaxDistance;
+    //   gsap.set(dragger$, { x: newX });
+    //   updateRotation(newX);
+    // });
 
     const startX = getXPosFromIndex(selArchetypeIndex, totalItems, maxDistance);
     updateRotation(startX);
@@ -1241,7 +1277,7 @@ class K4PCSheet extends ActorSheet {
 
     const tData: ArchetypeCarousel.TraitData = {
       name: traitName,
-      img: traitItem.img ?? "",
+      img: (traitItem.img ?? "").replace(/\(|\)/g, ""),
       tooltip: traitItem.shortDesc,
       isSelected: false,
       isMandatory: false,
@@ -1532,11 +1568,33 @@ class K4PCSheet extends ActorSheet {
     }
     html.find(".tab.front").css("--num-modifier-rows", rows);
   }
+//   void this.activateChargenArchetypeListeners(html);
+//   break;
+// }
+// case K4CharGenPhase.attributesAndTraits: {
+//   void this.activateChargenAttributesAndTraitsListeners(html);
+//   break;
+// }
+// case K4CharGenPhase.details: {
+//   void this.activateChargenDetailsListeners(html);
+//   break;
+// }
+// case K4CharGenPhase.relations: {
+//   void this.activateChargenRelationsListeners(html);
 
-
-  async activateCarouselListeners(html: JQuery) {
+  async activateChargenArchetypeListeners(html: JQuery) {
     const carouselScene$ = html.find(".archetype-staging");
     await ANIMATIONS.archetypeCarouselTimeline(carouselScene$, 200, this.actor);
+
+  }
+  async activateChargenAttributesAndTraitsListeners(html: JQuery) {
+    await Promise.resolve(html);
+  }
+  async activateChargenDetailsListeners(html: JQuery) {
+    await Promise.resolve(html);
+  }
+  async activateChargenRelationsListeners(html: JQuery) {
+    await Promise.resolve(html);
   }
   activateNavMenuListeners(html: JQuery): Array<Tuple<HTMLElement, GsapAnimation>> {
     const self = this;
@@ -2267,8 +2325,28 @@ class K4PCSheet extends ActorSheet {
       ).bind(this)
     });
 
-    if (this.actor.is(K4ActorType.pc) && !this.actor.getFlag("kult4th", "isInitialized")) {
-      void this.activateCarouselListeners(html);
+    if (this.actor.is(K4ActorType.pc) && !this.actor.isFinishedCharGen) {
+      switch (this.actor.charGenPhase) {
+        case K4CharGenPhase.archetype: {
+          void this.activateChargenArchetypeListeners(html);
+          break;
+        }
+        case K4CharGenPhase.attributesAndTraits: {
+          void this.activateChargenAttributesAndTraitsListeners(html);
+          break;
+        }
+        case K4CharGenPhase.details: {
+          void this.activateChargenDetailsListeners(html);
+          break;
+        }
+        case K4CharGenPhase.relations: {
+          void this.activateChargenRelationsListeners(html);
+          break;
+        }
+        case K4CharGenPhase.finished: {
+          break;
+        }
+      }
     }
   }
 

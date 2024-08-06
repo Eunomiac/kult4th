@@ -1,9 +1,11 @@
 // #region IMPORTS ~
 import K4Item from "./K4Item.js";
 import C from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import {K4ItemType} from "./K4Item";
 import K4ActiveEffect from "./K4ActiveEffect.js";
+import {Dragger} from "../libraries.js";
 // #endregion
 
 type K4ItemSheetOptions = DocumentSheetOptions & {
@@ -30,7 +32,10 @@ export default class K4ItemSheet extends ItemSheet {
     if (this.type === K4ItemType.gmtracker) {
       return "systems/kult4th/templates/sheets/gmtracker-sheet.hbs";
     }
-    return "systems/kult4th/templates/sheets/item-sheet.hbs";
+    if (this.isUnlocked) {
+      return "systems/kult4th/templates/sheets/item-sheet.hbs";
+    }
+    return "systems/kult4th/templates/sheets/item-sheet-locked.hbs";
   }
   get type() { return this.item.type; }
   get subType() { return this.item.system.subType; }
@@ -40,28 +45,28 @@ export default class K4ItemSheet extends ItemSheet {
   constructor(item: K4Item, options: Partial<ItemSheet.Options> = {}) {
     super(item, options);
 
-    switch (item.type) {
-      case K4ItemType.advantage: {
-        this.options.classes.push("k4-theme-gold");
-        break;
-      }
-      case K4ItemType.darksecret: {
-        this.options.classes.push("k4-theme-dark");
-        break;
-      }
-      case K4ItemType.disadvantage: {
-        this.options.classes.push("k4-theme-red");
-        break;
-      }
-      case K4ItemType.gmtracker: {
-        this.options.classes.push("k4-gmtracker-sheet");
-        break;
-      }
-      default: {
-        this.options.classes.push("k4-theme-white");
-        break;
-      }
-    }
+    // switch (item.type) {
+    //   case K4ItemType.advantage: {
+    //     this.options.classes.push("k4-theme-gold");
+    //     break;
+    //   }
+    //   case K4ItemType.darksecret: {
+    //     this.options.classes.push("k4-theme-dark");
+    //     break;
+    //   }
+    //   case K4ItemType.disadvantage: {
+    //     this.options.classes.push("k4-theme-red");
+    //     break;
+    //   }
+    //   case K4ItemType.gmtracker: {
+    //     this.options.classes.push("k4-gmtracker-sheet");
+    //     break;
+    //   }
+    //   default: {
+    //     this.options.classes.push("k4-theme-white");
+    //     break;
+    //   }
+    // }
   }
 
   override async getData() {
@@ -88,6 +93,128 @@ export default class K4ItemSheet extends ItemSheet {
     const self = this;
     const itemDoc = this.document as K4Item;
     const parentActor: Maybe<K4Actor> = this.actor instanceof K4Actor ? this.actor : undefined;
+
+    if (!this.isUnlocked) {
+      // Locate top sheet element
+      const sheet$ = html.closest(".sheet");
+      // Ensure element (a JQuery object) has pointer events enabled
+      sheet$.css("pointerEvents", "all");
+
+      // Remove any other event listeners from sheet$
+      sheet$.off("dragstart");
+      sheet$.off("dragend");
+      sheet$.off("throwupdate");
+      sheet$.off("throwcomplete");
+      sheet$.off("contextmenu");
+      sheet$.off("dblclick");
+      sheet$.off("wheel");
+      // Helper function that will return true if the sheet is near the edges of the screen
+      function isNearEdge(buffer = -25): boolean {
+        // If the sheet is within buffer of the edge of the screen, return true
+        const sheetRect = sheet$[0].getBoundingClientRect();
+        return sheetRect.left < (0 + buffer)
+          || sheetRect.right > (window.innerWidth - buffer)
+          || sheetRect.top < (0 + buffer)
+          || sheetRect.bottom > (window.innerHeight - buffer);
+      }
+
+      // Creating a Draggable instance for the sheet with InertiaPlugin enabled
+      const edgeTimeline = gsap.timeline({paused: true})
+        .fromTo(sheet$, {
+          scale: 1,
+          opacity: 1,
+          filter: "brightness(1)"
+        }, {
+          scale: 0,
+          opacity: 0,
+          filter: "brightness(0)",
+          duration: 3,
+          ease: "slow(0.3, 0.3, false)",
+          onComplete() {
+            void self.close();
+          }
+        })
+      const draggable = new Dragger(sheet$, {
+        type: "x,y",
+        inertia: true,
+        bounds: {
+          top: -50,
+          left: -50,
+          width: window.innerWidth + 100,
+          height: window.innerHeight + 100
+        },
+        allowEventDefault: false,
+        dragResistance: 0,
+        edgeResistance: 0.85,
+        // throwResistance: 1500,
+        overshootTolerance: 0.2,
+        liveSnap: {
+          points: function(this: Dragger, point: Point) {
+            return {
+              x: U.pInt(point.x),
+              y: U.pInt(point.y)
+            };
+          }
+        },
+        onDragStart(this: Dragger){
+          this.target.classList.add("dragging");
+          edgeTimeline.timeScale(2).reverse();
+        },
+        onDragEnd(this: Dragger){
+          if (isNearEdge()) {
+            edgeTimeline.timeScale(1).play();
+          }
+          this.target.classList.remove("dragging");
+        },
+        onThrowComplete: function(this: Dragger) {
+          if (isNearEdge()) {
+            edgeTimeline.timeScale(1).play();
+          } else {
+            edgeTimeline.timeScale(2).reverse();
+          }
+        }
+      });
+
+      /** We need to add more listeners to the sheet$ object:
+       * - a contextmenu listener to close the sheet
+       * - a wheel listener to scale the sheet up or down based on the wheel delta
+       */
+      sheet$.on({
+        contextmenu: async (ev) => {
+          kLog.log("[K4ItemSheet] contextmenu", {ev});
+          sheet$.css("pointerEvents", "none");
+          await U.sleep(100);
+          void edgeTimeline.timeScale(1).reversed(false).play().then(() => { void self.close(); });
+        },
+        dblclick: async (ev) => {
+          kLog.log("[K4ItemSheet] dblclick", {ev});
+          sheet$.css("pointerEvents", "none");
+          await U.sleep(100);
+          void edgeTimeline.timeScale(1).reversed(false).play().then(() => { void self.close(); });
+        },
+        wheel: (ev: WheelEvent) => {
+          // Check if there's an ongoing scale animation to prevent multiple scale operations simultaneously
+          if (gsap.isTweening(sheet$)) {
+            return;
+          }
+          const origEvent = (ev as WheelEvent & {originalEvent: WheelEvent}).originalEvent;
+          const currentScale = U.pFloat(U.get(sheet$[0], "scale") || "1", 2);
+          let newScale = currentScale;
+          kLog.log("[K4ItemSheet] wheel", {ev, currentScale, newScale, deltaY: ev.deltaY});
+          if (origEvent.deltaY < 0) {
+            newScale *= 1.4;
+          } else {
+            newScale /= 1.4;
+          }
+          // Use GSAP to make a smooth tween
+          gsap.to(sheet$, {
+            scale: newScale,
+            duration: 0.15,
+            ease: "none"
+          });
+        }
+      });
+    }
 
     $(() => {
       kLog.log("ITEM SHEET CONTEXT", {this: this, self, html});

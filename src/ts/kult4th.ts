@@ -140,6 +140,7 @@ async function PreloadHBSTemplates() {
       "pc-sheet",
       "npc-sheet",
       "item-sheet",
+      "item-sheet-locked",
       "gmtracker-sheet",
       "active-effect-sheet",
       "pc-initialization",

@@ -11069,7 +11069,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You have uncovered some horrid truth, which brings reality's very nature into question.",
           "trigger": "",
-          "outro": "%insert.break%It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion.%insert.break%The Illusion's keepers are now after you and it is only a matter of time before they find you.",
+          "outro": "It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion.%insert.break%The Illusion's keepers are now after you and it is only a matter of time before they find you.",
           "listRefs": [
             "drives"
           ],

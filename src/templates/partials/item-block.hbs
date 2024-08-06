@@ -2,7 +2,7 @@
 
 {{log (concat "[ITEM-BLOCK: " item.name "] this & item") this item}}
 {{#with item as |item|}}
-	<main class="kult-text-container tab-content kult-{{item.type}}-container {{../cssClass}}">
+	<main class="kult-text-container tab-content kult-move-container {{../cssClass}}">
 
     {{#if item.system.parentItem.type}}
     {{> "systems/kult4th/templates/components/icon.hbs"

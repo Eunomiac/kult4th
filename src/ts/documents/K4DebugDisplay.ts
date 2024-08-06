@@ -1,22 +1,24 @@
 import { Dragger, InertiaPlugin } from "../libraries.js";
 import { getDistanceFromSelected, getXPosFromIndex,getYRotFromIndex, getIndexFromYRot, getYRotFromXPos, getXPosFromYRot,getIndexFromXPos } from "./K4PCSheet.js";
 import U from "../scripts/utilities.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Actor from "./K4Actor.js";
 
 
 // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-const IS_DEBUGGING: boolean = false;
+const IS_DEBUGGING = false;
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class K4DebugDisplay {
-  private static displays = new Map<string, JQuery>();
+  private static readonly displays = new Map<string, JQuery>();
 
   static Initialize(): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!IS_DEBUGGING) { return };
     this.createDisplay("archetypeInfo", "Archetype Info");
     this.createDisplay("draggerInfo", "Dragger Info");
   }
 
   private static createDisplay(id: string, title: string): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!IS_DEBUGGING) { return };
 
     this.displays.set(id, $("<span />"));
@@ -44,6 +46,7 @@ class K4DebugDisplay {
   }
 
   static updateArchetypeInfo(archetype: string, selectedIndex: number, arrayIndex: number, elementIndex: number): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!IS_DEBUGGING) { return };
     const display = this.displays.get("archetypeInfo");
     if (display) {
@@ -59,8 +62,9 @@ class K4DebugDisplay {
   }
 
   static updateDraggerInfo(dragger: Maybe<Dragger>, actor: K4Actor): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!IS_DEBUGGING) { return };
-    if (!dragger) return;
+    if (!dragger) { return; }
     const dragger$ = $(dragger.target);
     const container$ = dragger$.closest(".pc-initialization");
     const carousel$ = container$.find(".archetype-carousel");
@@ -74,8 +78,6 @@ class K4DebugDisplay {
     const yRot = U.pFloat(U.get(carousel$[0], "rotationY"), 0);
     const chosenArchetype = actor.archetype;
     const chosenArchetypeIndex = U.pInt(carousel$.find(`[data-archetype="${chosenArchetype}"]`).attr("data-index"));
-    const isSelectedArchetype = carousel$.find(`[data-is-selected="true"]`).attr("data-archetype")!;
-    const isSelectedArchetypeIndex = U.pInt(carousel$.find(`[data-is-selected="true"]`).attr("data-index"));
     const usingArchetypeIndex = getIndexFromYRot(yRot, items$.length);
     const usingArchetype = carousel$.find(`[data-index="${usingArchetypeIndex}"]`).attr("data-archetype")!;
     const lines: string[] = [
@@ -88,8 +90,8 @@ class K4DebugDisplay {
       " ",
       `getYRotFromIndex: ${U.pInt(getYRotFromIndex(usingArchetypeIndex, items$.length),)}`,
       `getIndexFromYRot: ${getIndexFromYRot(yRot, items$.length)}`,
-      `getYRotFromXPos: ${U.pInt(getYRotFromXPos(xPos, items$.length, xMax))}`,
-      `getXPosFromYRot: ${U.pFloat(getXPosFromYRot(yRot, items$.length, xMax), 2)}`,
+      `getYRotFromXPos: ${U.pInt(getYRotFromXPos(xPos, xMax))}`,
+      `getXPosFromYRot: ${U.pFloat(getXPosFromYRot(yRot, xMax), 2)}`,
       `getIndexFromXPos: ${getIndexFromXPos(xPos, items$.length, xMax)}`,
       `getXPosFromIndex: ${U.pFloat(getXPosFromIndex(usingArchetypeIndex, items$.length, xMax), 2)}`,
       `Velocity: ${InertiaPlugin.getVelocity(dragger.target, "x").toFixed(2)}`,
