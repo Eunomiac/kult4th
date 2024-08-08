@@ -156,14 +156,14 @@
         #twitchy-eye {
           position: absolute;
           transform: translate(-50%, -50%);
-          height: 200px;
+          height: 30px;
           width: 600px;
           z-index: 0;
           display: block;
 
-          &.size-1 { height: 100px; }
-          &.size-2 { height: 175px; }
-          &.size-3 { height: 250px; }
+          &.size-1 { height: 30px; }
+          &.size-2 { height: 60px; }
+          &.size-3 { height: 90px; }
 
           &.intensity-1 { filter: brightness(1) sepia(0) hue-rotate(-45deg) saturate(1); }
           &.intensity-2 { filter: brightness(2) sepia(0) hue-rotate(-45deg) saturate(1); }
@@ -172,7 +172,7 @@
           &.position-1 { top: 60px; left: 700px; }
           &.position-2 { top: 125px; left: 500px; }
           &.position-3 { top: 260px; left: 50px; }
-          &.position-4 { top: 330px; left: 110px; }
+          &.position-4 { top: 360px; left: 110px; }
           &.position-5 { top: 570px; left: 170px; }
           &.position-6 { top: 320px; left: 430px; }
           &.position-7 { top: 520px; left: 450px; }

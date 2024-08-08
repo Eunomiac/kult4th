@@ -3,7 +3,7 @@ import K4Item, {K4ItemType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4ActiveEffect, {} from "./K4ActiveEffect.js";
-import C, {K4Attribute, Archetype, K4Stability, K4ConditionType, K4WoundType} from "../scripts/constants.js";
+import C, {K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 // #endregion
 
@@ -45,22 +45,27 @@ declare global {
         modDef: K4Roll.ModDefinition,
         isApplyingToRolls: boolean
       }
-
-      export interface Base {
-        description: string,
-        wounds: Record<IDString, Wound>,
-        conditions: Record<IDString, Condition>,
-        penalties: Record<IDString, number>;
-      }
     }
 
     /**
     * Describes the data structure as defined in template.json for each actor type
     */
     export namespace SourceSchema {
-      export interface PC extends K4Actor.Components.Base {
+      export interface PC {
         charGenPhase: K4CharGenPhase,
-        archetype: Archetype,
+        archetype: K4Archetype,
+        description: string,
+        looks: {
+          clothes: string,
+          face: string,
+          eyes: string,
+          body: string
+        },
+        charGen: {
+          selAdvantages: string[],
+          selDisadvantages: string[],
+          selDarkSecrets: string[]
+        },
         history: string,
         dramaticHooks: [
           {
@@ -73,6 +78,8 @@ declare global {
           }
         ],
         attributes: Record<K4CharAttribute, ValueMax>,
+        wounds: Record<IDString, Components.Wound>,
+        conditions: Record<IDString, Components.Condition>,
         modifiers: {
           wounds_serious: K4Roll.ModDefinition[],
           wounds_critical: K4Roll.ModDefinition[],
@@ -91,7 +98,9 @@ declare global {
         isSheetLocked: boolean;
       }
 
-      export type NPC = K4Actor.Components.Base
+      export interface NPC {
+        description: string
+      }
     }
 
     /**
@@ -291,12 +300,15 @@ class K4Actor extends Actor {
     return phases[nextIndex];
   }
   get isFinishedCharGen(): boolean {
-    return this.charGenPhase === K4CharGenPhase.finished;
+    // return true;
+    return CONFIG.debug.isDisablingCharGen
+      ? true
+      : this.charGenPhase === K4CharGenPhase.finished;
   }
-  get archetype(): Maybe<Archetype> {
+  get archetype(): Maybe<K4Archetype> {
     return this.is(K4ActorType.pc) ? this.system.archetype : undefined;
   }
-  set archetype(archetype: Archetype) {
+  set archetype(archetype: K4Archetype) {
     if (!this.is(K4ActorType.pc)) {return;}
     void this.update({
       "system.archetype": archetype
@@ -415,9 +427,11 @@ class K4Actor extends Actor {
   get relations() {return this.getItemsOfType(K4ItemType.relation);}
   get derivedItems() {return [...this.items].filter((item: K4Item): item is K4Item & K4SubItem => item.isSubItem());}
   get wounds(): Partial<Record<IDString, K4Actor.Components.Wound>> {
+    if (!this.is(K4ActorType.pc)) {return {};}
     return this.system.wounds;
   }
   get conditions(): Partial<Record<IDString, K4Actor.Components.Condition>> {
+    if (!this.is(K4ActorType.pc)) {return {};}
     return this.system.conditions;
   }
   get wounds_serious() {return Object.values(this.wounds).filter((wound) => wound && !wound.isCritical);}
@@ -746,6 +760,67 @@ class K4Actor extends Actor {
     return attributeMap;
   }
   // #endregion
+
+  // #region CHARGEN ~
+  isCharGenSelected(traitName: string) {
+    if (this.type !== K4ActorType.pc) {return false;}
+    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
+    const {selAdvantages, selDisadvantages, selDarkSecrets} = pcData.charGen;
+    // kLog.log("isCharGenSelected", traitName, {selAdvantages, selDisadvantages, selDarkSecrets, isSelected: [
+    //   ...selAdvantages.map((adv) => adv.replace(/^!?/, "")),
+    //   ...selDisadvantages.map((dis) => dis.replace(/^!?/, "")),
+    //   ...selDarkSecrets.map((ds) => ds.replace(/^!?/, ""))
+    // ].includes(traitName.replace(/^!?/, ""))});
+    return [
+      ...selAdvantages.map((adv) => adv.replace(/^!?/, "")),
+      ...selDisadvantages.map((dis) => dis.replace(/^!?/, "")),
+      ...selDarkSecrets.map((ds) => ds.replace(/^!?/, ""))
+    ].includes(traitName.replace(/^!?/, ""));
+  }
+
+  async charGenSelect(traitName: string) {
+    if (this.type !== K4ActorType.pc) {return;}
+    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
+    let {selAdvantages, selDisadvantages, selDarkSecrets} = pcData.charGen;
+    const item = game.items.getName(traitName) as Maybe<K4Item>;
+    if (!item) { return; }
+    switch (item.type) {
+      case K4ItemType.advantage: {
+        selAdvantages = U.unique([...selAdvantages, traitName]);
+        await this.update({"system.charGen.selAdvantages": selAdvantages});
+        break;
+      }
+      case K4ItemType.disadvantage: {
+        selDisadvantages = U.unique([...selDisadvantages, traitName]);
+        await this.update({"system.charGen.selDisadvantages": selDisadvantages});
+        break;
+      }
+      case K4ItemType.darksecret: {
+        selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
+        await this.update({"system.charGen.selDarkSecrets": selDarkSecrets});
+        break;
+      }
+    }
+  }
+
+  async charGenDeselect(traitName: string) {
+    if (this.type !== K4ActorType.pc) {return;}
+    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
+    const {selAdvantages, selDisadvantages, selDarkSecrets} = pcData.charGen;
+    if (selAdvantages.includes(traitName)) {
+      U.pullElement(selAdvantages, traitName);
+      await this.update({"system.charGen.selAdvantages": selAdvantages});
+    } else if (selDisadvantages.includes(traitName)) {
+      U.pullElement(selDisadvantages, traitName);
+      await this.update({"system.charGen.selDisadvantages": selDisadvantages});
+    } else if (selDarkSecrets.includes(traitName)) {
+      U.pullElement(selDarkSecrets, traitName);
+      await this.update({"system.charGen.selDarkSecrets": selDarkSecrets});
+    }
+  }
+  // #endregion
+
+
 
   // #region STABILITY & WOUNDS ~
   /**

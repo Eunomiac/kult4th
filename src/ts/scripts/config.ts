@@ -1,4 +1,4 @@
-import {Colors, K4Attribute} from "./constants.js";
+import {Colors, K4Attribute, K4Archetype} from "./constants.js";
 
 const K4Config = {
   colors: Colors,
@@ -13,7 +13,9 @@ const K4Config = {
     [K4Attribute.fortitude]: "kult4th.trait.fortitude",
     [K4Attribute.willpower]: "kult4th.trait.willpower",
     [K4Attribute.reflexes]: "kult4th.trait.reflexes"
-  }
-} as const;
+  },
+  isCharGenInitialized: false,
+  charGenIsShowing: null as null | K4Archetype
+};
 
 export default K4Config;

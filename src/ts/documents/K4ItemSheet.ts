@@ -87,6 +87,22 @@ export default class K4ItemSheet extends ItemSheet {
     return context;
   }
 
+  override async close() {
+    if (!this.rendered) { return; }
+    this.element.css("pointer-events", "none");
+    await U.gsap.to(this.element, {
+      scale: 0.85,
+      x: "+=300",
+      y: "-=100",
+      // skewX: -40,
+      opacity: 0,
+      filter: "blur(100px)",
+      duration: 0.5,
+      ease: "power2"
+    });
+    return super.close();
+  }
+
   override activateListeners(html: JQuery): void {
 
     super.activateListeners(html);
@@ -108,32 +124,7 @@ export default class K4ItemSheet extends ItemSheet {
       sheet$.off("contextmenu");
       sheet$.off("dblclick");
       sheet$.off("wheel");
-      // Helper function that will return true if the sheet is near the edges of the screen
-      function isNearEdge(buffer = -25): boolean {
-        // If the sheet is within buffer of the edge of the screen, return true
-        const sheetRect = sheet$[0].getBoundingClientRect();
-        return sheetRect.left < (0 + buffer)
-          || sheetRect.right > (window.innerWidth - buffer)
-          || sheetRect.top < (0 + buffer)
-          || sheetRect.bottom > (window.innerHeight - buffer);
-      }
 
-      // Creating a Draggable instance for the sheet with InertiaPlugin enabled
-      const edgeTimeline = gsap.timeline({paused: true})
-        .fromTo(sheet$, {
-          scale: 1,
-          opacity: 1,
-          filter: "brightness(1)"
-        }, {
-          scale: 0,
-          opacity: 0,
-          filter: "brightness(0)",
-          duration: 3,
-          ease: "slow(0.3, 0.3, false)",
-          onComplete() {
-            void self.close();
-          }
-        })
       const draggable = new Dragger(sheet$, {
         type: "x,y",
         inertia: true,
@@ -158,20 +149,9 @@ export default class K4ItemSheet extends ItemSheet {
         },
         onDragStart(this: Dragger){
           this.target.classList.add("dragging");
-          edgeTimeline.timeScale(2).reverse();
         },
         onDragEnd(this: Dragger){
-          if (isNearEdge()) {
-            edgeTimeline.timeScale(1).play();
-          }
           this.target.classList.remove("dragging");
-        },
-        onThrowComplete: function(this: Dragger) {
-          if (isNearEdge()) {
-            edgeTimeline.timeScale(1).play();
-          } else {
-            edgeTimeline.timeScale(2).reverse();
-          }
         }
       });
 
@@ -180,17 +160,11 @@ export default class K4ItemSheet extends ItemSheet {
        * - a wheel listener to scale the sheet up or down based on the wheel delta
        */
       sheet$.on({
-        contextmenu: async (ev) => {
-          kLog.log("[K4ItemSheet] contextmenu", {ev});
-          sheet$.css("pointerEvents", "none");
-          await U.sleep(100);
-          void edgeTimeline.timeScale(1).reversed(false).play().then(() => { void self.close(); });
+        contextmenu: (ev) => {
+          void self.close();
         },
-        dblclick: async (ev) => {
-          kLog.log("[K4ItemSheet] dblclick", {ev});
-          sheet$.css("pointerEvents", "none");
-          await U.sleep(100);
-          void edgeTimeline.timeScale(1).reversed(false).play().then(() => { void self.close(); });
+        dblclick: (ev) => {
+          void self.close();
         },
         wheel: (ev: WheelEvent) => {
           // Check if there's an ongoing scale animation to prevent multiple scale operations simultaneously

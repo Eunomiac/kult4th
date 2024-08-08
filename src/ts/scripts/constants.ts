@@ -22,7 +22,7 @@ export enum K4Attribute {
   soul = "soul"
 }
 
-export enum Archetype {
+export enum K4Archetype {
   academic = "academic",
   agent = "agent",
   artist = "artist",
@@ -82,7 +82,7 @@ export enum K4WoundType {
 }
 
 export const Archetypes = {
-  [Archetype.sleeper]: {
+  [K4Archetype.sleeper]: {
     label: "Sleeper",
     tier: ArchetypeTier.asleep,
     [K4ItemType.advantage]: [],
@@ -93,7 +93,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.academic]: {
+  [K4Archetype.academic]: {
     label: "Academic",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Academic Network", "Authority", "Elite Education", "Collector", "Data Retrieval", "Expert", "Occult Studies", "Elite Sport (Athletic)", "Elite Sport (Contact)", "Elite Sport (Fencing)"],
@@ -140,7 +140,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.agent]: {
+  [K4Archetype.agent]: {
     label: "Agent",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Moles", "Burglar", "Analyst", "Explosives Expert", "Tracer", "Quick Thinker", "Field Agent", "Endure Trauma"],
@@ -182,7 +182,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.artist]: {
+  [K4Archetype.artist]: {
     label: "Artist",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Artistic Talent", "Fascination", "Notorious", "Observant", "Body Awareness", "Enhanced Awareness", "Forbidden Inspiration", "Snake Charmer"],
@@ -224,7 +224,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.avenger]: {
+  [K4Archetype.avenger]: {
     label: "Avenger",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Animal Speaker", "Instinct", "Enhanced Awareness", "Intimidating", "Survival Instinct", "Code of Honor", "Eye for an Eye", "Rage"],
@@ -265,7 +265,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.broken]: {
+  [K4Archetype.broken]: {
     label: "Broken",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Street Contacts", "Intuitive", "Daredevil", "Contagious Insanity", "Enhanced Awareness", "Magical Intuition", "Sixth Sense", "Wayfinder"],
@@ -308,7 +308,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.careerist]: {
+  [K4Archetype.careerist]: {
     label: "Careerist",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Awe-Inspiring", "Influential Friends", "Network of Contacts", "Notorious", "Daredevil", "Puppeteer", "At Any Cost", "Opportunist"],
@@ -350,7 +350,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.criminal]: {
+  [K4Archetype.criminal]: {
     label: "Criminal",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Streetwise", "Burglar", "Escape Artist", "Sixth Sense", "Deadly Stare", "Enforcer", "Gang Leader", "Streetfighter"],
@@ -392,7 +392,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.cursed]: {
+  [K4Archetype.cursed]: {
     label: "Cursed",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Occult Studies", "Bound", "Magical Intuition", "Death Drive", "Ruthless", "Desperate", "Sealed Fate", "To the Last Breath"],
@@ -435,7 +435,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.deceiver]: {
+  [K4Archetype.deceiver]: {
     label: "Deceiver",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Erotic", "Impostor", "Seducer", "Backstab", "Eye for Detail", "Intuitive", "Grudge", "Manipulative"],
@@ -477,7 +477,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.descendant]: {
+  [K4Archetype.descendant]: {
     label: "Descendant",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Influential Friends", "Intuitive", "Occult Library", "Artifact", "Bound", "Enhanced Awareness", "Inner Power", "Watchers"],
@@ -518,7 +518,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.detective]: {
+  [K4Archetype.detective]: {
     label: "Detective",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Fast Talk", "Interrogator", "Instinct", "Read a Crowd", "Shadow", "Crime Scene Investigator", "Dreamer", "Enhanced Awareness"],
@@ -559,7 +559,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.doll]: {
+  [K4Archetype.doll]: {
     label: "Doll",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Perpetual Victim", "Backstab", "Ice Cold", "Sneak", "Divine", "Magnetic Attraction", "Endure Trauma", "Gritted Teeth"],
@@ -600,7 +600,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.drifter]: {
+  [K4Archetype.drifter]: {
     label: "Drifter",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Street Contacts", "Driver", "Improviser", "Character Actor", "Vigilant", "Wanderer", "Artifact", "Enhanced Awareness"],
@@ -641,7 +641,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.fixer]: {
+  [K4Archetype.fixer]: {
     label: "Fixer",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Forked Tongue", "Streetwise", "Ace Up the Sleeve", "Backstab", "Boss", "Extortionist", "Sixth Sense", "Worldly"],
@@ -682,7 +682,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.occultist]: {
+  [K4Archetype.occultist]: {
     label: "Occultist",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Crafty", "Occult Library", "Dabbler in the Occult", "Dreamer", "Enhanced Awareness", "Exorcist", "Magical Intuition", "Thirst for Knowledge"],
@@ -723,7 +723,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.prophet]: {
+  [K4Archetype.prophet]: {
     label: "Prophet",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Charismatic Aura", "Cult Leader", "Enhanced Awareness", "Exorcist", "Lay on Hands", "Voice of Insanity", "Divine Champion", "Good Samaritan"],
@@ -764,7 +764,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.ronin]: {
+  [K4Archetype.ronin]: {
     label: "Ronin",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Weapon Master (Melee)", "Weapon Master (Firearms)", "Chameleon", "Exit Strategy", "Manhunter", "Sixth Sense", "Lightning Fast", "Sniper", "Jaded"],
@@ -805,7 +805,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.scientist]: {
+  [K4Archetype.scientist]: {
     label: "Scientist",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Battlefield Medicine", "Inventor", "Scientist", "Enhanced Awareness", "Genius", "Implanted Messages", "Arcane Researcher", "Workaholic"],
@@ -846,7 +846,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.seeker]: {
+  [K4Archetype.seeker]: {
     label: "Seeker",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Parkour", "Access the Dark Net", "Keen-Eyed", "Hacker", "Prepared", "Enhanced Awareness", "Stubborn", "Endure Trauma"],
@@ -892,7 +892,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.veteran]: {
+  [K4Archetype.veteran]: {
     label: "Veteran",
     tier: ArchetypeTier.aware,
     [K4ItemType.advantage]: ["Hunter", "Instinct", "Survivalist", "Voice of Pain", "Martial Arts Expert", "Officer", "Dead Shot", "Hardened"],
@@ -932,7 +932,7 @@ export const Archetypes = {
       }
     ]
   },
-  [Archetype.abomination]: {
+  [K4Archetype.abomination]: {
     label: "Abomination",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],
@@ -943,7 +943,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.deathMagician]: {
+  [K4Archetype.deathMagician]: {
     label: "Death Magician",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],
@@ -954,7 +954,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.disciple]: {
+  [K4Archetype.disciple]: {
     label: "Disciple",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],
@@ -965,7 +965,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.dreamMagician]: {
+  [K4Archetype.dreamMagician]: {
     label: "Dream Magician",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],
@@ -976,7 +976,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.madnessMagician]: {
+  [K4Archetype.madnessMagician]: {
     label: "Madness Magician",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],
@@ -987,7 +987,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.passionMagician]: {
+  [K4Archetype.passionMagician]: {
     label: "Passion Magician",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],
@@ -998,7 +998,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.revenant]: {
+  [K4Archetype.revenant]: {
     label: "Revenant",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],
@@ -1009,7 +1009,7 @@ export const Archetypes = {
     looks: {},
     relations: []
   },
-  [Archetype.timeAndSpaceMagician]: {
+  [K4Archetype.timeAndSpaceMagician]: {
     label: "Time and Space Magician",
     tier: ArchetypeTier.enlightened,
     [K4ItemType.advantage]: [],

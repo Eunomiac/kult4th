@@ -11,6 +11,10 @@
 
 	--K4-resize-handle-translate: translate(0px, 0px);
 
+  // --K4-forced-z-index: none !important;
+
+  // z-index: var(--K4-forced-z-index) !important;
+
 	.window-header {
 		.header-button {
 			top: -25px;

@@ -1,6 +1,6 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C, {K4Attribute, StabilityConditions, K4ConditionType, K4Stability, Archetype, ArchetypeTier, Archetypes} from "../scripts/constants.js";
+import C, {K4Attribute, StabilityConditions, K4ConditionType, K4Stability, K4Archetype, ArchetypeTier, Archetypes} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {Dragger, InertiaPlugin} from "../libraries.js";
 import K4Actor, {K4ActorType, K4CharGenPhase} from "./K4Actor.js";
@@ -13,57 +13,50 @@ import K4DebugDisplay from "./K4DebugDisplay.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
-namespace ArchetypeCarousel {
+namespace Archetype {
   export interface TraitData {
     name: string,
     img: string,
     tooltip: string,
     isSelected: boolean,
-    isMandatory: boolean,
-    isSetByLock: boolean
+    isMandatory: boolean
   }
 
   export interface StringData {
     value: string,
-    examples: string[],
-    isValueAnExample: boolean,
-    isSetByLock: boolean
+    examples?: string[]
   }
 
-  export interface ArchetypeData {
-    label: string,
+  export interface ArchetypeData<T extends ArchetypeTier = ArchetypeTier> {
+    label: K4Archetype & string,
     img: string,
-    tier: ArchetypeTier,
+    tier: T,
     [K4ItemType.advantage]: Partial<Record<K4Attribute, Record<string, TraitData>>>,
+    selStringAdvantage: string,
     [K4ItemType.disadvantage]: Record<string, TraitData>,
+    selStringDisadvantage: string,
     [K4ItemType.darksecret]: Record<string, TraitData>,
-    description: string,
-    occupation: StringData,
-    looks: {
-      clothes: StringData,
-      face: StringData,
-      eyes: StringData,
-      body: StringData
-    },
-    isSelected: boolean,
+    selStringDarkSecret: string,
+    isSelected: boolean
   }
 
-  export type Data = Partial<Record<Archetype, ArchetypeData>>;
+  export type Data = Partial<Record<K4Archetype, ArchetypeData>>;
 }
 
 interface ChargenContext {
   charGenPhase: K4CharGenPhase,
-  archetypeCarousel: ArchetypeCarousel.Data,
-  selectedArchetype: Maybe<Archetype>,
-  archetypeAdvantages: Maybe<Partial<Record<K4Attribute, Record<string, ArchetypeCarousel.TraitData>>>>,
-  archetypeDisadvantages: Maybe<Record<string, ArchetypeCarousel.TraitData>>,
-  archetypeDarkSecrets: Maybe<Record<string, ArchetypeCarousel.TraitData>>,
-  occupation: Maybe<ArchetypeCarousel.StringData>,
+  archetypeCarousel: Archetype.Data,
+  selectedArchetype: Maybe<K4Archetype>,
+  archetypeAdvantages: Maybe<Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>>,
+  archetypeDisadvantages: Maybe<Record<string, Archetype.TraitData>>,
+  archetypeDarkSecrets: Maybe<Record<string, Archetype.TraitData>>,
+  description: Archetype.StringData,
+  occupation: Archetype.StringData,
   looks: {
-    clothes: Maybe<ArchetypeCarousel.StringData>,
-    face: Maybe<ArchetypeCarousel.StringData>,
-    eyes: Maybe<ArchetypeCarousel.StringData>,
-    body: Maybe<ArchetypeCarousel.StringData>
+    clothes: Archetype.StringData,
+    face: Archetype.StringData,
+    eyes: Archetype.StringData,
+    body: Archetype.StringData
   }
 }
 
@@ -105,10 +98,10 @@ export function getIndexFromXPos(x: number, total: number, max: number) {
 }
 
 function getArchetypeFromIndex(index: number) {
-  return Object.keys(VALIDARCHETYPES)[index] as Archetype;
+  return Object.keys(VALIDARCHETYPES)[index] as K4Archetype;
 }
 
-function getElementFromArchetype(context$: JQuery, archetype: Archetype) {
+function getElementFromArchetype(context$: JQuery, archetype: K4Archetype) {
   return context$.find(`[data-archetype=${archetype}]`);
 }
 
@@ -118,12 +111,31 @@ function getElementFromIndex(context$: JQuery, index: number) {
 }
 
 
-let VALIDARCHETYPES = Object.fromEntries(Object.entries(Archetypes).filter(([_, archetype]) => [ArchetypeTier.awake].includes(archetype.tier)));
+let VALIDARCHETYPES: Partial<Record<K4Archetype, Archetype.Data>> = Object.fromEntries(Object.entries(Archetypes).filter(([_, archetype]) => [ArchetypeTier.awake].includes(archetype.tier)));
 const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
   revealCarousel: {
     name: "revealCarousel",
-    effect: (carouselScene$) => {
-      const items$ = $(carouselScene$ as JQuery).find(".archetype-carousel-item");
+    effect: (carouselScene) => {
+      const carouselScene$ = $(carouselScene as HTMLElement|JQuery);
+      const container$ = carouselScene$.closest(".pc-initialization");
+      const sheet$ = container$.closest(".k4-actor-sheet");
+      const sheetHeader$ = sheet$.find(".window-header");
+      const sheetResizeHandle$ = sheet$.find(".window-resizable-handle");
+      const attributesPanel$ = container$.find(".archetype-panel.attributes");
+      const namePanel$ = container$.find(".archetype-panel.actor-name");
+      const items$ = carouselScene$.find(".archetype-carousel-item");
+
+      sheetHeader$.css("display", "none");
+      sheetResizeHandle$.css("display", "none");
+
+      if (CONFIG.K4.isCharGenInitialized) {
+        carouselScene$.css("visibility", "visible");
+        items$.css("visibility", "visible");
+        attributesPanel$.css("visibility", "visible");
+        namePanel$.css("visibility", "visible");
+        return U.gsap.timeline();
+      }
+      CONFIG.K4.isCharGenInitialized = true;
       const tl = U.gsap.timeline();
       tl.from(carouselScene$, {
         autoAlpha: 0,
@@ -144,6 +156,16 @@ const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
             from: "center",
             ease: "slow(0.2, 0.2, false)"
           }
+        }, 0)
+        .from([
+          attributesPanel$,
+          namePanel$
+        ], {
+          autoAlpha: 0,
+          y: 200,
+          ease: "power2",
+          duration: 1,
+          stagger: 0.2
         }, 0);
       return tl;
     },
@@ -176,8 +198,9 @@ const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
 }
 
 const ANIMATIONS = {
-  archetypeTimeline(archetype$: JQuery) {
+  archetypeTimeline(archetype$: JQuery, actor: K4Actor<K4ActorType.pc>) {
     const container$ = archetype$.closest(".pc-initialization");
+    const actorSheet$ = container$.closest(".k4-actor-sheet");
     const archetypeThe$ = archetype$.find(".archetype-carousel-the");
     const archetypeName$ = archetype$.find(".archetype-carousel-name");
     const archetypeDescription$ = archetype$.find(".archetype-description");
@@ -206,34 +229,98 @@ const ANIMATIONS = {
       archetypeDarkSecrets$
     ].forEach((container) => {
       container.find(".archetype-trait-container").each((_i, cont) => {
-        const container$ = $(cont);
-        const trait = container$.attr("data-trait");
-        const isSelected = container$.attr("data-is-selected") === "true";
-        const isMandatory = container$.attr("data-is-mandatory") === "true";
+        const cont$ = $(cont);
+        const overlay$ = cont$.next(".overlay");
+        const trait = cont$.attr("data-trait")!;
+        const isSelected = cont$.attr("data-is-selected") === "true";
+        const isMandatory = cont$.attr("data-is-mandatory") === "true";
 
-        container$.on({
-          click: () => {
+        const overlayTl = U.gsap.timeline({
+          paused: true
+        })
+          .addLabel("unselected")
+          .fromTo(overlay$, {width: 0}, {
+            width: 300,
+            duration: 2,
+            ease: "slow",
+            onComplete(this: gsap.core.Timeline) {
+              if (!isSelected) {
+                void actor.charGenSelect(trait);
+              }
+              this.seek("selected");
+            },
+            onReverseComplete(this: gsap.core.Timeline) {
+              if (isSelected) {
+                void actor.charGenDeselect(trait);
+              }
+              this.seek("unselected");
+            }
+          }, 0.5)
+          .to(overlay$, {
+            width: 300,
+            duration: 0.5,
+            ease: "none"
+          })
+          .addLabel("selected");
+
+        if (isSelected || isMandatory) {
+          overlayTl.seek("selected");
+        }
+
+        let clickTimer: NodeJS.Timeout | null = null;
+        let longPressTriggered = false;
+
+        cont$.on({
+          mousedown: () => {
             if (isMandatory) { return; }
+            longPressTriggered = false;
+            clickTimer = setTimeout(() => {
+              longPressTriggered = true;
+            }, 500);
             if (isSelected) {
-              kLog.log("[K4PCSheet] deselect", {container: cont, trait$});
-              return;
+              overlayTl.reverse();
             } else {
-              kLog.log("[K4PCSheet] select", {container: cont, trait$});
-              return;
+              overlayTl.play();
             }
           },
-          contextmenu: async () => {
-            const traitItem = game.items.getName(trait!) as Maybe<K4Item>;
+          mouseup: () => {
+            if (isMandatory) { return; }
+            if (clickTimer) {
+              clearTimeout(clickTimer);
+              clickTimer = null;
+            }
+            if (overlayTl.isActive()) {
+              if (overlayTl.reversed()) {
+                overlayTl.play();
+              } else {
+                overlayTl.reverse();
+              }
+            }
+          },
+          // click: () => {
+          //   if (isMandatory) { return; }
+          //   if (isSelected) {
+          //     void actor.charGenDeselect(trait);
+          //     kLog.log("[K4PCSheet] deselect", {container: cont, trait$});
+          //   } else {
+          //     kLog.log("[K4PCSheet] select", {container: cont, trait$});
+          //   }
+          // },
+          click: async () => {
+            if (longPressTriggered) { return; }
+            const traitItem = game.items.getName(trait) as Maybe<K4Item>;
             if (!traitItem) { return; }
             // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
             const highestZIndex = Math.max(...$("body").find(".k4-item-sheet").map((_i, sheet) =>
               U.pInt($(sheet).css("z-index"))
             ).toArray());
+            actorSheet$.css("z-index", 100);
             if (!traitItem.sheet.rendered) {
               traitItem.sheet.render(true);
-              await U.sleep(250);
+              await U.sleep(150);
             }
             traitItem.sheet.element.css("z-index", highestZIndex + 1);
+            actorSheet$.css("z-index", 100);
           }
         })
         const trait$ = $(cont).find(".archetype-trait");
@@ -262,30 +349,44 @@ const ANIMATIONS = {
       .fromTo([
         archetypeThe$,
         archetypeName$,
-        ...splitDescription.lines,
-        archetypeAdvantages$,
-        archetypeDisadvantages$,
-        archetypeDarkSecrets$
+        ...splitDescription.lines
       ], {
         autoAlpha: 0,
         skewX: -65,
-        x: function(index) {
-          return -80 + (index * 5);
-        },
+        // x: function(index) {
+        //   return -80 + (index * 5);
+        // },
         filter: "blur(15px)"
       }, {
         autoAlpha: 1,
         skewX: 0,
-        x: function(index) {
-          return 0 + (index * 5);
-        },
+        // x: function(index) {
+        //   return 0 + (index * 5);
+        // },
         filter: "blur(0px)",
         ease: "power2",
         duration: 2,
         stagger: {
           each: 0.25
+        },
+        onStart() {
+          CONFIG.K4.charGenIsShowing = archetype as Maybe<K4Archetype> ?? null;
         }
       }, "<")
+      .fromTo([
+        archetypeAdvantages$,
+        archetypeDisadvantages$,
+        archetypeDarkSecrets$
+      ], {
+        autoAlpha: 0,
+        y: 200
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        ease: "power2",
+        duration: 1,
+        stagger: 0.2
+      })
       .addLabel("selected")
       .seek(1);
   },
@@ -298,7 +399,7 @@ const ANIMATIONS = {
     const carousel$ = carouselScene$.find(".archetype-carousel");
     const items$ = carousel$.find(".archetype-carousel-item");
     let selArchetypeIndex = Object.keys(VALIDARCHETYPES)
-      .findIndex((archetype) => archetype as Archetype === actor.archetype);
+      .findIndex((archetype) => archetype as K4Archetype === actor.archetype);
 
     await U.gsap.set(carouselScene$, {
       opacity: 0,
@@ -314,7 +415,7 @@ const ANIMATIONS = {
     });
 
     await Promise.all(items$.map((i, item) => {
-      const archTimeline = ANIMATIONS.archetypeTimeline($(item));
+      const archTimeline = ANIMATIONS.archetypeTimeline($(item), actor as K4Actor<K4ActorType.pc>);
       $(item).data("archetypeTimeline", archTimeline);
       const distFromSelected = getDistanceFromSelected(i, selArchetypeIndex, totalItems);
       archTimeline.seek(1 - distFromSelected);
@@ -364,7 +465,7 @@ const ANIMATIONS = {
     const snapToNearestArchetype = (x: number, isCompleting = false) => {
       const newIndex = getIndexFromXPos(x, totalItems, maxDistance);
       if (newIndex !== selArchetypeIndex) {
-        actor.archetype = Object.keys(VALIDARCHETYPES)[newIndex] as Archetype;
+        actor.archetype = Object.keys(VALIDARCHETYPES)[newIndex] as K4Archetype;
         K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
       }
       if (isCompleting) {
@@ -461,7 +562,13 @@ const ANIMATIONS = {
     // const tl = gsap.timeline({ paused: true });
     const selectedArchetype = getElementFromIndex(carousel$, selArchetypeIndex);
     const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeTimeline") as gsap.core.Timeline);
-    void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
+
+    // If the selected archetype is the same as the one we're already showing, skip the tween
+    if (CONFIG.K4.charGenIsShowing === actor.archetype) {
+      selectedArchetypeTimeline.seek("selected");
+    } else {
+      void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
+    }
     const tl = gsap.timeline({ paused: true });
 
     return tl;
@@ -1223,7 +1330,7 @@ class K4PCSheet extends ActorSheet {
   }
   isTestingPCInitialization = true;
   override get template() {
-    if (this.isTestingPCInitialization && this.actor.is(K4ActorType.pc) && !this.actor.getFlag("kult4th", "isInitialized")) {
+    if (this.isTestingPCInitialization && this.actor.is(K4ActorType.pc) && !this.actor.isFinishedCharGen) {
       return "systems/kult4th/templates/sheets/pc-initialization.hbs";
     }
     return `systems/kult4th/templates/sheets/${this.actor.type}-sheet.hbs`;
@@ -1239,7 +1346,8 @@ class K4PCSheet extends ActorSheet {
     if (this.actor.is(K4ActorType.pc) && !this.actor.isFinishedCharGen) {
       return {
         ...baseContext,
-        ...this.chargenContext()
+        ...this.chargenContext(),
+        attributes:      this.actor.attributeData,
       };
     }
 
@@ -1264,8 +1372,13 @@ class K4PCSheet extends ActorSheet {
     return context;
   }
 
+  archetypeData: Map<K4Archetype, Archetype.Data> = new Map<K4Archetype, Archetype.Data>();
 
-  getTraitData(traitName: string, traitType: K4ItemType, archetype?: Archetype, isIgnoringLock = false): Maybe<ArchetypeCarousel.TraitData> {
+
+
+
+  getTraitData(traitName: string, traitType: K4ItemType, archetype?: K4Archetype): Maybe<Archetype.TraitData> {
+    // kLog.log("getTraitData", traitName, traitType, archetype);
     // Strip "!" prefix (marking mandatory trait) so traitName can retrieve item
     traitName = traitName.replace(/^!/g, "");
     archetype = archetype ?? this.actor.archetype;
@@ -1275,24 +1388,13 @@ class K4PCSheet extends ActorSheet {
       throw new Error(`Trait item "${traitName}" not found`);
     }
 
-    const tData: ArchetypeCarousel.TraitData = {
+    const tData: Archetype.TraitData = {
       name: traitName,
       img: (traitItem.img ?? "").replace(/\(|\)/g, ""),
       tooltip: traitItem.shortDesc,
-      isSelected: false,
-      isMandatory: false,
-      isSetByLock: false
+      isSelected: this.actor.isCharGenSelected(traitName),
+      isMandatory: false
     };
-
-    // First get locked value, if one exists, then get the value from the archetype if it's not locked
-    const lockedValue = this.actor.getFlag("kult4th", `locked.${traitType}.${traitName}`) as Maybe<boolean>;
-    if (lockedValue && !isIgnoringLock) {
-      tData.isSelected = true;
-      tData.isSetByLock = true;
-    } else {
-      const archetypeValue = this.actor.getFlag("kult4th", `${archetype}.${traitType}.${traitName}`) as Maybe<boolean>;
-      tData.isSelected = archetypeValue ?? false;
-    }
 
     const archetypeData = Archetypes[archetype];
 
@@ -1313,7 +1415,7 @@ class K4PCSheet extends ActorSheet {
     return tData;
   }
 
-  getArchetypeTraitData(traitType: K4ItemType & KeyOf<typeof Archetypes[Archetype]>, archetype: Archetype, attribute?: K4Attribute) {
+  getArchetypeTraitData(traitType: K4ItemType & KeyOf<typeof Archetypes[K4Archetype]>, archetype: K4Archetype, attribute?: K4Attribute) {
     if (![
       K4ItemType.advantage,
       K4ItemType.disadvantage,
@@ -1328,50 +1430,41 @@ class K4PCSheet extends ActorSheet {
       return Object.fromEntries(archetypeTData
         .filter((traitName) => this.getTraitAttribute(traitName) === attribute)
         .map((traitName) => [traitName.replace(/^!/g, ""), this.getTraitData(traitName, traitType, archetype)])
-      ) as Record<string, ArchetypeCarousel.TraitData>;
+      ) as Record<string, Archetype.TraitData>;
     }
 
     // For advantages, we need to group each data object by attribute
     if (traitType === K4ItemType.advantage) {
       return Object.fromEntries(
         (Object.keys(K4Attribute) as K4Attribute[])
-          .map((attrName): [K4Attribute, Record<string, ArchetypeCarousel.TraitData>] => [attrName, this.getArchetypeTraitData(traitType, archetype, attrName)] as [K4Attribute, Record<string, ArchetypeCarousel.TraitData>])
-          .filter(([_, data]) => !U.isEmpty(data))) as Partial<Record<K4Attribute, Record<string, ArchetypeCarousel.TraitData>>>;
+          .map((attrName): [K4Attribute, Record<string, Archetype.TraitData>] => [attrName, this.getArchetypeTraitData(traitType, archetype, attrName)] as [K4Attribute, Record<string, Archetype.TraitData>])
+          .filter(([_, data]) => !U.isEmpty(data))) as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>;
     }
 
     // Otherwise, we just return the Record<string, TraitData> object
     return Object.fromEntries(archetypeTData
         .map((traitName) => [traitName.replace(/^!/g, ""), this.getTraitData(traitName, traitType, archetype)])
-      ) as Record<string, ArchetypeCarousel.TraitData>;
+      ) as Record<string, Archetype.TraitData>;
   }
 
-  getStringData(dotKey: string, archetype?: Archetype, isIgnoringLock = false, isReturningLockedOnly = false): Maybe<ArchetypeCarousel.StringData> {
+  getStringData(dotKey: string, archetype?: K4Archetype): Archetype.StringData {
+    // If no archetype provided, try passing dotKey to actor's system data
+    if (!archetype) {
+      const sData = U.getProp<string>(
+        this.actor.system,
+        dotKey.replace(/^system\./, "")
+      );
+      if (sData) {
+        return {value: sData};
+      }
+    }
     archetype = archetype ?? this.actor.archetype;
-    if (!archetype) { return undefined; }
+    if (!archetype) { return {value: ""}; }
 
-    const sData: ArchetypeCarousel.StringData = {
+    const sData: Archetype.StringData = {
       value: "",
-      examples: U.getProp<string[]>(Archetypes[archetype], dotKey) ?? [],
-      isValueAnExample: false,
-      isSetByLock: false
+      examples: U.getProp<string[]>(Archetypes[archetype], dotKey) ?? []
     };
-
-    // First get locked value, if one exists and isn't being ignored, then get the value from the archetype if it's not locked
-    const lockedValue = this.actor.getFlag("kult4th", `locked.${dotKey}`) as Maybe<string>;
-    if (lockedValue && !isIgnoringLock) {
-      sData.value = lockedValue;
-      sData.isSetByLock = true;
-    } else {
-      sData.value = this.actor.getFlag("kult4th", `${archetype}.${dotKey}`) as Maybe<string> ?? "";
-    }
-
-    // Finally check whether value is an example
-    sData.isValueAnExample = sData.examples.includes(sData.value);
-
-    // If isReturningLockedOnly is true, return the locked value only
-    if (isReturningLockedOnly) {
-      return lockedValue ? sData : undefined;
-    }
 
     return sData;
   }
@@ -1387,7 +1480,7 @@ class K4PCSheet extends ActorSheet {
     return K4Attribute.zero;
   }
 
-  getArchetypeCarouselData(): ArchetypeCarousel.Data {
+  getArchetypeCarouselData(): Archetype.Data {
     // First filter Archetypes for those tiers allowed in settings
     /**
      * @todo Implement settings to allow multiple Archetype Tiers
@@ -1395,45 +1488,72 @@ class K4PCSheet extends ActorSheet {
      */
     const allowedTiers: ArchetypeTier[] = [ArchetypeTier.aware];
     return Object.fromEntries(
-      (Object.entries(Archetypes) as Array<Tuple<Archetype, ValueOf<typeof Archetypes>>>)
+      (Object.entries(Archetypes) as Array<Tuple<K4Archetype, ValueOf<typeof Archetypes>>>)
         .filter(([_archetype, {tier}]) => allowedTiers.includes(tier))
-        // Map data to match ArchetypeCarousel.Data
-        .map(([archetype, data]: [Archetype, ValueOf<typeof Archetypes>]) => [
-          archetype,
-          {
-            label: data.label,
-            tier: data.tier,
-            img: `systems/kult4th/assets/archetypes/${archetype}.png`,
-            [K4ItemType.advantage]: this.getArchetypeTraitData(K4ItemType.advantage, archetype),
-            [K4ItemType.disadvantage]: this.getArchetypeTraitData(K4ItemType.disadvantage, archetype),
-            [K4ItemType.darksecret]: this.getArchetypeTraitData(K4ItemType.darksecret, archetype),
-            description: data.description,
-            occupation: this.getStringData("occupation", archetype, true),
-            looks: {
-              clothes: this.getStringData("looks.clothes", archetype, true),
-              face: this.getStringData("looks.face", archetype, true),
-              eyes: this.getStringData("looks.eyes", archetype, true),
-              body: this.getStringData("looks.body", archetype, true)
-            },
-            isSelected: this.actor.archetype === archetype
+        // Map data to match Archetype.Data
+        .map(([archetype, data]: [K4Archetype, ValueOf<typeof Archetypes>]) => {
+          const advTraitData = this.getArchetypeTraitData(K4ItemType.advantage, archetype) as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>;
+          const advTraitDataArray = Object.values(advTraitData).flatMap(Object.values) as Archetype.TraitData[];
+          const advSelected = advTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
+          let selStringAdvantage: string;
+          if (advSelected.length > 3) {
+            selStringAdvantage = "<span class='neon-glow-strong-red'>Too Many Advantages!</span> <br> (max: #>text-keyword>THREE<#)";
+          } else if (advSelected.length === 0) {
+            selStringAdvantage = "Choose #>text-keyword>THREE<# from the list below:";
+          } else if (advSelected.length >= 3) {
+            selStringAdvantage = "&nbsp;";
+          } else {
+            selStringAdvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(3 - advSelected.length))}<# more:`;
           }
-        ])
-    );
-  }
 
-  getLockedArchetypeData(): DeepPartial<Pick<ArchetypeCarousel.ArchetypeData, K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | "occupation" | "looks">> {
-    return {
-      [K4ItemType.advantage]: this.actor.archetype ? this.getArchetypeTraitData(K4ItemType.advantage, this.actor.archetype) : undefined,
-      [K4ItemType.disadvantage]: this.actor.archetype ? this.getArchetypeTraitData(K4ItemType.disadvantage, this.actor.archetype) : undefined,
-      [K4ItemType.darksecret]: this.actor.archetype ? this.getArchetypeTraitData(K4ItemType.darksecret, this.actor.archetype) : undefined,
-      occupation: this.getStringData("occupation", undefined, false, true),
-      looks: {
-        clothes: this.getStringData("looks.clothes", undefined, false, true),
-        face: this.getStringData("looks.face", undefined, false, true),
-        eyes: this.getStringData("looks.eyes", undefined, false, true),
-        body: this.getStringData("looks.body", undefined, false, true)
-      }
-    };
+          const disTraitData = this.getArchetypeTraitData(K4ItemType.disadvantage, archetype) as Record<string, Archetype.TraitData>;
+          const disTraitDataArray: Archetype.TraitData[] = Object.values(disTraitData);
+          const disSelected = disTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
+          let selStringDisadvantage: string;
+          if (disSelected.length > 2) {
+            selStringDisadvantage = "<span class='neon-glow-strong-red'>Too Many Disadvantages!</span> <br> (max: #>text-keyword>TWO<#)";
+          } else if (disSelected.length === 0) {
+            selStringDisadvantage = "Choose #>text-keyword>TWO<#. Suggestions:";
+          } else if (disSelected.length >= 2) {
+            selStringDisadvantage = "&nbsp;";
+          } else {
+            selStringDisadvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(2 - disSelected.length))}<# more. Suggestions:`;
+          }
+
+          const darkSecretTraitData = this.getArchetypeTraitData(K4ItemType.darksecret, archetype) as Record<string, Archetype.TraitData>;
+          const darkSecretTraitDataArray: Archetype.TraitData[] = Object.values(darkSecretTraitData);
+          const darkSecretSelected = darkSecretTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
+          let selStringDarkSecret: string;
+          if (darkSecretSelected.length === 0) {
+            selStringDarkSecret = "Choose #>text-keyword>AT LEAST ONE<#. Suggestions:";
+          } else {
+            selStringDarkSecret = "(You #>text-keyword>MAY<# choose more.)";
+          }
+          return [
+            archetype,
+            {
+              label: data.label,
+              tier: data.tier,
+              img: `systems/kult4th/assets/archetypes/${archetype}.png`,
+              [K4ItemType.advantage]: this.getArchetypeTraitData(K4ItemType.advantage, archetype),
+              selStringAdvantage,
+              [K4ItemType.disadvantage]: this.getArchetypeTraitData(K4ItemType.disadvantage, archetype),
+              selStringDisadvantage,
+              [K4ItemType.darksecret]: this.getArchetypeTraitData(K4ItemType.darksecret, archetype),
+              selStringDarkSecret,
+              description: data.description,
+              occupation: this.getStringData("occupation", archetype),
+              looks: {
+                clothes: this.getStringData("looks.clothes", archetype),
+                face: this.getStringData("looks.face", archetype),
+                eyes: this.getStringData("looks.eyes", archetype),
+                body: this.getStringData("looks.body", archetype)
+              },
+              isSelected: this.actor.archetype === archetype
+            }
+          ];
+      })
+    );
   }
 
   chargenContext(): ChargenContext {
@@ -1494,11 +1614,12 @@ class K4PCSheet extends ActorSheet {
         : undefined,
       archetypeDisadvantages: (selectedArchetype
         ? this.getArchetypeTraitData(K4ItemType.disadvantage, selectedArchetype)
-        : undefined) as Maybe<Record<string, ArchetypeCarousel.TraitData>>,
+        : undefined) as Maybe<Record<string, Archetype.TraitData>>,
       archetypeDarkSecrets: (selectedArchetype
         ? this.getArchetypeTraitData(K4ItemType.darksecret, selectedArchetype)
-        : undefined) as Maybe<Record<string, ArchetypeCarousel.TraitData>>,
-      occupation: this.getStringData("occupation", selectedArchetype),
+        : undefined) as Maybe<Record<string, Archetype.TraitData>>,
+      description: this.getStringData("description"),
+      occupation: this.getStringData("occupation"),
       looks: {
         clothes: this.getStringData("looks.clothes", selectedArchetype),
         face: this.getStringData("looks.face", selectedArchetype),
@@ -2213,11 +2334,6 @@ class K4PCSheet extends ActorSheet {
       repeatDelay,
       yoyo: true
     })
-      .fromTo(tabContent$, {background: "rgba(0, 0, 0, 0)" }, {
-        background: C.Colors.dBLACK,
-        duration: 0.5,
-        ease: "power2.out"
-      })
       .fromTo(eyeContainer$, {opacity: 0}, {
         opacity: 1,
         duration: 0.25,
@@ -2348,6 +2464,11 @@ class K4PCSheet extends ActorSheet {
         }
       }
     }
+  }
+
+  override async close() {
+    CONFIG.K4.isCharGenInitialized = false;
+    return super.close();
   }
 
   _promptItemSelection(itemList: K4Item[]) {

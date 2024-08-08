@@ -1,13 +1,18 @@
 {{log "PC SHEET CONTEXT" this}}
 <form class="actor-sheet kult4th-form {{cssClass}} actor-pc" autocomplete="off">
 
-  {{> "systems/kult4th/templates/components/pc-header.hbs" }}
+  <header class="sheet-header">
+    {{> "systems/kult4th/templates/components/pc-nav-menu.hbs" }}
+    {{> "systems/kult4th/templates/components/pc-actor-name.hbs" }}
+  </header>
+
+
 
   <div class="tab-background">
   </div>
   <main class="tab-content">
     <div id="twitchy-eye">
-      <img src="systems/kult4th/assets/animations/twitchy-eye.gif" />
+      <img src="systems/kult4th/assets/animations/twitchy-eye.webp" />
     </div>
     <section class="tab front {{~#if (eq curTab "front")}} active{{/if}}" data-group="primary" data-tab="front">
       <section class="subsection dramatic-hooks">

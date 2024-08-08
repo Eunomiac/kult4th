@@ -78,7 +78,8 @@ declare global {
       hooks: boolean,
       customFunctionParams: Record<string, SystemScalar[]>,
       openReport: Maybe<string>,
-      openReports: Maybe<Record<string, DebugReport>>
+      openReports: Maybe<Record<string, DebugReport>>,
+      isDisablingCharGen: boolean
     },
     TinyMCE: TinyMCEConfig,
     K4: typeof K4Config,

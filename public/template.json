@@ -8,6 +8,18 @@
 			"archetype": "",
       "charGenPhase": "archetype",
 			"description": "",
+      "occupation": "",
+      "looks": {
+        "clothes": "",
+        "face": "",
+        "eyes": "",
+        "body": ""
+      },
+      "charGen": {
+        "selAdvantages": [],
+        "selDisadvantages": [],
+        "selDarkSecrets": []
+      },
 			"history": "",
 			"dramaticHooks": [
 				{

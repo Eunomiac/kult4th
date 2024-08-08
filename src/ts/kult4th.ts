@@ -155,7 +155,7 @@ async function PreloadHBSTemplates() {
       "rules-block",
       "roll-result",
       "attribute-box",
-      "pc-header",
+      "pc-actor-name",
       "pc-nav-menu",
       "svg",
       "icon",
@@ -485,6 +485,8 @@ Hooks.on("init", async () => {
   CONFIG.K4 = K4Config;
   // Disable Compatibility Warnings
   CONFIG.compatibility.mode = 0;
+  // Toggle Character Creation Features for Debugging
+  CONFIG.debug.isDisablingCharGen = true;
 
   // Initialize collection objects
   game.rolls = new Collection<K4Roll>();
