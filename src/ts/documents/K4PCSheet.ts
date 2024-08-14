@@ -47,9 +47,9 @@ interface ChargenContext {
   charGenPhase: K4CharGenPhase,
   archetypeCarousel: Archetype.Data,
   selectedArchetype: Maybe<K4Archetype>,
-  archetypeAdvantages: Maybe<Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>>,
-  archetypeDisadvantages: Maybe<Record<string, Archetype.TraitData>>,
-  archetypeDarkSecrets: Maybe<Record<string, Archetype.TraitData>>,
+  // archetypeAdvantages: Maybe<Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>>,
+  // archetypeDisadvantages: Maybe<Record<string, Archetype.TraitData>>,
+  // archetypeDarkSecrets: Maybe<Record<string, Archetype.TraitData>>,
   description: Archetype.StringData,
   occupation: Archetype.StringData,
   looks: {
@@ -112,39 +112,112 @@ function getElementFromIndex(context$: JQuery, index: number) {
 
 
 let VALIDARCHETYPES: Partial<Record<K4Archetype, Archetype.Data>> = Object.fromEntries(Object.entries(Archetypes).filter(([_, archetype]) => [ArchetypeTier.awake].includes(archetype.tier)));
-const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
-  revealCarousel: {
-    name: "revealCarousel",
-    effect: (carouselScene) => {
-      const carouselScene$ = $(carouselScene as HTMLElement|JQuery);
-      const container$ = carouselScene$.closest(".pc-initialization");
-      const sheet$ = container$.closest(".k4-actor-sheet");
-      const sheetHeader$ = sheet$.find(".window-header");
-      const sheetResizeHandle$ = sheet$.find(".window-resizable-handle");
-      const attributesPanel$ = container$.find(".archetype-panel.attributes");
-      const namePanel$ = container$.find(".archetype-panel.actor-name");
-      const items$ = carouselScene$.find(".archetype-carousel-item");
 
-      sheetHeader$.css("display", "none");
-      sheetResizeHandle$.css("display", "none");
+const ANIMATIONS = {
+  async revealBackground(carouselScene$: JQuery, isInstant = false) {
+
+    const sheet$ = carouselScene$.closest(".k4-actor-sheet");
+    const container$ = carouselScene$.closest(".pc-initialization");
+    const bgContainer$ = sheet$.find(".pc-initialization-bg");
+    const mid$ = bgContainer$.find(".cityscape-mid");
+    const clouds$ = bgContainer$.find(".cloud-bg");
+    const fore$ = bgContainer$.find(".cityscape-fore");
+
+    // For immediate user feedback, fade in the bg container and the sheet immediately.
+    U.gsap.to([sheet$, bgContainer$], {
+      autoAlpha: 1,
+      duration: isInstant ? 0 : 0.25,
+      ease: "power2.in"
+    });
+
+    const cloudVideo = clouds$[0] as HTMLVideoElement;
+
+    return new Promise<boolean>((resolve) => {
+
+      // Build the timeline, including a resolve step near the end so the next animation can blend in nicely.
+      const tl = U.gsap.timeline({paused: true, defaults: {ease: "power2.inOut"}})
+      .fromTo(clouds$, {autoAlpha: 0}, {autoAlpha: 0.75, duration: 2}, 0)
+      .fromTo(fore$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 1)
+      .fromTo(mid$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 2)
+      .fromTo(fore$, {filter: "blur(20px) brightness(0)"}, {filter: "blur(1px) brightness(0.8)", duration: 6}, 0)
+      .fromTo(fore$, {y: 250, scale: 1}, {y: 150, scale: 1.15, ease: "expoScale(1, 1.15, power2.inOut)", duration: 6}, "<")
+      .fromTo(mid$, {y: 200, scale: 0.85}, {y: 150, scale: 1, ease: "expoScale(0.85, 1, power2.inOut)", duration: 6}, "<")
+      .fromTo(mid$, {filter: "blur(40px) brightness(0)"}, {filter: "blur(2px) brightness(1)", duration: 6}, "<")
+      .call(() => { resolve(true) }, [], ">");
+
+      // Function to start the animation
+      const startAnimation = () => {
+        void cloudVideo.play();
+        if (isInstant) {
+          tl.progress(1);
+          resolve(true);
+          return;
+        }
+        tl.play();
+      };
+
+      // Check if video is already loaded
+      if (cloudVideo.readyState >= 3) {
+        startAnimation();
+      } else {
+        // Wait for the video to be ready
+        cloudVideo.addEventListener('canplay', startAnimation, { once: true });
+        // Fallback in case the video fails to load
+        cloudVideo.addEventListener('error', startAnimation, { once: true });
+      }
+    });
+  },
+  async revealCarousel(carouselScene$: JQuery) {
+
+    const container$ = carouselScene$.closest(".pc-initialization");
+    const sheet$ = container$.closest(".k4-actor-sheet");
+    const sheetHeader$ = sheet$.find(".window-header");
+    const sheetResizeHandle$ = sheet$.find(".window-resizable-handle");
+    const attributesPanel$ = container$.find(".archetype-panel.attributes");
+    const descriptionPanel$ = container$.find(".archetype-panel.description");
+    const namePanel$ = container$.find(".archetype-panel.actor-name");
+    const items$ = carouselScene$.find(".archetype-carousel-item");
+
+    sheetHeader$.css("display", "none");
+    sheetResizeHandle$.css("display", "none");
+
+    return new Promise<boolean>((resolve) => {
 
       if (CONFIG.K4.isCharGenInitialized) {
-        carouselScene$.css("visibility", "visible");
-        items$.css("visibility", "visible");
-        attributesPanel$.css("visibility", "visible");
-        namePanel$.css("visibility", "visible");
-        return U.gsap.timeline();
+        [
+          sheet$,
+          container$,
+          carouselScene$,
+          items$,
+          attributesPanel$,
+          namePanel$,
+          descriptionPanel$
+        ].forEach((el) => {
+          el.css("visibility", "visible");
+        });
+        void ANIMATIONS.revealBackground(carouselScene$, true);
+        resolve(true);
+        return;
       }
+
       CONFIG.K4.isCharGenInitialized = true;
-      const tl = U.gsap.timeline();
-      tl.from(carouselScene$, {
-        autoAlpha: 0,
-        y: 0,
-        scale: 0.7,
-        filter: "blur(100px)",
-        ease: "power3.in",
-        duration: 2
-      })
+
+      const tl = U.gsap.timeline({paused: true/* , onComplete() { resolve(true) } */})
+        .from(carouselScene$, {
+          autoAlpha: 0,
+          y: 0,
+          scale: 0.7,
+          filter: "blur(100px)",
+          ease: "power3.in",
+          duration: 1
+        }, 0)
+        .from(container$, {
+          autoAlpha: 0,
+          filter: "blur(10px)",
+          backgroundPosition: "50% 620px, 50% 630px",
+          duration: 0.5,
+          ease: "none"
+        }, 0.5)
         .from(items$, {
           autoAlpha: 0,
           y: 0,
@@ -156,51 +229,31 @@ const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
             from: "center",
             ease: "slow(0.2, 0.2, false)"
           }
-        }, 0)
+        }, ">")
         .from([
           attributesPanel$,
-          namePanel$
+          namePanel$,
+          descriptionPanel$
         ], {
           autoAlpha: 0,
           y: 200,
           ease: "power2",
           duration: 1,
           stagger: 0.2
-        }, 0);
-      return tl;
-    },
-    defaults: {},
-    extendTimeline: true
+        }, "<+50%")
+        .call(() => { resolve(true) }, [], "<75%");
+
+      ANIMATIONS.revealBackground(carouselScene$).then(() => {
+        tl.play();
+      }).catch(() => {
+        resolve(false);
+      });
+    })
   },
-  highlightArchetype: {
-    name: "highlightArchetype",
-    effect: (archetype, config) => {
-      const archetype$ = $(archetype as HTMLElement|JQuery);
-      const {duration, scale, ease} = config as gsap.TweenVars & {duration: number, scale: number, ease: string};
-      // archetype$.css("transformOrigin", "50% 100%");
-
-      return U.gsap.timeline()
-        .to(archetype$, {
-          filter: "brightness(1) invert(0) blur(0px) saturate(1) brightness(1.25)",
-          scale,
-          opacity: 1,
-          duration,
-          ease
-        });
-    },
-    defaults: {
-      scale: 1.15,
-      duration: 0.3,
-      ease: "power2"
-    },
-    extendTimeline: true
-  }
-}
-
-const ANIMATIONS = {
   archetypeTimeline(archetype$: JQuery, actor: K4Actor<K4ActorType.pc>) {
     const container$ = archetype$.closest(".pc-initialization");
     const actorSheet$ = container$.closest(".k4-actor-sheet");
+    const archetypeImg$ = archetype$.find(".archetype-carousel-img");
     const archetypeThe$ = archetype$.find(".archetype-carousel-the");
     const archetypeName$ = archetype$.find(".archetype-carousel-name");
     const archetypeDescription$ = archetype$.find(".archetype-description");
@@ -235,9 +288,9 @@ const ANIMATIONS = {
         const isSelected = cont$.attr("data-is-selected") === "true";
         const isMandatory = cont$.attr("data-is-mandatory") === "true";
 
-        const overlayTl = U.gsap.timeline({
-          paused: true
-        })
+        const overlayTl = U.gsap.timeline({paused: true});
+
+        overlayTl
           .addLabel("unselected")
           .fromTo(overlay$, {width: 0}, {
             width: 300,
@@ -247,13 +300,13 @@ const ANIMATIONS = {
               if (!isSelected) {
                 void actor.charGenSelect(trait);
               }
-              this.seek("selected");
+              overlayTl.seek("selected");
             },
             onReverseComplete(this: gsap.core.Timeline) {
               if (isSelected) {
                 void actor.charGenDeselect(trait);
               }
-              this.seek("unselected");
+              overlayTl.seek("unselected");
             }
           }, 0.5)
           .to(overlay$, {
@@ -330,22 +383,32 @@ const ANIMATIONS = {
       });
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    return (U.gsap.timeline({paused: true})
+    return U.gsap.timeline({paused: true})
       .addLabel("dark")
       .fromTo(archetype$, {
-        opacity: 0.75,
-        filter: "brightness(0) invert(1) blur(8px) saturate(0) brightness(0)"
+        opacity: 1,
+        filter: "blur(16px) saturate(0.5) brightness(0.25)",
+        // filter: "brightness(0) invert(1) blur(8px) saturate(0) brightness(0)"
       }, {
-        filter: "brightness(1) invert(0) blur(0px) saturate(0) brightness(0.5)",
+        filter: "blur(0px) saturate(1) brightness(0.5)",
+        // filter: "brightness(1) invert(0) blur(2px) saturate(1) brightness(0.5)",
         duration: 1,
-        ease: "power2"
+        ease: "none"
       })
       .addLabel("light")
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      .highlightArchetype(archetype$, {
+      .to(archetype$, {
+        filter: "blur(0px) saturate(1) brightness(1)",
+        // filter: "brightness(1) invert(0) blur(0px) saturate(1) brightness(1.25)",
+        scale: 1.15,
+        opacity: 1,
         duration: 2,
-      }) as gsap.core.Timeline)
+        ease: "power2"
+      })
+      .to(archetypeImg$, {
+        filter: "saturate(2) brightness(1.5)",
+        duration: 2,
+        ease: "power2"
+      }, "<")
       .fromTo([
         archetypeThe$,
         archetypeName$,
@@ -353,16 +416,10 @@ const ANIMATIONS = {
       ], {
         autoAlpha: 0,
         skewX: -65,
-        // x: function(index) {
-        //   return -80 + (index * 5);
-        // },
         filter: "blur(15px)"
       }, {
         autoAlpha: 1,
         skewX: 0,
-        // x: function(index) {
-        //   return 0 + (index * 5);
-        // },
         filter: "blur(0px)",
         ease: "power2",
         duration: 2,
@@ -386,7 +443,7 @@ const ANIMATIONS = {
         ease: "power2",
         duration: 1,
         stagger: 0.2
-      })
+      }, "<")
       .addLabel("selected")
       .seek(1);
   },
@@ -555,8 +612,7 @@ const ANIMATIONS = {
     updateRotation(startX);
     U.gsap.set(dragger$, { x: startX });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await U.gsap.effects.revealCarousel(carouselScene$, {});
+    await ANIMATIONS.revealCarousel(carouselScene$);
 
     // get currently selected archetype element, retrieve its timeline, and set it to "selected"
     // const tl = gsap.timeline({ paused: true });
@@ -569,9 +625,8 @@ const ANIMATIONS = {
     } else {
       void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
     }
-    const tl = gsap.timeline({ paused: true });
 
-    return tl;
+    return U.gsap.timeline();
   },
   _glitchText(_target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
 
@@ -1064,10 +1119,8 @@ class K4PCSheet extends ActorSheet {
     Actors.registerSheet("kult4th", K4PCSheet, {makeDefault: true});
 
     gsap.registerPlugin(Dragger, InertiaPlugin);
+
     // Register GSAP Effects
-    Object.values(GSAPEFFECTS).forEach((effect) => {
-      U.gsap.registerEffect(effect);
-    });
     gsap.registerEffect({
       name:   "breakShard",
       effect: (stabilityContainer$: JQuery, config: {stability: number}) => {
@@ -1377,12 +1430,10 @@ class K4PCSheet extends ActorSheet {
 
 
 
-  getTraitData(traitName: string, traitType: K4ItemType, archetype?: K4Archetype): Maybe<Archetype.TraitData> {
+  getTraitData(traitName: string, traitType: K4ItemType, archetype?: K4Archetype|false): Maybe<Archetype.TraitData> {
     // kLog.log("getTraitData", traitName, traitType, archetype);
     // Strip "!" prefix (marking mandatory trait) so traitName can retrieve item
     traitName = traitName.replace(/^!/g, "");
-    archetype = archetype ?? this.actor.archetype;
-    if (!archetype) { return undefined; }
     const traitItem = game.items.getName(traitName);
     if (!traitItem) {
       throw new Error(`Trait item "${traitName}" not found`);
@@ -1396,20 +1447,25 @@ class K4PCSheet extends ActorSheet {
       isMandatory: false
     };
 
-    const archetypeData = Archetypes[archetype];
+    if (archetype !== false) {
+      archetype = archetype ?? this.actor.archetype;
+      if (!archetype) { return undefined; }
 
-    if (!(traitType in archetypeData)) {
-      throw new Error(`Archetype ${archetype} does not have a ${traitType} section`);
-    }
+      const archetypeData = Archetypes[archetype];
 
-    const archetypeTraits = archetypeData[traitType as KeyOf<typeof archetypeData>] as string[];
+      if (!(traitType in archetypeData)) {
+        throw new Error(`Archetype ${archetype} does not have a ${traitType} section`);
+      }
 
-    // Check whether trait is mandatory for this archetype. If so, set isMandatory.
-    const nameIfMandatory = `!${traitName}`;
+      const archetypeTraits = archetypeData[traitType as KeyOf<typeof archetypeData>] as string[];
 
-    if (archetypeTraits.includes(nameIfMandatory)) {
-      tData.isMandatory = true;
-      tData.isSelected = true;
+      // Check whether trait is mandatory for this archetype. If so, set isMandatory.
+      const nameIfMandatory = `!${traitName}`;
+
+      if (archetypeTraits.includes(nameIfMandatory)) {
+        tData.isMandatory = true;
+        tData.isSelected = true;
+      }
     }
 
     return tData;
@@ -1442,9 +1498,14 @@ class K4PCSheet extends ActorSheet {
     }
 
     // Otherwise, we just return the Record<string, TraitData> object
-    return Object.fromEntries(archetypeTData
-        .map((traitName) => [traitName.replace(/^!/g, ""), this.getTraitData(traitName, traitType, archetype)])
-      ) as Record<string, Archetype.TraitData>;
+    return Object.fromEntries([
+      ...archetypeTData
+        .map((traitName) => [traitName.replace(/^!/g, ""), this.getTraitData(traitName, traitType, archetype)]),
+      // For disadvantages and dark secrets, we need to append any off-archetype selections made via the more menu
+      ...this.actor.system.charGen[
+        traitType === K4ItemType.disadvantage ? "extraDisadvantages" : "extraDarkSecrets"
+      ].map((traitName) => [traitName, this.getTraitData(traitName, traitType, false)])
+    ]) as Record<string, Archetype.TraitData>;
   }
 
   getStringData(dotKey: string, archetype?: K4Archetype): Archetype.StringData {
@@ -1609,15 +1670,15 @@ class K4PCSheet extends ActorSheet {
       charGenPhase: this.actor.charGenPhase,
       archetypeCarousel: this.getArchetypeCarouselData(),
       selectedArchetype,
-      archetypeAdvantages: selectedArchetype
-        ? this.getArchetypeTraitData(K4ItemType.advantage, selectedArchetype)
-        : undefined,
-      archetypeDisadvantages: (selectedArchetype
-        ? this.getArchetypeTraitData(K4ItemType.disadvantage, selectedArchetype)
-        : undefined) as Maybe<Record<string, Archetype.TraitData>>,
-      archetypeDarkSecrets: (selectedArchetype
-        ? this.getArchetypeTraitData(K4ItemType.darksecret, selectedArchetype)
-        : undefined) as Maybe<Record<string, Archetype.TraitData>>,
+      // archetypeAdvantages: selectedArchetype
+      //   ? this.getArchetypeTraitData(K4ItemType.advantage, selectedArchetype)
+      //   : undefined,
+      // archetypeDisadvantages: (selectedArchetype
+      //   ? this.getArchetypeTraitData(K4ItemType.disadvantage, selectedArchetype)
+      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
+      // archetypeDarkSecrets: (selectedArchetype
+      //   ? this.getArchetypeTraitData(K4ItemType.darksecret, selectedArchetype)
+      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
       description: this.getStringData("description"),
       occupation: this.getStringData("occupation"),
       looks: {
@@ -1707,6 +1768,48 @@ class K4PCSheet extends ActorSheet {
     const carouselScene$ = html.find(".archetype-staging");
     await ANIMATIONS.archetypeCarouselTimeline(carouselScene$, 200, this.actor);
 
+    const getUnlistedItemsOfType = (type: K4ItemType.disadvantage|K4ItemType.darksecret) => {
+      const {archetype} = this.actor;
+      if (!archetype) { return []; }
+      const listedTraits: string[] = [];
+      const cData = this.getArchetypeCarouselData();
+      if (cData[archetype]?.[type]) {
+        listedTraits.push(
+          ...Object.keys(cData[archetype][type])
+            .map((traitName) => traitName.replace(/^!/, ""))
+        );
+      }
+      return game.items
+        .filter((item): item is K4Item<K4ItemType.disadvantage|K4ItemType.darksecret> =>
+          item.type === type && !listedTraits.includes(item.name)
+        );
+    };
+
+    // Add listeners to "more" buttons
+    html.find("button.more-disadvantages").on({
+      click: async () => {
+        const item = await K4Dialog.GetUserItemSelection<K4ItemType.disadvantage>({
+          title: "Select a Disadvantage",
+          bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
+          itemList: getUnlistedItemsOfType(K4ItemType.disadvantage)
+        });
+        if (item) {
+          await this.actor.charGenSelect(item.name, false);
+        }
+      }
+    });
+    html.find("button.more-dark-secrets").on({
+      click: async () => {
+        const item = await K4Dialog.GetUserItemSelection<K4ItemType.darksecret>({
+          title: "Select a Dark Secret",
+          bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
+          itemList: getUnlistedItemsOfType(K4ItemType.darksecret)
+        });
+        if (item) {
+          await this.actor.charGenSelect(item.name, false);
+        }
+      }
+    });
   }
   async activateChargenAttributesAndTraitsListeners(html: JQuery) {
     await Promise.resolve(html);
@@ -2220,63 +2323,109 @@ class K4PCSheet extends ActorSheet {
     html.find(".content-editable").each(function() {
       $(this)
         .on("click", (clickEvent) => {
-          if ($(clickEvent.currentTarget).attr("contenteditable") === "true") {
+          const elem$ = $(clickEvent.currentTarget);
+          if (elem$.attr("contenteditable") === "true") {
             return undefined;
           }
           clickEvent.preventDefault();
-          const {currentTarget} = clickEvent;
-          let elemText = $(currentTarget).text().trim();
-          if ($(currentTarget).hasClass("placeholder")) {
-            elemText = "";
+          let elemContent: string;
+
+          if (elem$.hasClass("simple-editor")) {
+            // For simple-editor, preserve HTML content
+            elemContent = elem$.html().replace(/<br\s*\/?>/gi, "\n");
+            // Remove any other HTML tags
+            elemContent = elemContent.replace(/<[^>]*>/g, "");
+            // Set content using html() to preserve line breaks
+            elem$.html(elemContent || "&nbsp;");
+          } else {
+            // For other elements, use text content
+            elemContent = elem$.text().trim();
+            elem$.text(elemContent || " ");
           }
-          $(currentTarget)
-            .text(elemText || " ")
+
+          if (elem$.hasClass("placeholder")) {
+            elemContent = "";
+          }
+
+          elem$
             .removeClass("placeholder")
             .attr({contenteditable: "true"})
             .on("keydown", (keyboardEvent) => {
-              if (keyboardEvent.key === "Enter") {
+              if (!elem$.hasClass("simple-editor") && keyboardEvent.key === "Enter") {
                 keyboardEvent.preventDefault();
-                $(currentTarget).trigger("blur");
+                elem$.trigger("blur");
               }
-            })
-            .trigger("focus");
+            });
+
+          // Set content after making element editable
+          if (elem$.hasClass("simple-editor")) {
+            elem$.html(elemContent || " "); // Use text() to properly escape content
+          } else {
+            elem$.text(elemContent || " ");
+          }
+
+          elem$.trigger("focus");
         })
         .on("focus", (focusEvent) => {
           self.unClamp(focusEvent.currentTarget);
           const element = focusEvent.currentTarget;
-          const range = document.createRange(); // Create a new range
-          const selection = window.getSelection(); // Get the current selection
+          const elem$ = $(element);
 
-          if (selection) {
-            selection.removeAllRanges(); // Clear any existing selections
-            range.selectNodeContents(element); // Select the contents of the element
-            selection.addRange(range); // Add the range to the selection
+          if (elem$.hasClass("simple-editor")) {
+            // Convert <br> tags to newlines for editing
+            let content = elem$.html();
+            content = content.replace(/<br\s*\/?>/gi, "\n");
+            // Remove any HTML tags that might have been introduced
+            content = content.replace(/<[^>]*>/g, "");
+            // Use html() to set content, preserving line breaks
+            elem$.html(content);
+          }
+
+          const range = document.createRange();
+          const selection = window.getSelection();
+
+          if (selection && !elem$.hasClass("simple-editor")) {
+            selection.removeAllRanges();
+            range.selectNodeContents(element);
+            selection.addRange(range);
           }
         })
         .on("blur", (blurEvent) => {
           blurEvent.preventDefault();
           const {currentTarget} = blurEvent;
-          const elemText = $(currentTarget).text().trim();
+          const elem$ = $(currentTarget);
 
-          // Set placeholder text where text content is blank
-          if (!elemText && $(currentTarget).data("placeholder")) {
-            $(currentTarget)
-              .addClass("placeholder")
-              .text($(currentTarget).data("placeholder") as string);
-          } else {
-            $(currentTarget).removeClass("placeholder");
+          let elemHtml = elem$.html();
+
+          if (elem$.hasClass("simple-editor")) {
+            // Preserve line breaks by replacing them with <br> tags
+            elemHtml = elemHtml
+              .replace(/\r?\n/g, "<br>")
+              .replace(/(<br>)+$/g, ""); // Remove trailing <br> tags
           }
 
-          $(currentTarget)
+          // Set placeholder text where content is blank
+          if (!elemHtml.trim() && elem$.data("placeholder")) {
+            elem$
+              .addClass("placeholder")
+              .text(elem$.data("placeholder") as string);
+            elemHtml = "";
+          } else {
+            elem$.removeClass("placeholder");
+          }
+
+          elem$
             .attr({contenteditable: "false"})
             .off("keydown");
           self.clamp(currentTarget);
 
           // Sync with actor data
-          const dataField = $(currentTarget).data("field") as string;
+          const dataField = elem$.data("field") as string;
           const curData = getProperty(self.actor, dataField) as string;
-          if (curData !== elemText) {
-            self.actor.update({[dataField]: elemText}).catch((err: unknown) => { kLog.error(String(err)); });
+          if (curData !== elemHtml) {
+            self.actor.update({[dataField]: elemHtml}).catch((err: unknown) => {
+              kLog.error(`Failed to update ${dataField}: ${String(err)}`);
+            });
           }
         });
     });
@@ -2343,6 +2492,7 @@ class K4PCSheet extends ActorSheet {
 
   _twitchyEyeTimer: Maybe<NodeJS.Timeout> = undefined;
   startTwitchyEyeTimer(html: JQuery) {
+    if (!this.actor.isFinishedCharGen) { return; }
     if (this._twitchyEyeTimer) {
       clearTimeout(this._twitchyEyeTimer);
     }

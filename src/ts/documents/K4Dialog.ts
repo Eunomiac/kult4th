@@ -147,6 +147,7 @@ class K4Dialog extends Dialog {
     );
   }
 
+  _openedItemSheets: Set<K4Item> = new Set<K4Item>();
   #itemSelectionResolveFunc?: (value: K4Item|false) => void;
   static async GetUserItemSelection<T extends K4ItemType>(context: K4Dialog.PromptContext): Promise<K4Item<T> | false> {
     const {itemList: items, ...dialogContext} = context;
@@ -178,6 +179,30 @@ class K4Dialog extends Dialog {
     });
   }
 
+  async _onItemView(elem$: JQuery): Promise<void> {
+    const itemID = elem$.data("itemId") as Maybe<IDString>;
+    if (!itemID) {
+      throw new Error("Item ID not found");
+    }
+    const item = game.items.get(itemID);
+    if (!item) {
+      throw new Error(`Item with ID ${itemID} not found`);
+    }
+    // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
+    const actorSheetElements: HTMLElement[] = Array.from($("body").find(".k4-actor-sheet"));
+    const bodyElements: HTMLElement[] = [...$("body").find(".k4-item-sheet"), this.element[0]];
+    const highestZIndex = Math.max(101, ...bodyElements.map((sheet) =>
+      U.pInt($(sheet).css("z-index"))
+    ));
+    if (!item.sheet.rendered) {
+      item.sheet.render(true);
+      await U.sleep(150);
+    }
+    item.sheet.element.css("z-index", highestZIndex + 1);
+    $(actorSheetElements).css("z-index", 99);
+    this.element.css("z-index", 100);
+  }
+
   _onItemSelect(elem$: JQuery): gsap.core.Timeline {
     const container$ = elem$.closest(".item-selection-container");
     const otherItems$ = elem$.siblings(".item-portrait-button");
@@ -189,6 +214,9 @@ class K4Dialog extends Dialog {
     if (!item) {
       throw new Error(`Item with ID ${itemID} not found`);
     }
+
+
+
     return U.gsap.timeline({
       onComplete: () => {
         this.close().then(() => {
@@ -222,12 +250,20 @@ class K4Dialog extends Dialog {
   override activateListeners(element: JQuery): void {
     super.activateListeners(element);
 
+    this.element.on({
+      blur: async() => {
+        await this.close();
+        this.#itemSelectionResolveFunc?.(false);
+      }
+    });
+
     const itemButtons = element.find(".item-portrait-button");
     if (!itemButtons.length) { return; }
 
     itemButtons.each((index, elem) => {
       const button$ = $(elem);
-      const icon$ = button$.find(".item-portrait-icon");
+      const iconContainer$ = button$.find(".item-portrait-icon-container");
+      const icon$ = iconContainer$.find(".item-portrait-icon");
       const text$ = button$.find(".item-portrait-name");
       const hoverTimeline = U.gsap.timeline({
         paused: true,
@@ -238,25 +274,25 @@ class K4Dialog extends Dialog {
           this.timeScale(3);
         }
       })
-        .fromTo(icon$, {
+        .fromTo(iconContainer$, {
           scale: 1,
-          filter: "brightness(1) blur(5px)"
+          filter: "brightness(0.8) blur(2px)"
         }, {
           scale: 1.15,
           filter: "brightness(1.15) blur(0px)",
           duration: 0.25,
-          ease: "power1.easeInOut"
+          ease: "power2.inOut"
         }, 0)
         .fromTo(text$, {
           scale: 1,
-          color: C.Colors.GREY,
+          color: C.Colors.WHITE,
           filter: "brightness(1) blur(0px)"
         }, {
           scale: 1.15,
           filter: "brightness(1) blur(0px)",
           color: C.Colors.bWHITE,
           duration: 0.25,
-          ease: "power1.easeInOut"
+          ease: "power2.inOut"
         }, 0);
         //   scale: 0.8,
         //   duration: 0.25,
@@ -266,7 +302,8 @@ class K4Dialog extends Dialog {
       button$.data("hoverTimeline", hoverTimeline);
 
       button$.on({
-        click: () => { this._onItemSelect(button$); },
+        click: () => { void this._onItemView(button$); },
+        contextmenu: () => { this._onItemSelect(button$); },
         mouseenter: () => { hoverTimeline.play(); },
         mouseleave: () => { hoverTimeline.reverse(); }
       });

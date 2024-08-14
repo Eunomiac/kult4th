@@ -7,7 +7,9 @@
     {{#each itemList as |item|}}
       <div class="item-portrait-button tooltip-trigger" data-item-id="{{item.id}}">
         <span class="item-portrait-name">{{item.name}}</span>
-        <div class="item-portrait-icon" style="mask:url('{{item.img}}') no-repeat center;-webkit-mask:url('{{item.img}}') no-repeat center"></div>
+        <div class="item-portrait-icon-container">
+          <div class="item-portrait-icon" style="mask:url('{{item.img}}') no-repeat center;-webkit-mask:url('{{item.img}}') no-repeat center"></div>
+        </div>
         <div class="tooltip">
           <h2><center>{{item.name}}</center></h2>
           {{{formatForKult item.shortDesc}}}

@@ -486,7 +486,7 @@ Hooks.on("init", async () => {
   // Disable Compatibility Warnings
   CONFIG.compatibility.mode = 0;
   // Toggle Character Creation Features for Debugging
-  CONFIG.debug.isDisablingCharGen = true;
+  CONFIG.debug.isDisablingCharGen = false;
 
   // Initialize collection objects
   game.rolls = new Collection<K4Roll>();

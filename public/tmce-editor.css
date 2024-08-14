@@ -445,7 +445,7 @@
   --K4-bg-inset: transparent url("/assets/backgrounds/bg-black-leather.webp") repeat repeat center center/1000px 1000px;
 }
 #tinymce .k4-theme-red {
-  --K4-color-primary: var(--K4-WHITE);
+  --K4-color-primary: var(--K4-RED);
   --K4-color-primary-bright: var(--K4-bRED);
   --K4-color-primary-glow: var(--K4-gRED);
   --K4-color-contrast: var(--K4-BLACK);

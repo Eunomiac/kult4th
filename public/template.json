@@ -18,7 +18,9 @@
       "charGen": {
         "selAdvantages": [],
         "selDisadvantages": [],
-        "selDarkSecrets": []
+        "selDarkSecrets": [],
+        "extraDisadvantages": [],
+        "extraDarkSecrets": []
       },
 			"history": "",
 			"dramaticHooks": [

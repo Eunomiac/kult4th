@@ -64,7 +64,9 @@ declare global {
         charGen: {
           selAdvantages: string[],
           selDisadvantages: string[],
-          selDarkSecrets: string[]
+          selDarkSecrets: string[],
+          extraDisadvantages: string[],
+          extraDarkSecrets: string[]
         },
         history: string,
         dramaticHooks: [
@@ -765,7 +767,7 @@ class K4Actor extends Actor {
   isCharGenSelected(traitName: string) {
     if (this.type !== K4ActorType.pc) {return false;}
     const pcData = this.system as K4Actor.System<K4ActorType.pc>;
-    const {selAdvantages, selDisadvantages, selDarkSecrets} = pcData.charGen;
+    const {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
     // kLog.log("isCharGenSelected", traitName, {selAdvantages, selDisadvantages, selDarkSecrets, isSelected: [
     //   ...selAdvantages.map((adv) => adv.replace(/^!?/, "")),
     //   ...selDisadvantages.map((dis) => dis.replace(/^!?/, "")),
@@ -774,14 +776,16 @@ class K4Actor extends Actor {
     return [
       ...selAdvantages.map((adv) => adv.replace(/^!?/, "")),
       ...selDisadvantages.map((dis) => dis.replace(/^!?/, "")),
-      ...selDarkSecrets.map((ds) => ds.replace(/^!?/, ""))
+      ...selDarkSecrets.map((ds) => ds.replace(/^!?/, "")),
+      ...extraDisadvantages,
+      ...extraDarkSecrets
     ].includes(traitName.replace(/^!?/, ""));
   }
 
-  async charGenSelect(traitName: string) {
+  async charGenSelect(traitName: string, isArchetype = true) {
     if (this.type !== K4ActorType.pc) {return;}
     const pcData = this.system as K4Actor.System<K4ActorType.pc>;
-    let {selAdvantages, selDisadvantages, selDarkSecrets} = pcData.charGen;
+    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
     const item = game.items.getName(traitName) as Maybe<K4Item>;
     if (!item) { return; }
     switch (item.type) {
@@ -791,13 +795,23 @@ class K4Actor extends Actor {
         break;
       }
       case K4ItemType.disadvantage: {
-        selDisadvantages = U.unique([...selDisadvantages, traitName]);
-        await this.update({"system.charGen.selDisadvantages": selDisadvantages});
+        if (isArchetype) {
+          selDisadvantages = U.unique([...selDisadvantages, traitName]);
+          await this.update({"system.charGen.selDisadvantages": selDisadvantages});
+        } else {
+          extraDisadvantages = U.unique([...extraDisadvantages, traitName]);
+          await this.update({"system.charGen.extraDisadvantages": extraDisadvantages});
+        }
         break;
       }
       case K4ItemType.darksecret: {
-        selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
-        await this.update({"system.charGen.selDarkSecrets": selDarkSecrets});
+        if (isArchetype) {
+          selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
+          await this.update({"system.charGen.selDarkSecrets": selDarkSecrets});
+        } else {
+          extraDarkSecrets = U.unique([...extraDarkSecrets, traitName]);
+          await this.update({"system.charGen.extraDarkSecrets": extraDarkSecrets});
+        }
         break;
       }
     }
@@ -806,16 +820,24 @@ class K4Actor extends Actor {
   async charGenDeselect(traitName: string) {
     if (this.type !== K4ActorType.pc) {return;}
     const pcData = this.system as K4Actor.System<K4ActorType.pc>;
-    const {selAdvantages, selDisadvantages, selDarkSecrets} = pcData.charGen;
+    const {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
     if (selAdvantages.includes(traitName)) {
       U.pullElement(selAdvantages, traitName);
       await this.update({"system.charGen.selAdvantages": selAdvantages});
-    } else if (selDisadvantages.includes(traitName)) {
+    } else if ([...selDisadvantages, ...extraDisadvantages].includes(traitName)) {
       U.pullElement(selDisadvantages, traitName);
-      await this.update({"system.charGen.selDisadvantages": selDisadvantages});
-    } else if (selDarkSecrets.includes(traitName)) {
+      U.pullElement(extraDisadvantages, traitName);
+      await this.update({
+        "system.charGen.selDisadvantages": selDisadvantages,
+        "system.charGen.extraDisadvantages": extraDisadvantages
+      });
+    } else if ([...selDarkSecrets, ...extraDarkSecrets].includes(traitName)) {
       U.pullElement(selDarkSecrets, traitName);
-      await this.update({"system.charGen.selDarkSecrets": selDarkSecrets});
+      U.pullElement(extraDarkSecrets, traitName);
+      await this.update({
+        "system.charGen.selDarkSecrets": selDarkSecrets,
+        "system.charGen.extraDarkSecrets": extraDarkSecrets
+      });
     }
   }
   // #endregion

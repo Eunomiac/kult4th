@@ -86,7 +86,6 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
                 doc = game.items.getName(docName ?? "");
               }
               if (!doc) {
-                console.warn(`No such document: ${docName}`);
                 return `<span class="text-docLink" data-doc-name="${docName}" data-action="open">${docName}</span>`;
               }
               docDisplay ??= doc.name;

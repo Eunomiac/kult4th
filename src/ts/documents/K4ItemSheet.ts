@@ -83,6 +83,14 @@ export default class K4ItemSheet extends ItemSheet {
         }
       );
       kLog.log("[Gm Sheet Context]", {context});
+    } else {
+      Object.assign(
+        context,
+        {
+          rules: this.item.rulesSummary
+        }
+      );
+      kLog.log("[Item Sheet Assigned Context]", {context});
     }
     return context;
   }
@@ -191,7 +199,6 @@ export default class K4ItemSheet extends ItemSheet {
     }
 
     $(() => {
-      kLog.log("ITEM SHEET CONTEXT", {this: this, self, html});
 
       const height = html.height() ?? 0;
 

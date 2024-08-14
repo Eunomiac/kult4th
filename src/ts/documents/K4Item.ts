@@ -395,13 +395,13 @@ class K4Item extends Item {
     return parentItem ?? null;
   }
   get rulesSummary(): K4Item.Components.RulesData["rules"] | undefined {
-    if (this.hasOwnRules()) { return this.system.rules; }
     if (this.isParentItem()) {
       const subItemData = this.system.subItems.find((subItem) => "rules" in subItem.system);
       if (subItemData?.system.rules) {
         return subItemData.system.rules;
       }
     }
+    if (this.hasOwnRules()) { return this.system.rules; }
     return undefined;
   }
 
