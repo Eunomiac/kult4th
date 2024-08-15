@@ -35,7 +35,7 @@
     }
   ],
   "url": "https://github.com/Eunomiac/kult4th",
-  "manifest": "https://raw.githubusercontent.com/Eunomiac/kult4th/master/public/system.json",
+  "manifest": "https://raw.githubusercontent.com/Eunomiac/kult4th/v12Migration/public/system.json",
   "download": "",
   "readme": "",
   "license": "",

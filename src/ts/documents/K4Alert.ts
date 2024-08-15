@@ -466,7 +466,7 @@ class K4Alert {
       return [(fromUuidSync(target) ?? undefined) as Maybe<User>]
         .filter(Boolean) as User[];
     }
-    const allUsers = Array.from(game.users);
+    const allUsers = Array.from(game.users as Collection<User>);
     const [
       gmUsers,
       playerUsers

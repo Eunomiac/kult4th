@@ -53,16 +53,16 @@
 
     .text-tag, .text-docLink {
       text-shadow: none;
-      color: var(--K4-BLACK);
+      color: var(--K4-GREY1);
 
       &.text-resultlabel {
-        color: var(--K4-RED);
+        color: var(--K4-RED5);
       }
 
       &.text-mod,
       &.text-docLink,
       &.text-attributename {
-        color: var(--K4-BLUE);
+        color: var(--K4-BLUE5);
       }
 
       &.text-trigger,
@@ -81,7 +81,7 @@
     .tab-content {
       position: relative;
       z-index: 2;
-      --K4-color-primary: var(--K4-BLACK);
+      --K4-color-primary: var(--K4-GREY1);
 
       padding: var(--chat-vert-padding-internal) var(--chat-horiz-padding-internal);
       padding-right: 15px;
@@ -101,7 +101,7 @@
       }
 
       .sheet-header {
-        border-bottom: 4px solid var(--K4-BLACK);
+        border-bottom: 4px solid var(--K4-GREY1);
         height: min-content;
         margin: 0;
 
@@ -111,7 +111,7 @@
           font-size: $rem-16;
           line-height: $rem-20;
           font-weight: $font-weight-medium;
-          color: var(--K4-GOLD);
+          color: var(--K4-GOLD5);
           background: black;
           width: min-content;
           padding: 3px 10px 0px 10px;
@@ -134,7 +134,7 @@
         font-size: $rem-14;
         line-height: $rem-14;
         font-weight: $font-weight-bold;
-        color: var(--K4-BLUE);
+        color: var(--K4-BLUE5);
         display: block;
         white-space: nowrap;
         margin-left: auto;
@@ -145,14 +145,14 @@
         cursor: pointer;
 
         &:hover {
-          color: var(--K4-bBLUE);
+          color: var(--K4-BLUE8);
         }
         // background: black;
 
         &::before {
           content: "from ";
           font-family: var(--font-primary);
-          color: var(--K4-BLACK);
+          color: var(--K4-GREY1);
           text-transform: lowercase;
           font-size: $rem-10;
           font-style: italic;
@@ -163,15 +163,15 @@
       .rules-top {
         border-bottom-style: solid;
         border-bottom-width: 4px;
-        border-image: linear-gradient(to right, var(--K4-GOLD) 50%, transparent) 1;
+        border-image: linear-gradient(to right, var(--K4-GOLD5) 50%, transparent) 1;
         margin-top: 2px;
         .text-trigger {
-          color: var(--K4-BLACK);
+          color: var(--K4-GREY1);
           font-weight: normal;
           font-size: 13px;
         }
         // .text-attributename {
-        //   color: var(--K4-BLUE);
+        //   color: var(--K4-BLUE5);
         // }
       }
 
@@ -180,7 +180,7 @@
         text-align: left;
 
         + .result-entry + .result-entry .text-resultlabel + span::after {
-          background:  linear-gradient(to right, var(--K4-BLACK) 50%, transparent);
+          background:  linear-gradient(to right, var(--K4-GREY1) 50%, transparent);
         }
         .text-resultlabel {
           width: auto;
@@ -200,20 +200,18 @@
               display: block;
               height: 4px;
               width: 100%;
-              background:  linear-gradient(to right, var(--K4-GOLD) 50%, transparent);
+              background:  linear-gradient(to right, var(--K4-GOLD5) 50%, transparent);
               margin: 3px 0px;
             }
 
             .inline-list {
-
-              margin: 0;
 
               &::before {
                   content: "";
                   display: block;
                   height: 4px;
                   width: 100%;
-                  background:  linear-gradient(to right, var(--K4-GOLD) 50%, transparent);
+                  background:  linear-gradient(to right, var(--K4-GOLD5) 50%, transparent);
                   margin: 3px 0px;
               }
 
@@ -221,6 +219,7 @@
                 margin: 0;
                 width: auto;
                 text-align: left;
+                border-width: 1px;
               }
 
               li::before {
@@ -232,9 +231,9 @@
               li:not(:last-child)::after {
                 content: "";
                 display: block;
-                height: 4px;
+                height: 2px;
                 width: 100%;
-                background:  linear-gradient(to right, var(--K4-GOLD) 50%, transparent);
+                background:  linear-gradient(to right, var(--K4-GOLD5) 50%, transparent);
                 margin: 3px 0px;
               }
             }
@@ -251,7 +250,7 @@
         font-size: $rem-16;
         line-height: $rem-16;
         font-weight: $font-weight-medium;
-        color: var(--K4-BLACK);
+        color: var(--K4-GREY1);
         font-family: var(--font-primary);
         font-style: italic;
         margin: 15px 0px 10px 40px;

@@ -14,7 +14,7 @@
   --K4-section-padding-top: 40px;
   --K4-section-padding-horiz: 10px;
   --K4-section-padding-bottom: 20px;
-  --K4-section-drop-shadow: 2px 4px 2px var(--K4-dBLACK);
+  --K4-section-drop-shadow: 2px 4px 2px var(--K4-GREY0);
 
   --K4-subsection-padding-vert: 5px;
   --K4-subsection-padding-horiz: 5px;
@@ -53,8 +53,8 @@ img {
     top: 50%;
     left: 50%;
 
-    fill: var(--K4-BLACK) !important;
-    stroke: var(--K4-BLACK) !important;
+    fill: var(--K4-GREY1) !important;
+    stroke: var(--K4-GREY1) !important;
   }
 
   &.gear-huge {
@@ -148,7 +148,7 @@ img {
         --K4-icon-stroke: url("#nav-main-ring-stroke-gradient");
         --K4-icon-stroke-width: 10px;
         transform: translate(-50%, -50%);
-        filter: drop-shadow(2px 2px 1px var(--K4-BLACK));
+        filter: drop-shadow(2px 2px 1px var(--K4-GREY1));
       }
     }
   }
@@ -189,7 +189,7 @@ img {
     position: absolute;
     border-radius: 50%;
     background: var(--K4-color-contrast);
-    filter: drop-shadow(25px 25px 15px var(--K4-dBLACK));
+    filter: drop-shadow(25px 25px 15px var(--K4-GREY0));
   }
 
   .profile-image-animation {
@@ -299,7 +299,7 @@ img {
         left: 50%;
         overflow: hidden;
 
-        --K4-icon-fill: var(--K4-BLACK);
+        --K4-icon-fill: var(--K4-GREY1);
 
         .svg-def {
           position: relative;
@@ -320,17 +320,17 @@ img {
         .nav-tab-label {
           display: block;
           opacity: 0;
-          color: var(--K4-bWHITE);
+          color: var(--K4-GREY10);
           font-size: $rem-24;
           font-family: var(--K4-font-primary-caps);
           font-weight: $font-weight-black;
           text-shadow:
-            0px 0px 5px var(--K4-RED),
-            0px 0px 5px var(--K4-RED),
-            0px 0px 12px var(--K4-RED),
-            0px 0px 10px var(--K4-RED),
-            0px 0px 15px var(--K4-RED),
-            0px 0px 20px var(--K4-RED);
+            0px 0px 5px var(--K4-RED5),
+            0px 0px 5px var(--K4-RED5),
+            0px 0px 12px var(--K4-RED5),
+            0px 0px 10px var(--K4-RED5),
+            0px 0px 15px var(--K4-RED5),
+            0px 0px 20px var(--K4-RED5);
           position: absolute;
           transform-origin: center center;
           transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
@@ -372,7 +372,7 @@ $isDebug: false;
     width: 100vw;
     top: 0;
     left: 0;
-    background: var(--K4-BLACK);
+    background: var(--K4-GREY1);
     visibility: hidden;
 
     img, video {
@@ -475,8 +475,8 @@ $isDebug: false;
             0 0 16.5px var(--K4-color-primary-bright);
 
           &.placeholder {
-            --actor-name-shadow-bright: var(--K4-bGREY);
-            --actor-name-shadow-dim: var(--K4-dGREY);
+            --actor-name-shadow-bright: var(--K4-GREY7);
+            --actor-name-shadow-dim: var(--K4-GREY3);
             font-size: $rem-14;
             line-height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer));
           }
@@ -550,67 +550,67 @@ $isDebug: false;
 
           &[value="7"],
           option[value="7"] {
-            color: var(--K4-bWHITE);
+            color: var(--K4-GREY10);
           }
 
           &[value="6"],
           option[value="6"] {
-            color: var(--K4-bWHITE);
+            color: var(--K4-GREY10);
           }
 
           &[value="5"],
           option[value="5"] {
-            color: var(--K4-bWHITE);
+            color: var(--K4-GREY10);
           }
 
           &[value="4"],
           option[value="4"] {
-            color: var(--K4-WHITE);
+            color: var(--K4-GREY9);
           }
 
           &[value="3"],
           option[value="3"] {
-            color: var(--K4-gGOLD);
+            color: var(--K4-GOLD9);
           }
 
           &[value="2"],
           option[value="2"] {
-            color: var(--K4-bGOLD);
+            color: var(--K4-GOLD8);
           }
 
           &[value="1"],
           option[value="1"] {
-            color: var(--K4-GOLD);
+            color: var(--K4-GOLD5);
           }
 
           &[value="0"],
           option[value="0"] {
-            color: var(--K4-dGOLD);
+            color: var(--K4-GOLD1);
           }
 
           &[value="-1"],
           option[value="-1"] {
-            color: var(--K4-RED);
+            color: var(--K4-RED5);
           }
 
           &[value="-2"],
           option[value="-2"] {
-            color: var(--K4-bRED);
+            color: var(--K4-RED8);
           }
 
           &[value="-3"],
           option[value="-3"] {
-            color: var(--K4-gRED);
+            color: var(--K4-RED9);
           }
 
           &[value="-4"],
           option[value="-4"] {
-            color: var(--K4-gRED);
+            color: var(--K4-RED9);
           }
 
           &[value="-5"],
           option[value="-5"] {
-            color: var(--K4-gRED);
+            color: var(--K4-RED9);
             font-weight: $font-weight-black;
           }
         }
@@ -677,33 +677,33 @@ $isDebug: false;
       left: 0%;
       width: 100vw;
       height: 100vh;
-      background:
-          radial-gradient(
-            at 50% 50%,
-            #2b2b2b var(--gradient-center-stop),
-            var(--K4-BLACK) var(--gradient-middle-stop),
-            var(--K4-dBLACK) var(--gradient-border-stop),
-            transparent var(--gradient-outer-stop)
-          ),
-          radial-gradient(
-            at 50% 50%,
-            var(--K4-dBLACK) var(--gradient-border-stop),
-            transparent var(--gradient-outer-stop)
-          );
-      background-size: 100% 35%, 100% 35%;
-      background-position: 50% 490px, 50% 500px;
-      background-repeat: no-repeat, no-repeat;
+      // background:
+      //     radial-gradient(
+      //       at 50% 50%,
+      //       #2b2b2b var(--gradient-center-stop),
+      //       var(--K4-GREY1) var(--gradient-middle-stop),
+      //       var(--K4-GREY0) var(--gradient-border-stop),
+      //       transparent var(--gradient-outer-stop)
+      //     ),
+      //     radial-gradient(
+      //       at 50% 50%,
+      //       var(--K4-GREY0) var(--gradient-border-stop),
+      //       transparent var(--gradient-outer-stop)
+      //     );
+      // background-size: 100% 35%, 100% 35%;
+      // background-position: 50% 490px, 50% 500px;
+      // background-repeat: no-repeat, no-repeat;
       visibility: hidden;
       box-shadow:
-        inset 0px 0px 100px 50px var(--K4-dBLACK);
+        inset 0px 0px 100px 50px var(--K4-GREY0);
 
       .archetype-panel.actor-name {
         position: absolute;
         top: 42px;
-        left: calc(50% - 300px);
+        left: 300px;
         width: 600px;
-        transform-origin: center center;
-        transform: scale(1.25);
+        transform-origin: left center;
+        // transform: scale(1.25);
 
         .actor-name-spacer,
         .actor-name-border {
@@ -714,23 +714,23 @@ $isDebug: false;
       .archetype-panel.attributes {
         --attributes-width: 240px;
         --attributes-height: calc(2 * var(--attributes-width) - 40px);
-        --attributes-scale: 1.25;
+        --attributes-scale: 1;
         --attributes-font-size: calc(22px / var(--attributes-scale));
         position: absolute;
         height: var(--attributes-height);
         width: var(--attributes-width);
-        left: 80px;
-        top: 100px;
+        left: 20px;
+        top: 20px;
         transform-origin: top left;
         padding: 10px 30px;
         border-radius: 25px;
         background: rgba(0, 0, 0, 0.5) url("/assets/layout/attributes-spread.webp") no-repeat center 30px/200px auto;
         border: none !important;
-        transform: scale(1.25);
+        transform: scale(var(--attributes-scale)) !important;
         box-shadow:
-          inset 0px 0px 30px var(--K4-dBLACK),
-          0px 0px 15px var(--K4-dBLACK);
-        text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 8);
+          inset 0px 0px 30px var(--K4-GREY0),
+          0px 0px 15px var(--K4-GREY0);
+        text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
 
         .k4-title {
           font-size: var(--attributes-font-size);
@@ -780,7 +780,7 @@ $isDebug: false;
         height: 70vh;
         top: 120px;
         left: 25vw;
-        overflow: hidden;
+        overflow: visible;
 
         pointer-events: none; // Allow interactions to pass through      height: 100vh;
 
@@ -794,8 +794,8 @@ $isDebug: false;
           position: absolute;
           top: 50%;
           left: 50%;
-          width: 150vw;
-          height: 50vh; // Thin line for dragging
+          width: 400%;
+          height: 50vh;
           transform: translate(-50%, -50%);
           cursor: grab;
           pointer-events: all;
@@ -828,7 +828,7 @@ $isDebug: false;
         height: var(--item-height);
         margin: 0px auto;
         position: relative;
-        top: 250px;
+        top: 150px;
         perspective: 1000px;
         // transform: scale(0.8);
 
@@ -867,7 +867,7 @@ $isDebug: false;
               top: 150px;
               right: calc(50% + 120px);
               z-index: 2;
-              text-shadow: build-text-shadow(4px, var(--K4-dBLACK), 8);
+              text-shadow: build-text-shadow(4px, var(--K4-GREY0), 8);
               text-align: right;
               width: 200px;
               // background: rgba(0, 255, 0, 0.25);
@@ -879,12 +879,12 @@ $isDebug: false;
               font-family: var(--font-heading-1);
               white-space: nowrap;
               font-size: $rem-48;
-              color: var(--K4-gGOLD);
+              color: var(--K4-GOLD9);
               // transform: translate(0%, 0%);
               top: 165px;
               left: calc(50% - 120px);
               z-index: 2;
-              text-shadow: build-text-shadow(6px, var(--K4-dBLACK), 8);
+              text-shadow: build-text-shadow(6px, var(--K4-GREY0), 8);
               text-align: left;
               width: 200px;
               // background: rgba(255, 255, 0, 0.25);
@@ -902,8 +902,8 @@ $isDebug: false;
               &, * {
                 font-size: $rem-14;
                 line-height: $rem-18;
-                color: var(--K4-bGOLD);
-                text-shadow: build-text-shadow(5px, var(--K4-dBLACK), 8);
+                color: var(--K4-GOLD8);
+                text-shadow: build-text-shadow(5px, var(--K4-GREY0), 8);
               }
             }
 
@@ -955,7 +955,7 @@ $isDebug: false;
         justify-content: space-evenly;
         gap: 10px;
         z-index: 10000;
-        text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 8);
+        text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
 
         .archetype-panel {
           position: absolute;
@@ -967,8 +967,8 @@ $isDebug: false;
           background: rgba(0, 0, 0, 0.5);
           overflow: hidden;
           box-shadow:
-            inset 0px 0px 30px var(--K4-dBLACK),
-            0px 0px 15px var(--K4-dBLACK);
+            inset 0px 0px 30px var(--K4-GREY0),
+            0px 0px 15px var(--K4-GREY0);
 
           .k4-title {
             order: -2;
@@ -982,24 +982,25 @@ $isDebug: false;
           }
 
           &.archetype-panel-advantages {
-            right: 60px;
-            top: 100px;
+            left: 40px;
+            top: 480px;
             gap: 5px;
           }
 
           &.archetype-panel-darksecrets,
           &.archetype-panel-disadvantages {
-            bottom: 20px;
             min-height: 320px;
             // right: 5vw;
           }
 
           &.archetype-panel-disadvantages {
-            left: calc(50% - var(--panel-total-width) - var(--panel-center-offset));
+            bottom: 80px;
+            left: 370px;
           }
 
           &.archetype-panel-darksecrets {
-            left: calc(50% + var(--panel-center-offset));
+            bottom: 20px;
+            left: 700px;
           }
 
           .archetype-sub-panel {
@@ -1091,12 +1092,12 @@ $isDebug: false;
                   margin-left: var(--overlay-horiz-shift);
                   filter: drop-shadow(0 0 1px var(--K4-color-primary-bright)) drop-shadow(0 0 2px var(--K4-color-primary-bright)) drop-shadow(0 0 3px var(--K4-color-primary-bright)) drop-shadow(0 0 1px var(--K4-color-primary-bright)) drop-shadow(0 0 2px var(--K4-color-primary-bright)) drop-shadow(0 0 3px var(--K4-color-primary-bright));
                   .icon-mask {
-                    background: var(--K4-dBLACK);
+                    background: var(--K4-GREY0);
                   }
                 }
 
                 .archetype-trait-name {
-                  color: var(--K4-dBLACK);
+                  color: var(--K4-GREY0);
                   text-shadow: none;
                 }
               }
@@ -1132,7 +1133,7 @@ $isDebug: false;
                 text-align: left;
 
                 &.neon-glow-strong-red {
-                  color: var(--K4-bWHITE);
+                  color: var(--K4-GREY10);
                   font-size: $rem-24;
                   text-transform: lowercase;
                   line-height: 27px;
@@ -1316,7 +1317,7 @@ $isDebug: false;
             $border-width: 1px;
 
             height: $status-height;
-            outline: $border-width solid var(--K4-GOLD);
+            outline: $border-width solid var(--K4-GOLD5);
 
 
 
@@ -1391,7 +1392,7 @@ $isDebug: false;
                     left: 0;
                     height: 100%;
                     width: 100%;
-                    background: var(--K4-BLACK);
+                    background: var(--K4-GREY1);
                   }
 
                   img {
@@ -1430,7 +1431,7 @@ $isDebug: false;
                   height: $status-height - 2px;
                   width: 100px;
                   padding-top: 4px;
-                  fill: var(--K4-gGOLD);
+                  fill: var(--K4-GOLD9);
                   font-family: var(--font-decorative);
                   font-size: 512px;
                   opacity: 0;
@@ -1438,7 +1439,7 @@ $isDebug: false;
                     0 0 4px black;
 
                   &.glitch-text {
-                    fill: var(--K4-bRED);
+                    fill: var(--K4-RED8);
                     text-shadow: none;
                     position: absolute;
                     transform-origin: center center;
@@ -1470,7 +1471,7 @@ $isDebug: false;
 
                 .label-text {
                   position: relative;
-                  color: var(--K4-GOLD);
+                  color: var(--K4-GOLD5);
                   filter: drop-shadow(5px 5px 5px black);
                   font-size: 38px;
                   text-transform: uppercase;
@@ -1503,8 +1504,8 @@ $isDebug: false;
 
             /* STATUS BAR STRIPS */
             .status-bar-strips {
-              --button-gradient-light: var(--K4-bRED);
-              --button-gradient-dark: var(--K4-dRED);
+              --button-gradient-light: var(--K4-RED8);
+              --button-gradient-dark: var(--K4-RED1);
               display: grid;
               padding: 0px;
               grid-template-columns: 1fr 1fr;
@@ -1554,8 +1555,8 @@ $isDebug: false;
                   width: 160px;
                   transform-origin: 50% 50%;
                   rotate: 235deg;
-                  fill: var(--K4-dGOLD);
-                  filter: drop-shadow(-1px 1px 0px var(--K4-dBLACK));
+                  fill: var(--K4-GOLD1);
+                  filter: drop-shadow(-1px 1px 0px var(--K4-GREY0));
                 }
 
                 &.edges-1 svg {
@@ -1576,9 +1577,9 @@ $isDebug: false;
               .edges-source {
                 position: absolute;
                 font-family: var(--font-heading-2);
-                color: var(--K4-bGOLD);
+                color: var(--K4-GOLD8);
                 text-shadow:
-                  2px 2px 0px var(--K4-dGOLD);
+                  2px 2px 0px var(--K4-GOLD1);
               }
 
               .edges-header {
@@ -1587,7 +1588,7 @@ $isDebug: false;
               }
 
               .edges-count {
-                color: var(--K4-bWHITE);
+                color: var(--K4-GREY10);
                 font-size: 64px;
                 right: 0px;
               }
@@ -1596,9 +1597,9 @@ $isDebug: false;
                 right: 2px;
                 bottom: 2px;
                 font-size: 12px;
-                color: var(--K4-gGOLD);
+                color: var(--K4-GOLD9);
                 text-shadow:
-                  1px 1px 0px var(--K4-dGOLD);
+                  1px 1px 0px var(--K4-GOLD1);
                 font-style: italic;
                 font-family: var(--font-primary);
                 font-weight: bold;
@@ -1639,8 +1640,8 @@ $isDebug: false;
                   flex-grow: 0;
                   transform: skewX(-20deg);
                   margin: 0 10px;
-                  border-left: 2px solid var(--K4-dGOLD);
-                  border-right: 2px solid var(--K4-dGOLD);
+                  border-left: 2px solid var(--K4-GOLD1);
+                  border-right: 2px solid var(--K4-GOLD1);
                   width: 6px;
                 }
               }
@@ -1659,7 +1660,7 @@ $isDebug: false;
                 overflow: visible;
 
                 &, * {
-                  text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 4);
+                  text-shadow: build-text-shadow(3px, var(--K4-GREY0), 4);
                 }
 
                 .tooltip-trigger {
@@ -1735,8 +1736,8 @@ $isDebug: false;
                 }
 
                 &.move-modifier {
-                  --K4-color-primary: var(--K4-WHITE);
-                  --K4-value-color: var(--K4-bWHITE);
+                  --K4-color-primary: var(--K4-GREY9);
+                  --K4-value-color: var(--K4-GREY10);
                 }
 
                 &.left-modifier {
@@ -1754,27 +1755,27 @@ $isDebug: false;
                   display: none;
 
                   .modifier-button {
-                    --K4-color-primary: var(--K4-GOLD) !important;
+                    --K4-color-primary: var(--K4-GOLD5) !important;
                   }
-                  background: var(--K4-dRED);
+                  background: var(--K4-RED1);
                 }
 
                 &.armor-modifier {
                   .modifier-button {
-                    --K4-color-primary: var(--K4-gGOLD) !important;
+                    --K4-color-primary: var(--K4-GOLD9) !important;
                   }
                 }
 
                 .modifier-button {
                   --shadow-size: 3px;
                   &.pos-mod {
-                    --K4-color-primary: var(--K4-gBLUE);
+                    --K4-color-primary: var(--K4-BLUE9);
                   }
                   &.neg-mod {
-                    --K4-color-primary: var(--K4-gRED);
+                    --K4-color-primary: var(--K4-RED9);
                   }
                   &.neutral-mod {
-                    --K4-color-primary: var(--K4-bGOLD);
+                    --K4-color-primary: var(--K4-GOLD8);
                   }
                   background: transparent;
                   position: relative;
@@ -1794,12 +1795,12 @@ $isDebug: false;
                   box-shadow: 0 0 var(--shadow-size) var(--K4-color-primary);
 
                   &[data-state="disabled"] {
-                    --K4-color-primary: var(--K4-dGREY);
+                    --K4-color-primary: var(--K4-GREY3);
                     --shadow-size: 3px;
                     filter: saturate(0);
                     .modifier-label {
                       .modifier-value {
-                        color: var(--K4-dGREY);
+                        color: var(--K4-GREY3);
                         text-shadow: none;
                         animation: none;
                       }
@@ -1813,7 +1814,7 @@ $isDebug: false;
                       display: none;
                     }
                     .modifier-value {
-                      color: var(--K4-bWHITE);
+                      color: var(--K4-GREY10);
                       line-height: #{$modifiers-height};
 
                     }

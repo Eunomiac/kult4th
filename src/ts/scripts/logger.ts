@@ -22,14 +22,14 @@ const STACK_TRACE_EXCLUSION_FILTERS: Record<"all", RegExp[]> & Partial<Record<De
 };
 const STYLES = {
   base: {
-    "background": C.Colors.BLACK,
-    "color": C.Colors.bGOLD,
+    "background": C.Colors.GREY1,
+    "color": C.Colors.GOLD8,
     "font-family": "Pragmata Pro",
     "padding": "0 25px",
     "margin-right": "25px"
   },
   display: {
-    "color": C.Colors.gGOLD,
+    "color": C.Colors.GOLD9,
     "font-family": "Kultrata SC",
     "text-transform": "lowercase",
     "font-size": "16px",
@@ -37,26 +37,26 @@ const STYLES = {
     "padding": "0 100px"
   },
   error: {
-    "color": C.Colors.gRED,
-    "background": C.Colors.dRED,
+    "color": C.Colors.RED9,
+    "background": C.Colors.RED1,
     "font-weight": 500
   },
   handlebars: {
-    "background": C.Colors.GREY,
-    "color": C.Colors.BLUE,
+    "background": C.Colors.GREY5,
+    "color": C.Colors.BLUE5,
     "font-family": "Pragmata Pro",
     "padding": "0",
     "margin-right": "25px"
   },
   report: {
-    "background": C.Colors.dBLACK,
-    "color": C.Colors.gGOLD,
+    "background": C.Colors.GREY0,
+    "color": C.Colors.GOLD9,
     "font-family": "Pragmata Pro",
     "padding": "0 25px",
     "margin-right": "25px"
   },
   stack: {
-    "color": C.Colors.GOLD,
+    "color": C.Colors.GOLD5,
     "font-weight": 100,
     "font-size": "10px",
     "font-family": "Pragmata Pro"
@@ -164,7 +164,7 @@ const getConsoleCalls = (type: KeyOf<typeof STYLES> = "base", ...content: [strin
 
   if (stackTrace) {
     consoleCalls.push(
-      [console.group, ["%cSTACK TRACE", `color: ${C.Colors.bGOLD}; font-family: "Pragmata Pro"; font-size: 12px; background: ${C.Colors.BLACK}; font-weight: bold; padding: 0 10px;`]],
+      [console.group, ["%cSTACK TRACE", `color: ${C.Colors.GOLD8}; font-family: "Pragmata Pro"; font-size: 12px; background: ${C.Colors.GREY1}; font-weight: bold; padding: 0 10px;`]],
       [console.log, [`%c${stackTrace}`, Object.entries(STYLES.stack).map(([prop, val]) => `${prop}: ${val};`).join(" ")]],
       [console.groupEnd, []]
     )

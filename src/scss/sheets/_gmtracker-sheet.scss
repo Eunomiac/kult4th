@@ -22,7 +22,7 @@
   .kult4th-form {
     display: flex;
     border-radius: 0;
-    background: var(--K4-BLACK);
+    background: var(--K4-GREY1);
     background-image: none;
     * {
       font-family: Oswald;
@@ -44,14 +44,14 @@
         flex-grow: 0;
         flex-shrink: 0;
         margin-right: calc(-1 * var(--K4-gmsheet-column-toggler-size));
-        background: var(--K4-GOLD);
+        background: var(--K4-GOLD5);
 
 
         &:checked {
-          background: var(--K4-dGOLD);
+          background: var(--K4-GOLD1);
 
           + .column-label {
-            color: var(--K4-GOLD);
+            color: var(--K4-GOLD5);
 
             + .column { display: none;}
           }
@@ -60,7 +60,7 @@
 
       .column-label {
         pointer-events: none;
-        color: var(--K4-dBLACK);
+        color: var(--K4-GREY0);
         text-indent: 10px;
         display: block;
         width: var(--K4-gmsheet-column-toggler-size);
@@ -106,12 +106,12 @@
           flex-grow: 0;
           flex-shrink: 0;
           margin-bottom: calc(-1 * var(--K4-gmsheet-panel-toggler-size));
-          background: var(--K4-dBLACK);
-          border-top: 1px solid var(--K4-gGOLD);
-          border-bottom: 1px solid var(--K4-gGOLD);
+          background: var(--K4-GREY0);
+          border-top: 1px solid var(--K4-GOLD9);
+          border-bottom: 1px solid var(--K4-GOLD9);
 
           &:checked {
-            background: var(--K4-dGOLD);
+            background: var(--K4-GOLD1);
 
             + .panel-label {
               + .panel { display: none;}
@@ -120,7 +120,7 @@
         }
 
         .panel-label {
-          color: var(--K4-gGOLD);
+          color: var(--K4-GOLD9);
           position: relative;
           text-indent: 5px;
           display: block;
@@ -153,7 +153,7 @@
 
           &.panel-player-character {
             position: relative;
-            --K4-color-primary: var(--K4-bGOLD);
+            --K4-color-primary: var(--K4-GOLD8);
 
             .panel-bg {
               position: absolute;
@@ -177,7 +177,7 @@
               width: min-content;
               display: grid;
               padding: 3px;
-              border: 3px double var(--K4-gGOLD);
+              border: 3px double var(--K4-GOLD9);
 
               grid-template-areas:
                 "fortitude willpower reflexes"
@@ -224,20 +224,20 @@
                 &.attribute-soul { grid-area: soul; }
 
                 &.attribute-0 {
-                  --attribute-value-color: var(--K4-GOLD);
+                  --attribute-value-color: var(--K4-GOLD5);
                 }
                 &[class*='attribute--'] {
-                  --attribute-value-color: var(--K4-gRED);
+                  --attribute-value-color: var(--K4-RED9);
 
                   &.attribute--1 {
-                    --attribute-value-color: var(--K4-bRED);
+                    --attribute-value-color: var(--K4-RED8);
                   }
                 }
                 &.attribute-1 {
-                  --attribute-value-color: var(--K4-bGOLD);
+                  --attribute-value-color: var(--K4-GOLD8);
                 }
                 &.attribute-2 {
-                  --attribute-value-color: var(--K4-gGOLD);
+                  --attribute-value-color: var(--K4-GOLD9);
                 }
 
                 .attribute-name {
@@ -251,14 +251,14 @@
                   &.attribute-willpower { text-indent: 0px; }
 
                   &::first-letter {
-                    color: var(--attribute-value-color, var(--K4-bWHITE));
-                    text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 6);
+                    color: var(--attribute-value-color, var(--K4-GREY10));
+                    text-shadow: build-text-shadow(3px, var(--K4-GREY0), 6);
                   }
                 }
 
                 .attribute-value {
-                  text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 6);
-                  color: var(--attribute-value-color, var(--K4-bWHITE));
+                  text-shadow: build-text-shadow(3px, var(--K4-GREY0), 6);
+                  color: var(--attribute-value-color, var(--K4-GREY10));
                 }
               }
             }

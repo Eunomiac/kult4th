@@ -355,7 +355,7 @@ class K4Actor extends Actor {
 
   // #region GETTERS ~
   get user(): Maybe<User> {
-    return game.users.find((user) => user.character?.id === this.id)
+    return (game.users as Collection<User>).find((user) => user.character?.id === this.id);
   }
   get charGenPhase(): K4CharGenPhase {
     if (!this.is(K4ActorType.pc)) {
@@ -377,7 +377,7 @@ class K4Actor extends Actor {
   }
   get isFinishedCharGen(): boolean {
     // return true;
-    return CONFIG.debug.isDisablingCharGen
+    return CONFIG.K4.debug.isDisablingCharGen
       ? true
       : this.charGenPhase === K4CharGenPhase.finished;
   }
@@ -389,6 +389,15 @@ class K4Actor extends Actor {
     void this.update({
       "system.archetype": archetype
     }, {render: false});
+  }
+  get summaryData() {
+    const acData = (this.sheet as K4PCSheet).getArchetypeCarouselData();
+    return {
+      name: this.name,
+      archetype: this.archetype,
+      attributes: this.attributeData,
+      ...(this.archetype && this.archetype in acData ? {archetypeData: acData[this.archetype]} : {})
+    };
   }
   // #region -- Embedded Item Search & Retrieval Methods ~
 

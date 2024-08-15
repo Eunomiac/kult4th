@@ -1074,92 +1074,72 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
 };
 
 export const Colors = {
-  GOLD: "rgb(150, 140, 106)", // #968c6a
-  dGOLD: "rgb(65, 61, 46)", // #413d2e
-  bGOLD: "rgb(235, 219, 166)", // #ebdba6
-  gGOLD: "rgb(255, 254, 200)", // #fffec8
+  // GOLD5
+  GOLD1: "rgb(58, 54, 41)",
+  GOLD2: "rgb(81, 76, 58)",
+  GOLD3: "rgb(104, 97, 74)",
+  GOLD4: "rgb(127, 119, 90)",
+  GOLD5: "rgb(150, 140, 106)",
+  GOLD6: "rgb(177, 164, 125)",
+  GOLD7: "rgb(203, 189, 143)",
+  GOLD8: "rgb(229, 213, 162)",
+  GOLD9: "rgb(255, 243, 204)",
 
-  RED: "rgb(155, 32, 32)", // #9b2020
-  dRED: "rgb(70, 14, 14)", // #460e0e
-  bRED: "rgb(240, 50, 50)", // #f03232
-  gRED: "rgb(255, 0, 0)", // #ff0000
+  // RED5
+  RED1: "rgb(38, 8, 8)",
+  RED2: "rgb(68, 14, 14)",
+  RED3: "rgb(97, 20, 20)",
+  RED4: "rgb(126, 26, 26)",
+  RED5: "rgb(155, 33, 33)",
+  RED6: "rgb(180, 38, 38)",
+  RED7: "rgb(205, 47, 43)",
+  RED8: "rgb(230, 57, 48)",
+  RED9: "rgb(255, 124, 114)",
 
-  BLUE: "rgb(43, 85, 139)", // #2b558b
-  dBLUE: "rgb(17, 33, 54)", // #112136
-  bBLUE: "rgb(69, 137, 224)", // #4589e0
-  gBLUE: "rgb(128, 185, 255)", // #80b9ff
+  // BLUE5
+  BLUE1: "rgb(9, 18, 29)",
+  BLUE2: "rgb(18, 34, 57)",
+  BLUE3: "rgb(26, 51, 84)",
+  BLUE4: "rgb(34, 68, 112)",
+  BLUE5: "rgb(43, 85, 139)",
+  BLUE6: "rgb(52, 103, 168)",
+  BLUE7: "rgb(61, 121, 197)",
+  BLUE8: "rgb(70, 139, 226)",
+  BLUE9: "rgb(119, 179, 255)",
 
-  bWHITE: "rgb(255, 255, 255)", // #ffffff
-  WHITE: "rgb(200, 200, 200)", // #c8c8c8
-  bGREY: "rgb(177, 177, 177)", // #b1b1b1
-  GREY: "rgb(128, 128, 128)", // #808080
-  dGREY: "rgb(78, 78, 78)", // #4e4e4e
-  BLACK: "rgb(20, 20, 20)", // #141414
-  dBLACK: "rgb(0, 0, 0)"// #000000
-};
+  // GREYS
+  GREY0: "rgb(0, 0, 0)",
+  GREY1: "rgb(20, 20, 20)",
+  GREY2: "rgb(47, 47, 47)",
+  GREY3: "rgb(74, 74, 74)",
+  GREY4: "rgb(100, 100, 100)",
+  GREY5: "rgb(127, 127, 127)",
+  GREY6: "rgb(154, 154, 154)",
+  GREY7: "rgb(181, 181, 181)",
+  GREY8: "rgb(208, 208, 208)",
+  GREY9: "rgb(235, 235, 235)",
+  GREY10: "rgb(255, 255, 255)"
+}
 
 export const ColorFilters = {
-  GOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(65%)",
-  dGOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(30%)",
-  bGOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(105%)",
-  gGOLD: "hue-rotate(-32.63deg) saturate(32%) brightness(125%)",
+  GOLD5: "hue-rotate(-32.63deg) saturate(32%) brightness(65%)",
+  GOLD1: "hue-rotate(-32.63deg) saturate(32%) brightness(30%)",
+  GOLD8: "hue-rotate(-32.63deg) saturate(32%) brightness(105%)",
+  GOLD9: "hue-rotate(-32.63deg) saturate(32%) brightness(125%)",
 
-  RED: "hue-rotate(290.37deg) saturate(1620%) brightness(62%)",
-  dRED: "hue-rotate(290.37deg) saturate(1620%) brightness(28%)",
-  bRED: "hue-rotate(289.67deg) saturate(820%) brightness(95%)",
-  gRED: "hue-rotate(290.37deg) saturate(1620%)",
+  RED5: "hue-rotate(290.37deg) saturate(1620%) brightness(62%)",
+  RED1: "hue-rotate(290.37deg) saturate(1620%) brightness(28%)",
+  RED8: "hue-rotate(289.67deg) saturate(820%) brightness(95%)",
+  RED9: "hue-rotate(290.37deg) saturate(1620%)",
 
-  bWHITE: "saturate(0)",
-  WHITE: "hue-rotate(deg) saturate() brightness()",
-  bGREY: "hue-rotate(deg) saturate() brightness()",
-  GREY: "hue-rotate(deg) saturate() brightness()",
-  dGREY: "hue-rotate(deg) saturate() brightness()",
-  BLACK: "hue-rotate(deg) saturate() brightness()",
-  dBLACK: "hue-rotate(deg) saturate() brightness()"
+  GREY10: "saturate(0)",
+  GREY9: "hue-rotate(deg) saturate() brightness()",
+  GREY7: "hue-rotate(deg) saturate() brightness()",
+  GREY5: "hue-rotate(deg) saturate() brightness()",
+  GREY3: "hue-rotate(deg) saturate() brightness()",
+  GREY1: "hue-rotate(deg) saturate() brightness()",
+  GREY0: "hue-rotate(deg) saturate() brightness()"
 };
-export function getColorName(colorVal: string): KeyOf<typeof Colors> | false {
-  if (colorVal in Colors) {
-    return colorVal as KeyOf<typeof Colors>;
-  }
-  colorVal = U.getRGBString(colorVal) ?? "";
-  if (colorVal && Object.values(Colors).includes(colorVal)) {
-    return U.objFindKey(Colors, ((v: string) => v === colorVal) as testFunc<valFunc>);
-  }
-  return false;
-}
-export function getContrastingColor(colorVal: string, contrastLevel = 1 as number, bgShade: "light"| "dark"= "dark") {
-  let colorName = getColorName(colorVal);
-  if (!colorName) {
-    console.error(`Unable to find official contrast for ${colorVal}: Generating one instead.`);
-    if (U.isRGBColor(colorVal)) {
-      return U.getContrastingColor(colorVal);
-    }
-    throw new Error(`${colorVal} is not a recognized color name or RGB color value.`);
-  }
-  const masterColor = colorName.replace(/[a-z]/g, "");
-  if (/GOLD|BLUE|RED/.test(colorName)) { // it's a color
-    if (!/^[bgd]/.test(colorName)) { // it's a neutral color; refer to bgShade to nudge it brighter/darker
-      if (bgShade === "light") {
-        colorName = `d${masterColor}` as KeyOf<typeof Colors>;
-      } else {
-        colorName = `b${masterColor}` as KeyOf<typeof Colors>;
-      }
-    }
-    // now any color value will be a bright/glow/dark shade
-    if (/^[bg]/.test(colorName)) { // it's a bright shade
-      return [false, Colors[`d${masterColor}` as KeyOf<typeof Colors>], Colors.BLACK, Colors.dBLACK, Colors.dBLACK][contrastLevel];
-    } else { // it's a dark shade
-      return [false, Colors[`b${masterColor}` as KeyOf<typeof Colors>], Colors[`g${masterColor}` as KeyOf<typeof Colors>], Colors.WHITE, Colors.bWHITE][contrastLevel];
-    }
-  } else { // it's a grey
-    const brightness = U.pInt(colorVal.replace(/^.*?(\d+),.*$/, "$1"));
-    if (brightness >= 128) { // it's bright
-      return [false, Colors.BLACK, Colors.BLACK, Colors.dBLACK, Colors.dBLACK][contrastLevel];
-    } else { // it's dark
-      return [false, Colors.WHITE, Colors.WHITE, Colors.bWHITE, Colors.bWHITE][contrastLevel];
-    }
-  }
-}
 
 // export const Ranges = {
 //   [AttackRange.arm]: "When you engage an able opponent within arm's reach in close combat,",

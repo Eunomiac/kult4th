@@ -8,18 +8,18 @@
     }
 
     ::-webkit-scrollbar-track {
-      box-shadow: 0 0 1px var(--K4-gGOLD);
+      box-shadow: 0 0 1px var(--K4-GOLD9);
       border-radius: 4px;
       background: black;
     }
 
     ::-webkit-scrollbar-thumb {
-      box-shadow: 0 0 1px var(--K4-gGOLD);
+      box-shadow: 0 0 1px var(--K4-GOLD9);
       outline: none;
       border-radius: 2px;
-      background: var(--K4-GOLD);
+      background: var(--K4-GOLD5);
       min-height: 50px;
-      border: 4px outset var(--K4-bGOLD);
+      border: 4px outset var(--K4-GOLD8);
     }
   }
 }

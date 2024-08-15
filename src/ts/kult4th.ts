@@ -1,6 +1,7 @@
 // #region IMPORTS ~
 import "../scss/style.scss";
 
+import LogRocket from 'logrocket';
 import K4Config from "./scripts/config.js";
 import K4Actor from "./documents/K4Actor.js";
 import K4Item, {K4ItemType} from "./documents/K4Item.js";
@@ -8,7 +9,7 @@ import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
-import C, {getContrastingColor} from "./scripts/constants.js";
+import C from "./scripts/constants.js";
 import InitializeTooltips from "./scripts/tooltips.js";
 import U from "./scripts/utilities.js";
 import {formatStringForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers.js";
@@ -81,32 +82,29 @@ declare global {
 const gameRef: Game = game;
 Object.assign(globalThis, {gameRef});
 
+
+
 /* #DEVCODE */
 async function GlobalAssignment() {
 
-  // Register a ready hook for assignments that can't occur during "init" hook.
-  Hooks.on("ready", () => {
+  const ACTOR = (game as SetupGame).actors.values().next().value as Maybe<K4Actor>;
+  const ITEM = (game as SetupGame).items.values().next().value as Maybe<K4Item>;
+  const EMBED = ACTOR?.items.values().next().value as Maybe<K4Item>;
+  const ACTORSHEET = ACTOR?.sheet;
 
-    const ACTOR = gameRefReady.actors.values().next().value as Maybe<K4Actor>;
-    const ITEM = gameRefReady.items.values().next().value as Maybe<K4Item>;
-    const EMBED = ACTOR?.items.values().next().value as Maybe<K4Item>;
-    const ACTORSHEET = ACTOR?.sheet;
-
-    Object.assign(globalThis, {
-      gsap,
-      U,
-      C,
-      K4Actor,
-      K4Item,
-      ActorSheet,
-      K4PCSheet,
-      K4Socket,
-      getContrastingColor,
-      formatStringForKult,
-      gameRef,
-      ACTOR, ITEM, EMBED, ACTORSHEET,
-      ENTITIES: [ACTOR, ITEM, EMBED]
-    });
+  Object.assign(globalThis, {
+    gsap,
+    U,
+    C,
+    K4Actor,
+    K4Item,
+    ActorSheet,
+    K4PCSheet,
+    K4Socket,
+    formatStringForKult,
+    gameRef,
+    ACTOR, ITEM, EMBED, ACTORSHEET,
+    ENTITIES: [ACTOR, ITEM, EMBED]
   });
 
   // Dynamically import data.js for initializing and building Item documents during development (will become packs for production)
@@ -124,6 +122,10 @@ async function GlobalAssignment() {
     findUniqueKeys,
     BUILD_ITEMS_FROM_DATA
   });
+}
+function InitLogRocketCSSPerformanceMonitor() {
+  LogRocket.init('vodsl0/kult4th-for-foundry-vtt');
+  kLog.display("Initialized LogRocket CSS performance monitor", 0);
 }
 /* #endDEVCODE */
 
@@ -251,114 +253,114 @@ async function GenerateSVGDefs() {
         {
           bgold: {
             fill: {
-              stops: [C.Colors.gGOLD, C.Colors.bGOLD]
+              stops: [C.Colors.GOLD9, C.Colors.GOLD8]
             },
             stroke: {
-              stops: [C.Colors.dGREY, C.Colors.dBLACK]
+              stops: [C.Colors.GREY3, C.Colors.GREY0]
             }
           },
           gold: {
             fill: {
-              stops: [C.Colors.bGOLD, C.Colors.GOLD]
+              stops: [C.Colors.GOLD8, C.Colors.GOLD5]
             },
             stroke: {
-              stops: [C.Colors.dGREY, C.Colors.dBLACK]
+              stops: [C.Colors.GREY3, C.Colors.GREY0]
             }
           },
           red: {
             fill: {
-              stops: [C.Colors.bRED, C.Colors.dRED]
+              stops: [C.Colors.RED8, C.Colors.RED1]
             },
             stroke: {
-              stops: [C.Colors.bGOLD, C.Colors.dGOLD]
+              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
             }
           },
           grey: {
             fill: {
-              stops: [C.Colors.bGREY, C.Colors.dGREY]
+              stops: [C.Colors.GREY7, C.Colors.GREY3]
             },
             stroke: {
-              stops: [C.Colors.dBLACK, C.Colors.dBLACK]
+              stops: [C.Colors.GREY0, C.Colors.GREY0]
             }
           },
           blue: {
             fill: {
-              stops: [C.Colors.bBLUE, C.Colors.dBLUE]
+              stops: [C.Colors.BLUE8, C.Colors.BLUE1]
             },
             stroke: {
-              stops: [C.Colors.bGOLD, C.Colors.dGOLD]
+              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
             }
           },
           black: {
             fill: {
-              stops: [C.Colors.dBLACK, C.Colors.dBLACK],
+              stops: [C.Colors.GREY0, C.Colors.GREY0],
             },
             stroke: {
-              stops: [C.Colors.BLACK, C.Colors.BLACK]
+              stops: [C.Colors.GREY1, C.Colors.GREY1]
             }
           },
           white: {
             fill: {
-              stops: [C.Colors.bWHITE, C.Colors.WHITE],
+              stops: [C.Colors.GREY10, C.Colors.GREY9],
             },
             stroke: {
-              stops: [C.Colors.BLACK, C.Colors.dBLACK]
+              stops: [C.Colors.GREY1, C.Colors.GREY0]
             }
           },
           [K4ItemType.advantage]: {
             fill: {
-              stops: [C.Colors.bGOLD, C.Colors.dGOLD]
+              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
             },
             stroke: {
-              stops: [C.Colors.GOLD, C.Colors.dGOLD]
+              stops: [C.Colors.GOLD5, C.Colors.GOLD1]
             }
           },
           [K4ItemType.darksecret]: {
             fill: {
-              stops: [C.Colors.dRED, C.Colors.dRED]
+              stops: [C.Colors.RED1, C.Colors.RED1]
             },
             stroke: {
-              stops: [C.Colors.bRED, C.Colors.RED]
+              stops: [C.Colors.RED8, C.Colors.RED5]
             }
           },
           [K4ItemType.disadvantage]: {
             fill: {
-              stops: [C.Colors.GREY, C.Colors.BLACK]
+              stops: [C.Colors.GREY5, C.Colors.GREY1]
             },
             stroke: {
-              stops: [C.Colors.WHITE, C.Colors.bGREY]
+              stops: [C.Colors.GREY9, C.Colors.GREY7]
             }
           },
           // [K4ItemType.gear]: {
           //   fill: {
-          //     stops: [C.Colors["bGOLD"], C.Colors["dGOLD"]]
+          //     stops: [C.Colors["GOLD8"], C.Colors["GOLD1"]]
           //   },
           //   stroke: {
-          //     stops: [C.Colors.GOLD, C.Colors["dGOLD"]]
+          //     stops: [C.Colors.GOLD5, C.Colors["GOLD1"]]
           //   }
           // },
           [K4ItemType.move]: {
             fill: {
-              stops: [C.Colors.GOLD, C.Colors.dGOLD]
+              stops: [C.Colors.GOLD5, C.Colors.GOLD1]
             },
             stroke: {
-              stops: [C.Colors.bGOLD, C.Colors.bGOLD]
+              stops: [C.Colors.GOLD8, C.Colors.GOLD8]
             }
           },
           // [K4ItemType.relation]: {
           //   fill: {
-          //     stops: [C.Colors["bGOLD"], C.Colors["dGOLD"]]
+          //     stops: [C.Colors["GOLD8"], C.Colors["GOLD1"]]
           //   },
           //   stroke: {
-          //     stops: [C.Colors.GOLD, C.Colors["dGOLD"]]
+          //     stops: [C.Colors.GOLD5, C.Colors["GOLD1"]]
           //   }
           // },
           [K4ItemType.weapon]: {
             fill: {
-              stops: [C.Colors.bRED, C.Colors.dRED]
+              stops: [C.Colors.RED8, C.Colors.RED1]
             },
             stroke: {
-              stops: [C.Colors.RED, C.Colors.dRED]
+              stops: [C.Colors.RED5, C.Colors.RED1]
             }
           }
         },
@@ -574,10 +576,14 @@ Hooks.on("init", async () => {
 
   // Define the "K4" namespace within the CONFIG object, and assign basic system configuration package.
   CONFIG.K4 = K4Config;
+
+  /* #DEVCODE */
   // Disable Compatibility Warnings
   // CONFIG.compatibility.mode = 0;
   // Toggle Character Creation Features for Debugging
   CONFIG.K4.debug.isDisablingCharGen = false; // Default to false
+  InitLogRocketCSSPerformanceMonitor();
+  /* #endDEVCODE */
 
   // Create toggle button
   const toggleButton = document.createElement("button");
@@ -664,6 +670,8 @@ Hooks.on("ready", async () => {
   if (gameRefReady.user?.isGM) {
     $("#interface").addClass("gm-user");
   }
+  // Assign global variables to globalThis
+  void GlobalAssignment();
 });
 
 

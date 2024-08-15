@@ -1,6 +1,6 @@
 & {
-  --tooltip-color-fg: var(--K4-bWHITE);
-  --tooltip-color-bg: var(--K4-dBLACK);
+  --tooltip-color-fg: var(--K4-GREY10);
+  --tooltip-color-bg: var(--K4-GREY0);
 
   .tooltip-trigger {
     pointer-events: auto !important;
@@ -22,9 +22,9 @@
     hyphens: auto;
     outline: 1px solid var(--tooltip-color-fg);
     box-shadow:
-      2px 2px 3px var(--K4-dBLACK),
-      2px 2px 3px var(--K4-dBLACK),
-      2px 2px 3px var(--K4-dBLACK);
+      2px 2px 3px var(--K4-GREY0),
+      2px 2px 3px var(--K4-GREY0),
+      2px 2px 3px var(--K4-GREY0);
 
     padding: 5px;
     border-radius: 10px;
@@ -42,7 +42,7 @@
   }
 
   .tooltip-clone {
-    --K4-color-primary: var(--K4-bWHITE);
+    --K4-color-primary: var(--K4-GREY10);
     opacity: 1;
     width: auto;
     max-width: 300px;

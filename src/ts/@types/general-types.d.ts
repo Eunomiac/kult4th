@@ -227,6 +227,9 @@ declare global {
   // Represents any entity document or entity document sheet
   type AnyEntity = EntityDoc | EntitySheet;
 
+  // Represents the constructor (i.e. class) of an object
+  type ConstructorOf<T> = new (...args: unknown[]) => T;
+
   // Represents a constructor for an entity document
   type EntityConstructor = ConstructorOf<EntityDoc>;
 

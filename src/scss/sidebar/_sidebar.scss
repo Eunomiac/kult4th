@@ -20,7 +20,7 @@
   --gradient-stop-2: calc(var(--gradient-stop-1) + 30px);
   background: linear-gradient(
     to left,
-    var(--K4-dBLACK) var(--gradient-stop-1),
+    var(--K4-GREY0) var(--gradient-stop-1),
     transparent var(--gradient-stop-2)
   );
   background: transparent;
@@ -35,10 +35,10 @@
     box-shadow: none;
     position: relative;
     z-index: 50;
-    background: var(--K4-dBLACK);
+    background: var(--K4-GREY0);
 
     &[data-tooltip-direction='DOWN'] {
-      box-shadow: 0 5px 5px var(--K4-BLACK);
+      box-shadow: 0 5px 5px var(--K4-GREY1);
       width: calc(var(--sidebar-width) + var(--sidebar-tabs-horiz-overhang));
       margin-left: calc(var(--sidebar-horiz-gutter) - var(--sidebar-tabs-horiz-overhang));
       margin-bottom: 0;
@@ -57,7 +57,7 @@
     &:not(#chat) {
       background: linear-gradient(
         to left,
-        var(--K4-dBLACK) var(--gradient-stop-1),
+        var(--K4-GREY0) var(--gradient-stop-1),
         transparent var(--gradient-stop-2)
       );
     }

@@ -1,5 +1,5 @@
 import { Dragger, InertiaPlugin } from "../libraries.js";
-import { getDistanceFromSelected, getXPosFromIndex,getYRotFromIndex, getIndexFromYRot, getYRotFromXPos, getXPosFromYRot,getIndexFromXPos } from "./K4PCSheet.js";
+import { getNormalizedDistanceFromSelected as getNormalizedDistanceFromSelected, getXPosFromIndex,getYRotFromIndex, getIndexFromYRot, getYRotFromXPos, getXPosFromYRot,getIndexFromXPos } from "./K4PCSheet.js";
 import U from "../scripts/utilities.js";
 import K4Actor from "./K4Actor.js";
 
@@ -87,7 +87,7 @@ class K4DebugDisplay {
       `YROT: ${U.padNum(yRot, 0)}`,
       `INDEX - CHOSEN: ${chosenArchetypeIndex} (${chosenArchetype})`,
       `INDEX - USING: ${usingArchetypeIndex} (${usingArchetype})`,
-      `DISTANCE: ${U.pFloat(getDistanceFromSelected(usingArchetypeIndex, chosenArchetypeIndex), 2)}`,
+      `DISTANCE: ${U.pFloat(getNormalizedDistanceFromSelected(usingArchetypeIndex, chosenArchetypeIndex), 2)}`,
       `TOTAL: ${items$.length}`,
       " ",
       `getYRotFromIndex: ${U.pInt(getYRotFromIndex(usingArchetypeIndex))}`,

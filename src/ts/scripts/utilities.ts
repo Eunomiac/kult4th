@@ -671,7 +671,7 @@ const getUID = (id: string): string => {
   Object.assign(globalThis, {UUIDLOG});
   return uuid;
 };
-const getID = (): IDString => randomID() as IDString;
+const getID = (): IDString => foundry.utils.randomID() as IDString;
 // #endregion ■■■■[Content]■■■■
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
@@ -2026,6 +2026,98 @@ const reverseRepeatingTimeline = (tl: gsap.core.Timeline): gsap.core.Timeline =>
   }
   return tl;
 };
+
+/**
+ * Creates a distribution function for staggered animations based on element positions.
+ * This function is useful for creating animations where the timing of each element's
+ * animation is based on its position relative to other elements.
+ *
+ * @param {Object} vars - Configuration object for the distribution.
+ * @param {number} [vars.amount] - Total amount of time (in seconds) to distribute across elements.
+ * @param {number} [vars.each] - Time (in seconds) to allocate for each element.
+ * @param {"center" | "end" | "edges" | "start" | number} [vars.from="start"] - Starting point for the distribution.
+ * @param {number} [vars.base=0] - Base value to add to the calculated distribution.
+ * @param {gsap.EaseFunction} [vars.ease] - Easing function to apply to the distribution.
+ * @param {"x" | "y"} [vars.axis] - Axis to use for distribution calculation. If omitted, uses both x and y.
+ * @returns {(index: number, target: Element, elements: Element[]) => number} Distribution function.
+ *
+ * @example
+ * gsap.to(".box", {
+ *   duration: 1,
+ *   scale: 0.1,
+ *   y: 40,
+ *   ease: "power1.inOut",
+ *   stagger: U.distributeByPosition({
+ *     from: "center",
+ *     amount: 2
+ *   })
+ * });
+ */
+const distributeByPosition = (vars: {
+  amount?: number;
+  each?: number;
+  from?: "center" | "end" | "edges" | "start" | number;
+  base?: number;
+  ease?: string | gsap.EaseFunction;
+  axis?: "x" | "y";
+}): (index: number, target: Element, elements: Element[]) => number => {
+  const ease = vars.ease && gsap.parseEase(vars.ease);
+  const from = vars.from ?? "start";
+  const base = vars.base ?? 0;
+  const axis = vars.axis;
+  const ratio = typeof from === "string" ? { center: 0.5, end: 1, edges: 0.5, start: 0 }[from] : 0;
+
+  let distances: number[] & { max?: number; min?: number; v?: number; b?: number } = [];
+
+  return (index: number, target: Element, elements: Element[]): number => {
+    const elementsCount = elements.length;
+
+    if (distances.length === 0) {
+      // Initialize position calculations
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      const positions: Point[] = [];
+
+      // Calculate positions and find extremes
+      elements.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        const centerX = (rect.left + rect.right) / 2;
+        const centerY = (rect.top + rect.bottom) / 2;
+        positions.push({ x: centerX, y: centerY });
+
+        minX = Math.min(minX, centerX);
+        maxX = Math.max(maxX, centerX);
+        minY = Math.min(minY, centerY);
+        maxY = Math.max(maxY, centerY);
+      });
+
+      // Calculate origin based on 'from' parameter
+      const originX = typeof from === "number" ? positions[from]?.x ?? 0 : minX + (maxX - minX) * ratio;
+      const originY = typeof from === "number" ? positions[from]?.y ?? 0 : minY + (maxY - minY) * ratio;
+
+      // Calculate distances from origin
+      let maxDistance = 0, minDistance = Infinity;
+      distances = positions.map(({ x, y }) => {
+        const dx = x - originX;
+        const dy = originY - y;
+        const distance = !axis ? Math.sqrt(dx * dx + dy * dy) : Math.abs(axis === "y" ? dy : dx);
+        maxDistance = Math.max(maxDistance, distance);
+        minDistance = Math.min(minDistance, distance);
+        return distance;
+      });
+
+      // Set additional properties on distances array
+      distances.max = maxDistance - minDistance;
+      distances.min = minDistance;
+      distances.v = (vars.amount ?? (vars.each ? vars.each * elementsCount : 0)) * (from === "edges" ? -1 : 1);
+      distances.b = distances.v < 0 ? base - distances.v : base;
+    }
+
+    // Calculate the distribution value for the current element
+    const normalizedDistance = (distances[index] - distances.min!) / distances.max!;
+    const easedDistance = ease ? ease(normalizedDistance) : normalizedDistance;
+    return distances.b! + easedDistance * distances.v!;
+  };
+};
 // #endregion ■■■■[GreenSock]■■■■
 
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
@@ -2069,6 +2161,35 @@ function waitFor(waitForTarget: unknown): Promise<void> {
       }
     }
   );
+}
+
+/**
+ * Yields control to the main thread, allowing it to process higher-priority tasks.
+ *
+ * This function is useful for breaking long tasks into smaller chunks, preventing
+ * the creation of bottlenecks in the main thread. By awaiting this function,
+ * you give the main thread an opportunity to handle important tasks (like user input)
+ * before your function continues its operations.
+ *
+ * The timeout is set to 0, so it won't significantly slow down your function
+ * unless the main thread is already busy with other tasks.
+ *
+ * @returns {Promise<void>} A promise that resolves immediately after yielding to the main thread.
+ *
+ * @example
+ * async function longRunningTask() {
+ *   for (let i = 0; i < 1000000; i++) {
+ *     // Do some work...
+ *     if (i % 10000 === 0) {
+ *       await yieldToMain();
+ *     }
+ *   }
+ * }
+ */
+function yieldToMain(): Promise<void> {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
 }
 // #endregion ▄▄▄▄▄ ASYNC ▄▄▄▄▄
 
@@ -2145,7 +2266,7 @@ const parseDocRefToUUID = (ref: unknown): UUIDString => {
   if (isDocUUID(ref)) {
     return ref;
   } else if (isDocID(ref)) {
-    const doc = game.collections.find((collection) => collection.has(ref))?.get(ref);
+    const doc = (game as SetupGame).collections.find((collection) => collection.has(ref))?.get(ref);
     if (doc && "uuid" in doc) {
       return doc.uuid as UUIDString;
     }
@@ -2219,6 +2340,11 @@ function displayImageSelector(
 // #endregion ▄▄▄▄▄ FOUNDRY ▄▄▄▄▄
 
 export default {
+  // █████████████████ FOUNDRY UTILS ████████████████████████
+  //  - augment custom utility functions with Foundry's)
+  //  - see https://foundryvtt.com/api/modules/foundry.utils.html
+  ...foundry.utils,
+
   // █████████████████ INITIALIZATION ███████████████████████
   Initialize,
 
@@ -2306,8 +2432,10 @@ export default {
 
   /* TextPlugin, Flip, */ MotionPathPlugin,
 
+  distributeByPosition,
+
   // ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████
-  sleep, waitFor,
+  sleep, waitFor, yieldToMain,
 
   // EVENT HANDLERS
   EventHandlers,

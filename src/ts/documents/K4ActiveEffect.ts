@@ -1774,7 +1774,7 @@ class K4ActiveEffect extends ActiveEffect {
     if (!this.canToggle()) { return undefined; }
     return this.setFlag<boolean>("data.isLocked", value);
   }
-  async reset(resetTo = this.resetTo, isForcing = false) {
+  override async reset(resetTo = this.resetTo, isForcing = false) {
     if (this.isLocked && !isForcing) { return undefined; }
     const promises: Array<Promise<unknown>> = [];
     if (this.isLocked && isForcing) {
@@ -2008,7 +2008,6 @@ class K4ActiveEffect extends ActiveEffect {
 
 // #region -- INTERFACE AUGMENTATION ~
 interface K4ActiveEffect extends ActiveEffect {
-  label: string,
   icon: string,
   origin: string,
   changes: EffectChangeData[],

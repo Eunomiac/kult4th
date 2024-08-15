@@ -130,11 +130,11 @@ export function initTinyMCEStyles() {
 //     dropShadow: true,
 //     dropShadowAngle: U.degToRad(45),
 //     dropShadowBlur: 8,
-//     dropShadowColor: C.Colors.BLACK,
+//     dropShadowColor: C.Colors.GREY1,
 //     dropShadowDistance: 4,
 //     fill: [
-//       C.Colors.bGOLD,
-//       C.Colors.GOLD
+//       C.Colors.GOLD8,
+//       C.Colors.GOLD5
 //     ],
 //     fillGradientType: 1,
 //     fillGradientStops: [
@@ -147,7 +147,7 @@ export function initTinyMCEStyles() {
 //     lineHeight: 32,
 //     lineJoin: "round",
 //     padding: 4,
-//     stroke: C.Colors.dGOLD,
+//     stroke: C.Colors.GOLD1,
 //     strokeThickness: 3,
 //     trim: true,
 //     whiteSpace: "normal",

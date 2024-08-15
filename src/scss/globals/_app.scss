@@ -9,7 +9,7 @@
 
 	.window-header {
 
-    background: var(--K4-dBLACK);
+    background: var(--K4-GREY0);
 		.header-button {
 			position: relative;
 			// font-size: 0;
@@ -17,13 +17,13 @@
 			i[class^="fa"] {
 				font-size: $rem-16;
 				text-shadow:
-					0 0 3px var(--K4-BLACK),
-					0 0 3px var(--K4-BLACK),
-					0 0 3px var(--K4-BLACK),
-					0 0 3px var(--K4-BLACK),
-					0 0 3px var(--K4-BLACK),
-					0 0 5px var(--K4-bGOLD),
-					0 0 5px var(--K4-bGOLD);
+					0 0 3px var(--K4-GREY1),
+					0 0 3px var(--K4-GREY1),
+					0 0 3px var(--K4-GREY1),
+					0 0 3px var(--K4-GREY1),
+					0 0 3px var(--K4-GREY1),
+					0 0 5px var(--K4-GOLD8),
+					0 0 5px var(--K4-GOLD8);
 			}
 		}
 	}

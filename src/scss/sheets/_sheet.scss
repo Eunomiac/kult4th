@@ -17,7 +17,7 @@
 
 	--K4-sheet-header-height: 60px;
 
-	--K4-section-drop-shadow: 20px 20px 20px var(--K4-dBLACK);
+	--K4-section-drop-shadow: 20px 20px 20px var(--K4-GREY0);
 	--K4-section-padding-horiz: 0px;
 	--K4-section-padding-vert: 0px;
 	--K4-section-padding-top: var(--K4-section-padding-vert);
@@ -65,7 +65,7 @@
 			&.close {
 				order: -1;
 				transform: translateY(2px) scale(1.25);
-				color: var(--K4-bRED);
+				color: var(--K4-RED8);
 			}
 		}
 	}
@@ -227,8 +227,8 @@
 
         i {
           position: absolute;
-          color: var(--K4-GREY);
-          text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 5);
+          color: var(--K4-GREY5);
+          text-shadow: build-text-shadow(3px, var(--K4-GREY0), 5);
           top: 0;
           left: 0;
           pointer-events: none;
@@ -240,7 +240,7 @@
           transition: 0.25s;
 
           &.fa-lock-open {
-            color: var(--K4-bRED);
+            color: var(--K4-RED8);
             opacity: 1;
           }
         }
@@ -343,9 +343,9 @@
 			}
 
 			&.basic-move-item {
-				--icon-background: var(--K4-GOLD);
-				--popout-background: var(--K4-GOLD);
-				--popout-spacer-color: var(--K4-BLACK);
+				--icon-background: var(--K4-GOLD5);
+				--popout-background: var(--K4-GOLD5);
+				--popout-spacer-color: var(--K4-GREY1);
 				.item-icon {
 					&.active-item {
 					--icon-filter: invert(1);

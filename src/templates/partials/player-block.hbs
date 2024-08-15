@@ -2,13 +2,23 @@
   <div class="panel-bg">
     <img src="{{img}}" />
   </div>
-  <div class="attribute-summary">
-    {{#each attributeData}}
-    <div class="attribute-box attribute-{{key}} attribute-{{value}} tooltip-trigger">
-      <span class="attribute-name">{{name}}</span>
-      <span class="attribute-value">{{signNum value}}</span>
-      <span class="tooltip">{{name}}</span>
+  <div class="player-name">{{name}}</div>
+  <section class="player-panel-main">
+    <div class="panel-column panel-column-left">
+      <div class="attribute-summary">
+      {{#each attributeData}}
+        <div class="attribute-box attribute-{{key}} attribute-{{value}} tooltip-trigger">
+          <span class="attribute-name">{{name}}</span>
+          <span class="attribute-value">{{signNum value}}</span>
+          <span class="tooltip">{{name}}</span>
+        </div>
+      {{/each}}
+      </div>
     </div>
-    {{/each}}
-  </div>
+    <div class="panel-column panel-column-right">
+      {{#each derivedMoves}}
+      {{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}
+      {{/each}}
+    </div>
+  </section>
 </div>

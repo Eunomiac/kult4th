@@ -44,7 +44,7 @@
 	// 		line-height: $rem-16;
 	// 		background: var(--K4-bg);
 	// 		border-radius: 30px;
-	// 		filter: drop-shadow(10px 10px 10px var(--K4-BLACK));
+	// 		filter: drop-shadow(10px 10px 10px var(--K4-GREY1));
   //     height: auto;
   //     min-height: var(--K4-sheet-min-height);
   //     min-width: var(--K4-sheet-min-width);
@@ -66,9 +66,9 @@
 	// 			clip-path: var(--K4-icon-clip-path);
 
 	// 			&.header-move {
-	// 				--K4-color-primary: var(--K4-GOLD);
+	// 				--K4-color-primary: var(--K4-GOLD5);
   //         // --K4-icon-bg-color: var(--K4-color-primary);
-  //         --K4-icon-fill: var(--K4-BLACK);
+  //         --K4-icon-fill: var(--K4-GREY1);
   //         --K4-icon-stroke: none;
 	// 			}
 	// 		}
@@ -93,16 +93,16 @@
 	// 			}
 
 	// 			&.move-header {
-	// 				--K4-color-title-fg: var(--K4-BLACK);
+	// 				--K4-color-title-fg: var(--K4-GREY1);
 	// 			}
 	// 		}
 
 	// 		.tab-content {
-	// 			--K4-color-primary: var(--K4-WHITE);
-	// 			--K4-color-primary-bright: var(--K4-bWHITE);
-	// 			--K4-color-primary-glow: var(--K4-bWHITE);
-	// 			--K4-color-header: var(--K4-bWHITE);
-	// 			--K4-color-neg: var(--K4-gRED);
+	// 			--K4-color-primary: var(--K4-GREY9);
+	// 			--K4-color-primary-bright: var(--K4-GREY10);
+	// 			--K4-color-primary-glow: var(--K4-GREY10);
+	// 			--K4-color-header: var(--K4-GREY10);
+	// 			--K4-color-neg: var(--K4-RED9);
   //       --K4-section-padding-top: 10px;
   //       --K4-section-padding-left: 10px;
   //       --K4-section-padding-right: 10px;
@@ -110,9 +110,9 @@
 
   //       &.kult-move-container {
   //         text-shadow: none;
-  //         --K4-color-primary-bright: var(--K4-dBLACK);
-  //         --K4-color-primary: var(--K4-BLACK);
-  //         --K4-color-header: var(--K4-RED);
+  //         --K4-color-primary-bright: var(--K4-GREY0);
+  //         --K4-color-primary: var(--K4-GREY1);
+  //         --K4-color-header: var(--K4-RED5);
   //       }
 
 
@@ -122,7 +122,7 @@
 	// 			border-radius: 25px;
 	// 			filter: none;
 	// 			overflow: hidden;
-	// 			text-shadow: 0 0 3px var(--K4-dBLACK), 0 0 3px var(--K4-dBLACK), 0 0 3px var(--K4-dBLACK);
+	// 			text-shadow: 0 0 3px var(--K4-GREY0), 0 0 3px var(--K4-GREY0), 0 0 3px var(--K4-GREY0);
 
   //       .icon-container {
   //         position: absolute;

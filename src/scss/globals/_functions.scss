@@ -20,7 +20,7 @@
 			1000));
 }
 
-@function build-text-shadow($size, $color: var(--K4-dBLACK), $count: 1, $offsetX: 0, $offsetY: 0) {
+@function build-text-shadow($size, $color: var(--K4-GREY0), $count: 1, $offsetX: 0, $offsetY: 0) {
   $shadows: ();
 
   @for $i from 1 through $count {

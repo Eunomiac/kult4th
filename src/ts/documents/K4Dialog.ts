@@ -285,12 +285,12 @@ class K4Dialog extends Dialog {
         }, 0)
         .fromTo(text$, {
           scale: 1,
-          color: C.Colors.WHITE,
+          color: C.Colors.GREY9,
           filter: "brightness(1) blur(0px)"
         }, {
           scale: 1.15,
           filter: "brightness(1) blur(0px)",
-          color: C.Colors.bWHITE,
+          color: C.Colors.GREY10,
           duration: 0.25,
           ease: "power2.inOut"
         }, 0);

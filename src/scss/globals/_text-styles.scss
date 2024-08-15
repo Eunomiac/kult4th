@@ -42,11 +42,11 @@
     pointer-events: auto !important;
 
 		&:invalid {
-			color: var(--K4-dRED);
+			color: var(--K4-RED1);
 		}
 
 		&.placeholder {
-			color: var(--K4-GREY) !important;
+			color: var(--K4-GREY5) !important;
 			font-weight: $font-weight-light !important;
 			font-family: var(--font-primary) !important;
 			font-style: italic !important;
@@ -78,15 +78,15 @@
   }
 
 	i {
-		--K4-color-primary: var(--K4-GOLD);
-		--K4-color-contrast: var(--K4-BLACK);
+		--K4-color-primary: var(--K4-GOLD5);
+		--K4-color-contrast: var(--K4-GREY1);
 		font-family: var(--font-icon);
 		font-weight: $font-weight-black;
 
-		&.notification-pip { --K4-color-primary: var(--K4-bGOLD) }
+		&.notification-pip { --K4-color-primary: var(--K4-GOLD8) }
 	}
 
-	.header-button.close i { --K4-color-primary: var(--K4-bRED) }
+	.header-button.close i { --K4-color-primary: var(--K4-RED8) }
 
 	ul.rules-list, ul.inline-list {
 		--K4-list-indent: 24px;
@@ -556,31 +556,31 @@
       --K4-icon-clip-path: none;
       --K4-icon-bg-color: transparent;
 
-      --K4-strip-main-color-fg: var(--K4-RED);
-      --K4-strip-main-color-bg: var(--K4-dRED);
+      --K4-strip-main-color-fg: var(--K4-RED5);
+      --K4-strip-main-color-bg: var(--K4-RED1);
       --K4-strip-icon-color-bg: transparent;
-      --K4-strip-button-color-fg: var(--K4-BLACK);
-      --K4-strip-button-color-bg: var(--K4-RED);
-      --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
-      --K4-strip-button-hover-color-bg: var(--K4-gRED);
+      --K4-strip-button-color-fg: var(--K4-GREY1);
+      --K4-strip-button-color-bg: var(--K4-RED5);
+      --K4-strip-button-hover-color-fg: var(--K4-GREY0);
+      --K4-strip-button-hover-color-bg: var(--K4-RED9);
 
       &.condition-strip {
-        --K4-strip-main-color-fg: var(--K4-GOLD);
-        --K4-strip-main-color-bg: var(--K4-bGOLD);
-        --K4-strip-icon-color-fg: var(--K4-GOLD);
-        --K4-strip-button-color-fg: var(--K4-dBLACK);
-        --K4-strip-button-color-bg: var(--K4-bGOLD);
-        --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
-        --K4-strip-button-hover-color-bg: var(--K4-gGOLD);
+        --K4-strip-main-color-fg: var(--K4-GOLD5);
+        --K4-strip-main-color-bg: var(--K4-GOLD8);
+        --K4-strip-icon-color-fg: var(--K4-GOLD5);
+        --K4-strip-button-color-fg: var(--K4-GREY0);
+        --K4-strip-button-color-bg: var(--K4-GOLD8);
+        --K4-strip-button-hover-color-fg: var(--K4-GREY0);
+        --K4-strip-button-hover-color-bg: var(--K4-GOLD9);
 
-        &.stability-strip { // Stability Strip is Colored BLUE not GOLD
-          --K4-strip-main-color-fg: var(--K4-bBLUE);
-          --K4-strip-main-color-bg: var(--K4-gBLUE);
-          --K4-strip-icon-color-fg: var(--K4-bBLUE);
-          --K4-strip-button-color-fg: var(--K4-dBLACK);
-          --K4-strip-button-color-bg: var(--K4-bBLUE);
-          --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
-          --K4-strip-button-hover-color-bg: var(--K4-gBLUE);
+        &.stability-strip { // Stability Strip is Colored BLUE5 not GOLD5
+          --K4-strip-main-color-fg: var(--K4-BLUE8);
+          --K4-strip-main-color-bg: var(--K4-BLUE9);
+          --K4-strip-icon-color-fg: var(--K4-BLUE8);
+          --K4-strip-button-color-fg: var(--K4-GREY0);
+          --K4-strip-button-color-bg: var(--K4-BLUE8);
+          --K4-strip-button-hover-color-fg: var(--K4-GREY0);
+          --K4-strip-button-hover-color-bg: var(--K4-BLUE9);
         }
       }
 
@@ -598,18 +598,18 @@
         }
 
         &:not(.wound-stabilized) {
-          --K4-strip-main-color-fg: var(--K4-gRED);
-          --K4-strip-icon-color-fg: var(--K4-gRED);
+          --K4-strip-main-color-fg: var(--K4-RED9);
+          --K4-strip-icon-color-fg: var(--K4-RED9);
           --icon-scale: 1.2;
         }
       }
 
       &.wound-stabilized {
-        --K4-icon-fill: var(--K4-GOLD);
+        --K4-icon-fill: var(--K4-GOLD5);
         --K4-icon-clip-path: none;
         --K4-icon-outline-color: transparent;
 
-        --K4-strip-main-color-fg: var(--K4-GOLD);
+        --K4-strip-main-color-fg: var(--K4-GOLD5);
 
         .strip-name {
           font-style: italic;
@@ -629,13 +629,13 @@
       --K4-icon-clip-path: none;
       --K4-icon-bg-color: transparent;
 
-      --K4-strip-main-color-fg: var(--K4-bWHITE);
+      --K4-strip-main-color-fg: var(--K4-GREY10);
       --K4-strip-main-color-bg: transparent;
       --K4-strip-icon-color-bg: transparent;
-      --K4-strip-button-color-fg: var(--K4-dBLACK);
-      --K4-strip-button-color-bg: var(--K4-bBLUE);
-      --K4-strip-button-hover-color-fg: var(--K4-dBLACK);
-      --K4-strip-button-hover-color-bg: var(--K4-gBLUE);
+      --K4-strip-button-color-fg: var(--K4-GREY0);
+      --K4-strip-button-color-bg: var(--K4-BLUE8);
+      --K4-strip-button-hover-color-fg: var(--K4-GREY0);
+      --K4-strip-button-hover-color-bg: var(--K4-BLUE9);
 
       .button-strip {
         width: calc(100% - 0.5 * var(--K4-icon-size) + 30px);
@@ -651,7 +651,7 @@
         text-transform: lowercase;
         font-size: 16px;
         line-height: 16px;
-        color: var(--K4-bWHITE);
+        color: var(--K4-GREY10);
         text-shadow:
           0 0 2px #000,
           0 0 10px rgba(3, 247, 249, 0.561),

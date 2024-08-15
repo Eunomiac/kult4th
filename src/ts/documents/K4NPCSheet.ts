@@ -103,7 +103,7 @@ const ANIMATIONS = {
           width:           "100%",
           borderRadius:    0,
           duration:        FULL_DURATION,
-          backgroundColor: C.Colors.bGOLD,
+          backgroundColor: C.Colors.GOLD8,
           ease:            "sine"
         },
         0
@@ -113,17 +113,17 @@ const ANIMATIONS = {
           x:          0,
           width:      "auto",
           opacity:    1,
-          color:      C.Colors.GOLD,
+          color:      C.Colors.GOLD5,
           textShadow: 0
         },
         {
           x:          -(parseInt(`${gsap.getProperty(itemText$[0], "width")}`, 10)) - 40,
           width:      0,
-          color:      C.Colors.BLACK,
+          color:      C.Colors.GREY1,
           textShadow: [
-            ...Array.from({length: 4}).fill(`0 0 15px ${C.Colors.bGOLD}`),
-            ...Array.from({length: 6}).fill(`0 0 5px ${C.Colors.bGOLD}`),
-            ...Array.from({length: 4}).fill(`0 0 2px ${C.Colors.bGOLD}`)
+            ...Array.from({length: 4}).fill(`0 0 15px ${C.Colors.GOLD8}`),
+            ...Array.from({length: 6}).fill(`0 0 5px ${C.Colors.GOLD8}`),
+            ...Array.from({length: 4}).fill(`0 0 2px ${C.Colors.GOLD8}`)
           ].join(", "),
           duration: FULL_DURATION,
           ease:     "back"
