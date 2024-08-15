@@ -491,7 +491,7 @@ const signNum = (num: number, delim = "", zeroSign = "+") => {
 const padNum = (num: number, numDecDigits: number, includePlus = false) => {
   const prefix = (includePlus && num >= 0) ? "+" : "";
   const [leftDigits, rightDigits] = String(pFloat(num)).split(/\./);
-  if (getType(rightDigits) === "int") {
+  if (isInt(parseInt(rightDigits, 10))) {
     if (rightDigits.length > numDecDigits) {
       return `${String(prefix)}${String(pFloat(num, numDecDigits))}`;
     } else if (rightDigits.length < numDecDigits) {
@@ -600,7 +600,7 @@ const verbalizeNum = (num: number | string) => {
     }
   }
   numWords.push(intStrings.join(", ").trim());
-  if (getType(decimals) === "int") {
+  if (isInt(parseFloat(decimals))) {
     if (integers === "0") {
       numWords.push("zero");
     }
@@ -2139,7 +2139,7 @@ const isTargetFlagKey = (ref: unknown): ref is TargetFlagKey => {
   return true;
 };
 
-const getProp = <T>(obj: object, key: string): Maybe<T> => getProperty(obj, key) as Maybe<T>;
+const getProp = <T>(obj: object, key: string): Maybe<T> => foundry.utils.getProperty(obj, key) as Maybe<T>;
 
 const parseDocRefToUUID = (ref: unknown): UUIDString => {
   if (isDocUUID(ref)) {

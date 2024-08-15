@@ -2,21 +2,6 @@
 	<img src="/systems/kult4th/assets/animations/attribute-flare.webp" alt="{{localize "kult4th.sheet.imageAlts.attributeFlare"}}" width="200" height="200">
 	<span class="attribute-title" data-action="roll" data-item-name="{{key}}">{{name}}</span>
 	<select class="attribute-value" name="system.attributes.{{key}}.value" value="{{value}}" required>
-		{{#select value}}
-		<option name="" value="" selected hidden disabled> </option>
-		<option value="7">+7</option>
-		<option value="6">+6</option>
-		<option value="5">+5</option>
-		<option value="4">+4</option>
-		<option value="3">+3</option>
-		<option value="2">+2</option>
-		<option value="1">+1</option>
-		<option value="0">0</option>
-		<option value="-1">−1</option>
-		<option value="-2">−2</option>
-		<option value="-3">−3</option>
-		<option value="-4">−4</option>
-		<option value="-5">−5</option>
-		{{/select}}
+    {{selectOptions selectList selected=value localize=false}}
 	</select>
 </div>

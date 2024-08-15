@@ -3,23 +3,22 @@ import { getDistanceFromSelected, getXPosFromIndex,getYRotFromIndex, getIndexFro
 import U from "../scripts/utilities.js";
 import K4Actor from "./K4Actor.js";
 
-
-// eslint-disable-next-line @typescript-eslint/no-inferrable-types
-const IS_DEBUGGING = false;
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class K4DebugDisplay {
+  public static readonly IS_DEBUGGING = false;
   private static readonly displays = new Map<string, JQuery>();
+
 
   static Initialize(): void {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!IS_DEBUGGING) { return };
+    if (!K4DebugDisplay.IS_DEBUGGING) { return };
     this.createDisplay("archetypeInfo", "Archetype Info");
     this.createDisplay("draggerInfo", "Dragger Info");
   }
 
   private static createDisplay(id: string, title: string): void {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!IS_DEBUGGING) { return };
+    if (!K4DebugDisplay.IS_DEBUGGING) { return };
 
     this.displays.set(id, $("<span />"));
 
@@ -47,7 +46,8 @@ class K4DebugDisplay {
 
   static updateArchetypeInfo(archetype: string, selectedIndex: number, arrayIndex: number, elementIndex: number): void {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!IS_DEBUGGING) { return };
+    if (!K4DebugDisplay.IS_DEBUGGING) { return };
+    if (!archetype) { return; }
     const display = this.displays.get("archetypeInfo");
     if (display) {
       // if (archetype) {
@@ -63,37 +63,39 @@ class K4DebugDisplay {
 
   static updateDraggerInfo(dragger: Maybe<Dragger>, actor: K4Actor): void {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!IS_DEBUGGING) { return };
+    if (!K4DebugDisplay.IS_DEBUGGING) { return };
     if (!dragger) { return; }
     const dragger$ = $(dragger.target);
     const container$ = dragger$.closest(".pc-initialization");
     const carousel$ = container$.find(".archetype-carousel");
     const items$ = carousel$.find(".archetype-carousel-item");
     const dragContainer$ = dragger$.closest(".archetype-carousel-dragger");
-    const dragWidth = dragContainer$.width()!;
-    const xMin = -0.5 * dragWidth;
-    const xMax = 0.5 * dragWidth;
+
+
+    const PIXELS_PER_ROTATION = 1000;
+    const xMin = -0.5 * PIXELS_PER_ROTATION;
+    const xMax = 0.5 * PIXELS_PER_ROTATION;
 
     const xPos = U.pFloat(dragger.x, 2);
     const yRot = U.pFloat(U.get(carousel$[0], "rotationY"), 0);
     const chosenArchetype = actor.archetype;
     const chosenArchetypeIndex = U.pInt(carousel$.find(`[data-archetype="${chosenArchetype}"]`).attr("data-index"));
-    const usingArchetypeIndex = getIndexFromYRot(yRot, items$.length);
+    const usingArchetypeIndex = getIndexFromYRot(yRot);
     const usingArchetype = carousel$.find(`[data-index="${usingArchetypeIndex}"]`).attr("data-archetype")!;
     const lines: string[] = [
       `XPOS: ${U.padNum(xPos, 2)} (min: ${xMin}, max: ${xMax})`,
       `YROT: ${U.padNum(yRot, 0)}`,
       `INDEX - CHOSEN: ${chosenArchetypeIndex} (${chosenArchetype})`,
       `INDEX - USING: ${usingArchetypeIndex} (${usingArchetype})`,
-      `DISTANCE: ${U.pFloat(getDistanceFromSelected(usingArchetypeIndex, chosenArchetypeIndex, items$.length), 2)}`,
+      `DISTANCE: ${U.pFloat(getDistanceFromSelected(usingArchetypeIndex, chosenArchetypeIndex), 2)}`,
       `TOTAL: ${items$.length}`,
       " ",
-      `getYRotFromIndex: ${U.pInt(getYRotFromIndex(usingArchetypeIndex, items$.length),)}`,
-      `getIndexFromYRot: ${getIndexFromYRot(yRot, items$.length)}`,
-      `getYRotFromXPos: ${U.pInt(getYRotFromXPos(xPos, xMax))}`,
-      `getXPosFromYRot: ${U.pFloat(getXPosFromYRot(yRot, xMax), 2)}`,
-      `getIndexFromXPos: ${getIndexFromXPos(xPos, items$.length, xMax)}`,
-      `getXPosFromIndex: ${U.pFloat(getXPosFromIndex(usingArchetypeIndex, items$.length, xMax), 2)}`,
+      `getYRotFromIndex: ${U.pInt(getYRotFromIndex(usingArchetypeIndex))}`,
+      `getIndexFromYRot: ${getIndexFromYRot(yRot)}`,
+      `getYRotFromXPos: ${U.pInt(getYRotFromXPos(xPos))}`,
+      `getXPosFromYRot: ${U.pFloat(getXPosFromYRot(yRot), 2)}`,
+      `getIndexFromXPos: ${getIndexFromXPos(xPos)}`,
+      `getXPosFromIndex: ${U.pFloat(getXPosFromIndex(usingArchetypeIndex), 2)}`,
       `Velocity: ${InertiaPlugin.getVelocity(dragger.target, "x").toFixed(2)}`,
       `Is Dragging: ${dragger.isDragging}`,
       `Is Pressed: ${dragger.isPressed}`

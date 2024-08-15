@@ -7,6 +7,71 @@ import C, {K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType} 
 import U from "../scripts/utilities.js";
 // #endregion
 
+/** ==== REPLACE TEMPLATE.JSON WITH DATA MODELS ====
+ * https://www.foundryvtt.wiki/en/development/api/DataModel
+ *
+ * Example of minimal template.json:
+ * {
+  "Actor": {
+    "types": [
+      "character",
+      "npc",
+      "vehicle",
+      "group"
+    ],
+    "htmlFields": [
+      "details.biography.value",
+      "details.biography.public",
+      "description.full",
+      "description.summary"
+    ]
+  },
+  "Item": {
+    "types": [
+      "weapon",
+      "equipment",
+      "consumable",
+      "tool",
+      "loot",
+      "race",
+      "background",
+      "class",
+      "subclass",
+      "spell",
+      "feat",
+      "container",
+      "backpack"
+    ],
+    "htmlFields": [
+      "description.value",
+      "description.chat",
+      "unidentified.description"
+    ]
+  },
+  "JournalEntryPage": {
+    "types": [
+      "class",
+      "map",
+      "rule",
+      "spells",
+      "subclass"
+    ],
+    "htmlFields": [
+      "description.value",
+      "description.additionalHitPoints",
+      "description.additionalTraits",
+      "description.additionalEquipment",
+      "description.subclass",
+      "tooltip"
+    ]
+  }
+}
+ */
+
+
+
+
+
 // #region === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
 // #region -- ENUMS ~
 enum K4ActorType {
@@ -22,6 +87,15 @@ enum K4CharGenPhase {
   finished = "finished"
 }
 // #endregion
+
+interface K4SelectOption<T> {
+  value: T;
+  label: string;
+}
+interface K4AttributeData extends NamedValueMax {
+  key: K4CharAttribute;
+  selectList: Array<K4SelectOption<number>>;
+}
 // #region -- TYPES ~
 declare global {
   type K4CharAttribute = Exclude<K4Attribute, K4Attribute.ask | K4Attribute.zero>;
@@ -211,7 +285,7 @@ class K4Actor extends Actor {
     promises.push(K4ActiveEffect.CreateFromBuildData(
       {
         parentData: K4ActiveEffect.BuildEffectData({
-          label: "Wounds",
+          name: "Wounds",
           dynamic: "wounds",
           canToggle: false,
           inStatusBar: true,
@@ -225,7 +299,7 @@ class K4Actor extends Actor {
     promises.push(K4ActiveEffect.CreateFromBuildData(
       {
         parentData: K4ActiveEffect.BuildEffectData({
-          label: "Stability",
+          name: "Stability",
           dynamic: "stability",
           canToggle: false,
           inStatusBar: true,
@@ -239,7 +313,7 @@ class K4Actor extends Actor {
     promises.push(K4ActiveEffect.CreateFromBuildData(
       {
         parentData: K4ActiveEffect.BuildEffectData({
-          label: "Stability Conditions",
+          name: "Stability Conditions",
           dynamic: "stabilityConditions",
           canToggle: false,
           inStatusBar: true,
@@ -253,7 +327,7 @@ class K4Actor extends Actor {
     promises.push(K4ActiveEffect.CreateFromBuildData(
       {
         parentData: K4ActiveEffect.BuildEffectData({
-          label: "Armor",
+          name: "Armor",
           dynamic: "armor",
           statusCategory: "armor",
           canToggle: false,
@@ -503,7 +577,7 @@ class K4Actor extends Actor {
         id: `wound-${filter}`,
         filter,
         value,
-        label: "Wounds",
+        name: "Wounds",
         tooltip: [
           `<h2>${tooltipLabel}</h2>`,
           `<p>${tooltipDesc}</p>`
@@ -544,7 +618,7 @@ class K4Actor extends Actor {
         id: `stability-${filter}`,
         filter,
         value,
-        label: "Stability",
+        name: "Stability",
         tooltip: [
           `<h2>${tooltipLabel}</h2>`,
           `<p>${tooltipDesc}</p>`
@@ -564,7 +638,7 @@ class K4Actor extends Actor {
           id: `stability-condition-${condition.id}-${filter}`,
           filter,
           value,
-          label: condition.label,
+          name: condition.label,
           tooltip: [
             `<h2>${condition.label}</h2>`,
             `<p>${condition.description}</p>`
@@ -736,17 +810,28 @@ class K4Actor extends Actor {
     ][this.stability];
   }
 
-  get attributeData() {
+
+  get attributeData(): K4AttributeData[] {
+
+
     if (this.is(K4ActorType.pc)) {
       const attrList = [...Object.keys(C.Attributes.Passive), ...Object.keys(C.Attributes.Active)] as K4CharAttribute[];
       const pcData: K4Actor.System<K4ActorType.pc> = this.system;
-      return attrList.map((attrName) => ({
-        name: U.tCase(attrName),
-        key: attrName,
-        min: pcData.attributes[attrName].min,
-        max: pcData.attributes[attrName].max,
-        value: pcData.attributes[attrName].value
-      }));
+      return attrList.map((attrName): K4AttributeData => {
+        const {min, max, value} = pcData.attributes[attrName];
+        const selectList = Array.from({ length: max - min + 1 }, (_, i) => ({
+          value: min + i,
+          label: U.signNum(min + i)
+        })).sort((a, b) => a.value - b.value);
+        return {
+          name: U.tCase(attrName),
+          key: attrName,
+          min,
+          max,
+          value,
+          selectList
+        };
+      });
     }
     return [];
   }
@@ -757,7 +842,7 @@ class K4Actor extends Actor {
   get attributes(): Record<K4CharAttribute, number> {
     const attributeMap: Record<K4CharAttribute, number> = {} as Record<K4CharAttribute, number>;
     this.attributeData.forEach((aData) => {
-      attributeMap[aData.key] = aData.value;
+      attributeMap[aData.key] = aData.value as Maybe<number> ?? 0;
     });
     return attributeMap;
   }
@@ -1361,7 +1446,7 @@ class K4Actor extends Actor {
         .map(({modData}) => {
           return [
             "<li>",
-            `<strong class='${modData.cssClasses[0]}'>${modData.value >= 0 ? "+" : "–"}${Math.abs(modData.value)}</strong> from <strong class='${modData.cssClasses[0]}'>${modData.label}</strong>`,
+            `<strong class='${modData.cssClasses[0]}'>${modData.value >= 0 ? "+" : "–"}${Math.abs(modData.value)}</strong> from <strong class='${modData.cssClasses[0]}'>${modData.name}</strong>`,
             "</li>"
           ].join("")
         }).join("")}</ul>`;

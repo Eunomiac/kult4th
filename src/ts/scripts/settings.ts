@@ -76,50 +76,51 @@ export default function registerSettings() {
 }
 
 export function initTinyMCEStyles() {
+  return;
   // CONFIG.TinyMCE.plugins += " searchreplace preview template";
   // CONFIG.TinyMCE.toolbar += " | searchreplace template";
-  CONFIG.TinyMCE.style_formats = [
-    {
-      title: U.tCase(U.loc("kult4th.system.tinymce.headings")),
-      items: [
-        {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(1)})), block: "h1", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(2)})), block: "h2", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(3)})), block: "h3", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(4)})), block: "h4", wrapper: false}
-      ]
-    },
-    {
-      title: U.tCase(U.loc("kult4th.system.tinymce.block")),
-      items: [
-        {title: U.tCase(U.loc("kult4th.system.tinymce.paragraph")), block: "p", wrapper: true}
-      ]
-    },
-    {
-      title: U.tCase(U.loc("kult4th.system.tinymce.inline")),
-      items: [
-        {title: U.tCase(U.loc("kult4th.system.tinymce.bold")), inline: "strong", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.system.tinymce.extraBold")), inline: "strong", classes: "text-extra-bold", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.system.tinymce.italics")), inline: "em", wrapper: false}
-      ]
-    },
-    {
-      title: "Rules",
-      items: [
-        {title: U.tCase(U.loc("kult4th.system.trigger")), inline: "em", classes: "text-trigger", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.system.keyword")), inline: "strong", classes: "text-keyword", wrapper: false},
-        {title: U.tCase(U.loc("kult4th.item.type.move")), inline: "em", classes: "text-keyword text-docLink", wrapper: false}
-      ]
-    }
-  ];
-  CONFIG.TinyMCE.skin = "Kult4th";
-  CONFIG.TinyMCE.skin_url = "systems/kult4th/tinymce/ui/Kult4th";
-  CONFIG.TinyMCE.style_formats_merge = false;
-  if (typeof CONFIG.TinyMCE.content_css === "string") {
-    CONFIG.TinyMCE.content_css = [CONFIG.TinyMCE.content_css];
-  } else if (!Array.isArray(CONFIG.TinyMCE.content_css)) {
-    CONFIG.TinyMCE.content_css = [];
-  }
-  CONFIG.TinyMCE.content_css.push("systems/kult4th/tmce-editor.css");
+  // CONFIG.TinyMCE.style_formats = [
+  //   {
+  //     title: U.tCase(U.loc("kult4th.system.tinymce.headings")),
+  //     items: [
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(1)})), block: "h1", wrapper: false},
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(2)})), block: "h2", wrapper: false},
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(3)})), block: "h3", wrapper: false},
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.headingNum", {headingNum: String(4)})), block: "h4", wrapper: false}
+  //     ]
+  //   },
+  //   {
+  //     title: U.tCase(U.loc("kult4th.system.tinymce.block")),
+  //     items: [
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.paragraph")), block: "p", wrapper: true}
+  //     ]
+  //   },
+  //   {
+  //     title: U.tCase(U.loc("kult4th.system.tinymce.inline")),
+  //     items: [
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.bold")), inline: "strong", wrapper: false},
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.extraBold")), inline: "strong", classes: "text-extra-bold", wrapper: false},
+  //       {title: U.tCase(U.loc("kult4th.system.tinymce.italics")), inline: "em", wrapper: false}
+  //     ]
+  //   },
+  //   {
+  //     title: "Rules",
+  //     items: [
+  //       {title: U.tCase(U.loc("kult4th.system.trigger")), inline: "em", classes: "text-trigger", wrapper: false},
+  //       {title: U.tCase(U.loc("kult4th.system.keyword")), inline: "strong", classes: "text-keyword", wrapper: false},
+  //       {title: U.tCase(U.loc("kult4th.item.type.move")), inline: "em", classes: "text-keyword text-docLink", wrapper: false}
+  //     ]
+  //   }
+  // ];
+  // CONFIG.TinyMCE.skin = "Kult4th";
+  // CONFIG.TinyMCE.skin_url = "systems/kult4th/tinymce/ui/Kult4th";
+  // CONFIG.TinyMCE.style_formats_merge = false;
+  // if (typeof CONFIG.TinyMCE.content_css === "string") {
+  //   CONFIG.TinyMCE.content_css = [CONFIG.TinyMCE.content_css];
+  // } else if (!Array.isArray(CONFIG.TinyMCE.content_css)) {
+  //   CONFIG.TinyMCE.content_css = [];
+  // }
+  // CONFIG.TinyMCE.content_css.push("systems/kult4th/tmce-editor.css");
 
 }
 

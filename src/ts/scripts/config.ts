@@ -15,7 +15,10 @@ const K4Config = {
     [K4Attribute.reflexes]: "kult4th.trait.reflexes"
   },
   isCharGenInitialized: false,
-  charGenIsShowing: null as null | K4Archetype
+  charGenIsShowing: null as null | K4Archetype,
+  debug: {
+    isDisablingCharGen: false
+  }
 };
 
 export default K4Config;

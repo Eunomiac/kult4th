@@ -60,45 +60,103 @@ interface ChargenContext {
   }
 }
 
-export function getDistanceFromSelected(index: number, selected: number, totalItems: number) {
+
+const PIXELS_PER_ROTATION = 1000;
+const VALID_ARCHETYPE_TIERS: ArchetypeTier[] = [ArchetypeTier.aware];
+
+function getValidArchetypes() {
+  return Object.fromEntries(
+    Object.entries(Archetypes)
+      .filter(([_, archetype]) => VALID_ARCHETYPE_TIERS.includes(archetype.tier))
+  );
+}
+function getArchetypeCount() {
+  return Object.keys(getValidArchetypes()).length;
+}
+function getArchetypeFromIndex(index: number) {
+  return Object.keys(getValidArchetypes())[index] as K4Archetype;
+}
+function getIndexOfArchetype(archetype: K4Archetype) {
+  return Object.keys(getValidArchetypes())
+    .findIndex((arch) => arch as K4Archetype === archetype);
+}
+function wrapIndex(index: number) {
+  const total = getArchetypeCount();
+  return ((index % total) + total) % total;
+}
+
+function wrapRotation(rotation: number) {
+  return (((rotation) % 360) + 360) % 360;
+}
+
+function wrapXPos(x: number) {
+  const totalWidth = PIXELS_PER_ROTATION;
+  const minX = -totalWidth / 2;
+  const maxX = totalWidth / 2;
+  return U.gsap.utils.wrap(minX, maxX)(x);
+}
+
+function getNormalizedRotation(rotation: number, offset = 0): number {
+  return wrapRotation(rotation + offset) / 360;
+}
+function getNormalizedXPos(x: number, offset = 500): number {
+  return wrapXPos(x + offset) / PIXELS_PER_ROTATION;
+}
+
+Object.assign(globalThis, {wrapIndex, wrapRotation, wrapXPos,
+  getArchetypeCount,
+  getArchetypeFromIndex,
+  getIndexFromYRot,
+  getYRotFromXPos,
+  getXPosFromYRot,
+  getXPosFromIndex,
+  getIndexFromXPos,
+  getDistanceFromSelected
+});
+
+export function getYRotFromIndex(index: number) {
+  const boundIndex = wrapIndex(index);
+  return U.gsap.utils.mapRange(0, getArchetypeCount(), 0, 360, boundIndex);
+}
+
+export function getIndexFromYRot(rotationY: number) {
+  const total = getArchetypeCount();
+  return U.pInt(U.gsap.utils.mapRange(0, 360, 0, total, wrapRotation(rotationY)));
+}
+
+export function getYRotFromXPos(x: number) {
+  const max = PIXELS_PER_ROTATION / 2;
+  return U.gsap.utils.mapRange(-max, max, 0, 360, wrapXPos(x));
+}
+
+export function getXPosFromYRot(rotationY: number) {
+  const max = PIXELS_PER_ROTATION / 2;
+  return U.gsap.utils.mapRange(0, 360, -max, max, wrapRotation(rotationY));
+}
+
+export function getXPosFromIndex(index: number) {
+  const max = PIXELS_PER_ROTATION / 2;
+  const boundIndex = wrapIndex(index);
+  return U.gsap.utils.mapRange(0, getArchetypeCount(), -max, max, boundIndex);
+}
+
+export function getIndexFromXPos(x: number) {
+  const total = getArchetypeCount();
+  const max = PIXELS_PER_ROTATION / 2;
+  return U.pInt(U.gsap.utils.mapRange(-max, max, 0, total, wrapXPos(x)));
+}
+
+export function getDistanceFromSelected(index: number, selected: number) {
+  const boundIndex = wrapIndex(index);
+  const boundSelected = wrapIndex(selected);
   // Calculate the distance between the given index and the selected index
-  const distance = Math.abs(index - selected);
+  const distance = Math.abs(boundIndex - boundSelected);
   // Normalize the distance by the total number of items to get a value between 0 and 1
-  const normalizedDistance = distance / totalItems;
-  return normalizedDistance;
+  const normalizedDistance = distance / getArchetypeCount();
+  // return normalizedDistance;
   // Since the carousel wraps around, we need to adjust the distance if it's more than half of the total items
   const adjustedDistance = normalizedDistance > 0.5 ? 1 - normalizedDistance : normalizedDistance;
   return 2 * adjustedDistance // (normalized to between 0 and 1;
-}
-
-export function getYRotFromIndex(index: number, total: number) {
-  return U.gsap.utils.mapRange(0, total, 360, 0, index);
-}
-
-export function getIndexFromYRot(rotationY: number, total: number) {
-  return U.gsap.utils.clamp(0, total - 1, U.pInt(U.gsap.utils.mapRange(360, 0, 0, total, rotationY)));
-}
-
-export function getYRotFromXPos(x: number, max: number) {
-  // x = U.gsap.utils.wrap(-max, max, x);
-  return U.gsap.utils.mapRange(max, -max, 360, 0, x);
-}
-
-export function getXPosFromYRot(rotationY: number, max: number) {
-  return U.gsap.utils.mapRange(360, 0, max, -max, rotationY);
-}
-
-export function getXPosFromIndex(index: number, total: number, max: number) {
-  return U.gsap.utils.mapRange(0, total, max, -max, index);
-}
-
-export function getIndexFromXPos(x: number, total: number, max: number) {
-  // x = U.gsap.utils.wrap(-max, max, x);
-  return U.gsap.utils.clamp(0, total - 1, U.pInt(U.gsap.utils.mapRange(max, -max, 0, total, x)));
-}
-
-function getArchetypeFromIndex(index: number) {
-  return Object.keys(VALIDARCHETYPES)[index] as K4Archetype;
 }
 
 function getElementFromArchetype(context$: JQuery, archetype: K4Archetype) {
@@ -111,7 +169,7 @@ function getElementFromIndex(context$: JQuery, index: number) {
 }
 
 
-let VALIDARCHETYPES: Partial<Record<K4Archetype, Archetype.Data>> = Object.fromEntries(Object.entries(Archetypes).filter(([_, archetype]) => [ArchetypeTier.awake].includes(archetype.tier)));
+
 
 const ANIMATIONS = {
   async revealBackground(carouselScene$: JQuery, isInstant = false) {
@@ -449,22 +507,19 @@ const ANIMATIONS = {
   },
   async archetypeCarouselTimeline(carouselScene$: JQuery, itemWidth: number, actor: K4Actor): Promise<gsap.core.Timeline> {
 
-    kLog.log("TEST", {VALIDARCHETYPES});
-    VALIDARCHETYPES = Object.fromEntries(Object.entries(Archetypes).filter(([_, archetype]) => [ArchetypeTier.aware].includes(archetype.tier)));
-
     const container$ = carouselScene$.closest(".pc-initialization");
     const carousel$ = carouselScene$.find(".archetype-carousel");
     const items$ = carousel$.find(".archetype-carousel-item");
-    let selArchetypeIndex = Object.keys(VALIDARCHETYPES)
-      .findIndex((archetype) => archetype as K4Archetype === actor.archetype);
+    let selArchetypeIndex = actor.archetype
+      ? getIndexOfArchetype(actor.archetype)
+      : 0;
 
     await U.gsap.set(carouselScene$, {
       opacity: 0,
       visibility: "visible"
     });
 
-    const totalItems = Object.keys(VALIDARCHETYPES).length;
-    const angleStep = 360 / totalItems;
+    const totalItems = getArchetypeCount();
     const radius = Math.round((itemWidth / 2) / Math.tan(Math.PI / totalItems));
 
     await U.gsap.set(carousel$, {
@@ -474,10 +529,11 @@ const ANIMATIONS = {
     await Promise.all(items$.map((i, item) => {
       const archTimeline = ANIMATIONS.archetypeTimeline($(item), actor as K4Actor<K4ActorType.pc>);
       $(item).data("archetypeTimeline", archTimeline);
-      const distFromSelected = getDistanceFromSelected(i, selArchetypeIndex, totalItems);
+      const distFromSelected = getDistanceFromSelected(i, selArchetypeIndex);
       archTimeline.seek(1 - distFromSelected);
+      $(item).data("archetypeTimeline", archTimeline);
       return U.gsap.set(item, {
-        transform: `rotateY(${-1 * getYRotFromIndex(i, totalItems)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i, totalItems)}deg)`
+        transform: `rotateY(${-1 * getYRotFromIndex(i)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i)}deg)`
       });
     }));
 
@@ -487,117 +543,106 @@ const ANIMATIONS = {
     kLog.log("Testing Draggable Components", {draggerContainer$, dragger$});
 
     await U.gsap.set(carouselScene$, { opacity: 1, visibility: "visible" });
+// Calculate the maximum physical drag distance in either direction
+  // const expandedDragRange = PIXELS_PER_ROTATION * 4; // Make the draggable area 4 times wider
 
-    // Calculate the maximum drag distance
-    const maxDistance = 0.5 * draggerContainer$.width()!;
+  const updateDebugInfo = (x: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!K4DebugDisplay.IS_DEBUGGING) { return; }
+    const newIndex = getIndexFromXPos(x);
+    const archetype = getArchetypeFromIndex(newIndex);
+    const elementIndex = carousel$.find(`[data-archetype=${archetype}]`).data("index") as number;
 
-    // Calculate the bounds
-    const bounds = {
-      minX: -maxDistance,
-      maxX: maxDistance
-    };
+    K4DebugDisplay.updateArchetypeInfo(archetype, selArchetypeIndex, newIndex, elementIndex);
+  };
 
-    const updateDebugInfo = (x: number) => {
-      const newIndex = U.gsap.utils.clamp(0, totalItems, Math.round(((x + maxDistance) / Math.abs(2 * maxDistance)) * totalItems) % totalItems);
-      const archetype = Object.keys(VALIDARCHETYPES)[newIndex];
-      const elementIndex = carousel$.find(`[data-archetype=${archetype}]`).data("index") as number;
+  const updateRotation = (x: number) => {
+    const wrappedX = wrapXPos(x);
+    const rotation = getYRotFromXPos(wrappedX);
+    gsap.set(carousel$, { rotationY: rotation });
+    items$.each((_i, item) => {
+      gsap.set(item, { rotationY: -rotation });
+      const thisTimeline = ($(item).data("archetypeTimeline") as gsap.core.Timeline);
+      const thisIndex = U.pInt($(item).data("index"));
+      if (thisIndex !== selArchetypeIndex && thisTimeline.time() <= 1) {
+        const distFromSelected = getDistanceFromSelected(thisIndex, selArchetypeIndex);
+        thisTimeline.seek(1 - distFromSelected);
+      }
+    });
+    U.gsap.set(dragger$, { x: wrappedX, duration: 0 });
+  };
 
-      K4DebugDisplay.updateArchetypeInfo(archetype, selArchetypeIndex, newIndex, elementIndex);
-    };
-
-    const updateRotation = (x: number) => {
-      const rotation = getYRotFromXPos(x, maxDistance);
-      gsap.set(carousel$, { rotationX: 0, rotationY: rotation, rotationZ: 0 });
+  const snapToNearestArchetype = (x: number, isCompleting = false) => {
+    const newIndex = getIndexFromXPos(wrapXPos(x));
+    actor.archetype = getArchetypeFromIndex(newIndex);
+    K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
+    if (isCompleting) {
       items$.each((_i, item) => {
-        gsap.set(item, { rotationY: -rotation });
         const thisTimeline = ($(item).data("archetypeTimeline") as gsap.core.Timeline);
         const thisIndex = U.pInt($(item).data("index"));
-        if (thisIndex !== selArchetypeIndex && thisTimeline.time() <= 1) {
-          const distFromSelected = getDistanceFromSelected(thisIndex, selArchetypeIndex, totalItems);
-          thisTimeline.seek(1 - distFromSelected);
+        if (thisIndex !== newIndex) {
+          const distFromSelected = getDistanceFromSelected(thisIndex, newIndex);
+          void thisTimeline.tweenTo(1 - distFromSelected, {duration: 0.5});
+        } else if (thisIndex === newIndex) {
+          void thisTimeline.tweenTo("selected", {duration: 2});
         }
       });
-    };
-    // Function to update rotation based on drag position
-    const snapToNearestArchetype = (x: number, isCompleting = false) => {
-      const newIndex = getIndexFromXPos(x, totalItems, maxDistance);
-      if (newIndex !== selArchetypeIndex) {
-        actor.archetype = Object.keys(VALIDARCHETYPES)[newIndex] as K4Archetype;
-        K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
-      }
-      if (isCompleting) {
-        // Iterate through all items, and set their data-is-selected to false UNLESS this is the new item, then set it to true
-        items$.each((_i, item) => {
-          const thisTimeline = ($(item).data("archetypeTimeline") as gsap.core.Timeline);
-          const thisIndex = U.pInt($(item).data("index"));
-          if (thisIndex !== newIndex) {
-            const distFromSelected = getDistanceFromSelected(thisIndex, newIndex, totalItems);
-            void thisTimeline.tweenTo(1 - distFromSelected, {duration: 0.5});
-          } else if (thisIndex === newIndex) {
-            void thisTimeline.tweenTo("selected", {duration: 2});
-          }
-        });
-      }
-      selArchetypeIndex = newIndex;
-      return getXPosFromIndex(newIndex, totalItems, maxDistance);
-    };
+    }
+    selArchetypeIndex = newIndex;
+    return getXPosFromIndex(newIndex);
+  };
 
-    const dragger = Dragger.create(dragger$, {
-      type: "x",
-      // trigger: ".archetype-carousel-item",
-      inertia: true,
-      dragResistance: 0.25,
-      maxDuration: 0.25,
-      snap: {
-        x: (value) => snapToNearestArchetype(value)
-      },
-      onDragStart: function(this: Dragger) {
-        // set data-is-selected to false for all items
-        items$.each((_i, item) => {
-          const itemTimeline = ($(item).data("archetypeTimeline") as gsap.core.Timeline);
-          // If the timeline is past the "light" label (at timeline time 1s), tween back to "light" and THEN set data-is-selected.
-          if (itemTimeline.time() > 1) {
-            void itemTimeline.tweenTo("light", {duration: 0.5});
-              // $(item).attr("data-is-selected", "false");
-            // });
-          } else {
+  const dragger = Dragger.create(dragger$, {
+    type: "x",
+    inertia: true,
+    dragResistance: 0.5,
+    maxDuration: 0.15,
+    snap: {
+      x: (value) => snapToNearestArchetype(value)
+    },
+    onDragStart: function(this: Dragger) {
+      // set data-is-selected to false for all items
+      items$.each((_i, item) => {
+        const itemTimeline = ($(item).data("archetypeTimeline") as gsap.core.Timeline);
+        // If the timeline is past the "light" label (at timeline time 1s), tween back to "light" and THEN set data-is-selected.
+        if (itemTimeline.time() > 1) {
+          void itemTimeline.tweenTo("light", {duration: 0.5});
             // $(item).attr("data-is-selected", "false");
-          }
-        });
-      },
-      onDrag: function(this: Dragger) {
-        updateRotation(this.x);
-        // this.applyBounds(bounds);
-        snapToNearestArchetype(this.x);
-        updateDebugInfo(this.x);
-        K4DebugDisplay.updateDraggerInfo(this, actor);
-      },
-      onThrowUpdate: function(this: Dragger) {
-        updateRotation(this.x);
-        // this.applyBounds(bounds);
-        snapToNearestArchetype(this.x);
-        updateDebugInfo(this.x);
-      },
-      // onDragEnd: function(this: Dragger) {
-      //   updateRotation(snapToNearestArchetype(this.x, true));
-      // },
-      onThrowComplete: function(this: Dragger) {
-        updateRotation(snapToNearestArchetype(this.x, true));
-      }
-    });
+          // });
+        } else {
+          // $(item).attr("data-is-selected", "false");
+        }
+      });
+    },
+    onDrag: function(this: Dragger) {
+      updateRotation(this.x);
+      // snapToNearestArchetype(this.x);
+      K4DebugDisplay.updateDraggerInfo(this, actor);
+    },
+    onDragEnd: function(this: Dragger) {
+      if (this.isThrowing) { return; }
+      snapToNearestArchetype(this.x, true);
+    },
+    onThrowUpdate: function(this: Dragger) {
+      updateRotation(this.x);
+      // snapToNearestArchetype(this.x);
+    },
+    onThrowComplete: function(this: Dragger) {
+      snapToNearestArchetype(this.x, true);
+    }
+  });
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (K4DebugDisplay.IS_DEBUGGING) {
+      kLog.log("Dragger Created", {dragger, draggerContainer$, dragger$});
 
-    kLog.log("Dragger Created", {dragger, draggerContainer$, dragger$});
-
-    // Set initial position of the proxy
-    // gsap.set(proxy, { x: (selArchetypeIndex / totalItems) * maxDistance });
-
-    // Update debug info on each frame
-    gsap.ticker.add(() => {
-      const x = gsap.getProperty(dragger$[0], "x") as number;
-      updateDebugInfo(x);
-      K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), actor);
-    });
+      // Update debug info on each frame
+      gsap.ticker.add(() => {
+        const x = gsap.getProperty(dragger$[0], "x") as number;
+        updateDebugInfo(x);
+        K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), actor);
+      });
+    }
 
     // // Update rotation on window resize
     // window.addEventListener("resize", () => {
@@ -608,7 +653,7 @@ const ANIMATIONS = {
     //   updateRotation(newX);
     // });
 
-    const startX = getXPosFromIndex(selArchetypeIndex, totalItems, maxDistance);
+    const startX = getXPosFromIndex(selArchetypeIndex);
     updateRotation(startX);
     U.gsap.set(dragger$, { x: startX });
 
@@ -1374,7 +1419,7 @@ class K4PCSheet extends ActorSheet {
 
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-actor-sheet", "k4-theme-dgold"],
       tabs:    [
         {navSelector: ".tabs", contentSelector: ".tab-content", initial: "front"}
@@ -1549,10 +1594,10 @@ class K4PCSheet extends ActorSheet {
      */
     const allowedTiers: ArchetypeTier[] = [ArchetypeTier.aware];
     return Object.fromEntries(
-      (Object.entries(Archetypes) as Array<Tuple<K4Archetype, ValueOf<typeof Archetypes>>>)
+      (Object.entries(Archetypes) as Array<Tuple<K4Archetype, ValOf<typeof Archetypes>>>)
         .filter(([_archetype, {tier}]) => allowedTiers.includes(tier))
         // Map data to match Archetype.Data
-        .map(([archetype, data]: [K4Archetype, ValueOf<typeof Archetypes>]) => {
+        .map(([archetype, data]: [K4Archetype, ValOf<typeof Archetypes>]) => {
           const advTraitData = this.getArchetypeTraitData(K4ItemType.advantage, archetype) as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>;
           const advTraitDataArray = Object.values(advTraitData).flatMap(Object.values) as Archetype.TraitData[];
           const advSelected = advTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
@@ -1780,7 +1825,7 @@ class K4PCSheet extends ActorSheet {
         );
       }
       return game.items
-        .filter((item): item is K4Item<K4ItemType.disadvantage|K4ItemType.darksecret> =>
+        .filter((item: any): item is K4Item<K4ItemType.disadvantage|K4ItemType.darksecret> =>
           item.type === type && !listedTraits.includes(item.name)
         );
     };
@@ -2062,7 +2107,7 @@ class K4PCSheet extends ActorSheet {
   }
   activateResizeListener(html: JQuery) {
     const resizableHandle = html.find(".window-resizable-handle");
-    const debouncedResizeModifierReport = debounce(() => { this.resizeModifierReport(html); }, 1);
+    const debouncedResizeModifierReport = foundry.utils.debounce(() => { this.resizeModifierReport(html); }, 1);
 
     const onMouseMove = () => {
       debouncedResizeModifierReport();
@@ -2293,7 +2338,7 @@ class K4PCSheet extends ActorSheet {
       });
   }
   activateToggleStripListeners(html: JQuery) {
-    this.actor.toggleableEffects.forEach((effect) => { effect.applyToggleListeners(html); });
+    this.actor.toggleableEffects.forEach((effect: any) => { effect.applyToggleListeners(html); });
   }
   activateWindowControlListeners(html: JQuery) {
     const self = this;
@@ -2587,7 +2632,7 @@ class K4PCSheet extends ActorSheet {
 
     html.find("#item-test-button").on({
       click: this._promptItemSelection(
-        Array.from(game.items).filter((item) => item.type === K4ItemType.advantage)
+        Array.from(game.items as Collection<K4Item>).filter((item) => item.type === K4ItemType.advantage)
       ).bind(this)
     });
 
@@ -2635,7 +2680,7 @@ class K4PCSheet extends ActorSheet {
     };
   }
 
-  activateTab(tabName: string | null) {
+  override activateTab(tabName: string | null) {
     tabName ??= "front";
     const curTab = (this.actor.getFlag("kult4th", "sheetTab") ?? "front") as string;
     if (tabName && tabName !== curTab) {

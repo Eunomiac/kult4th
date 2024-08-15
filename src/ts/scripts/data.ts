@@ -6,7 +6,7 @@ import U from "../scripts/utilities.js";
 import C from "../scripts/constants";
 import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
 import ITEM_DATA from "./item-data.js";
-import PREV_DATA from "./item-data-prev.js";
+// import PREV_DATA from "../../../.dev/item-data-prev.js";
 
 enum K4Attribute {
   ask = "ask",
@@ -557,9 +557,9 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
   return options.isExpanding !== false ? (expandObject(reportObject) as Record<string, unknown>) : reportObject;
 }
 
-function getMutationDiffReport() {
-  return diffObject(PREV_DATA, ITEM_DATA);
-}
+// function getMutationDiffReport() {
+//   return diffObject(PREV_DATA, ITEM_DATA);
+// }
 // #endregion
 
 // #REGION BUILDING ITEMS FROM DATA ~
@@ -581,7 +581,7 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
   };
   return itemDataArray
     .map((itemData) => {
-      const newItemData = duplicate(itemData) as ITEM_DATA.Schema & {folder: string|null};
+      const newItemData = foundry.utils.duplicate(itemData) as ITEM_DATA.Schema & {folder: string|null};
       ["_id", "folder", "sort", "permission", "flags"]
         .forEach((key) => {
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
@@ -778,7 +778,7 @@ export {
   getUniqueValuesForSystemKey,
   getItemSystemReport,
   getSubItemSystemReport,
-  getMutationDiffReport,
+  // getMutationDiffReport,
   findRepresentativeSubset,
   checkSubsetCoverage,
   findUniqueKeys

@@ -33,7 +33,7 @@ declare global {
       id: string,
       filter: "all"|K4ItemType.advantage|K4ItemType.disadvantage|string,
       value: number,
-      label: string,
+      name: string,
       tooltip: string,
       cssClasses: string[]
     }
@@ -125,9 +125,9 @@ declare global {
 }
 // #endregion
 // #region -- INTERFACE AUGMENTATION ~
-interface K4Roll {
-  result: string
-}
+// interface K4Roll {
+//   result: string
+// }
 // #endregion
 // #ENDREGION
 
@@ -383,7 +383,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
 
     kLog.log("EVALUATING ROLL", {roll: this});
 
-    super.evaluate({async: false});
+    await super.evaluate();
 
     // game.dice3d.showForRoll(this); // Can't include if disabling canvas.
 

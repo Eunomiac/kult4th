@@ -69,7 +69,7 @@ type DebugMode = "base"|"display"|"error"|"handlebars"|"report";
 
 interface DebugReport {
   debugLevel: DebugLevel,
-  consoleCalls: Array<Array<Tuple<ValueOf<typeof console>, unknown[]>>>
+  consoleCalls: Array<Array<Tuple<ValOf<typeof console>, unknown[]>>>
 }
 // #endregion
 
@@ -119,7 +119,7 @@ const checkDebugLevel = (loggerArgs: unknown[]) => {
     : DEFAULT_DB_LEVEL;
   return dbLevel <= maxDBLevel;
 }
-const getConsoleCalls = (type: KeyOf<typeof STYLES> = "base", ...content: [string, ...unknown[]]): Array<Tuple<ValueOf<typeof console>, unknown[]>> => {
+const getConsoleCalls = (type: KeyOf<typeof STYLES> = "base", ...content: [string, ...unknown[]]): Array<Tuple<(...args: unknown[]) => void, unknown[]>> => {
   const [message, ...data] = content;
   const stackTrace = getStackTrace(type as DebugMode);
   const styleLine = Object.entries({
@@ -127,10 +127,10 @@ const getConsoleCalls = (type: KeyOf<typeof STYLES> = "base", ...content: [strin
     ...STYLES[type]
   }).map(([prop, val]) => `${prop}: ${val};`).join(" ");
 
-  const consoleCalls: Array<Tuple<ValueOf<typeof console>, unknown[]>> = [];
+  const consoleCalls: Array<Tuple<(...args: unknown[]) => void, unknown[]>> = [];
 
   let isClosingGroup = false;
-  let firstFunc: ValueOf<typeof console>;
+  let firstFunc: (...args: unknown[]) => void;
   if (typeof stackTrace === "string") {
     firstFunc = console.groupCollapsed;
     isClosingGroup = true;
@@ -179,61 +179,12 @@ const k4Logger = (type: KeyOf<typeof STYLES> = "base", ...content: [string, ...u
   getConsoleCalls(type, ...content)
     .forEach(([logFunc, logArgs]) => (logFunc as Func)(...logArgs));
 };
-const openReport = (name: string, title = "", dbLevel = DEFAULT_DB_LEVEL) => {
-  CONFIG.debug.openReports ??= {};
-  if (!checkDebugLevel([dbLevel])) { return; }
-  if (name in CONFIG.debug.openReports) {
-    console.warn(`Report named '${name}' is already open!`);
-    return;
-  }
-  const initialConsoleCall = getConsoleCalls("display", `[${name} REPORT] ${title}`);
-  initialConsoleCall[0][0] = console.groupCollapsed;
-  initialConsoleCall[0][1][1] = (initialConsoleCall[0][1][1] as string)
-    .replace(/background:.*?;/, `background: ${C.Colors.dBLUE};`)
-    .replace(/color:.*?;/, `color: ${C.Colors.gBLUE};`)
-  U.pullIndex(initialConsoleCall, 1);
-  kLog.log("Initial Console Call: ", {iCC: [...initialConsoleCall]});
-  // throw new Error("");
-  CONFIG.debug.openReports[name] = {
-    debugLevel: dbLevel,
-    consoleCalls: [
-      initialConsoleCall,
-      getConsoleCalls("base", "Initial Stack Trace")
-    ]
-  };
-}
-const report = (name: string, ...content: [string, ...unknown[]]) => {
-  if (!checkDebugLevel(content)) { return; }
-  if (CONFIG.debug.openReports && name in CONFIG.debug.openReports) {
-    CONFIG.debug.openReports[name].consoleCalls.push(getConsoleCalls("report", ...content));
-  }
-}
-const closeReport = (name: string) => {
-  if (CONFIG.debug.openReports && name in CONFIG.debug.openReports) {
-    const {consoleCalls} = CONFIG.debug.openReports[name];
-    consoleCalls.push(
-      getConsoleCalls("base", "Final Stack Trace"),
-      [[console.groupEnd, []]]
-    );
-    consoleCalls
-      .forEach((theseCalls) => {
-        theseCalls.forEach(([logFunc, logArgs]) => (logFunc as Func)(...logArgs))
-      });
-    kLog.log("Console Calls", consoleCalls);
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete CONFIG.debug.openReports[name];
-  }
-}
 
 const kLog = {
   display: (...content: [string, ...unknown[]]) => { k4Logger("display", ...content); },
   log: (...content: [string, ...unknown[]]) => { k4Logger("base", ...content); },
   error: (...content: [string, ...unknown[]]) => { k4Logger("error", ...content); },
-  hbsLog: (...content: [string, ...unknown[]]) => { k4Logger("handlebars", ...content); },
-
-  openReport,
-  report,
-  closeReport
+  hbsLog: (...content: [string, ...unknown[]]) => { k4Logger("handlebars", ...content); }
 };
 
 const registerConsoleLogger = () => {

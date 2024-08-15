@@ -43,9 +43,9 @@ $assetPath: '/assets';
     @import 'alerts/alerts';
   }
 
-  .editor-content {
-    position: static !important;
-  }
+  // .editor-content {
+  //   position: static !important;
+  // }
 
 	.app.window-app {
 		@import 'globals/app';

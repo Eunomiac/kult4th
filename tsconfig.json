@@ -21,11 +21,11 @@
     "paths": {
       "*": [
         "*",
-        "D:/Projects/.CODING/FoundryVTT/FoundryV10DistData/Data/systems/*",
-        "D:/Projects/.CODING/FoundryVTT/FoundryV10DevData/Data/systems/*",
-        "D:/Projects/.CODING/FoundryVTT/FoundryV10DistData/Data/modules/*",
-        "D:/Projects/.CODING/FoundryVTT/FoundryV10DevData/Data/modules/*",
-        "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/*"
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DistData/Data/systems/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DevData/Data/systems/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DistData/Data/modules/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DevData/Data/modules/*",
+        "C:/FoundryVTT/v12/Foundry Virtual Tabletop/resources/app/*"
       ]
     },
     "plugins": [
@@ -48,7 +48,7 @@
   "include": [
     "./src/ts/**/*.ts",
     "vite.config.ts"
-  ],
+, ".dev/item-data-prev.ts"  ],
   "exclude": [
     "./.dev",
     "eslint.config.mjs"

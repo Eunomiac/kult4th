@@ -1,18 +1,20 @@
 {
-	"ACTOR": {
-		"TypePc": "Player Character",
-		"TypeNpc": "Non-Player Character"
-	},
-	"ITEM": {
-		"TypeAttack": "Attack",
-		"TypeMove": "Move",
-		"TypeAdvantage": "Advantage",
-		"TypeDisadvantage": "Disadvantage",
-		"TypeDarksecret": "Dark Secret",
-		"TypeWeapon": "Weapon",
-		"TypeRelation": "Relation",
-		"TypeGear": "Gear"
-	},
+  "TYPES": {
+    "Actor": {
+      "pc": "Player Character",
+      "npc": "Non-Player Character"
+    },
+    "Item": {
+      "attack": "Attack",
+      "move": "Move",
+      "advantage": "Advantage",
+      "disadvantage": "Disadvantage",
+      "darksecret": "Dark Secret",
+      "weapon": "Weapon",
+      "relation": "Relation",
+      "gear": "Gear"
+    }
+  },
 	"kult4th": {
 		"system": {
 			"trigger": "trigger",

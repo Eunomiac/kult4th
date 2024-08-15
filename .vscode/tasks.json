@@ -6,10 +6,10 @@
       "type": "shell",
       "command": "node",
       "args": [
-        "C:/FoundryVTT/v10/Foundry Virtual Tabletop/resources/app/main.js",
+        "C:/FoundryVTT/v12/Foundry Virtual Tabletop/resources/app/main.js",
         "--world=kult-dev",
-        "--port=31000",
-        "--dataPath=D:/Projects/.CODING/FoundryVTT/FoundryV10DistData",
+        "--port=31200",
+        "--dataPath=D:/Projects/.CODING/FoundryVTT/FoundryV12DistData",
         "--hotReload"
       ],
       "presentation": {
@@ -19,95 +19,7 @@
         "panel": "dedicated",
         "clear": true
       },
-      "dependsOn": ["[Dep] Build TinyMCE"],
-      "dependsOrder": "sequence",
-      "problemMatcher": [
-        {
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": "^.*Running on Node\\.js.*$",
-            "endsPattern": "^.*Created client session.*$"
-          },
-          "pattern": {
-            "regexp": "Error:\\s*(.*)$",
-            "message": 1
-          },
-          "severity": "error",
-          "source": "foundry-vtt"
-        },
-        {
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": "^.*Running on Node\\.js.*$",
-            "endsPattern": "^.*Created client session.*$"
-          },
-          "pattern": {
-            "regexp": "(^\\(node:.*DeprecationWarning.*$)",
-            "message": 1
-          },
-          "severity": "info",
-          "source": "foundry-vtt"
-        },
-        {
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": "^.*Running on Node\\.js.*$",
-            "endsPattern": "^.*Created client session.*$"
-          },
-          "pattern": {
-            "regexp": "^FoundryVTT.*?warn\\]\\s+(.*)$",
-            "message": 1
-          },
-          "severity": "warning",
-          "source": "foundry-vtt"
-        },
-        {
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": "^.*Running on Node\\.js.*$",
-            "endsPattern": "^.*Created client session.*$"
-          },
-          "pattern": {
-            "regexp": "^FoundryVTT.*?error\\]\\s+(.*)$",
-            "message": 1
-          },
-          "severity": "error",
-          "source": "foundry-vtt"
-        }
-      ]
-    },
-    {
-      "label": "[Dep] Build TinyMCE",
-      "type": "shell",
-      "command": "npx sass src/scss/tmce-editor.scss:public/tmce-editor.css; npx sass src/scss/tmce-editor.scss:dist/tmce-editor.css",
-      "group": "build",
-      "presentation": {
-        "close": true,
-        "echo": false,
-        "reveal": "never",
-        "focus": false,
-        "panel": "shared",
-        "clear": true
-      },
-      "problemMatcher": {
-        "owner": "sass",
-        "fileLocation": ["absolute"],
-        "pattern": [
-          {
-            "regexp": "^[0-9]+(?::[0-9]{1,2}){2}.*?server error:\\s*(.*)$",
-            "message": 1
-          },
-          {
-            "regexp": "^\\s*╵"
-          },
-          {
-            "regexp": "^\\s+(src\\scss\\.*?scss)\\s*(\\d+):(\\d+)",
-            "file": 1,
-            "line": 2,
-            "column": 3
-          }
-        ]
-      }
+      "problemMatcher": []
     },
     {
       "label": "[MULTI] Build to Dist",

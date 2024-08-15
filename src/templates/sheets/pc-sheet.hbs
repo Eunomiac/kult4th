@@ -85,8 +85,7 @@
     <section class="tab bio {{~#if (eq curTab "bio")}} active{{/if}}" data-group="primary" data-tab="bio">
       <section class="subsection description">
         <label class="k4-title section-title">{{case "title" (localize "kult4th.sheet.description")}}</label>
-        {{editor content=actor.system.description target="system.description" button=true owner=owner
-        editable=editable}}
+        <!-- Insert editor once it's figured out -->
       </section>
       <section class="subsection flex-item-list item-list advantages">
         <label class="k4-title section-title">{{case "title" (localize "kult4th.item.type.advantages")}}</label>

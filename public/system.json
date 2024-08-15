@@ -6,8 +6,8 @@
   "version": 0.1,
 	"compatibility": {
 		"minimum": "0.8.4",
-		"verified": 9,
-		"maximum": 11
+		"verified": 12,
+		"maximum": 12
 	},
   "authors": [{
 		"name": "Ryan West",
@@ -24,8 +24,7 @@
 	],
   "socket": true,
   "styles": [
-		"style.css",
-    "tmce-editor.css"
+		"style.css"
 	],
   "packs": [],
   "languages": [
@@ -35,11 +34,8 @@
       "path": "lang/en.json"
     }
   ],
-  "gridDistance": 5,
-  "gridUnits": "ft",
-  "primaryTokenAttribute": "harm",
   "url": "https://github.com/Eunomiac/kult4th",
-  "manifest": "https://raw.githubusercontent.com/Eunomiac/kult4th/master/system.json",
+  "manifest": "https://raw.githubusercontent.com/Eunomiac/kult4th/master/public/system.json",
   "download": "",
   "readme": "",
   "license": "",

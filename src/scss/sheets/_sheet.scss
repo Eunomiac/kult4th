@@ -251,25 +251,7 @@
 			display: none !important;
 		}
 
-		.editor {
-			height: 100%;
-			overflow: visible;
 
-			.editor-content {
-				position: relative;
-				width: calc(100% + (2 * var(--K4-subsection-padding-horiz)));
-				left: calc(-1 * var(--K4-subsection-padding-horiz));
-				overflow-x: hidden;
-				padding: 0 var(--K4-subsection-padding-horiz);
-				@import '../globals/text-styles';
-			}
-			.tox.tox-tinymce .tox-editor-container .tox-editor-header {
-				transform-origin: top left;
-				transform: scale(0.75);
-				width: calc(100% / 0.75);
-			}
-			// .editor-edit { color: var(--K4-GOLD)} )
-		}
 
 		.item-card {
 			--card-height: 30px;

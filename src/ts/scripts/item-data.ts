@@ -10187,7 +10187,7 @@ const ITEM_DATA: {
                     "parentData": K4ActiveEffect.BuildEffectData({
                       canToggle: false,
                       inStatusBar: true,
-                      label: "Depression",
+                      name: "Depression",
                       icon: "systems/kult4th/assets/icons/disadvantage/depression.svg",
                       uses: 1,
                       duration: EffectDuration.limited,
@@ -11289,7 +11289,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    label: "Angry",
+                    name: "Angry",
                     type: K4ConditionType.stability,
                     description: "You blame someone or something in your vicinity for whatever happened, and may lash out against them or harbor resentment.",
                     modDef: {all: -1}
@@ -11320,7 +11320,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    label: "Saddened",
+                    name: "Saddened",
                     type: K4ConditionType.stability,
                     description: "You feel sorrow or grief over what happened. You might want to seek solitude or the comfort of a loved one.",
                     modDef: {all: -1}
@@ -11351,7 +11351,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    label: "Scared",
+                    name: "Scared",
                     type: K4ConditionType.stability,
                     description: "You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.",
                     modDef: {all: -1}
@@ -11382,7 +11382,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    label: "Guilt-Ridden",
+                    name: "Guilt-Ridden",
                     type: K4ConditionType.stability,
                     description: "You blame yourself for what transpired, and seek forgiveness from those around you.",
                     modDef: {all: -1}
@@ -11438,7 +11438,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    label: "Obsessed",
+                    name: "Obsessed",
                     type: K4ConditionType.stability,
                     description: "You are paradoxically enthralled by whatever initially caused you stress (#>text-posmod>%insert.FLAGS.name%<#), now finding it attractive and compelling. You may feel compelled to seek it out or to study it intensely.",
                     modDef: {all: -1}
@@ -11462,7 +11462,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    label: "Distracted",
+                    name: "Distracted",
                     type: K4ConditionType.stability,
                     description: "You are confused and sidetracked by what threatens you. You cannot stop looking at it, and are inattentive to everything else around you. You take #>text-negmod>&minus;2<# to all rolls in situations where being distracted is an obstacle.",
                     modDef: {all: -2}
@@ -11991,7 +11991,7 @@ const ITEM_DATA: {
               "parentData": K4ActiveEffect.BuildEffectData({
                 canToggle: true,
                 inStatusBar: true,
-                label: "Acting On Observations",
+                name: "Acting On Observations",
                 duration: EffectDuration.scene,
                 defaultState: true,
                 resetOn: EffectResetOn.onUse,
@@ -12023,7 +12023,7 @@ const ITEM_DATA: {
               "parentData": K4ActiveEffect.BuildEffectData({
                 canToggle: true,
                 inStatusBar: true,
-                label: "Acting On Observations",
+                name: "Acting On Observations",
                 duration: EffectDuration.scene,
                 defaultState: true,
                 resetOn: EffectResetOn.onUse,
@@ -12090,7 +12090,7 @@ const ITEM_DATA: {
           "listRefs": [],
           "effects": [
             {
-              "parentData": K4ActiveEffect.BuildEffectData({label: "Harm", tooltip: "The Harm you are enduring is subtracted from your roll."}),
+              "parentData": K4ActiveEffect.BuildEffectData({name: "Harm", tooltip: "The Harm you are enduring is subtracted from your roll."}),
               "changeData": [
                 K4ActiveEffect.BuildChangeData("ModifyRoll", {
                   filter: "Endure Injury",
@@ -12142,7 +12142,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateWound", {
                     permanent: true,
-                    label: "%insert.FLAGS.woundName%",
+                    name: "%insert.FLAGS.woundName%",
                     isCritical: false
                   })
                 ]

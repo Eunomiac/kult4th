@@ -6,7 +6,6 @@ import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
-import K4ActiveEffectSheet from "./K4ActiveEffectSheet.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import K4Dialog, {PromptInputType} from "./K4Dialog.js";
 import K4Alert, {AlertType, AlertTarget} from "./K4Alert.js";
@@ -134,7 +133,7 @@ namespace K4Change {
     }
 
     export interface CreateCondition extends Base {
-      label: string, // The name of the condition, appearing on hover strips and as headers in tooltips.
+      name: string, // The name of the condition, appearing on hover strips and as headers in tooltips.
       description: string, // A longer description of the condition -- the bodies of tooltips
       type: K4ConditionType, // The type of condition
       modDef: K4Roll.ModDefinition // An object literal of roll modifiers in the form Record<filter, number>
@@ -144,7 +143,7 @@ namespace K4Change {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of conditions to delete. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
     }
     export interface CreateWound extends Base {
-      label: string,
+      name: string,
       isCritical: boolean
     }
     export interface StabilizeWound extends Base {
@@ -175,8 +174,8 @@ namespace K4Change {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of rolls this change applies to. Can be "all", an item type, a specific item name, or the attribute rolled. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters).
       mode: Modes.ModifyRoll, // Mode of the custom function to use
       value: SystemScalar // Value to apply to the modification
-      changeLabel?: string // Optional override to effect's label when showing this change in a roll result report.
-      changeTooltip?: string // Optional override to effect's tooltip when showing this change in a roll result report.
+      name?: string // If defined, will override merging display of all changes into the parent effect, isolating this change as its own displayed entity.
+      tooltip?: string // Optional override to effect's tooltip when showing this change in a roll result report.
 
       // Optional properties for "prompt" values
       title?: string,
@@ -307,7 +306,7 @@ namespace K4ActiveEffect {
     statusLabel: string; // The label to display on the status bar (default = "")
     tooltip: string; // The tooltip to display when hovering over the effect in the status bar OR in the chat card
 
-    label?: string, // The principal name of the Effect. Appears in tooltips and in chat roll results. If undefined, effect takes the name of its origin item.
+    name?: string, // The principal name of the Effect. Appears in tooltips and in chat roll results. If undefined, effect takes the name of its origin item.
     dynamic?: keyof typeof DYNAMIC_CHANGES, // A list of dynamically-generated changes that should be refreshed each time the effect is applied. Possible values: "wounds", "stability", "stabilityConditions", "armor"
     statusCategory?: StatusBarCategory, // Optional override of automatically-determined category of the effect, used to group similar effects in the actor's character sheet
     icon?: string, // The icon to display on the status bar. If undefined, takes icon of origin item.
@@ -343,7 +342,7 @@ namespace K4ActiveEffect {
        * Base interface for an Effect.
        */
       interface Base extends Omit<ParentData, "uses"|"from"> {
-        label: string; // The principal name of the Effect. Appears in tooltips and in chat roll results.
+        name: string; // The principal name of the Effect. Appears in tooltips and in chat roll results.
         dynamic?: keyof typeof DYNAMIC_CHANGES, // A list of dynamically-generated changes that should be refreshed each time the effect is applied. Possible values: "wounds", "stability", "stabilityConditions"
         uses?: ValueMax; // Defines and tracks how many times the Effect can be used (i.e. to modify a roll or triggered static ability)
                          // - if undefined, the Effect is not limited-use
@@ -525,7 +524,11 @@ const CUSTOM_FUNCTIONS = {
       img,
       type,
       system: itemData
-    }])).pop() as K4Item;
+    }])).pop() as Maybe<K4Item>;
+
+    if (!newItem) {
+      return false;
+    }
 
     // Log the id of the item to FLAGS.itemToRemove, so it can be deleted later
     await this.parentEffect?.setFlag<IDString>("itemToRemove", newItem.id);
@@ -584,10 +587,10 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   async CreateWound(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateWound): Promise<boolean> {
-    const {label, isCritical} = await parseData(data, actor);
+    const {name, isCritical} = await parseData(data, actor);
     await actor.addWound(
       isCritical ? K4WoundType.critical : K4WoundType.serious,
-      label
+      name
     )
     return Promise.resolve(true);
   },
@@ -793,7 +796,7 @@ const CUSTOM_FUNCTIONS = {
     }
 
     const user = filter === "gm"
-      ? game.users.find((user) => user.isGM)
+      ? game.users.find((user: User) => user.isGM)
       : actor.user;
     if (!user) {
       throw new Error(`[Prompt for Data] Unable to resolve user from filter '${filter}'.`)
@@ -859,8 +862,8 @@ const CUSTOM_FUNCTIONS = {
       filter, // Filter to determine the type(s) of rolls this change applies to. Can be "all", an item type, a specific item name, or the attribute rolled. Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters).
       mode, // Mode of the custom function to use
       value, // Value to apply to the modification
-      changeLabel, // Optional override to effect's label when showing this change in a roll result report.
-      changeTooltip, // Optional override to effect's tooltip when showing this change in a roll result report.
+      name, // Optional override to effect's label when showing this change in a roll result report.
+      tooltip, // Optional override to effect's tooltip when showing this change in a roll result report.
 
       /* Parameters for value === "prompt" roll modifiers */
       title, // Title for the prompt
@@ -934,8 +937,8 @@ const CUSTOM_FUNCTIONS = {
         roll.modifiers.push({
           id:           this.id,
           filter:       this.filter,
-          label:        changeLabel ?? this.customFunctionData.label as Maybe<string> ?? this.parentEffect.eData.label,
-          tooltip:      changeTooltip ?? this.tooltip,
+          name:         name ?? this.customFunctionData.name as Maybe<string> ?? this.parentEffect.eData.name,
+          tooltip:      tooltip ?? this.tooltip,
           value,
           cssClasses:   [
             value >= 0 ? "k4-theme-gold" : "k4-theme-red"
@@ -1010,8 +1013,8 @@ const DYNAMIC_CHANGES = {
             filter: stabilityConditionData.filter,
             mode: "Add",
             value: stabilityConditionData.value,
-            changeLabel: stabilityConditionData.label,
-            changeTooltip: stabilityConditionData.tooltip
+            name: stabilityConditionData.name,
+            tooltip: stabilityConditionData.tooltip
           }), effect
         );
       })
@@ -1096,27 +1099,27 @@ class K4Change implements EffectChangeData {
     if (["wounds", "stability"].includes(String(this.customFunctionData.value))) {
       return U.tCase(this.customFunctionData.value);
     }
-    if (typeof this.customFunctionData.changeLabel === "string") {
-      return this.customFunctionData.changeLabel;
-    }
-    if (typeof this.customFunctionData.label === "string") {
-      return this.customFunctionData.label;
+    if (typeof this.customFunctionData.name === "string") {
+      return this.customFunctionData.name;
     }
     if (typeof this.customFunctionData.name === "string") {
       return this.customFunctionData.name;
     }
-    return this.parentEffect?.label
+    if (typeof this.customFunctionData.name === "string") {
+      return this.customFunctionData.name;
+    }
+    return this.parentEffect?.name
       ?? this.originItem?.name
       ?? "";
   }
   get tooltip(): string {
-    let tooltipText: string = this.customFunctionData.changeTooltip as Maybe<string>
+    let tooltipText: string = this.customFunctionData.tooltip as Maybe<string>
       ?? this.customFunctionData.tooltip as Maybe<string>
       ?? this.parentEffect?.eData.tooltip
       ?? "";
     if (!tooltipText.includes('<p>')) {
       tooltipText = [
-        `<h2>${this.customFunctionData.label as Maybe<string> ?? this.parentEffect?.eData.label ?? this.name}</h2>`,
+        `<h2>${this.customFunctionData.name as Maybe<string> ?? this.parentEffect?.eData.name ?? this.name}</h2>`,
         `<p>${tooltipText}</p>`
       ].join("");
     }
@@ -1147,7 +1150,7 @@ class K4Change implements EffectChangeData {
     return {
       id:           this.id,
       filter:       this.filter,
-      label:        this.customFunctionData.label as Maybe<string> ?? this.name,
+      name:        this.customFunctionData.name as Maybe<string> ?? this.name,
       tooltip:      this.tooltip,
       value:        this.finalValue,
       cssClasses:   [
@@ -1339,7 +1342,7 @@ class K4ActiveEffect extends ActiveEffect {
   static ResolveEffectLabel(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin, explicitOnly?: false): string
   static ResolveEffectLabel(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin, explicitOnly: true): Maybe<string>
   static ResolveEffectLabel(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin, explicitOnly = false): Maybe<string> {
-    let effectName: Maybe<string> = parentData.label;
+    let effectName: Maybe<string> = parentData.name;
     if (effectName ?? explicitOnly) { return effectName; }
 
     if (
@@ -1379,7 +1382,7 @@ class K4ActiveEffect extends ActiveEffect {
   static ParseParentData(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
     const {uses: usageMax, from, dynamic, onChatSelection, ...baseExtData} = parentData;
     const effectSource = this.ResolveEffectSource(origin, onChatSelection?.listIndex);
-    const label = this.ResolveEffectLabel(parentData, origin);
+    const name = this.ResolveEffectLabel(parentData, origin);
     let uses: Maybe<ValueMax> = undefined;
     if (U.isDefined(usageMax) && usageMax > 0) {
       uses = {
@@ -1419,7 +1422,7 @@ class K4ActiveEffect extends ActiveEffect {
           statusIcon: parentData.icon ?? `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-neutral.svg`,
           statusLabel: parentData.statusLabel,
           statusTooltip: parentData.tooltip,
-          label,
+          name,
           uses,
           effectSource,
           fromText
@@ -1433,7 +1436,7 @@ class K4ActiveEffect extends ActiveEffect {
           isEnabled: true,
           statusBarCategory,
           statusIcon: parentData.icon ?? `systems/${C.SYSTEM_ID}/assets/icons/modifiers/default-neutral.svg`,
-          label,
+          name,
           uses,
           effectSource,
           fromText
@@ -1445,7 +1448,7 @@ class K4ActiveEffect extends ActiveEffect {
         dynamic,
         canToggle: false,
         inStatusBar: false,
-        label,
+        name,
         uses,
         effectSource,
         fromText
@@ -1498,7 +1501,7 @@ class K4ActiveEffect extends ActiveEffect {
 
     // If the effect is unique, delete any existing effect with the same name
     if (effectExtendedData.isUnique) {
-      const existingEffect = effectHost.effects.find((effect) => effect.label === effectExtendedData.label);
+      const existingEffect = effectHost.effects.find((effect) => effect.name === effectExtendedData.name);
       if (existingEffect) {
         await existingEffect.delete();
       }
@@ -1506,7 +1509,7 @@ class K4ActiveEffect extends ActiveEffect {
 
     const effect = (await effectHost.createEmbeddedDocuments("ActiveEffect", [{
       origin:   origin.uuid,
-      label:    effectExtendedData.label,
+      name:    effectExtendedData.name,
       transfer: origin.uuid !== target?.uuid,
       disabled: false,
       changes:  effectDataSet.changeData,
@@ -1656,12 +1659,12 @@ class K4ActiveEffect extends ActiveEffect {
   // #region INITIALIZATION ~
   static PreInitialize() {
     CONFIG.ActiveEffect.documentClass = K4ActiveEffect;
-    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
-    DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, {makeDefault: true});
+    // DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
+    // DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, {makeDefault: true});
 
     Hooks.on("createActiveEffect", async (effect: K4ActiveEffect) => {
       if (!game.user.isGM) { return; }
-      kLog.display(`[on CreateActiveEffect] ${effect.label}`, {
+      kLog.display(`[on CreateActiveEffect] ${effect.name}`, {
         effect,
         origin:             effect.origin,
         ownedByActor:       effect.isOwnedByActor(),
@@ -1985,7 +1988,7 @@ class K4ActiveEffect extends ActiveEffect {
       statusLabel: data.statusLabel ?? "",
       tooltip: data.tooltip ?? "",
 
-      label: data.label ?? undefined,
+      name: data.name ?? undefined,
       dynamic: data.dynamic ?? undefined,
       icon: data.icon ?? undefined,
       from: data.from ?? undefined,
