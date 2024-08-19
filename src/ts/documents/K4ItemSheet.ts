@@ -27,7 +27,7 @@ export default class K4ItemSheet extends ItemSheet {
   }
 
   public isUnlocked = false;
-  override get item(): K4Item { return super.item; }
+  override get item(): K4Item { return super.item as K4Item; }
   override get template() {
     if (this.type === K4ItemType.gmtracker) {
       return "systems/kult4th/templates/sheets/gmtracker-sheet.hbs";
@@ -42,7 +42,7 @@ export default class K4ItemSheet extends ItemSheet {
   get subItems() { return this.item.subItems; }
   get subMoves() { return this.item.subMoves; }
 
-  constructor(item: K4Item, options: Partial<ItemSheet.Options> = {}) {
+  constructor(item: K4Item, options: Partial<DocumentSheetOptions<Item>> = {}) {
     super(item, options);
 
     // switch (item.type) {
@@ -76,9 +76,9 @@ export default class K4ItemSheet extends ItemSheet {
         context,
         {
           playerCharacters: Object.fromEntries(
-            Array.from(game.actors)
-              .filter((actor) => actor.type === K4ActorType.pc)
-              .map((actor) => [actor.id, actor])
+            Array.from(game.actors as Collection<K4Actor>)
+            .filter((actor) => actor.type === K4ActorType.pc)
+            .map((actor) => [actor.id, actor])
           )
         }
       );
@@ -302,7 +302,7 @@ export default class K4ItemSheet extends ItemSheet {
           if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
+            $(elem).on("click", () => (Array.from(game.items as Collection<K4Item>))
               .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet.render(true));
           }
@@ -314,7 +314,7 @@ export default class K4ItemSheet extends ItemSheet {
           if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(game.items ?? []) as K4Item[])
+            $(elem).on("click", () => (Array.from(game.items as Collection<K4Item>))
               .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet.render(true));
           }

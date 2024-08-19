@@ -237,11 +237,12 @@ declare global {
 interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get id(): IDString;
   get uuid(): UUIDString;
+  get img(): string;
   get name(): string;
   get type(): Type;
-  get sheet(): Actor["sheet"] & (Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet);
-  get items(): Actor["items"] & Collection<K4Item>;
-  get effects(): Actor["effects"] & Collection<K4ActiveEffect>;
+  get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
+  get items(): Collection<K4Item>;
+  get effects(): Collection<K4ActiveEffect>;
   system: K4Actor.System<Type>;
 }
 // #endregion
@@ -1199,7 +1200,7 @@ class K4Actor extends Actor {
     return this.effects.filter((effect) => effect.isEnabled);
   }
   get customChanges() {
-    return Array.from(this.effects as Collection<K4ActiveEffect>)
+    return Array.from(this.effects)
       .map((effect) => effect.getCustomChanges())
       .flat();
   }

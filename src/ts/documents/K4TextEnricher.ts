@@ -138,14 +138,15 @@ const getProp = <T>(obj: object, key: string): Maybe<T> => foundry.utils.getProp
 // it's just most commonly needed by custom DocumentSheets
 class K4TextEditor extends TextEditor {
 
-  static override enrichHTML(htmlContent: string, options?: Partial<TextEditor.EnrichOptions>): string {
+  static override async enrichHTML(htmlContent: string, options?: Partial<TextEditor.EnrichmentOptions>): Promise<string> {
 
     /* === [1] RUN CUSTOM PRE-ENRICHMENT PATTERNS === */
 
-    const customPatterns = [
+    const customPatterns: string[] = [
 
     ];
-    return htmlContent;
+    await Promise.resolve(customPatterns);
+    return  htmlContent;
   }
 
   // async getData() {

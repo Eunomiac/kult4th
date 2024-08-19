@@ -297,11 +297,12 @@ declare global {
 // #region -- AUGMENTED INTERFACE ~
 interface K4Item<T extends K4ItemType = K4ItemType> {
   get id(): IDString;
+  get img(): string;
   get uuid(): UUIDString;
   get name(): string;
   get type(): T;
-  get sheet(): K4Item["_sheet"] & K4ItemSheet;
-  get effects(): this["data"]["effects"] & Collection<K4ActiveEffect>;
+  get sheet(): K4ItemSheet;
+  get effects(): Collection<K4ActiveEffect>;
   system: K4Item.System<T>;
   parent: ActorDoc | null;
 }
@@ -390,7 +391,7 @@ class K4Item extends Item {
     if (!id) {
       throw new Error(`SubItem ${this.name} is missing a parentItem ID.`);
     }
-    const parentItem = this.parent.getEmbeddedDocument("Item", id) as Maybe<K4Item.Parent>;
+    const parentItem = this.parent.getEmbeddedDocument("Item", id, {}) as Maybe<K4Item.Parent>;
 
     return parentItem ?? null;
   }
@@ -585,7 +586,7 @@ class K4Item extends Item {
     const stripData: HoverStripData = {
       id: this.id,
       type: stripType,
-      icon: this.img ?? "",
+      icon: this.img,
       display: this.name,
       ...this.isSubItem()
         ? {
@@ -759,7 +760,7 @@ class K4Item extends Item {
           isRoll: false,
           isTrigger: false,
           isEdge: false
-        }
+        } as never
       }
     });
   }
@@ -833,9 +834,9 @@ class K4Item extends Item {
           isRoll: false,
           isTrigger: true,
           isEdge: this.isEdge()
-        }
+        } as never
       }
-    }));
+    })) as Maybe<K4ChatMessage>;
     if (!message) {
       throw new Error("No message found for triggered Item result");
     }

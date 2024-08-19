@@ -100,10 +100,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Nightmares", "Obsession", "Phobia", "Repressed Memories", "Rationalist", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Returned from the Other Side", "Strange Disappearance"],
     description: [
-      "The Academic studies the world from her desk.",
-      "Everything is interconnected via logical rules of causality, yet she suspects something must be wrong. Pieces refuse to fall into the safe, predictable patterns of common scientific models. Worse, shadowy forces silence new and alternative fields of research.",
+      "The Academic studies the world from a desk.",
+      "Everything is interconnected via logical rules of causality, yet you suspect something must be wrong. Pieces refuse to fall into the safe, predictable patterns of common scientific models. Worse, shadowy forces silence new and alternative fields of research.",
       "Those who question the scientific establishment and its rational worldview risk disgrace and the destruction of their research, reputation, and revenue.",
-      "Does she dare to look for the truth?"
+      "Do you dare to look for the truth?"
     ].join("<br/><br/>"),
     occupation: ["Professor", "Student", "Ph.D. Candidate", "Teacher", "Public Servant", "Advisor", "Politician", "Author", "Television Show Host", "Aristocrat", "Researcher", "Psychologist", "Archaeologist", "Dilettante", "Antiquarian"],
     looks: {
@@ -147,10 +147,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Lost Identity", "Nightmares", "Obsession", "Rival", "Stalker", "Wanted"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Strange Disappearance", "Victim of Medical Experiments"],
     description: [
-      "The Agent does whatever is necessary to protect and serve her employer's best interests.",
-      "People are simply resources to be used, abused, and expended. Anyone standing in the way must be removed. She gathers and analyzes information at an almost impossible speed. Threats demand rapid responses, and sometimes there are no good choices.",
-      "The Agent's job means accepting great costs, usually in the form of dangers, but also an ever-growing debt to those sacrificed for the greater good.",
-      "When this burden finally becomes too heavy, The Agent's exits have likely already closed, and 'good' and 'evil' have lost all meaning."
+      "The Agent does whatever is necessary to protect and serve their employer's best interests.",
+      "People are simply resources to be used, abused, and expended. Anyone standing in your way must be removed. You gather and analyze information at an almost impossible speed. Threats demand rapid responses, and sometimes there are no good choices.",
+      "Your job means accepting great costs, usually in the form of dangers, but also an ever-growing debt to those sacrificed for the greater good.",
+      "When this burden finally becomes too heavy, your exits have likely already closed, and 'good' and 'evil' have lost all meaning."
     ].join("<br/><br/>"),
     occupation: ["Open-Source Officer", "Case Officer", "Counterterrorism Analyst", "Analytic Methodologist", "Special Agent", "Security Professional", "Operations Officer", "Collection Management Officer", "Handler", "Infiltrator", "Spy", "Sleeper Agent"],
     looks: {
@@ -189,10 +189,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Depression", "Drug Addict", "Nightmares", "Schizophrenia", "Victim of Passion"],
     [K4ItemType.darksecret]: ["Curse", "Heir", "Mental Illness", "Pact with Dark Forces", "Victim of Crime"],
     description: [
-      "The Artist exists only to create, to give themselves, body and soul, over to the arts. They express this desire through many mediums.",
-      "A hypnotic painting, music trapping the audience in pure ecstasy, books spellbinding their readers, or a model's sculpted flesh are all the purview of The Artist.",
-      "Artists have the ability to speak to the souls of others by inviting them into their own, but this ability always comes at a price.",
-      "The price is paid by The Artist themselves, be it their sanity or strength."
+      "The Artist exists only to create.",
+      "You give yourself, body and soul, over to the arts. You express this desire through many mediums: a hypnotic painting, music trapping the audience in pure ecstasy, books spellbinding their readers, or a model's sculpted flesh are all within your purview.",
+      "You have the ability to speak to the souls of others by inviting them into your own, but this ability always comes at a price.",
+      "The price is paid by you, be it your sanity or your strength."
     ].join("<br/><br/>"),
     occupation: ["Author", "Dancer", "Actor", "Painter", "Videographer", "Photographer", "Designer", "Model", "Musician", "Singer", "Personal Trainer", "Cosmetologist", "Television Host", "Director", "Reporter", "Blogger"],
     looks: {
@@ -231,9 +231,9 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["!Oath of Revenge", "Mental Compulsion", "Nightmares", "Schizophrenia", "Stalker", "Wanted"],
     [K4ItemType.darksecret]: ["Guardian", "Returned from the Other Side", "Strange Disappearance", "Victim of Crime", "Victim of Medical Experiments"],
     description: [
-      "The Avenger has been robbed of something dear to them, be it their loved one, job, family, humanity, honor, memories, or life goals.",
-      "Regardless of what was taken from them, its loss can only be paid for in blood.",
-      "The only thing remaining is revenge, and The Avenger isn't about to let anything or anyone get in their way, regardless of consequences."
+      "The Avenger has been robbed of something dear, be it a loved one, job, family, humanity, honor, memories, or opportunity.",
+      "Regardless of what was taken from you, its loss can only be paid for in blood.",
+      "The only thing remaining is revenge, and you aren't about to let anything or anyone get in your way, regardless of consequences."
     ].join("<br/><br/>"),
     occupation: ["Homemaker", "Police Officer", "Panhandler", "Unemployed", "Student", "Criminal", "Conspiracy Theorist", "Refugee", "Prison Escapee", "Prize Fighter", "Widow(er)", "Washed-Up Celebrity", "Failed Businessperson", "Science Experiment On The Run"],
     looks: {
@@ -272,11 +272,11 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["!Broken", "Drug Addict", "Involuntary Medium", "Obsession", "Schizophrenia", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Mental Illness", "Occult Experience", "Returned from the Other Side", "Victim of Medical Experiments"],
     description: [
-      "The Broken has gazed into the Abyss and escaped with their mind in tatters.",
-      "They could be a homeless person who subconsciously performs rituals to forgotten gods, the mental patient who became a test subject for experimental medications, or the sinner who was physically dragged down into hell, yet somehow managed to escape back to the land of the living.",
-      "The Broken views things and sees through the Illusion in ways others do not.",
-      "In exchange for their irreparable trauma, they've been granted unique insights about the Truth.",
-      "The question is, how far can they trust their own senses?"
+      "The Broken has gazed into the Abyss and escaped with a mind in tatters.",
+      "You could be a homeless person who subconsciously performs rituals to forgotten gods, a mental patient who became a test subject for experimental medications, or a sinner who was physically dragged down into hell, yet somehow managed to escape back to the land of the living.",
+      "You view things and see through the Illusion in ways others do not.",
+      "In exchange for your irreparable trauma, you've been granted unique insights about the Truth.",
+      "The question is, how far can you trust your own senses?"
     ].join("<br/><br/>"),
     occupation: ["Homeless", "Escaped Mental Patient", "Street Peddler", "Street Performer", "Fence", "Thief", "Police", "Drug Dealer", "Addict", "Street Artist", "Freelance Journalist", "Tattoo Artist", "Abuse Survivor", "Normal Person In The Wrong Place At The Wrong Time"],
     looks: {
@@ -317,8 +317,8 @@ export const Archetypes = {
     description: [
       "The Careerist is the consummate brown-nosing backstabber.",
       "Most remain stuck in a cubicle farm, performing the same mundane tasks day after day, while the ruthless few climb upwards in the corporate hierarchy.",
-      "Potentially, The Careerist could also run their own company, fighting for survival against corporate giants.",
-      "In a world where nothing is off limits when it comes to advancing one's career, success necessitates being willing to do whatever it takes."
+      "Potentially, you could also run your own company, fighting for survival against corporate giants.",
+      "In a world where nothing is off limits when it comes to advancing your career, success necessitates being willing to do whatever it takes."
     ].join("<br/><br/>"),
     occupation: ["Lawyer", "Businessman", "Office Worker", "Director", "Ceo", "Consultant", "Bureaucrat", "Politician", "Jet Setter", "Yuppie", "Salesman", "Trainee", "Aristocrat"],
     looks: {
@@ -357,9 +357,9 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Bad Reputation", "Drug Addict", "Harassed", "Nemesis", "Sexual Neurosis", "Wanted"],
     [K4ItemType.darksecret]: ["Family Secret", "Forbidden Knowledge", "Guilty of Crime", "Occult Experience", "Victim of Crime"],
     description: [
-      "Mobsters, gang members, thieves, drug dealers, and hitmen are all driven by two things: their quest for money and all the shit they've endured during their lives.",
-      "For a precious few, their criminality grants them the life of luxury.",
-      "But for most, they only catch a fleeting glimpse of wealth before someone bigger and meaner takes it all away from them.",
+      "Whether mobster, gang member, thief, drug dealer, or hitman, you are driven by two things: your quest for money, and payback for all the shit you've endured during your life.",
+      "If you're one of a precious few, your criminality grants you a life of luxury.",
+      "Otherwise, you only catch a fleeting glimpse of wealth before someone bigger and meaner takes it all away from you.",
       "It's a dog-eat-dog world."
     ].join("<br/><br/>"),
     occupation: ["Thief", "Robber", "Dealer", "Gang Member", "Homeless", "Prize Fighter", "Corrupt Cop", "Enforcer", "Club Owner", "Extortionist", "Hitman", "Face Of The Operation", "Getaway Driver", "Con Artist", "Mobster", "Dealer", "Muscle For Hire"],
@@ -400,10 +400,10 @@ export const Archetypes = {
     [K4ItemType.darksecret]: ["Chosen One", "Curse", "Occult Experience", "Pact with Dark Forces", "Returned from the Other Side"],
     description: [
       "The Cursed is living on borrowed time.",
-      "They might be the unfortunate victim of a deadly disease or the target of a higher power's rage.",
-      "Usually, however, The Cursed has sealed their own fate by selling their soul for fortune and fame.",
-      "Now their time is almost up, and The Cursed has realized life itself is the most worthwhile thing they possess.",
-      "No price is too high to pay for The Cursed to thwart their destiny, even if it means sacrificing others."
+      "You might be the unfortunate victim of a deadly disease or the target of a higher power's rage.",
+      "Usually, however, you have sealed your own fate by selling your soul for fortune and fame.",
+      "Now your time is almost up, and you have realized life itself is the most worthwhile thing you possess.",
+      "No price is too high to pay for you to thwart their destiny, even if it means sacrificing others."
     ].join("<br/><br/>"),
     occupation: ["Occultist", "Cult Escapee", "Police Officer", "CEO", "Detective", "Military Officer", "Gangster", "Politician", "Disability Collector", "Amateur Magician", "Celebrity", "Jailbird", "Businessman", "Playboy", "Refugee", "Researcher", "Internet Celebrity"],
     looks: {
@@ -442,10 +442,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Greedy", "Liar", "Nemesis", "Sexual Neurosis", "Wanted"],
     [K4ItemType.darksecret]: ["Heir", "Mental Illness", "Occult Experience", "Pact with Dark Forces", "Victim of Crime"],
     description: [
-      "You were in love. You finally met Mr. Right. Your future was certain, the wedding was planned, and everyone felt you were perfect for each other. Then one day, your beloved disappeared along with your bank account and all your jewelry.",
-      "You were another target of the Deceiver.",
-      "Deceivers are manipulative people who fool others into trusting them to deprive them of money or services. They are masters of masking their true intentions and feelings, and can become exactly the person their victims want.",
-      "Deceivers leave a trail of bitter enemies in their wake. When their past catches up to them, it often ends in tragedy."
+      "He was in love. She finally met Mr. Right. Their future was certain, the wedding was planned, and everyone felt they were perfect for each other. Then one day, you disappeared — along with his bank account and all of her jewelry.",
+      "They were merely targets of the Deceiver.",
+      "You are a manipulator who fools others into trusting you to deprive them of money or services. You are a master of masking your true intentions and feelings, and can become exactly the person your victims want.",
+      "You have left a trail of bitter enemies in your wake. When your past catches up to you, it often ends in tragedy."
     ].join("<br/><br/>"),
     occupation: ["Model", "Between Jobs", "Catfisher", "Lover", "Escort", "Heir(Ess)", "Jetsetter", "Party Animal", "Secretary", "Party Planner", "Marriage Swindler", "Con Artist", "Gigolo", "Scammer", "Thief", "Snitch", "Pornstar"],
     looks: {
@@ -484,9 +484,9 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Haunted", "Nightmares", "Phobia", "Repressed Memories", "Stalker"],
     [K4ItemType.darksecret]: ["Chosen One", "Family Secret", "Heir", "Occult Experience", "Pact with Dark Forces"],
     description: [
-      "Blood, soul and heritage weigh heavy on The Descendant's shoulders.",
-      "She is an offspring of some mythic ancestor, a now dead family, a lost god, chosen by a dark cult or maybe the heir of some unknown power. It is the past that haunts The Descendant – the Sins of the Fathers. It may be dark pacts, servitude to demons, or a still lingering upbringing filled with abuse and violence.",
-      "No matter where The Descendant goes or hides, her past will eventually catch up to her."
+      "Blood, soul and heritage weigh heavy on your shoulders.",
+      "You are an offspring of some mythic ancestor, a now dead family, a lost god, chosen by a dark cult or maybe the heir of some unknown power. It is the past that haunts you – the Sins of the Fathers. It may be dark pacts, servitude to demons, or a still lingering upbringing filled with abuse and violence.",
+      "No matter where you go or hide, your past will eventually catch up to you."
     ].join("<br/><br/>"),
     occupation: ["Antiquarian", "Aristocrat", "Author", "Homeless", "Tattoo Artist", "Occultist", "Sect Escapee", "Preacher", "Heir", "Unemployed", "Office Worker", "Craftsman", "Forester"],
     looks: {
@@ -525,9 +525,9 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Drug Addict", "Infirm", "Nightmares", "Repressed Memories", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guilty of Crime", "Occult Experience", "Returned from the Other Side", "Strange Disappearance"],
     description: [
-      "Be they the disillusioned private eye in their office shrouded in clouds of cigarette smoke or the hardened investigator on the homicide unit, The Detective is motivated by their desperate need to find answers.",
-      "Meanwhile, their families disintegrate, friends abandon them, and they fall into a spiral of darkness and addiction.",
-      "Their 'noble' search leads them down lonely and dangerous paths best left untrodden."
+      "Whether a disillusioned private eye in an office shrouded in clouds of cigarette smoke or a hardened investigator on the homicide unit, The Detective is motivated by their desperate need to find answers.",
+      "Meanwhile, your family disintegrates, your friends abandon you, and you fall into a spiral of darkness and addiction.",
+      "Your 'noble' search leads you down lonely and dangerous paths best left untrodden."
     ].join("<br/><br/>"),
     occupation: ["Beat Cop", "Private Eye", "Lawyer", "Investigator", "Security Guard", "Investigative Journalist", "Intelligence Officer", "Detective", "Medium", "Hacker", "Cryptologist", "Conspiracy Theorist"],
     looks: {
@@ -566,9 +566,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["!Object of Desire", "Harassed", "Owned", "Phobia", "Sexual Neurosis", "Stalker"],
     [K4ItemType.darksecret]: ["Chosen One", "Guilty of Crime", "Occult Experience", "Victim of Crime", "Victim of Medical Experiments"],
     description: [
-      "In the shadows, The Doll stands ready. The Doll strives to break free, to be human again, and assume control of her own life while others strive to possess her.",
-      "She has lived a life in submission, as an outcast, a prisoner, a freak, or a trophy.",
-      "Feelings of emptiness and tragedy reside within her, as well as dreams of hope, love, and happiness – dreams which are shattered over and over again."
+      "In the shadows, The Doll stands ready.",
+      "You strive to break free, to be human again, to assume control of your own life while others strive to possess you.",
+      "You have lived a life in submission, as an outcast, a prisoner, a freak, or a trophy.",
+      "Feelings of emptiness and tragedy reside within you, as well as dreams of hope, love, and happiness – dreams which are shattered over and over again."
     ].join("<br/><br/>"),
     occupation: ["Child Beauty Contestant", "Model", "Stripper", "Trophy Wife", "Gigolo", "Actor", "Escaped Experiment", "High School Prom Queen", "Vlogger", "Reality TV Celebrity", "Pornstar", "Escort", "Abuse Survivor", "Imprisoned Innocent", "Trafficking Victim"],
     looks: {
@@ -607,9 +608,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Harassed", "Haunted", "Schizophrenia", "Stalker", "Wanted"],
     [K4ItemType.darksecret]: ["Curse", "Family Secret", "Mental Illness", "Returned from the Other Side", "Rootless"],
     description: [
-      "The Drifter never stays in one place long enough to feel at home. The road is their home. It could be an uncontrollable urge to never put down roots, or a reaction to pursuers always on their heels.",
-      "The Drifter has learned to live with whatever fits in their backpack or the back of their car. What is important to others lacks meaning to The Drifter, who never gets attached to anything. Other vagabonds and outcasts are their friends and allies. They seek refuge in rundown motels, boxcars, abandoned homes, and other makeshift shelters.",
-      "The eternal question for those who meet them is: what are you running from?"
+      "The Drifter never stays in one place long enough to feel at home.",
+      "The road is your home. It could be an uncontrollable urge to never put down roots, or a reaction to pursuers always on your heels.",
+      "You have learned to live with whatever fits in your backpack or the back of your car. What is important to others lacks meaning to you, who never gets attached to anything. Other vagabonds and outcasts are your friends and allies. They seek refuge in rundown motels, boxcars, abandoned homes, and other makeshift shelters.",
+      "The eternal question for those who meet you is: What are you running from?"
     ].join("<br/><br/>"),
     occupation: ["Homeless", "Vagabond", "Runaway", "In Witness Protection", "Draft Dodger", "Small-Time Crook", "Backpacker", "Refugee", "Prison Escapee", "Traveling Salesman", "Courier", "Day Laborer", "Outsider"],
     looks: {
@@ -648,8 +650,9 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Competitor", "Cursed", "Greedy", "Jealousy", "Liar", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guilty of Crime", "Heir", "Pact with Dark Forces", "Victim of Crime"],
     description: [
-      "The Fixer has all the contacts, and uses them to make quick cash. Drugs, weapons, illegal prizefights, antiques, cars, apartments – The Fixer can set you up with whatever you need. But everything she sells comes with a catch. Once The Fixer gets their hooks in you she'll never let you go.",
-      "As long as there's money involved The Fixer doesn't care about the stakes, and the more successful she is, the more enemies she makes along the way.",
+      "The Fixer has all the contacts, and uses them to make quick cash.",
+      "Drugs, weapons, illegal prizefights, antiques, cars, apartments – you can set anyone up with whatever they need. But everything you sell comes with a catch. Once you get their hooks in them, you'll never let them go.",
+      "As long as there's money involved you don't care about the stakes, and the more successful you are, the more enemies you make along the way.",
       "In the underworld, there are always people hungrily watching you, waiting for the right moment, and willing to step over your body to take your place."
     ].join("<br/><br/>"),
     occupation: ["Mafia Boss", "Business Person", "Real Estate Agent", "Dealer", "Restaurateur", "Club Owner", "Fence", "Loan Shark", "Bookie", "Advisor", "Extortionist", "Criminal", "Consigliere"],
@@ -690,8 +693,8 @@ export const Archetypes = {
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Pact with Dark Forces", "Visitations"],
     description: [
       "The Occultist seeks the answers to life's mysteries through occult theories.",
-      "Ancient tomes, mad sect leaders, and obscure internet forums speak of different dimensions, magical rituals, otherworldly creatures, and powers that can turn men into gods. The Occultist has discovered enough information to begin experimenting with these forces, but not nearly enough to give them any degree of control.",
-      "Magic always comes at a high price, and The Occultist's account is coming due."
+      "Ancient tomes, mad sect leaders, and obscure internet forums speak of different dimensions, magical rituals, otherworldly creatures, and powers that can turn men into gods. You have discovered enough information to begin experimenting with these forces, but not nearly enough to give you any degree of control.",
+      "Magic always comes at a high price, and your account is coming due."
     ].join("<br/><br/>"),
     occupation: ["Antiquarian", "Medium", "Exorcist", "Linguist", "Unemployed", "Theologian", "Professor", "Morgue Employee", "Teenager", "Student", "Bureaucrat", "Disability Collector", "Librarian", "Recent Convert", "Thelemic"],
     looks: {
@@ -730,8 +733,8 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Fanatic", "Harassed", "Involuntary Medium", "Sexual Neurosis", "Stalker"],
     [K4ItemType.darksecret]: ["Chosen One", "Forbidden Knowledge", "Guardian", "Occult Experience", "Visitations"],
     description: [
-      "Faith and religion bestow power, whether you're a priest, pastor, imam, rabbi, or other sect leader.",
-      "The Prophet may have chosen to serve their god, but it could also be a path they've been forced to walk by their family or congregation from an early age. Being on the inside of a religious association provides access to community and a sense of higher purpose.",
+      "Faith and religion bestow power upon The Prophet, whether you're a priest, pastor, imam, rabbi, or other sect leader.",
+      "You may have chosen to serve your god, but it could also be a path you've been forced to walk by your family or congregation from an early age. Being on the inside of a religious association provides access to community and a sense of higher purpose.",
       "However, the shadows cast by the Divine's light often hide abuse of power, occultism, perverted doctrine, forced marriages, and the worship of false gods."
     ].join("<br/><br/>"),
     occupation: ["Priest", "Pastor", "Imam", "Rabbi", "Sect Leader", "Sect Member", "Sect Escapee", "Prophet", "Medium", "Witch", "Preacher", "Healer", "Missionary", "Seer", "Cultist", "Idolater", "Iconoclast", "Elder", "Oracle", "Guru"],
@@ -772,8 +775,8 @@ export const Archetypes = {
     [K4ItemType.darksecret]: ["Curse", "Guardian", "Occult Experience", "Victim of Medical Experiments", "Visitations"],
     description: [
       "The Ronin always teeters at the edge of a bottomless pit.",
-      "When you've run out of options, you hire The Ronin to solve the problem. They perform any task where compassion and morality are liabilities, and where mistakes mean prison, death, or worse. The Ronin can never trust anyone. Yesterday's employers are tomorrow's potential targets.",
-      "Once The Ronin's hunt has begun, there is no escape for their prey."
+      "When the desperate have run out of options, they hire you to solve the problem. You perform any task where compassion and morality are liabilities, and where mistakes mean prison, death, or worse. You can never trust anyone. Yesterday's employers are tomorrow's potential targets.",
+      "Once your hunt has begun, there is no escape for your prey."
     ].join("<br/><br/>"),
     occupation: ["Contract Killer", "Hitman", "Special Agent", "Special Ops", "Military Experiment", "Sniper", "Spree Killer"],
     looks: {
@@ -813,8 +816,8 @@ export const Archetypes = {
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Mental Illness", "Responsible for Medical Experiments", "Returned from the Other Side", "Victim of Medical Experiments"],
     description: [
       "The Scientist explores the unknown in the hope of finding answers to the questions of life and the universe.",
-      "Her research often leads to dangerous experiments, where the fabric between our dimension and others is temporarily blown aside. In psychology, medicine, physics, chemistry, and various parasciences, these experiments often lead to terrible consequences.",
-      "They might call her mad, but she knows this is because they refuse to see the Truth."
+      "Your research often leads to dangerous experiments, where the fabric between our dimension and others is temporarily blown aside. In psychology, medicine, physics, chemistry, and various parasciences, these experiments often lead to terrible consequences.",
+      "Some might call you mad, but you know this is because they refuse to see the Truth."
     ].join("<br/><br/>"),
     occupation: ["Doctor", "Psychologist", "Surgeon", "Inventor", "Engineer", "Technician", "Therapist", "Physicist"],
     looks: {
@@ -854,8 +857,8 @@ export const Archetypes = {
     [K4ItemType.darksecret]: ["Family Secret", "Forbidden Knowledge", "Guardian", "Occult Experience", "Strange Disappearance"],
     description: [
       "Seekers are explorers of modern, ancient, and forgotten urban myths. They are bloggers, hackers, and storytellers of the Modern Age.",
-      "On the Internet, faceless voices whisper of lies and conspiracies. In abandoned subway stations, someone leaves messages in seemingly meaningless graffiti. If you dig deep enough you'll find the Truth, but most of us cannot see through the thick fog of misinformation, and we become hopelessly lost in the tempest of propaganda, pornography, and mindless entertainment. The Seeker knows how to use the Internet to uncover secrets under stones best left unturned.",
-      "For the Seeker, no price is too great to find the Truth and expose it for public consumption."
+      "On the Internet, faceless voices whisper of lies and conspiracies. In abandoned subway stations, someone leaves messages in seemingly meaningless graffiti. If you dig deep enough you'll find the Truth, but most cannot see through the thick fog of misinformation, and we become hopelessly lost in the tempest of propaganda, pornography, and mindless entertainment. You know how to use the Internet to uncover secrets under stones best left unturned.",
+      "For you, no price is too great to find the Truth and expose it for public consumption."
     ].join("<br/><br/>"),
     occupation: ["Student", "Unemployed", "Blogger", "Hacker", "Activist", "Academic", "Researcher", "Parapsychologist", "Author", "Journalist", "Thief", "Medium", "Conspiracy Theorist"],
     looks: {
@@ -899,8 +902,9 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Drug Addict", "Haunted", "Nightmares", "Phobia", "Repressed Memories", "Stalker"],
     [K4ItemType.darksecret]: ["Guilty of Crime", "Returned from the Other Side", "Victim of Crime", "Victim of Medical Experiments", "Visitations"],
     description: [
-      "The Veteran has seen death up close. She has spent a major part of her life in combat, weapon in hand, and adrenaline coursing through her veins.",
-      "She might be an infantry soldier crouching in an Afghanistan foxhole, a SWAT officer carrying out frequent missions against heavily armed criminals, or a civilian from a country devastated by war, now a refugee but still tortured by memories of the conflict."
+      "The Veteran has seen death up close.",
+      "You have spent a major part of your life in combat, weapon in hand, and adrenaline coursing through your veins.",
+      "You might be an infantry soldier crouching in an Afghanistan foxhole, a SWAT officer carrying out frequent missions against heavily armed criminals, or a civilian from a country devastated by war, now a refugee but still tortured by memories of the conflict."
     ].join("<br/><br/>"),
     occupation: ["Special Agent", "Military Soldier", "Street Soldier", "Mercenary", "Mma Fighter", "Military Officer", "Security Guard", "Body Guard", "Hitman", "War Refugee", "Military Police", "Retiree", "Homeless Vet"],
     looks: {
@@ -1039,7 +1043,7 @@ export const Attributes = {
   }
 } as const;
 export const HarmButtons = (resolve: (value: {harm: number;}) => void) => {
-  const harmButtons: Record<string, Dialog.Button> = {};
+  const harmButtons: Record<string, DialogButton> = {};
   for (let harm = 1; harm <= 5; harm++) {
     harmButtons[harm] = {
       label: `${String(harm)} Harm`,
@@ -1049,7 +1053,7 @@ export const HarmButtons = (resolve: (value: {harm: number;}) => void) => {
   return harmButtons;
 };
 export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAttribute;}) => void) => {
-  const attrButtons: Record<string, Dialog.Button> = {};
+  const attrButtons: Record<string, DialogButton> = {};
   [
     K4Attribute.zero,
     K4Attribute.willpower,

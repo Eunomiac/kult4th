@@ -35,6 +35,10 @@ img {
   word-wrap: break-word;
 }
 
+.editor {
+  height: 100%;
+}
+
 .gear-container {
   position: absolute;
   pointer-events: none;
@@ -697,8 +701,26 @@ $isDebug: false;
       box-shadow:
         inset 0px 0px 100px 50px var(--K4-GREY0);
 
+      .archetype-panel {
+        position: fixed;
+
+        &:not(.actor-name) {
+          border-radius: 25px;
+          box-shadow:
+            inset 0px 0px 30px var(--K4-GREY0),
+            0px 0px 15px var(--K4-GREY0);
+          text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
+          padding: 10px;
+          border-radius: 25px;
+          background: rgba(0, 0, 0, 0.5);
+          overflow: hidden;
+          box-shadow:
+            inset 0px 0px 30px var(--K4-GREY0),
+            0px 0px 15px var(--K4-GREY0);
+        }
+      }
+
       .archetype-panel.actor-name {
-        position: absolute;
         top: 42px;
         left: 300px;
         width: 600px;
@@ -716,21 +738,15 @@ $isDebug: false;
         --attributes-height: calc(2 * var(--attributes-width) - 40px);
         --attributes-scale: 1;
         --attributes-font-size: calc(22px / var(--attributes-scale));
-        position: absolute;
         height: var(--attributes-height);
         width: var(--attributes-width);
         left: 20px;
         top: 20px;
         transform-origin: top left;
         padding: 10px 30px;
-        border-radius: 25px;
         background: rgba(0, 0, 0, 0.5) url("/assets/layout/attributes-spread.webp") no-repeat center 30px/200px auto;
         border: none !important;
         transform: scale(var(--attributes-scale)) !important;
-        box-shadow:
-          inset 0px 0px 30px var(--K4-GREY0),
-          0px 0px 15px var(--K4-GREY0);
-        text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
 
         .k4-title {
           font-size: var(--attributes-font-size);
@@ -772,6 +788,42 @@ $isDebug: false;
         height: 300px;
         width: var(--panel-total-width);
         z-index: 10000;
+      }
+
+      .archetype-panel-notes {
+        height: auto;
+        width: 600px;
+        left: 1040px;
+        bottom: 20px;
+        z-index: 30000;
+
+        .archetype-sub-panel {
+
+          &.chargen-history .editor {
+            max-height: 200px;
+          }
+
+          .archetype-sub-panel-title {
+            color: var(--K4-GOLD9);
+          }
+
+          .archetype-example-container {
+            height: auto;
+            line-height: $rem-10;
+          }
+          .archetype-example-label {
+            font-weight: $font-weight-bold;
+            color: var(--K4-GOLD9);
+            font-size: $rem-10;
+            line-height: $rem-10;
+          }
+          .archetype-example-list {
+            font-style: italic;
+            color: var(--K4-GOLD7);
+            font-size: $rem-10;
+            line-height: $rem-10;
+          }
+        }
       }
 
       .archetype-carousel-dragger {
@@ -864,11 +916,11 @@ $isDebug: false;
               white-space: nowrap;
               font-size: $rem-24;
               // transform: translate(0%, 0%);
-              top: 150px;
-              right: calc(50% + 120px);
+              top: 10px;
+              left: -310px;
               z-index: 2;
               text-shadow: build-text-shadow(4px, var(--K4-GREY0), 8);
-              text-align: right;
+              text-align: left;
               width: 200px;
               // background: rgba(0, 255, 0, 0.25);
 
@@ -881,11 +933,11 @@ $isDebug: false;
               font-size: $rem-48;
               color: var(--K4-GOLD9);
               // transform: translate(0%, 0%);
-              top: 165px;
-              left: calc(50% - 120px);
+              top: 30px;
+              left: -310px;
               z-index: 2;
               text-shadow: build-text-shadow(6px, var(--K4-GREY0), 8);
-              text-align: left;
+              text-align: center;
               width: 200px;
               // background: rgba(255, 255, 0, 0.25);
             }
@@ -894,8 +946,8 @@ $isDebug: false;
               visibility: hidden;
               position: absolute;
               transform: translate(-50%, 0%);
-              top: 225px;
-              left: 50%;
+              top: 85px;
+              left: -180px;
               width: 200%;
               transform-origin: center center;
 
@@ -958,17 +1010,9 @@ $isDebug: false;
         text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
 
         .archetype-panel {
-          position: absolute;
           display: flex;
           flex-direction: column;
           gap: 5px;
-          padding: 10px;
-          border-radius: 25px;
-          background: rgba(0, 0, 0, 0.5);
-          overflow: hidden;
-          box-shadow:
-            inset 0px 0px 30px var(--K4-GREY0),
-            0px 0px 15px var(--K4-GREY0);
 
           .k4-title {
             order: -2;

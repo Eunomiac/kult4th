@@ -138,7 +138,9 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
    *
    * @returns {Promise<void>} A promise that resolves when the hook is registered.
    */
-  static async PreInitialize(): Promise<void> {
+  static PreInitialize(): void {
+    // Initialize rolls collection
+    game.rolls = new Collection<K4Roll>();
     /* Insert PreInitiailize Steps Here */
   }
   // #endregion
@@ -156,11 +158,11 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
 
   static GenerateFromStorage(storedData: K4Roll.Serialized.Base): K4Roll {
 
-    const roll = new K4Roll(storedData as unknown as K4Roll.ConstructorData);
+    const roll = new K4Roll(storedData as K4Roll.ConstructorData);
     roll.modifiers = storedData.modifiers;
     roll._attribute = storedData.attribute as K4Roll.RollableAttribute;
-    roll.terms = storedData.terms.map((termData) => RollTerm.fromData(termData));
-    roll._dice = storedData.dice.map((dieData) => Die.fromData(dieData)) as DiceTerm[];
+    roll.terms = storedData.terms.map((termData) => foundry.dice.terms.RollTerm.fromData(termData as Record<string, unknown>));
+    roll._dice = storedData.dice.map((dieData) => foundry.dice.terms.Die.fromData(dieData as Record<string, unknown>)) as foundry.dice.terms.DiceTerm[];
     roll._total = storedData.total;
     roll._evaluated = storedData.evaluated;
     // roll.result = storedData.result;
@@ -228,7 +230,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
       }
       return {
         type: K4RollType.move,
-        img: rollData.source.img ?? "",
+        img: rollData.source.img,
         attribute,
         attrVal: attribute === K4Attribute.zero ? 0 : actor.attributes[attribute],
         source: rollData.source
@@ -374,8 +376,8 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
 
     // Insert the modTerm into the roll's terms
     this.terms.push(
-      new OperatorTerm({operator: "+", options: {}}),
-      new NumericTerm({
+      new foundry.dice.terms.OperatorTerm({operator: "+", options: {}}),
+      new foundry.dice.terms.NumericTerm({
         number: this.modifiers.reduce((acc, mod) => acc + mod.value, 0),
         options: {}
       })
@@ -387,7 +389,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
 
     // game.dice3d.showForRoll(this); // Can't include if disabling canvas.
 
-    this.chatMessage = await this.displayToChat();
+    this.chatMessage = (await this.displayToChat()) as K4ChatMessage;
 
     return this.chatMessage;
   }
@@ -406,7 +408,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
       attrType: this.attribute! in C.Attributes.Active ? "active" : "passive",
       modifiers: this.modifiers,
       rollerName: this.actor.name,
-      rollerImg: this.actor.img ?? "",
+      rollerImg: this.actor.img,
       result: this.getOutcomeData(),
       outcome: this.outcome,
       ...(this.source instanceof K4Item && this.source.isActiveItem())
@@ -414,7 +416,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
         source: this.source,
         sourceType: this.source.parentType,
         sourceName: this.source.name,
-        sourceImg: this.source.img ?? ""
+        sourceImg: this.source.img
       }
       : {
         source: this.source as K4Roll.RollableAttribute
@@ -452,7 +454,8 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
     //   cssClasses.push("condensed");
     // }
     templateData.cssClass = cssClasses.join(" ");
-    // kLog.log("DISPLAYING ROLL RESULT", {roll, templateData, rollData, options});
+    const messageData = await this.toMessage({}, {create: false});
+    kLog.log("DISPLAYING ROLL RESULT", {roll: this, templateData, messageData});
     const content = await renderTemplate(
       U.getTemplatePath("sidebar", "result-rolled"),
       templateData
@@ -474,7 +477,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
           rollOutcome: this.outcome,
           isEdge: false,
           rollData: this.serializeForStorage()
-        }
+        } as never
       }
     }))!;
   }

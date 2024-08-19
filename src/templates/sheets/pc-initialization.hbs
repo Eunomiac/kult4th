@@ -27,4 +27,13 @@
   {{else if (eq charGenPhase "relationships")}}
   {{> "systems/kult4th/templates/sheets/pc-initialization-relations.hbs" }}
   {{/if}}
+
+  <div class="archetype-panel character-summary-panel">
+    {{#each otherPlayerData as |actorData actorID|}}
+    <div class="character-summary" data-actor-id="{{actorID}}">
+      <img src="{{actorData.img}}">
+      <h3>{{actorData.name}}</h3>
+    </div>
+    {{/each}}
+  </div>
 </form>

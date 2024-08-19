@@ -18,7 +18,7 @@ enum PromptInputType {
 // #endregion
 // #region TYPES ~
 namespace K4Dialog {
-  export type Data = Dialog.Data;
+  export type Data = DialogData;
   export interface PromptContext<T extends K4ItemType = K4ItemType> {
     title: string;
     bodyText: string;
@@ -70,7 +70,7 @@ class K4Dialog extends Dialog {
         U.getTemplatePath("dialog", `ask-for-${input}`),
         context
       );
-      const dialogData: Dialog.Data = {
+      const dialogData: DialogData = {
         title:   context.title,
         content,
         buttons: {}
@@ -94,7 +94,7 @@ class K4Dialog extends Dialog {
             });
             // Assign the default value to defaultVal or the first button
             dialogData.default = String(defaultVal ?? buttonVals[0]);
-            dialogData.buttons = Object.fromEntries<Record<string, unknown>>(buttonEntries);
+            dialogData.buttons = Object.fromEntries(buttonEntries) as Record<string, DialogButton>;
             break;
           }
           case PromptInputType.text: {
@@ -140,6 +140,9 @@ class K4Dialog extends Dialog {
   ): Promise<T | false> {
     promptContext.user ??= game.user;
     const {user, ...context} = promptContext;
+    if (!user) {
+      throw new Error("User not found");
+    }
     return K4Socket.Call<T>(
       "GetUserInput",
       user.id as IDString,
@@ -165,7 +168,7 @@ class K4Dialog extends Dialog {
       U.getTemplatePath("dialog", "ask-for-item"),
       {...dialogContext, itemList: items}
     );
-    const dialogData: Dialog.Data = {
+    const dialogData: DialogData = {
       title:   context.title,
       content,
       buttons: {}

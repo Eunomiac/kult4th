@@ -12,6 +12,7 @@ $assetPath: '/assets';
 
 	@import 'globals/colors';
   @import 'globals/tooltips';
+  @import 'globals/editor';
 
 	@include cq-prolyfill("width >= 1000px") {
 		outline: 3px solid lime !important;

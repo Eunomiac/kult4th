@@ -5,6 +5,7 @@
 import U from "../scripts/utilities.js";
 import C from "../scripts/constants";
 import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
+import K4Item from "../documents/K4Item.js";
 import ITEM_DATA from "./item-data.js";
 // import PREV_DATA from "../../../.dev/item-data-prev.js";
 
@@ -600,36 +601,36 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
  */
 async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   const itemSchemas = parseItemSchemasForCreation(PACKS.all);
-  function clearActorItems(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
+  function clearActorItems(actor: K4Actor): Promise<unknown> {
     // Filter actor's items to exclude K4SubItems, as their removal is taken care of by their parent item
     const mainItems = actor.items.contents.filter((i) => !i.isSubItem());
     // Delete all the remaining items
     return Promise.all(mainItems.map((item) => item.delete()));
   }
-  function clearActorEffects(actor: K4Actor<K4ActorType.pc>): Promise<unknown> {
+  function clearActorEffects(actor: K4Actor): Promise<unknown> {
     return actor.deleteEmbeddedDocuments("ActiveEffect", Array.from(actor.effects.keys()));
   }
-  async function clearActor(actor: K4Actor<K4ActorType.pc>) {
+  async function clearActor(actor: K4Actor) {
     await clearActorItems(actor);
     await clearActorEffects(actor);
     return undefined;
   }
 
   function clearAllActors(): Promise<unknown> {
-    return Promise.all(game.actors.contents.map((actor) => clearActor(actor as K4Actor<K4ActorType.pc>)));
+    return Promise.all((game.actors as Collection<K4Actor>).map((actor) => clearActor(actor)));
   }
 
   // Await a Promise.all that deletes all the existing items
   await Promise.all([
     clearAllActors(),
-    Promise.all(game.items.map((item) => item.delete()))
+    Promise.all((game.items as Collection<K4Item>).map((item) => item.delete()))
   ]);
 
   // Create all the new items
   await Item.create(itemSchemas as unknown as ItemDataConstructorData);
 
   // Initialize each actor with a new set of basic moves
-  await Promise.all(game.actors.contents.map((actor) => actor.initMovesAndEffects()));
+  await Promise.all((game.actors as Collection<K4Actor>).map((actor) => actor.initMovesAndEffects()));
 }
 
 //#endregion

@@ -98,6 +98,7 @@ async function GlobalAssignment() {
     C,
     K4Actor,
     K4Item,
+    K4Roll,
     ActorSheet,
     K4PCSheet,
     K4Socket,

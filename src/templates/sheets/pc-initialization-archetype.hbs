@@ -89,4 +89,35 @@
     </div>
   </div>
   {{/each}}
+  <div class="archetype-panel archetype-panel-notes">
+    <div class="archetype-sub-panel chargen-occupation">
+      <div class="archetype-sub-panel-title">Occupation</div>
+      <span class="archetype-example-list" data-target="occupation"></span>
+      {{editor actor.system.occupation target="system.occupation" button=true engine="prosemirror" collaborate=false class="k4-one-line-editor"}}
+    </div>
+    <div class="archetype-sub-panel chargen-description">
+      <div class="archetype-sub-panel-title">Description</div>
+      <div class="archetype-example-container">
+        <span class="archetype-example-label">Clothes:</span>
+      <span class="archetype-example-list" data-target="looks.clothes"></span>
+      </div>
+      <div class="archetype-example-container">
+        <span class="archetype-example-label">Face:</span>
+      <span class="archetype-example-list" data-target="looks.face"></span>
+      </div>
+      <div class="archetype-example-container">
+        <span class="archetype-example-label">Eyes:</span>
+      <span class="archetype-example-list" data-target="looks.eyes"></span>
+      </div>
+      <div class="archetype-example-container">
+        <span class="archetype-example-label">Body:</span>
+      <span class="archetype-example-list" data-target="looks.body"></span>
+      </div>
+      {{editor actor.system.description target="system.description" button=true engine="prosemirror" collaborate=false class="k4-small-editor"}}
+    </div>
+    <div class="archetype-sub-panel chargen-history">
+      <div class="archetype-sub-panel-title">History</div>
+      {{editor actor.system.history target="system.history" button=true engine="prosemirror" collaborate=false class="k4-medium-editor"}}
+    </div>
+  </div>
   <div class="archetype-carousel-dragger"><div class="archetype-carousel-drag-handle"></div></div>

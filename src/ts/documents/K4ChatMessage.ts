@@ -804,7 +804,7 @@ class K4ChatMessage extends ChatMessage {
 
     // Register a hook to run when a chat message is rendered
     Hooks.on("renderChatMessage", async (message: K4ChatMessage, html) => {
-      // kLog.log(`RENDERING ${message.isLastMessage ? "LAST " : ""}CHAT MESSAGE`, message);
+      kLog.log(`RENDERING ${message.isLastMessage ? "LAST " : ""}CHAT MESSAGE`, message);
       // Apply custom CSS classes to the chat message based on its flags
       message.applyFlagCSSClasses(html);
 
@@ -814,7 +814,7 @@ class K4ChatMessage extends ChatMessage {
       // If this is the last chat message, animate it and freeze any animations of currently-animating messages
       if (message.isLastMessage) {
         message.animate();
-        game.messages
+        (game.messages as Collection<K4ChatMessage>)
           .filter((msg) => msg.isAnimated && msg.id !== message.id)
           .forEach((msg) => { msg.freeze(); });
       } else {
@@ -831,15 +831,15 @@ class K4ChatMessage extends ChatMessage {
     // if (!this.isAnimated) { return Promise.resolve(undefined); }
     // Return a promise that checks every 250ms for _animationTimeline and resolves when it is defined.
     return new Promise((resolve, reject) => {
-      // kLog.display("Awaiting Timeline Promise...");
+      kLog.display("Awaiting Timeline Promise...");
       const intervalId = setInterval(() => {
         if (this.animationTimeline) {
-          // kLog.display("Timeline Promise Resolved!", {timeline: this.animationTimeline});
+          kLog.display("Timeline Promise Resolved!", {timeline: this.animationTimeline});
           clearInterval(intervalId); // Stop checking
           clearTimeout(timeoutId); // Clear the timeout
           resolve(); // Resolve the promise
         }
-        // kLog.display("Awaiting Timeline Promise...", {timeline: this.animationTimeline})
+        kLog.display("Awaiting Timeline Promise...", {timeline: this.animationTimeline})
       }, 250);
 
       // Set a timeout to reject the promise after 10 seconds
@@ -851,24 +851,24 @@ class K4ChatMessage extends ChatMessage {
   }
   get animationsPromise(): Promise<void> {
     if (!this.isAnimated) {
-      // kLog.display("Message isn't animated: Resolving.");
+      kLog.display("Message isn't animated: Resolving.");
       return Promise.resolve();
     }
 
     return new Promise((resolve) => {
-      // kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
+      kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
       void this.timelinePromise.then(() => {
-        // kLog.display("Timeline Promise Resolved!");
+        kLog.display("Timeline Promise Resolved!");
         const timeline = this.animationTimeline;
         if (!timeline) { return undefined; }
         const labelTime = timeline.labels.revealed;
         const watchLabel = () => {
           if (timeline.time() >= labelTime) {
-            // kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
+            kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
             resolve();
             return undefined;
           }
-          // kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
+          kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
           setTimeout(watchLabel, 250);
         };
         watchLabel();
@@ -936,14 +936,14 @@ class K4ChatMessage extends ChatMessage {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async #resolveUserSelectors(ref: UserRef): Promise<User[]> {
-    const {users} = game;
+    const users = game.users as Collection<User>;
     if (ref === UserRef.any) {
       return Array.from(users);
     }
     if (ref === UserRef.gm) {
       return users.filter((user) => user.isGM);
     }
-    const curUser = users.get(this.user?.id ?? "");
+    const curUser = users.get(this.user.id ?? "");
     if (!curUser) {
       throw new Error(`Unable to derive user from chat message '${this.id}'.`);
     }
@@ -981,7 +981,7 @@ class K4ChatMessage extends ChatMessage {
     return K4ChatMessage.GetMessage(prevMessage);
   }
   get isLastMessage(): boolean {
-    return this.id === U.getLast(Array.from(game.messages)).id;
+    return this.id === U.getLast(Array.from(game.messages as Collection<K4ChatMessage>)).id;
   }
   isChatRoll(): this is typeof this & {outcome: K4RollResult} {
     return (this.getFlag("kult4th", "isRoll") ?? false) as boolean;
@@ -1108,7 +1108,7 @@ class K4ChatMessage extends ChatMessage {
         )).flat().map((user) => user.id!).filter(Boolean);
 
         // If this user isn't eligible to select from the list, don't apply selectors.
-        if (!selectorUserIDs.includes(game.user.id!)) { return; }
+        if (!selectorUserIDs.includes(game.user.id)) { return; }
 
         // Otherwise, create the callback function that will be triggered if this element is selected
         const onSelect = async () => {

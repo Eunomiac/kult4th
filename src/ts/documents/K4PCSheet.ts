@@ -24,7 +24,7 @@ namespace Archetype {
 
   export interface StringData {
     value: string,
-    examples?: string[]
+    examples?: string
   }
 
   export interface ArchetypeData<T extends ArchetypeTier = ArchetypeTier> {
@@ -57,7 +57,8 @@ interface ChargenContext {
     face: Archetype.StringData,
     eyes: Archetype.StringData,
     body: Archetype.StringData
-  }
+  },
+  otherPlayerData: Record<IDString, K4Actor["summaryData"]>
 }
 
 
@@ -320,7 +321,7 @@ const ANIMATIONS = {
           duration: 2,
           grid: "auto",
           stagger: U.distributeByPosition({
-            amount: 3,
+            each: 0.25,
             from: farthestIndex,
             axis: "y",
             ease: "sine.in"
@@ -354,12 +355,14 @@ const ANIMATIONS = {
     const archetypeName$ = archetype$.find(".archetype-carousel-name");
     const archetypeDescription$ = archetype$.find(".archetype-description");
 
-    const archetype = archetype$.attr("data-archetype");
+    const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
     // <div class="archetype-panels" data-archetype="{{case "lower" archetype}}">
     const archetypePanels$ = container$.find(`.archetype-panels[data-archetype="${archetype}"]`);
     const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
     const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
     const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
+    const archetypeNotes$ = archetypePanels$.find(".archetype-panel-notes");
+    const archetypeExamples$ = container$.find(".archetype-example-list");
 
     // Split the description into individual lines
     const splitDescription = new SplitText(archetypeDescription$, { type: "lines" });
@@ -370,6 +373,9 @@ const ANIMATIONS = {
     archetypeAdvantages$.css("visibility", "visible");
     archetypeDisadvantages$.css("visibility", "visible");
     archetypeDarkSecrets$.css("visibility", "visible");
+
+    // Prepare the example strings for when this archetype is selected
+    const archData = Archetypes[archetype ?? K4Archetype.academic];
 
     // Assign listeners to each of the trait elements
     [
@@ -530,13 +536,26 @@ const ANIMATIONS = {
           each: 0.25
         },
         onStart() {
-          CONFIG.K4.charGenIsShowing = archetype as Maybe<K4Archetype> ?? null;
+          CONFIG.K4.charGenIsShowing = archetype ?? null;
+          kLog.log("[K4PCSheet] archetypeExamples$", {archetypeExamples$, archData});
+          archetypeExamples$.each((_i, elem) => {
+            const target = $(elem).attr("data-target") as Maybe<string>;
+            kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, archData});
+            if (target) {
+              const example = U.getProp<string[]>(archData, target);
+              kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
+              if (example) {
+                $(elem).text(example.join(", "));
+              }
+            }
+          });
         }
       }, "<")
       .fromTo([
         archetypeAdvantages$,
         archetypeDisadvantages$,
-        archetypeDarkSecrets$
+        archetypeDarkSecrets$,
+        archetypeNotes$
       ], {
         autoAlpha: 0,
         y: 200
@@ -1613,9 +1632,11 @@ class K4PCSheet extends ActorSheet {
     archetype = archetype ?? this.actor.archetype;
     if (!archetype) { return {value: ""}; }
 
+    const examples = U.getProp<string[]>(Archetypes[archetype], dotKey) ?? [];
+
     const sData: Archetype.StringData = {
       value: "",
-      examples: U.getProp<string[]>(Archetypes[archetype], dotKey) ?? []
+      examples: Array.isArray(examples) ? examples.join(", ") : ""
     };
 
     return sData;
@@ -1765,9 +1786,9 @@ class K4PCSheet extends ActorSheet {
       _gmUsers,
       otherPlayerUsers
     ] = U.partition<User>(otherUsers, (user) => (user as User).isGM);
-    const otherPlayerData = otherPlayerUsers
-      .map((user) => (user.character as Maybe<K4Actor<K4ActorType.pc>>)?.summaryData)
-      .filter(Boolean);
+    const otherPlayerData = Object.fromEntries(otherPlayerUsers
+      .map((user) => [user.id, (user.character as Maybe<K4Actor<K4ActorType.pc>>)?.summaryData])
+      .filter(Boolean));
 
     return {
       charGenPhase: this.actor.charGenPhase,
@@ -1868,8 +1889,30 @@ class K4PCSheet extends ActorSheet {
 // case K4CharGenPhase.relations: {
 //   void this.activateChargenRelationsListeners(html);
 
+  updateArchetypeExamples(html: JQuery) {
+    const archetype = this.actor.archetype;
+    if (!archetype) { return; }
+
+    // Prepare the example strings for the selected archetype.
+    const archData = Archetypes[archetype];
+    const archetypeExamples$ = html.find(".archetype-example-list");
+    kLog.log("[K4PCSheet] archetypeExamples$", {archetypeExamples$, archData});
+    archetypeExamples$.each((_i, elem) => {
+      const target = $(elem).attr("data-target") as Maybe<string>;
+      kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, archData});
+      if (target) {
+        const example = U.getProp<string[]>(archData, target);
+        kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
+        if (example) {
+          $(elem).text(example.join(", "));
+        }
+      }
+    });
+  }
+
   async activateChargenArchetypeListeners(html: JQuery) {
     const carouselScene$ = html.find(".archetype-staging");
+    this.updateArchetypeExamples(html);
     await ANIMATIONS.archetypeCarouselTimeline(carouselScene$, 200, this.actor);
 
     const getUnlistedItemsOfType = (type: K4ItemType.disadvantage|K4ItemType.darksecret) => {
@@ -1914,6 +1957,8 @@ class K4PCSheet extends ActorSheet {
         }
       }
     });
+
+
   }
   async activateChargenAttributesAndTraitsListeners(html: JQuery) {
     await Promise.resolve(html);
@@ -2683,12 +2728,6 @@ class K4PCSheet extends ActorSheet {
     // Activate listeners for closing & minimizing the sheet
     this.activateWindowControlListeners(html);
 
-    // Activate listeners for editing "content-editable" elements
-    this.activateContentEditableListeners(html);
-
-    // Activate interval timer for twitchy-eye effect
-    this.startTwitchyEyeTimer(html);
-
     html.find("#item-test-button").on({
       click: this._promptItemSelection(
         Array.from(game.items as Collection<K4Item>).filter((item) => item.type === K4ItemType.advantage)
@@ -2717,6 +2756,14 @@ class K4PCSheet extends ActorSheet {
           break;
         }
       }
+    } else {
+
+      // Activate listeners for editing "content-editable" elements
+      this.activateContentEditableListeners(html);
+
+      // Activate interval timer for twitchy-eye effect
+      this.startTwitchyEyeTimer(html);
+
     }
   }
 
