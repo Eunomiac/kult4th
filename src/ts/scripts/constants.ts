@@ -100,7 +100,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Nightmares", "Obsession", "Phobia", "Repressed Memories", "Rationalist", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Returned from the Other Side", "Strange Disappearance"],
     description: [
-      "The Academic studies the world from a desk.",
+      "You study the world from a desk.",
       "Everything is interconnected via logical rules of causality, yet you suspect something must be wrong. Pieces refuse to fall into the safe, predictable patterns of common scientific models. Worse, shadowy forces silence new and alternative fields of research.",
       "Those who question the scientific establishment and its rational worldview risk disgrace and the destruction of their research, reputation, and revenue.",
       "Do you dare to look for the truth?"
@@ -147,7 +147,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Lost Identity", "Nightmares", "Obsession", "Rival", "Stalker", "Wanted"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Strange Disappearance", "Victim of Medical Experiments"],
     description: [
-      "The Agent does whatever is necessary to protect and serve their employer's best interests.",
+      "You do whatever is necessary to protect and serve your employer's best interests.",
       "People are simply resources to be used, abused, and expended. Anyone standing in your way must be removed. You gather and analyze information at an almost impossible speed. Threats demand rapid responses, and sometimes there are no good choices.",
       "Your job means accepting great costs, usually in the form of dangers, but also an ever-growing debt to those sacrificed for the greater good.",
       "When this burden finally becomes too heavy, your exits have likely already closed, and 'good' and 'evil' have lost all meaning."
@@ -189,7 +189,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Depression", "Drug Addict", "Nightmares", "Schizophrenia", "Victim of Passion"],
     [K4ItemType.darksecret]: ["Curse", "Heir", "Mental Illness", "Pact with Dark Forces", "Victim of Crime"],
     description: [
-      "The Artist exists only to create.",
+      "You exist only to create.",
       "You give yourself, body and soul, over to the arts. You express this desire through many mediums: a hypnotic painting, music trapping the audience in pure ecstasy, books spellbinding their readers, or a model's sculpted flesh are all within your purview.",
       "You have the ability to speak to the souls of others by inviting them into your own, but this ability always comes at a price.",
       "The price is paid by you, be it your sanity or your strength."
@@ -231,7 +231,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["!Oath of Revenge", "Mental Compulsion", "Nightmares", "Schizophrenia", "Stalker", "Wanted"],
     [K4ItemType.darksecret]: ["Guardian", "Returned from the Other Side", "Strange Disappearance", "Victim of Crime", "Victim of Medical Experiments"],
     description: [
-      "The Avenger has been robbed of something dear, be it a loved one, job, family, humanity, honor, memories, or opportunity.",
+      "You have been robbed of something dear, be it a loved one, job, family, humanity, honor, memories, or opportunity.",
       "Regardless of what was taken from you, its loss can only be paid for in blood.",
       "The only thing remaining is revenge, and you aren't about to let anything or anyone get in your way, regardless of consequences."
     ].join("<br/><br/>"),
@@ -272,7 +272,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["!Broken", "Drug Addict", "Involuntary Medium", "Obsession", "Schizophrenia", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Mental Illness", "Occult Experience", "Returned from the Other Side", "Victim of Medical Experiments"],
     description: [
-      "The Broken has gazed into the Abyss and escaped with a mind in tatters.",
+      "You have gazed into the Abyss and escaped with your mind in tatters.",
       "You could be a homeless person who subconsciously performs rituals to forgotten gods, a mental patient who became a test subject for experimental medications, or a sinner who was physically dragged down into hell, yet somehow managed to escape back to the land of the living.",
       "You view things and see through the Illusion in ways others do not.",
       "In exchange for your irreparable trauma, you've been granted unique insights about the Truth.",
@@ -315,8 +315,8 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Greedy", "Haunted", "Liar", "Rationalist", "Rival"],
     [K4ItemType.darksecret]: ["Curse", "Guilty of Crime", "Occult Experience", "Pact with Dark Forces", "Responsible for Medical Experiments"],
     description: [
-      "The Careerist is the consummate brown-nosing backstabber.",
-      "Most remain stuck in a cubicle farm, performing the same mundane tasks day after day, while the ruthless few climb upwards in the corporate hierarchy.",
+      "You are the consummate brown-nosing backstabber.",
+      "Most like you remain stuck in a cubicle farm, performing the same mundane tasks day after day, while a ruthless few climb upwards in the corporate hierarchy.",
       "Potentially, you could also run your own company, fighting for survival against corporate giants.",
       "In a world where nothing is off limits when it comes to advancing your career, success necessitates being willing to do whatever it takes."
     ].join("<br/><br/>"),
@@ -399,7 +399,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["!Condemned", "Drug Addict", "Greedy", "Haunted", "Nightmares", "Stalker"],
     [K4ItemType.darksecret]: ["Chosen One", "Curse", "Occult Experience", "Pact with Dark Forces", "Returned from the Other Side"],
     description: [
-      "The Cursed is living on borrowed time.",
+      "You are living on borrowed time.",
       "You might be the unfortunate victim of a deadly disease or the target of a higher power's rage.",
       "Usually, however, you have sealed your own fate by selling your soul for fortune and fame.",
       "Now your time is almost up, and you have realized life itself is the most worthwhile thing you possess.",
@@ -442,10 +442,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Greedy", "Liar", "Nemesis", "Sexual Neurosis", "Wanted"],
     [K4ItemType.darksecret]: ["Heir", "Mental Illness", "Occult Experience", "Pact with Dark Forces", "Victim of Crime"],
     description: [
-      "He was in love. She finally met Mr. Right. Their future was certain, the wedding was planned, and everyone felt they were perfect for each other. Then one day, you disappeared — along with his bank account and all of her jewelry.",
-      "They were merely targets of the Deceiver.",
+      "He was in love. She finally met Mr. Right. Their futures were certain, the weddings were planned, and everyone felt they were perfect for each other. Then one day, you disappeared — along with his bank account and all of her jewelry.",
+      "They were your targets.",
       "You are a manipulator who fools others into trusting you to deprive them of money or services. You are a master of masking your true intentions and feelings, and can become exactly the person your victims want.",
-      "You have left a trail of bitter enemies in your wake. When your past catches up to you, it often ends in tragedy."
+      "You have left a trail of bitter enemies in your wake. When your past catches up to you, will it end in tragedy?"
     ].join("<br/><br/>"),
     occupation: ["Model", "Between Jobs", "Catfisher", "Lover", "Escort", "Heir(Ess)", "Jetsetter", "Party Animal", "Secretary", "Party Planner", "Marriage Swindler", "Con Artist", "Gigolo", "Scammer", "Thief", "Snitch", "Pornstar"],
     looks: {
@@ -525,7 +525,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Drug Addict", "Infirm", "Nightmares", "Repressed Memories", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guilty of Crime", "Occult Experience", "Returned from the Other Side", "Strange Disappearance"],
     description: [
-      "Whether a disillusioned private eye in an office shrouded in clouds of cigarette smoke or a hardened investigator on the homicide unit, The Detective is motivated by their desperate need to find answers.",
+      "Whether a disillusioned private eye in an office shrouded in clouds of cigarette smoke or a hardened investigator on the homicide unit, you are motivated by your desperate need to find answers.",
       "Meanwhile, your family disintegrates, your friends abandon you, and you fall into a spiral of darkness and addiction.",
       "Your 'noble' search leads you down lonely and dangerous paths best left untrodden."
     ].join("<br/><br/>"),
@@ -566,10 +566,10 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["!Object of Desire", "Harassed", "Owned", "Phobia", "Sexual Neurosis", "Stalker"],
     [K4ItemType.darksecret]: ["Chosen One", "Guilty of Crime", "Occult Experience", "Victim of Crime", "Victim of Medical Experiments"],
     description: [
-      "In the shadows, The Doll stands ready.",
-      "You strive to break free, to be human again, to assume control of your own life while others strive to possess you.",
+      "In the shadows, you stand ready.",
+      "You strive to break free, to be human again, to assume control of your own life — while others strive to possess you.",
       "You have lived a life in submission, as an outcast, a prisoner, a freak, or a trophy.",
-      "Feelings of emptiness and tragedy reside within you, as well as dreams of hope, love, and happiness – dreams which are shattered over and over again."
+      "Feelings of emptiness and tragedy reside within you, as well as dreams of hope, love, and happiness – dreams which have been shattered over and over again."
     ].join("<br/><br/>"),
     occupation: ["Child Beauty Contestant", "Model", "Stripper", "Trophy Wife", "Gigolo", "Actor", "Escaped Experiment", "High School Prom Queen", "Vlogger", "Reality TV Celebrity", "Pornstar", "Escort", "Abuse Survivor", "Imprisoned Innocent", "Trafficking Victim"],
     looks: {
@@ -608,7 +608,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Harassed", "Haunted", "Schizophrenia", "Stalker", "Wanted"],
     [K4ItemType.darksecret]: ["Curse", "Family Secret", "Mental Illness", "Returned from the Other Side", "Rootless"],
     description: [
-      "The Drifter never stays in one place long enough to feel at home.",
+      "You never stay in one place long enough to feel at home.",
       "The road is your home. It could be an uncontrollable urge to never put down roots, or a reaction to pursuers always on your heels.",
       "You have learned to live with whatever fits in your backpack or the back of your car. What is important to others lacks meaning to you, who never gets attached to anything. Other vagabonds and outcasts are your friends and allies. They seek refuge in rundown motels, boxcars, abandoned homes, and other makeshift shelters.",
       "The eternal question for those who meet you is: What are you running from?"
@@ -650,7 +650,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Competitor", "Cursed", "Greedy", "Jealousy", "Liar", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guilty of Crime", "Heir", "Pact with Dark Forces", "Victim of Crime"],
     description: [
-      "The Fixer has all the contacts, and uses them to make quick cash.",
+      "You have all the contacts, and you use them to make quick cash.",
       "Drugs, weapons, illegal prizefights, antiques, cars, apartments – you can set anyone up with whatever they need. But everything you sell comes with a catch. Once you get their hooks in them, you'll never let them go.",
       "As long as there's money involved you don't care about the stakes, and the more successful you are, the more enemies you make along the way.",
       "In the underworld, there are always people hungrily watching you, waiting for the right moment, and willing to step over your body to take your place."
@@ -692,7 +692,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Guilt", "Haunted", "Involuntary Medium", "Nightmares", "Repressed Memories", "Stalker"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Guardian", "Occult Experience", "Pact with Dark Forces", "Visitations"],
     description: [
-      "The Occultist seeks the answers to life's mysteries through occult theories.",
+      "You seek the answers to life's mysteries through occult theories.",
       "Ancient tomes, mad sect leaders, and obscure internet forums speak of different dimensions, magical rituals, otherworldly creatures, and powers that can turn men into gods. You have discovered enough information to begin experimenting with these forces, but not nearly enough to give you any degree of control.",
       "Magic always comes at a high price, and your account is coming due."
     ].join("<br/><br/>"),
@@ -733,7 +733,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Fanatic", "Harassed", "Involuntary Medium", "Sexual Neurosis", "Stalker"],
     [K4ItemType.darksecret]: ["Chosen One", "Forbidden Knowledge", "Guardian", "Occult Experience", "Visitations"],
     description: [
-      "Faith and religion bestow power upon The Prophet, whether you're a priest, pastor, imam, rabbi, or other sect leader.",
+      "Faith and religion bestow power, whether you're a priest, pastor, imam, rabbi, or other sect leader.",
       "You may have chosen to serve your god, but it could also be a path you've been forced to walk by your family or congregation from an early age. Being on the inside of a religious association provides access to community and a sense of higher purpose.",
       "However, the shadows cast by the Divine's light often hide abuse of power, occultism, perverted doctrine, forced marriages, and the worship of false gods."
     ].join("<br/><br/>"),
@@ -774,7 +774,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Haunted", "Marked", "Nemesis", "Nightmares", "Wanted"],
     [K4ItemType.darksecret]: ["Curse", "Guardian", "Occult Experience", "Victim of Medical Experiments", "Visitations"],
     description: [
-      "The Ronin always teeters at the edge of a bottomless pit.",
+      "You teeter at the edge of a bottomless pit.",
       "When the desperate have run out of options, they hire you to solve the problem. You perform any task where compassion and morality are liabilities, and where mistakes mean prison, death, or worse. You can never trust anyone. Yesterday's employers are tomorrow's potential targets.",
       "Once your hunt has begun, there is no escape for your prey."
     ].join("<br/><br/>"),
@@ -815,7 +815,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Bad Reputation", "Experiment Gone Wrong", "Fanatic", "Mental Compulsion", "Repressed Memories", "Wanted"],
     [K4ItemType.darksecret]: ["Forbidden Knowledge", "Mental Illness", "Responsible for Medical Experiments", "Returned from the Other Side", "Victim of Medical Experiments"],
     description: [
-      "The Scientist explores the unknown in the hope of finding answers to the questions of life and the universe.",
+      "You explore the unknown in the hope of finding answers to the questions of life and the universe.",
       "Your research often leads to dangerous experiments, where the fabric between our dimension and others is temporarily blown aside. In psychology, medicine, physics, chemistry, and various parasciences, these experiments often lead to terrible consequences.",
       "Some might call you mad, but you know this is because they refuse to see the Truth."
     ].join("<br/><br/>"),
@@ -856,7 +856,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Cursed", "Haunted", "Nightmares", "Repressed Memories", "Stalker", "Wanted"],
     [K4ItemType.darksecret]: ["Family Secret", "Forbidden Knowledge", "Guardian", "Occult Experience", "Strange Disappearance"],
     description: [
-      "Seekers are explorers of modern, ancient, and forgotten urban myths. They are bloggers, hackers, and storytellers of the Modern Age.",
+      "You are an explorer of modern, ancient, and forgotten urban myths. You are a blogger, a hacker, a storyteller of the Modern Age.",
       "On the Internet, faceless voices whisper of lies and conspiracies. In abandoned subway stations, someone leaves messages in seemingly meaningless graffiti. If you dig deep enough you'll find the Truth, but most cannot see through the thick fog of misinformation, and we become hopelessly lost in the tempest of propaganda, pornography, and mindless entertainment. You know how to use the Internet to uncover secrets under stones best left unturned.",
       "For you, no price is too great to find the Truth and expose it for public consumption."
     ].join("<br/><br/>"),
@@ -902,7 +902,7 @@ export const Archetypes = {
     [K4ItemType.disadvantage]: ["Drug Addict", "Haunted", "Nightmares", "Phobia", "Repressed Memories", "Stalker"],
     [K4ItemType.darksecret]: ["Guilty of Crime", "Returned from the Other Side", "Victim of Crime", "Victim of Medical Experiments", "Visitations"],
     description: [
-      "The Veteran has seen death up close.",
+      "You've seen death up close.",
       "You have spent a major part of your life in combat, weapon in hand, and adrenaline coursing through your veins.",
       "You might be an infantry soldier crouching in an Afghanistan foxhole, a SWAT officer carrying out frequent missions against heavily armed criminals, or a civilian from a country devastated by war, now a refugee but still tortured by memories of the conflict."
     ].join("<br/><br/>"),

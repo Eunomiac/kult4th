@@ -194,102 +194,24 @@
     margin-left: var(--horiz-shift-left);
 	}
 
-  @keyframes neonGlow-blue {
-    0% {
-      text-shadow: 0 0 2px rgba(255,255,255,.8),
-                  0 0 4px rgba(255,255,255,.8),
-                  0 0 4.5px  rgba(255,255,255,.8),
-                  0 0 8px  rgba(65,132, 220, 0.8),
-                  0 0 12.5px  rgba(65,132, 220,.8),
-                  0 0 16.5px  rgba(65,132, 220,.5),
-                  0 0 21px rgba(65,132, 220,.5),
-                  0 0 29px rgba(65,132, 220,.5),
-                  0 0 41.5px rgba(65,132, 220,.5);
+  .neon-glow-animated-blue {
+    @include neon-glow-animated(blue, var(--K4-BLUE9), white);
+  }
+
+  .neon-glow-animated-red {
+    @include neon-glow-animated(red, var(--K4-RED9), white);
+  }
+
+  .neon-glow-animated-gold {
+    @include neon-glow-animated(gold, var(--K4-GOLD5), white);
+  }
+
+  .neon-glow-animated-white {
+    @include neon-glow-animated(white, var(--K4-GREY9), white);
+
+    .icon-container {
+      --K4-color-primary-bright: var(--K4-GREY2);
     }
-    100% {
-      text-shadow: 0 0 0.5px rgba(255,255,255,.8),
-                  0 0 1.5px rgba(255,255,255,.8),
-                  0 0 2px rgba(255,255,255,.8),
-                  0 0 4px rgba(65,132, 220,.8),
-                  0 0 6px rgba(65,132, 220,.8),
-                  0 0 8px rgba(65,132, 220,.8),
-                  0 0 10.5px rgba(65,132, 220,.8),
-                  0 0 16.5px rgba(65,132, 220,.8);
-    }
-  }
-
-  @keyframes neonGlow-red {
-    0% {
-      text-shadow: 0 0 2px rgba(255, 255, 255, 0.8),
-                  0 0 4px rgba(255, 255, 255, 0.8),
-                  0 0 4.5px  rgba(255, 255, 255, 0.8),
-                  0 0 8px  rgba(220, 65, 65, 0.8),
-                  0 0 12.5px  rgba(220, 65, 65, 0.8),
-                  0 0 16.5px  rgba(220, 65, 65, 0.5),
-                  0 0 21px rgba(220, 65, 65, 0.5),
-                  0 0 29px rgba(220, 65, 65, 0.5),
-                  0 0 41.5px rgba(220, 65, 65, 0.5);
-    }
-    100% {
-      text-shadow: 0 0 0.5px rgba(255,255,255,.8),
-                  0 0 1.5px rgba(255,255,255,.8),
-                  0 0 2px rgba(255,255,255,.8),
-                  0 0 4px rgba(220, 65, 65, 0.8),
-                  0 0 6px rgba(220, 65, 65, 0.8),
-                  0 0 8px rgba(220, 65, 65, 0.8),
-                  0 0 10.5px rgba(220, 65, 65, 0.8),
-                  0 0 16.5px rgba(220, 65, 65, 0.8);
-    }
-  }
-
-  @keyframes neonGlow-gold {
-    0% {
-      text-shadow: 0 0 2px rgba(255, 255, 255, 0.8),
-                  0 0 4px rgba(255, 255, 255, 0.8),
-                  0 0 4.5px  rgba(255, 255, 255, 0.8),
-                  0 0 8px  rgba(220, 220, 65, 0.8),
-                  0 0 12.5px  rgba(220, 220, 65, 0.8),
-                  0 0 16.5px  rgba(220, 220, 65, 0.5),
-                  0 0 21px rgba(220, 220, 65, 0.5),
-                  0 0 29px rgba(220, 220, 65, 0.5),
-                  0 0 41.5px rgba(220, 220, 65, 0.5);
-    }
-    100% {
-      text-shadow: 0 0 0.5px rgba(255,255,255,.8),
-                  0 0 1.5px rgba(255,255,255,.8),
-                  0 0 2px rgba(255,255,255,.8),
-                  0 0 4px rgba(220, 220, 65, 0.8),
-                  0 0 6px rgba(220, 220, 65, 0.8),
-                  0 0 8px rgba(220, 220, 65, 0.8),
-                  0 0 10.5px rgba(220, 220, 65, 0.8),
-                  0 0 16.5px rgba(220, 220, 65, 0.8);
-    }
-  }
-
-  @mixin neon-glow-strong($color) {
-    color: var(--K4-neon-text-color);
-    animation: neonGlow-#{$color} 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
-  }
-
-  @mixin neon-glow-soft($textColor, $glowColor) {
-    color: $textColor;
-    text-shadow:
-      0 0 2px #000,
-      0 0 10px $glowColor,
-      0 0 5px $glowColor,
-      0 0 25px $glowColor;
-  }
-
-  .neon-glow-strong-blue {
-    @include neon-glow-strong(blue);
-  }
-
-  .neon-glow-strong-red {
-    @include neon-glow-strong(red);
-  }
-
-  .neon-glow-strong-gold {
-    @include neon-glow-strong(gold);
   }
 
   .neon-glow-soft-blue {

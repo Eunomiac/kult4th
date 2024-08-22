@@ -34,6 +34,32 @@
       text-wrap: pretty;
       hyphens: auto;
     }
+
+    .archetype-example-container {
+      height: auto;
+      line-height: $rem-10;
+      display: flex;
+      gap: 5px;
+      margin-bottom: 5px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .archetype-example-label {
+        font-weight: $font-weight-bold;
+        color: var(--K4-GOLD9);
+        font-style: normal;
+        font-size: $rem-10;
+        line-height: $rem-12;
+      }
+      .archetype-example-list {
+        font-style: normal;
+        color: var(--K4-GOLD7);
+        font-size: $rem-10;
+        line-height: $rem-12;
+      }
+    }
   }
 
   .tooltip {

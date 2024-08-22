@@ -1,0 +1,57 @@
+
+      <div class="archetype-panel archetype-panel-advantages k4-theme-gold">
+        <label class="k4-title section-title">Advantages</label>
+        {{#if data.selStringAdvantage}}
+        <h4>{{{formatForKult data.selStringAdvantage}}}</h4>
+        {{/if}}
+        {{#each data.advantage as |traits attribute|}}
+        <div class="archetype-sub-panel" data-attribute="{{attribute}}">
+          <div class="archetype-sub-panel-title">{{#if (eq attribute "zero")}}None{{else}}{{case "title" attribute}}{{/if}}</div>
+          {{#each traits}}
+          <div class="archetype-trait-container tooltip-trigger" data-trait-type="advantage" data-trait="{{@key}}" data-is-selected="{{isSelected}}" data-is-mandatory="{{isMandatory}}">
+            <div class="icon-container">
+              <div class="icon-mask" style="mask:url({{img}}) no-repeat center;-webkit-mask:url({{img}}) no-repeat center;"></div>
+            </div>
+            <span class="archetype-trait-name">{{name}}</span>
+            <span class="tooltip">{{{formatForKult tooltip}}}</span>
+          </div>
+          {{/each}}
+        </div>
+        {{/each}}
+      </div>
+      <div class="archetype-panel archetype-panel-disadvantages k4-theme-red">
+        <label class="k4-title section-title">Disadvantages</label>
+        {{#if data.selStringDisadvantage}}
+        <h4>{{{formatForKult data.selStringDisadvantage}}}</h4>
+        {{/if}}
+        {{#each data.disadvantage}}
+        <div class="archetype-sub-panel {{#if isMandatory}} mandatory{{/if}}">
+          <div class="archetype-trait-container tooltip-trigger" data-trait-type="disadvantage" data-trait="{{@key}}" data-is-selected="{{isSelected}}" data-is-mandatory="{{isMandatory}}">
+            <div class="icon-container">
+              <div class="icon-mask" style="mask:url({{img}}) no-repeat center;-webkit-mask:url({{img}}) no-repeat center;"></div>
+            </div>
+            <span class="archetype-trait-name">{{name}}</span>
+            <span class="tooltip">{{{formatForKult tooltip}}}</span>
+          </div>
+        </div>
+        {{/each}}
+        <button class="archetype-more-button more-disadvantages">More ▶</button>
+      </div>
+      <div class="archetype-panel archetype-panel-darksecrets k4-theme-dark">
+        <label class="k4-title section-title">Dark Secrets</label>
+        {{#if data.selStringDarkSecret}}
+        <h4>{{{formatForKult data.selStringDarkSecret}}}</h4>
+        {{/if}}
+        {{#each data.darksecret}}
+        <div class="archetype-sub-panel {{#if isMandatory}} mandatory{{/if}}">
+          <div class="archetype-trait-container tooltip-trigger" data-trait-type="darksecret" data-trait="{{@key}}" data-is-selected="{{isSelected}}" data-is-mandatory="{{isMandatory}}">
+            <div class="icon-container">
+              <div class="icon-mask" style="mask:url({{img}}) no-repeat center;-webkit-mask:url({{img}}) no-repeat center;"></div>
+            </div>
+            <span class="archetype-trait-name">{{name}}</span>
+            <span class="tooltip">{{{formatForKult tooltip}}}</span>
+          </div>
+        </div>
+        {{/each}}
+        <button class="archetype-more-button more-dark-secrets">More ▶</button>
+      </div>

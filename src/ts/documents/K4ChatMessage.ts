@@ -241,7 +241,7 @@ const CHILD_TIMELINES = {
           yoyo: true,
           duration: 0.5,
           ease: "power2.inOut"
-      }, "-=25%")
+      }, "<25%")
       .fromTo(attrFlare$, {
         y: -100,
         scale: 0.64,
@@ -588,7 +588,7 @@ const CHILD_TIMELINES = {
           textShadow: `0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}`
         }, 0)
         .to(msgOutcomeMain, {filter: "saturate(0.25)", color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 12.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.5), 0 0 21px rgba(220, 220, 65, 0.5), 0 0 29px rgba(220, 220, 65, 0.5), 0 0 41.5px rgba(220, 220, 65, 0.5)", duration: 1, onComplete() {
-          msgOutcomeMain.addClass("neon-glow-strong-gold");
+          msgOutcomeMain.addClass("neon-glow-animated-gold");
           msgOutcomeMain.attr("style", "color: rgb(255, 255, 255); visibility: visible; filter: saturate(0.45)");
         }}, 0)
         .to(msgOutcomeSub, {color: C.Colors.GOLD9, textShadow: "none", duration: 1}, 0)
@@ -640,7 +640,7 @@ const CHILD_TIMELINES = {
           textShadow: `0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}`
         }, 0)
         .to(msgOutcomeMain, {color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5)", duration: 1, onComplete() {
-          msgOutcomeMain.addClass("neon-glow-strong-red");
+          msgOutcomeMain.addClass("neon-glow-animated-red");
           msgOutcomeMain.attr("style", "color: rgb(255, 255, 255); visibility: visible");
         }}, 0)
         .to(msgOutcomeSub, {color: C.Colors.RED9, textShadow: "none", duration: 1}, 0)
@@ -804,7 +804,7 @@ class K4ChatMessage extends ChatMessage {
 
     // Register a hook to run when a chat message is rendered
     Hooks.on("renderChatMessage", async (message: K4ChatMessage, html) => {
-      kLog.log(`RENDERING ${message.isLastMessage ? "LAST " : ""}CHAT MESSAGE`, message);
+      // kLog.log(`RENDERING ${message.isLastMessage ? "LAST " : ""}CHAT MESSAGE`, message);
       // Apply custom CSS classes to the chat message based on its flags
       message.applyFlagCSSClasses(html);
 
@@ -831,15 +831,15 @@ class K4ChatMessage extends ChatMessage {
     // if (!this.isAnimated) { return Promise.resolve(undefined); }
     // Return a promise that checks every 250ms for _animationTimeline and resolves when it is defined.
     return new Promise((resolve, reject) => {
-      kLog.display("Awaiting Timeline Promise...");
+      // kLog.display("Awaiting Timeline Promise...");
       const intervalId = setInterval(() => {
         if (this.animationTimeline) {
-          kLog.display("Timeline Promise Resolved!", {timeline: this.animationTimeline});
+          // kLog.display("Timeline Promise Resolved!", {timeline: this.animationTimeline});
           clearInterval(intervalId); // Stop checking
           clearTimeout(timeoutId); // Clear the timeout
           resolve(); // Resolve the promise
         }
-        kLog.display("Awaiting Timeline Promise...", {timeline: this.animationTimeline})
+        // kLog.display("Awaiting Timeline Promise...", {timeline: this.animationTimeline})
       }, 250);
 
       // Set a timeout to reject the promise after 10 seconds
@@ -851,24 +851,24 @@ class K4ChatMessage extends ChatMessage {
   }
   get animationsPromise(): Promise<void> {
     if (!this.isAnimated) {
-      kLog.display("Message isn't animated: Resolving.");
+      // kLog.display("Message isn't animated: Resolving.");
       return Promise.resolve();
     }
 
     return new Promise((resolve) => {
-      kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
+      // kLog.display("Awaiting Timeline", {message: this, timelinePromise: this.timelinePromise});
       void this.timelinePromise.then(() => {
-        kLog.display("Timeline Promise Resolved!");
+        // kLog.display("Timeline Promise Resolved!");
         const timeline = this.animationTimeline;
         if (!timeline) { return undefined; }
         const labelTime = timeline.labels.revealed;
         const watchLabel = () => {
           if (timeline.time() >= labelTime) {
-            kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
+            // kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);
             resolve();
             return undefined;
           }
-          kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
+          // kLog.display(`Awaiting Message Animation (timeline.time = ${timeline.time()})...`);
           setTimeout(watchLabel, 250);
         };
         watchLabel();

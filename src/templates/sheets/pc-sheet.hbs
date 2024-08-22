@@ -42,7 +42,7 @@
           {{#if actor.system.edges.value}}
           {{> "systems/kult4th/templates/components/edges-blade-container.hbs" value=actor.system.stability.value}}
           <span class="edges-header">Edges</span>
-          <span class="edges-count neon-glow-strong-blue">{{actor.system.edges.value}}</span>
+          <span class="edges-count neon-glow-animated-blue">{{actor.system.edges.value}}</span>
           <span class="edges-source">{{actor.system.edges.sourceName}}</span>
           {{#each actor.system.activeEdges}}
           {{> "systems/kult4th/templates/components/hover-strip.hbs" hoverStrip}}

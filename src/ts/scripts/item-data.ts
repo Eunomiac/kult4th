@@ -723,7 +723,7 @@ const ITEM_DATA: {
           "intro": "You have placed a number of moles in groups or organizations of interest to you, such as business competitors, governments, or cults.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -920,7 +920,7 @@ const ITEM_DATA: {
           "intro": "You are being watched over and protected by a group of mysterious people who intend on keeping you alive for their own obscure purposes.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["watchers"],
           "holdText": "The GM can spend Hold on the Watchers' behalf to let them make a Move against you."
         },
         "currentHold": 0,
@@ -1205,7 +1205,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1273,7 +1273,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1381,7 +1381,7 @@ const ITEM_DATA: {
           "intro": "#>text-center>Your body and mind are as one.<#",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1448,7 +1448,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1898,7 +1898,7 @@ const ITEM_DATA: {
           "intro": "You are bound to an extradimensional entity whose powers you can draw upon. Explain what you think it is when you take this Advantage.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -1968,7 +1968,7 @@ const ITEM_DATA: {
           "intro": "#>text-center>You are able to understand and control animals.<#",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2038,7 +2038,7 @@ const ITEM_DATA: {
           "intro": "You are deft at running and jumping, even over difficult terrain.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2381,7 +2381,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2448,7 +2448,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2519,7 +2519,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2683,7 +2683,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2811,7 +2811,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -2882,7 +2882,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3151,7 +3151,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3271,7 +3271,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3390,7 +3390,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3567,7 +3567,7 @@ const ITEM_DATA: {
           "intro": "You have contacts among the homeless, crazies, and other societal outsiders and outcasts.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -3700,7 +3700,7 @@ const ITEM_DATA: {
           "intro": "You're an academic authority in your field and a well-known name in newspapers, debate shows, and scientific journals.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4120,7 +4120,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4191,7 +4191,7 @@ const ITEM_DATA: {
           "intro": "You have attended one of the world's most prestigious institutes of higher learning and have acquired contacts with power and influence.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4260,7 +4260,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -4540,7 +4540,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5069,7 +5069,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5385,7 +5385,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5455,7 +5455,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5667,7 +5667,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5791,7 +5791,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -5860,7 +5860,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["visions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6095,7 +6095,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6210,7 +6210,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6282,7 +6282,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6351,7 +6351,7 @@ const ITEM_DATA: {
           "intro": "There is something about you that reminds your former servants of what you truly are.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -6468,7 +6468,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": "The GM can spend Hold at any time to make a hard or soft Move."
         },
         "currentHold": 0,
@@ -6644,7 +6644,7 @@ const ITEM_DATA: {
           "intro": "You have an innate ability to perceive Kirlian auras and sense the presence of magic.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7032,7 +7032,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["questions"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7102,7 +7102,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7348,7 +7348,7 @@ const ITEM_DATA: {
           "intro": "You radiate an aura that makes people trust you and seek your company.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7546,7 +7546,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7700,7 +7700,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -7903,7 +7903,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8233,7 +8233,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8305,7 +8305,7 @@ const ITEM_DATA: {
           "intro": "#>text-center>You can consciously make people fall in love with you.<#",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8424,7 +8424,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8492,7 +8492,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -8732,7 +8732,7 @@ const ITEM_DATA: {
           "intro": "",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["options"],
           "holdText": ""
         },
         "currentHold": 0,
@@ -9809,7 +9809,7 @@ const ITEM_DATA: {
           "intro": "You refuse to believe in anything not confirmed as fact by modern science, even when it is right in front of you.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["gmoptions"],
           "holdText": ""
         },
         "currentHold": 0
@@ -10135,7 +10135,7 @@ const ITEM_DATA: {
           "intro": "Your fate has already been sealed. Perhaps you're dying from a disease, been promised as the sacrificial offering to a forgotten god, or you've sold your soul to some entity, waiting to drag you off to hell when your time is up. When you finally run out of Time, you meet your ultimate fate.",
           "trigger": "",
           "outro": "",
-          "listRefs": [],
+          "listRefs": ["gmoptions"],
           "effects": [{
             "parentData": K4ActiveEffect.BuildEffectData({}),
             "changeData": [

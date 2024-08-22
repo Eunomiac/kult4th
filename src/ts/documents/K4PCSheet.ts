@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import C, {K4Attribute, StabilityConditions, K4ConditionType, K4Stability, K4Archetype, ArchetypeTier, Archetypes} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
-import {Dragger, InertiaPlugin} from "../libraries.js";
+import {Dragger, InertiaPlugin, CustomEase, CustomWiggle} from "../libraries.js";
 import K4Actor, {K4ActorType, K4CharGenPhase} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4Dialog, {PromptInputType} from "./K4Dialog.js";
@@ -32,11 +32,11 @@ namespace Archetype {
     img: string,
     tier: T,
     [K4ItemType.advantage]: Partial<Record<K4Attribute, Record<string, TraitData>>>,
-    selStringAdvantage: string,
+    selStringAdvantage: Maybe<string>,
     [K4ItemType.disadvantage]: Record<string, TraitData>,
-    selStringDisadvantage: string,
+    selStringDisadvantage: Maybe<string>,
     [K4ItemType.darksecret]: Record<string, TraitData>,
-    selStringDarkSecret: string,
+    selStringDarkSecret: Maybe<string>,
     isSelected: boolean
   }
 
@@ -104,6 +104,22 @@ function getNormalizedXPos(x: number, offset = 500): number {
   return wrapXPos(x + offset) / PIXELS_PER_ROTATION;
 }
 
+function revealAndReturn(elem$: JQuery) {
+  elem$.css({
+    opacity: 0,
+    visibility: "visible"
+  });
+  return elem$;
+}
+
+function hideAndReturn(elem$: JQuery) {
+  elem$.css({
+    opacity: 0,
+    visibility: "hidden"
+  });
+  return elem$;
+}
+
 Object.assign(globalThis, {wrapIndex, wrapRotation, wrapXPos,
   getArchetypeCount,
   getArchetypeFromIndex,
@@ -112,7 +128,9 @@ Object.assign(globalThis, {wrapIndex, wrapRotation, wrapXPos,
   getXPosFromYRot,
   getXPosFromIndex,
   getIndexFromXPos,
-  getNormalizedDistanceFromSelected
+  getNormalizedDistanceFromSelected,
+  revealAndReturn,
+  hideAndReturn
 });
 
 export function getYRotFromIndex(index: number) {
@@ -167,7 +185,7 @@ export function getNormalizedDistanceFromSelected(index: number, selected: numbe
   return U.clampNum(normalizedDistance, [0, 1]);
 }
 
-function getDistanceStyles(index: number, selected: number) {
+function getDistanceStyles(index: number, selected: number): Record<Key, string|number> {
   const scaleFactor = getNormalizedDistanceFromSelected(index, selected);
 
   const maxBlur = 5; const minBlur = 0;
@@ -198,546 +216,541 @@ function getElementFromIndex(context$: JQuery, index: number) {
   return getElementFromArchetype(context$, archetype);
 }
 
+const updateDebugInfo = (carousel$: JQuery, x: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!K4DebugDisplay.IS_DEBUGGING) { return; }
+  const newIndex = getIndexFromXPos(x);
+  const archetype = getArchetypeFromIndex(newIndex);
+  const elementIndex = carousel$.find(`[data-archetype=${archetype}]`).data("index") as number;
+  const selArchetypeIndex = getIndexOfArchetype(archetype);
 
+  K4DebugDisplay.updateArchetypeInfo(archetype, selArchetypeIndex, newIndex, elementIndex);
+};
 
 
 const ANIMATIONS = {
-  async revealBackground(carouselScene$: JQuery, isInstant = false) {
+  // async revealBackground(carouselScene$: JQuery, revealCarouselTimeline?: gsap.core.Timeline) {
 
-    const sheet$ = carouselScene$.closest(".k4-actor-sheet");
-    const container$ = carouselScene$.closest(".pc-initialization");
-    const bgContainer$ = sheet$.find(".pc-initialization-bg");
-    const mid$ = bgContainer$.find(".cityscape-mid");
-    const clouds$ = bgContainer$.find(".cloud-bg");
-    const fore$ = bgContainer$.find(".cityscape-fore");
+  //   const sheet$ = carouselScene$.closest(".k4-actor-sheet");
+  //   const container$ = carouselScene$.closest(".pc-initialization");
+  //   const bgContainer$ = sheet$.find(".pc-initialization-bg");
+  //   const mid$ = bgContainer$.find(".cityscape-mid");
+  //   const clouds$ = bgContainer$.find(".cloud-bg");
+  //   const fore$ = bgContainer$.find(".cityscape-fore");
 
-    // For immediate user feedback, fade in the bg container and the sheet immediately.
-    U.gsap.to([sheet$, bgContainer$], {
-      autoAlpha: 1,
-      duration: isInstant ? 0 : 0.25,
-      ease: "power2.in"
-    });
+  //   // For immediate user feedback, fade in the bg container and the sheet immediately.
+  //   U.gsap.to([sheet$, bgContainer$], {
+  //     autoAlpha: 1,
+  //     duration: revealCarouselTimeline ? 0.25 : 0,
+  //     ease: "power2.in"
+  //   });
 
-    const cloudVideo = clouds$[0] as HTMLVideoElement;
+  //   const cloudVideo = clouds$[0] as HTMLVideoElement;
 
-    return new Promise<boolean>((resolve) => {
+  //   return new Promise<boolean>((resolve) => {
 
-      // Build the timeline, including a resolve step near the end so the next animation can blend in nicely.
-      const tl = U.gsap.timeline({paused: true, defaults: {ease: "power2.inOut"}})
-      .fromTo(clouds$, {autoAlpha: 0}, {autoAlpha: 0.75, duration: 2}, 0)
-      .fromTo(fore$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 1)
-      .fromTo(mid$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 2)
-      .fromTo(fore$, {filter: "blur(20px) brightness(0)"}, {filter: "blur(1px) brightness(0.8)", duration: 6}, 0)
-      .fromTo(fore$, {y: 250, scale: 1}, {y: 150, scale: 1.15, ease: "expoScale(1, 1.15, power2.inOut)", duration: 6}, "<")
-      .fromTo(mid$, {y: 200, scale: 0.85}, {y: 150, scale: 1, ease: "expoScale(0.85, 1, power2.inOut)", duration: 6}, "<")
-      .fromTo(mid$, {filter: "blur(40px) brightness(0)"}, {filter: "blur(2px) brightness(1)", duration: 6}, "<")
-      .call(() => { resolve(true) }, [], ">");
+  //     // Build the timeline, including a resolve step near the end so the next animation can blend in nicely.
+  //     const tl = U.gsap.timeline({paused: true, defaults: {ease: "power2.inOut"}})
+  //     .fromTo(clouds$, {autoAlpha: 0}, {autoAlpha: 0.75, duration: 2}, 0)
+  //     .fromTo(fore$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 1)
+  //     .fromTo(mid$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 2)
+  //     .fromTo(fore$, {filter: "blur(20px) brightness(0)"}, {filter: "blur(1px) brightness(0.8)", duration: 6}, 0)
+  //     .fromTo(fore$, {y: 250, scale: 1}, {y: 150, scale: 1.15, ease: "expoScale(1, 1.15, power2.inOut)", duration: 6}, "<")
+  //     .fromTo(mid$, {y: 200, scale: 0.85}, {y: 150, scale: 1, ease: "expoScale(0.85, 1, power2.inOut)", duration: 6}, "<")
+  //     .fromTo(mid$, {filter: "blur(40px) brightness(0)"}, {filter: "blur(2px) brightness(1)", duration: 6}, "<");
 
-      // Function to start the animation
-      const startAnimation = () => {
-        void cloudVideo.play();
-        if (isInstant) {
-          tl.progress(1);
-          resolve(true);
-          return;
-        }
-        tl.play();
-      };
+  //     if (revealCarouselTimeline) {
+  //       tl.add(revealCarouselTimeline, "<25%");
+  //     }
 
-      // Check if video is already loaded
-      if (cloudVideo.readyState >= 3) {
-        startAnimation();
-      } else {
-        // Wait for the video to be ready
-        cloudVideo.addEventListener('canplay', startAnimation, { once: true });
-        // Fallback in case the video fails to load
-        cloudVideo.addEventListener('error', startAnimation, { once: true });
-      }
-    });
-  },
-  async revealCarousel(carouselScene$: JQuery) {
+  //     tl.call(() => { resolve(true) }, [], ">");
 
-    const container$ = carouselScene$.closest(".pc-initialization");
-    const sheet$ = container$.closest(".k4-actor-sheet");
-    const [_a, _b, actorID] = sheet$.attr("id")!.split("-");
-    const actor = game.actors.get(actorID) as K4Actor;
-    const selArchetype = actor.archetype ?? K4Archetype.academic;
-    const selIndex = getIndexOfArchetype(selArchetype);
-    const farthestIndex = wrapIndex(selIndex + getArchetypeCount() / 2);
-    const sheetHeader$ = sheet$.find(".window-header");
-    const sheetResizeHandle$ = sheet$.find(".window-resizable-handle");
-    const attributesPanel$ = container$.find(".archetype-panel.attributes");
-    const descriptionPanel$ = container$.find(".archetype-panel.description");
-    const namePanel$ = container$.find(".archetype-panel.actor-name");
-    const items$ = carouselScene$.find(".archetype-carousel-item");
+  //     // Function to start the animation
+  //     const startAnimation = () => {
+  //       void cloudVideo.play();
+  //       if (!revealCarouselTimeline) {
+  //         tl.progress(1);
+  //         resolve(true);
+  //         return;
+  //       }
+  //       tl.play();
+  //     };
 
-    kLog.log(`selArchetype: ${selArchetype}, selIndex: ${selIndex}, farthestIndex: ${farthestIndex}`);
+  //     // Check if video is already loaded
+  //     if (cloudVideo.readyState >= 3) {
+  //       startAnimation();
+  //     } else {
+  //       // Wait for the video to be ready
+  //       cloudVideo.addEventListener('canplay', startAnimation, { once: true });
+  //       // Fallback in case the video fails to load
+  //       cloudVideo.addEventListener('error', startAnimation, { once: true });
+  //     }
+  //   });
+  // },
+  // // async revealCarousel(carouselScene$: JQuery) {
 
-    sheetHeader$.css("display", "none");
-    sheetResizeHandle$.css("display", "none");
+  // //   const container$ = carouselScene$.closest(".pc-initialization");
+  // //   const sheet$ = container$.closest(".k4-actor-sheet");
+  // //   const [_a, _b, actorID] = sheet$.attr("id")!.split("-");
+  // //   const actor = game.actors.get(actorID) as K4Actor<K4ActorType.pc>;
+  // //   const selArchetype = actor.archetype ?? K4Archetype.academic;
+  // //   const selIndex = getIndexOfArchetype(selArchetype);
+  // //   const farthestIndex = wrapIndex(selIndex + getArchetypeCount() / 2);
+  // //   const sheetHeader$ = sheet$.find(".window-header");
+  // //   const sheetResizeHandle$ = sheet$.find(".window-resizable-handle");
+  // //   const attributesPanel$ = container$.find(".archetype-panel.attributes");
+  // //   const descriptionPanel$ = container$.find(".archetype-panel.description");
+  // //   const archetypeExamples$ = container$.find(".archetype-example-list");
+  // //   const namePanel$ = container$.find(".archetype-panel.actor-name");
+  // //   const items$ = carouselScene$.find(".archetype-carousel-item");
 
-    return new Promise<boolean>((resolve) => {
+  // //   kLog.log(`selArchetype: ${selArchetype}, selIndex: ${selIndex}, farthestIndex: ${farthestIndex}`);
 
-      if (CONFIG.K4.isCharGenInitialized) {
-        [
-          sheet$,
-          container$,
-          carouselScene$,
-          items$,
-          attributesPanel$,
-          namePanel$,
-          descriptionPanel$
-        ].forEach((el) => {
-          el.css("visibility", "visible");
-        });
-        void ANIMATIONS.revealBackground(carouselScene$, true);
-        resolve(true);
-        return;
-      }
+  // //   sheetHeader$.css("display", "none");
+  // //   sheetResizeHandle$.css("display", "none");
 
-      CONFIG.K4.isCharGenInitialized = true;
+  // //   if (CONFIG.K4.isCharGenInitialized) {
+  // //     $([
+  // //       sheet$,
+  // //       container$,
+  // //       carouselScene$,
+  // //       archetypeExamples$,
+  // //       items$,
+  // //       attributesPanel$,
+  // //       namePanel$,
+  // //       descriptionPanel$
+  // //     ]).css("visibility", "visible");
+  // //     void ANIMATIONS.revealBackground(carouselScene$);
+  // //     actor.sheet.updateArchetypeExamples(container$);
+  // //     return;
+  // //   }
 
-      const tl = U.gsap.timeline({paused: true/* , onComplete() { resolve(true) } */})
-        .from(carouselScene$, {
-          autoAlpha: 0,
-          y: 0,
-          scale: 0.7,
-          filter: "blur(100px)",
-          ease: "power3.in",
-          duration: 1
-        }, 0)
-        .from(container$, {
-          autoAlpha: 0,
-          filter: "blur(10px)",
-          backgroundPosition: "50% 620px, 50% 630px",
-          duration: 0.5,
-          ease: "none"
-        }, 0)
-        .from(items$, {
-          autoAlpha: 0,
-          y: 0,
-          scale: 1,
-          ease: "power2",
-          duration: 2,
-          grid: "auto",
-          stagger: U.distributeByPosition({
-            each: 0.25,
-            from: farthestIndex,
-            axis: "y",
-            ease: "sine.in"
-          })
-        })
-        .from([
-          attributesPanel$,
-          namePanel$,
-          descriptionPanel$
-        ], {
-          autoAlpha: 0,
-          y: 200,
-          ease: "power2",
-          duration: 1,
-          stagger: 0.2
-        }, "<+50%")
-        .call(() => { resolve(true) }, [], "<75%");
+  // //   const tl = U.gsap.timeline()
+  // //     .from(carouselScene$, {
+  // //       autoAlpha: 0,
+  // //       y: 0,
+  // //       scale: 0.7,
+  // //       filter: "blur(100px)",
+  // //       ease: "power3.in",
+  // //       duration: 1
+  // //     }, 0)
+  // //     .from(container$, {
+  // //       autoAlpha: 0,
+  // //       filter: "blur(10px)",
+  // //       backgroundPosition: "50% 620px, 50% 630px",
+  // //       duration: 0.5,
+  // //       ease: "none"
+  // //     }, 0)
+  // //     .from(items$, {
+  // //       autoAlpha: 0,
+  // //       y: 0,
+  // //       scale: 1,
+  // //       ease: "power2",
+  // //       duration: 1,
+  // //       delay(this: gsap.core.Timeline, index: number) {
+  // //         const MAX_DELAY = this.duration();
+  // //         const STAGGER_SHIFT = MAX_DELAY / getArchetypeCount() / 2;
+  // //         const nextDistRatio = 1 - getNormalizedDistanceFromSelected(wrapIndex(index + 1), selIndex);
+  // //         const thisDistRatio = 1 - getNormalizedDistanceFromSelected(index, selIndex);
+  // //         const distRatio = thisDistRatio + (nextDistRatio > thisDistRatio ? STAGGER_SHIFT : 0);
+  // //         const delay = U.gsap.utils.mapRange(0, 1, 0, MAX_DELAY, distRatio);
+  // //         kLog.log(`[K4PCSheet] Delay (MAX: ${MAX_DELAY}): index '${index}' -> ${nextDistRatio > thisDistRatio ? `[STAGGER: '${STAGGER_SHIFT}']` : ""} distRatio '${distRatio}' -> delay '${delay}'`);
+  // //         return delay;
+  // //       }
+  // //     })
+  // //     .from([
+  // //       attributesPanel$,
+  // //       namePanel$,
+  // //       descriptionPanel$
+  // //     ], {
+  // //       autoAlpha: 0,
+  // //       y: 200,
+  // //       ease: "power2",
+  // //       duration: 1,
+  // //       stagger: 0.2
+  // //     }, 0)
+  // //     .call(() => { resolve(true) }, [], "<75%");
 
-      ANIMATIONS.revealBackground(carouselScene$).then(() => {
-        tl.play();
-      }).catch(() => {
-        resolve(false);
-      });
-    })
-  },
-  archetypeTimeline(archetype$: JQuery, actor: K4Actor<K4ActorType.pc>) {
-    const container$ = archetype$.closest(".pc-initialization");
-    const actorSheet$ = container$.closest(".k4-actor-sheet");
-    const archetypeImg$ = archetype$.find(".archetype-carousel-img");
-    const archetypeThe$ = archetype$.find(".archetype-carousel-the");
-    const archetypeName$ = archetype$.find(".archetype-carousel-name");
-    const archetypeDescription$ = archetype$.find(".archetype-description");
+  // //     ANIMATIONS.revealBackground(carouselScene$, tl).then(() => {
+  // //       tl.play();
+  // //     }).catch(() => {
+  // //       resolve(false);
+  // //     });
+  // //   // })
+  // // },
+  // archetypeStyleTimeline(archetype$: JQuery, actor: K4Actor<K4ActorType.pc>) {
+  //   const container$ = archetype$.closest(".pc-initialization");
+  //   const actorSheet$ = container$.closest(".k4-actor-sheet");
+  //   const archetypeImg$ = archetype$.find(".archetype-carousel-img");
+  //   const archetypeThe$ = archetype$.find(".archetype-carousel-the");
+  //   const archetypeName$ = archetype$.find(".archetype-carousel-name");
+  //   const archetypeDescription$ = archetype$.find(".archetype-description");
 
-    const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
-    // <div class="archetype-panels" data-archetype="{{case "lower" archetype}}">
-    const archetypePanels$ = container$.find(`.archetype-panels[data-archetype="${archetype}"]`);
-    const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
-    const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
-    const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
-    const archetypeNotes$ = archetypePanels$.find(".archetype-panel-notes");
-    const archetypeExamples$ = container$.find(".archetype-example-list");
+  //   const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
+  //   // <div class="archetype-panels" data-archetype="{{case "lower" archetype}}">
+  //   const archetypePanels$ = container$.find(`.archetype-panels[data-archetype="${archetype}"]`);
+  //   const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
+  //   const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
+  //   const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
+  //   const archetypeNotes$ = archetypePanels$.find(".archetype-panel-notes");
+  //   const archetypeExamples$ = container$.find(".archetype-example-list");
 
-    // Split the description into individual lines
-    const splitDescription = new SplitText(archetypeDescription$, { type: "lines" });
-    archetypeThe$.css("visibility", "visible");
-    archetypeName$.css("visibility", "visible");
-    archetypePanels$.css("visibility", "visible");
-    archetypeDescription$.css("visibility", "visible");
-    archetypeAdvantages$.css("visibility", "visible");
-    archetypeDisadvantages$.css("visibility", "visible");
-    archetypeDarkSecrets$.css("visibility", "visible");
+  //   // Split the description into individual lines
+  //   const splitDescription = new SplitText(archetypeDescription$, { type: "lines" });
+  //   archetypeThe$.css("visibility", "visible");
+  //   archetypeName$.css("visibility", "visible");
+  //   archetypePanels$.css("visibility", "visible");
+  //   archetypeDescription$.css("visibility", "visible");
+  //   archetypeAdvantages$.css("visibility", "visible");
+  //   archetypeDisadvantages$.css("visibility", "visible");
+  //   archetypeDarkSecrets$.css("visibility", "visible");
 
-    // Prepare the example strings for when this archetype is selected
-    const archData = Archetypes[archetype ?? K4Archetype.academic];
+  //   // Prepare the example strings for when this archetype is selected
+  //   const archData = Archetypes[archetype ?? K4Archetype.academic];
 
-    // Assign listeners to each of the trait elements
-    [
-      archetypeAdvantages$,
-      archetypeDisadvantages$,
-      archetypeDarkSecrets$
-    ].forEach((container) => {
-      container.find(".archetype-trait-container").each((_i, cont) => {
-        const cont$ = $(cont);
-        const overlay$ = cont$.next(".overlay");
-        const trait = cont$.attr("data-trait")!;
-        const isSelected = cont$.attr("data-is-selected") === "true";
-        const isMandatory = cont$.attr("data-is-mandatory") === "true";
+  //   // Assign listeners to each of the trait elements
+  //   [
+  //     archetypeAdvantages$,
+  //     archetypeDisadvantages$,
+  //     archetypeDarkSecrets$
+  //   ].forEach((container) => {
+  //     container.find(".archetype-trait-container").each((_i, cont) => {
+  //       const cont$ = $(cont);
+  //       const overlay$ = cont$.next(".overlay");
+  //       const trait = cont$.attr("data-trait")!;
+  //       const isSelected = cont$.attr("data-is-selected") === "true";
+  //       const isMandatory = cont$.attr("data-is-mandatory") === "true";
 
-        const overlayTl = U.gsap.timeline({paused: true});
+  //       const overlayTl = U.gsap.timeline({paused: true});
 
-        overlayTl
-          .addLabel("unselected")
-          .fromTo(overlay$, {width: 0}, {
-            width: 300,
-            duration: 2,
-            ease: "slow",
-            onComplete(this: gsap.core.Timeline) {
-              if (!isSelected) {
-                void actor.charGenSelect(trait);
-              }
-              overlayTl.seek("selected");
-            },
-            onReverseComplete(this: gsap.core.Timeline) {
-              if (isSelected) {
-                void actor.charGenDeselect(trait);
-              }
-              overlayTl.seek("unselected");
-            }
-          }, 0.5)
-          .to(overlay$, {
-            width: 300,
-            duration: 0.5,
-            ease: "none"
-          })
-          .addLabel("selected");
+  //       overlayTl
+  //         .addLabel("unselected")
+  //         .fromTo(overlay$, {width: 0}, {
+  //           width: 300,
+  //           duration: 2,
+  //           ease: "slow",
+  //           onComplete(this: gsap.core.Timeline) {
+  //             if (!isSelected) {
+  //               void actor.charGenSelect(trait);
+  //             }
+  //             overlayTl.seek("selected");
+  //           },
+  //           onReverseComplete(this: gsap.core.Timeline) {
+  //             if (isSelected) {
+  //               void actor.charGenDeselect(trait);
+  //             }
+  //             overlayTl.seek("unselected");
+  //           }
+  //         }, 0.5)
+  //         .to(overlay$, {
+  //           width: 300,
+  //           duration: 0.5,
+  //           ease: "none"
+  //         })
+  //         .addLabel("selected");
 
-        if (isSelected || isMandatory) {
-          overlayTl.seek("selected");
-        }
+  //       if (isSelected || isMandatory) {
+  //         overlayTl.seek("selected");
+  //       }
 
-        let clickTimer: NodeJS.Timeout | null = null;
-        let longPressTriggered = false;
+  //       let clickTimer: NodeJS.Timeout | null = null;
+  //       let longPressTriggered = false;
 
-        cont$.on({
-          mousedown: () => {
-            if (isMandatory) { return; }
-            longPressTriggered = false;
-            clickTimer = setTimeout(() => {
-              longPressTriggered = true;
-            }, 500);
-            if (isSelected) {
-              overlayTl.reverse();
-            } else {
-              overlayTl.play();
-            }
-          },
-          mouseup: () => {
-            if (isMandatory) { return; }
-            if (clickTimer) {
-              clearTimeout(clickTimer);
-              clickTimer = null;
-            }
-            if (overlayTl.isActive()) {
-              if (overlayTl.reversed()) {
-                overlayTl.play();
-              } else {
-                overlayTl.reverse();
-              }
-            }
-          },
-          // click: () => {
-          //   if (isMandatory) { return; }
-          //   if (isSelected) {
-          //     void actor.charGenDeselect(trait);
-          //     kLog.log("[K4PCSheet] deselect", {container: cont, trait$});
-          //   } else {
-          //     kLog.log("[K4PCSheet] select", {container: cont, trait$});
-          //   }
-          // },
-          click: async () => {
-            if (longPressTriggered) { return; }
-            const traitItem = game.items.getName(trait) as Maybe<K4Item>;
-            if (!traitItem) { return; }
-            // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
-            const highestZIndex = Math.max(...$("body").find(".k4-item-sheet").map((_i, sheet) =>
-              U.pInt($(sheet).css("z-index"))
-            ).toArray());
-            actorSheet$.css("z-index", 100);
-            if (!traitItem.sheet.rendered) {
-              traitItem.sheet.render(true);
-              await U.sleep(150);
-            }
-            traitItem.sheet.element.css("z-index", highestZIndex + 1);
-            actorSheet$.css("z-index", 100);
-          }
-        })
-        const trait$ = $(cont).find(".archetype-trait");
-        trait$.on("click", () => {
-          kLog.log("[K4PCSheet] archetypeAdvantages$", {container: cont, trait$});
-        });
-      });
-    });
+  //       cont$.on({
+  //         mousedown: () => {
+  //           if (isMandatory) { return; }
+  //           longPressTriggered = false;
+  //           clickTimer = setTimeout(() => {
+  //             longPressTriggered = true;
+  //           }, 500);
+  //           if (isSelected) {
+  //             overlayTl.reverse();
+  //           } else {
+  //             overlayTl.play();
+  //           }
+  //         },
+  //         mouseup: () => {
+  //           if (isMandatory) { return; }
+  //           if (clickTimer) {
+  //             clearTimeout(clickTimer);
+  //             clickTimer = null;
+  //           }
+  //           if (overlayTl.isActive()) {
+  //             if (overlayTl.reversed()) {
+  //               overlayTl.play();
+  //             } else {
+  //               overlayTl.reverse();
+  //             }
+  //           }
+  //         },
+  //         // click: () => {
+  //         //   if (isMandatory) { return; }
+  //         //   if (isSelected) {
+  //         //     void actor.charGenDeselect(trait);
+  //         //     kLog.log("[K4PCSheet] deselect", {container: cont, trait$});
+  //         //   } else {
+  //         //     kLog.log("[K4PCSheet] select", {container: cont, trait$});
+  //         //   }
+  //         // },
+  //         click: async () => {
+  //           if (longPressTriggered) { return; }
+  //           const traitItem = game.items.getName(trait) as Maybe<K4Item>;
+  //           if (!traitItem) { return; }
+  //           // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
+  //           const highestZIndex = Math.max(...$("body").find(".k4-item-sheet").map((_i, sheet) =>
+  //             U.pInt($(sheet).css("z-index"))
+  //           ).toArray());
+  //           actorSheet$.css("z-index", 100);
+  //           if (!traitItem.sheet.rendered) {
+  //             traitItem.sheet.render(true);
+  //             await U.sleep(150);
+  //           }
+  //           traitItem.sheet.element.css("z-index", highestZIndex + 1);
+  //           actorSheet$.css("z-index", 100);
+  //         }
+  //       })
+  //       const trait$ = $(cont).find(".archetype-trait");
+  //       trait$.on("click", () => {
+  //         kLog.log("[K4PCSheet] archetypeAdvantages$", {container: cont, trait$});
+  //       });
+  //     });
+  //   });
 
-    // Determine minimum and maximum values for distance-based styles
-    const minDistanceStyles = getDistanceStyles(0, 0);
-    const maxDistanceStyles = getDistanceStyles(0, Math.floor(getArchetypeCount() / 2));
+  //   // Determine minimum and maximum values for distance-based styles
+  //   const minDistanceStyles = getDistanceStyles(0, 0);
+  //   const maxDistanceStyles = getDistanceStyles(0, Math.floor(getArchetypeCount() / 2));
 
-    return U.gsap.timeline({paused: true})
-      .addLabel("dark")
-      .fromTo(archetype$, {
-        opacity: maxDistanceStyles.opacity,
-        filter: maxDistanceStyles.filter,
-      }, {
-        opacity: minDistanceStyles.opacity,
-        filter: minDistanceStyles.filter,
-        duration: 1,
-        ease: "power2"
-      })
-      .addLabel("light")
-      .set(archetype$, {filter: "none"})
-      .set(archetypeImg$, {filter: "brightness(1) contrast(1)"})
-      .fromTo(archetype$, {
-        scale: 1,
-        opacity: 1
-      }, {
-        scale: 1.15,
-        opacity: 1,
-        duration: 2,
-        ease: "power2"
-      })
-      .fromTo(archetypeImg$, {
-      }, {
-        filter: "brightness(1.25) saturate(1)",
-        duration: 2,
-        ease: "power2"
-      }, "<")
-      .fromTo([
-        archetypeThe$,
-        archetypeName$,
-        ...splitDescription.lines
-      ], {
-        autoAlpha: 0,
-        skewX: -65,
-        filter: "blur(15px)"
-      }, {
-        autoAlpha: 1,
-        skewX: 0,
-        filter: "blur(0px)",
-        ease: "power2",
-        duration: 2,
-        stagger: {
-          each: 0.25
-        },
-        onStart() {
-          CONFIG.K4.charGenIsShowing = archetype ?? null;
-          kLog.log("[K4PCSheet] archetypeExamples$", {archetypeExamples$, archData});
-          archetypeExamples$.each((_i, elem) => {
-            const target = $(elem).attr("data-target") as Maybe<string>;
-            kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, archData});
-            if (target) {
-              const example = U.getProp<string[]>(archData, target);
-              kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
-              if (example) {
-                $(elem).text(example.join(", "));
-              }
-            }
-          });
-        }
-      }, "<")
-      .fromTo([
-        archetypeAdvantages$,
-        archetypeDisadvantages$,
-        archetypeDarkSecrets$,
-        archetypeNotes$
-      ], {
-        autoAlpha: 0,
-        y: 200
-      }, {
-        autoAlpha: 1,
-        y: 0,
-        ease: "power2",
-        duration: 2,
-        stagger: {
-          amount: 0.25
-        }
-      }, "<")
-      .addLabel("selected");
-  },
-  async archetypeCarouselTimeline(carouselScene$: JQuery, itemWidth: number, actor: K4Actor): Promise<gsap.core.Timeline> {
+  //   return U.gsap.timeline({paused: true})
+  //     .addLabel("dark")
+  //     .fromTo(archetype$, {
+  //       opacity: maxDistanceStyles.opacity,
+  //       filter: maxDistanceStyles.filter,
+  //     }, {
+  //       opacity: minDistanceStyles.opacity,
+  //       filter: minDistanceStyles.filter,
+  //       duration: 1,
+  //       ease: "power2"
+  //     })
+  //     .addLabel("light")
+  //     .set(archetype$, {filter: "none"})
+  //     .set(archetypeImg$, {filter: "brightness(1) contrast(1)"})
+  //     .fromTo(archetype$, {
+  //       scale: 1,
+  //       opacity: 1
+  //     }, {
+  //       scale: 1.15,
+  //       opacity: 1,
+  //       duration: 2,
+  //       ease: "power2"
+  //     })
+  //     .fromTo(archetypeImg$, {
+  //     }, {
+  //       filter: "brightness(1.25) saturate(1)",
+  //       duration: 2,
+  //       ease: "power2"
+  //     }, "<")
+  //     .fromTo([
+  //       archetypeThe$,
+  //       archetypeName$,
+  //       ...splitDescription.lines
+  //     ], {
+  //       autoAlpha: 0,
+  //       skewX: -65,
+  //       filter: "blur(15px)"
+  //     }, {
+  //       autoAlpha: 1,
+  //       skewX: 0,
+  //       filter: "blur(0px)",
+  //       ease: "power2",
+  //       duration: 2,
+  //       stagger: {
+  //         each: 0.25
+  //       },
+  //       onStart() {
+  //         CONFIG.K4.charGenIsShowing = archetype ?? null;
+  //         kLog.log("[K4PCSheet] archetypeExamples$", {archetypeExamples$, archData});
+  //         archetypeExamples$.each((_i, elem) => {
+  //           const target = $(elem).attr("data-target") as Maybe<string>;
+  //           kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, archData});
+  //           if (target) {
+  //             const example = U.getProp<string[]>(archData, target);
+  //             kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
+  //             if (example) {
+  //               $(elem).text(example.join(", "));
+  //             }
+  //           }
+  //         });
+  //       }
+  //     }, "<")
+  //     .fromTo([
+  //       archetypeAdvantages$,
+  //       archetypeDisadvantages$,
+  //       archetypeDarkSecrets$,
+  //       archetypeNotes$
+  //     ], {
+  //       autoAlpha: 0,
+  //       y: 200
+  //     }, {
+  //       autoAlpha: 1,
+  //       y: 0,
+  //       ease: "power2",
+  //       duration: 2,
+  //       stagger: {
+  //         amount: 0.25
+  //       }
+  //     }, "<")
+  //     .addLabel("selected");
+  // },
+  // async archetypeCarouselTimeline(carouselScene$: JQuery, itemWidth: number, actor: K4Actor): Promise<gsap.core.Timeline> {
 
-    const container$ = carouselScene$.closest(".pc-initialization");
-    const carousel$ = carouselScene$.find(".archetype-carousel");
-    const items$ = carousel$.find(".archetype-carousel-item");
-    const draggerContainer$ = container$.find(".archetype-carousel-dragger");
-    const dragger$ = draggerContainer$.find(".archetype-carousel-drag-handle");
+  //   const container$ = carouselScene$.closest(".pc-initialization");
+  //   const carousel$ = carouselScene$.find(".archetype-carousel");
+  //   const items$ = carousel$.find(".archetype-carousel-item");
+  //   const draggerContainer$ = container$.find(".archetype-carousel-dragger");
+  //   const dragger$ = draggerContainer$.find(".archetype-carousel-drag-handle");
 
-    const totalItems = getArchetypeCount();
-    const radius = Math.round((itemWidth / 2) / Math.tan(Math.PI / totalItems));
-    let selArchetypeIndex = actor.archetype
-      ? getIndexOfArchetype(actor.archetype)
-      : 0;
+  //   const totalItems = getArchetypeCount();
+  //   const radius = Math.round((itemWidth / 2) / Math.tan(Math.PI / totalItems));
+  //   let selArchetypeIndex = actor.archetype
+  //     ? getIndexOfArchetype(actor.archetype)
+  //     : 0;
 
-    await U.gsap.set(carouselScene$, {opacity: 0, visibility: "visible"});
+  //   await U.gsap.set(carouselScene$, {opacity: 0, visibility: "visible"});
 
-    await U.gsap.set(carousel$, {z: -1 * radius});
-    await Promise.all(items$.map((i, item) => {
-      const item$ = $(item);
-      const archTimeline = ANIMATIONS.archetypeTimeline($(item), actor as K4Actor<K4ActorType.pc>);
-      const distFromSelected = getNormalizedDistanceFromSelected(i, selArchetypeIndex);
-      archTimeline.seek(1 - distFromSelected, true);
-      item$.data("archetypeTimeline", archTimeline);
-      return U.gsap.set(item, {
-        transform: `rotateY(${-1 * getYRotFromIndex(i)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i)}deg)`
-      });
-    }));
+  //   await U.gsap.set(carousel$, {z: -1 * radius});
+  //   await Promise.all(items$.map((i, item) => {
+  //     const item$ = $(item);
+  //     const archTimeline = ANIMATIONS.archetypeStyleTimeline($(item), actor as K4Actor<K4ActorType.pc>);
+  //     const distFromSelected = getNormalizedDistanceFromSelected(i, selArchetypeIndex);
+  //     archTimeline.seek(1 - distFromSelected, true);
+  //     item$.data("archetypeStyleTimeline", archTimeline);
+  //     return U.gsap.set(item, {
+  //       transform: `rotateY(${-1 * getYRotFromIndex(i)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i)}deg)`
+  //     });
+  //   }));
 
-    await U.gsap.set(carouselScene$, { opacity: 1, visibility: "visible" });
-
-
-  const updateDebugInfo = (x: number) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!K4DebugDisplay.IS_DEBUGGING) { return; }
-    const newIndex = getIndexFromXPos(x);
-    const archetype = getArchetypeFromIndex(newIndex);
-    const elementIndex = carousel$.find(`[data-archetype=${archetype}]`).data("index") as number;
-
-    K4DebugDisplay.updateArchetypeInfo(archetype, selArchetypeIndex, newIndex, elementIndex);
-  };
-
-  const updateCarousel = async (x: number, isTweening = false) => {
-    const wrappedX = wrapXPos(x);
-    const rotation = getYRotFromXPos(wrappedX);
-    let tl: gsap.core.Tween;
-    if (isTweening) {
-      tl = U.gsap.to(carousel$, {rotationY: rotation, duration: 0.5, ease: "back.inOut"});
-    } else {
-      tl = U.gsap.set(carousel$, { rotationY: rotation });
-    }
-    items$.each((_i, item) => {
-      const item$ = $(item);
-      gsap.set(item, { rotationY: -rotation });
-      const thisTimeline = item$.data("archetypeTimeline") as gsap.core.Timeline;
-      const thisIndex = U.pInt(item$.attr("data-index"));
-      if (thisIndex !== selArchetypeIndex) {
-        if (isTweening) {
-          void thisTimeline.tweenTo(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), {duration: 0.5, ease: "back"});
-        } else {
-          void thisTimeline.seek(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true);
-        }
-      }
-    });
-    U.gsap.set(dragger$, { x: wrappedX, duration: 0 });
-    await tl;
-  };
+  //   await U.gsap.set(carouselScene$, { opacity: 1, visibility: "visible" });
 
 
-  const getSnappedXPos = (x: number) => {
-    const newIndex = getIndexFromXPos(wrapXPos(x));
-    return getXPosFromIndex(newIndex);
-  }
 
 
-  const snapToNearestArchetype = async (x: number, isCompleting = false, isUpdating = true) => {
-    const newIndex = getIndexFromXPos(wrapXPos(x));
-    actor.archetype = getArchetypeFromIndex(newIndex);
-    selArchetypeIndex = newIndex;
-    if (isUpdating) {
-      await updateCarousel(getXPosFromIndex(newIndex), isCompleting);
-    }
-    K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
-    if (isCompleting) {
-      focusOn();
-    }
-    return getXPosFromIndex(newIndex);
-  };
+  // const updateCarousel = async (x: number, isTweening = false) => {
+  //   const wrappedX = wrapXPos(x);
+  //   const rotation = getYRotFromXPos(wrappedX);
+  //   let tl: gsap.core.Tween;
+  //   if (isTweening) {
+  //     tl = U.gsap.to(carousel$, {rotationY: rotation, duration: 0.5, ease: "back.inOut"});
+  //   } else {
+  //     tl = U.gsap.set(carousel$, { rotationY: rotation });
+  //   }
+  //   items$.each((_i, item) => {
+  //     const item$ = $(item);
+  //     gsap.set(item, { rotationY: -rotation });
+  //     const thisTimeline = item$.data("archetypeStyleTimeline") as gsap.core.Timeline;
+  //     const thisIndex = U.pInt(item$.attr("data-index"));
+  //     if (thisIndex !== selArchetypeIndex) {
+  //       if (isTweening) {
+  //         void thisTimeline.tweenTo(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), {duration: 0.5, ease: "back"});
+  //       } else {
+  //         void thisTimeline.seek(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true);
+  //       }
+  //     }
+  //   });
+  //   U.gsap.set(dragger$, { x: wrappedX, duration: 0 });
+  //   await tl;
+  // };
 
-  const focusOn = (index = selArchetypeIndex) => {
-    const selectedArchetype = getElementFromIndex(carousel$, index);
-    const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeTimeline") as gsap.core.Timeline);
-    void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
-  }
-  const focusOff = (index = selArchetypeIndex) => {
-    const selectedArchetype = getElementFromIndex(carousel$, index);
-    const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeTimeline") as gsap.core.Timeline);
-    void selectedArchetypeTimeline.tweenTo("light", {duration: 0.5});
-  }
 
-  const dragger = Dragger.create(dragger$, {
-    type: "x",
-    // inertia: true,
-    dragResistance: 0.5,
-    maxDuration: 0.25,
-    snap: {
-      x: function(this: Dragger, value: number) {
-        if (!this.isThrowing) { return value; }
-        return getSnappedXPos(value);
-      }
-    },
-    onDragStart: function(this: Dragger) {
-      focusOff();
-    },
-    onDrag: function(this: Dragger) {
-      void updateCarousel(this.x);
-      K4DebugDisplay.updateDraggerInfo(this, actor);
-    },
-    onDragEnd: function(this: Dragger) {
-      if (this.isThrowing) { return; }
-      void snapToNearestArchetype(this.x, true);
-    },
-    onThrowUpdate: function(this: Dragger) {
-      void updateCarousel(this.x);
-    },
-    onThrowComplete: function(this: Dragger) {
-      void snapToNearestArchetype(this.x, true);
-    }
-  });
+  // const getSnappedXPos = (x: number) => {
+  //   const newIndex = getIndexFromXPos(wrapXPos(x));
+  //   return getXPosFromIndex(newIndex);
+  // }
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (K4DebugDisplay.IS_DEBUGGING) {
-      kLog.log("Dragger Created", {dragger, draggerContainer$, dragger$});
 
-      // Update debug info on each frame
-      gsap.ticker.add(() => {
-        const x = gsap.getProperty(dragger$[0], "x") as number;
-        updateDebugInfo(x);
-        K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), actor);
-      });
-    }
+  // const snapToNearestArchetype = async (x: number, isCompleting = false, isUpdating = true) => {
+  //   const newIndex = getIndexFromXPos(wrapXPos(x));
+  //   actor.archetype = getArchetypeFromIndex(newIndex);
+  //   selArchetypeIndex = newIndex;
+  //   if (isUpdating) {
+  //     await updateCarousel(getXPosFromIndex(newIndex), isCompleting);
+  //   }
+  //   K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
+  //   if (isCompleting) {
+  //     focusOn();
+  //   }
+  //   return getXPosFromIndex(newIndex);
+  // };
 
-    // // Update rotation on window resize
-    // window.addEventListener("resize", () => {
-    //   const newMaxDistance = window.innerWidth / 2;
-    //   const currentRotation = gsap.getProperty(carousel$[0], "rotationY") as number;
-    //   const newX = (currentRotation / 180) * newMaxDistance;
-    //   gsap.set(dragger$, { x: newX });
-    //   updateRotation(newX);
-    // });
+  // const focusOn = (index = selArchetypeIndex) => {
+  //   const selectedArchetype = getElementFromIndex(carousel$, index);
+  //   const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeStyleTimeline") as gsap.core.Timeline);
+  //   void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
+  // }
+  // const focusOff = (index = selArchetypeIndex) => {
+  //   const selectedArchetype = getElementFromIndex(carousel$, index);
+  //   const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeStyleTimeline") as gsap.core.Timeline);
+  //   void selectedArchetypeTimeline.tweenTo("light", {duration: 0.5});
+  // }
 
-    void updateCarousel(getXPosFromIndex(selArchetypeIndex));
+  // const dragger = Dragger.create(dragger$, {
+  //   type: "x",
+  //   // inertia: true,
+  //   dragResistance: 0.5,
+  //   maxDuration: 0.25,
+  //   snap: {
+  //     x: function(this: Dragger, value: number) {
+  //       if (!this.isThrowing) { return value; }
+  //       return getSnappedXPos(value);
+  //     }
+  //   },
+  //   onDragStart: function(this: Dragger) {
+  //     focusOff();
+  //   },
+  //   onDrag: function(this: Dragger) {
+  //     void updateCarousel(this.x);
+  //     K4DebugDisplay.updateDraggerInfo(this, actor);
+  //   },
+  //   onDragEnd: function(this: Dragger) {
+  //     if (this.isThrowing) { return; }
+  //     void snapToNearestArchetype(this.x, true);
+  //   },
+  //   onThrowUpdate: function(this: Dragger) {
+  //     void updateCarousel(this.x);
+  //   },
+  //   onThrowComplete: function(this: Dragger) {
+  //     void snapToNearestArchetype(this.x, true);
+  //   }
+  // });
 
-    await ANIMATIONS.revealCarousel(carouselScene$);
 
-    // get currently selected archetype element, retrieve its timeline, and set it to "selected"
-    // const tl = gsap.timeline({ paused: true });
-    const selectedArchetype = getElementFromIndex(carousel$, selArchetypeIndex);
-    const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeTimeline") as gsap.core.Timeline);
 
-    // If the selected archetype is the same as the one we're already showing, skip the tween
-    if (CONFIG.K4.charGenIsShowing === actor.archetype) {
-      selectedArchetypeTimeline.seek("selected");
-    } else {
-      void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
-    }
+  //   // // Update rotation on window resize
+  //   // window.addEventListener("resize", () => {
+  //   //   const newMaxDistance = window.innerWidth / 2;
+  //   //   const currentRotation = gsap.getProperty(carousel$[0], "rotationY") as number;
+  //   //   const newX = (currentRotation / 180) * newMaxDistance;
+  //   //   gsap.set(dragger$, { x: newX });
+  //   //   updateRotation(newX);
+  //   // });
 
-    return U.gsap.timeline();
-  },
+  //   void updateCarousel(getXPosFromIndex(selArchetypeIndex));
+
+  //   await ANIMATIONS.revealCarousel(carouselScene$);
+
+  //   // get currently selected archetype element, retrieve its timeline, and set it to "selected"
+  //   // const tl = gsap.timeline({ paused: true });
+  //   const selectedArchetype = getElementFromIndex(carousel$, selArchetypeIndex);
+  //   const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeStyleTimeline") as gsap.core.Timeline);
+
+  //   // If the selected archetype is the same as the one we're already showing, skip the tween
+  //   if (CONFIG.K4.charGenIsShowing === actor.archetype) {
+  //     selectedArchetypeTimeline.seek("selected");
+  //   } else {
+  //     void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
+  //   }
+
+  //   return U.gsap.timeline();
+  // },
   _glitchText(_target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
 
     const tl = gsap.timeline({
@@ -1488,7 +1501,8 @@ class K4PCSheet extends ActorSheet {
       classes: [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-actor-sheet", "k4-theme-dgold"],
       tabs:    [
         {navSelector: ".tabs", contentSelector: ".tab-content", initial: "front"}
-      ]
+      ],
+      submitOnChange: false
     });
   }
   isTestingPCInitialization = true;
@@ -1668,35 +1682,31 @@ class K4PCSheet extends ActorSheet {
           const advTraitData = this.getArchetypeTraitData(K4ItemType.advantage, archetype) as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>;
           const advTraitDataArray = Object.values(advTraitData).flatMap(Object.values) as Archetype.TraitData[];
           const advSelected = advTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-          let selStringAdvantage: string;
+          let selStringAdvantage: Maybe<string> = undefined;
           if (advSelected.length > 3) {
-            selStringAdvantage = "<span class='neon-glow-strong-red'>Too Many Advantages!</span> <br> (max: #>text-keyword>THREE<#)";
+            selStringAdvantage = "<span class='neon-glow-animated-red'>Too Many Advantages!</span> <br> (max: #>text-keyword>THREE<#)";
           } else if (advSelected.length === 0) {
             selStringAdvantage = "Choose #>text-keyword>THREE<# from the list below:";
-          } else if (advSelected.length >= 3) {
-            selStringAdvantage = "&nbsp;";
-          } else {
+          } else if (advSelected.length < 3) {
             selStringAdvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(3 - advSelected.length))}<# more:`;
           }
 
           const disTraitData = this.getArchetypeTraitData(K4ItemType.disadvantage, archetype) as Record<string, Archetype.TraitData>;
           const disTraitDataArray: Archetype.TraitData[] = Object.values(disTraitData);
           const disSelected = disTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-          let selStringDisadvantage: string;
+          let selStringDisadvantage: Maybe<string> = undefined;
           if (disSelected.length > 2) {
-            selStringDisadvantage = "<span class='neon-glow-strong-red'>Too Many Disadvantages!</span> <br> (max: #>text-keyword>TWO<#)";
+            selStringDisadvantage = "<span class='neon-glow-animated-red'>Too Many Disadvantages!</span> <br> (max: #>text-keyword>TWO<#)";
           } else if (disSelected.length === 0) {
             selStringDisadvantage = "Choose #>text-keyword>TWO<#. Suggestions:";
-          } else if (disSelected.length >= 2) {
-            selStringDisadvantage = "&nbsp;";
-          } else {
+          } else if (disSelected.length < 2) {
             selStringDisadvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(2 - disSelected.length))}<# more. Suggestions:`;
           }
 
           const darkSecretTraitData = this.getArchetypeTraitData(K4ItemType.darksecret, archetype) as Record<string, Archetype.TraitData>;
           const darkSecretTraitDataArray: Archetype.TraitData[] = Object.values(darkSecretTraitData);
           const darkSecretSelected = darkSecretTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-          let selStringDarkSecret: string;
+          let selStringDarkSecret: Maybe<string> = undefined;
           if (darkSecretSelected.length === 0) {
             selStringDarkSecret = "Choose #>text-keyword>AT LEAST ONE<#. Suggestions:";
           } else {
@@ -1889,86 +1899,88 @@ class K4PCSheet extends ActorSheet {
 // case K4CharGenPhase.relations: {
 //   void this.activateChargenRelationsListeners(html);
 
-  updateArchetypeExamples(html: JQuery) {
-    const archetype = this.actor.archetype;
+  async updateArchetypeExamples(html?: JQuery, archetype?: K4Archetype) {
+    html = html ?? await this.awaitElement;
+
+    archetype = archetype ?? this.actor.archetype;
     if (!archetype) { return; }
 
     // Prepare the example strings for the selected archetype.
     const archData = Archetypes[archetype];
     const archetypeExamples$ = html.find(".archetype-example-list");
-    kLog.log("[K4PCSheet] archetypeExamples$", {archetypeExamples$, archData});
+    // kLog.log("[K4PCSheet] archetypeExamples$", {archetypeExamples$, archData});
     archetypeExamples$.each((_i, elem) => {
       const target = $(elem).attr("data-target") as Maybe<string>;
-      kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, archData});
+      // kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, archData});
       if (target) {
         const example = U.getProp<string[]>(archData, target);
-        kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
+        // kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
         if (example) {
-          $(elem).text(example.join(", "));
+          $(elem).text(example.join(" ◆ "));
         }
       }
     });
   }
 
-  async activateChargenArchetypeListeners(html: JQuery) {
-    const carouselScene$ = html.find(".archetype-staging");
-    this.updateArchetypeExamples(html);
-    await ANIMATIONS.archetypeCarouselTimeline(carouselScene$, 200, this.actor);
+  // async activateChargenArchetypeListeners(html: JQuery) {
+  //   const carouselScene$ = html.find(".archetype-staging");
+  //   void this.updateArchetypeExamples(html);
+  //   await ANIMATIONS.archetypeCarouselTimeline(carouselScene$, 200, this.actor);
 
-    const getUnlistedItemsOfType = (type: K4ItemType.disadvantage|K4ItemType.darksecret) => {
-      const {archetype} = this.actor;
-      if (!archetype) { return []; }
-      const listedTraits: string[] = [];
-      const cData = this.getArchetypeCarouselData();
-      if (cData[archetype]?.[type]) {
-        listedTraits.push(
-          ...Object.keys(cData[archetype][type])
-            .map((traitName) => traitName.replace(/^!/, ""))
-        );
-      }
-      return game.items
-        .filter((item: any): item is K4Item<K4ItemType.disadvantage|K4ItemType.darksecret> =>
-          item.type === type && !listedTraits.includes(item.name)
-        );
-    };
+  //   const getUnlistedItemsOfType = (type: K4ItemType.disadvantage|K4ItemType.darksecret) => {
+  //     const {archetype} = this.actor;
+  //     if (!archetype) { return []; }
+  //     const listedTraits: string[] = [];
+  //     const cData = this.getArchetypeCarouselData();
+  //     if (cData[archetype]?.[type]) {
+  //       listedTraits.push(
+  //         ...Object.keys(cData[archetype][type])
+  //           .map((traitName) => traitName.replace(/^!/, ""))
+  //       );
+  //     }
+  //     return game.items
+  //       .filter((item: any): item is K4Item<K4ItemType.disadvantage|K4ItemType.darksecret> =>
+  //         item.type === type && !listedTraits.includes(item.name)
+  //       );
+  //   };
 
-    // Add listeners to "more" buttons
-    html.find("button.more-disadvantages").on({
-      click: async () => {
-        const item = await K4Dialog.GetUserItemSelection<K4ItemType.disadvantage>({
-          title: "Select a Disadvantage",
-          bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
-          itemList: getUnlistedItemsOfType(K4ItemType.disadvantage)
-        });
-        if (item) {
-          await this.actor.charGenSelect(item.name, false);
-        }
-      }
-    });
-    html.find("button.more-dark-secrets").on({
-      click: async () => {
-        const item = await K4Dialog.GetUserItemSelection<K4ItemType.darksecret>({
-          title: "Select a Dark Secret",
-          bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
-          itemList: getUnlistedItemsOfType(K4ItemType.darksecret)
-        });
-        if (item) {
-          await this.actor.charGenSelect(item.name, false);
-        }
-      }
-    });
+  //   // Add listeners to "more" buttons
+  //   html.find("button.more-disadvantages").on({
+  //     click: async () => {
+  //       const item = await K4Dialog.GetUserItemSelection<K4ItemType.disadvantage>({
+  //         title: "Select a Disadvantage",
+  //         bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
+  //         itemList: getUnlistedItemsOfType(K4ItemType.disadvantage)
+  //       });
+  //       if (item) {
+  //         await this.actor.charGenSelect(item.name, false);
+  //       }
+  //     }
+  //   });
+  //   html.find("button.more-dark-secrets").on({
+  //     click: async () => {
+  //       const item = await K4Dialog.GetUserItemSelection<K4ItemType.darksecret>({
+  //         title: "Select a Dark Secret",
+  //         bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
+  //         itemList: getUnlistedItemsOfType(K4ItemType.darksecret)
+  //       });
+  //       if (item) {
+  //         await this.actor.charGenSelect(item.name, false);
+  //       }
+  //     }
+  //   });
 
 
-  }
-  async activateChargenAttributesAndTraitsListeners(html: JQuery) {
-    await Promise.resolve(html);
-  }
-  async activateChargenDetailsListeners(html: JQuery) {
-    await Promise.resolve(html);
-  }
-  async activateChargenRelationsListeners(html: JQuery) {
-    await Promise.resolve(html);
-  }
+  // }
+  // async activateChargenAttributesAndTraitsListeners(html: JQuery) {
+  //   await Promise.resolve(html);
+  // }
+  // async activateChargenDetailsListeners(html: JQuery) {
+  //   await Promise.resolve(html);
+  // }
+  // async activateChargenRelationsListeners(html: JQuery) {
+  //   await Promise.resolve(html);
+  // }
   activateNavMenuListeners(html: JQuery): Array<Tuple<HTMLElement, GsapAnimation>> {
     const self = this;
     const hoverTimelines: Array<Tuple<HTMLElement, GsapAnimation>> = [];
@@ -2048,6 +2060,1212 @@ class K4PCSheet extends ActorSheet {
     gsap.to(html.find("#stability-gear-binah"), {rotation: "-=360", duration: 10, repeat: -1, ease: "rough({strength: 0.2, points: 25, template: sine, taper: out, randomize: true, clamp: false})"});
     gsap.set(html.find("#stability-animation-bg img, .stability-count, #stability-frame"), {opacity: 1});
   }
+
+  _minDistanceStyles: Maybe<Record<Key, string|number>> = undefined;
+  _maxDistanceStyles: Maybe<Record<Key, string|number>> = undefined;
+
+  get minDistanceStyles(): Record<Key, string|number> {
+    if (!this._minDistanceStyles) {
+      this._minDistanceStyles = getDistanceStyles(0, 0);
+    }
+    return this._minDistanceStyles;
+  }
+  get maxDistanceStyles(): Record<Key, string|number> {
+    if (!this._maxDistanceStyles) {
+      this._maxDistanceStyles = getDistanceStyles(0, Math.floor(getArchetypeCount() / 2));
+    }
+    return this._maxDistanceStyles;
+  }
+
+
+
+  // For immediate user feedback, fade in the bg container and the sheet immediately.
+  #getTimeline_revealCarouselBaseBackground(): gsap.core.Timeline {
+    const sheet$ = $(this.element);
+    const bgContainer$ = sheet$.find(".pc-initialization-bg");
+
+    return U.gsap.timeline()
+      .to([sheet$, bgContainer$], {
+        autoAlpha: 1,
+        duration: 0.25,
+        ease: "power2.out"
+      });
+  }
+
+  #getTimeline_revealCarouselBackground(): gsap.core.Timeline {
+    const sheet$ = $(this.element);
+    const container$ = sheet$.find(".pc-initialization-bg");
+    const mid$ = container$.find(".cityscape-mid");
+    const clouds$ = container$.find(".cloud-bg");
+    const fore$ = container$.find(".cityscape-fore");
+
+    // Construct timeline for revealing the background buildings & clouds.
+    return U.gsap.timeline({defaults: {ease: "power2.inOut"}})
+      .to(clouds$, {opacity: 0.75, ease: "power2.in", duration: 1}, 0)
+      .fromTo(fore$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 1)
+      .fromTo(mid$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 2)
+      .fromTo(fore$, {filter: "blur(20px) brightness(0)"}, {filter: "blur(1px) brightness(0.8)", duration: 6}, 0)
+      .fromTo(fore$, {y: 250, scale: 1}, {y: 150, scale: 1.15, ease: "expoScale(1, 1.15, power2.inOut)", duration: 6}, 0)
+      .fromTo(mid$, {y: 200, scale: 0.85}, {y: 150, scale: 1, ease: "expoScale(0.85, 1, power2.inOut)", duration: 6}, 0)
+      .fromTo(mid$, {filter: "blur(40px) brightness(0)"}, {filter: "blur(2px) brightness(1)", duration: 6}, 0);
+  }
+
+  #getTimeline_revealCarouselScene(carouselStaggerDuration = 1): gsap.core.Timeline {
+    const sheet$ = $(this.element);
+    const container$ = sheet$.find(".pc-initialization");
+    const carouselScene$ = sheet$.find(".archetype-staging");
+
+    const selArchetype = this.actor.archetype ?? K4Archetype.academic;
+    const selIndex = getIndexOfArchetype(selArchetype);
+
+    const attributesPanel$ = container$.find(".archetype-panel.attributes");
+    const notesPanel$ = container$.find(".archetype-panel.notes");
+    const namePanel$ = container$.find(".archetype-panel.actor-name");
+    const items$ = carouselScene$.find(".archetype-carousel-item");
+
+    const MAX_DELAY = carouselStaggerDuration;
+    const STAGGER_SHIFT = MAX_DELAY / getArchetypeCount() / 2;
+    function getDelayFromIndex(index: number) {
+      const nextDistRatio = 1 - getNormalizedDistanceFromSelected(wrapIndex(index + 1), selIndex);
+      const thisDistRatio = 1 - getNormalizedDistanceFromSelected(index, selIndex);
+      const distRatio = thisDistRatio + (nextDistRatio > thisDistRatio ? STAGGER_SHIFT : 0);
+      const delay = U.gsap.utils.mapRange(0, 1, 0, MAX_DELAY, distRatio);
+      // kLog.log(`[K4PCSheet] Delay (MAX: ${MAX_DELAY}): index '${index}' -> ${nextDistRatio > thisDistRatio ? `[STAGGER: '${STAGGER_SHIFT}']` : ""} distRatio '${distRatio}' -> delay '${delay}'`);
+      return delay;
+    }
+
+    return U.gsap.timeline()
+      .call(() => {
+        void this.actor.sheet.updateArchetypeExamples(container$);
+      })
+      .from(carouselScene$, {
+        autoAlpha: 0,
+        y: 0,
+        scale: 0.7,
+        filter: "blur(100px)",
+        ease: "power3.in",
+        duration: 1
+      }, 0)
+      .from(container$, {
+        autoAlpha: 0,
+        filter: "blur(10px)",
+        backgroundPosition: "50% 620px, 50% 630px",
+        duration: 0.5,
+        ease: "none"
+      }, 0)
+      .from(items$, {
+        autoAlpha: 0,
+        y: 0,
+        scale: 1,
+        ease: "power2",
+        duration: 1,
+        delay: getDelayFromIndex
+      })
+      .from([
+        attributesPanel$,
+        namePanel$,
+        notesPanel$
+      ], {
+        autoAlpha: 0,
+        y: 200,
+        ease: "power2",
+        duration: 1,
+        stagger: 0.2
+      }, 0);
+
+  }
+
+  #getTimeline_archetypeStyle(archetype$: JQuery): gsap.core.Timeline {
+
+    if (archetype$.data("archetypeStyleTimeline")) {
+      return archetype$.data("archetypeStyleTimeline");
+    }
+
+    const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
+    if (!archetype) {
+      throw new Error(`No archetype found for K4PCSheet: ${String(archetype$)}`);
+    }
+
+    const self = this;
+
+    const archetypeImg$ = archetype$.find(".archetype-carousel-img");
+
+    const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
+    const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
+    const archetypeThe$ = archetypeNamePanel$.find(".archetype-carousel-the");
+    const archetypeName$ = archetypeNamePanel$.find(".archetype-carousel-name");
+    const archetypeDescription$ = archetypePanels$.find(".archetype-panel-description");
+    const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
+    const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
+    const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
+
+    // If not done already, split the description into individual lines
+    let splitDescription = archetype$.data("splitDescription");
+    if (!splitDescription) {
+      // revealAndReturn(archetypeDescription$);
+      splitDescription = new SplitText(archetypeDescription$, { type: "lines" });
+      archetype$.data("splitDescription", splitDescription);
+      // hideAndReturn(archetypeDescription$);
+    }
+
+
+    const tl = U.gsap.timeline({
+      paused: true
+    })
+      .addLabel("dark")
+      .fromTo(archetype$, {
+        opacity: this.maxDistanceStyles.opacity,
+        filter: this.maxDistanceStyles.filter,
+      }, {
+        opacity: this.minDistanceStyles.opacity,
+        filter: this.minDistanceStyles.filter,
+        duration: 1,
+        ease: "none"
+      })
+      .addLabel("light")
+      .set(archetype$, {filter: "none"})
+      .set(archetypeImg$, {filter: "brightness(1) contrast(1)"})
+      .call(() => {
+        CONFIG.K4.charGenIsShowing = archetype;
+        void self.updateArchetypeExamples(undefined, archetype);
+      })
+      .fromTo(archetype$, {
+        scale: 1,
+        opacity: 1
+      }, {
+        scale: 1.15,
+        opacity: 1,
+        duration: 2,
+        ease: "power2"
+      })
+      .fromTo(archetypeImg$, {
+      }, {
+        filter: "brightness(1.25) saturate(1)",
+        duration: 2,
+        ease: "power2"
+      }, "<")
+      .set([archetypeNamePanel$, archetypeDescription$], {
+        visibility: "visible",
+        opacity: 1
+      })
+      .fromTo([
+        archetypeThe$,
+        archetypeName$,
+        ...splitDescription.lines
+      ], {
+        autoAlpha: 0,
+        x: -100,
+        // skewX: -65,
+        filter: "blur(15px)"
+      }, {
+        autoAlpha: 1,
+        // skewX: 0,
+        x(this: gsap.core.Timeline, index: number) {
+          index = Math.max(0, index - 2);
+          return gsap.utils.random(0, index * 5);
+          // return index * 5 + gsap.utils.random(-10, 10);
+        },
+        filter: "blur(0px)",
+        ease: "power2",
+        duration: 2,
+        stagger: {
+          each: 0.25
+        }
+      }, "<")
+      .fromTo([
+        archetypeAdvantages$,
+        archetypeDisadvantages$,
+        archetypeDarkSecrets$
+      ], {
+        autoAlpha: 0,
+        y: 200
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        ease: "power2",
+        onStart() {
+          const archetypeData = self.getArchetypeCarouselData()[archetype];
+          if (!archetypeData) {
+            throw new Error(`No archetype data found for archetype: ${archetype}`);
+          }
+          void self.#reRenderTraitPanel(archetype$, archetypeData);
+        },
+        duration: 2,
+        stagger: {
+          amount: 0.25
+        }
+      }, "<")
+      .addLabel("selected")
+
+      // tl.seek("light");
+
+      return tl;
+  }
+
+/*
+  #getTimeline_focusArchetype(archetype$: JQuery, duration: number): gsap.core.Timeline {
+    const halfDuration = 0.5 * duration;
+    const self = this;
+    const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
+    if (!archetype) {
+      throw new Error(`No archetype found for K4PCSheet: ${String(archetype$)}`);
+    }
+    const archetypeImg$ = archetype$.find(".archetype-carousel-img");
+
+    const archetypePanels$ = archetype$.closest(".pc-initialization")
+      .find(`.archetype-panels[data-archetype="${archetype}"]`);
+    const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
+    const archetypeThe$ = archetypeNamePanel$.find(".archetype-carousel-the");
+    const archetypeName$ = archetypeNamePanel$.find(".archetype-carousel-name");
+    const archetypeDescription$ = archetypePanels$.find(".archetype-panel-description");
+    const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
+    const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
+    const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
+
+    // If not done already, split the description into individual lines
+    let splitDescription = archetype$.data("splitDescription");
+    if (!splitDescription) {
+      splitDescription = new SplitText(archetypeDescription$, { type: "lines" });
+      archetype$.data("splitDescription", splitDescription);
+    }
+
+    const tl = U.gsap.timeline({paused: true, repeat: 1, yoyo: true});
+
+    tl
+      .fromTo(archetype$, {
+        scale: 1,
+        opacity: 1
+      }, {
+        scale: 1.15,
+        opacity: 1,
+        duration: halfDuration / 2,
+        ease: "power2"
+      })
+      .fromTo(archetypeImg$, {
+      }, {
+        filter: "brightness(1.25) saturate(1)",
+        duration: halfDuration / 2,
+        ease: "power2"
+      }, "<")
+      // .set([archetypeNamePanel$, archetypeDescription$], {
+      //   visibility: "visible",
+      //   opacity: 1
+      // })
+      .fromTo([
+        archetypeThe$,
+        archetypeName$,
+        ...splitDescription.lines
+      ], {
+        autoAlpha: 0,
+        x: -100,
+        filter: "blur(15px)"
+      }, {
+        autoAlpha: 1,
+        x(this: gsap.core.Timeline, index: number) {
+          index = Math.max(0, index - 2);
+          return gsap.utils.random(0, index * 5);
+        },
+        filter: "blur(0px)",
+        ease: "power2",
+        duration: halfDuration,
+        stagger: {
+          each: 0.25
+        }
+      }, "<")
+      .fromTo([
+        archetypeAdvantages$,
+        archetypeDisadvantages$,
+        archetypeDarkSecrets$
+      ], {
+        autoAlpha: 0,
+        y: 200
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        ease: "power2",
+        duration: halfDuration / 2,
+        stagger: {
+          amount: 0.25
+        }
+      }, halfDuration / 4)
+      .call(() => {
+        if (!tl.reversed()) {
+          CONFIG.K4.charGenIsShowing = archetype;
+          void self.updateArchetypeExamples(undefined, archetype);
+          const archetypeData = this.getArchetypeCarouselData()[archetype];
+          void this.#reRenderTraitPanel(archetype$, archetypeData);
+        }
+      });
+
+    return tl;
+  }
+
+  #getTimeline_rotateArchetype(archetype$: JQuery, timePerArchetype: number, minDistanceStyles: Record<Key, string|number>, maxDistanceStyles: Record<Key, string|number>): gsap.core.Timeline {
+    let tl = archetype$.data("rotateTimeline") as Maybe<gsap.core.Timeline>;
+    if (!tl) {
+      tl = U.gsap.timeline({repeat: -1});
+
+      // For a 10s total timeline, we construct only the first half then yoyo it
+      const fadeInDuration = 5 - 0.5 * timePerArchetype;
+
+      tl
+        .fromTo(archetype$, {
+          opacity: maxDistanceStyles.opacity,
+          filter: maxDistanceStyles.filter,
+        }, {
+          opacity: minDistanceStyles.opacity,
+          filter: minDistanceStyles.filter,
+          duration: fadeInDuration,
+          ease: "none"
+        })
+        .add(this.#getTimeline_focusArchetype(archetype$, timePerArchetype))
+        .fromTo(archetype$, {
+          opacity: minDistanceStyles.opacity,
+          filter: minDistanceStyles.filter,
+        }, {
+          opacity: maxDistanceStyles.opacity,
+          filter: maxDistanceStyles.filter,
+          duration: fadeInDuration,
+          ease: "none"
+        });
+
+      archetype$.data("rotateTimeline", tl);
+    }
+    return tl;
+  }
+
+  #getTimeline_rotateCarousel(carouselScene$: JQuery): gsap.core.Timeline {
+    const carousel$ = carouselScene$.find(".archetype-carousel");
+
+    let tl = carousel$.data("carouselRotationTimeline") as Maybe<gsap.core.Timeline>;
+    if (!tl) {
+      const archetypeItems$ = carousel$.find(".archetype-carousel-item");
+      const itemImages$ = carousel$.find(".archetype-carousel-item .archetype-carousel-img");
+
+      tl = U.gsap.timeline({paused: true, repeat: -1})
+        .to(carousel$, {
+          rotationY: "+=360",
+          duration: 10,
+          repeat: -1,
+          ease: "none"
+        })
+        .fromTo(itemImages$, {
+          xPercent: -50,
+          yPercent: -50
+        }, {
+          rotationY: "-=360",
+          duration: 10,
+          repeat: -1,
+          ease: "none"
+        }, 0);
+
+      // For each archetype, retrieve the looping timeline and add it to the carousel, offsetting each to spread their focus moment around the carousel.
+      // Get total number of archetypes to determine how much of the 10s timeline they will be focused for
+      const totalArchetypes = getArchetypeCount();
+      const timePerArchetype = 10 / totalArchetypes;
+
+      // Determine minimum and maximum values for distance-based styles
+      const minDistanceStyles = getDistanceStyles(0, 0);
+      const maxDistanceStyles = getDistanceStyles(0, Math.floor(getArchetypeCount() / 2));
+
+      archetypeItems$.each((i, archetypeItem) => {
+        const archetype$ = $(archetypeItem);
+        const archetypeTimeline = this.#getTimeline_rotateArchetype(archetype$, timePerArchetype, maxDistanceStyles, minDistanceStyles);
+        tl!.add(archetypeTimeline, i * timePerArchetype);
+      });
+
+      // To account for all of the overlapping archetype timelines, we'll be running the carousel rotation after a full repeat -- i.e. from
+      // 10s to 20s, then back to 10s.
+      tl.seek(10);
+      tl.call(() => {
+        tl!.seek(10);
+      }, [], 20);
+
+      carousel$.data("carouselRotationTimeline", tl);
+    }
+    return tl;
+  }
+
+  #constructCarousel(carouselScene$: JQuery) {
+    const carousel$ = carouselScene$.find(".archetype-carousel");
+    const items$ = carousel$.find(".archetype-carousel-item");
+
+    const totalItems = getArchetypeCount();
+    const radius = Math.round((this.itemWidth / 2) / Math.tan(Math.PI / totalItems));
+
+    void U.gsap.set(carousel$, {z: -1 * radius});
+
+    void Promise.all(items$.map((i, item) => {
+      U.gsap.set(item, {
+        transform: `rotateY(${-1 * getYRotFromIndex(i)}deg) translateZ(${radius}px)`
+      });
+      U.gsap.set($(item).find(".archetype-carousel-img")[0], {
+        xPercent: -50,
+        yPercent: -50,
+        top: "50%",
+        left: "50%",
+        rotationY: getYRotFromIndex(i)
+      });
+    }));
+  }
+
+  async initializeCarouselScene(): Promise<void> {
+
+    void this.#getTimeline_revealCarouselBaseBackground().play();
+
+    const timeStamp = U.getTimeStamp();
+
+    kLog.log(`${timeStamp()} - Initializing Carousel Scene`);
+
+    const sheet$ = $(this.element);
+    sheet$.find(".window-header, .window-resizable-handle")
+      .css("display", "none");
+
+    // Construct the carousel by positioning and rotating all elements
+    const carouselScene$ = sheet$.find(".archetype-staging");
+    this.#constructCarousel(carouselScene$);
+    kLog.log(`${timeStamp()} - Carousel Scene Constructed`);
+
+    // Get the master carousel rotation timeline and attach it to the carousel
+    const carouselRotationTimeline = this.#getTimeline_rotateCarousel(carouselScene$);
+    Object.assign(globalThis, {carouselRotationTimeline});
+    // carouselRotationTimeline.play();
+    kLog.log(`${timeStamp()} - Carousel Rotation Timeline Attached`);
+
+    kLog.log(`${timeStamp()} - Carousel Rendered, Awaiting Video`);
+    const cloudVideo = (sheet$.find(".cloud-bg") as JQuery<Maybe<HTMLVideoElement>>)[0];
+    if (cloudVideo) {
+      if (cloudVideo.readyState >= 3) {
+        kLog.log(`${timeStamp()} - Video Ready, Animating Carousel`);
+        this.#animateCarousel(cloudVideo);
+      } else {
+        kLog.log(`${timeStamp()} - Video Not Ready, Waiting for Video`);
+        // this.#animateCarousel(cloudVideo);
+        // Wait for the video to be ready
+        cloudVideo.addEventListener('canplay', () => { this.#animateCarousel(cloudVideo); }, { once: true });
+        // Fallback in case the video fails to load
+        cloudVideo.addEventListener('error', () => { this.#animateCarousel(cloudVideo); }, { once: true });
+      }
+    }
+
+
+    return;
+
+    // Add the carousel drag controller
+    this.#constructCarouselDragger(sheet$);
+    kLog.log(`${timeStamp()} - Carousel Dragger Constructed`);
+
+
+    // Attach archetype timelines and listeners to their associated elements
+    sheet$.find(".archetype-carousel-item[data-archetype]").each((_i, archetypeElem) => {
+      const archetype$ = $(archetypeElem);
+      this.#attachListeners_archetypePanels(archetype$);
+      // const archetypeStyleTimeline = this.#getTimeline_archetypeStyle(archetype$);
+      // archetype$.data("archetypeStyleTimeline", archetypeStyleTimeline);
+    });
+    kLog.log(`${timeStamp()} - Archetype Timelines Attached`);
+
+    // Update the carousel to match the selected archetype
+    await this.#updateCarouselFromDragger(getXPosFromIndex(this.selArchetypeIndex), false);
+    kLog.log(`${timeStamp()} - Carousel Updated to Selected Archetype`);
+
+    // Add panel listeners
+
+    kLog.log(`${timeStamp()} - More Buttons Attached to Archetype Panels`);
+
+    // if (CONFIG.K4.isCharGenInitialized) {
+    //   kLog.log(`${timeStamp()} - Carousel Rendered, NOT Animating`);
+    //   this.#renderCarousel();
+    // } else {
+      kLog.log(`${timeStamp()} - Carousel Rendered, Awaiting Video`);
+      const orig_cloudVideo = (sheet$.find(".cloud-bg") as JQuery<Maybe<HTMLVideoElement>>)[0];
+      if (orig_cloudVideo) {
+        if (orig_cloudVideo.readyState >= 3) {
+          kLog.log(`${timeStamp()} - Video Ready, Animating Carousel`);
+          this.#animateCarousel(orig_cloudVideo);
+        } else {
+          kLog.log(`${timeStamp()} - Video Not Ready, Waiting for Video`);
+          this.#animateCarousel(orig_cloudVideo);
+          // Wait for the video to be ready
+          // orig_cloudVideo.addEventListener('canplay', () => { this.#animateCarousel(orig_cloudVideo); }, { once: true });
+          // Fallback in case the video fails to load
+          // orig_cloudVideo.addEventListener('error', () => { this.#animateCarousel(orig_cloudVideo); }, { once: true });
+        }
+      }
+    // }
+  }
+ */
+
+  #getTimeline_revealCarousel(): gsap.core.Timeline {
+    const sheet$ = $(this.element);
+    const selectedArchetypeTimeline = this.#getTimeline_archetypeStyle(sheet$.find(`.archetype-carousel-item[data-archetype="${this.actor.archetype ?? K4Archetype.academic}"]`));
+    return U.gsap.timeline({paused: true})
+      .add(this.#getTimeline_revealCarouselBackground())
+      .add(this.#getTimeline_revealCarouselScene())
+      .add(selectedArchetypeTimeline.tweenTo(selectedArchetypeTimeline.duration(), {duration: 3}).play(), "-=1");
+  }
+
+  #getTimeline_traitSelection(traitContainer$: JQuery): gsap.core.Timeline {
+
+    // Extracts path data string for an ease curve, converting into a simple list of x,y points
+    function getEaseSVGData(easeCurve: gsap.EaseFunction) {
+      return (CustomEase.getSVGData(easeCurve, {
+        width: 1,
+        height: 1,
+        invertY: true // Keep this true to match SVG coordinate system
+      }) as string)
+        // The ease string starts with 'M' but contains nothing else except digits and commas:
+        .replace(/C/g, "")
+        .replace(/ /g, ",");
+    }
+    // Extracts point pairs of an ease curve
+    function getEasePoints(easeCurve: gsap.EaseFunction, steps?: number): Array<Tuple<number>> {
+      const points: Array<Tuple<number>> = [];
+      if (typeof steps === 'number' && steps > 0) {
+        // If steps is provided, sample the ease at regular intervals
+        const easeFunc = typeof easeCurve === 'string' ? gsap.parseEase(easeCurve) : easeCurve;
+        for (let i = 0; i <= steps; i++) {
+          const progress = i / steps;
+          points.push([progress, easeFunc(progress)]);
+        }
+        return points;
+      } else {
+        // If steps is not provided, use the original SVG data parsing method
+        const easeData = getEaseSVGData(easeCurve);
+        const allValues = easeData.split(/[M,]/).filter(v => v.trim()).map(Number);
+        for (let i = 0; i < allValues.length; i += 2) {
+          points.push([allValues[i], allValues[i + 1]]);
+        }
+        return points;
+      }
+    }
+    // Given a list of point pairs, returns {minX, maxX, minY, maxY}
+    function getMaxAndMin(points: Array<Tuple<number>>) {
+      const xPoints = points.map((p) => p[0]);
+      const yPoints = points.map((p) => p[1]);
+      return {
+        minX: Math.min(0, ...xPoints),
+        maxX: Math.max(1, ...xPoints),
+        minY: Math.min(0, ...yPoints),
+        maxY: Math.max(1, ...yPoints)
+      };
+    }
+    // Given a list of point pairs, will normalize the points to between 0 and 1
+    function normalizePoints(points: Array<Tuple<number>>): Array<Tuple<number>> {
+      const {minX, maxX, minY, maxY} = getMaxAndMin(points);
+      const xMapper = gsap.utils.mapRange(minX, maxX, 0, 1);
+      const yMapper = gsap.utils.mapRange(minY, maxY, 0, 1);
+      return points.map(([xPoint, yPoint]) => [xMapper(xPoint), yMapper(yPoint)]);
+    }
+    // Converts point pairs back to string representation of an ease curve
+    function getEaseStringFromPoints(points: Array<Tuple<number>>) {
+      return `M${points.flat().join(",")}`;
+    }
+
+    // Function to create a wiggle ease
+    function createWiggleEase(wiggles = 100) {
+      const ease = CustomWiggle.create("my-wiggle", { //name
+        wiggles,
+        type: "random"
+      });
+      const points = getEasePoints(ease);
+      const normalizedPoints = normalizePoints(points);
+      const normalizedEaseString = getEaseStringFromPoints(normalizedPoints);
+      const normalizedEase = CustomEase.create(`wiggle-${wiggles}`, normalizedEaseString);
+
+      return normalizedEase;
+    }
+
+    function createControlledWiggleEase(controlEase: gsap.EaseFunction|string, steps = 100): gsap.EaseFunction {
+      controlEase = typeof controlEase === "string" ? gsap.parseEase(controlEase) : controlEase;
+
+      // Create the wiggle ease
+      const wiggleEase = createWiggleEase(steps);
+
+      // Extract the points from the wiggle ease
+      const wigglePoints = getEasePoints(wiggleEase, steps);
+
+      // Extract the points from the control ease
+      const controlPoints = getEasePoints(controlEase, steps);
+
+      // The control ease determines the threshold for the final ease to be 0 or 1:
+      const controlledWigglePoints: Array<Tuple<number>> = wigglePoints.map(([wX, wY], i) => {
+        const cY = controlPoints[i][1];
+        if (cY >= wY) { return [wX, cY]; }
+        return [wX, 0];
+      });
+
+      const controlledWiggleEase = CustomEase.create(`controlledWiggle-${steps}`, getEaseStringFromPoints(controlledWigglePoints));
+
+      // console.log("CONTROLLED WIGGLE EASE", {wigglePoints, controlPoints, controlledWigglePoints});
+
+      return controlledWiggleEase;
+    }
+
+    const glowColors: Partial<Record<K4ItemType, string>> = {
+      [K4ItemType.advantage]: "neon-glow-animated-gold",
+      [K4ItemType.disadvantage]: "neon-glow-animated-red",
+      [K4ItemType.darksecret]: "neon-glow-animated-white"
+    };
+    const traitType = traitContainer$.attr("data-trait-type") as keyof typeof glowColors;
+    const glowClass = glowColors[traitType] ?? "";
+
+    let tl = traitContainer$.data("traitSelectionTimeline") as Maybe<gsap.core.Timeline>;
+    if (!tl) {
+      const traitName$ = traitContainer$.find(".archetype-trait-name");
+      const splitTraitName = traitContainer$.data("splitTraitName") as Maybe<SplitText> ?? new SplitText(traitName$, {type: "chars"});
+      traitContainer$.data("splitTraitName", splitTraitName);
+
+      const actor = this.actor;
+      const trait = traitContainer$.attr("data-trait")!;
+
+      tl = U.gsap.timeline({
+        paused: true,
+        onReverseComplete() {
+          void actor.charGenDeselect(trait);
+          traitContainer$.attr("data-is-selected", "false");
+          traitContainer$.removeClass(glowClass);
+        }
+      });
+      tl
+        .addLabel("unselected")
+        .to(splitTraitName.chars, {
+          color: "rgb(255, 255, 255)",
+          fontWeight: 700,
+          // textShadow: "0 0 3px rgb(255, 255, 255)",
+          ease: createControlledWiggleEase("power2.in", 200),
+          duration: 2,
+          stagger: {
+            each: 0.05,
+            ease: "power3.out"
+          },
+          clearProps: "textShadow"
+        })
+        .call(() => {
+          if (!tl!.reversed()) {
+            void actor.charGenSelect(trait);
+            traitContainer$.attr("data-is-selected", "true");
+            traitContainer$.addClass(glowClass);
+          }
+        })
+        .addLabel("selected");
+    }
+
+    traitContainer$.data("traitSelectionTimeline", tl);
+    return tl;
+  }
+
+  #attachListeners_trait(traitContainer$: JQuery) {
+    const sheet$ = $(this.element);
+    const trait = traitContainer$.attr("data-trait");
+    let clickTimer: NodeJS.Timeout | null = null;
+    let longPressTriggered = false;
+    const glowColors: Partial<Record<K4ItemType, string>> = {
+      [K4ItemType.advantage]: "neon-glow-animated-gold",
+      [K4ItemType.disadvantage]: "neon-glow-animated-red",
+      [K4ItemType.darksecret]: "neon-glow-animated-white"
+    };
+    const traitType = traitContainer$.attr("data-trait-type") as keyof typeof glowColors;
+
+    if (traitContainer$.attr("data-is-mandatory") === "true" || traitContainer$.attr("data-is-selected") === "true") {
+      const tl = this.#getTimeline_traitSelection(traitContainer$);
+      void tl.progress(1);
+    }
+
+    traitContainer$.on({
+      mousedown: () => {
+        const isMandatory = traitContainer$.attr("data-is-mandatory") === "true";
+        if (isMandatory) { return; }
+        const isSelected = traitContainer$.attr("data-is-selected") === "true";
+        longPressTriggered = false;
+        clickTimer = setTimeout(() => {
+          longPressTriggered = true;
+        }, 500);
+        const tl = this.#getTimeline_traitSelection(traitContainer$);
+        kLog.log("MOUSE DOWN", {tl, isSelected, isMandatory, trait, longPressTriggered, clickTimer});
+        if (isSelected) {
+          // traitContainer$.removeClass(glowClass);
+          tl.timeScale(1).reverse();
+        } else {
+          tl.seek(0.5).timeScale(1).play();
+        }
+      },
+      mouseup: () => {
+        const isMandatory = traitContainer$.attr("data-is-mandatory") === "true";
+        if (isMandatory) { return; }
+        const tl = this.#getTimeline_traitSelection(traitContainer$);
+        if (clickTimer) {
+          clearTimeout(clickTimer);
+          clickTimer = null;
+        }
+        if (tl.isActive()) {
+          if (tl.reversed()) {
+            tl.timeScale(3).play();
+          } else {
+            // traitContainer$.removeClass(glowClass);
+            tl.timeScale(3).reverse();
+          }
+        }
+      },
+      click: async () => {
+        if (longPressTriggered) { return; }
+        const traitItem = game.items.getName(trait) as Maybe<K4Item>;
+        if (!traitItem) { return; }
+        // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
+        const highestZIndex = Math.max(...$("body").find(".k4-item-sheet").map((_i, sheet) =>
+          U.pInt($(sheet).css("z-index"))
+        ).toArray());
+        sheet$.css("z-index", 100);
+        if (!traitItem.sheet.rendered) {
+          traitItem.sheet.render(true);
+          await U.sleep(150);
+        }
+        traitItem.sheet.element.css("z-index", highestZIndex + 1);
+        sheet$.css("z-index", 100);
+      }
+    });
+  }
+
+  #attachListeners_archetypePanels(archetype$: JQuery) {
+
+    const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
+    if (!archetype) {
+      throw new Error(`No archetype found for K4PCSheet: ${String(archetype$)}`);
+    }
+    const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
+    const getUnlistedItemsOfType = (type: K4ItemType.disadvantage|K4ItemType.darksecret) => {
+      const {archetype} = this.actor;
+      if (!archetype) { return []; }
+      const listedTraits: string[] = [];
+      const cData = this.getArchetypeCarouselData();
+      if (cData[archetype]?.[type]) {
+        listedTraits.push(
+          ...Object.keys(cData[archetype][type])
+            .map((traitName) => traitName.replace(/^!/, ""))
+        );
+      }
+      return game.items
+        .filter((item: any): item is K4Item<K4ItemType.disadvantage|K4ItemType.darksecret> =>
+          item.type === type && !listedTraits.includes(item.name)
+        );
+    };
+    archetypePanels$.find(".archetype-panel-advantages, .archetype-panel-disadvantages, .archetype-panel-darksecrets")
+      .each((_i, panel) => {
+        const panel$ = $(panel);
+        panel$.find(".archetype-trait-container")
+          .each((_i, cont) => {
+            this.#attachListeners_trait($(cont));
+          });
+      });
+    // Add listeners to "more" buttons
+    archetypePanels$.find("button.more-disadvantages").on({
+      click: async () => {
+        const item = await K4Dialog.GetUserItemSelection<K4ItemType.disadvantage>({
+          title: "Select a Disadvantage",
+          bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
+          itemList: getUnlistedItemsOfType(K4ItemType.disadvantage)
+        });
+        if (item) {
+          await this.actor.charGenSelect(item.name, false);
+        }
+      }
+    });
+    archetypePanels$.find("button.more-dark-secrets").on({
+      click: async () => {
+        const item = await K4Dialog.GetUserItemSelection<K4ItemType.darksecret>({
+          title: "Select a Dark Secret",
+          bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
+          itemList: getUnlistedItemsOfType(K4ItemType.darksecret)
+        });
+        if (item) {
+          await this.actor.charGenSelect(item.name, false);
+        }
+      }
+    });
+  }
+
+  updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
+    const selArchetypeIndex = selIndex ?? getIndexFromYRot(rotation);
+    const thisIndex = U.pInt(item$.attr("data-index"));
+    U.gsap.set(item$[0], { rotationY: -rotation });
+    if (thisIndex === selArchetypeIndex) { return; }
+    const thisTimeline = this.#getTimeline_archetypeStyle(item$);
+    kLog.log(`Updating Seeking Archetype Item '${item$.attr("data-archetype")}' ($${thisIndex}) to ${1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex)}`);
+    thisTimeline.seek(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true).pause();
+  }
+
+  async #updateCarouselFromDragger(x: number, isTweening = false) {
+    const html$ = $(this.element);
+    const carousel$ = html$.find(".archetype-carousel");
+    const dragger$ = html$.find(".archetype-carousel-drag-handle");
+    const items$ = carousel$.find(".archetype-carousel-item");
+    const wrappedX = wrapXPos(x);
+    const thisIndex = getIndexFromXPos(wrappedX);
+    const rotation = isTweening
+      ? getYRotFromIndex(thisIndex)
+      : getYRotFromXPos(wrappedX);
+    let tl: gsap.core.Tween;
+    if (isTweening) {
+      tl = U.gsap.to(carousel$, {rotationY: rotation, duration: 0.5, ease: "back.inOut"});
+    } else {
+      tl = U.gsap.set(carousel$, { rotationY: rotation });
+    }
+    U.gsap.set(dragger$[0], { x: wrappedX, duration: 0 });
+    items$.each((_i, item) => {
+      this.updateArchetypeItem($(item), rotation, isTweening ? thisIndex : undefined);
+    });
+    await tl;
+  }
+
+  selArchetypeIndex = getIndexOfArchetype(this.actor.archetype ?? K4Archetype.academic);
+  #constructCarouselDragger(html$: JQuery) {
+    const draggerContainer$ = html$.find(".archetype-carousel-dragger");
+    const dragger$ = draggerContainer$.find(".archetype-carousel-drag-handle");
+    const carousel$ = html$.find(".archetype-carousel");
+    const items$ = carousel$.find(".archetype-carousel-item");
+    const self = this;
+
+    const getSnappedXPos = (x: number) => {
+      const newIndex = getIndexFromXPos(wrapXPos(x));
+      return getXPosFromIndex(newIndex);
+    }
+
+    const snapToNearestArchetype = async (x: number, isCompleting = false, isUpdating = true) => {
+      const newIndex = getIndexFromXPos(wrapXPos(x));
+      this.actor.archetype = getArchetypeFromIndex(newIndex);
+      this.selArchetypeIndex = newIndex;
+      if (isUpdating) {
+        await this.#updateCarouselFromDragger(getXPosFromIndex(newIndex), isCompleting);
+      }
+      K4DebugDisplay.updateArchetypeInfo(this.actor.archetype, this.selArchetypeIndex, newIndex, newIndex);
+      if (isCompleting) {
+        focusOn();
+      }
+      return getXPosFromIndex(newIndex);
+    };
+
+    const focusOn = (index = this.selArchetypeIndex) => {
+      dragger$.css("pointer-events", "none");
+      const selectedArchetype = getElementFromIndex(carousel$, index);
+      const archetype = getArchetypeFromIndex(index);
+      const selectedArchetypeTimeline = this.#getTimeline_archetypeStyle($(selectedArchetype));
+      U.gsap.timeline()
+        .add(selectedArchetypeTimeline.tweenTo("selected", {duration: 2}))
+        .add(() => { void this.reRenderTraitPanels(archetype); }, 1)
+        .add(() => { dragger$.css("pointer-events", "auto"); });
+    }
+    const focusOff = (index = this.selArchetypeIndex) => {
+      const selectedArchetype = getElementFromIndex(carousel$, index);
+      const selectedArchetypeTimeline = this.#getTimeline_archetypeStyle($(selectedArchetype));
+      void selectedArchetypeTimeline.seek("light", true).pause();
+    }
+
+    const dragger = Dragger.create(dragger$, {
+      type: "x",
+      inertia: true,
+      dragResistance: 0.5,
+      maxDuration: 0.25,
+      // startX: getXPosFromIndex(getIndexOfArchetype(this.actor.archetype ?? K4Archetype.academic)),
+      snap: {
+        x: function(this: Dragger, value: number) {
+          if (!this.isThrowing) { return value; }
+          return getSnappedXPos(value);
+        }
+      },
+      onDragStart: function(this: Dragger) {
+        focusOff();
+      },
+      onDrag: function(this: Dragger) {
+        void self.#updateCarouselFromDragger(this.x, false);
+        K4DebugDisplay.updateDraggerInfo(this, self.actor);
+      },
+      onDragEnd: function(this: Dragger) {
+        if (this.isThrowing) { return; }
+        // void self.#updateCarouselFromDragger(this.x, false);
+        void snapToNearestArchetype(this.x, true);
+      },
+      onThrowUpdate: function(this: Dragger) {
+        void self.#updateCarouselFromDragger(this.x, false);
+        K4DebugDisplay.updateDraggerInfo(this, self.actor);
+      },
+      onThrowComplete: function(this: Dragger) {
+        // void self.#updateCarouselFromDragger(this.x, false);
+        void snapToNearestArchetype(this.x, true);
+      }
+    })[0];
+
+    // void this.#updateCarouselFromDragger(dragger.x, false);
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (K4DebugDisplay.IS_DEBUGGING) {
+      kLog.log("Dragger Created", {dragger, draggerContainer$, dragger$});
+
+      // Update debug info on each frame
+      gsap.ticker.add(() => {
+        const x = gsap.getProperty(dragger$[0], "x") as number;
+        updateDebugInfo(carousel$, x);
+        K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), this.actor);
+      });
+    }
+  }
+
+  itemWidth = 200;
+  #constructCarousel(carouselScene$: JQuery) {
+    const carousel$ = carouselScene$.find(".archetype-carousel");
+    const items$ = carousel$.find(".archetype-carousel-item");
+
+    const totalItems = getArchetypeCount();
+    const radius = Math.round((this.itemWidth / 2) / Math.tan(Math.PI / totalItems));
+
+    [carouselScene$, carousel$, items$].forEach(revealAndReturn);
+
+    void U.gsap.set(carousel$, {z: -1 * radius});
+
+    void Promise.all(items$.map((i, item) => {
+      const item$ = $(item);
+      const archTimeline = this.#getTimeline_archetypeStyle(item$);
+      const distFromSelected = getNormalizedDistanceFromSelected(i, this.selArchetypeIndex);
+      archTimeline.seek(1 - distFromSelected, true);
+      return U.gsap.set(item, {
+        transform: `rotateY(${-1 * getYRotFromIndex(i)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i)}deg)`
+      });
+    }));
+
+    hideAndReturn(items$);
+
+    U.gsap.set([carouselScene$, carousel$], { opacity: 1, visibility: "visible" });
+
+    this.#constructCarouselDragger(carouselScene$);
+  }
+
+  async #reRenderTraitPanel(archetype$: JQuery, panelData: Archetype.ArchetypeData) {
+    const htmlContent = await renderTemplate("systems/kult4th/templates/sheets/pc-initialization-archetype-trait-panels.hbs", {data: panelData});
+    archetype$.find(".archetype-trait-panels-wrapper").html(htmlContent);
+    this.#attachListeners_archetypePanels(archetype$);
+  }
+
+  async reRenderTraitPanels(archetype?: K4Archetype) {
+    kLog.log("Re-rendering trait panels");
+    const sheet$ = $(this.element);
+    archetype ??= this.actor.archetype ?? K4Archetype.academic;
+    // Use destructuring to separate carousel data into its archetype-specific and archetype-independent components
+    const allCarouselData = this.getArchetypeCarouselData();
+    const archetypeData = allCarouselData[archetype];
+    if (!archetypeData) {
+      throw new Error(`No archetype data found for archetype: ${archetype}`);
+    }
+    const archetype$ = sheet$.find(`.archetype-panels[data-archetype="${archetype}"]`);
+    await this.#reRenderTraitPanel(archetype$, archetypeData);
+
+    // Use async/multithreading to render remaining panels without interrupting the main thread
+    // void Promise.all((Object.keys(allCarouselData) as K4Archetype[])
+    //   .filter((aType) => aType !== archetype)
+    //   .map(async (aType) => {
+    //     const panelData = allCarouselData[aType]!;
+    //     const panel$ = sheet$.find(`.archetype-panels[data-archetype="${aType}"]`);
+    //     await this.#reRenderTraitPanel(panel$, panelData);
+    //   }));
+  }
+
+  #animateCarousel(videoElem: HTMLVideoElement) {
+    void videoElem.play();
+    CONFIG.K4.isCharGenInitialized = true;
+    return this.#getTimeline_revealCarousel().play();
+  }
+
+  // #renderCarousel() {
+  //   const sheet$ = $(this.element);
+  //   const container$ = sheet$.find(".pc-initialization");
+  //   const bgContainer$ = sheet$.find(".pc-initialization-bg");
+  //   const mid$ = bgContainer$.find(".cityscape-mid");
+  //   const clouds$ = bgContainer$.find(".cloud-bg");
+  //   const cloudsVideo = clouds$[0] as Maybe<HTMLVideoElement>;
+  //   void cloudsVideo?.play();
+  //   const fore$ = bgContainer$.find(".cityscape-fore");
+  //   const carouselScene$ = container$.find(".archetype-staging");
+  //   const attributesPanel$ = container$.find(".archetype-panel.attributes");
+  //   const notesPanel$ = container$.find(".archetype-panel-notes");
+  //   const namePanel$ = container$.find(".archetype-panel.actor-name");
+  //   const items$ = carouselScene$.find(".archetype-carousel-item");
+
+  //   U.gsap.set([
+  //     sheet$,
+  //     container$,
+  //     carouselScene$,
+  //     bgContainer$,
+  //     mid$,
+  //     fore$,
+  //     attributesPanel$,
+  //     notesPanel$,
+  //     namePanel$,
+  //     items$
+  //   ], {
+  //     autoAlpha: 1,
+  //     opacity: 1
+  //   });
+
+  //   U.gsap.set(clouds$, {
+  //     autoAlpha: 0.5,
+  //     opacity: 0.5
+  //   });
+
+  //   const selArchetypeIndex = getIndexOfArchetype(this.actor.archetype ?? K4Archetype.academic);
+  //   const draggerXPos = getXPosFromIndex(selArchetypeIndex);
+  //   // U.gsap.set([sheet$, container$, bgContainer$, mid$, fore$, carouselScene$, attributesPanel$, notesPanel$, namePanel$, items$], {autoAlpha: 1, opacity: 1});
+  //   // U.gsap.set(clouds$, {autoAlpha: 1, opacity: 0.5});
+  //   void this.#updateCarouselFromDragger(draggerXPos, false);
+  //   void this.actor.sheet.updateArchetypeExamples(container$);
+  //     //       $([
+  //     //         sheet$,
+  //     //         container$,
+  //     //         carouselScene$,
+  //     //         archetypeExamples$,
+  //     //         items$,
+  //     //         attributesPanel$,
+  //     //         namePanel$,
+  //     //         descriptionPanel$
+  //     //       ]).css("visibility", "visible");
+  //     //       void ANIMATIONS.revealBackground(carouselScene$);
+  //     //       this.actor.sheet.updateArchetypeExamples(container$);
+  //     //       return;
+  // }
+
+  async initializeCarouselScene(): Promise<void> {
+
+    const timeStamp = U.getTimeStamp();
+
+    kLog.log(`${timeStamp()} - Initializing Carousel Scene`);
+
+    const sheet$ = $(this.element);
+    sheet$.find(".window-header, .window-resizable-handle").css("display", "none");
+    void this.#getTimeline_revealCarouselBaseBackground().play();
+
+    // Construct the carousel by positioning and rotating all elements
+    const carouselScene$ = sheet$.find(".archetype-staging");
+    this.#constructCarousel(carouselScene$);
+    kLog.log(`${timeStamp()} - Carousel Scene Constructed`);
+
+    // Add the carousel drag controller
+    this.#constructCarouselDragger(sheet$);
+    kLog.log(`${timeStamp()} - Carousel Dragger Constructed`);
+
+    // Attach archetype timelines and listeners to their associated elements
+    sheet$.find(".archetype-carousel-item[data-archetype]").each((_i, archetypeElem) => {
+      const archetype$ = $(archetypeElem);
+      this.#attachListeners_archetypePanels(archetype$);
+    });
+    kLog.log(`${timeStamp()} - Archetype Timelines Attached`);
+
+    // Update the carousel to match the selected archetype
+    await this.#updateCarouselFromDragger(getXPosFromIndex(this.selArchetypeIndex), false);
+    kLog.log(`${timeStamp()} - Carousel Updated to Selected Archetype`);
+
+    kLog.log(`${timeStamp()} - Carousel Rendered, Awaiting Video`);
+    const cloudVideo = (sheet$.find(".cloud-bg") as JQuery<Maybe<HTMLVideoElement>>)[0];
+    if (cloudVideo) {
+      if (cloudVideo.readyState >= 3) {
+        kLog.log(`${timeStamp()} - Video Ready, Animating Carousel`);
+        this.#animateCarousel(cloudVideo);
+      } else {
+        kLog.log(`${timeStamp()} - Video Not Ready, Waiting for Video`);
+        // this.#animateCarousel(cloudVideo);
+        // Wait for the video to be ready
+        cloudVideo.addEventListener('canplay', () => { this.#animateCarousel(cloudVideo); }, { once: true });
+        // Fallback in case the video fails to load
+        cloudVideo.addEventListener('error', () => { this.#animateCarousel(cloudVideo); }, { once: true });
+      }
+    }
+    // }
+  }
+
+
+  // async revealCarousel(carouselScene$: JQuery) {
+
+
+  //   if (isInstant) {
+  //     if (CONFIG.K4.isCharGenInitialized) {
+  //       $([
+  //         sheet$,
+  //         container$,
+  //         carouselScene$,
+  //         archetypeExamples$,
+  //         items$,
+  //         attributesPanel$,
+  //         namePanel$,
+  //         descriptionPanel$
+  //       ]).css("visibility", "visible");
+  //       void ANIMATIONS.revealBackground(carouselScene$);
+  //       this.actor.sheet.updateArchetypeExamples(container$);
+  //       return;
+  //     }
+  //   }
+
+
+  // }
+
+  // async archetypeCarouselTimeline(carouselScene$: JQuery, itemWidth: number, actor: K4Actor): Promise<gsap.core.Timeline> {
+
+
+
+
+
+
+
+
+
+
+
+    // // Update rotation on window resize
+    // window.addEventListener("resize", () => {
+    //   const newMaxDistance = window.innerWidth / 2;
+    //   const currentRotation = gsap.getProperty(carousel$[0], "rotationY") as number;
+    //   const newX = (currentRotation / 180) * newMaxDistance;
+    //   gsap.set(dragger$, { x: newX });
+    //   updateRotation(newX);
+    // });
+
+    // void updateCarousel(getXPosFromIndex(selArchetypeIndex));
+
+    // await ANIMATIONS.revealCarousel(carouselScene$);
+
+    // // get currently selected archetype element, retrieve its timeline, and set it to "selected"
+    // // const tl = gsap.timeline({ paused: true });
+    // const selectedArchetype = getElementFromIndex(carousel$, selArchetypeIndex);
+    // const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeStyleTimeline") as gsap.core.Timeline);
+
+    // // If the selected archetype is the same as the one we're already showing, skip the tween
+    // if (CONFIG.K4.charGenIsShowing === actor.archetype) {
+    //   selectedArchetypeTimeline.seek("selected");
+    // } else {
+    //   void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
+    // }
+
+    // return U.gsap.timeline();
+  // }
+
+  // Function to start the animation
+  // async #startAnimation_carousel(video: HTMLVideoElement, mainTL: gsap.core.Timeline, instantTimelines?: gsap.core.Timeline[]) {
+  //   const isInstant = U.isDefined(instantTimelines) && !U.isEmpty(instantTimelines);
+  //   void video.play();
+  //   if (isInstant) {
+  //     [mainTL, ...instantTimelines].forEach((tl) => tl.progress(1).pause());
+  //     return;
+  //   }
+  //   await mainTL.play();
+  // };
+
+
+
+
+
+
+
+
+
+
+
+
+
   activateStabilityListeners(html: JQuery) {
     let clickStatus = false;
     const buttonContainer$ = html.find(".button-container");
@@ -2580,6 +3798,31 @@ class K4PCSheet extends ActorSheet {
     });
   }
 
+  /**
+   * Waits for this.element to be available, up to a maximum of 10 seconds.
+   * @returns A Promise that resolves to this.element when it becomes available.
+   * @throws Error if this.element is not available after 10 seconds.
+   */
+  get awaitElement(): Promise<JQuery> {
+    return new Promise((resolve, reject) => {
+      const maxAttempts = 100; // 10 seconds with 100ms interval
+      let attempts = 0;
+
+      const checkElement = () => {
+        if (this.element as Maybe<JQuery>) {
+          resolve(this.element);
+        } else if (attempts >= maxAttempts) {
+          reject(new Error("No element found for K4PCSheet after 10 seconds"));
+        } else {
+          attempts++;
+          setTimeout(checkElement, 100);
+        }
+      };
+
+      checkElement();
+    });
+  }
+
   get twitchyEyeSize(): number {
     switch (this.actor.stabilityLevel) {
       case K4Stability.composed: return 0;
@@ -2735,27 +3978,7 @@ class K4PCSheet extends ActorSheet {
     });
 
     if (this.actor.is(K4ActorType.pc) && !this.actor.isFinishedCharGen) {
-      switch (this.actor.charGenPhase) {
-        case K4CharGenPhase.archetype: {
-          void this.activateChargenArchetypeListeners(html);
-          break;
-        }
-        case K4CharGenPhase.attributesAndTraits: {
-          void this.activateChargenAttributesAndTraitsListeners(html);
-          break;
-        }
-        case K4CharGenPhase.details: {
-          void this.activateChargenDetailsListeners(html);
-          break;
-        }
-        case K4CharGenPhase.relations: {
-          void this.activateChargenRelationsListeners(html);
-          break;
-        }
-        case K4CharGenPhase.finished: {
-          break;
-        }
-      }
+      void this.initializeCarouselScene();
     } else {
 
       // Activate listeners for editing "content-editable" elements

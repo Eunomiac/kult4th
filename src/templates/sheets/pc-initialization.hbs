@@ -9,15 +9,21 @@
 </div>
 
 <form class="actor-sheet kult4th-form {{cssClass}} actor-pc pc-initialization" autocomplete="off">
+
+
   <div class="archetype-panel actor-name">
     {{> "systems/kult4th/templates/components/pc-actor-name.hbs" }}
   </div>
+
+
   <div class="archetype-panel attributes">
     <label class="k4-title section-title">Attributes</label>
     {{#each attributes}}
     {{> "systems/kult4th/templates/components/attribute-box.hbs"}}
     {{/each}}
   </div>
+
+
   {{#if (eq charGenPhase "archetype")}}
   {{> "systems/kult4th/templates/sheets/pc-initialization-archetype.hbs" }}
   {{else if (eq charGenPhase "attributesAndTraits")}}
@@ -28,6 +34,54 @@
   {{> "systems/kult4th/templates/sheets/pc-initialization-relations.hbs" }}
   {{/if}}
 
+
+  <div class="archetype-panel archetype-panel-notes">
+    <div class="archetype-sub-panel chargen-occupation">
+      <div class="archetype-sub-panel-title tooltip-trigger">
+        <label class="k4-title section-title">Occupation</label>
+        <span class="tooltip">
+          <h2>Suggestions:</h2>
+          <div class="archetype-example-container">
+          <span class="archetype-example-list" data-target="occupation"></span>
+          </div>
+        </span>
+      </div>
+      {{editor actor.system.occupation target="system.occupation" button=true engine="prosemirror" collaborate=false class="k4-one-line-editor"}}
+    </div>
+    <div class="archetype-sub-panel chargen-description">
+      <div class="archetype-sub-panel-title tooltip-trigger">
+        <label class="k4-title section-title">Description</label>
+        <span class="tooltip">
+          <h2>Suggestions:</h2>
+          <div class="archetype-example-container">
+            <span class="archetype-example-label">Clothes:</span>
+            <span class="archetype-example-list" data-target="looks.clothes"></span>
+          </div>
+          <div class="archetype-example-container">
+            <span class="archetype-example-label">Face:</span>
+            <span class="archetype-example-list" data-target="looks.face"></span>
+          </div>
+          <div class="archetype-example-container">
+            <span class="archetype-example-label">Eyes:</span>
+            <span class="archetype-example-list" data-target="looks.eyes"></span>
+          </div>
+          <div class="archetype-example-container">
+            <span class="archetype-example-label">Body:</span>
+            <span class="archetype-example-list" data-target="looks.body"></span>
+          </div>
+        </span>
+      </div>
+      {{editor actor.system.description target="system.description" button=true engine="prosemirror" collaborate=false class="k4-small-editor"}}
+    </div>
+    <div class="archetype-sub-panel chargen-history">
+      <div class="archetype-sub-panel-title">
+        <label class="k4-title section-title">History</label>
+      </div>
+      {{editor actor.system.history target="system.history" button=true engine="prosemirror" collaborate=false class="k4-medium-editor"}}
+    </div>
+  </div>
+
+
   <div class="archetype-panel character-summary-panel">
     {{#each otherPlayerData as |actorData actorID|}}
     <div class="character-summary" data-actor-id="{{actorID}}">
@@ -36,4 +90,6 @@
     </div>
     {{/each}}
   </div>
+
+
 </form>

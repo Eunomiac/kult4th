@@ -52,8 +52,9 @@ Kult White:  #FFFFFF */
 
 @mixin set-default-theme() {
 	--K4-color-primary: var(--K4-GOLD5);
-	--K4-color-primary-bright: var(--K4-GOLD8);
+	--K4-color-primary-bright: var(--K4-GOLD7);
 	--K4-color-primary-glow: var(--K4-GOLD9);
+	--K4-color-primary-dark: var(--K4-GOLD2);
 
 	--K4-color-contrast: var(--K4-GREY1);
 	--K4-color-contrast-low: var(--K4-GOLD1);
@@ -157,7 +158,7 @@ Kult White:  #FFFFFF */
 	@include set-default-theme();
 
   &.k4-theme-bgold {
-    --K4-color-primary: var(--K4-GOLD8);
+    --K4-color-primary: var(--K4-GOLD7);
     --K4-color-contrast: var(--K4-GREY0);
     --K4-bg-inset: transparent #{to-url("backgrounds/bg-gold.webp")} repeat repeat center center/1000px 1000px;
   }
@@ -167,6 +168,7 @@ Kult White:  #FFFFFF */
 	--K4-color-primary: var(--K4-GREY1);
 	--K4-color-primary-bright: var(--K4-GREY0);
 	--K4-color-primary-glow: var(--K4-GREY0);
+	--K4-color-primary-dark: var(--K4-GOLD2);
 
 	--K4-color-contrast: var(--K4-GREY9);
 	--K4-color-contrast-low: var(--K4-GREY7);
@@ -261,9 +263,10 @@ Kult White:  #FFFFFF */
 }
 
 .k4-theme-dark, .k4-theme-black {
-	--K4-color-primary: var(--K4-GREY9);
+	--K4-color-primary: var(--K4-GREY8);
 	--K4-color-primary-bright: var(--K4-GREY10);
 	--K4-color-primary-glow: var(--K4-GREY10);
+  --K4-color-primary-dark: var(--K4-GREY4);
 
 	--K4-color-contrast: var(--K4-GREY1);
 	--K4-color-contrast-low: var(--K4-GOLD1);
@@ -312,6 +315,7 @@ Kult White:  #FFFFFF */
 	--K4-color-primary: var(--K4-RED5);
 	--K4-color-primary-bright: var(--K4-RED8);
 	--K4-color-primary-glow: var(--K4-RED9);
+  --K4-color-primary-dark: var(--K4-RED4);
 
 	--K4-color-contrast: var(--K4-GREY1);
 	--K4-color-contrast-low: var(--K4-RED5);

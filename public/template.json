@@ -15,6 +15,7 @@
         "eyes": "",
         "body": ""
       },
+			"notes": "",
       "charGen": {
         "selAdvantages": [],
         "selDisadvantages": [],
@@ -128,7 +129,10 @@
 			},
       "isSheetLocked": false
 		},
-		"npc": {}
+		"npc": {
+			"description": "",
+      "notes": ""
+    }
 	},
 	"Item": {
 		"types": [

@@ -127,14 +127,17 @@ declare global {
     export namespace SourceSchema {
       export interface PC {
         charGenPhase: K4CharGenPhase,
-        archetype: K4Archetype,
+        archetype: K4Archetype|"",
         description: string,
+        occupation: string,
         looks: {
           clothes: string,
           face: string,
           eyes: string,
           body: string
         },
+        history: string,
+        notes: string,
         charGen: {
           selAdvantages: string[],
           selDisadvantages: string[],
@@ -142,7 +145,6 @@ declare global {
           extraDisadvantages: string[],
           extraDarkSecrets: string[]
         },
-        history: string,
         dramaticHooks: [
           {
             value: string,
@@ -175,7 +177,8 @@ declare global {
       }
 
       export interface NPC {
-        description: string
+        description: string,
+        notes: string
       }
     }
 
@@ -230,6 +233,38 @@ declare global {
       img: string,
       system: K4Actor.System<T>;
     }
+
+    export namespace SummaryData {
+      export interface Trait<T extends K4ItemType = K4ItemType> {
+        name: string,
+        img: string,
+        type: T,
+        tooltip: string
+      }
+      export interface Base {
+        name: string,
+        img: string
+      }
+
+      export interface PC extends Base {
+        archetype: Maybe<K4Archetype>,
+        attributes: Record<K4CharAttribute, number>,
+        advantages: Array<Trait<K4ItemType.advantage>>,
+        disadvantages: Array<Trait<K4ItemType.disadvantage>>,
+        darkSecrets: Array<Trait<K4ItemType.darksecret>>,
+        occupation: string,
+        description: string,
+        notes: string
+      }
+      export interface NPC extends Base {
+        description: string,
+        notes: string
+      }
+    }
+
+    export type SummaryData<T extends K4ActorType = K4ActorType> =
+      T extends K4ActorType.pc ? SummaryData.PC
+      : T extends K4ActorType.npc ? SummaryData.NPC : never;
   }
 }
 // #endregion
@@ -383,7 +418,9 @@ class K4Actor extends Actor {
       : this.charGenPhase === K4CharGenPhase.finished;
   }
   get archetype(): Maybe<K4Archetype> {
-    return this.is(K4ActorType.pc) ? this.system.archetype : undefined;
+    if (!this.is(K4ActorType.pc)) { return undefined; }
+    if (!this.system.archetype) { return K4Archetype.academic; }
+    return this.system.archetype;
   }
   set archetype(archetype: K4Archetype) {
     if (!this.is(K4ActorType.pc)) {return;}
@@ -391,14 +428,28 @@ class K4Actor extends Actor {
       "system.archetype": archetype
     }, {render: false});
   }
-  get summaryData() {
-    const acData = (this.sheet as K4PCSheet).getArchetypeCarouselData();
-    return {
-      name: this.name,
-      archetype: this.archetype,
-      attributes: this.attributeData,
-      ...(this.archetype && this.archetype in acData ? {archetypeData: acData[this.archetype]} : {})
-    };
+  get summaryData(): K4Actor.SummaryData {
+    if (this.is(K4ActorType.pc)) {
+      return {
+        name: this.name,
+        img: this.img,
+        archetype: this.archetype,
+        attributes: this.attributes,
+        advantages: [],
+        disadvantages: [],
+        darkSecrets: [],
+        occupation: this.system.occupation,
+        description: this.system.description,
+        notes: this.system.notes
+      }
+    } else {
+      return {
+        name: this.name,
+        img: this.img,
+        description: this.system.description,
+        notes: this.system.notes
+      }
+    }
   }
   // #region -- Embedded Item Search & Retrieval Methods ~
 
@@ -878,34 +929,44 @@ class K4Actor extends Actor {
   }
 
   async charGenSelect(traitName: string, isArchetype = true) {
-    if (this.type !== K4ActorType.pc) {return;}
-    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
+    if (!this.is(K4ActorType.pc)) {return;}
+    const pcData = this.system;
     let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
     const item = game.items.getName(traitName) as Maybe<K4Item>;
     if (!item) { return; }
     switch (item.type) {
       case K4ItemType.advantage: {
+        if (selAdvantages.includes(traitName)) { break; }
         selAdvantages = U.unique([...selAdvantages, traitName]);
-        await this.update({"system.charGen.selAdvantages": selAdvantages});
+        await this.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
+        await this.sheet.reRenderTraitPanels();
         break;
       }
       case K4ItemType.disadvantage: {
         if (isArchetype) {
+          if (selDisadvantages.includes(traitName)) { break; }
           selDisadvantages = U.unique([...selDisadvantages, traitName]);
-          await this.update({"system.charGen.selDisadvantages": selDisadvantages});
+          await this.update({"system.charGen.selDisadvantages": selDisadvantages}, {render: false});
+          await this.sheet.reRenderTraitPanels();
         } else {
+          if (extraDisadvantages.includes(traitName)) { break; }
           extraDisadvantages = U.unique([...extraDisadvantages, traitName]);
-          await this.update({"system.charGen.extraDisadvantages": extraDisadvantages});
+          await this.update({"system.charGen.extraDisadvantages": extraDisadvantages}, {render: false});
+          await this.sheet.reRenderTraitPanels();
         }
         break;
       }
       case K4ItemType.darksecret: {
         if (isArchetype) {
+          if (selDarkSecrets.includes(traitName)) { break; }
           selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
-          await this.update({"system.charGen.selDarkSecrets": selDarkSecrets});
+          await this.update({"system.charGen.selDarkSecrets": selDarkSecrets}, {render: false});
+          await this.sheet.reRenderTraitPanels();
         } else {
+          if (extraDarkSecrets.includes(traitName)) { break; }
           extraDarkSecrets = U.unique([...extraDarkSecrets, traitName]);
-          await this.update({"system.charGen.extraDarkSecrets": extraDarkSecrets});
+          await this.update({"system.charGen.extraDarkSecrets": extraDarkSecrets}, {render: false});
+          await this.sheet.reRenderTraitPanels();
         }
         break;
       }
@@ -913,26 +974,29 @@ class K4Actor extends Actor {
   }
 
   async charGenDeselect(traitName: string) {
-    if (this.type !== K4ActorType.pc) {return;}
-    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
+    if (!this.is(K4ActorType.pc)) {return;}
+    const pcData = this.system;
     const {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
     if (selAdvantages.includes(traitName)) {
       U.pullElement(selAdvantages, traitName);
-      await this.update({"system.charGen.selAdvantages": selAdvantages});
+      await this.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
+      await this.sheet.reRenderTraitPanels();
     } else if ([...selDisadvantages, ...extraDisadvantages].includes(traitName)) {
       U.pullElement(selDisadvantages, traitName);
       U.pullElement(extraDisadvantages, traitName);
       await this.update({
         "system.charGen.selDisadvantages": selDisadvantages,
         "system.charGen.extraDisadvantages": extraDisadvantages
-      });
+      }, {render: false});
+      await this.sheet.reRenderTraitPanels();
     } else if ([...selDarkSecrets, ...extraDarkSecrets].includes(traitName)) {
       U.pullElement(selDarkSecrets, traitName);
       U.pullElement(extraDarkSecrets, traitName);
       await this.update({
         "system.charGen.selDarkSecrets": selDarkSecrets,
         "system.charGen.extraDarkSecrets": extraDarkSecrets
-      });
+      }, {render: false});
+      await this.sheet.reRenderTraitPanels();
     }
   }
   // #endregion

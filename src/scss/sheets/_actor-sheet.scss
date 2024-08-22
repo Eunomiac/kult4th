@@ -387,14 +387,18 @@ $isDebug: false;
 
       &.cityscape-mid {
         transform-origin: center 50%;
+        visibility: hidden;
       }
 
       &.cityscape-fore {
         transform-origin: center 0%;
+        visibility: hidden;
       }
 
       &.cloud-bg {
         transform-origin: top center;
+        visibility: visible;
+        opacity: 0.1;
       }
     }
   }
@@ -703,13 +707,14 @@ $isDebug: false;
 
       .archetype-panel {
         position: fixed;
+        z-index: 10000;
 
         &:not(.actor-name) {
           border-radius: 25px;
           box-shadow:
             inset 0px 0px 30px var(--K4-GREY0),
             0px 0px 15px var(--K4-GREY0);
-          text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
+          // text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
           padding: 10px;
           border-radius: 25px;
           background: rgba(0, 0, 0, 0.5);
@@ -722,7 +727,7 @@ $isDebug: false;
 
       .archetype-panel.actor-name {
         top: 42px;
-        left: 300px;
+        left: 246px;
         width: 600px;
         transform-origin: left center;
         // transform: scale(1.25);
@@ -736,7 +741,7 @@ $isDebug: false;
       .archetype-panel.attributes {
         --attributes-width: 240px;
         --attributes-height: calc(2 * var(--attributes-width) - 40px);
-        --attributes-scale: 1;
+        --attributes-scale: 0.9;
         --attributes-font-size: calc(22px / var(--attributes-scale));
         height: var(--attributes-height);
         width: var(--attributes-width);
@@ -747,6 +752,7 @@ $isDebug: false;
         background: rgba(0, 0, 0, 0.5) url("/assets/layout/attributes-spread.webp") no-repeat center 30px/200px auto;
         border: none !important;
         transform: scale(var(--attributes-scale)) !important;
+        z-index: 10000;
 
         .k4-title {
           font-size: var(--attributes-font-size);
@@ -793,7 +799,7 @@ $isDebug: false;
       .archetype-panel-notes {
         height: auto;
         width: 600px;
-        left: 1040px;
+        right: 20px;
         bottom: 20px;
         z-index: 30000;
 
@@ -804,25 +810,16 @@ $isDebug: false;
           }
 
           .archetype-sub-panel-title {
-            color: var(--K4-GOLD9);
+            .k4-title.section-title {
+              color: var(--K4-GOLD9);
+              text-align: left;
+              margin-top: 10px;
+              margin-bottom: -5px;
+            }
           }
 
-          .archetype-example-container {
-            height: auto;
-            line-height: $rem-10;
-          }
-          .archetype-example-label {
-            font-weight: $font-weight-bold;
-            color: var(--K4-GOLD9);
-            font-size: $rem-10;
-            line-height: $rem-10;
-          }
-          .archetype-example-list {
-            font-style: italic;
-            color: var(--K4-GOLD7);
-            font-size: $rem-10;
-            line-height: $rem-10;
-          }
+
+
         }
       }
 
@@ -901,63 +898,15 @@ $isDebug: false;
             position: absolute;
             width: calc(var(--item-width) - var(--item-gap));
             height: calc(var(--item-height) - var(--item-gap));
-            perspective: 1000px;
-            transform-style: preserve-3d;
+            // perspective: 1000px;
+            // transform-style: preserve-3d;
             transform-origin: center 70%;
             @if $isDebug {
               @include grid-background(rgba(255, 255, 0, 0.2),rgba(255, 255, 0, 0.1), 10px);
             }
 
 
-            .archetype-carousel-the {
-              visibility: hidden;
-              position: absolute;
-              font-family: var(--font-heading-1);
-              white-space: nowrap;
-              font-size: $rem-24;
-              // transform: translate(0%, 0%);
-              top: 10px;
-              left: -310px;
-              z-index: 2;
-              text-shadow: build-text-shadow(4px, var(--K4-GREY0), 8);
-              text-align: left;
-              width: 200px;
-              // background: rgba(0, 255, 0, 0.25);
 
-            }
-            .archetype-carousel-name {
-              visibility: hidden;
-              position: absolute;
-              font-family: var(--font-heading-1);
-              white-space: nowrap;
-              font-size: $rem-48;
-              color: var(--K4-GOLD9);
-              // transform: translate(0%, 0%);
-              top: 30px;
-              left: -310px;
-              z-index: 2;
-              text-shadow: build-text-shadow(6px, var(--K4-GREY0), 8);
-              text-align: center;
-              width: 200px;
-              // background: rgba(255, 255, 0, 0.25);
-            }
-
-            .archetype-description {
-              visibility: hidden;
-              position: absolute;
-              transform: translate(-50%, 0%);
-              top: 85px;
-              left: -180px;
-              width: 200%;
-              transform-origin: center center;
-
-              &, * {
-                font-size: $rem-14;
-                line-height: $rem-18;
-                color: var(--K4-GOLD8);
-                text-shadow: build-text-shadow(5px, var(--K4-GREY0), 8);
-              }
-            }
 
             &[data-is-selected="false"] {
               .archetype-carousel-the,
@@ -980,6 +929,7 @@ $isDebug: false;
               max-width: none; // Allow image to exceed container width
               transform-origin: center center;
               position: absolute;
+              // perspective: 1000px;
               transform: translate(-50%, -50%);
               top: 50%;
               left: 50%;
@@ -994,7 +944,7 @@ $isDebug: false;
       }
 
       .archetype-panels {
-        visibility: hidden;
+        // visibility: hidden;
         position: absolute;
         top: 0;
         left: 0;
@@ -1007,7 +957,7 @@ $isDebug: false;
         justify-content: space-evenly;
         gap: 10px;
         z-index: 10000;
-        text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
+        // text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
 
         .archetype-panel {
           display: flex;
@@ -1025,25 +975,95 @@ $isDebug: false;
             padding: 0;
           }
 
+          &.archetype-panel-name {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            left: 246px;
+            width: 550px;
+            top: 100px;
+            background: transparent;
+            box-shadow: none;
+
+            .archetype-carousel-the {
+              visibility: hidden;
+              flex-grow: 0;
+              position: relative;
+              font-family: var(--font-heading-1);
+              white-space: nowrap;
+              font-size: $rem-24;
+              top: -10px;
+              // transform: translate(0%, 0%);
+              // top: 10px;
+              // left: -310px;
+              z-index: 2;
+              text-shadow: build-text-shadow(4px, var(--K4-GREY0), 8);
+              text-align: right;
+              // width: 200px;
+              // background: rgba(0, 255, 0, 0.25);
+
+            }
+            .archetype-carousel-name {
+              visibility: hidden;
+              position: relative;
+              font-family: var(--font-heading-1);
+              white-space: nowrap;
+              font-size: $rem-48;
+              color: var(--K4-GOLD9);
+              // transform: translate(0%, 0%);
+              // top: 30px;
+              // left: -310px;
+              z-index: 2;
+              text-shadow: build-text-shadow(6px, var(--K4-GREY0), 8);
+              text-align: left;
+              // width: 200px;
+              // background: rgba(255, 255, 0, 0.25);
+            }
+          }
+
+          &.archetype-panel-description {
+            visibility: hidden;
+            position: absolute;
+            // transform: translate(-50%, 0%);
+            top: 150px;
+            left: 246px;
+            // right: calc(100% + 85px);
+            width: 500px;
+            transform-origin: center center;
+            background: transparent;
+            box-shadow: none;
+            overflow: visible;
+            gap: 0px;
+
+            &, * {
+              font-size: $rem-14;
+              line-height: $rem-18;
+              color: var(--K4-GOLD8);
+              text-shadow: build-text-shadow(5px, var(--K4-GREY0), 8);
+            }
+          }
+
           &.archetype-panel-advantages {
             left: 40px;
-            top: 480px;
+            bottom: 20px;
             gap: 5px;
           }
 
           &.archetype-panel-darksecrets,
           &.archetype-panel-disadvantages {
             min-height: 320px;
+            bottom: 20px;
             // right: 5vw;
           }
 
           &.archetype-panel-disadvantages {
-            bottom: 80px;
             left: 370px;
           }
 
           &.archetype-panel-darksecrets {
-            bottom: 20px;
             left: 700px;
           }
 
@@ -1111,47 +1131,26 @@ $isDebug: false;
               box-sizing: border-box;
               border: var(--border-width) solid transparent;
               width: var(--trait-width);
+              transition: 0.25s;
+              transform-origin: 30px center;
 
               &:hover {
-                border: var(--border-width) solid var(--K4-color-primary-bright);
-              }
-
-              &.overlay {
-                flex-grow: 0;
-                padding: 0;
-                border: none;
-                width: 0px;
-                pointer-events: none;
-                white-space: nowrap;
-                overflow: hidden;
-                background: var(--K4-color-primary);
-                margin-top: var(--overlay-vert-shift);
-
-
-                .icon-container {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  height: var(--trait-height);
-                  width: var(--trait-height);
-                  margin-left: var(--overlay-horiz-shift);
-                  filter: drop-shadow(0 0 1px var(--K4-color-primary-bright)) drop-shadow(0 0 2px var(--K4-color-primary-bright)) drop-shadow(0 0 3px var(--K4-color-primary-bright)) drop-shadow(0 0 1px var(--K4-color-primary-bright)) drop-shadow(0 0 2px var(--K4-color-primary-bright)) drop-shadow(0 0 3px var(--K4-color-primary-bright));
-                  .icon-mask {
-                    background: var(--K4-GREY0);
-                  }
-                }
-
-                .archetype-trait-name {
-                  color: var(--K4-GREY0);
-                  text-shadow: none;
-                }
+                scale: 1.05;
               }
 
               &[data-is-mandatory="true"] {
                 justify-content: center;
                 margin-bottom: 5px;
                 order: -1;
-              }
 
+                .archetype-trait-name,
+                .archetype-trait-name * {
+                  font-size: $rem-24;
+                  text-transform: lowercase;
+                  line-height: 27px;
+                  font-family: var(--font-primary-smallcaps);
+                }
+              }
 
               .icon-container {
                 vertical-align: middle;
@@ -1159,7 +1158,7 @@ $isDebug: false;
                 background: transparent;
                 clip-path: none;
                 order: -1;
-                filter: drop-shadow(0 0 1px black) drop-shadow(0 0 2px black) drop-shadow(0 0 3px black);
+                // filter: drop-shadow(0 0 1px black) drop-shadow(0 0 2px black) drop-shadow(0 0 3px black);
                 .icon-mask {
                   height: 100%;
                   width: 100%;
@@ -1168,21 +1167,15 @@ $isDebug: false;
 
               }
 
-              .archetype-trait-name {
+              .archetype-trait-name,
+              .archetype-trait-name * {
                 font-size: $rem-14;
                 vertical-align: middle;
-                color: var(--K4-color-primary-bright);
+                color: var(--K4-color-primary-dark);
                 font-weight: $font-weight-bold;
+                // letter-spacing: 0.45px;
                 hyphens: auto;
                 text-align: left;
-
-                &.neon-glow-strong-red {
-                  color: var(--K4-GREY10);
-                  font-size: $rem-24;
-                  text-transform: lowercase;
-                  line-height: 27px;
-                  font-family: var(--font-primary-smallcaps);
-                }
               }
             }
           }

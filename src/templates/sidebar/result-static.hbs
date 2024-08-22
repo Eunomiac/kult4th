@@ -6,7 +6,7 @@
     <img class="drop-cap" src="{{getDropCap item.parent.name}}" />
 		<span class="roll-char-name">{{getRestCaps item.parent.name}}</span>
     {{~#if item.system.isEdge}}
-    <span class="roll-intro-line"><span class="neon-glow-strong-blue">uses the Edge:</span></span>
+    <span class="roll-intro-line"><span class="neon-glow-animated-blue">uses the Edge:</span></span>
     {{/if}}
     {{> "systems/kult4th/templates/components/icon.hbs"
       icon=img
@@ -46,7 +46,7 @@
   {{/if}}
 
   {{#if item.system.rules.holdText}}
-    <label class="k4-header hold-header neon-glow-strong-red">{{localize "kult4th.item.headings.risksHold" itemType=(case "title" item.type)}}</label>
+    <label class="k4-header hold-header neon-glow-animated-red">{{localize "kult4th.item.headings.risksHold" itemType=(case "title" item.type)}}</label>
     <span class="hold-body">{{{formatForKult item.system.rules.holdText}}}</span>
   {{/if}}
 </div>

@@ -2191,6 +2191,17 @@ function yieldToMain(): Promise<void> {
     setTimeout(resolve, 0);
   });
 }
+
+const timeRefs: Record<IDString, number> = {};
+function getTimeStamp() {
+  const id = getID();
+  timeRefs[id] = Date.now();
+
+  return function() {
+    return (Date.now() - timeRefs[id]) / 1000;
+  }
+}
+
 // #endregion ▄▄▄▄▄ ASYNC ▄▄▄▄▄
 
 const EventHandlers = {
@@ -2435,7 +2446,7 @@ export default {
   distributeByPosition,
 
   // ████████ ASYNC: Async Functions, Asynchronous Flow Control ████████
-  sleep, waitFor, yieldToMain,
+  sleep, waitFor, yieldToMain, getTimeStamp,
 
   // EVENT HANDLERS
   EventHandlers,
