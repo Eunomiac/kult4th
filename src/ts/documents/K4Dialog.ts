@@ -265,56 +265,64 @@ class K4Dialog extends Dialog {
 
     itemButtons.each((index, elem) => {
       const button$ = $(elem);
-      const iconContainer$ = button$.find(".item-portrait-icon-container");
-      const icon$ = iconContainer$.find(".item-portrait-icon");
-      const text$ = button$.find(".item-portrait-name");
-      const hoverTimeline = U.gsap.timeline({
-        paused: true,
-        onStart(this: gsap.core.Timeline) {
-          this.timeScale(1);
-        },
-        onReverse(this: gsap.core.Timeline) {
-          this.timeScale(3);
-        }
-      })
-        .fromTo(iconContainer$, {
-          scale: 1,
-          filter: "brightness(0.8) blur(2px)"
-        }, {
-          scale: 1.15,
-          filter: "brightness(1.15) blur(0px)",
-          duration: 0.25,
-          ease: "power2.inOut"
-        }, 0)
-        .fromTo(text$, {
-          scale: 1,
-          color: C.Colors.GREY9,
-          filter: "brightness(1) blur(0px)"
-        }, {
-          scale: 1.15,
-          filter: "brightness(1) blur(0px)",
-          color: C.Colors.GREY10,
-          duration: 0.25,
-          ease: "power2.inOut"
-        }, 0);
+      // const iconContainer$ = button$.find(".item-portrait-icon-container");
+      // const icon$ = iconContainer$.find(".item-portrait-icon");
+      // const text$ = button$.find(".item-portrait-name");
+
+
+
+      // const hoverTimeline = U.gsap.timeline({
+      //   paused: true,
+      //   onStart(this: gsap.core.Timeline) {
+      //     this.timeScale(1);
+      //   },
+      //   onReverse(this: gsap.core.Timeline) {
+      //     this.timeScale(3);
+      //   }
+      // })
+      //   .fromTo(iconContainer$, {
+      //     scale: 1,
+      //     filter: "brightness(0.8) blur(2px)"
+      //   }, {
+      //     scale: 1.15,
+      //     filter: "brightness(1.15) blur(0px)",
+      //     duration: 0.75,
+      //     ease: "back.out(4)"
+      //   }, 0)
+      //   .fromTo(text$, {
+      //     scale: 1,
+      //     color: C.Colors.GREY9,
+      //     filter: "brightness(1) blur(0px)"
+      //   }, {
+      //     scale: 1.15,
+      //     filter: "brightness(1) blur(0px)",
+      //     color: C.Colors.GREY10,
+      //     duration: 0.75,
+      //     ease: "back.out(4)"
+      //   }, 0);
         //   scale: 0.8,
         //   duration: 0.25,
         //   ease: "power1.easeInOut"
         // }, 0);
 
-      button$.data("hoverTimeline", hoverTimeline);
+      // button$.data("hoverTimeline", hoverTimeline);
 
       button$.on({
         click: () => { void this._onItemView(button$); },
         contextmenu: () => { this._onItemSelect(button$); },
-        mouseenter: () => { hoverTimeline.play(); },
-        mouseleave: () => { hoverTimeline.reverse(); }
+        // mouseenter: () => { hoverTimeline.play(); },
+        // mouseleave: () => { hoverTimeline.reverse(); }
       });
     });
   }
 
-  override async render(force = false): Promise<void> {
+  throttledRender = foundry.utils.throttle(async (force = false) => {
     await super._render(force);
+  }, 100);
+
+  override async render(force = false): Promise<void> {
+    kLog.log(`Rendering dialog ${this.id}`);
+    await this.throttledRender(force);
   }
 }
 

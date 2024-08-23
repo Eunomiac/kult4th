@@ -1,5 +1,5 @@
 <div
-  class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}} {{~#if tooltip}} tooltip-trigger{{/if}}"
+  class="hover-strip item {{~#each stripClasses}} {{this}}{{/each}}"
   data-type={{type}}
   {{~#if dataset}}{{#each dataset as |val key|}}
     data-{{key}}="{{val}}"
@@ -9,13 +9,33 @@
 
 {{#if display}}
 
+  {{#let
+    anchorName=(getUniqueID "hoverstrip-anchor")
+    popoverID=(getUniqueID "hoverstrip-popover")
+  }}
+
   <div
     class="strip-name"
     data-clamplines="1"
     {{~#if dataset}}{{#each dataset as |val key|}}
       data-{{key}}="{{val}}"
     {{/each}}{{/if}}
-  >{{display}}</div>
+    {{#if tooltip}}
+      style="anchor-name: --{{anchorName}}"
+      popovertarget="{{popoverID}}"
+    {{/if}}
+  >
+    {{display}}
+  </div>
+  {{#if tooltip}}
+    <div id="{{popoverID}}"
+        style="position-anchor: --{{anchorName}};"
+        popover>
+      {{{formatForKult tooltip}}}
+    </div>
+  {{/if}}
+
+  {{/let}}
 
   <span class="button-strip"><span class="button-spacer"></span>
 
@@ -41,10 +61,6 @@
     type=type
     name=name
   }}
-
-  {{#if tooltip}}
-    <span class="tooltip">{{{formatForKult tooltip}}}</span>
-  {{/if}}
 
 {{else}}
 

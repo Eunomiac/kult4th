@@ -86,13 +86,24 @@
     </div>
     <div class="roll-modifiers">
       {{#each modifiers}}
-      <div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}} {{cssClasses}} tooltip-trigger">
+        {{#let
+          anchorName=(getUniqueID "roll-mod-anchor")
+          popoverID=(getUniqueID "roll-mod-popover")
+        }}
+      <div class="roll-mod roll-mod-{{#if (test value ">=" 0)}}pos{{else}}neg{{/if}} {{cssClasses}}"
+        style="anchor-name: --{{anchorName}}"
+        popovertarget="{{popoverID}}"
+      >
         <span class="roll-mod-val">{{signNum value}}</span>
         <span class="roll-mod-desc">{{label}}</span>
-        <div class="tooltip roll-mod-tooltip">
-          {{{formatForKult tooltip}}}
-        </div>
       </div>
+      <div id="{{popoverID}}"
+          class="roll-mod-tooltip"
+          style="position-anchor: --{{anchorName}};"
+          popover>
+        {{{formatForKult tooltip}}}
+      </div>
+      {{/let}}
       {{/each}}
     </div>
     <div class="roll-outcome">

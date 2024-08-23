@@ -37,22 +37,55 @@
 
   <div class="archetype-panel archetype-panel-notes">
     <div class="archetype-sub-panel chargen-occupation">
-      <div class="archetype-sub-panel-title tooltip-trigger">
-        <label class="k4-title section-title">Occupation</label>
-        <span class="tooltip">
-          <h2>Suggestions:</h2>
-          <div class="archetype-example-container">
-          <span class="archetype-example-list" data-target="occupation"></span>
+
+      <div class="archetype-sub-panel-title">
+
+        {{#let
+          anchorName=(getUniqueID "occupation-anchor")
+          popoverID=(getUniqueID "occupation-popover")
+        }}
+
+          <label class="k4-title section-title"
+                style="anchor-name: --{{anchorName}}"
+                popovertarget="{{popoverID}}">Occupation</label>
+
+
+          <div id="{{popoverID}}"
+              style="position-anchor: --{{anchorName}};"
+              popover>
+            <h2>Suggestions</h2>
+            <div class="archetype-example-container">
+              <span class="archetype-example-list" data-target="occupation"></span>
+            </div>
           </div>
-        </span>
+
+        {{/let}}
+
+
       </div>
+
+
+
+
       {{editor actor.system.occupation target="system.occupation" button=true engine="prosemirror" collaborate=false class="k4-one-line-editor"}}
     </div>
     <div class="archetype-sub-panel chargen-description">
-      <div class="archetype-sub-panel-title tooltip-trigger">
-        <label class="k4-title section-title">Description</label>
-        <span class="tooltip">
-          <h2>Suggestions:</h2>
+      <div class="archetype-sub-panel-title">
+
+        {{#let
+          anchorName=(getUniqueID "description-anchor")
+          popoverID=(getUniqueID "description-popover")
+        }}
+        <label class="k4-title section-title"
+                style="anchor-name: --{{anchorName}}"
+                popovertarget="{{popoverID}}">
+          Description
+        </label>
+        <div id="{{popoverID}}"
+            class="left-aligned"
+            style="position-anchor: --{{anchorName}};"
+            popover>
+          <h2>Suggestions</h2>
           <div class="archetype-example-container">
             <span class="archetype-example-label">Clothes:</span>
             <span class="archetype-example-list" data-target="looks.clothes"></span>
@@ -69,7 +102,10 @@
             <span class="archetype-example-label">Body:</span>
             <span class="archetype-example-list" data-target="looks.body"></span>
           </div>
-        </span>
+        </div>
+
+        {{/let}}
+
       </div>
       {{editor actor.system.description target="system.description" button=true engine="prosemirror" collaborate=false class="k4-small-editor"}}
     </div>

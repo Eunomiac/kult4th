@@ -1,5 +1,41 @@
 & {
 
+  &.k4-theme-dark {
+    .message-content {
+    .tab-content {
+      .sheet-header {
+        border-bottom: 3px solid var(--K4-GOLD5);
+        .k4-title {
+          margin-left: 10px;
+          font-size: $rem-16;
+          font-weight: $font-weight-semi;
+          background: var(--K4-GOLD5);
+          color: var(--K4-GREY0);
+          font-style: italic;
+
+          &::before {
+            display: none;
+          }
+        }
+      }
+
+      .rules-top {
+        border: none;
+      }
+
+      h2.list-name {
+        margin-left: 35px;
+        font-weight: $font-weight-semi;
+      }
+
+      br {
+        display: none;
+      }
+    }
+  }
+
+  }
+
   transform-origin: center center;
 
   // &.near-edge {
@@ -33,17 +69,21 @@
   height: unset !important;
   // width: unset !important;
 
-  .message-content,
-  .window-content form {
+  .message-content {
 
     width: min-content;
     filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 1));
+    border-image: #{to-url("chat/border-chains.svg")} 58 8/58px 8px/20px 16px 36px 16px;
+    // background: transparent;
 
     .message-bg.bg-success {
       position: absolute;
       visibility: visible;
       border-image: none;
-      background: transparent #{to-url("chat/bg-item.webp")} no-repeat no-repeat center center / 100% 100%;
+      background:
+        #{to-url("chat/bg-item.webp")} no-repeat no-repeat center center / 100% 100%;
+        // #{to-url("chat/border-chains.svg")} repeat repeat center center / 120% 120%;
+      // background: transparent;
       z-index: 1;
       top: 0;
       left: 0;
@@ -69,7 +109,7 @@
       &.text-keyword,
       &.text-edgename,
       &.text-gmtext {
-        font-weight: normal;
+        // font-weight: normal;
 
         &.text-trigger,
         &.text-edgename {
@@ -88,6 +128,7 @@
       filter: none;
       width: min-content;
       min-width: 300px;
+      font-weight: $font-weight-medium;
 
       > .icon-container { display: none; }
 
@@ -165,11 +206,11 @@
         border-bottom-width: 4px;
         border-image: linear-gradient(to right, var(--K4-GOLD5) 50%, transparent) 1;
         margin-top: 2px;
-        .text-trigger {
-          color: var(--K4-GREY1);
-          font-weight: normal;
-          font-size: 13px;
-        }
+        // .text-trigger {
+        //   color: var(--K4-GREY1);
+        //   font-weight: normal;
+        //   font-size: 13px;
+        // }
         // .text-attributename {
         //   color: var(--K4-BLUE5);
         // }
@@ -249,7 +290,7 @@
       .list-edges::before {
         font-size: $rem-16;
         line-height: $rem-16;
-        font-weight: $font-weight-medium;
+        font-weight: $font-weight-semi;
         color: var(--K4-GREY1);
         font-family: var(--font-primary);
         font-style: italic;
@@ -281,6 +322,45 @@
             background: transparent #{to-url("icons/bullets/bullet-gold.svg")} no-repeat center center/10px;
             margin-left: -5px;
             margin-right: 5px;
+          }
+        }
+
+      }
+
+      &.item-sheet-darksecret,
+      &.k4-theme-dark {
+
+        .tab-content {
+          min-width: 400px;
+
+          .sheet-header {
+            margin-left: 10px;
+            border-bottom: 3px solid var(--K4-GOLD5);
+            .k4-title {
+              margin-left: 10px;
+              font-size: $rem-14;
+              font-weight: $font-weight-semi;
+              background: var(--K4-GOLD5);
+              color: var(--K4-GREY0);
+              font-style: italic;
+
+              &::before {
+                display: none;
+              }
+            }
+          }
+
+          .rules-top {
+            border: none;
+          }
+
+          h2.list-name {
+            margin-left: 55px;
+            font-weight: $font-weight-semi;
+          }
+
+          br {
+            display: none;
           }
         }
 

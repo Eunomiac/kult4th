@@ -19,7 +19,7 @@ export default class K4ItemSheet extends ItemSheet {
 
   static override get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes:   [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-item-sheet"],
+      classes:   [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-item-sheet", "k4-theme-white"],
       height:    590 * 0.75,
       width:     384 * 0.75,
       resizable: false

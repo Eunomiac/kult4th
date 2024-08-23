@@ -1167,10 +1167,10 @@ const ANIMATIONS = {
     }
     if (modifier$?.[0]) {
       const anim$ = modifier$.find(".status-mod-bg");
-      const strong$ = modifier$.find(".tooltip-trigger > strong");
+      const strong$ = modifier$.find("strong");
       let shadowColor: string;
       let color: string;
-      if (modifier$.find(".tooltip-trigger").hasClass("k4-theme-red")) {
+      if (modifier$.find("k4-theme-red").length) {
         shadowColor = "220, 65, 65";
         color = C.Colors.RED8;
       } else {
@@ -1916,7 +1916,9 @@ class K4PCSheet extends ActorSheet {
         const example = U.getProp<string[]>(archData, target);
         // kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
         if (example) {
-          $(elem).text(example.join(" ◆ "));
+          $(elem).html(`<span class="archetype-example">${
+            example.join("</span><span class='archetype-example-separator'>◆</span><span class='archetype-example'>")
+          }</span>`);
         }
       }
     });
@@ -2858,8 +2860,8 @@ class K4PCSheet extends ActorSheet {
           });
       });
     // Add listeners to "more" buttons
-    archetypePanels$.find("button.more-disadvantages").on({
-      click: async () => {
+    archetypePanels$.find("button.more-disadvantages").off("click.k4disadvantages").on("click.k4disadvantages", () => {
+      void (async () => {
         const item = await K4Dialog.GetUserItemSelection<K4ItemType.disadvantage>({
           title: "Select a Disadvantage",
           bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
@@ -2868,10 +2870,11 @@ class K4PCSheet extends ActorSheet {
         if (item) {
           await this.actor.charGenSelect(item.name, false);
         }
-      }
+      })();
     });
-    archetypePanels$.find("button.more-dark-secrets").on({
-      click: async () => {
+
+    archetypePanels$.find("button.more-dark-secrets").off("click.k4darksecrets").on("click.k4darksecrets", () => {
+      void (async () => {
         const item = await K4Dialog.GetUserItemSelection<K4ItemType.darksecret>({
           title: "Select a Dark Secret",
           bodyText: "(<strong>Click</strong> to View, <strong>Right</strong>-Click to Select, <strong>Escape</strong> to Cancel.)",
@@ -2880,7 +2883,7 @@ class K4PCSheet extends ActorSheet {
         if (item) {
           await this.actor.charGenSelect(item.name, false);
         }
-      }
+      })();
     });
   }
 
@@ -2890,7 +2893,7 @@ class K4PCSheet extends ActorSheet {
     U.gsap.set(item$[0], { rotationY: -rotation });
     if (thisIndex === selArchetypeIndex) { return; }
     const thisTimeline = this.#getTimeline_archetypeStyle(item$);
-    kLog.log(`Updating Seeking Archetype Item '${item$.attr("data-archetype")}' ($${thisIndex}) to ${1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex)}`);
+    // kLog.log(`Updating Seeking Archetype Item '${item$.attr("data-archetype")}' ($${thisIndex}) to ${1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex)}`);
     thisTimeline.seek(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true).pause();
   }
 
@@ -3978,6 +3981,8 @@ class K4PCSheet extends ActorSheet {
     });
 
     if (this.actor.is(K4ActorType.pc) && !this.actor.isFinishedCharGen) {
+      kLog.log("[Activate Listeners] HTML Context", {html});
+      html.closest(".k4-actor-sheet").addClass("k4-actor-sheet-pc-initialization");
       void this.initializeCarouselScene();
     } else {
 

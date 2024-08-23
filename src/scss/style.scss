@@ -11,7 +11,8 @@ $assetPath: '/assets';
   box-shadow: none;
 
 	@import 'globals/colors';
-  @import 'globals/tooltips';
+  // @import 'globals/tooltips';
+  @import 'globals/popovers';
   @import 'globals/editor';
 
 	@include cq-prolyfill("width >= 1000px") {

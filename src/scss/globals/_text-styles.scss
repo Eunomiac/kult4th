@@ -255,6 +255,11 @@
 		margin: 10px 0 0 0;
 	}
 
+  br {
+    line-height: $rem-10 !important;
+    height: $rem-10 !important;
+  }
+
 	label.k4-h4 {
 		color: var(--K4-color-header);
 		font-family: var(--font-primary);
@@ -339,6 +344,7 @@
 		font-weight: $font-weight-semi;
     font-family: var(--font-primary-italics);
 		font-style: italic;
+    font-family: var(--font-primary);
 	}
 
 	div.hover-strip {

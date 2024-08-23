@@ -7,11 +7,23 @@
     <div class="panel-column panel-column-left">
       <div class="attribute-summary">
       {{#each attributeData}}
-        <div class="attribute-box attribute-{{key}} attribute-{{value}} tooltip-trigger">
+        {{#let
+          anchorName=(getUniqueID "attribute-panel-anchor")
+          popoverID=(getUniqueID "attribute-panel-popover")
+        }}
+        <div class="attribute-box attribute-{{key}} attribute-{{value}}"
+          style="anchor-name: --{{anchorName}}"
+          popovertarget="{{popoverID}}"
+        >
           <span class="attribute-name">{{name}}</span>
           <span class="attribute-value">{{signNum value}}</span>
-          <span class="tooltip">{{name}}</span>
         </div>
+        <div id="{{popoverID}}"
+            style="position-anchor: --{{anchorName}};"
+            popover>
+          {{name}}
+        </div>
+        {{/let}}
       {{/each}}
       </div>
     </div>

@@ -10611,7 +10611,7 @@ const ITEM_DATA: {
         "shortDesc": "You experienced an event where the Illusion shattered completely, and you were the only one who returned.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Discover the truth about the event.",
               "Expose what happened to you to the world.",
@@ -10645,7 +10645,7 @@ const ITEM_DATA: {
         "shortDesc": "You were responsible for or assisted in shady medical experiments, which ended in horrifying results.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Avoid taking responsibility for the experiments.",
               "Seek forgiveness from subjects and/or their relatives.",
@@ -10680,7 +10680,7 @@ const ITEM_DATA: {
         "shortDesc": "You have been granted a unique inheritance from relatives or friends.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Discover the truth about your inheritance.",
               "Protect your inheritance.",
@@ -10713,7 +10713,7 @@ const ITEM_DATA: {
         "shortDesc": "You have sealed a pact with a powerful entity.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Find a way to break the pact.",
               "Cheat death.",
@@ -10747,7 +10747,7 @@ const ITEM_DATA: {
         "shortDesc": "You were subjected to medical experiments with unexpected outcomes, with or without your consent or knowledge.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Track down those responsible.",
               "Restore yourself to the state you were in before.",
@@ -10782,7 +10782,7 @@ const ITEM_DATA: {
         "shortDesc": "Your family always moved around, often suddenly, in the middle of the night. Your parents never told you why.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Find out what is pursuing you.",
               "Find a place where you can stop and breathe.",
@@ -10816,7 +10816,7 @@ const ITEM_DATA: {
         "shortDesc": "You have witnessed occult proceedings that changed your view of reality.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Uncover more of the Truth.",
               "Seek atonement for your actions.",
@@ -10850,7 +10850,7 @@ const ITEM_DATA: {
         "shortDesc": "You are afflicted by a curse, knowingly or not, that threatens you and those closest to you.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Find out what the curse is.",
               "Discover how to break the curse.",
@@ -10884,7 +10884,7 @@ const ITEM_DATA: {
         "shortDesc": "You or one of your close relations suffer from mental illness.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Explore the Illusion.",
               "Expose the conspiracy.",
@@ -10918,7 +10918,7 @@ const ITEM_DATA: {
         "shortDesc": "Someone close to you disappeared after getting too close to the truth.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Figure out whatever became of the missing person.",
               "Finish the investigation they started.",
@@ -10952,7 +10952,7 @@ const ITEM_DATA: {
         "shortDesc": "You have a history of encounters with beings from the other side.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Figure out why you are haunted in this way.",
               "Help spirits find peace after death.",
@@ -10986,7 +10986,7 @@ const ITEM_DATA: {
         "shortDesc": "You feel constant remorse for a crime you have committed.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Avoid justice.",
               "Confront the victim or their relatives.",
@@ -11021,7 +11021,7 @@ const ITEM_DATA: {
         "shortDesc": "You have endured a terrible crime, a violation that has marred your entire life.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Get revenge on the perpetrator.",
               "Re-experience the crime again (as victim or as perpetrator).",
@@ -11055,7 +11055,7 @@ const ITEM_DATA: {
         "shortDesc": "You have uncovered some horrid truth, which brings reality's very nature into question.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Reveal the Truth to the world.",
               "Acquire power or knowledge.",
@@ -11089,7 +11089,7 @@ const ITEM_DATA: {
         "shortDesc": "Your family has a well-kept secret, which has haunted you for your entire life.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Keep the secret.",
               "Avoid your family.",
@@ -11123,7 +11123,7 @@ const ITEM_DATA: {
         "shortDesc": "You have been chosen to protect an important object, place, or person.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Keep what you are guarding safe.",
               "Find out more about the previous guardians and what you are protecting.",
@@ -11156,7 +11156,7 @@ const ITEM_DATA: {
         "shortDesc": "You have been chosen by a god to become its advocate or sacrificial lamb.",
         "lists": {
           "drives": {
-            "name": "Suggested Drives",
+            "name": "Suggested personal drives",
             "items": [
               "Avoid your pursuers.",
               "Fight the cult and/or their god.",

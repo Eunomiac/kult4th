@@ -31,6 +31,10 @@
   @return $shadows;
 }
 
+@function change-alpha($color, $alpha) {
+  @return rgb(from #{$color} r g b / $alpha);
+}
+
 /// Creates a circular mask effect using SVG and CSS masking.
 ///
 /// @param {Length} $area - The dimensions of the entire mask area when applied to an element.
@@ -149,6 +153,18 @@
 
 @mixin neon-glow-animated($name, $color, $text-color: var(--K4-neon-text-color)) {
   --K4-color-primary-bright: #{$text-color};
+  color: var(--K4-color-primary-bright);
+  text-shadow: 0 0 2px change-alpha(#{$color}, 0.8),
+                  0 0 4px change-alpha(#{$color}, 0.8),
+                  0 0 4.5px change-alpha(#{$color}, 0.8),
+                  0 0 8px change-alpha(#{$color}, 0.8),
+                  0 0 12.5px change-alpha(#{$color}, 0.8),
+                  0 0 16.5px change-alpha(#{$color}, 0.5),
+                  0 0 21px change-alpha(#{$color}, 0.5),
+                  0 0 29px change-alpha(#{$color}, 0.5),
+                  0 0 41.5px change-alpha(#{$color}, 0.5);
+  // animation: neonGlow-#{"" + $name} 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
+
   /* @keyframes neonGlow-#{"" + $name} {
     0% {
       text-shadow: 0 0 2px rgb(from #{$color} r g b / 0.8),
@@ -172,28 +188,17 @@
                   0 0 16.5px rgb(from #{$color} r g b / 0.8);
     }
   } */
-  color: var(--K4-color-primary-bright);
-  text-shadow: 0 0 2px rgb(from #{$color} r g b / 0.8),
-                  0 0 4px rgb(from #{$color} r g b / 0.8),
-                  0 0 4.5px rgb(from #{$color} r g b / 0.8),
-                  0 0 8px rgb(from #{$color} r g b / 0.8),
-                  0 0 12.5px rgb(from #{$color} r g b / 0.8),
-                  0 0 16.5px rgb(from #{$color} r g b / 0.5),
-                  0 0 21px rgb(from #{$color} r g b / 0.5),
-                  0 0 29px rgb(from #{$color} r g b / 0.5),
-                  0 0 41.5px rgb(from #{$color} r g b / 0.5);
-  // animation: neonGlow-#{"" + $name} 1.5s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
   .icon-container {
     color: var(--K4-color-primary-bright);
     filter:
-      drop-shadow(0 0 0.5px rgb(from #{$color} r g b / 0.8))
-      drop-shadow(0 0 1.5px rgb(from #{$color} r g b / 0.8))
-      drop-shadow(0 0 2px rgb(from #{$color} r g b / 0.8))
-      drop-shadow(0 0 3px rgb(from #{$color} r g b / 0.8))
-      drop-shadow(0 0 4px rgb(from #{$color} r g b / 0.5))
-      drop-shadow(0 0 5px rgb(from #{$color} r g b / 0.5))
-      drop-shadow(0 0 8px rgb(from #{$color} r g b / 0.5)) !important;
+      drop-shadow(0 0 0.5px change-alpha(#{$color}, 0.8))
+      drop-shadow(0 0 1.5px change-alpha(#{$color}, 0.8))
+      drop-shadow(0 0 2px change-alpha(#{$color}, 0.8))
+      drop-shadow(0 0 3px change-alpha(#{$color}, 0.8))
+      drop-shadow(0 0 4px change-alpha(#{$color}, 0.5))
+      drop-shadow(0 0 5px change-alpha(#{$color}, 0.5))
+      drop-shadow(0 0 8px change-alpha(#{$color}, 0.5)) !important;
   }
 }
 

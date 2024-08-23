@@ -356,6 +356,16 @@ img {
 
 $isDebug: false;
 
+&.k4-actor-sheet-pc-initialization {
+  top: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  margin: 0 !important;
+  max-width: unset;
+  max-height: unset;
+}
+
 .window-content {
   display: block;
   background: none;
@@ -371,19 +381,22 @@ $isDebug: false;
   --gradient-outer-stop: 40%;
 
   .pc-initialization-bg {
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
+    position: absolute;
+    // height: 100vh;
+    // width: 100vw;
     top: 0;
     left: 0;
+    bottom: 0;
+    right: 0;
     background: var(--K4-GREY1);
     visibility: hidden;
 
     img, video {
       position: absolute;
+      object-fit: cover;
       bottom: 0;
-      left: 0;
-      width: 100%;
+      left: 50%;
+      transform: translate(-50%, 0%);
 
       &.cityscape-mid {
         transform-origin: center 50%;
@@ -396,12 +409,19 @@ $isDebug: false;
       }
 
       &.cloud-bg {
-        transform-origin: top center;
+        transform-origin: center center;
         visibility: visible;
         opacity: 0.1;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        height: 100%;
+        width: 100%;
       }
     }
   }
+
+
+
 
   .kult4th-form {
 
@@ -680,7 +700,7 @@ $isDebug: false;
       --panel-horiz-padding: 10px;
       --panel-total-width: calc(var(--panel-width) + var(--panel-horiz-padding) * 2);
       --panel-center-offset: 250px;
-      position: fixed;
+      position: absolute;
       top: 0%;
       left: 0%;
       width: 100vw;
@@ -706,7 +726,7 @@ $isDebug: false;
         inset 0px 0px 100px 50px var(--K4-GREY0);
 
       .archetype-panel {
-        position: fixed;
+        position: absolute;
         z-index: 10000;
 
         &:not(.actor-name) {
@@ -959,6 +979,11 @@ $isDebug: false;
         z-index: 10000;
         // text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
 
+        .archetype-trait-panels-wrapper {
+          position: static;
+        }
+
+
         .archetype-panel {
           display: flex;
           flex-direction: column;
@@ -1106,6 +1131,7 @@ $isDebug: false;
             }
 
             .archetype-sub-panel-title {
+              position: relative;
               font-size: $rem-10;
               font-family: var(--font-primary-smallcaps);
               text-transform: lowercase;
@@ -1700,10 +1726,19 @@ $isDebug: false;
                   text-shadow: build-text-shadow(3px, var(--K4-GREY0), 4);
                 }
 
-                .tooltip-trigger {
-                  position: relative;
-                  z-index: 1;
+                [popover]:popover-open {
+                  padding: 3px;
+
+                  * {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
                 }
+
+                // .tooltip-trigger {
+                //   position: relative;
+                //   z-index: 1;
+                // }
 
                 .status-mod-bg {
                   visibility: hidden;

@@ -10,9 +10,9 @@ import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
 import C from "./scripts/constants.js";
-import InitializeTooltips from "./scripts/tooltips.js";
+import InitializePopovers from "./scripts/popovers.js";
 import U from "./scripts/utilities.js";
-import {formatStringForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers.js";
+import {formatForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers.js";
 import registerSettings from "./scripts/settings.js";
 import registerConsoleLogger from "./scripts/logger.js";
 import K4Alert from "./documents/K4Alert.js";
@@ -102,7 +102,7 @@ async function GlobalAssignment() {
     ActorSheet,
     K4PCSheet,
     K4Socket,
-    formatStringForKult,
+    formatForKult,
     gameRef,
     ACTOR, ITEM, EMBED, ACTORSHEET,
     ENTITIES: [ACTOR, ITEM, EMBED]
@@ -584,7 +584,7 @@ Hooks.on("init", async () => {
   // CONFIG.compatibility.mode = 0;
   // Toggle Character Creation Features for Debugging
   CONFIG.K4.debug.isDisablingCharGen = false; // Default to false
-  InitLogRocketCSSPerformanceMonitor();
+  // InitLogRocketCSSPerformanceMonitor();
   /* #endDEVCODE */
 
   // Create toggle button
@@ -626,7 +626,8 @@ Hooks.on("init", async () => {
   InitializeLibraries();
 
   // Initialize Tooltips Overlay
-  InitializeTooltips($("body"));
+  // InitializeTooltips($("body"));
+  InitializePopovers($("body"));
 
   // Register Handlebar Helpers
   RegisterHandlebarHelpers();

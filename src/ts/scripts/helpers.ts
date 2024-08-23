@@ -7,11 +7,6 @@ import K4Item from "../documents/K4Item.js";
 import K4ChatMessage from "../documents/K4ChatMessage.js";
 // #endregion
 
-export function formatStringForKult(str: string) {
-  // Apply spans around all hash-tag indicators
-  return str.replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
-}
-
 type ContextType = K4Item | {
   data: {
     root: {
@@ -26,6 +21,7 @@ type ContextType = K4Item | {
 };
 
 export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {
+
   // Step One: Replace any data object references.
   str = str.replace(
     /%([^%.]+)\.([^%]+)%/g,
@@ -113,7 +109,9 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
       }
       default: return `<span style='color: red;'>No Such Source: ${sourceRef}.${dataKey}</span>`;
     }
-  });
+  })
+    // Apply spans around all hash-tag indicators
+    // .replace(/#>([^>]+)>([^<>#]+)<#/g, "<span class='text-tag $1'>$2</span>");
 
   // Step Two: Apply span styling.
   // str = str.replace(/Check: /g, "CHECK"); // Remove the colon from 'Check:' moves, to avoid confusing the replacer
@@ -144,14 +142,39 @@ export function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.Sys
   // str = str.replace(/CHECK/g, "Check: ");
 
   // Step Three: Apply final specific fixes to formatting
-  // str = str
-  //   .replace(/([\s\t\n]*<p>[\s\t\n]*<\/p>[\s\t\n]*)+/g, "<p></p>") // Remove empty <p> elements, except when used as breaks
-  //   .replace(/^<p>[\s\t\n]*<\/p>|<p>[\s\t\n]*<\/p>$/g, ""); // Remove empty <p> elements at start and end of code block
+
+  // If the string does not begin and end with an html tag, wrap it in a <p> tag.
+  // if (!str.startsWith("<") && !str.endsWith(">")) {
+  //   str = `<p class='text-wrapper'>${str}</p>`;
+  // }
+  str = str
+    // Remove empty <p> elements
+    .replace(/<p[^>]*>[\s\t\n]*<\/p>/g, "");
 
   return str;
 }
 
 const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
+  /**
+   * Handlebars helper that allows defining local variables (like #with), but without changing the context. Can define multiple variables in one call (see example).
+   * @param {Object} options - The options object provided by Handlebars.
+   * @returns {string} - The rendered block with access to the defined local variables.
+   * @example
+   * // In your Handlebars template:
+   * {{#let
+   *   anchorName=(uniqueAnchorName 'occupation')
+   *   title="Occupation"
+   *   suggestions=occupationSuggestions
+   * }}
+   *   ... HTML with above variables added to scope ...
+   * {{/let}}
+   */
+  "let"(options: Handlebars.HelperOptions): string {
+    // Merge the current context with the hash arguments
+    const context = { ...this, ...options.hash };
+    // Execute the block with the new context, but keep the original context as `this`
+    return options.fn(context);
+  },
   /**
    * Handlebars helper to perform various comparison operations.
    * @param {unknown} param1 - The first parameter for comparison.
@@ -218,6 +241,9 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
   "areEmpty"(...args) {
     args.pop();
     return !Object.values(args).flat().join("");
+  },
+  "getUniqueID"(base: string) {
+    return U.getUID(base);
   },
   "getDropCap"(content: Maybe<string>): string {
     if (!content?.length) {

@@ -667,7 +667,6 @@ const getUID = (id: string): string => {
   ) + 1;
   const uuid = indexNum === 1 ? id : `${String(id)}_${String(indexNum)}`;
   UUIDLOG.push([id, uuid, indexNum]);
-  kLog.log(`UUIDify(${String(id)}) --> [${String(uuid)}, ${String(indexNum)}]`);
   Object.assign(globalThis, {UUIDLOG});
   return uuid;
 };
