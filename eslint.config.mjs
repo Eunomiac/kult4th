@@ -99,8 +99,7 @@ export default tseslint.config(
     ignores: [
       "**/.vscode/**",
       "**/dist/**",
-      "**/.dev-refs/**",
-      "**/.dev/**"
+      "**/*.test.ts"
     ]
   },
   {

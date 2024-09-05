@@ -63,11 +63,7 @@
 
 
       </div>
-
-
-
-
-      {{editor actor.system.occupation target="system.occupation" button=true engine="prosemirror" collaborate=false class="k4-one-line-editor"}}
+      <div class="archetype-editor occupation-editor simple-editor content-editable clamp-text" data-field="system.occupation" data-clamplines="1" data-placeholder="What do you do to eat?">{{{actor.system.occupation}}}</div>
     </div>
     <div class="archetype-sub-panel chargen-description">
       <div class="archetype-sub-panel-title">
@@ -107,13 +103,14 @@
         {{/let}}
 
       </div>
-      {{editor actor.system.description target="system.description" button=true engine="prosemirror" collaborate=false class="k4-small-editor"}}
+      <div class="archetype-editor description-editor simple-editor content-editable" data-placeholder="Flesh out your character during the group discussion, including any important notes about traits or other character features."data-field="system.description">{{{actor.system.description}}}</div>
+
     </div>
     <div class="archetype-sub-panel chargen-history">
       <div class="archetype-sub-panel-title">
         <label class="k4-title section-title">History</label>
       </div>
-      {{editor actor.system.history target="system.history" button=true engine="prosemirror" collaborate=false class="k4-medium-editor"}}
+        <div class="archetype-editor history-editor simple-editor content-editable clamp-text" data-placeholder="As the group develops their characters, backstories will inevitably emerge: Record any important details (especially relationships) here." data-field="system.history">{{{actor.system.history}}}</div>
     </div>
   </div>
 

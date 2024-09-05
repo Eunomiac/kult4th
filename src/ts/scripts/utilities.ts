@@ -320,7 +320,7 @@ const pFloat = <IsStrict extends boolean>(
 
 const pInt: {
   (ref: unknown, isStrict?: boolean): number;
-  (ref: unknown, index: number, array: unknown[]): number;
+  (ref: unknown, index: number, array: unknown[]): number; // So this can be used in Array.map()
 } = (ref: unknown, isStrictOrIndex?: boolean | number, _arr?: unknown[]): typeof NaN => {
   let isStrict = false;
   if (typeof isStrictOrIndex === "boolean") {

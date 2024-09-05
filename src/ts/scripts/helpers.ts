@@ -243,7 +243,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
     return !Object.values(args).flat().join("");
   },
   "getUniqueID"(base: string) {
-    return U.getUID(base);
+    return `${base}-${U.getID()}`;
   },
   "getDropCap"(content: Maybe<string>): string {
     if (!content?.length) {

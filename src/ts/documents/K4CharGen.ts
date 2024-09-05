@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 
 
 /**
  * Top-level flow of control class that conducts the character generation process.
  */
-class K4CharGen_Boss {
+class K4CharGen {
+
+
+  static Initialize(): void {
+
+  }
 
 }
 
@@ -15,7 +21,7 @@ class K4CharGen_UserHandler {
 
 }
 
-/**
+/**b
  * Class that handles socket communication.
  */
 class K4CharGen_SocketController {
@@ -41,3 +47,6 @@ class K4CharGen_ArchetypeCarousel extends K4CharGen_DOMController {
 /**
  * ... unique classes for attribute selection, for panels, for long-form text entry elements, name selection, img selection ... ?
  */
+
+
+export default K4CharGen;

@@ -47,10 +47,12 @@
   },
   "include": [
     "./src/ts/**/*.ts",
-    "vite.config.ts"
-, ".dev/item-data-prev.ts"  ],
+    "vite.config.ts",
+    ".dev/item-data-prev.ts"
+  ],
   "exclude": [
-    "./.dev",
+    "node_modules",
+    "**/*.test.ts",
     "eslint.config.mjs"
   ]
 }

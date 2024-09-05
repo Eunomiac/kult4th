@@ -28,7 +28,8 @@
       "group": {
         "kind": "build",
         "isDefault": true
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "[MULTI] Run Vite Dev Server",
@@ -49,7 +50,8 @@
       "type": "shell",
       "command": "cmd.exe",
       "args": [
-        "/d", "/c",
+        "/d",
+        "/c",
         "set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --format html --ignore-path .eslintignore --color --fix . > ./.status-reports/fix-indentation.html"
       ],
       "problemMatcher": "$eslint-stylish",
@@ -63,7 +65,8 @@
       "type": "shell",
       "command": "cmd.exe",
       "args": [
-        "/d", "/c",
+        "/d",
+        "/c",
         "set \"DEPLOYING=true\" && set \"JSDOC=true\" && set \"FIXING_COMMENTS=true\" && set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --format html --ignore-path .eslintignore --color . > ./.status-reports/scan-deployment.html"
       ],
       "problemMatcher": "$eslint-stylish",
@@ -74,7 +77,8 @@
       "type": "shell",
       "command": "cmd.exe",
       "args": [
-        "/d", "/c",
+        "/d",
+        "/c",
         "set \"DEPLOYING=true\" && set \"JSDOC=true\" && set \"FIXING_COMMENTS=true\" && set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --ignore-path .eslintignore --color --fix ."
       ],
       "problemMatcher": "$eslint-stylish",
@@ -85,7 +89,8 @@
       "type": "shell",
       "command": "cmd.exe",
       "args": [
-        "/d", "/c",
+        "/d",
+        "/c",
         "set \"ALL_RULES_ACTIVE=true\" && set \"FAST_LINTING=false\" && npx eslint --ext .ts,.tsx --config .eslintrc.cjs --format html --ignore-path .eslintignore --color . > ./.status-reports/scan-all-rules.html"
       ],
       "problemMatcher": "$eslint-stylish",

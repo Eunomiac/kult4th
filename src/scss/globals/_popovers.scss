@@ -1,24 +1,12 @@
 & {
 
-  [popover] {
-    /*  POSITIONING  */
-    // max-width: 300px;
-
-    // /*  etc  */
-    // background: var(--bg);
-    // color: white;
-    // border: none;
-    // padding: 0 1rem;
-    // overflow: visible;
-    // border-radius: 1rem;
-  }
-
   [popovertarget] {
     pointer-events: auto !important;
     anchor-name: var(--popover-anchor);
     width: fit-content !important;
   }
 
+  .chat-message *[style*="anchor-name"]:not([popovertarget]) + [style*="position-anchor"]:not([popover]),
   [popover] {
     inset-area: top;
     margin-bottom: 10px;
@@ -162,22 +150,29 @@
   }
 
   /* Transition for the popover's backdrop */
-  [popover]::backdrop {
-    background-color: change-alpha(var(--K4-GREY0), 0);
-    transition: all 0.75s allow-discrete;
-  }
+  // [popover]::backdrop {
+  //   background-color: change-alpha(var(--K4-GREY0), 0);
+  //   transition: all 0.75s allow-discrete;
+  // }
 
-  [popover]:popover-open::backdrop {
-    background-color: change-alpha(var(--K4-GREY0), 0.25);
-    // backdrop-filter: blur(2px);
-  }
+  // [popover]:popover-open::backdrop {
+  //   background-color: change-alpha(var(--K4-GREY0), 0.25);
+  //   // backdrop-filter: blur(2px);
+  // }
 
   /* The nesting selector (&) cannot represent pseudo-elements
   so this starting-style rule cannot be nested */
 
-  @starting-style {
-    [popover]:popover-open::backdrop {
-      background-color: change-alpha(var(--K4-GREY0), 0);
-    }
+  // @starting-style {
+  //   [popover]:popover-open::backdrop {
+  //     background-color: change-alpha(var(--K4-GREY0), 0);
+  //   }
+  // }
+
+  .chat-message *[style*="anchor-name"]:not([popovertarget]) + [style*="position-anchor"] {
+    visibility: hidden;
+    opacity: 0;
   }
+  /** Because chat messages are parsed before being rendered, must add popover attributes via script -- and keep it invisible until done **/
+
 }

@@ -63,4 +63,13 @@
     }
   }
 
+  .quench-button {
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    transform-origin: bottom left;
+    scale: 0.85;
+
+  }
+
 }

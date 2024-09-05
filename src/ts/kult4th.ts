@@ -21,6 +21,8 @@ import K4Roll from "./documents/K4Roll.js";
 import K4Dialog from "./documents/K4Dialog.js";
 import K4Socket from "./documents/K4Socket.js";
 import K4DebugDisplay from "./documents/K4DebugDisplay.js";
+import K4CharGen from "./documents/K4CharGen.js";
+import K4GMTracker from "./documents/K4GMTracker.js";
 
 import InitializeLibraries, {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
@@ -103,6 +105,7 @@ async function GlobalAssignment() {
     K4PCSheet,
     K4Socket,
     formatForKult,
+    K4CharGen,
     gameRef,
     ACTOR, ITEM, EMBED, ACTORSHEET,
     ENTITIES: [ACTOR, ITEM, EMBED]
@@ -121,7 +124,8 @@ async function GlobalAssignment() {
     findRepresentativeSubset,
     checkSubsetCoverage,
     findUniqueKeys,
-    BUILD_ITEMS_FROM_DATA
+    BUILD_ITEMS_FROM_DATA,
+    K4GMTracker
   });
 }
 function InitLogRocketCSSPerformanceMonitor() {
@@ -143,9 +147,11 @@ async function PreInitializeClasses() {
       K4ActiveEffect,
       K4Roll,
       K4Dialog,
+      K4CharGen,
       K4Sound,
       K4Alert,
-      K4DebugDisplay
+      K4DebugDisplay,
+      K4GMTracker
     ].filter(
       (doc): doc is typeof doc & {PreInitialize: () => Promise<void>;} =>
         "PreInitialize" in doc
@@ -165,9 +171,11 @@ async function InitializeClasses() {
       K4ActiveEffect,
       K4Roll,
       K4Dialog,
+      K4CharGen,
       K4Sound,
       K4Alert,
-      K4DebugDisplay
+      K4DebugDisplay,
+      K4GMTracker
     ].filter(
       (doc): doc is typeof doc & {Initialize: () => Promise<void>;} =>
         "Initialize" in doc
@@ -566,8 +574,31 @@ async function DisableClientCanvas() {
   console.log("Canvas has been disabled for all clients.");
 }
 
+Hooks.on("renderUserConfig", (config: UserConfig, html: HTMLFormElement) => {
+
+  const body$ = $(html).closest("body");
+  const interface$ = body$.find("#interface");
+  const pauseIcon$ = body$.find("#pause");
+  const notifications$ = body$.find("#notifications");
+
+  $(html).remove();
+
+  interface$.children().css("display", "none");
+  pauseIcon$.css("display", "none");
+  notifications$.css("display", "none");
+
+  U.gsap.to(interface$, {
+    backgroundColor: C.Colors.GREY0,
+    duration: 1,
+    ease: "power2.out"
+  });
+
+  return false;
+});
 
 Hooks.on("init", async () => {
+
+
 
   // Register logging function and announce initialization to console.
   registerConsoleLogger();
@@ -584,6 +615,7 @@ Hooks.on("init", async () => {
   // CONFIG.compatibility.mode = 0;
   // Toggle Character Creation Features for Debugging
   CONFIG.K4.debug.isDisablingCharGen = false; // Default to false
+  CONFIG.debug.hooks = true;
   // InitLogRocketCSSPerformanceMonitor();
   /* #endDEVCODE */
 

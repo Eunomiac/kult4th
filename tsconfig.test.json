@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "types": [
+      "jest",
+      "gsap",
+      "@league-of-foundry-developers/foundry-vtt-types"
+    ],
+  }
+}

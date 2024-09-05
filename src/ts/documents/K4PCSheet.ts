@@ -3791,7 +3791,7 @@ class K4PCSheet extends ActorSheet {
 
           // Sync with actor data
           const dataField = elem$.data("field") as string;
-          const curData = getProperty(self.actor, dataField) as string;
+          const curData = U.getProp(self.actor, dataField);
           if (curData !== elemHtml) {
             self.actor.update({[dataField]: elemHtml}).catch((err: unknown) => {
               kLog.error(`Failed to update ${dataField}: ${String(err)}`);
@@ -3980,14 +3980,14 @@ class K4PCSheet extends ActorSheet {
       ).bind(this)
     });
 
+    // Activate listeners for editing "content-editable" elements
+    this.activateContentEditableListeners(html);
+
     if (this.actor.is(K4ActorType.pc) && !this.actor.isFinishedCharGen) {
       kLog.log("[Activate Listeners] HTML Context", {html});
       html.closest(".k4-actor-sheet").addClass("k4-actor-sheet-pc-initialization");
       void this.initializeCarouselScene();
     } else {
-
-      // Activate listeners for editing "content-editable" elements
-      this.activateContentEditableListeners(html);
 
       // Activate interval timer for twitchy-eye effect
       this.startTwitchyEyeTimer(html);

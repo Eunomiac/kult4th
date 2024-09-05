@@ -808,8 +808,12 @@ class K4ChatMessage extends ChatMessage {
       // Apply custom CSS classes to the chat message based on its flags
       message.applyFlagCSSClasses(html);
 
+      // Fix any popovers
+      void message.fixPopovers(html);
+
       // Introduce a brief pause to let the DOM settle
       await U.sleep(500);
+
 
       // If this is the last chat message, animate it and freeze any animations of currently-animating messages
       if (message.isLastMessage) {
@@ -1062,6 +1066,16 @@ class K4ChatMessage extends ChatMessage {
 
     // Serialize the modified DOM back to a string
     return doc.body.innerHTML;
+  }
+  async fixPopovers(html?: JQuery) {
+    await Promise.all(Array.from((html ?? this.elem$).find("[style*='anchor-name']")).map(async (mod) => {
+      const mod$ = $(mod);
+      const popover$ = mod$.next();
+      // popover$.css("display", "none");
+      mod$.attr("popovertarget", popover$.attr("id") ?? "");
+      popover$.attr("popover", "");
+      // popover$.css("display", "flex");
+    }));
   }
   addClass(cls: ValueOrArray<string>, html?: JQuery) {
     const classes = [cls].flat();
