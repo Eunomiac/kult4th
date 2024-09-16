@@ -1,27 +1,8 @@
-{{log "ACTOR INITIALIZATION" this}}
 
-<div class="pc-initialization-bg">
-  <img class="cityscape-mid" src="systems/kult4th/assets/animations/cityscape-mid.webp">
-  <video class="cloud-bg" autoplay loop muted playsinline>
-    <source src="systems/kult4th/assets/animations/cloud-bg.webm" type="video/webm">
-  </video>
-  <img class="cityscape-fore" src="systems/kult4th/assets/animations/cityscape-fore.webp">
-</div>
+
+
 
 <form class="actor-sheet kult4th-form {{cssClass}} actor-pc pc-initialization" autocomplete="off">
-
-
-  <div class="archetype-panel actor-name">
-    {{> "systems/kult4th/templates/components/pc-actor-name.hbs" }}
-  </div>
-
-
-  <div class="archetype-panel attributes">
-    <label class="k4-title section-title">Attributes</label>
-    {{#each attributes}}
-    {{> "systems/kult4th/templates/components/attribute-box.hbs"}}
-    {{/each}}
-  </div>
 
 
   {{#if (eq charGenPhase "archetype")}}

@@ -140,7 +140,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
    */
   static PreInitialize(): void {
     // Initialize rolls collection
-    game.rolls = new Collection<K4Roll>();
+    getGame().rolls = new Collection<K4Roll>();
     /* Insert PreInitiailize Steps Here */
   }
   // #endregion
@@ -304,7 +304,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
   // #region === CONSTRUCTOR ===
   constructor(rollData: K4Roll.ConstructorData, actor?: K4Actor<K4ActorType.pc>) {
     const id = rollData.data?.id ?? U.getID();
-    actor ??= game.actors.get(rollData.data?.actorID ?? "") as Maybe<K4Actor<K4ActorType.pc>>;
+    actor ??= getGame().actors.get(rollData.data?.actorID ?? "") as Maybe<K4Actor<K4ActorType.pc>>;
     if (!actor) {
       throw new Error(`Unable to find actor for roll ${id}`);
     }
@@ -317,7 +317,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
     this.source = source;
     this.data.id = id;
     this.data.actorID = actor.id;
-    game.rolls.set(id, this);
+    getGame().rolls.set(id, this);
     kLog.log("K4Roll created", {rollData, actor, roll: this});
   }
 
@@ -387,7 +387,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
 
     await super.evaluate();
 
-    // game.dice3d.showForRoll(this); // Can't include if disabling canvas.
+    // getGame().dice3d.showForRoll(this); // Can't include if disabling canvas.
 
     this.chatMessage = (await this.displayToChat()) as K4ChatMessage;
 

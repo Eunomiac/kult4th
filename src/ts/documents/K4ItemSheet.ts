@@ -76,7 +76,7 @@ export default class K4ItemSheet extends ItemSheet {
         context,
         {
           playerCharacters: Object.fromEntries(
-            Array.from(game.actors as Collection<K4Actor>)
+            Array.from(getGame().actors as Collection<K4Actor>)
             .filter((actor) => actor.type === K4ActorType.pc)
             .map((actor) => [actor.id, actor])
           )
@@ -289,7 +289,7 @@ export default class K4ItemSheet extends ItemSheet {
       // Quick active effects control for dev purposes
       html.find(".effect-control").on("click", (ev) => {
         if ( self.item.isOwned ) {
-          ui.notifications.warn(game.i18n.localize("BITD.EffectWarning"));
+          ui.notifications.warn(getI18n().localize("BITD.EffectWarning"));
           return undefined;
         }
         void K4ActiveEffect.onManageActiveEffect(ev, self.item);
@@ -302,7 +302,7 @@ export default class K4ItemSheet extends ItemSheet {
           if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(game.items as Collection<K4Item>))
+            $(elem).on("click", () => (Array.from(getGame().items as Collection<K4Item>))
               .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet.render(true));
           }
@@ -314,7 +314,7 @@ export default class K4ItemSheet extends ItemSheet {
           if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(game.items as Collection<K4Item>))
+            $(elem).on("click", () => (Array.from(getGame().items as Collection<K4Item>))
               .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet.render(true));
           }

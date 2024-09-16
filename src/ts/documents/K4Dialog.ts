@@ -138,7 +138,7 @@ class K4Dialog extends Dialog {
     promptContext: K4Dialog.PromptContext,
     inputData: K4Dialog.InputData<T>
   ): Promise<T | false> {
-    promptContext.user ??= game.user;
+    promptContext.user ??= getUser();
     const {user, ...context} = promptContext;
     if (!user) {
       throw new Error("User not found");
@@ -187,7 +187,7 @@ class K4Dialog extends Dialog {
     if (!itemID) {
       throw new Error("Item ID not found");
     }
-    const item = game.items.get(itemID);
+    const item = getGame().items.get(itemID);
     if (!item) {
       throw new Error(`Item with ID ${itemID} not found`);
     }
@@ -213,7 +213,7 @@ class K4Dialog extends Dialog {
     if (!itemID) {
       throw new Error("Item ID not found");
     }
-    const item = game.items.get(itemID);
+    const item = getGame().items.get(itemID);
     if (!item) {
       throw new Error(`Item with ID ${itemID} not found`);
     }

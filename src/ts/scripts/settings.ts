@@ -6,7 +6,7 @@ import U from "./utilities.js";
 // #endregion
 
 export default function registerSettings() {
-  game.settings.register<string, string, number>("kult4th", "debug", {
+  getGame().settings.register<string, string, number>("kult4th", "debug", {
     "name": U.loc("system.settings.debugModeTitle"),
     "hint": U.loc("system.settings.debugModeHint"),
     "scope": "client",
@@ -20,7 +20,7 @@ export default function registerSettings() {
     },
     "onChange": () => { kLog.log(`Logging level set to ${String(U.getSetting("debug"))}`, 0); }
   });
-  game.settings.register("kult4th", "gears", {
+  getGame().settings.register("kult4th", "gears", {
     "name": U.loc("system.settings.displayGearsTitle"),
     "hint": U.loc("system.settings.displayGearsHint"),
     "scope": "client",
@@ -29,7 +29,7 @@ export default function registerSettings() {
     "type": Boolean/* ,
     "onChange": () => window.location.reload() */
   });
-  game.settings.register("kult4th", "shadows", {
+  getGame().settings.register("kult4th", "shadows", {
     "name": U.loc("system.settings.displayShadowsTitle"),
     "hint": U.loc("system.settings.displayShadowsHint"),
     "scope": "client",
@@ -38,7 +38,7 @@ export default function registerSettings() {
     "type": Boolean/* ,
     "onChange": () => window.location.reload() */
   });
-  game.settings.register("kult4th", "blur", {
+  getGame().settings.register("kult4th", "blur", {
     "name": U.loc("system.settings.displayBlurTitle"),
     "hint": U.loc("system.settings.displayBlurHint"),
     "scope": "client",
@@ -47,7 +47,7 @@ export default function registerSettings() {
     "type": Boolean/* ,
     "onChange": () => window.location.reload() */
   });
-  game.settings.register("kult4th", "flare", {
+  getGame().settings.register("kult4th", "flare", {
     "name": U.loc("system.settings.displayNavFlareTitle"),
     "hint": U.loc("system.settings.displayNavFlareHint"),
     "scope": "client",
@@ -56,7 +56,7 @@ export default function registerSettings() {
     "type": Boolean/* ,
     "onChange": () => window.location.reload() */
   });
-  game.settings.register("kult4th", "animations", {
+  getGame().settings.register("kult4th", "animations", {
     "name": U.loc("system.settings.displayHeavyAnimationsTitle"),
     "hint": U.loc("system.settings.displayHeavyAnimationsHint"),
     "scope": "client",
@@ -65,7 +65,7 @@ export default function registerSettings() {
     "type": Boolean/* ,
     "onChange": () => window.location.reload() */
   });
-  game.settings.register("kult4th", "useStabilityVariant", {
+  getGame().settings.register("kult4th", "useStabilityVariant", {
     "name": "Variant Rule: Stability",
     "hint": "Use a variant for Stability that uses an additional level (for a total of ten), and allows for more flexibility defining the character's mental state at each level. Recommended.",
     "scope": "world",

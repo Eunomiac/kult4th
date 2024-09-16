@@ -796,7 +796,7 @@ const CUSTOM_FUNCTIONS = {
     }
 
     const user = filter === "gm"
-      ? game.users.find((user: User) => user.isGM)
+      ? getGame().users.find((user: User) => user.isGM)
       : actor.user;
     if (!user) {
       throw new Error(`[Prompt for Data] Unable to resolve user from filter '${filter}'.`)
@@ -1665,7 +1665,7 @@ class K4ActiveEffect extends ActiveEffect {
     // DocumentSheetConfig.registerSheet(ActiveEffect, "kult4th", K4ActiveEffectSheet, {makeDefault: true});
 
     Hooks.on("createActiveEffect", async (effect: K4ActiveEffect) => {
-      if (!game.user.isGM) { return; }
+      if (!getUser().isGM) { return; }
       kLog.display(`[on CreateActiveEffect] ${effect.name}`, {
         effect,
         origin:             effect.origin,
@@ -1853,7 +1853,7 @@ class K4ActiveEffect extends ActiveEffect {
     if (!this.isOwnedByActor()) { return undefined; }
     return this.parent;
     // const [_, actorId] = this.origin.split(".");
-    // return game.actors.get(actorId);
+    // return getGame().actors.get(actorId);
   }
   get eData(): K4ActiveEffect.ExtendedData {
     const eData = this.getFlag<K4ActiveEffect.ExtendedData>("data");

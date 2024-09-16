@@ -589,7 +589,7 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
           delete newItemData[key as keyof typeof newItemData]
       });
       if (FOLDER_NAME_MAP[itemData.type as K4ItemType]) {
-        newItemData.folder = game.folders?.getName(FOLDER_NAME_MAP[itemData.type as K4ItemType]!)?.id ?? null;
+        newItemData.folder = getGame().folders?.getName(FOLDER_NAME_MAP[itemData.type as K4ItemType]!)?.id ?? null;
       }
       return newItemData;
     });
@@ -617,20 +617,20 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   }
 
   function clearAllActors(): Promise<unknown> {
-    return Promise.all((game.actors as Collection<K4Actor>).map((actor) => clearActor(actor)));
+    return Promise.all((getGame().actors as Collection<K4Actor>).map((actor) => clearActor(actor)));
   }
 
   // Await a Promise.all that deletes all the existing items
   await Promise.all([
     clearAllActors(),
-    Promise.all((game.items as Collection<K4Item>).map((item) => item.delete()))
+    Promise.all((getGame().items as Collection<K4Item>).map((item) => item.delete()))
   ]);
 
   // Create all the new items
   await Item.create(itemSchemas as unknown as ItemDataConstructorData);
 
   // Initialize each actor with a new set of basic moves
-  await Promise.all((game.actors as Collection<K4Actor>).map((actor) => actor.initMovesAndEffects()));
+  await Promise.all((getGame().actors as Collection<K4Actor>).map((actor) => actor.initMovesAndEffects()));
 }
 
 //#endregion

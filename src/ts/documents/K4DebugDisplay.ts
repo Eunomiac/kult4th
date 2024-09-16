@@ -1,5 +1,5 @@
 import { Dragger, InertiaPlugin } from "../libraries.js";
-import { getNormalizedDistanceFromSelected as getNormalizedDistanceFromSelected, getXPosFromIndex,getYRotFromIndex, getIndexFromYRot, getYRotFromXPos, getXPosFromYRot,getIndexFromXPos } from "./K4PCSheet.js";
+import { getNormalizedDistanceFromSelected as getNormalizedDistanceFromSelected, getXPosFromIndex,getYRotFromIndex, getIndexFromYRot, getYRotFromXPos, getXPosFromYRot,getIndexFromXPos } from "./K4CharGen.js";
 import U from "../scripts/utilities.js";
 import K4Actor from "./K4Actor.js";
 

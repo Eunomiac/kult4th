@@ -470,7 +470,7 @@ class K4Item extends Item {
 
   override async _onCreate(...args: Parameters<Item["_onCreate"]>) {
     super._onCreate(...args);
-    if (!game.user.isGM) { return; }
+    if (!getUser().isGM) { return; }
 
     // If this has Change data in its system.rules schema, prepare a K4ActiveEffect to carry those Changes
     if (this.hasMainEffects()) {

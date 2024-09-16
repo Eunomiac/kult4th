@@ -45,6 +45,11 @@ $assetPath: '/assets';
     @import 'alerts/alerts';
   }
 
+  #chargen-intro-overlay,
+  #chargen-main {
+    @import 'chargen/chargen';
+  }
+
   // .editor-content {
   //   position: static !important;
   // }

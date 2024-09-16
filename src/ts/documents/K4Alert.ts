@@ -458,15 +458,15 @@ class K4Alert {
   }
 
   static #resolveUserTarget(target: Maybe<AlertTarget|IDString|UUIDString>, selfUserID?: IDString): User[] {
-    const selfUser = selfUserID ? game.users.get(selfUserID) ?? game.user : game.user;
+    const selfUser = selfUserID ? getGame().users.get(selfUserID) ?? getUser() : getUser();
     if (!target) { return [selfUser]; }
     if (U.isDocID(target)) {
-      return [game.users.get(target) ?? undefined].filter(Boolean) as User[];
+      return [getGame().users.get(target) ?? undefined].filter(Boolean) as User[];
     } else if (U.isDocUUID(target)) {
       return [(fromUuidSync(target) ?? undefined) as Maybe<User>]
         .filter(Boolean) as User[];
     }
-    const allUsers = Array.from(game.users as Collection<User>);
+    const allUsers = Array.from(getGame().users as Collection<User>);
     const [
       gmUsers,
       playerUsers

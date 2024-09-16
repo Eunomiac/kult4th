@@ -28,6 +28,28 @@ import InitializeLibraries, {gsap} from "./libraries.js";
 import K4ChatMessage from "./documents/K4ChatMessage.js";
 // #endregion
 
+// #region === CONSTANTS === ~
+const InitializableClasses = {
+  K4Actor,
+  K4PCSheet,
+  K4NPCSheet,
+
+  K4Item,
+  K4ItemSheet,
+
+  K4ChatMessage,
+  K4ActiveEffect,
+  K4Roll,
+  K4Dialog,
+  K4Sound,
+  K4Alert,
+  K4DebugDisplay,
+  K4GMTracker,
+  K4CharGen,
+  K4Socket
+ } as const;
+// #endregion
+
 // #region === TYPES === ~
 interface SVGGradientStopParams {
   offset: number,
@@ -44,53 +66,34 @@ interface SVGGradientDef {
 interface GradientDef {fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>;}
 // #endregion
 
-/** === DYNAMIC GAME DEFINITIONS ===
- * Generate a series of references to the 'game' object, reflecting its state at different phases of initialization.
- */
-// * The currently supported hooks are:
-// * - init
-// * - i18nReady
-// * - setup
-// * - ready
-// *
-// * You can also set the special key "none" to make the default behavior set the variable to `undefined` instead of a union.
-// *
-// * @example
-// * ```typescript
-// * declare global {
-// *   interface AssumeHookRan {
-// *     setup: never; // the type doesn't matter
-// *   }
-// * }
-const gameRefInit: Game = game;
-declare global {
-  interface AssumeHookRan {
-    init: never;
+Object.assign(globalThis, {
+  getGame: function getGame(): Game {
+    if (!(game instanceof Game)) {
+      throw new Error("Game is not ready");
   }
-}
-const gameRefI18nReady: Game = game;
-declare global {
-  interface AssumeHookRan {
-    i18nReady: never;
-    setup: never;
+    return game;
+  },
+  getUser: function getUser(): User {
+    const user = getGame().user;
+    if (!user) {
+      throw new Error("User is not ready");
+    }
+    return user;
+  },
+  getI18n: function getI18n(): Localization {
+    const i18n = getGame().i18n;
+    if (!i18n) {
+      throw new Error("I18n is not ready");
+    }
+    return i18n;
   }
-}
-const gameRefReady: Game = game;
-declare global {
-  interface AssumeHookRan {
-    ready: never;
-  }
-}
-const gameRef: Game = game;
-Object.assign(globalThis, {gameRef});
-
-
+});
 
 /* #DEVCODE */
 async function GlobalAssignment() {
 
-  const ACTOR = (game as SetupGame).actors.values().next().value as Maybe<K4Actor>;
-  const ITEM = (game as SetupGame).items.values().next().value as Maybe<K4Item>;
+  const ACTOR = getGame().actors.values().next().value as Maybe<K4Actor>;
+  const ITEM = getGame().items.values().next().value as Maybe<K4Item>;
   const EMBED = ACTOR?.items.values().next().value as Maybe<K4Item>;
   const ACTORSHEET = ACTOR?.sheet;
 
@@ -98,17 +101,11 @@ async function GlobalAssignment() {
     gsap,
     U,
     C,
-    K4Actor,
-    K4Item,
-    K4Roll,
     ActorSheet,
-    K4PCSheet,
-    K4Socket,
     formatForKult,
-    K4CharGen,
-    gameRef,
     ACTOR, ITEM, EMBED, ACTORSHEET,
-    ENTITIES: [ACTOR, ITEM, EMBED]
+    ENTITIES: [ACTOR, ITEM, EMBED],
+    ...InitializableClasses
   });
 
   // Dynamically import data.js for initializing and building Item documents during development (will become packs for production)
@@ -124,8 +121,7 @@ async function GlobalAssignment() {
     findRepresentativeSubset,
     checkSubsetCoverage,
     findUniqueKeys,
-    BUILD_ITEMS_FROM_DATA,
-    K4GMTracker
+    BUILD_ITEMS_FROM_DATA
   });
 }
 function InitLogRocketCSSPerformanceMonitor() {
@@ -134,56 +130,27 @@ function InitLogRocketCSSPerformanceMonitor() {
 }
 /* #endDEVCODE */
 
-async function PreInitializeClasses() {
-  return Promise.all([
-      K4Actor,
-      K4PCSheet,
-      K4NPCSheet,
+enum InitializerMethod {
+  PreInitialize = "PreInitialize",
+  Initialize = "Initialize",
+  PostInitialize = "PostInitialize"
+}
 
-      K4Item,
-      K4ItemSheet,
-
-      K4ChatMessage,
-      K4ActiveEffect,
-      K4Roll,
-      K4Dialog,
-      K4CharGen,
-      K4Sound,
-      K4Alert,
-      K4DebugDisplay,
-      K4GMTracker
-    ].filter(
-      (doc): doc is typeof doc & {PreInitialize: () => Promise<void>;} =>
-        "PreInitialize" in doc
-    ).map((doc) => doc.PreInitialize())
+async function RunInitializer<T extends InitializerMethod>(methodName: T) {
+  return Promise.all(
+    Object.values(InitializableClasses).filter(
+      (doc): doc is typeof doc & Record<T, () => Promise<void>> =>
+        methodName in doc
+    ).map((doc) => doc[methodName]())
   );
 }
-async function InitializeClasses() {
-  return Promise.all([
-      K4Actor,
-      K4PCSheet,
-      K4NPCSheet,
 
-      K4Item,
-      K4ItemSheet,
-
-      K4ChatMessage,
-      K4ActiveEffect,
-      K4Roll,
-      K4Dialog,
-      K4CharGen,
-      K4Sound,
-      K4Alert,
-      K4DebugDisplay,
-      K4GMTracker
-    ].filter(
-      (doc): doc is typeof doc & {Initialize: () => Promise<void>;} =>
-        "Initialize" in doc
-    ).map((doc) => doc.Initialize())
-  );
-}
 async function PreloadHBSTemplates() {
   const templatePaths = [
+    ...U.getTemplatePath("chargen", [
+      "chargen-intro-overlay",
+      "chargen-main"
+    ]),
     ...U.getTemplatePath("globals", [
       "svg-defs",
       "color-defs"
@@ -563,13 +530,13 @@ function MonitorNotifications(...observerGenerators: Array<(notificationsContain
  */
 async function DisableClientCanvas() {
   // Wait until the "noCanvas" setting exists
-  while (!gameRefI18nReady.settings.settings.has("core.noCanvas")) {
+  while (!getGame().settings.settings.has("core.noCanvas")) {
     await U.sleep(100); // Wait for 100ms before checking again
   }
 
-  if (!gameRefI18nReady.settings.get("core", "noCanvas")) {
+  if (!getGame().settings.get("core", "noCanvas")) {
     // Set the canvas-disabled setting to true for all connected clients
-    await gameRefI18nReady.settings.set("core", "noCanvas", true);
+    await getGame().settings.set("core", "noCanvas", true);
   }
   console.log("Canvas has been disabled for all clients.");
 }
@@ -588,7 +555,7 @@ Hooks.on("renderUserConfig", (config: UserConfig, html: HTMLFormElement) => {
   notifications$.css("display", "none");
 
   U.gsap.to(interface$, {
-    backgroundColor: C.Colors.GREY0,
+    backgroundColor: C.Colors.GREY0.css,
     duration: 1,
     ease: "power2.out"
   });
@@ -681,7 +648,7 @@ Hooks.on("init", async () => {
     // GlobalAssignment(),
     /* #endDEVCODE */
     // Call 'PreInitialize' on all relevant classes
-    PreInitializeClasses(),
+    RunInitializer(InitializerMethod.PreInitialize),
     // Preload Handlebars Templates
     PreloadHBSTemplates(),
     // Generate CSS Color Definitions
@@ -698,15 +665,19 @@ Hooks.on("i18nReady", () => {
 });
 
 Hooks.on("ready", async () => {
-  await InitializeClasses();
+  // Call Initialize on all relevant classes
+  await RunInitializer(InitializerMethod.Initialize);
   // Initialize collection objects
-  gameRefReady.rolls = new Collection<K4Roll>();
+  getGame().rolls = new Collection<K4Roll>();
   // If user is GM, add "gm-user" class to #interface
-  if (gameRefReady.user?.isGM) {
+  if (getUser().isGM) {
     $("#interface").addClass("gm-user");
   }
   // Assign global variables to globalThis
-  void GlobalAssignment();
+  await GlobalAssignment();
+
+  // Call PostInitialize on all relevant classes
+  await RunInitializer(InitializerMethod.PostInitialize);
 });
 
 

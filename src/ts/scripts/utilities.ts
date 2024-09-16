@@ -144,7 +144,7 @@ const Initialize = () => {
 // #region ████████ GETTERS: Basic Data Lookup & Retrieval ████████ ~
 // @ts-expect-error League of foundry developers is wrong about user not being on game.
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-const GMID = (): string | false => game.user.find((user) => user.isGM)?.id ?? false;
+const GMID = (): string | false => getUser().find((user) => user.isGM)?.id ?? false;
 // #endregion ▄▄▄▄▄ GETTERS ▄▄▄▄▄
 
 // #region ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████ ~
@@ -2235,9 +2235,9 @@ const EventHandlers = {
       await inst.document.update({[target]: value});
     } else if (flagTarget) {
       if (elem.value === "") {
-        await inst.document.unsetFlag(game.system.id, flagTarget);
+        await inst.document.unsetFlag(getGame().system.id, flagTarget);
       } else {
-        await (inst.document as Item).setFlag(game.system.id, flagTarget, value);
+        await (inst.document as Item).setFlag(getGame().system.id, flagTarget, value);
       }
     }
   }
@@ -2251,7 +2251,11 @@ const isDocUUID = (ref: unknown): ref is UUIDString => {
   if (typeof ref !== "string") { return false; }
   const [docName, docID] = ref.split(/\./);
   if (!isDocID(docID)) { return false; }
-  return game.collections.has(docName);
+  const {collections} = getGame();
+  if (!collections) {
+    throw new Error("[U.isDocUUID] Game not ready");
+  }
+  return collections.has(docName);
 };
 
 const isDotKey = (ref: unknown): ref is DotKey => typeof ref === "string";
@@ -2276,7 +2280,11 @@ const parseDocRefToUUID = (ref: unknown): UUIDString => {
   if (isDocUUID(ref)) {
     return ref;
   } else if (isDocID(ref)) {
-    const doc = (game as SetupGame).collections.find((collection) => collection.has(ref))?.get(ref);
+    const {collections} = getGame();
+    if (!collections) {
+      throw new Error("[U.parseDocRefToUUID] Game not ready");
+    }
+    const doc = collections.find((collection) => collection.has(ref))?.get(ref);
     if (doc && "uuid" in doc) {
       return doc.uuid as UUIDString;
     }
@@ -2289,21 +2297,21 @@ const parseDocRefToUUID = (ref: unknown): UUIDString => {
 
 const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
   if (/[a-z]/.test(locRef)) { // Reference contains lower-case characters: add system ID namespacing to dot notation
-    locRef = locRef.replace(new RegExp(`^(${String(game.system.id)}.)*`), `${String(game.system.id)}.`);
+    locRef = locRef.replace(new RegExp(`^(${String(getGame().system.id)}.)*`), `${String(getGame().system.id)}.`);
   }
-  if (typeof game.i18n.localize(locRef) === "string") {
+  if (typeof getI18n().localize(locRef) === "string") {
     for (const [key, val] of Object.entries(formatDict)) {
       formatDict[key] = loc(val);
     }
-    return game.i18n.format(locRef, formatDict) || game.i18n.localize(locRef) || locRef;
+    return getI18n().format(locRef, formatDict) || getI18n().localize(locRef) || locRef;
   }
   return locRef;
 };
 
 const getSetting = <T = unknown>(setting: string, submenu?: string): Maybe<T> => {
   const settingPath = [submenu, setting].filter(isDefined).join(".");
-  if (game.settings.settings.has(`${String(game.system.id)}.${String(settingPath)}`)) {
-    return game.settings.get(game.system.id, settingPath) as T;
+  if (getGame().settings.settings.has(`${String(getGame().system.id)}.${String(settingPath)}`)) {
+    return getGame().settings.get(getGame().system.id, settingPath) as T;
   }
   return undefined;
 };
@@ -2317,7 +2325,7 @@ function getTemplatePath(subFolder: string, fileName: string[]): string[]
  */
 function getTemplatePath(subFolder: string, fileName: string | string[]) {
   if (typeof fileName === "string") {
-    return `systems/${String(game.system.id)}/templates/${String(subFolder)}/${String(fileName.replace(/\..*$/, ""))}.hbs`;
+    return `systems/${String(getGame().system.id)}/templates/${String(subFolder)}/${String(fileName.replace(/\..*$/, ""))}.hbs`;
   }
   return fileName.map((fName) => getTemplatePath(subFolder, fName));
 }
@@ -2333,7 +2341,7 @@ function getTemplatePath(subFolder: string, fileName: string | string[]) {
  */
 function displayImageSelector(
   callback: (path: string) => void,
-  pathRoot = `systems/${String(game.system.id)}/assets`,
+  pathRoot = `systems/${String(getGame().system.id)}/assets`,
   position: {top: number | null, left: number | null} = {top: 200, left: 200}
 ) {
   const fp = new FilePicker({

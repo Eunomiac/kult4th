@@ -19,7 +19,7 @@ class K4Socket {
   }
 
   static async Call<RT>(funcName: string, userID: IDString, ...funcParameters: unknown[]): Promise<RT|false> {
-    if (!game.users.get(userID)?.active) { return false; }
+    if (!getGame().users.get(userID)?.active) { return false; }
     if (!(funcName in K4Socket.SocketFunctions)) {
       throw new Error(`[K4Socket.Call] No Such Function Registered: ${funcName}`);
     }

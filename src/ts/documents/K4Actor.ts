@@ -2,8 +2,9 @@
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
+import K4CharGen from "./K4CharGen.js";
 import K4ActiveEffect, {} from "./K4ActiveEffect.js";
-import C, {K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType} from "../scripts/constants.js";
+import C, {K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 // #endregion
 
@@ -74,18 +75,7 @@ import U from "../scripts/utilities.js";
 
 // #region === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
 // #region -- ENUMS ~
-enum K4ActorType {
-  pc = "pc",
-  npc = "npc"
-}
 
-enum K4CharGenPhase {
-  archetype = "archetype",
-  attributesAndTraits = "attributesAndTraits",
-  details = "details",
-  relations = "relations",
-  finished = "finished"
-}
 // #endregion
 
 interface K4SelectOption<T> {
@@ -276,6 +266,7 @@ interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get name(): string;
   get type(): Type;
   get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
+  get ownership(): Record<IDString, number>;
   get items(): Collection<K4Item>;
   get effects(): Collection<K4ActiveEffect>;
   system: K4Actor.System<Type>;
@@ -391,7 +382,7 @@ class K4Actor extends Actor {
 
   // #region GETTERS ~
   get user(): Maybe<User> {
-    return (game.users as Collection<User>).find((user) => user.character?.id === this.id);
+    return (getGame().users as Collection<User>).find((user) => user.character?.id === this.id);
   }
   get charGenPhase(): K4CharGenPhase {
     if (!this.is(K4ActorType.pc)) {
@@ -928,18 +919,32 @@ class K4Actor extends Actor {
     ].includes(traitName.replace(/^!?/, ""));
   }
 
+  _chargenSheet: Maybe<K4CharGen>;
+  get chargenSheet(): K4CharGen {
+    if (!this.user) {
+      throw new Error(`Cannot initialize chargen sheet for actor ${this.id}: Actor has no user.`)
+    }
+    if (!this.is(K4ActorType.pc)) {
+      throw new Error(`Cannot initialize chargen sheet for actor ${this.id}: Actor is not a PC.`)
+    }
+    if (!this._chargenSheet) {
+      this._chargenSheet = new K4CharGen(this.user, this);
+    }
+    return this._chargenSheet;
+  }
+
   async charGenSelect(traitName: string, isArchetype = true) {
     if (!this.is(K4ActorType.pc)) {return;}
     const pcData = this.system;
     let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
-    const item = game.items.getName(traitName) as Maybe<K4Item>;
+    const item = getGame().items.getName(traitName) as Maybe<K4Item>;
     if (!item) { return; }
     switch (item.type) {
       case K4ItemType.advantage: {
         if (selAdvantages.includes(traitName)) { break; }
         selAdvantages = U.unique([...selAdvantages, traitName]);
         await this.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
-        await this.sheet.reRenderTraitPanels();
+        await this.chargenSheet.reRenderTraitPanels();
         break;
       }
       case K4ItemType.disadvantage: {
@@ -947,12 +952,12 @@ class K4Actor extends Actor {
           if (selDisadvantages.includes(traitName)) { break; }
           selDisadvantages = U.unique([...selDisadvantages, traitName]);
           await this.update({"system.charGen.selDisadvantages": selDisadvantages}, {render: false});
-          await this.sheet.reRenderTraitPanels();
+          await this.chargenSheet.reRenderTraitPanels();
         } else {
           if (extraDisadvantages.includes(traitName)) { break; }
           extraDisadvantages = U.unique([...extraDisadvantages, traitName]);
           await this.update({"system.charGen.extraDisadvantages": extraDisadvantages}, {render: false});
-          await this.sheet.reRenderTraitPanels();
+          await this.chargenSheet.reRenderTraitPanels();
         }
         break;
       }
@@ -961,12 +966,12 @@ class K4Actor extends Actor {
           if (selDarkSecrets.includes(traitName)) { break; }
           selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
           await this.update({"system.charGen.selDarkSecrets": selDarkSecrets}, {render: false});
-          await this.sheet.reRenderTraitPanels();
+          await this.chargenSheet.reRenderTraitPanels();
         } else {
           if (extraDarkSecrets.includes(traitName)) { break; }
           extraDarkSecrets = U.unique([...extraDarkSecrets, traitName]);
           await this.update({"system.charGen.extraDarkSecrets": extraDarkSecrets}, {render: false});
-          await this.sheet.reRenderTraitPanels();
+          await this.chargenSheet.reRenderTraitPanels();
         }
         break;
       }
@@ -980,7 +985,7 @@ class K4Actor extends Actor {
     if (selAdvantages.includes(traitName)) {
       U.pullElement(selAdvantages, traitName);
       await this.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
-      await this.sheet.reRenderTraitPanels();
+      await this.chargenSheet.reRenderTraitPanels();
     } else if ([...selDisadvantages, ...extraDisadvantages].includes(traitName)) {
       U.pullElement(selDisadvantages, traitName);
       U.pullElement(extraDisadvantages, traitName);
@@ -988,7 +993,7 @@ class K4Actor extends Actor {
         "system.charGen.selDisadvantages": selDisadvantages,
         "system.charGen.extraDisadvantages": extraDisadvantages
       }, {render: false});
-      await this.sheet.reRenderTraitPanels();
+      await this.chargenSheet.reRenderTraitPanels();
     } else if ([...selDarkSecrets, ...extraDarkSecrets].includes(traitName)) {
       U.pullElement(selDarkSecrets, traitName);
       U.pullElement(extraDarkSecrets, traitName);
@@ -996,7 +1001,7 @@ class K4Actor extends Actor {
         "system.charGen.selDarkSecrets": selDarkSecrets,
         "system.charGen.extraDarkSecrets": extraDarkSecrets
       }, {render: false});
-      await this.sheet.reRenderTraitPanels();
+      await this.chargenSheet.reRenderTraitPanels();
     }
   }
   // #endregion
@@ -1589,7 +1594,7 @@ class K4Actor extends Actor {
 
   override async _onCreate(...params: Parameters<Actor["_onCreate"]>) {
     super._onCreate(...params);
-    if (!game.user.isGM) { return; }
+    if (!getUser().isGM) { return; }
     if (this.type !== K4ActorType.pc) {return;}
 
     // Set the default tab for the character sheet
@@ -1637,6 +1642,6 @@ export default K4Actor;
 
 export {
   K4ActorType,
-  K4CharGenPhase
+  type K4AttributeData
 };
 // #endregion

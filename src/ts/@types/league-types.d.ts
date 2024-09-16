@@ -25,6 +25,28 @@ declare module "@league-of-foundry-developers/foundry-vtt-types/src/foundry/comm
 }
 
 declare global {
+
+  /**
+   * Retrieves the current Game instance.
+   * @returns The current Game instance.
+   * @throws Error if the Game is not ready.
+ */
+  function getGame(): Game;
+
+  /**
+   * Retrieves the current User instance.
+   * @returns The current User instance.
+   * @throws Error if the User is not ready.
+   */
+  function getUser(): User;
+
+  /**
+   * Retrieves the current I18n instance.
+   * @returns The current I18n instance.
+   * @throws Error if the I18n is not ready.
+   */
+  function getI18n(): I18n;
+
   export type EmbeddedCollection<
     ContainedDocumentConstructor extends foundry.abstract.DocumentConstructor,
     ParentDocumentData extends foundry.abstract.AnyDocumentData
