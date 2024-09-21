@@ -1,5 +1,5 @@
 {{log "GM Tracker Sheet" this}}
-<form class="kult4th-form form-gmtracker {{cssClass}}" autocomplete="off">
+<form class="kult4th-form form-gmtracker phase-{{item.system.gamePhase}} {{cssClass}}" autocomplete="off">
 
   {{> (concat "systems/kult4th/templates/sheets/gmtracker-phases/" item.system.gamePhase ".hbs")}}
 

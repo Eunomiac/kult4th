@@ -132,22 +132,18 @@ class K4Dialog extends Dialog {
     }
   }
 
-  static async GetUserInput<T extends SystemScalar>(promptContext: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal?: never}): Promise<T | false>
-  static async GetUserInput<T extends SystemScalar>(promptContext: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T> & {defaultVal: T}): Promise<T>
+  static async GetUserInput<T extends SystemScalar>(promptContext: K4Dialog.PromptContext, {input, inputVals, defaultVal}: K4Dialog.InputData<T>): Promise<T>
   static async GetUserInput<T extends SystemScalar>(
     promptContext: K4Dialog.PromptContext,
     inputData: K4Dialog.InputData<T>
-  ): Promise<T | false> {
+  ): Promise<T> {
     promptContext.user ??= getUser();
     const {user, ...context} = promptContext;
-    if (!user) {
-      throw new Error("User not found");
-    }
-    return K4Socket.Call<T>(
+    return (await K4Socket.Call<T>(
       "GetUserInput",
       user.id as IDString,
       context, inputData
-    );
+    ))[0];
   }
 
   _openedItemSheets: Set<K4Item> = new Set<K4Item>();

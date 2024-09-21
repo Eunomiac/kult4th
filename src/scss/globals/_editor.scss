@@ -9,8 +9,8 @@
   background: rgba(0, 0, 0, 0.5);
   margin: 5px;
   margin-top: 10px;
-  // box-shadow: inset 0px 0px 10px var(--K4-GOLD1);
-  outline: 1px solid var(--K4-GOLD1);
+  // box-shadow: inset 0px 0px 10px var(--K4-ddGOLD);
+  outline: 1px solid var(--K4-ddGOLD);
   padding: 5px;
 
   &:not(.prosemirror):hover {
@@ -18,8 +18,8 @@
   }
 
   &.prosemirror { /* Editor is in edit mode */
-    background: var(--K4-GREY0);
-    box-shadow: inset 0px 0px 0px 1px var(--K4-GOLD9);
+    background: var(--K4-dBLACK);
+    box-shadow: inset 0px 0px 0px 1px var(--K4-bbGOLD);
 
   }
 
@@ -32,8 +32,8 @@
     i {
 
       &::before {
-        color: var(--K4-GREY0);
-        text-shadow: build-text-shadow(5px, var(--K4-GOLD9), 3);
+        color: var(--K4-dBLACK);
+        text-shadow: build-text-shadow(5px, var(--K4-bbGOLD), 3);
         background: transparent;
       }
     }
@@ -42,7 +42,7 @@
       scale: 1.25;
 
       i::before {
-        color: var(--K4-GOLD9);
+        color: var(--K4-bbGOLD);
       }
     }
 
@@ -70,9 +70,9 @@
     &:hover {
       height: 32px;
       margin-bottom: -32px;
-      background: var(--K4-GREY0);
+      background: var(--K4-dBLACK);
       top: 0px;
-      outline: 2px outset var(--K4-GOLD8);
+      outline: 2px outset var(--K4-bGOLD);
 
       li { display: list-item; }
     }

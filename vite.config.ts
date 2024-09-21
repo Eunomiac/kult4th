@@ -10,9 +10,10 @@ import copy from "rollup-plugin-copy";
 /* ==== CONFIGURATION ==== */
 
 const FOUNDRY_VERSION = 12;
-const NUM_CHROME_PROFILES = 1;
+const NUM_CHROME_PROFILES = parseInt(process.env.NUM_CHROME_PROFILES ?? "1", 10);
 const PACKAGE_TYPE: "module" | "system" = "system";
 const PACKAGE_ID = "kult4th";
+
 const ENTRY_FILE_NAME = "kult4th";
 
 /* ==== END CONFIGURATION ==== */

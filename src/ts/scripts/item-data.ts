@@ -33,7 +33,8 @@ import {
   K4ItemSubType,
   K4ItemRange
 } from "../documents/K4Item.js";
-import {AlertType, AlertTarget} from "../documents/K4Alert.js";
+import {AlertType} from "../documents/K4Alert.js";
+import {UserTargetRef} from "../documents/K4Socket.js";
 
 console.log("Loading item-data.ts");
 console.log("K4ItemType in item-data.ts:", K4ItemType);
@@ -201,7 +202,7 @@ const ITEM_DATA: {
                           alerts: [
                             {
                               type: AlertType.simple,
-                              target: AlertTarget.all,
+                              target: UserTargetRef.all,
                               header: "%insert.actor.name% Refuses to Give In!",
                               body: "They sacrifice Time to reroll the dice.",
                               logoImg: "%insert.actor.img%"
@@ -234,7 +235,7 @@ const ITEM_DATA: {
                   alerts: [
                     {
                       type: AlertType.simple,
-                      target: AlertTarget.self,
+                      target: UserTargetRef.self,
                       header: "Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span>",
                       body: "You must take the '#>text-keyword>Condemned<# Disadvantage before you can take #>text-keyword>To the Last Breath<#.",
                       logoImg: ""
@@ -2301,7 +2302,7 @@ const ITEM_DATA: {
                   alerts: [
                     {
                       type: AlertType.simple,
-                      target: AlertTarget.self,
+                      target: UserTargetRef.self,
                       header: "Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span>",
                       body: "You must take the '#>text-keyword>Condemned<# Disadvantage before you can take #>text-keyword>Sealed Fate<#.",
                       logoImg: ""
@@ -10213,7 +10214,7 @@ const ITEM_DATA: {
                         alerts: [
                           {
                             type: AlertType.simple,
-                            target: AlertTarget.all,
+                            target: UserTargetRef.all,
                             header: "%insert.actor.name% Loses Stability",
                             body: "%insert.actor.name% succumbs to depression, taking #>text-negmod>&minus;2 Stability<#.",
                             logoImg: "%insert.actor.img%"
@@ -11282,14 +11283,14 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Angry",
                     body: "%insert.actor.name% takes #>text-negmod>&minus;1 Stability<# and gains the #>text-keyword>Angry<# Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    name: "Angry",
+                    label: "Angry",
                     type: K4ConditionType.stability,
                     description: "You blame someone or something in your vicinity for whatever happened, and may lash out against them or harbor resentment.",
                     modDef: {all: -1}
@@ -11313,14 +11314,14 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Saddened",
                     body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Saddened<# Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    name: "Saddened",
+                    label: "Saddened",
                     type: K4ConditionType.stability,
                     description: "You feel sorrow or grief over what happened. You might want to seek solitude or the comfort of a loved one.",
                     modDef: {all: -1}
@@ -11344,14 +11345,14 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Frightened",
                     body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Scared<# Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    name: "Scared",
+                    label: "Scared",
                     type: K4ConditionType.stability,
                     description: "You feel threatened. You instinctively want to retreat from the situation and seek out a hiding spot.",
                     modDef: {all: -1}
@@ -11375,14 +11376,14 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Feels Guilty",
                     body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Guilt-Ridden<# Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    name: "Guilt-Ridden",
+                    label: "Guilt-Ridden",
                     type: K4ConditionType.stability,
                     description: "You blame yourself for what transpired, and seek forgiveness from those around you.",
                     modDef: {all: -1}
@@ -11406,7 +11407,7 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Obsessed",
                     body: "%insert.actor.name% gains the #>text-keyword>Obsessed<# Stability Condition, and gains #>text-posmod>+1 Relation<# towards #>text-keyword>%insert.FLAGS.name%<#.",
                     logoImg: "%insert.actor.img%"
@@ -11438,7 +11439,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    name: "Obsessed",
+                    label: "Obsessed",
                     type: K4ConditionType.stability,
                     description: "You are paradoxically enthralled by whatever initially caused you stress (#>text-posmod>%insert.FLAGS.name%<#), now finding it attractive and compelling. You may feel compelled to seek it out or to study it intensely.",
                     modDef: {all: -1}
@@ -11455,14 +11456,14 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Distracted",
                     body: "%insert.actor.name% gains the #>text-keyword>Distracted<# Stability Condition (#>text-negmod>&minus;2<# to all rolls when relevant).",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
-                    name: "Distracted",
+                    label: "Distracted",
                     type: K4ConditionType.stability,
                     description: "You are confused and sidetracked by what threatens you. You cannot stop looking at it, and are inattentive to everything else around you. You take #>text-negmod>&minus;2<# to all rolls in situations where being distracted is an obstacle.",
                     modDef: {all: -2}
@@ -11480,7 +11481,7 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Will Regret This ...",
                     body: "%insert.actor.name% will be haunted by this at a later time. #>text-gmtext>The GM gets 1 Hold.<#",
                     logoImg: "%insert.actor.img%"
@@ -11522,14 +11523,14 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.other,
+                    target: UserTargetRef.other,
                     header: "%insert.actor.name% Cowers in Fear!",
                     body: "%insert.actor.name% cowers powerless in the threat's presence.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.self,
+                    target: UserTargetRef.self,
                     header: "You Cower in Fear!",
                     body: "You cower, powerless, in the threat's presence.",
                     logoImg: "%insert.actor.img%"
@@ -11549,14 +11550,14 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.other,
+                    target: UserTargetRef.other,
                     header: "%insert.actor.name% Panics!",
                     body: "%insert.actor.name% panics, losing control of their actions.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.self,
+                    target: UserTargetRef.self,
                     header: "You Panic!",
                     body: "You panic, losing control of your actions to the GM.",
                     logoImg: "%insert.actor.img%"
@@ -11573,7 +11574,7 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Suffers Emotional Trauma",
                     body: "%insert.actor.name% takes #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
                     logoImg: "%insert.actor.img%"
@@ -11597,7 +11598,7 @@ const ITEM_DATA: {
                 "changeData": [
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% Suffers Life-Changing Trauma!",
                     body: "%insert.actor.name% takes #>text-negmod>&minus;4<# #>text-keyword>Stability<#.",
                     logoImg: "%insert.actor.img%"
@@ -12135,7 +12136,7 @@ const ITEM_DATA: {
                   }),
                   K4ActiveEffect.BuildChangeData("Alert", {
                     type: AlertType.simple,
-                    target: AlertTarget.all,
+                    target: UserTargetRef.all,
                     header: "%insert.actor.name% is Seriously Wounded",
                     body: "%insert.actor.name% suffers a #>text-keyword>%insert.FLAGS.woundName%<#.",
                     logoImg: "%insert.actor.img%"

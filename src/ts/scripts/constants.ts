@@ -1145,6 +1145,7 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
 
 export const Colors = {
   // GOLD5
+  GOLD0: "rgb(29, 27, 20)",
   GOLD1: "rgb(58, 54, 41)",
   GOLD2: "rgb(81, 76, 58)",
   GOLD3: "rgb(104, 97, 74)",
@@ -1154,8 +1155,15 @@ export const Colors = {
   GOLD7: "rgb(203, 189, 143)",
   GOLD8: "rgb(229, 213, 162)",
   GOLD9: "rgb(255, 243, 204)",
+  // GOLD ALIASES
+  get ddGOLD() { return this.GOLD0; },
+  get dGOLD() { return this.GOLD3; },
+  get GOLD() { return this.GOLD5; },
+  get bGOLD() { return this.GOLD7; },
+  get bbGOLD() { return this.GOLD9; },
 
   // RED5
+  RED0: "rgb(19, 4, 4)",
   RED1: "rgb(38, 8, 8)",
   RED2: "rgb(68, 14, 14)",
   RED3: "rgb(97, 20, 20)",
@@ -1165,6 +1173,12 @@ export const Colors = {
   RED7: "rgb(205, 47, 43)",
   RED8: "rgb(230, 57, 48)",
   RED9: "rgb(255, 124, 114)",
+  // RED ALIASES
+  get ddRED() { return this.RED0; },
+  get dRED() { return this.RED3; },
+  get RED() { return this.RED5; },
+  get bRED() { return this.RED7; },
+  get bbRED() { return this.RED9; },
 
   // BLUE5
   BLUE1: "rgb(9, 18, 29)",
@@ -1176,6 +1190,12 @@ export const Colors = {
   BLUE7: "rgb(61, 121, 197)",
   BLUE8: "rgb(70, 139, 226)",
   BLUE9: "rgb(119, 179, 255)",
+  // BLUE ALIASES
+  get ddBLUE() { return this.BLUE1; },
+  get dBLUE() { return this.BLUE3; },
+  get BLUE() { return this.BLUE5; },
+  get bBLUE() { return this.BLUE7; },
+  get bbBLUE() { return this.BLUE9; },
 
   // GREYS
   GREY0: "rgb(0, 0, 0)",
@@ -1188,8 +1208,17 @@ export const Colors = {
   GREY7: "rgb(181, 181, 181)",
   GREY8: "rgb(208, 208, 208)",
   GREY9: "rgb(235, 235, 235)",
-  GREY10: "rgb(255, 255, 255)"
+  GREY10: "rgb(255, 255, 255)",
+  // GREY ALIASES
+  get dBLACK() { return this.GREY0; },
+  get BLACK() { return this.GREY1; },
+  get dGREY() { return this.GREY3; },
+  get GREY() { return this.GREY5; },
+  get bGREY() { return this.GREY7; },
+  get WHITE() { return this.GREY9; },
+  get bWHITE() { return this.GREY10; }
 }
+
 
 export const ColorFilters = {
   GOLD5: "hue-rotate(-32.63deg) saturate(32%) brightness(65%)",

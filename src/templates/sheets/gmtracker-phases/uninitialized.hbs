@@ -1,0 +1,16 @@
+<main>
+  <div class="actor-assignment">
+    <h1 class="actor-assignment-header {{~#if allActorsAssigned}} confirmed-header{{/if}}">Actor Assignment</h1>
+    {{#each playerCharacters}}
+    <div class="actor-assignment-row">
+      <span class="actor-name">{{actor.name}}</span>
+      <span class="user-selection-container">
+        <select class="user-selection" data-actor-id="{{actor.id}}">
+          <option value="" disabled hidden {{~#unless owner}} selected{{/unless}}></option>
+          {{selectOptions @root.playerUsers selected=owner.id labelAttr="name" valueAttr="id"}}
+        </select>
+      </span>
+    </div>
+    {{/each}}
+  </div>
+</main>

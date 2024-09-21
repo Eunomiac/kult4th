@@ -368,6 +368,23 @@ class K4Actor extends Actor {
     await Promise.all(promises);
   }
   // #endregion
+
+  // #region STATIC METHODS ~
+  /**
+   * Retrieves the player character owned by the given user.
+   * @param {User} user - The user whose player character to retrieve.
+   * @returns {K4Actor | undefined} The player character owned by the user, or undefined if not found.
+   * @throws {Error} If the user ID cannot be determined.
+   */
+  static GetCharacter(user: User): Maybe<K4Actor<K4ActorType.pc>> {
+    if (!user.id) {
+      throw new Error("Unable to determine ID of user.");
+    }
+    const playerCharacters = getGame().actors.filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc);
+    const ownedPlayerCharacter = playerCharacters.find((actor: K4Actor<K4ActorType.pc>) => actor.ownership[user.id as IDString] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
+    return ownedPlayerCharacter;
+  }
+
   // #region Type Guards ~
   /**
    * Type guard to check if the actor is of a specific type.

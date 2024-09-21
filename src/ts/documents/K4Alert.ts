@@ -7,7 +7,7 @@ import {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
 import K4Sound from "./K4Sound.js"
 import {formatForKult} from "../scripts/helpers.js";
-import K4Socket from "./K4Socket.js";
+import K4Socket, {UserTargetRef} from "./K4Socket.js";
 // #endregion
 
 // #region === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -16,14 +16,7 @@ enum AlertType {
   simple = "simple",
   card = "card"
 };
-enum AlertTarget {
-  gm = "gm", // The alert is shown to the GM.
-  self = "self", // The alert is shown to the current user.
-  all = "all", // The alert is shown to all connected users.
-  players = "players", // The alert is shown to all users except the GM.
-  other = "other", // The alert is shown to all users except the current user.
-  otherPlayers = "otherPlayers" // The alert is shown to all users except the current user and the GM.
-}
+
 // #endregion
 // #region -- TYPES ~
 namespace K4Alert {
@@ -35,7 +28,7 @@ namespace K4Alert {
   export namespace Context {
     interface Base {
       type: AlertType;
-      target: AlertTarget|IDString|UUIDString;
+      target: UserTargetRef|IDString|UUIDString;
       skipQueue?: boolean;
     }
     export interface Simple extends Base {
@@ -457,33 +450,9 @@ class K4Alert {
     return data;
   }
 
-  static #resolveUserTarget(target: Maybe<AlertTarget|IDString|UUIDString>, selfUserID?: IDString): User[] {
-    const selfUser = selfUserID ? getGame().users.get(selfUserID) ?? getUser() : getUser();
-    if (!target) { return [selfUser]; }
-    if (U.isDocID(target)) {
-      return [getGame().users.get(target) ?? undefined].filter(Boolean) as User[];
-    } else if (U.isDocUUID(target)) {
-      return [(fromUuidSync(target) ?? undefined) as Maybe<User>]
-        .filter(Boolean) as User[];
-    }
-    const allUsers = Array.from(getGame().users as Collection<User>);
-    const [
-      gmUsers,
-      playerUsers
-    ] = U.partition<User>(allUsers, (user) => (user as User).isGM);
-    switch (target) {
-      case AlertTarget.all: return allUsers;
-      case AlertTarget.gm: return gmUsers;
-      case AlertTarget.other: return allUsers.filter((user) => user.id !== selfUser.id);
-      case AlertTarget.otherPlayers: return playerUsers.filter((user) => user.id !== selfUser.id);
-      case AlertTarget.players: return playerUsers;
-      case AlertTarget.self: return [selfUser];
-    }
-  }
-
-  static Alert(fullData: Partial<K4Alert.Data>, selfUserID?: IDString) {
+  static Alert(fullData: Partial<K4Alert.Data>) {
     const {target, ...data} = fullData;
-    const userTargets = this.#resolveUserTarget(target, selfUserID);
+    const userTargets = K4Socket.GetUsers(target);
     kLog.log(`target: ${target} -> Users: ${userTargets.map((user) => user.name).join(", ")}`);
     return userTargets.map((user) => K4Socket.Call(
         "Alert",
@@ -536,7 +505,7 @@ class K4Alert {
       case AlertType.simple: {
         return {
           type,
-          target: AlertTarget.all,
+          target: UserTargetRef.all,
           skipQueue: false,
           header: "",
           body: "",
@@ -548,7 +517,7 @@ class K4Alert {
       case AlertType.card: {
         return {
           type,
-          target: AlertTarget.all,
+          target: UserTargetRef.all,
           skipQueue: false,
           ...C.Influences.Kether
         } as K4Alert.Data.Card & K4Alert.TypedData<T>;
@@ -641,5 +610,5 @@ class K4Alert {
 
 // #region EXPORTS ~
 export default K4Alert;
-export {AlertType, AlertTarget};
+export {AlertType};
 // #endregion

@@ -42,6 +42,12 @@ declare global {
 }
 
 declare global {
+  interface Array<T> {
+    includes<IncludesType>(
+      item: [T & IncludesType] extends [never] ? T : IncludesType,
+      fromIndex?: number
+    ): boolean;
+  }
   // #region MISCELLANEOUS TYPE ALIASES (nonfunctional; for clarity) ~
 
   // Represents a Record of typed values and ambiguous keys

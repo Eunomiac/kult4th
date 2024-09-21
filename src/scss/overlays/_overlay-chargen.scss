@@ -1,34 +1,7 @@
 $isDebug: false;
 
-&#chargen-intro-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 255);
-  z-index: 1001;
-  visibility: hidden;
-
-  h1 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-    visibility: hidden;
-  }
-}
-
-&#chargen-main { // Equivalent to window content
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--K4-GREY1);
-  z-index: 1000;
+& { // Equivalent to window content
+  background-color: var(--K4-BLACK);
   visibility: hidden;
 
   .pc-initialization-bg {
@@ -39,7 +12,7 @@ $isDebug: false;
     left: 0;
     bottom: 0;
     right: 0;
-    background: var(--K4-GREY1);
+    background: var(--K4-BLACK);
     visibility: hidden;
 
     img, video {
@@ -85,13 +58,13 @@ $isDebug: false;
     //     radial-gradient(
     //       at 50% 50%,
     //       #2b2b2b var(--gradient-center-stop),
-    //       var(--K4-GREY1) var(--gradient-middle-stop),
-    //       var(--K4-GREY0) var(--gradient-border-stop),
+    //       var(--K4-BLACK) var(--gradient-middle-stop),
+    //       var(--K4-dBLACK) var(--gradient-border-stop),
     //       transparent var(--gradient-outer-stop)
     //     ),
     //     radial-gradient(
     //       at 50% 50%,
-    //       var(--K4-GREY0) var(--gradient-border-stop),
+    //       var(--K4-dBLACK) var(--gradient-border-stop),
     //       transparent var(--gradient-outer-stop)
     //     );
     // background-size: 100% 35%, 100% 35%;
@@ -99,7 +72,7 @@ $isDebug: false;
     // background-repeat: no-repeat, no-repeat;
     visibility: hidden;
     box-shadow:
-      inset 0px 0px 100px 50px var(--K4-GREY0);
+      inset 0px 0px 100px 50px var(--K4-dBLACK);
 
     .archetype-panel {
       position: absolute;
@@ -108,16 +81,16 @@ $isDebug: false;
       &:not(.actor-name) {
         border-radius: 25px;
         box-shadow:
-          inset 0px 0px 30px var(--K4-GREY0),
-          0px 0px 15px var(--K4-GREY0);
-        // text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
+          inset 0px 0px 30px var(--K4-dBLACK),
+          0px 0px 15px var(--K4-dBLACK);
+        // text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 8);
         padding: 10px;
         border-radius: 25px;
         background: rgba(0, 0, 0, 0.5);
         overflow: hidden;
         box-shadow:
-          inset 0px 0px 30px var(--K4-GREY0),
-          0px 0px 15px var(--K4-GREY0);
+          inset 0px 0px 30px var(--K4-dBLACK),
+          0px 0px 15px var(--K4-dBLACK);
       }
     }
 
@@ -180,8 +153,8 @@ $isDebug: false;
               0 0 16.5px var(--K4-color-primary-bright);
 
             &.placeholder {
-              --actor-name-shadow-bright: var(--K4-GREY7);
-              --actor-name-shadow-dim: var(--K4-GREY3);
+              --actor-name-shadow-bright: var(--K4-bGREY);
+              --actor-name-shadow-dim: var(--K4-dGREY);
               font-size: $rem-14;
               line-height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer));
             }
@@ -272,17 +245,17 @@ $isDebug: false;
 
           &[value="7"],
           option[value="7"] {
-            color: var(--K4-GREY10);
+            color: var(--K4-bWHITE);
           }
 
           &[value="6"],
           option[value="6"] {
-            color: var(--K4-GREY10);
+            color: var(--K4-bWHITE);
           }
 
           &[value="5"],
           option[value="5"] {
-            color: var(--K4-GREY9);
+            color: var(--K4-WHITE);
           }
 
           &[value="4"],
@@ -292,7 +265,7 @@ $isDebug: false;
 
           &[value="3"],
           option[value="3"] {
-            color: var(--K4-GREY7);
+            color: var(--K4-bGREY);
           }
 
           &[value="2"],
@@ -302,7 +275,7 @@ $isDebug: false;
 
           &[value="1"],
           option[value="1"] {
-            color: var(--K4-GREY5);
+            color: var(--K4-GREY);
           }
 
           &[value="0"],
@@ -312,27 +285,27 @@ $isDebug: false;
 
           &[value="-1"],
           option[value="-1"] {
-            color: var(--K4-RED5);
+            color: var(--K4-RED);
           }
 
           &[value="-2"],
           option[value="-2"] {
-            color: var(--K4-RED8);
+            color: var(--K4-bRED);
           }
 
           &[value="-3"],
           option[value="-3"] {
-            color: var(--K4-RED9);
+            color: var(--K4-bbRED);
           }
 
           &[value="-4"],
           option[value="-4"] {
-            color: var(--K4-RED9);
+            color: var(--K4-bbRED);
           }
 
           &[value="-5"],
           option[value="-5"] {
-            color: var(--K4-RED9);
+            color: var(--K4-bbRED);
             font-weight: $font-weight-black;
           }
         }
@@ -409,7 +382,7 @@ $isDebug: false;
 
         .archetype-sub-panel-title {
           .k4-title.section-title {
-            color: var(--K4-GOLD9);
+            color: var(--K4-bbGOLD);
             text-align: left;
             margin-top: 10px;
             margin-bottom: -5px;
@@ -560,7 +533,7 @@ $isDebug: false;
       justify-content: space-evenly;
       gap: 10px;
       z-index: 10000;
-      // text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
+      // text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 8);
 
       .archetype-trait-panels-wrapper {
         position: static;
@@ -608,7 +581,7 @@ $isDebug: false;
             // top: 10px;
             // left: -310px;
             z-index: 2;
-            text-shadow: build-text-shadow(4px, var(--K4-GREY0), 8);
+            text-shadow: build-text-shadow(4px, var(--K4-dBLACK), 8);
             text-align: right;
             // width: 200px;
             // background: rgba(0, 255, 0, 0.25);
@@ -620,12 +593,12 @@ $isDebug: false;
             font-family: var(--font-heading-1);
             white-space: nowrap;
             font-size: $rem-48;
-            color: var(--K4-GOLD9);
+            color: var(--K4-bbGOLD);
             // transform: translate(0%, 0%);
             // top: 30px;
             // left: -310px;
             z-index: 2;
-            text-shadow: build-text-shadow(6px, var(--K4-GREY0), 8);
+            text-shadow: build-text-shadow(6px, var(--K4-dBLACK), 8);
             text-align: left;
             // width: 200px;
             // background: rgba(255, 255, 0, 0.25);
@@ -649,8 +622,8 @@ $isDebug: false;
           &, * {
             font-size: $rem-14;
             line-height: $rem-18;
-            color: var(--K4-GOLD8);
-            text-shadow: build-text-shadow(5px, var(--K4-GREY0), 8);
+            color: var(--K4-bGOLD);
+            text-shadow: build-text-shadow(5px, var(--K4-dBLACK), 8);
           }
         }
 
@@ -817,9 +790,6 @@ $isDebug: false;
         }
       }
     }
-
-
-
   }
 
 
@@ -835,7 +805,5 @@ $isDebug: false;
   .editor {
     height: 100%;
   }
-
-
 
 }

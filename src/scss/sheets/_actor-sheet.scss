@@ -14,7 +14,7 @@
   --K4-section-padding-top: 40px;
   --K4-section-padding-horiz: 10px;
   --K4-section-padding-bottom: 20px;
-  --K4-section-drop-shadow: 2px 4px 2px var(--K4-GREY0);
+  --K4-section-drop-shadow: 2px 4px 2px var(--K4-dBLACK);
 
   --K4-subsection-padding-vert: 5px;
   --K4-subsection-padding-horiz: 5px;
@@ -46,8 +46,8 @@ img {
     top: 50%;
     left: 50%;
 
-    fill: var(--K4-GREY1) !important;
-    stroke: var(--K4-GREY1) !important;
+    fill: var(--K4-BLACK) !important;
+    stroke: var(--K4-BLACK) !important;
   }
 
   &.gear-huge {
@@ -141,7 +141,7 @@ img {
         --K4-icon-stroke: url("#nav-main-ring-stroke-gradient");
         --K4-icon-stroke-width: 10px;
         transform: translate(-50%, -50%);
-        filter: drop-shadow(2px 2px 1px var(--K4-GREY1));
+        filter: drop-shadow(2px 2px 1px var(--K4-BLACK));
       }
     }
   }
@@ -182,7 +182,7 @@ img {
     position: absolute;
     border-radius: 50%;
     background: var(--K4-color-contrast);
-    filter: drop-shadow(25px 25px 15px var(--K4-GREY0));
+    filter: drop-shadow(25px 25px 15px var(--K4-dBLACK));
   }
 
   .profile-image-animation {
@@ -292,7 +292,7 @@ img {
         left: 50%;
         overflow: hidden;
 
-        --K4-icon-fill: var(--K4-GREY1);
+        --K4-icon-fill: var(--K4-BLACK);
 
         .svg-def {
           position: relative;
@@ -313,17 +313,17 @@ img {
         .nav-tab-label {
           display: block;
           opacity: 0;
-          color: var(--K4-GREY10);
+          color: var(--K4-bWHITE);
           font-size: $rem-24;
           font-family: var(--K4-font-primary-caps);
           font-weight: $font-weight-black;
           text-shadow:
-            0px 0px 5px var(--K4-RED5),
-            0px 0px 5px var(--K4-RED5),
-            0px 0px 12px var(--K4-RED5),
-            0px 0px 10px var(--K4-RED5),
-            0px 0px 15px var(--K4-RED5),
-            0px 0px 20px var(--K4-RED5);
+            0px 0px 5px var(--K4-RED),
+            0px 0px 5px var(--K4-RED),
+            0px 0px 12px var(--K4-RED),
+            0px 0px 10px var(--K4-RED),
+            0px 0px 15px var(--K4-RED),
+            0px 0px 20px var(--K4-RED);
           position: absolute;
           transform-origin: center center;
           transform: translate(-50%, -50%) rotate(calc(-1 * var(--tab-rotation)));
@@ -444,8 +444,8 @@ $isDebug: false;
             0 0 16.5px var(--K4-color-primary-bright);
 
           &.placeholder {
-            --actor-name-shadow-bright: var(--K4-GREY7);
-            --actor-name-shadow-dim: var(--K4-GREY3);
+            --actor-name-shadow-bright: var(--K4-bGREY);
+            --actor-name-shadow-dim: var(--K4-dGREY);
             font-size: $rem-14;
             line-height: calc(var(--K4-sheet-header-height) + var(--actor-name-vert-buffer));
           }
@@ -519,67 +519,67 @@ $isDebug: false;
 
           &[value="7"],
           option[value="7"] {
-            color: var(--K4-GREY10);
+            color: var(--K4-bWHITE);
           }
 
           &[value="6"],
           option[value="6"] {
-            color: var(--K4-GREY10);
+            color: var(--K4-bWHITE);
           }
 
           &[value="5"],
           option[value="5"] {
-            color: var(--K4-GREY10);
+            color: var(--K4-bWHITE);
           }
 
           &[value="4"],
           option[value="4"] {
-            color: var(--K4-GREY9);
+            color: var(--K4-WHITE);
           }
 
           &[value="3"],
           option[value="3"] {
-            color: var(--K4-GOLD9);
+            color: var(--K4-bbGOLD);
           }
 
           &[value="2"],
           option[value="2"] {
-            color: var(--K4-GOLD8);
+            color: var(--K4-bGOLD);
           }
 
           &[value="1"],
           option[value="1"] {
-            color: var(--K4-GOLD5);
+            color: var(--K4-GOLD);
           }
 
           &[value="0"],
           option[value="0"] {
-            color: var(--K4-GOLD1);
+            color: var(--K4-ddGOLD);
           }
 
           &[value="-1"],
           option[value="-1"] {
-            color: var(--K4-RED5);
+            color: var(--K4-RED);
           }
 
           &[value="-2"],
           option[value="-2"] {
-            color: var(--K4-RED8);
+            color: var(--K4-bRED);
           }
 
           &[value="-3"],
           option[value="-3"] {
-            color: var(--K4-RED9);
+            color: var(--K4-bbRED);
           }
 
           &[value="-4"],
           option[value="-4"] {
-            color: var(--K4-RED9);
+            color: var(--K4-bbRED);
           }
 
           &[value="-5"],
           option[value="-5"] {
-            color: var(--K4-RED9);
+            color: var(--K4-bbRED);
             font-weight: $font-weight-black;
           }
         }
@@ -650,13 +650,13 @@ $isDebug: false;
       //     radial-gradient(
       //       at 50% 50%,
       //       #2b2b2b var(--gradient-center-stop),
-      //       var(--K4-GREY1) var(--gradient-middle-stop),
-      //       var(--K4-GREY0) var(--gradient-border-stop),
+      //       var(--K4-BLACK) var(--gradient-middle-stop),
+      //       var(--K4-dBLACK) var(--gradient-border-stop),
       //       transparent var(--gradient-outer-stop)
       //     ),
       //     radial-gradient(
       //       at 50% 50%,
-      //       var(--K4-GREY0) var(--gradient-border-stop),
+      //       var(--K4-dBLACK) var(--gradient-border-stop),
       //       transparent var(--gradient-outer-stop)
       //     );
       // background-size: 100% 35%, 100% 35%;
@@ -664,7 +664,7 @@ $isDebug: false;
       // background-repeat: no-repeat, no-repeat;
       visibility: hidden;
       box-shadow:
-        inset 0px 0px 100px 50px var(--K4-GREY0);
+        inset 0px 0px 100px 50px var(--K4-dBLACK);
 
       .archetype-panel {
         position: absolute;
@@ -673,16 +673,16 @@ $isDebug: false;
         &:not(.actor-name) {
           border-radius: 25px;
           box-shadow:
-            inset 0px 0px 30px var(--K4-GREY0),
-            0px 0px 15px var(--K4-GREY0);
-          // text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
+            inset 0px 0px 30px var(--K4-dBLACK),
+            0px 0px 15px var(--K4-dBLACK);
+          // text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 8);
           padding: 10px;
           border-radius: 25px;
           background: rgba(0, 0, 0, 0.5);
           overflow: hidden;
           box-shadow:
-            inset 0px 0px 30px var(--K4-GREY0),
-            0px 0px 15px var(--K4-GREY0);
+            inset 0px 0px 30px var(--K4-dBLACK),
+            0px 0px 15px var(--K4-dBLACK);
         }
       }
 
@@ -772,7 +772,7 @@ $isDebug: false;
 
           .archetype-sub-panel-title {
             .k4-title.section-title {
-              color: var(--K4-GOLD9);
+              color: var(--K4-bbGOLD);
               text-align: left;
               margin-top: 10px;
               margin-bottom: -5px;
@@ -926,7 +926,7 @@ $isDebug: false;
         justify-content: space-evenly;
         gap: 10px;
         z-index: 10000;
-        // text-shadow: build-text-shadow(3px, var(--K4-GREY0), 8);
+        // text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 8);
 
         .archetype-trait-panels-wrapper {
           position: static;
@@ -974,7 +974,7 @@ $isDebug: false;
               // top: 10px;
               // left: -310px;
               z-index: 2;
-              text-shadow: build-text-shadow(4px, var(--K4-GREY0), 8);
+              text-shadow: build-text-shadow(4px, var(--K4-dBLACK), 8);
               text-align: right;
               // width: 200px;
               // background: rgba(0, 255, 0, 0.25);
@@ -986,12 +986,12 @@ $isDebug: false;
               font-family: var(--font-heading-1);
               white-space: nowrap;
               font-size: $rem-48;
-              color: var(--K4-GOLD9);
+              color: var(--K4-bbGOLD);
               // transform: translate(0%, 0%);
               // top: 30px;
               // left: -310px;
               z-index: 2;
-              text-shadow: build-text-shadow(6px, var(--K4-GREY0), 8);
+              text-shadow: build-text-shadow(6px, var(--K4-dBLACK), 8);
               text-align: left;
               // width: 200px;
               // background: rgba(255, 255, 0, 0.25);
@@ -1015,8 +1015,8 @@ $isDebug: false;
             &, * {
               font-size: $rem-14;
               line-height: $rem-18;
-              color: var(--K4-GOLD8);
-              text-shadow: build-text-shadow(5px, var(--K4-GREY0), 8);
+              color: var(--K4-bGOLD);
+              text-shadow: build-text-shadow(5px, var(--K4-dBLACK), 8);
             }
           }
 
@@ -1329,7 +1329,7 @@ $isDebug: false;
             $border-width: 1px;
 
             height: $status-height;
-            outline: $border-width solid var(--K4-GOLD5);
+            outline: $border-width solid var(--K4-GOLD);
 
 
 
@@ -1404,7 +1404,7 @@ $isDebug: false;
                     left: 0;
                     height: 100%;
                     width: 100%;
-                    background: var(--K4-GREY1);
+                    background: var(--K4-BLACK);
                   }
 
                   img {
@@ -1443,7 +1443,7 @@ $isDebug: false;
                   height: $status-height - 2px;
                   width: 100px;
                   padding-top: 4px;
-                  fill: var(--K4-GOLD9);
+                  fill: var(--K4-bbGOLD);
                   font-family: var(--font-decorative);
                   font-size: 512px;
                   opacity: 0;
@@ -1451,7 +1451,7 @@ $isDebug: false;
                     0 0 4px black;
 
                   &.glitch-text {
-                    fill: var(--K4-RED8);
+                    fill: var(--K4-bRED);
                     text-shadow: none;
                     position: absolute;
                     transform-origin: center center;
@@ -1483,7 +1483,7 @@ $isDebug: false;
 
                 .label-text {
                   position: relative;
-                  color: var(--K4-GOLD5);
+                  color: var(--K4-GOLD);
                   filter: drop-shadow(5px 5px 5px black);
                   font-size: 38px;
                   text-transform: uppercase;
@@ -1516,8 +1516,8 @@ $isDebug: false;
 
             /* STATUS BAR STRIPS */
             .status-bar-strips {
-              --button-gradient-light: var(--K4-RED8);
-              --button-gradient-dark: var(--K4-RED1);
+              --button-gradient-light: var(--K4-bRED);
+              --button-gradient-dark: var(--K4-ddRED);
               display: grid;
               padding: 0px;
               grid-template-columns: 1fr 1fr;
@@ -1567,8 +1567,8 @@ $isDebug: false;
                   width: 160px;
                   transform-origin: 50% 50%;
                   rotate: 235deg;
-                  fill: var(--K4-GOLD1);
-                  filter: drop-shadow(-1px 1px 0px var(--K4-GREY0));
+                  fill: var(--K4-ddGOLD);
+                  filter: drop-shadow(-1px 1px 0px var(--K4-dBLACK));
                 }
 
                 &.edges-1 svg {
@@ -1589,9 +1589,9 @@ $isDebug: false;
               .edges-source {
                 position: absolute;
                 font-family: var(--font-heading-2);
-                color: var(--K4-GOLD8);
+                color: var(--K4-bGOLD);
                 text-shadow:
-                  2px 2px 0px var(--K4-GOLD1);
+                  2px 2px 0px var(--K4-ddGOLD);
               }
 
               .edges-header {
@@ -1600,7 +1600,7 @@ $isDebug: false;
               }
 
               .edges-count {
-                color: var(--K4-GREY10);
+                color: var(--K4-bWHITE);
                 font-size: 64px;
                 right: 0px;
               }
@@ -1609,9 +1609,9 @@ $isDebug: false;
                 right: 2px;
                 bottom: 2px;
                 font-size: 12px;
-                color: var(--K4-GOLD9);
+                color: var(--K4-bbGOLD);
                 text-shadow:
-                  1px 1px 0px var(--K4-GOLD1);
+                  1px 1px 0px var(--K4-ddGOLD);
                 font-style: italic;
                 font-family: var(--font-primary);
                 font-weight: bold;
@@ -1652,8 +1652,8 @@ $isDebug: false;
                   flex-grow: 0;
                   transform: skewX(-20deg);
                   margin: 0 10px;
-                  border-left: 2px solid var(--K4-GOLD1);
-                  border-right: 2px solid var(--K4-GOLD1);
+                  border-left: 2px solid var(--K4-ddGOLD);
+                  border-right: 2px solid var(--K4-ddGOLD);
                   width: 6px;
                 }
               }
@@ -1672,7 +1672,7 @@ $isDebug: false;
                 overflow: visible;
 
                 &, * {
-                  text-shadow: build-text-shadow(3px, var(--K4-GREY0), 4);
+                  text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 4);
                 }
 
                 [popover]:popover-open {
@@ -1757,8 +1757,8 @@ $isDebug: false;
                 }
 
                 &.move-modifier {
-                  --K4-color-primary: var(--K4-GREY9);
-                  --K4-value-color: var(--K4-GREY10);
+                  --K4-color-primary: var(--K4-WHITE);
+                  --K4-value-color: var(--K4-bWHITE);
                 }
 
                 &.left-modifier {
@@ -1776,27 +1776,27 @@ $isDebug: false;
                   display: none;
 
                   .modifier-button {
-                    --K4-color-primary: var(--K4-GOLD5) !important;
+                    --K4-color-primary: var(--K4-GOLD) !important;
                   }
-                  background: var(--K4-RED1);
+                  background: var(--K4-ddRED);
                 }
 
                 &.armor-modifier {
                   .modifier-button {
-                    --K4-color-primary: var(--K4-GOLD9) !important;
+                    --K4-color-primary: var(--K4-bbGOLD) !important;
                   }
                 }
 
                 .modifier-button {
                   --shadow-size: 3px;
                   &.pos-mod {
-                    --K4-color-primary: var(--K4-BLUE9);
+                    --K4-color-primary: var(--K4-bbBLUE);
                   }
                   &.neg-mod {
-                    --K4-color-primary: var(--K4-RED9);
+                    --K4-color-primary: var(--K4-bbRED);
                   }
                   &.neutral-mod {
-                    --K4-color-primary: var(--K4-GOLD8);
+                    --K4-color-primary: var(--K4-bGOLD);
                   }
                   background: transparent;
                   position: relative;
@@ -1816,12 +1816,12 @@ $isDebug: false;
                   box-shadow: 0 0 var(--shadow-size) var(--K4-color-primary);
 
                   &[data-state="disabled"] {
-                    --K4-color-primary: var(--K4-GREY3);
+                    --K4-color-primary: var(--K4-dGREY);
                     --shadow-size: 3px;
                     filter: saturate(0);
                     .modifier-label {
                       .modifier-value {
-                        color: var(--K4-GREY3);
+                        color: var(--K4-dGREY);
                         text-shadow: none;
                         animation: none;
                       }
@@ -1835,7 +1835,7 @@ $isDebug: false;
                       display: none;
                     }
                     .modifier-value {
-                      color: var(--K4-GREY10);
+                      color: var(--K4-bWHITE);
                       line-height: #{$modifiers-height};
 
                     }

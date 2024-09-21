@@ -23,21 +23,21 @@
     &.icon-advantage  {
       --K4-icon-fill: url(#fill-bgold);
       --K4-icon-stroke: url(#stroke-bgold);
-      --K4-icon-outline-color: var(--K4-GOLD9);
-      --K4-icon-bg-color: var(--K4-GREY1);
+      --K4-icon-outline-color: var(--K4-bbGOLD);
+      --K4-icon-bg-color: var(--K4-BLACK);
     }
 
     &.icon-move {
       --K4-icon-fill: url(#fill-gold);
       --K4-icon-stroke: url(#stroke-black);
-      --K4-icon-outline-color: var(--K4-GREY1);
+      --K4-icon-outline-color: var(--K4-BLACK);
     }
 
     &.icon-red,
     &.icon-disadvantage {
       --K4-icon-fill: url(#fill-red);
       --K4-icon-stroke: url(#stroke-red);
-      --K4-icon-outline-color: var(--K4-RED8);
+      --K4-icon-outline-color: var(--K4-bRED);
     }
 
     &.icon-blue {
@@ -49,7 +49,7 @@
     &.icon-darksecret {
       --K4-icon-fill: url(#fill-grey);
       --K4-icon-stroke: url(#stroke-grey);
-      --K4-icon-outline-color: var(--K4-GREY10);
+      --K4-icon-outline-color: var(--K4-bWHITE);
     }
 
     &.icon-attack {
@@ -68,7 +68,7 @@
     }
 
     &.icon-weapon {
-      --K4-icon-fill: var(--K4-GREY9);
+      --K4-icon-fill: var(--K4-WHITE);
       --K4-icon-stroke: none;
 
       .svg-bg {

@@ -13,7 +13,7 @@
 
   .window-header {
     display: flex;
-    background: var(--K4-GREY0);
+    background: var(--K4-dBLACK);
     top: -20px;
     .header-button {
       top: 0px;
@@ -26,14 +26,18 @@
     .kult4th-form {
       display: flex;
       border-radius: 0;
-      background: var(--K4-GREY1);
+      background: var(--K4-BLACK);
       background-image: none;
       height: calc(100vh - 70px);
       width: calc(100vw - 20px);
       * {
         font-family: Oswald;
       }
+      h1 {
+        text-transform: uppercase;
+      }
 
+      /* #region Main Defaults & Column Control */
       main {
         display: flex;
         width: 100%;
@@ -50,14 +54,14 @@
           flex-grow: 0;
           flex-shrink: 0;
           margin-right: calc(-1 * var(--K4-gmsheet-column-toggler-size));
-          background: var(--K4-GOLD5);
+          background: var(--K4-GOLD);
 
 
           &:checked {
-            background: var(--K4-GOLD1);
+            background: var(--K4-ddGOLD);
 
             + .column-label {
-              color: var(--K4-GOLD5);
+              color: var(--K4-GOLD);
 
               + .column { display: none;}
             }
@@ -66,7 +70,7 @@
 
         .column-label {
           pointer-events: none;
-          color: var(--K4-GREY0);
+          color: var(--K4-dBLACK);
           text-indent: 10px;
           display: block;
           width: var(--K4-gmsheet-column-toggler-size);
@@ -112,12 +116,12 @@
             flex-grow: 0;
             flex-shrink: 0;
             margin-bottom: calc(-1 * var(--K4-gmsheet-panel-toggler-size));
-            background: var(--K4-GREY0);
-            border-top: 1px solid var(--K4-GOLD9);
-            border-bottom: 1px solid var(--K4-GOLD9);
+            background: var(--K4-dBLACK);
+            border-top: 1px solid var(--K4-bbGOLD);
+            border-bottom: 1px solid var(--K4-bbGOLD);
 
             &:checked {
-              background: var(--K4-GOLD1);
+              background: var(--K4-ddGOLD);
 
               + .panel-label {
                 + .panel { display: none;}
@@ -126,7 +130,7 @@
           }
 
           .panel-label {
-            color: var(--K4-GOLD9);
+            color: var(--K4-bbGOLD);
             position: relative;
             text-indent: 5px;
             display: block;
@@ -159,7 +163,7 @@
 
             &.panel-player-character {
               position: relative;
-              --K4-color-primary: var(--K4-GOLD8);
+              --K4-color-primary: var(--K4-bGOLD);
 
               .panel-bg {
                 position: absolute;
@@ -183,7 +187,7 @@
                 width: min-content;
                 display: grid;
                 padding: 3px;
-                border: 3px double var(--K4-GOLD9);
+                border: 3px double var(--K4-bbGOLD);
 
                 grid-template-areas:
                   "fortitude willpower reflexes"
@@ -230,20 +234,20 @@
                   &.attribute-soul { grid-area: soul; }
 
                   &.attribute-0 {
-                    --attribute-value-color: var(--K4-GOLD5);
+                    --attribute-value-color: var(--K4-GOLD);
                   }
                   &[class*='attribute--'] {
-                    --attribute-value-color: var(--K4-RED9);
+                    --attribute-value-color: var(--K4-bbRED);
 
                     &.attribute--1 {
-                      --attribute-value-color: var(--K4-RED8);
+                      --attribute-value-color: var(--K4-bRED);
                     }
                   }
                   &.attribute-1 {
-                    --attribute-value-color: var(--K4-GOLD8);
+                    --attribute-value-color: var(--K4-bGOLD);
                   }
                   &.attribute-2 {
-                    --attribute-value-color: var(--K4-GOLD9);
+                    --attribute-value-color: var(--K4-bbGOLD);
                   }
 
                   .attribute-name {
@@ -257,21 +261,49 @@
                     &.attribute-willpower { text-indent: 0px; }
 
                     &::first-letter {
-                      color: var(--attribute-value-color, var(--K4-GREY10));
-                      text-shadow: build-text-shadow(3px, var(--K4-GREY0), 6);
+                      color: var(--attribute-value-color, var(--K4-bWHITE));
+                      text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 6);
                     }
                   }
 
                   .attribute-value {
-                    text-shadow: build-text-shadow(3px, var(--K4-GREY0), 6);
-                    color: var(--attribute-value-color, var(--K4-GREY10));
+                    text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 6);
+                    color: var(--attribute-value-color, var(--K4-bWHITE));
                   }
                 }
               }
             }
           }
         }
+      }
+      /* #endregion */
 
+      /* #region Uninitialized */
+      &.phase-uninitialized {
+        main {
+          padding: 20px;
+          .actor-assignment {
+            .actor-assignment-header {
+              &.confirmed-header {
+                color: var(--K4-bGOLD);
+              }
+            }
+            .actor-assignment-row {
+              padding: 0 15px;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              .actor-name {
+                font-size: 20px;
+                line-height: 30px;
+              }
+              .user-selection-container {
+                font-size: 20px;
+
+              }
+            }
+          }
+        }
       }
 
       footer {
@@ -283,14 +315,14 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        background: var(--K4-GREY0);
+        background: var(--K4-dBLACK);
 
         .phase-container {
           flex-grow: 1;
           display: flex;
-          fiex-direction: row;
+          flex-direction: row;
           justify-content: stretch;
-          background: var(--K4-GOLD2);
+          background: var(--K4-dGOLD);
 
           .phase-select-button {
             flex-basis: 25px;
@@ -306,7 +338,7 @@
               text-align: center;
               font-size: 32px;
               line-height: 20px;
-              color: var(--K4-GREY0);
+              color: var(--K4-dBLACK);
               font-weight: 100;
             }
           }
@@ -354,17 +386,17 @@
         &.phase-uninitialized {
           .phase-container.phase-uninitialized {
             .phase-label {
-              background: var(--K4-GOLD9);
+              background: var(--K4-bbGOLD);
             }
           }
 
           .phase-container.phase-initialized {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
+                background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
-                color: var(--K4-GREY10);
+                color: var(--K4-bWHITE);
               }
             }
           }
@@ -374,25 +406,25 @@
 
           .phase-container.phase-initialized {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
-                @include neon-glow-animated(red, var(--K4-RED9), white);
-                color: var(--K4-GREY10);
+                background: var(--K4-BLACK);
+                @include neon-glow-animated(red, var(--K4-bbRED), white);
+                color: var(--K4-bWHITE);
               }
             }
             .phase-label {
-              background: var(--K4-GOLD9);
+              background: var(--K4-bbGOLD);
             }
           }
 
           .phase-container.phase-chargen {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
+                background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
-                color: var(--K4-GREY10);
+                color: var(--K4-bWHITE);
               }
             }
           }
@@ -402,25 +434,25 @@
 
           .phase-container.phase-chargen {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
-                @include neon-glow-animated(red, var(--K4-RED9), white);
-                color: var(--K4-GREY10);
+                background: var(--K4-BLACK);
+                @include neon-glow-animated(red, var(--K4-bbRED), white);
+                color: var(--K4-bWHITE);
               }
             }
             .phase-label {
-              background: var(--K4-GOLD9);
+              background: var(--K4-bbGOLD);
             }
           }
 
           .phase-container.phase-preSession {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
+                background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
-                color: var(--K4-GREY10);
+                color: var(--K4-bWHITE);
               }
             }
           }
@@ -430,25 +462,25 @@
 
           .phase-container.phase-preSession {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
-                @include neon-glow-animated(red, var(--K4-RED9), white);
-                color: var(--K4-GREY10);
+                background: var(--K4-BLACK);
+                @include neon-glow-animated(red, var(--K4-bbRED), white);
+                color: var(--K4-bWHITE);
               }
             }
             .phase-label {
-              background: var(--K4-GOLD9);
+              background: var(--K4-bbGOLD);
             }
           }
 
           .phase-container.phase-session {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
+                background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
-                color: var(--K4-GREY10);
+                color: var(--K4-bWHITE);
               }
             }
           }
@@ -458,25 +490,25 @@
 
           .phase-container.phase-session {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
-                @include neon-glow-animated(red, var(--K4-RED9), white);
-                color: var(--K4-GREY10);
+                background: var(--K4-BLACK);
+                @include neon-glow-animated(red, var(--K4-bbRED), white);
+                color: var(--K4-bWHITE);
               }
             }
             .phase-label {
-              background: var(--K4-GOLD9);
+              background: var(--K4-bbGOLD);
             }
           }
 
           .phase-container.phase-postSession {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
+                background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
-                color: var(--K4-GREY10);
+                color: var(--K4-bWHITE);
               }
             }
           }
@@ -486,15 +518,15 @@
 
           .phase-container.phase-postSession {
             .phase-select-button {
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               &::before {
-                background: var(--K4-GREY1);
-                @include neon-glow-animated(red, var(--K4-RED9), white);
-                color: var(--K4-GREY10);
+                background: var(--K4-BLACK);
+                @include neon-glow-animated(red, var(--K4-bbRED), white);
+                color: var(--K4-bWHITE);
               }
             }
             .phase-label {
-              background: var(--K4-GOLD9);
+              background: var(--K4-bbGOLD);
             }
           }
         }

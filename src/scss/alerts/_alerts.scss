@@ -18,15 +18,15 @@
     left: calc(50% - 0.5 * var(--sidebar-width));
     opacity: 0;
     filter:
-      drop-shadow(0px 2px 1px var(--K4-GREY0))
-      drop-shadow(0px 2px 2px var(--K4-GREY0))
-      drop-shadow(0px 2px 4px var(--K4-GREY0));
+      drop-shadow(0px 2px 1px var(--K4-dBLACK))
+      drop-shadow(0px 2px 2px var(--K4-dBLACK))
+      drop-shadow(0px 2px 4px var(--K4-dBLACK));
 
     .k4-alert-frame {
       position: absolute;
 
       svg {
-        fill: var(--K4-GOLD5);
+        fill: var(--K4-GOLD);
         height: auto;
         width: auto;
 
@@ -126,7 +126,7 @@
         z-index: 0;
         height: auto;
         svg {
-          fill: var(--K4-GREY5);
+          fill: var(--K4-GREY);
         }
 
         .alert-border {
@@ -171,7 +171,7 @@
 
         .k4-alert-header {
           white-space: nowrap;
-          text-shadow: build-text-shadow(4px, var(--K4-GREY0), 4);
+          text-shadow: build-text-shadow(4px, var(--K4-dBLACK), 4);
         }
       }
     }
@@ -193,14 +193,14 @@
       width: 70%;
       margin-left: auto;
       margin-right: auto;
-      border-image: linear-gradient(to right, transparent, var(--K4-RED9), transparent) 1;
+      border-image: linear-gradient(to right, transparent, var(--K4-bbRED), transparent) 1;
     }
 
     .k4-alert-body {
       font-family: var(--K4-alert-font-family, var(--font-body-1));
       font-size: var(--K4-alert-font-size, 20px);
       line-height: var(--K4-alert-font-size, 20px);
-      color: var(--K4-alert-font-color, var(--K4-GREY9));
+      color: var(--K4-alert-font-color, var(--K4-WHITE));
       text-align: center;
       margin: 10px 0 15px 0;
     }
@@ -222,8 +222,8 @@
         vertical-align: top;
         letter-spacing: 5px;
         line-height: 124px;
-        text-shadow: build-text-shadow(5px, var(--K4-RED9), 6);
-        color: var(--K4-GREY0);
+        text-shadow: build-text-shadow(5px, var(--K4-bbRED), 6);
+        color: var(--K4-dBLACK);
         &::first-letter {
           font-size: 200px;
           vertical-align: top;
@@ -238,12 +238,12 @@
         font-family: var(--font-body-1);
         font-size: 20px;
         line-height: 20px;
-        color: var(--K4-GREY0);
+        color: var(--K4-dBLACK);
         display: flex;
         text-align: center;
         flex-direction: column;
         z-index: 1;
-        text-shadow: build-text-shadow(3px, var(--K4-GREY0), 6);
+        text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 6);
       }
       .alert-card-image-influence-key {
         position: absolute;
@@ -252,7 +252,7 @@
         width: 200px;
         left: 100px;
         height: auto;
-        fill: var(--K4-GOLD5);
+        fill: var(--K4-GOLD);
       }
       .alert-card-image-tarot {
         position: absolute;
@@ -261,7 +261,7 @@
         top: 50%;
         width: auto;
         height: 100%;
-        fill: var(--K4-GOLD5);
+        fill: var(--K4-GOLD);
         z-index: 0;
         opacity: 0.25;
         filter: blur(5px);

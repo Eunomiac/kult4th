@@ -30,9 +30,9 @@
     hyphens: none !important;
     outline: 1px solid var(--K4-strip-tooltip-color-fg);
     box-shadow:
-      2px 2px 3px var(--K4-GREY0),
-      2px 2px 3px var(--K4-GREY0),
-      2px 2px 3px var(--K4-GREY0);
+      2px 2px 3px var(--K4-dBLACK),
+      2px 2px 3px var(--K4-dBLACK),
+      2px 2px 3px var(--K4-dBLACK);
 
     padding: 10px;
     border-radius: 10px;
@@ -88,7 +88,7 @@
 
       .archetype-example-label {
         font-weight: $font-weight-bold;
-        color: var(--K4-GOLD9);
+        color: var(--K4-bbGOLD);
         display: inline-flex;
         margin-top: 1px;
         // font-style: normal;
@@ -109,12 +109,12 @@
         .archetype-example {
           font-size: 14px;
           line-height: 18px;
-          color: var(--K4-GOLD6);
+          color: var(--K4-GOLD);
 
         }
 
         .archetype-example-separator {
-          color: var(--K4-GREY3);
+          color: var(--K4-dGREY);
           font-size: 10px;
           line-height: 20px;
           margin-bottom: -2px;
@@ -151,12 +151,12 @@
 
   /* Transition for the popover's backdrop */
   // [popover]::backdrop {
-  //   background-color: change-alpha(var(--K4-GREY0), 0);
+  //   background-color: change-alpha(var(--K4-dBLACK), 0);
   //   transition: all 0.75s allow-discrete;
   // }
 
   // [popover]:popover-open::backdrop {
-  //   background-color: change-alpha(var(--K4-GREY0), 0.25);
+  //   background-color: change-alpha(var(--K4-dBLACK), 0.25);
   //   // backdrop-filter: blur(2px);
   // }
 
@@ -165,7 +165,7 @@
 
   // @starting-style {
   //   [popover]:popover-open::backdrop {
-  //     background-color: change-alpha(var(--K4-GREY0), 0);
+  //     background-color: change-alpha(var(--K4-dBLACK), 0);
   //   }
   // }
 

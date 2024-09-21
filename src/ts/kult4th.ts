@@ -19,7 +19,7 @@ import K4Alert from "./documents/K4Alert.js";
 import K4Sound from "./documents/K4Sound.js";
 import K4Roll from "./documents/K4Roll.js";
 import K4Dialog from "./documents/K4Dialog.js";
-import K4Socket from "./documents/K4Socket.js";
+import K4Socket, {UserTargetRef} from "./documents/K4Socket.js";
 import K4DebugDisplay from "./documents/K4DebugDisplay.js";
 import K4CharGen from "./documents/K4CharGen.js";
 import K4GMTracker from "./documents/K4GMTracker.js";
@@ -90,8 +90,16 @@ Object.assign(globalThis, {
 });
 
 /* #DEVCODE */
+const DEV_DEBUG_CONFIG = {
+  isRunningDevCode: true,
+  isDebuggingHooks: true,
+  isDisablingCompatibilityWarnings: true,
+  isRunningCSSPerformanceMonitor: false,
+  isDebuggingChargen: false,
+  isDisablingCharGen: false
+};
+// #region === DEVELOPMENT CODE === ~
 function GlobalAssignment() {
-
   Hooks.once("ready", async () => {
     const ACTOR = getGame().actors.values().next().value as Maybe<K4Actor>;
     const ITEM = getGame().items.values().next().value as Maybe<K4Item>;
@@ -130,10 +138,12 @@ function GlobalAssignment() {
 
 }
 function InitLogRocketCSSPerformanceMonitor() {
+  if (!DEV_DEBUG_CONFIG.isRunningCSSPerformanceMonitor) { return; }
   LogRocket.init('vodsl0/kult4th-for-foundry-vtt');
   kLog.display("Initialized LogRocket CSS performance monitor", 0);
 }
 function InitCharGenToggleButton() {
+  if (!DEV_DEBUG_CONFIG.isDebuggingChargen) { return; }
   // Create toggle button
   const toggleButton = document.createElement("button");
   toggleButton.textContent = "";
@@ -170,28 +180,36 @@ function InitCharGenToggleButton() {
 }
 function SetDevelopmentConfig() {
   // Disable Compatibility Warnings
-  // CONFIG.compatibility.mode = 0;
+  if (DEV_DEBUG_CONFIG.isDisablingCompatibilityWarnings) {
+    CONFIG.compatibility.mode = CONST.COMPATIBILITY_MODES.SILENT;
+  }
 
   // Toggle Character Creation Features for Debugging
-  CONFIG.K4.debug.isDisablingCharGen = false; // Default to false
 
-  // Enable hook debugging
-  CONFIG.debug.hooks = true;
+  CONFIG.K4.debug.isDisablingCharGen = DEV_DEBUG_CONFIG.isDisablingCharGen;
+
+  // Hook debugging
+  CONFIG.debug.hooks = DEV_DEBUG_CONFIG.isDebuggingHooks;
 }
 function RunDevelopmentInitCode() {
+
   Hooks.once("ready", SetDevelopmentConfig);
 
   // Initialize Character Creation Toggle Button
   InitCharGenToggleButton();
 
   // Enable LogRocket CSS Performance Monitoring
-  // InitLogRocketCSSPerformanceMonitor();
+  InitLogRocketCSSPerformanceMonitor();
 
   // Setup ready hook to register variables to the global scope for debugging.
   GlobalAssignment();
 }
-RunDevelopmentInitCode();
+if (DEV_DEBUG_CONFIG.isRunningDevCode) {
+  RunDevelopmentInitCode();
+}
+// #endregion
 /* !DEVCODE */
+
 
 enum InitializerMethod {
   PreInitialize = "PreInitialize",
@@ -469,124 +487,52 @@ async function GenerateSVGDefs() {
 }
 
 /**
- * Sets up a MutationObserver to watch for canvas disabled notifications in the given container.
- *
- * @param {HTMLElement} notificationsContainer - The container to observe for notifications
- * @returns {void}
- */
-function generateObserver_CanvasDisabled(notificationsContainer: HTMLElement): MutationObserver {
-  /**
- * Checks if a node is a canvas disabled notification.
- *
- * @param {Node} node - The node to check
- * @returns {boolean} True if the node is a canvas disabled notification, false otherwise
- */
-  function isCanvasDisabledNotification(node: Node): boolean {
-    // Check if the node is an element node
-    if (node.nodeType !== Node.ELEMENT_NODE || !(node instanceof HTMLElement)) {
-      return false; // Not an HTMLElement, return false
-    }
-
-    // Check if the node has the 'notification' class
-    if (!node.classList.contains('notification')) {
-      return false; // Not a notification, return false
-    }
-
-    // Check if the notification contains specific text
-    return Boolean(node.textContent?.includes("because the game Canvas is disabled."));
-  }
-  // Create a new MutationObserver instance
-  const canvasDisabledObserver = new MutationObserver((mutations) => {
-    // For each mutation (change) in the observed element
-    mutations.forEach((mutation) => {
-      // Check each node that was added
-      mutation.addedNodes.forEach((node) => {
-        // Check if the added node is a canvas disabled notification
-        if (isCanvasDisabledNotification(node)) {
-          // If it's the canvas disabled notification, remove it from the DOM
-          (node as HTMLElement).remove(); // Type assertion to HTMLElement
-
-          // Disconnect the observer since we no longer need to watch for notifications
-          canvasDisabledObserver.disconnect();
-        }
-      });
-    });
-  });
-
-  // Start observing the notifications container for changes to its direct children
-  canvasDisabledObserver.observe(notificationsContainer, { childList: true });
-
-  // Return the observer so it can be disconnected later
-  return canvasDisabledObserver;
-}
-/**
- * Sets up a MutationObserver to watch for canvas disabled notifications in the given container.
- *
- * @param {HTMLElement} notificationsContainer - The container to observe for notifications
- * @returns {void}
- */
-function generateObserver_MinimumScreenSize(notificationsContainer: HTMLElement): MutationObserver {
-  /**
- * Checks if a node is a minimum screen size notification.
- *
- * @param {Node} node - The node to check
- * @returns {boolean} True if the node is a minimum screen size notification, false otherwise
- */
-  function isMinimumScreenSizeNotification(node: Node): boolean {
-    // Check if the node is an element node
-    if (node.nodeType !== Node.ELEMENT_NODE || !(node instanceof HTMLElement)) {
-      return false; // Not an HTMLElement, return false
-    }
-
-    // Check if the node has the 'notification' class
-    if (!node.classList.contains('notification')) {
-      return false; // Not a notification, return false
-    }
-
-    // Check if the notification contains specific text
-    return Boolean(node.textContent?.includes("requires a minimum screen resolution"));
-  }
-  // Create a new MutationObserver instance
-  const minimumScreenSizeObserver = new MutationObserver((mutations) => {
-    // For each mutation (change) in the observed element
-    mutations.forEach((mutation) => {
-      // Check each node that was added
-      mutation.addedNodes.forEach((node) => {
-        // Check if the added node is a minimum screen size notification
-        if (isMinimumScreenSizeNotification(node)) {
-          // If it's the minimum screen size notification, remove it from the DOM
-          (node as HTMLElement).remove(); // Type assertion to HTMLElement
-        }
-      });
-    });
-  });
-
-  // Start observing the notifications container for changes to its direct children
-  minimumScreenSizeObserver.observe(notificationsContainer, { childList: true });
-
-  // Return the observer so it can be disconnected later
-  return minimumScreenSizeObserver;
-}
-/**
  * Sets up a MutationObserver to monitor the DOM for the appearance of the notifications container.
- * Once the container is found, it sets up mutation observers for each generator supplied.
+ * Once the container is found, it sets up mutation observers to watch for the specified notification texts,
+ * and removes them from the DOM when found.
  *
+ * @param {string[]} notificationTexts - Array of texts to identify target notifications
  * @returns {void}
  */
-function MonitorNotifications(...observerGenerators: Array<(notificationsContainer: HTMLElement) => MutationObserver>) {
+function MuteNotifications(notificationTexts: string[]) {
+
   // Create a MutationObserver to watch for the notifications container
   const notificationsObserver = new MutationObserver((mutations) => {
+
     mutations.forEach((mutation) => {
+
       mutation.addedNodes.forEach((node) => {
         // Check if the added node is the notifications container
-        if (node.nodeType === Node.ELEMENT_NODE &&
-            node instanceof HTMLElement &&
-            node.id === 'notifications') {
+        if (node.nodeType === Node.ELEMENT_NODE
+            && node instanceof HTMLElement
+            && node.id === 'notifications'
+        ) {
 
-          // Set up the observer for each generator
-          observerGenerators.forEach((generator) => {
-            generator(node);
+          // Create a new MutationObserver instance for the notifications
+          const observer = new MutationObserver((mutations) => {
+
+            // For each mutation (change) in the observed element
+            mutations.forEach((mutation) => {
+
+              // Check each node that was added
+              mutation.addedNodes.forEach((node) => {
+                // Check if the added node is a target notification
+                if (node.nodeType === Node.ELEMENT_NODE
+                    && node instanceof HTMLElement
+                    && node.classList.contains('notification')
+                    && notificationTexts.some(text => node.textContent?.includes(text))
+                ) {
+                  // If it's a target notification, remove it from the DOM
+                  node.remove();
+                }
+              });
+            });
+
           });
+
+
+          // Start observing the notifications container for changes to its direct children
+          observer.observe(node, { childList: true });
 
           // Disconnect this observer since we no longer need to watch for the notifications container
           notificationsObserver.disconnect();
@@ -601,13 +547,13 @@ function MonitorNotifications(...observerGenerators: Array<(notificationsContain
 
 /**
  * Automatically disables the canvas for all connected clients during the "init" hook.
- *
  * (Kult4th for Foundry does not use the Canvas, replacing it with the Stage.)
  *
  * @returns {Promise<void>}
  */
 async function DisableClientCanvas() {
   // Wait until the "noCanvas" setting exists
+  kLog.log("Disabling Canvas for this client.");
   while (!getGame().settings.settings.has("core.noCanvas")) {
     await U.sleep(100); // Wait for 100ms before checking again
   }
@@ -616,7 +562,7 @@ async function DisableClientCanvas() {
     // Set the canvas-disabled setting to true for all connected clients
     await getGame().settings.set("core", "noCanvas", true);
   }
-  console.log("Canvas has been disabled for all clients.");
+  kLog.log("Canvas has been disabled for all clients.");
 }
 
 // Hooks.on("renderUserConfig", (config: UserConfig, html: HTMLFormElement) => {
@@ -641,42 +587,7 @@ async function DisableClientCanvas() {
 //   return false;
 // });
 
-async function InitializeInterface() {
-  const user = getUser();
-  const gamePhase = K4GMTracker.instance?.phase ?? K4GamePhase.uninitialized;
-  console.warn(`Initializing interface for game phase: ${gamePhase}`);
-  const body$ = $("body");
-  if (!body$.length) {
-    console.warn("Body element not found. Interface initialization skipped.");
-    return;
-  }
 
-  switch (gamePhase) {
-    case K4GamePhase.uninitialized:
-    case K4GamePhase.initialized:
-    case K4GamePhase.chargen: {
-      if (user.isGM) {
-          K4GMTracker.instance?.tracker.sheet.render(true);
-      } else {
-        body$.prepend(await renderTemplate(
-          U.getTemplatePath("gamephase", `overlay-${gamePhase}`),
-          (user.character?.sheet as Maybe<FormApplication>)?.getData() ?? {}
-        ));
-      }
-      body$.addClass("interface-visible");
-      return;
-    }
-    case K4GamePhase.preSession: {
-      return;
-    }
-    case K4GamePhase.session: {
-      return;
-    }
-    case K4GamePhase.postSession: {
-      return;
-    }
-  }
-}
 
 Hooks.on("init", async () => {
 
@@ -703,10 +614,10 @@ Hooks.on("init", async () => {
   RegisterHandlebarHelpers();
 
   // Monitor notifications for canvas disabled and minimum screen size warnings
-  MonitorNotifications(
-    generateObserver_CanvasDisabled,
-    generateObserver_MinimumScreenSize
-  );
+  MuteNotifications([
+    "because the game Canvas is disabled.",
+    "requires a minimum screen resolution"
+  ]);
 
   // Unregister default sheets
   Actors.unregisterSheet("core", ActorSheet);
@@ -723,7 +634,6 @@ Hooks.on("init", async () => {
   ];
 
   await Promise.all(parallelAsyncFunctions);
-  return false;
 });
 
 Hooks.on("i18nReady", () => {
@@ -733,33 +643,31 @@ Hooks.on("i18nReady", () => {
 Hooks.on("ready", async () => {
   // Call Initialize on all relevant classes
   await RunInitializer(InitializerMethod.Initialize);
+  void DisableClientCanvas();
 
   // Initialize collection objects
   getGame().rolls = new Collection<K4Roll>();
 
-  // If user is GM, add "gm-user" class to #interface
-  if (getUser().isGM) {
-    $("#interface").addClass("gm-user");
-  }
-
   // Call PostInitialize on all relevant classes
   await RunInitializer(InitializerMethod.PostInitialize);
 
+  // Further actions only trigger for GM users
+  if (!getUser().isGM) { return; }
+
+  // If user is GM, add "gm-user" class to #interface
+  $("#interface").addClass("gm-user");
+
+  const tracker = await K4GMTracker.Get();
+
   // Re-initialize interface with user and proper game phase
-  // if (!K4GMTracker.instance) {
-  //   throw new Error("K4GMTracker.instance is not initialized.");
-  // }
-  await InitializeInterface();
+  await K4Socket.Call("ChangePhase", UserTargetRef.players, tracker.phase);
 });
 
 
 // #region ░░░░░░░[SocketLib]░░░░ SocketLib Initialization ░░░░░░░ ~
 Hooks.once("socketlib.ready", () => {
   socketlib.registerSystem("kult4th");
-  [
-    K4Alert,
-    K4Dialog
-  ].filter(
+  Object.values(InitializableClasses).filter(
     (doc): doc is typeof doc & {SocketFunctions: Record<string, SocketFunction>} =>
       "SocketFunctions" in doc
   ).forEach((doc) => {

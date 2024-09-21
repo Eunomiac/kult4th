@@ -2,7 +2,7 @@
 	"version": "2.0.0",
   "tasks": [
     {
-      "label": "[MULTI] Run Foundry Server",
+      "label": "Run Foundry Server",
       "type": "shell",
       "command": "node",
       "args": [
@@ -22,7 +22,7 @@
       "problemMatcher": []
     },
     {
-      "label": "[MULTI] Build to Dist",
+      "label": "Build to Dist",
       "type": "shell",
       "command": "npx vite build",
       "group": {
@@ -32,9 +32,23 @@
       "problemMatcher": []
     },
     {
-      "label": "[MULTI] Run Vite Dev Server",
+      "label": "Run 1x Vite Dev Server",
       "type": "shell",
-      "command": "$env:NODE_OPTIONS='--max-old-space-size=8192'; npx vite",
+      "command": "$env:NUM_CHROME_PROFILES='1'; $env:NODE_OPTIONS='--max-old-space-size=8192'; npx vite",
+      "group": "build",
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run 2x Vite Dev Server",
+      "type": "shell",
+      "command": "$env:NUM_CHROME_PROFILES='2'; $env:NODE_OPTIONS='--max-old-space-size=8192'; npx vite",
       "group": "build",
       "presentation": {
         "echo": false,

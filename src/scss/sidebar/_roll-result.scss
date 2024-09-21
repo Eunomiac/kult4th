@@ -50,12 +50,12 @@
         gap: 0px 5px;
 				width: 50%;
 				margin: 2px 0;
-				--K4-color-primary-bright: var(--K4-GOLD8);
-				--K4-color-primary-glow: var(--K4-GOLD9);
+				--K4-color-primary-bright: var(--K4-bGOLD);
+				--K4-color-primary-glow: var(--K4-bbGOLD);
 				&.roll-mod-neg {
-					--K4-color-primary: var(--K4-RED5);
-					--K4-color-primary-bright: var(--K4-RED8);
-					--K4-color-primary-glow: var(--K4-RED9);
+					--K4-color-primary: var(--K4-RED);
+					--K4-color-primary-bright: var(--K4-bRED);
+					--K4-color-primary-glow: var(--K4-bbRED);
 				}
 				.roll-mod-val {
 					font-size: $rem-20;
@@ -65,10 +65,10 @@
 					text-align: right;
 					color: var(--K4-color-primary-glow);
 					text-shadow:
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0),
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0),
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0),
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0);
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK);
 				}
 				.roll-mod-desc {
 					font-size: $rem-10;
@@ -76,10 +76,10 @@
           width: 100%;
 					color: var(--K4-color-primary-bright);
 					text-shadow:
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0),
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0),
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0),
-						0 0 var(--roll-text-shadow-size) var(--K4-GREY0);
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK),
+						0 0 var(--roll-text-shadow-size) var(--K4-dBLACK);
           overflow-wrap: break-word;
           word-break: keep-all;
 				}

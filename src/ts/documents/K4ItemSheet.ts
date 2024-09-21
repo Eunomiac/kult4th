@@ -20,7 +20,7 @@ export default class K4ItemSheet extends ItemSheet {
 
   static override get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes:   [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-item-sheet", "k4-theme-white"],
+      classes:   [C.SYSTEM_ID, "sheet", "k4-sheet", "k4-item-sheet"],
       height:    590 * 0.75,
       width:     384 * 0.75,
       resizable: false
@@ -46,50 +46,24 @@ export default class K4ItemSheet extends ItemSheet {
   constructor(item: K4Item, options: Partial<DocumentSheetOptions<Item>> = {}) {
     super(item, options);
     if (this.type === K4ItemType.gmtracker) {
-      this.options.classes.push("k4-gmtracker-sheet");
+      this.options.classes.push("k4-gmtracker-sheet", "k4-theme-gold");
       this.options.height = null;
       this.options.width = null;
       this.options.resizable = true;
       this.options.top = 20;
       this.options.left = 20;
+    } else {
+      this.options.classes.push("k4-theme-white");
     }
-
-    // switch (item.type) {
-    //   case K4ItemType.advantage: {
-    //     this.options.classes.push("k4-theme-gold");
-    //     break;
-    //   }
-    //   case K4ItemType.darksecret: {
-    //     this.options.classes.push("k4-theme-dark");
-    //     break;
-    //   }
-    //   case K4ItemType.disadvantage: {
-    //     this.options.classes.push("k4-theme-red");
-    //     break;
-    //   }
-    //   case K4ItemType.gmtracker: {
-    //     this.options.classes.push("k4-gmtracker-sheet");
-    //     break;
-    //   }
-    //   default: {
-    //     this.options.classes.push("k4-theme-white");
-    //     break;
-    //   }
-    // }
   }
 
   override async getData() {
     const context = await super.getData();
     if (this.item.type === K4ItemType.gmtracker) {
+      const tracker = await K4GMTracker.Get();
       Object.assign(
         context,
-        {
-          playerCharacters: Object.fromEntries(
-            Array.from(getGame().actors as Collection<K4Actor>)
-            .filter((actor) => actor.type === K4ActorType.pc)
-            .map((actor) => [actor.id, actor])
-          )
-        }
+        tracker.getData()
       );
       kLog.log("[Gm Sheet Context]", {context});
     } else {
@@ -120,12 +94,13 @@ export default class K4ItemSheet extends ItemSheet {
     return super.close();
   }
 
-  override activateListeners(html: JQuery): void {
+  override async activateListeners(html: JQuery): Promise<void> {
 
     super.activateListeners(html);
 
     if (this.item.type === K4ItemType.gmtracker) {
-      K4GMTracker.Get().activateSheetListeners(html);
+      const tracker = await K4GMTracker.Get();
+      tracker.activateListeners(html);
       return;
     }
 

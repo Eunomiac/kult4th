@@ -11,8 +11,9 @@ import K4ActiveEffect from "./K4ActiveEffect.js";
 import K4Roll from "./K4Roll.js";
 import {gsap} from "../libraries.js";
 import K4GMTracker from "./K4GMTracker.js";
-import K4Alert, {AlertType, AlertTarget} from "./K4Alert.js";
+import K4Alert, {AlertType} from "./K4Alert.js";
 import K4DebugDisplay from "./K4DebugDisplay.js";
+import {UserTargetRef} from "./K4Socket.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -236,7 +237,6 @@ const updateDebugInfo = (carousel$: JQuery, x: number) => {
 class K4CharGen {
 
 
-  private static _introOverlay$: Maybe<JQuery> = undefined;
   static PreInitialize() {
     // Create chargen intro overlay via JQuery and append it to the DOM
     // const content = await renderTemplate(U.getTemplatePath("chargen", "chargen-intro-overlay"), {});
@@ -260,11 +260,9 @@ class K4CharGen {
   }
 
 
-  static PostInitialize() {
-    if (!K4GMTracker.instance) { return; }
-    const gmTracker = K4GMTracker.Get();
-    if (gmTracker.system.gamePhase !== K4GamePhase.chargen) {
-      this._introOverlay$?.remove();
+  static async PostInitialize() {
+    const gmTracker = await K4GMTracker.Get();
+    if (gmTracker.phase !== K4GamePhase.chargen) {
       return;
     }
     const user = getUser();
@@ -272,7 +270,7 @@ class K4CharGen {
     if (!userPC) {
       void K4Alert.Alert({
         type: AlertType.simple,
-        target: AlertTarget.gm,
+        target: UserTargetRef.gm,
         skipQueue: false,
         header: `User ${user.name} Owns No Character!`,
         body: "You must create a template PC character, and set this user as its owner before character generation can begin."

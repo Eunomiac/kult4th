@@ -8,7 +8,8 @@ import K4Roll, {K4RollResult} from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
 import K4ChatMessage from "./K4ChatMessage.js";
 import K4Dialog, {PromptInputType} from "./K4Dialog.js";
-import K4Alert, {AlertType, AlertTarget} from "./K4Alert.js";
+import K4Alert, {AlertType} from "./K4Alert.js";
+import {UserTargetRef} from "./K4Socket.js";
 // #endregion
 
 // #region -- TYPES & ENUMS -- ~
@@ -102,7 +103,7 @@ namespace K4Change {
                                             // Alerts with the same user-targets will be run sequentially.
     }
 
-    export type Alert = Partial<K4Alert.Data>;
+    export type Alert = Partial<K4Alert.Data> & {target: UserTargetRef};
     export interface CreateAttack extends Base {
       filter: ValueOrArray<string>, // Filter to determine the type(s) of weapons to add this attack to. Refer to TAGS on the weapon (e.g. "sword"), or use a hyphen to check a property (e.g. "range-arm"). Precede with an '!' to negate the filter. ALL filters must apply (create a new change for "or" filters)
       name: string, // Name of the attack
@@ -133,7 +134,7 @@ namespace K4Change {
     }
 
     export interface CreateCondition extends Base {
-      name: string, // The name of the condition, appearing on hover strips and as headers in tooltips.
+      label: string, // The name of the condition, appearing on hover strips and as headers in tooltips.
       description: string, // A longer description of the condition -- the bodies of tooltips
       type: K4ConditionType, // The type of condition
       modDef: K4Roll.ModDefinition // An object literal of roll modifiers in the form Record<filter, number>
@@ -490,7 +491,7 @@ async function parseData<T extends K4Change.Schema.AnySchema>(data: T, actor: K4
 const CUSTOM_FUNCTIONS = {
   async Alert(this: K4Change, actor: K4Actor, data: K4Change.Schema.Alert): Promise<boolean> {
     data = await parseData(data, actor);
-    await Promise.all(K4Alert.Alert(data, actor.user?.id as Maybe<IDString>));
+    await Promise.all(K4Alert.Alert(data));
     return Promise.resolve(true);
   },
   async CreateAttack(this: K4Change, actor: K4Actor, data: K4Change.Schema.CreateAttack): Promise<boolean> {
@@ -840,7 +841,7 @@ const CUSTOM_FUNCTIONS = {
       // The required item is not found. Alert the user, and return false.
       await Promise.all(K4Alert.Alert({
         type: AlertType.simple,
-        target: AlertTarget.self,
+        target: UserTargetRef.self,
         skipQueue: false,
         header: `Missing Prerequisite: '${filter}'`,
         displayDuration: 5,

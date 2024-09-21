@@ -4,13 +4,13 @@
     .message-content {
     .tab-content {
       .sheet-header {
-        border-bottom: 3px solid var(--K4-GOLD5);
+        border-bottom: 3px solid var(--K4-GOLD);
         .k4-title {
           margin-left: 10px;
           font-size: $rem-16;
           font-weight: $font-weight-semi;
-          background: var(--K4-GOLD5);
-          color: var(--K4-GREY0);
+          background: var(--K4-GOLD);
+          color: var(--K4-dBLACK);
           font-style: italic;
 
           &::before {
@@ -93,16 +93,16 @@
 
     .text-tag, .text-docLink {
       text-shadow: none;
-      color: var(--K4-GREY1);
+      color: var(--K4-BLACK);
 
       &.text-resultlabel {
-        color: var(--K4-RED5);
+        color: var(--K4-RED);
       }
 
       &.text-mod,
       &.text-docLink,
       &.text-attributename {
-        color: var(--K4-BLUE5);
+        color: var(--K4-BLUE);
       }
 
       &.text-trigger,
@@ -121,7 +121,7 @@
     .tab-content {
       position: relative;
       z-index: 2;
-      --K4-color-primary: var(--K4-GREY1);
+      --K4-color-primary: var(--K4-BLACK);
 
       padding: var(--chat-vert-padding-internal) var(--chat-horiz-padding-internal);
       padding-right: 15px;
@@ -142,7 +142,7 @@
       }
 
       .sheet-header {
-        border-bottom: 4px solid var(--K4-GREY1);
+        border-bottom: 4px solid var(--K4-BLACK);
         height: min-content;
         margin: 0;
 
@@ -152,7 +152,7 @@
           font-size: $rem-16;
           line-height: $rem-20;
           font-weight: $font-weight-medium;
-          color: var(--K4-GOLD5);
+          color: var(--K4-GOLD);
           background: black;
           width: min-content;
           padding: 3px 10px 0px 10px;
@@ -175,7 +175,7 @@
         font-size: $rem-14;
         line-height: $rem-14;
         font-weight: $font-weight-bold;
-        color: var(--K4-BLUE5);
+        color: var(--K4-BLUE);
         display: block;
         white-space: nowrap;
         margin-left: auto;
@@ -186,14 +186,14 @@
         cursor: pointer;
 
         &:hover {
-          color: var(--K4-BLUE8);
+          color: var(--K4-bBLUE);
         }
         // background: black;
 
         &::before {
           content: "from ";
           font-family: var(--font-primary);
-          color: var(--K4-GREY1);
+          color: var(--K4-BLACK);
           text-transform: lowercase;
           font-size: $rem-10;
           font-style: italic;
@@ -204,15 +204,15 @@
       .rules-top {
         border-bottom-style: solid;
         border-bottom-width: 4px;
-        border-image: linear-gradient(to right, var(--K4-GOLD5) 50%, transparent) 1;
+        border-image: linear-gradient(to right, var(--K4-GOLD) 50%, transparent) 1;
         margin-top: 2px;
         // .text-trigger {
-        //   color: var(--K4-GREY1);
+        //   color: var(--K4-BLACK);
         //   font-weight: normal;
         //   font-size: 13px;
         // }
         // .text-attributename {
-        //   color: var(--K4-BLUE5);
+        //   color: var(--K4-BLUE);
         // }
       }
 
@@ -221,7 +221,7 @@
         text-align: left;
 
         + .result-entry + .result-entry .text-resultlabel + span::after {
-          background:  linear-gradient(to right, var(--K4-GREY1) 50%, transparent);
+          background:  linear-gradient(to right, var(--K4-BLACK) 50%, transparent);
         }
         .text-resultlabel {
           width: auto;
@@ -241,7 +241,7 @@
               display: block;
               height: 4px;
               width: 100%;
-              background:  linear-gradient(to right, var(--K4-GOLD5) 50%, transparent);
+              background:  linear-gradient(to right, var(--K4-GOLD) 50%, transparent);
               margin: 3px 0px;
             }
 
@@ -252,7 +252,7 @@
                   display: block;
                   height: 4px;
                   width: 100%;
-                  background:  linear-gradient(to right, var(--K4-GOLD5) 50%, transparent);
+                  background:  linear-gradient(to right, var(--K4-GOLD) 50%, transparent);
                   margin: 3px 0px;
               }
 
@@ -274,7 +274,7 @@
                 display: block;
                 height: 2px;
                 width: 100%;
-                background:  linear-gradient(to right, var(--K4-GOLD5) 50%, transparent);
+                background:  linear-gradient(to right, var(--K4-GOLD) 50%, transparent);
                 margin: 3px 0px;
               }
             }
@@ -291,7 +291,7 @@
         font-size: $rem-16;
         line-height: $rem-16;
         font-weight: $font-weight-semi;
-        color: var(--K4-GREY1);
+        color: var(--K4-BLACK);
         font-family: var(--font-primary);
         font-style: italic;
         margin: 15px 0px 10px 40px;
@@ -335,13 +335,13 @@
 
           .sheet-header {
             margin-left: 10px;
-            border-bottom: 3px solid var(--K4-GOLD5);
+            border-bottom: 3px solid var(--K4-GOLD);
             .k4-title {
               margin-left: 10px;
               font-size: $rem-14;
               font-weight: $font-weight-semi;
-              background: var(--K4-GOLD5);
-              color: var(--K4-GREY0);
+              background: var(--K4-GOLD);
+              color: var(--K4-dBLACK);
               font-style: italic;
 
               &::before {

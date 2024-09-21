@@ -1,17 +1,28 @@
-<div id="gamephase-overlay uninitialized">
-  <div class="gear-container gear-huge gear-kether-huge">
-    {{> "src/templates/components/svg" key="gear-kether-huge"}}
-  </div>
-  <div class="gear-container gear-top-right gear-binah">
-    {{> "src/templates/components/svg.hbs" key="gear-binah-outer-teeth"}}
-    {{> "src/templates/components/svg.hbs" key="gear-binah-inner-full"}}
-  </div>
-  <div class="gear-container gear-bottom-right gear-geburah">
-    {{> "src/templates/components/svg.hbs" key="gear-geburah"}}
-    {{> "src/templates/components/svg.hbs" key="gear-geburah-center-saw"}}
-  </div>
+<div id="gamephase-overlay" class="gamephase-overlay uninitialized">
+
 
   <div class="overlay-content">
-    <h1 class="overlay-title">Welcome to KULT: DIVINITY LOST 4th Edition</h1>
+    <div class="gear-container gear-huge gear-kether-huge">
+    {{> "systems/kult4th/templates/components/svg.hbs" key="gear-kether-huge"}}
+    </div>
+    <div class="gear-container gear-top-right gear-binah">
+      {{> "systems/kult4th/templates/components/svg.hbs" key="gear-binah-outer-teeth"}}
+      {{> "systems/kult4th/templates/components/svg.hbs" key="gear-binah-inner-full"}}
+    </div>
+    <div class="gear-container gear-bottom-right gear-geburah">
+      {{> "systems/kult4th/templates/components/svg.hbs" key="gear-geburah"}}
+      {{> "systems/kult4th/templates/components/svg.hbs" key="gear-geburah-center-saw"}}
+    </div>
+    <div class="rolling-fog-container">
+      <video class="rolling-fog" autoplay loop muted playsinline>
+        <source src="systems/kult4th/assets/animations/rolling-fog.webm?v=1" type="video/webm">
+      </video>
+    </div>
+    <div class="rolling-fog-container inverted">
+      <video class="rolling-fog inverted" autoplay loop muted playsinline>
+        <source src="systems/kult4th/assets/animations/rolling-fog.webm?v=2" type="video/webm">
+      </video>
+    </div>
+    <img class="overlay-title" src="systems/kult4th/assets/overlays/kult-logo.webp">
   </div>
 </div>

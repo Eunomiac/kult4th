@@ -117,8 +117,8 @@
       &.not-animating.roll-success {
         * {
           --K4-chat-border-image: #{to-url("chat/border-success.svg")};
-          --K4-color-primary: var(--K4-GOLD9);
-          --roll-result-fg: var(--K4-GOLD9);
+          --K4-color-primary: var(--K4-bbGOLD);
+          --roll-result-fg: var(--K4-bbGOLD);
         }
         .kult4th-chat {
           .roll-intro-header {
@@ -128,10 +128,10 @@
           }
           .roll-source-header {
             background: transparent #{to-url("backgrounds/texture-gold.webp")} repeat repeat center center/300px;
-            border-color: var(--K4-GOLD9);
+            border-color: var(--K4-bbGOLD);
             .roll-source-name .roll-source-text {
-              color: var(--K4-GREY0);
-              text-shadow: build-text-shadow(5px, var(--K4-GOLD8), 6);
+              color: var(--K4-dBLACK);
+              text-shadow: build-text-shadow(5px, var(--K4-bGOLD), 6);
             }
           }
         }
@@ -139,8 +139,8 @@
       &.not-animating.roll-partial {
         * {
           --K4-chat-border-image: #{to-url("chat/border-partial.svg")};
-          --K4-color-primary: var(--K4-GREY7);
-          --roll-result-fg: var(--K4-GREY7);
+          --K4-color-primary: var(--K4-bGREY);
+          --roll-result-fg: var(--K4-bGREY);
         }
         .message-content {
           .kult4th-chat {
@@ -186,13 +186,13 @@
       &.not-animating.roll-failure {
         * {
           --K4-chat-border-image: #{to-url("chat/border-failure.svg")};
-          --K4-color-primary: var(--K4-RED8) !important;
-          --roll-result-fg: var(--K4-RED8);
+          --K4-color-primary: var(--K4-bRED) !important;
+          --roll-result-fg: var(--K4-bRED);
         }
         .kult4th-chat {
           .roll-intro-header {
             .drop-cap {
-              filter: sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5) drop-shadow(2px 2px 2px var(--K4-GREY0));
+              filter: sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5) drop-shadow(2px 2px 2px var(--K4-dBLACK));
             }
             .icon-container.icon-base,
             .icon-container.icon-partial,
@@ -200,10 +200,10 @@
           }
           .roll-source-header {
             background: transparent #{to-url("backgrounds/texture-red.webp")} repeat repeat center center/300px;
-            border-color: var(--K4-RED9);
+            border-color: var(--K4-bbRED);
             .roll-source-name .roll-source-text {
-              color: var(--K4-GREY0);
-              text-shadow: build-text-shadow(5px, var(--K4-RED8), 6);
+              color: var(--K4-dBLACK);
+              text-shadow: build-text-shadow(5px, var(--K4-bRED), 6);
             }
           }
           .roll-dice-results {
@@ -260,11 +260,11 @@
         height: 20px;
         top: 0px;
         left: -2px;
-        border: 2px outset var(--K4-GOLD1);
+        border: 2px outset var(--K4-ddGOLD);
         border-bottom: none;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
-        background: linear-gradient(var(--K4-GOLD1), var(--K4-GOLD1) 22px, transparent 24px);
+        background: linear-gradient(var(--K4-ddGOLD), var(--K4-ddGOLD) 22px, transparent 24px);
         width: var(--sidebar-width);
         z-index: 3;
 
@@ -361,7 +361,7 @@
               right: calc(100% - var(--chat-intro-header-dropcap-horiz-shift));
               transform-origin: center center;
               z-index: 4;
-              filter: drop-shadow(2px 2px 2px var(--K4-GREY0));
+              filter: drop-shadow(2px 2px 2px var(--K4-dBLACK));
             }
 
             .roll-char-name {
@@ -370,10 +370,10 @@
               font-family: var(--font-primary-smallcaps);
               text-transform: lowercase;
               color: var(--K4-color-primary);
-              text-shadow: build-text-shadow(6px, var(--K4-GREY0), 6);
+              text-shadow: build-text-shadow(6px, var(--K4-dBLACK), 6);
               z-index: 3;
               padding-left: calc(var(--chat-intro-header-text-horiz-shift) - 20px);
-              --K4-color-primary: var(--K4-GOLD9);
+              --K4-color-primary: var(--K4-bbGOLD);
             }
 
             .roll-intro-line {
@@ -410,7 +410,7 @@
                 background: transparent #{to-url("backgrounds/bg-white.webp")} repeat repeat center center/100px 100px;
               }
               &.icon-success .chat-icon {
-                background: linear-gradient(-45deg, var(--K4-GOLD8) 20%, var(--K4-GREY10) 50%, var(--K4-GOLD8) 80%);
+                background: linear-gradient(-45deg, var(--K4-bGOLD) 20%, var(--K4-bWHITE) 50%, var(--K4-bGOLD) 80%);
               }
             }
           }
@@ -450,7 +450,7 @@
               width: min-content;
               margin-left: auto;
               white-space: nowrap;
-              background: var(--K4-GREY1);
+              background: var(--K4-BLACK);
               line-height: $rem-14;
               padding-left: 10px;
               text-align: right;
@@ -486,7 +486,7 @@
               --roll-outcome-height: calc(var(--chat-outcome-main-font-size) + var(--chat-outcome-sub-font-size));
             }
             &.roll-failure {
-              --roll-result-fg: var(--K4-RED5);
+              --roll-result-fg: var(--K4-RED);
               --roll-outcome-height: var(--chat-outcome-main-font-size);
               --roll-total-filter: brightness(0.75) saturate(2) contrast(1);
             }
@@ -502,7 +502,7 @@
                 "roll-total roll-outcome";
               grid-template-columns: var(--chat-dice-results-dice-total-width) 1fr;
               grid-template-rows: var(--chat-dice-results-term-container-size) 1fr var(--roll-outcome-height);
-              text-shadow: 0 0 1px var(--K4-GREY1) !important;
+              text-shadow: 0 0 1px var(--K4-BLACK) !important;
               position: relative;
 
               .roll-total {
@@ -583,7 +583,7 @@
                       z-index: 1;
                       transform-origin: center;
                       transform: translate(-50%, -50%) scale(1.15);
-                      background: var(--K4-GREY0);
+                      background: var(--K4-dBLACK);
                       filter: saturate(5) hue-rotate(25deg) brightness(1.5);
                       video { transform: translate(-50%, -50%) scale(var(--chat-dice-results-animation-scale)) rotate(var(--chat-dice-results-animation-rotation)); }
                     }
@@ -629,7 +629,7 @@
                 align-items: flex-end;
 
                 > * {
-                  text-shadow: build-text-shadow(4px, var(--K4-GREY0), 2);
+                  text-shadow: build-text-shadow(4px, var(--K4-dBLACK), 2);
                   color: var(--roll-result-fg);
                   white-space: nowrap;
                   font-family: var(--font-heading-2);
@@ -656,7 +656,7 @@
             .rules-top {
               margin: 0;
               position: relative;
-              text-shadow: build-text-shadow(3px, var(--K4-GREY0), 4);
+              text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 4);
               margin-top: 10px;
               > span {
                 display: block;
@@ -710,7 +710,7 @@
     padding-right: 20px;
     border-radius: 30px;
     align-self: flex-end;
-    background: linear-gradient(to left, var(--K4-GREY0) 100%, transparent);
+    background: linear-gradient(to left, var(--K4-dBLACK) 100%, transparent);
     background-clip: none;
 
     .chat-control-icon,
@@ -737,12 +737,12 @@
     display: flex;
     position: relative;
     top: 10px;
-    border: 4px double var(--K4-GOLD1);
+    border: 4px double var(--K4-ddGOLD);
     margin-top: -6px;
     width: var(--sidebar-width);
     margin-left: var(--sidebar-horiz-gutter);
     left: calc(-1 * var(--sidebar-chat-form-padding));
-    background: var(--K4-GREY1);
+    background: var(--K4-BLACK);
 
 
     &::before {
@@ -777,12 +777,12 @@
     }
 
     &:focus-within {
-      border-color: var(--K4-GOLD8);
+      border-color: var(--K4-bGOLD);
       &::before {
         opacity: 0;
       }
       #chat-message {
-        box-shadow: inset 0 0 15px 5px var(--K4-GREY0), inset 0 0 5px 150px rgba(0, 0, 0, 0.25);
+        box-shadow: inset 0 0 15px 5px var(--K4-dBLACK), inset 0 0 5px 150px rgba(0, 0, 0, 0.25);
       }
       #chat-input-controls {
         &::before {
@@ -798,7 +798,7 @@
 
     #chat-message {
       background: transparent;
-      border-color: var(--K4-GOLD5);
+      border-color: var(--K4-GOLD);
       font-family: var(--font-primary);
       margin: 0;
       height: auto;
@@ -883,17 +883,17 @@
     &[data-type='ooc'] {
       #chat-input-controls::before {
         content: "( out-of-character )";
-        color: var(--K4-GREY1);
+        color: var(--K4-BLACK);
       }
 
       #ooc { filter: grayscale(1) brightness(1.5); }
-      border-color: var(--K4-BLUE5);
+      border-color: var(--K4-BLUE);
       &::after {
         opacity: 1;
         filter: grayscale(100%) blur(5px) invert(1);
       }
       #chat-message {
-        color: var(--K4-GREY1);
+        color: var(--K4-BLACK);
         text-shadow: none;
         font-weight: 500;
         box-shadow: none !important;
@@ -902,17 +902,17 @@
     &[data-type='gm'] {
       #chat-input-controls::before {
         content: "( private message to gamemaster )";
-        color: var(--K4-GREY9);
+        color: var(--K4-WHITE);
       }
       #gm { filter: grayscale(1) brightness(1.5); }
-      border-color: var(--K4-GREY5);
+      border-color: var(--K4-GREY);
       &::after {
         filter: grayscale(100%) brightness(1) blur(5px);
       }
       #chat-message {
         font-style: italic;
         font-weight: 500;
-        color: var(--K4-GREY9);
+        color: var(--K4-WHITE);
       }
     }
   }
