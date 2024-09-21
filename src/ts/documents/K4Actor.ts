@@ -382,8 +382,14 @@ class K4Actor extends Actor {
 
   // #region GETTERS ~
   get user(): Maybe<User> {
-    return (getGame().users as Collection<User>).find((user) => user.character?.id === this.id);
+    if (!this.is(K4ActorType.pc)) {return undefined;}
+    const ownerID = (Object.keys(this.ownership) as IDString[])
+      .filter((id: IDString) => getGame().users.get(id)?.isGM === false)
+      .find((id: IDString) => this.ownership[id] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
+    if (!ownerID) {return undefined;}
+    return getGame().users.get(ownerID);
   }
+
   get charGenPhase(): K4CharGenPhase {
     if (!this.is(K4ActorType.pc)) {
       throw new Error("Cannot get charGenPhase for NPCs");

@@ -57,7 +57,6 @@ function showPopover(event: JQuery.MouseEnterEvent) {
  * @param event - The mouseenter event.
  */
 function hidePopover(event: JQuery.MouseLeaveEvent) {
-  if (CONFIG.K4.debug.isDisablingCharGen) { return; }
   const popoverTrigger$ = $(event.currentTarget as HTMLElement);
   const popover = popoverTrigger$.nextAll("[popover]").first()[0] as Maybe<HTMLElement>;
   if (!popover) {

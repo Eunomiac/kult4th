@@ -47,6 +47,7 @@
   },
   "include": [
     "./src/ts/**/*.ts",
+    "./src/ts/**/*.hbs.ts",
     "vite.config.ts",
     ".dev/item-data-prev.ts"
   ],

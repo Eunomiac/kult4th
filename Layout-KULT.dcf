@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<button backcol="none" display="both" textcol="none">
-	<label>Layout &apos;KULT&apos;</label>
-	<tip>Load the saved Lister Layout &apos;KULT&apos;</tip>
-	<icon1>#layoutload</icon1>
-	<function type="normal">
-		<instruction>Prefs LAYOUT=&quot;KULT&quot;</instruction>
-	</function>
-</button>

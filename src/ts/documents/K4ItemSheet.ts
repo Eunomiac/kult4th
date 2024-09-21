@@ -5,6 +5,7 @@ import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import {K4ItemType} from "./K4Item";
 import K4ActiveEffect from "./K4ActiveEffect.js";
+import K4GMTracker from "./K4GMTracker.js";
 import {Dragger} from "../libraries.js";
 // #endregion
 
@@ -29,7 +30,7 @@ export default class K4ItemSheet extends ItemSheet {
   public isUnlocked = false;
   override get item(): K4Item { return super.item as K4Item; }
   override get template() {
-    if (this.type === K4ItemType.gmtracker) {
+    if (this.item.type === K4ItemType.gmtracker) {
       return "systems/kult4th/templates/sheets/gmtracker-sheet.hbs";
     }
     if (this.isUnlocked) {
@@ -44,6 +45,14 @@ export default class K4ItemSheet extends ItemSheet {
 
   constructor(item: K4Item, options: Partial<DocumentSheetOptions<Item>> = {}) {
     super(item, options);
+    if (this.type === K4ItemType.gmtracker) {
+      this.options.classes.push("k4-gmtracker-sheet");
+      this.options.height = null;
+      this.options.width = null;
+      this.options.resizable = true;
+      this.options.top = 20;
+      this.options.left = 20;
+    }
 
     // switch (item.type) {
     //   case K4ItemType.advantage: {
@@ -114,6 +123,12 @@ export default class K4ItemSheet extends ItemSheet {
   override activateListeners(html: JQuery): void {
 
     super.activateListeners(html);
+
+    if (this.item.type === K4ItemType.gmtracker) {
+      K4GMTracker.Get().activateSheetListeners(html);
+      return;
+    }
+
     const self = this;
     const itemDoc = this.document as K4Item;
     const parentActor: Maybe<K4Actor> = this.actor instanceof K4Actor ? this.actor : undefined;

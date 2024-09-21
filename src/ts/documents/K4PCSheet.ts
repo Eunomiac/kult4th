@@ -1038,8 +1038,8 @@ const ANIMATIONS = {
     // const colorBG = (String(getContrastingColor(colorFG, 4) || $(target).css("--K4-strip-color-bg")?.trim()) ?? C.Colors.GREY1);
     const colorBase = stripName$.css("color");
     const colorHover = stripType === "edge"
-      ? C.Colors.GREY10.css
-      : C.Colors.GREY0.css;
+      ? C.Colors.GREY10
+      : C.Colors.GREY0;
     const colorShadow = stripType === "edge"
       ? "rgba(3, 247, 249, 0.56)"
       : colorBase;
@@ -1122,10 +1122,10 @@ const ANIMATIONS = {
       let color: string;
       if (modifier$.find("k4-theme-red").length) {
         shadowColor = "220, 65, 65";
-        color = C.Colors.RED8.css;
+        color = C.Colors.RED8;
       } else {
         shadowColor = "220, 220, 65";
-        color = C.Colors.GOLD8.css;
+        color = C.Colors.GOLD8;
       }
       const textShadow = [
         "0 0 2px rgba(0, 0, 0, 1)",
@@ -1149,7 +1149,7 @@ const ANIMATIONS = {
           color,
           textShadow: "0 0 0 rgba(0, 0, 0, 0)"
         }, {
-          color:    C.Colors.GREY10.css,
+          color:    C.Colors.GREY10,
           textShadow,
           duration: FULL_DURATION,
           ease:     "sine"
@@ -1287,7 +1287,7 @@ class K4PCSheet extends ActorSheet {
 
     /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
     return gsap.timeline({paused: true})
-      .fromTo(shards$, {fill: C.Colors.GOLD8.css, stroke: C.Colors.GOLD8.css}, {fill: C.Colors.GOLD8.css, stroke: C.Colors.GOLD8.css, duration: 0}, 0)
+      .fromTo(shards$, {fill: C.Colors.GOLD8, stroke: C.Colors.GOLD8}, {fill: C.Colors.GOLD8, stroke: C.Colors.GOLD8, duration: 0}, 0)
       .fromTo(anim$, {filter: "brightness(0) saturate(1.5)"}, {filter: "brightness(0) saturate(1.5)", duration: 0}, 0)
     // COMPOSED (GOLD5)
     .addLabel("stability10")
@@ -1298,7 +1298,7 @@ class K4PCSheet extends ActorSheet {
       }, 0)
       // .fromTo(shards$, {fill: C.Colors.GOLD5, stroke: C.Colors.GOLD5}, {fill: C.Colors.GREY1, stroke: C.Colors.GREY1, duration: 5})
     // MODERATE (GOLD1)
-    .to(shards$, {fill: C.Colors.GOLD5.css, stroke: C.Colors.GOLD5.css, duration: 0.5}, "<")
+    .to(shards$, {fill: C.Colors.GOLD5, stroke: C.Colors.GOLD5, duration: 0.5}, "<")
     .addLabel("stability9")
       .to(cracks$, {
         morphSVG: html.find<gsap.TweenVars["SVGPathElement"]>("#stability-cracks-8")[0],
@@ -1638,7 +1638,7 @@ class K4PCSheet extends ActorSheet {
       }
       // Set profile image background to black if animations are disabled
       if (!U.getSetting("animations")) {
-        gsap.set(self.element.find(".profile-image-animation"), {background: C.Colors.GREY1.css});
+        gsap.set(self.element.find(".profile-image-animation"), {background: C.Colors.GREY1});
       }
       // Add hover animation to the hoverTimelines array for nav-panel
       hoverTimelines.push([this, ANIMATIONS.hoverNav(this)]);
@@ -2355,7 +2355,7 @@ class K4PCSheet extends ActorSheet {
 
     // Set actor name background to black if animations are disabled
     if (!getGame().settings.get("kult4th", "animations")) {
-      gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.GREY1.css});
+      gsap.set(this.element.find(".actor-name-bg-anim"), {background: C.Colors.GREY1});
     }
 
     // Animate stability display

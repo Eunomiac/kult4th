@@ -568,10 +568,10 @@ const CHILD_TIMELINES = {
     return U.gsap.timeline({ease: "power3.in", clearProps: true})
       .to(msgBgBase$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"})
       .to(msgIconSuccess$, {autoAlpha: 1, duration: 0.25, ease: "power2.inOut"}, 0)
-      .to(msgCharName$, {color: C.Colors.GOLD8.css, duration: 1, ease: "power2.inOut"}, 0)
-      .to(msgIntroLine$, {color: C.Colors.GOLD8.css, duration: 1, ease: "power2.inOut"}, 0)
-      .to(msgAttrName$, {color: C.Colors.GOLD8.css, filter: "brightness(3) saturate(1.5)", duration: 1, ease: "power2.inOut"}, 0)
-      .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `sepia(0) brightness(1.5) contrast(5) drop-shadow(2px 2px 2px ${C.Colors.GREY0.css})`, duration: 1}, 0)
+      .to(msgCharName$, {color: C.Colors.GOLD8, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgIntroLine$, {color: C.Colors.GOLD8, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgAttrName$, {color: C.Colors.GOLD8, filter: "brightness(3) saturate(1.5)", duration: 1, ease: "power2.inOut"}, 0)
+      .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `sepia(0) brightness(1.5) contrast(5) drop-shadow(2px 2px 2px ${C.Colors.GREY0})`, duration: 1}, 0)
         // .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration: 1}, 0)
         .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(1.5px) brightness(1.5) saturate(0.5)", duration: 1}, 0)
         .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(1.5) saturate(2) contrast(1)", duration: 1}, 0)
@@ -579,20 +579,20 @@ const CHILD_TIMELINES = {
 
 
         .to(msgSource, {opacity: 0, duration: 0.5, ease: "power2.out"}, 0)
-        .set(msgSource, {borderTopColor: C.Colors.GOLD9.css, borderBottomColor: C.Colors.GOLD9.css, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-gold.webp') repeat repeat center center/300px"}, 0.5)
+        .set(msgSource, {borderTopColor: C.Colors.GOLD9, borderBottomColor: C.Colors.GOLD9, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-gold.webp') repeat repeat center center/300px"}, 0.5)
         .to(msgSource, {opacity: 1, duration: 0.5, ease: "power2.out"}, 0.5)
 
         .fromTo(msgSourceName$, {
           textShadow: "0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0)"},  {
-          color: C.Colors.GREY0.css,
-          textShadow: `0 0 5px ${C.Colors.GOLD8.css}, 0 0 5px ${C.Colors.GOLD8.css}, 0 0 5px ${C.Colors.GOLD8.css}, 0 0 5px ${C.Colors.GOLD8.css}, 0 0 5px ${C.Colors.GOLD8.css}, 0 0 5px ${C.Colors.GOLD8.css}`
+          color: C.Colors.GREY0,
+          textShadow: `0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}, 0 0 5px ${C.Colors.GOLD8}`
         }, 0)
         .to(msgOutcomeMain, {filter: "saturate(0.25)", color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 220, 65, 0.8), 0 0 12.5px rgba(220, 220, 65, 0.8), 0 0 16.5px rgba(220, 220, 65, 0.5), 0 0 21px rgba(220, 220, 65, 0.5), 0 0 29px rgba(220, 220, 65, 0.5), 0 0 41.5px rgba(220, 220, 65, 0.5)", duration: 1, onComplete() {
           msgOutcomeMain.addClass("neon-glow-animated-gold");
           msgOutcomeMain.attr("style", "color: rgb(255, 255, 255); visibility: visible; filter: saturate(0.45)");
         }}, 0)
-        .to(msgOutcomeSub, {color: C.Colors.GOLD9.css, textShadow: "none", duration: 1}, 0)
-        .to(msgTextToBrightGold, {color: C.Colors.GOLD8.css, duration: 1}, 0);
+        .to(msgOutcomeSub, {color: C.Colors.GOLD9, textShadow: "none", duration: 1}, 0)
+        .to(msgTextToBrightGold, {color: C.Colors.GOLD8, duration: 1}, 0);
   },
   animateToFailure(message$: JQuery): gsap.core.Timeline {
     /*  const {duration, stagger, ease} = config as {duration: number, stagger: number, ease: string};
@@ -622,29 +622,29 @@ const CHILD_TIMELINES = {
     return U.gsap.timeline({ease: "power3.in", clearProps: true})
       .to(msgBgBase$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"})
       .to(msgIconFail$, {autoAlpha: 1, duration: 0.25, ease: "power2.inOut"}, 0)
-      .to(msgCharName$, {color: C.Colors.RED8.css, duration: 1, ease: "power2.inOut"}, 0)
-      .to(msgIntroLine$, {color: C.Colors.RED8.css, duration: 1, ease: "power2.inOut"}, 0)
-      .to(msgAttrName$, {color: C.Colors.RED8.css, filter: "brightness(3) saturate(1.5)", duration: 1, ease: "power2.inOut"}, 0)
-      .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5) drop-shadow(2px 2px 2px ${C.Colors.GREY0.css})`, duration: 1}, 0)
+      .to(msgCharName$, {color: C.Colors.RED8, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgIntroLine$, {color: C.Colors.RED8, duration: 1, ease: "power2.inOut"}, 0)
+      .to(msgAttrName$, {color: C.Colors.RED8, filter: "brightness(3) saturate(1.5)", duration: 1, ease: "power2.inOut"}, 0)
+      .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `sepia(0) brightness(0.5) saturate(3) hue-rotate(-45deg) saturate(1) contrast(5) drop-shadow(2px 2px 2px ${C.Colors.GREY0})`, duration: 1}, 0)
         // .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "sepia(5) brightness(0.25) saturate(5) hue-rotate(-45deg) saturate(3) brightness(1) contrast(1)", duration: 1}, 0)
         .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "blur(1.5px) sepia(5) brightness(0.65) saturate(5) hue-rotate(-45deg) contrast(2)", duration: 1}, 0)
         .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(0.75) saturate(2) contrast(1)", duration: 1}, 0)
         .to(msgIconBase$, {autoAlpha: 0, duration: 1}, 0)
 
         .to(msgSource, {opacity: 0, duration: 0.5, ease: "power2.out"}, 0)
-        .set(msgSource, {borderTopColor: C.Colors.RED9.css, borderBottomColor: C.Colors.RED9.css, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-red.webp') repeat repeat center center/300px"}, 0.5)
+        .set(msgSource, {borderTopColor: C.Colors.RED9, borderBottomColor: C.Colors.RED9, background: "transparent url('/systems/kult4th/assets/backgrounds/texture-red.webp') repeat repeat center center/300px"}, 0.5)
         .to(msgSource, {opacity: 1, duration: 0.5, ease: "power2.out"}, 0.5)
         .fromTo(msgSourceName$, {
           textShadow: "0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0), 0 0 0 rgb(0, 0, 0)"},  {
-          color: C.Colors.GREY0.css,
-          textShadow: `0 0 5px ${C.Colors.RED8.css}, 0 0 5px ${C.Colors.RED8.css}, 0 0 5px ${C.Colors.RED8.css}, 0 0 5px ${C.Colors.RED8.css}, 0 0 5px ${C.Colors.RED8.css}, 0 0 5px ${C.Colors.RED8.css}`
+          color: C.Colors.GREY0,
+          textShadow: `0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}, 0 0 5px ${C.Colors.RED8}`
         }, 0)
         .to(msgOutcomeMain, {color: "rgb(255, 255, 255)", textShadow: "0 0 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.8), 0 0 4.5px rgba(255, 255, 255, 0.8), 0 0 8px rgba(220, 65, 65, 0.8), 0 0 12.5px rgba(220, 65, 65, 0.8), 0 0 16.5px rgba(220, 65, 65, 0.5), 0 0 21px rgba(220, 65, 65, 0.5), 0 0 29px rgba(220, 65, 65, 0.5), 0 0 41.5px rgba(220, 65, 65, 0.5)", duration: 1, onComplete() {
           msgOutcomeMain.addClass("neon-glow-animated-red");
           msgOutcomeMain.attr("style", "color: rgb(255, 255, 255); visibility: visible");
         }}, 0)
-        .to(msgOutcomeSub, {color: C.Colors.RED9.css, textShadow: "none", duration: 1}, 0)
-        .to(msgTextToRed, {color: C.Colors.RED8.css, duration: 1}, 0);
+        .to(msgOutcomeSub, {color: C.Colors.RED9, textShadow: "none", duration: 1}, 0)
+        .to(msgTextToRed, {color: C.Colors.RED8, duration: 1}, 0);
   },
   animateToPartial(message$: JQuery): gsap.core.Timeline {
 
@@ -671,19 +671,19 @@ const CHILD_TIMELINES = {
   return U.gsap.timeline({ease: "power3.in", clearProps: true})
     .to(msgBgBase$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"})
     .to(msgIconPartial$, {autoAlpha: 1, filter: "grayscale(1)", duration: 0.25, ease: "power2.inOut"}, 0)
-    .to(msgCharName$, {color: C.Colors.GREY10.css, duration: 1, ease: "power2.inOut"}, 0)
-    .to(msgIntroLine$, {color: C.Colors.GREY10.css, duration: 1, ease: "power2.inOut"}, 0)
-    .to(msgAttrName$, {color: C.Colors.GREY10.css, filter: "brightness(3)", duration: 1, ease: "power2.inOut"}, 0)
-    .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `grayscale(1) sepia(0) brightness(1) contrast(1) drop-shadow(2px 2px 2px ${C.Colors.GREY0.css})`, duration: 1}, 0)
+    .to(msgCharName$, {color: C.Colors.GREY10, duration: 1, ease: "power2.inOut"}, 0)
+    .to(msgIntroLine$, {color: C.Colors.GREY10, duration: 1, ease: "power2.inOut"}, 0)
+    .to(msgAttrName$, {color: C.Colors.GREY10, filter: "brightness(3)", duration: 1, ease: "power2.inOut"}, 0)
+    .fromTo(msgDropCap$, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)"}, {filter: `grayscale(1) sepia(0) brightness(1) contrast(1) drop-shadow(2px 2px 2px ${C.Colors.GREY0})`, duration: 1}, 0)
       .fromTo(msgAttrFlare, {filter: "sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "grayscale(1)", duration: 1}, 0)
       .fromTo(msgGears, {filter: "blur(1.5px) sepia(0) brightness(1) hue-rotate(0deg) saturate(1) contrast(1)"}, {filter: "grayscale(1) blur(1.5px) brightness(1)", duration: 1}, 0)
       .fromTo(msgTotal, {filter: "brightness(1) saturate(1) contrast(1)"}, {filter: "brightness(1) saturate(1) contrast(1) grayscale(1)", duration: 1}, 0)
       .to(msgIconBase$, {autoAlpha: 0, duration: 1}, 0)
       .to(msgSource, {filter: "grayscale(1)", duration: 1}, 0)
-      .to(msgSourceName$, {color: C.Colors.GREY9.css}, 0)
-      .to(msgOutcomeMain, {color: C.Colors.GREY9.css, duration: 1}, 0)
-      .to(msgOutcomeSub, {color: C.Colors.GREY9.css, duration: 1}, 0)
-      .to(msgTextToGrey, {color: C.Colors.GREY9.css, duration: 1}, 0);
+      .to(msgSourceName$, {color: C.Colors.GREY9}, 0)
+      .to(msgOutcomeMain, {color: C.Colors.GREY9, duration: 1}, 0)
+      .to(msgOutcomeSub, {color: C.Colors.GREY9, duration: 1}, 0)
+      .to(msgTextToGrey, {color: C.Colors.GREY9, duration: 1}, 0);
 },
   animateResults(message$: JQuery, msg: K4ChatMessage): gsap.core.Timeline {
 
@@ -1157,21 +1157,21 @@ class K4ChatMessage extends ChatMessage {
     const colors: Record<string, string> = {};
     switch (this.outcome) {
       case K4RollResult.completeSuccess: {
-        colors.bright = C.Colors.GOLD9.css;
-        colors.med = C.Colors.GOLD8.css;
-        colors.dark = C.Colors.GOLD1.css;
+        colors.bright = C.Colors.GOLD9;
+        colors.med = C.Colors.GOLD8;
+        colors.dark = C.Colors.GOLD1;
         break;
       }
       case K4RollResult.partialSuccess: {
-        colors.bright = C.Colors.GREY10.css;
-        colors.med = C.Colors.GREY9.css;
-        colors.dark = C.Colors.GREY1.css;
+        colors.bright = C.Colors.GREY10;
+        colors.med = C.Colors.GREY9;
+        colors.dark = C.Colors.GREY1;
         break;
       }
       case K4RollResult.failure: {
-        colors.bright = C.Colors.RED9.css;
-        colors.med = C.Colors.RED8.css;
-        colors.dark = C.Colors.RED1.css;
+        colors.bright = C.Colors.RED9;
+        colors.med = C.Colors.RED8;
+        colors.dark = C.Colors.RED1;
         break;
       }
       default: {

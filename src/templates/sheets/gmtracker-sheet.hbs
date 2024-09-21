@@ -1,37 +1,34 @@
+{{log "GM Tracker Sheet" this}}
 <form class="kult4th-form form-gmtracker {{cssClass}}" autocomplete="off">
 
-  <main>
-    <input class="column-toggler" type="checkbox" name="system.collapsedColumns.1.isChecked" {{checked item.system.collapsedColumns.1.isChecked}} />
-    <span class="column-label">Column 1</span>
-    <section class="column no-scroll" style="flex-basis: 50%;">
+  {{> (concat "systems/kult4th/templates/sheets/gmtracker-phases/" item.system.gamePhase ".hbs")}}
 
-      {{#each playerCharacters as |actor id|}}
-        {{#with (lookup ../item.system.collapsedPanels.[1] @index) as |collapse|}}
-        <input class="panel-toggler" type="checkbox" name="system.collapsedPanels.1.{{@index}}.isChecked" {{checked (lookup collapse "isChecked")}} />
-        <span class="panel-label">{{actor.name}}</span>
-        {{> "systems/kult4th/templates/partials/player-block.hbs" actor}}
-        {{/with}}
-      {{/each}}
 
-    </section>
-    <input class="column-toggler" type="checkbox" name="system.collapsedColumns.2.isChecked" {{checked item.system.collapsedColumns.2.isChecked}} />
-    <span class="column-label">Column 2</span>
-    <section class="column">
-    </section>
-    <input class="column-toggler" type="checkbox" name="system.collapsedColumns.3.isChecked" {{checked item.system.collapsedColumns.3.isChecked}} />
-    <span class="column-label">Column 3</span>
-    <section class="column">
-    </section>
-    <input class="column-toggler" type="checkbox" name="system.collapsedColumns.4.isChecked" {{checked item.system.collapsedColumns.4.isChecked}} />
-    <span class="column-label">Column 4</span>
-    <section class="column">
-    </section>
-  </main>
+
+  <footer class="phase-select-container phase-{{item.system.gamePhase}}">
+    <span class="phase-container phase-uninitialized">
+      <span class="phase-label">SCENARIO CONFIGURATION</span>
+    </span>
+    <span class="phase-container phase-initialized">
+      <button class="phase-select-button" data-phase="initialized"></button>
+      <span class="phase-label">WAITING FOR PLAYERS</span>
+    </span>
+    <span class="phase-container phase-chargen">
+      <button class="phase-select-button" data-phase="chargen"></button>
+      <span class="phase-label">CHARACTER CREATION</span>
+    </span>
+    <span class="phase-container phase-preSession">
+      <button class="phase-select-button" data-phase="preSession"></button>
+      <span class="phase-label">PRE-SESSION</span>
+    </span>
+    <span class="phase-container phase-session">
+      <button class="phase-select-button" data-phase="session"></button>
+      <span class="phase-label">SESSION</span>
+    </span>
+    <span class="phase-container phase-postSession">
+      <button class="phase-select-button" data-phase="postSession"></button>
+      <span class="phase-label">POST-SESSION</span>
+    </span>
+  </footer>
 
 </form>
-
-<div class="dev-box stringify-box">
-  <pre>
-    {{stringify item.system}}
-  </pre>
-</div>

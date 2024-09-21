@@ -9,7 +9,7 @@ import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
-import C from "./scripts/constants.js";
+import C, {K4GamePhase} from "./scripts/constants.js";
 import InitializePopovers from "./scripts/popovers.js";
 import U from "./scripts/utilities.js";
 import {formatForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers.js";
@@ -90,45 +90,108 @@ Object.assign(globalThis, {
 });
 
 /* #DEVCODE */
-async function GlobalAssignment() {
+function GlobalAssignment() {
 
-  const ACTOR = getGame().actors.values().next().value as Maybe<K4Actor>;
-  const ITEM = getGame().items.values().next().value as Maybe<K4Item>;
-  const EMBED = ACTOR?.items.values().next().value as Maybe<K4Item>;
-  const ACTORSHEET = ACTOR?.sheet;
+  Hooks.once("ready", async () => {
+    const ACTOR = getGame().actors.values().next().value as Maybe<K4Actor>;
+    const ITEM = getGame().items.values().next().value as Maybe<K4Item>;
+    const EMBED = ACTOR?.items.values().next().value as Maybe<K4Item>;
+    const ACTORSHEET = ACTOR?.sheet;
 
-  Object.assign(globalThis, {
-    gsap,
-    U,
-    C,
-    ActorSheet,
-    formatForKult,
-    ACTOR, ITEM, EMBED, ACTORSHEET,
-    ENTITIES: [ACTOR, ITEM, EMBED],
-    ...InitializableClasses
+    // Dynamically import data.js for initializing and building Item documents during development (will become packs for production)
+    const {BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} = await import("./scripts/data.js");
+
+    Object.assign(globalThis, {
+      gsap,
+      U,
+      C,
+      ActorSheet,
+      formatForKult,
+      ACTOR, ITEM, EMBED, ACTORSHEET,
+      ENTITIES: [ACTOR, ITEM, EMBED],
+      ...InitializableClasses,
+      PACKS,
+      getItemSystemReport,
+      getSubItemSystemReport,
+      getUniqueValuesForSystemKey,
+      getUniqueEffects: () => getUniqueValuesForSystemKey(PACKS.all, "rules.effects"),
+      findRepresentativeSubset,
+      checkSubsetCoverage,
+      findUniqueKeys,
+      BUILD_ITEMS_FROM_DATA
+    });
   });
 
-  // Dynamically import data.js for initializing and building Item documents during development (will become packs for production)
-  const {BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} = await import("./scripts/data.js");
-
-  // Assign objects to global namespace, for console access during development
-  Object.assign(globalThis, {
-    PACKS,
-    getItemSystemReport,
-    getSubItemSystemReport,
-    getUniqueValuesForSystemKey,
-    getUniqueEffects: () => getUniqueValuesForSystemKey(PACKS.all, "rules.effects"),
-    findRepresentativeSubset,
-    checkSubsetCoverage,
-    findUniqueKeys,
-    BUILD_ITEMS_FROM_DATA
+  Hooks.once("socketlib.ready", () => {
+    Object.assign(globalThis, {
+      socketlib,
+    });
   });
+
 }
 function InitLogRocketCSSPerformanceMonitor() {
   LogRocket.init('vodsl0/kult4th-for-foundry-vtt');
   kLog.display("Initialized LogRocket CSS performance monitor", 0);
 }
-/* #endDEVCODE */
+function InitCharGenToggleButton() {
+  // Create toggle button
+  const toggleButton = document.createElement("button");
+  toggleButton.textContent = "";
+  toggleButton.style.cssText = `
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 19999;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+    width: 30px;
+    height: 30px;
+    font-size: 10px;
+    background-color: var(--toggle-color, #333);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    outline: 2px solid var(--toggle-color, #000);
+    cursor: pointer;
+  `;
+
+  // Add hover effect
+  toggleButton.addEventListener("mouseenter", () => toggleButton.style.opacity = "1");
+  toggleButton.addEventListener("mouseleave", () => toggleButton.style.opacity = "0.3");
+
+  // Add click listener to toggle config value
+  toggleButton.addEventListener("click", () => {
+    CONFIG.K4.debug.isDisablingCharGen = !CONFIG.K4.debug.isDisablingCharGen;
+    toggleButton.style.setProperty("--toggle-color", CONFIG.K4.debug.isDisablingCharGen ? "red" : "#333");
+  });
+
+  // Append button to body
+  document.body.appendChild(toggleButton);
+}
+function SetDevelopmentConfig() {
+  // Disable Compatibility Warnings
+  // CONFIG.compatibility.mode = 0;
+
+  // Toggle Character Creation Features for Debugging
+  CONFIG.K4.debug.isDisablingCharGen = false; // Default to false
+
+  // Enable hook debugging
+  CONFIG.debug.hooks = true;
+}
+function RunDevelopmentInitCode() {
+  Hooks.once("ready", SetDevelopmentConfig);
+
+  // Initialize Character Creation Toggle Button
+  InitCharGenToggleButton();
+
+  // Enable LogRocket CSS Performance Monitoring
+  // InitLogRocketCSSPerformanceMonitor();
+
+  // Setup ready hook to register variables to the global scope for debugging.
+  GlobalAssignment();
+}
+RunDevelopmentInitCode();
+/* !DEVCODE */
 
 enum InitializerMethod {
   PreInitialize = "PreInitialize",
@@ -147,9 +210,24 @@ async function RunInitializer<T extends InitializerMethod>(methodName: T) {
 
 async function PreloadHBSTemplates() {
   const templatePaths = [
-    ...U.getTemplatePath("chargen", [
-      "chargen-intro-overlay",
-      "chargen-main"
+    ...U.getTemplatePath("sheets/gmtracker-phases", [
+      "uninitialized",
+      "initialized",
+      "chargen",
+      "preSession",
+      "session",
+      "postSession"
+    ]),
+    ...U.getTemplatePath("sheets/gmtracker-phases/parts", [
+      "player-column"
+    ]),
+    ...U.getTemplatePath("gamephase", [
+      "overlay-uninitialized",
+      "overlay-initialized",
+      "overlay-chargen",
+      "overlay-preSession",
+      "overlay-session",
+      "overlay-postSession"
     ]),
     ...U.getTemplatePath("globals", [
       "svg-defs",
@@ -541,35 +619,73 @@ async function DisableClientCanvas() {
   console.log("Canvas has been disabled for all clients.");
 }
 
-Hooks.on("renderUserConfig", (config: UserConfig, html: HTMLFormElement) => {
+// Hooks.on("renderUserConfig", (config: UserConfig, html: HTMLFormElement) => {
 
-  const body$ = $(html).closest("body");
-  const interface$ = body$.find("#interface");
-  const pauseIcon$ = body$.find("#pause");
-  const notifications$ = body$.find("#notifications");
+//   const body$ = $(html).closest("body");
+//   const interface$ = body$.find("#interface");
+//   const pauseIcon$ = body$.find("#pause");
+//   const notifications$ = body$.find("#notifications");
 
-  $(html).remove();
+//   $(html).remove();
 
-  interface$.children().css("display", "none");
-  pauseIcon$.css("display", "none");
-  notifications$.css("display", "none");
+//   interface$.children().css("display", "none");
+//   pauseIcon$.css("display", "none");
+//   notifications$.css("display", "none");
 
-  U.gsap.to(interface$, {
-    backgroundColor: C.Colors.GREY0.css,
-    duration: 1,
-    ease: "power2.out"
-  });
+//   U.gsap.to(interface$, {
+//     backgroundColor: C.Colors.GREY0,
+//     duration: 1,
+//     ease: "power2.out"
+//   });
 
-  return false;
-});
+//   return false;
+// });
+
+async function InitializeInterface() {
+  const user = getUser();
+  const gamePhase = K4GMTracker.instance?.phase ?? K4GamePhase.uninitialized;
+  console.warn(`Initializing interface for game phase: ${gamePhase}`);
+  const body$ = $("body");
+  if (!body$.length) {
+    console.warn("Body element not found. Interface initialization skipped.");
+    return;
+  }
+
+  switch (gamePhase) {
+    case K4GamePhase.uninitialized:
+    case K4GamePhase.initialized:
+    case K4GamePhase.chargen: {
+      if (user.isGM) {
+          K4GMTracker.instance?.tracker.sheet.render(true);
+      } else {
+        body$.prepend(await renderTemplate(
+          U.getTemplatePath("gamephase", `overlay-${gamePhase}`),
+          (user.character?.sheet as Maybe<FormApplication>)?.getData() ?? {}
+        ));
+      }
+      body$.addClass("interface-visible");
+      return;
+    }
+    case K4GamePhase.preSession: {
+      return;
+    }
+    case K4GamePhase.session: {
+      return;
+    }
+    case K4GamePhase.postSession: {
+      return;
+    }
+  }
+}
 
 Hooks.on("init", async () => {
-
-
 
   // Register logging function and announce initialization to console.
   registerConsoleLogger();
   kLog.display("Initializing 'Kult: Divinity Lost 4th Edition' for Foundry VTT", 0);
+
+  // Preload Handlebars Templates
+  await PreloadHBSTemplates();
 
   // Register settings (including debug settings necessary for kLog)
   registerSettings();
@@ -577,55 +693,10 @@ Hooks.on("init", async () => {
   // Define the "K4" namespace within the CONFIG object, and assign basic system configuration package.
   CONFIG.K4 = K4Config;
 
-  /* #DEVCODE */
-  // Disable Compatibility Warnings
-  // CONFIG.compatibility.mode = 0;
-  // Toggle Character Creation Features for Debugging
-  CONFIG.K4.debug.isDisablingCharGen = false; // Default to false
-  CONFIG.debug.hooks = true;
-  // InitLogRocketCSSPerformanceMonitor();
-  /* #endDEVCODE */
-
-  // Create toggle button
-  const toggleButton = document.createElement("button");
-  toggleButton.textContent = "";
-  toggleButton.style.cssText = `
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 19999;
-    opacity: 0.3;
-    transition: opacity 0.3s;
-    width: 30px;
-    height: 30px;
-    font-size: 10px;
-    background-color: var(--toggle-color, #333);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    outline: 2px solid var(--toggle-color, #000);
-    cursor: pointer;
-  `;
-
-  // Add hover effect
-  toggleButton.addEventListener("mouseenter", () => toggleButton.style.opacity = "1");
-  toggleButton.addEventListener("mouseleave", () => toggleButton.style.opacity = "0.3");
-
-  // Add click listener to toggle config value
-  toggleButton.addEventListener("click", () => {
-    CONFIG.K4.debug.isDisablingCharGen = !CONFIG.K4.debug.isDisablingCharGen;
-    toggleButton.style.setProperty("--toggle-color", CONFIG.K4.debug.isDisablingCharGen ? "red" : "#333");
-  });
-
-  // Append button to body
-  document.body.appendChild(toggleButton);
-
-
   // Initialize Libraries
   InitializeLibraries();
 
   // Initialize Tooltips Overlay
-  // InitializeTooltips($("body"));
   InitializePopovers($("body"));
 
   // Register Handlebar Helpers
@@ -643,14 +714,8 @@ Hooks.on("init", async () => {
 
   // Asynchronous operations, run in parallel
   const parallelAsyncFunctions = [
-    /* #DEVCODE */
-    // Assignment of select variables to global namespace for access in development console
-    // GlobalAssignment(),
-    /* #endDEVCODE */
     // Call 'PreInitialize' on all relevant classes
     RunInitializer(InitializerMethod.PreInitialize),
-    // Preload Handlebars Templates
-    PreloadHBSTemplates(),
     // Generate CSS Color Definitions
     GenerateColorDefs(),
     // Generate CSS SVG Definitions
@@ -658,6 +723,7 @@ Hooks.on("init", async () => {
   ];
 
   await Promise.all(parallelAsyncFunctions);
+  return false;
 });
 
 Hooks.on("i18nReady", () => {
@@ -667,17 +733,23 @@ Hooks.on("i18nReady", () => {
 Hooks.on("ready", async () => {
   // Call Initialize on all relevant classes
   await RunInitializer(InitializerMethod.Initialize);
+
   // Initialize collection objects
   getGame().rolls = new Collection<K4Roll>();
+
   // If user is GM, add "gm-user" class to #interface
   if (getUser().isGM) {
     $("#interface").addClass("gm-user");
   }
-  // Assign global variables to globalThis
-  await GlobalAssignment();
 
   // Call PostInitialize on all relevant classes
   await RunInitializer(InitializerMethod.PostInitialize);
+
+  // Re-initialize interface with user and proper game phase
+  // if (!K4GMTracker.instance) {
+  //   throw new Error("K4GMTracker.instance is not initialized.");
+  // }
+  await InitializeInterface();
 });
 
 
@@ -693,9 +765,5 @@ Hooks.once("socketlib.ready", () => {
   ).forEach((doc) => {
     K4Socket.RegisterSocketFunctions(doc.SocketFunctions);
   });
-  /* DEVCODE*/Object.assign(
-    globalThis,
-    {socketlib}
-  );/* !DEVCODE*/
 });
 // #endregion ░░░░[SocketLib]░░░░

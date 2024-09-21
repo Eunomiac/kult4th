@@ -11,7 +11,7 @@ import K4Item, {K4ItemType} from "./K4Item.js";
 declare global {
   namespace K4GMTracker {
     export interface System {
-      gamephase: K4GamePhase;
+      gamePhase: K4GamePhase;
     }
   }
 }
@@ -29,7 +29,7 @@ class K4GMTracker {
       /* Insert PreInitiailize Steps Here */
     }
 
-  private static instance: K4GMTracker | null = null;
+  static instance: K4GMTracker | null = null;
 
   /**
    * Initializes the K4GMTracker, ensuring a single instance of the GMTracker item exists.
@@ -37,7 +37,7 @@ class K4GMTracker {
    */
   public static async Initialize(): Promise<void> {
 
-    if (!getUser()?.isGM) {
+    if (!getUser().isGM) {
       return;
     }
 
@@ -63,7 +63,11 @@ class K4GMTracker {
 
   public static Get(): K4GMTracker {
     if (!K4GMTracker.instance) {
-      throw new Error("GM Tracker not initialized");
+      const instance = getGame().items.find((item: K4Item): item is K4Item<K4ItemType.gmtracker> => item.type === K4ItemType.gmtracker);
+      if (!instance) {
+        throw new Error("GM Tracker not initialized");
+      }
+      K4GMTracker.instance = new K4GMTracker(instance);
     }
     return K4GMTracker.instance;
   }
@@ -78,15 +82,52 @@ class K4GMTracker {
     return this._trackerItem;
   }
 
+  get elem$(): Maybe<JQuery> {
+    if (this.tracker.sheet.rendered) {
+      return $(this.tracker.sheet.element);
+    }
+    return undefined;
+  }
+
   get system(): K4GMTracker.System {
     return this.tracker.system;
   }
 
   get phase(): K4GamePhase {
-    return this.system.gamephase;
+    return this.system.gamePhase;
   }
   set phase(phase: K4GamePhase) {
-    void this.tracker.update({system: {gamephase: phase}});
+    void this.tracker.update({system: {gamePhase: phase}}, {render: true});
+  }
+
+
+  activateSheetListeners(html: JQuery): void {
+
+    html.find(".phase-select-button")
+      .on({
+        click: (evemt: ClickEvent): void => {
+          const button$ = $(evemt.currentTarget as HTMLButtonElement);
+          const curPhase = this.phase;
+          const clickedPhase = button$.data("phase") as K4GamePhase;
+          const curPhaseIndex = Object.values(K4GamePhase).indexOf(curPhase);
+          const clickedPhaseIndex = Object.values(K4GamePhase).indexOf(clickedPhase);
+
+          // Do nothing if clickedPhase is more than one step away from curPhase
+          if (Math.abs(clickedPhaseIndex - curPhaseIndex) > 1) {
+            return;
+          }
+
+          // If the clicked phase equals the current phase, move one phase left
+          if (clickedPhase === curPhase) {
+            const newPhase = Object.values(K4GamePhase)[curPhaseIndex - 1];
+            this.phase = newPhase;
+            return;
+          }
+
+          // Otherwise, set the phase to the clicked phase
+          this.phase = clickedPhase;
+        }
+      });
   }
 
 }

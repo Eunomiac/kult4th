@@ -256,6 +256,7 @@
 		},
     "gmtracker": {
       "templates": ["base", "hasSubItems"],
+      "gamePhase": "uninitialized",
       "collapsedColumns": {}
     }
 	}

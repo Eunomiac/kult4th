@@ -4,9 +4,26 @@ $assetPath: '/assets';
 @import 'globals/typography';
 @import 'globals/root';
 
+body:not(.interface-visible),
+body.vtt.game.system-kult4th:not(.interface-visible) {
+  background: var(--K4-GREY0);
+  #interface {
+    background: var(--K4-GREY0);
+    > * {
+      visibility: hidden;
+    }
+  }
+  #pause { visibility: hidden; }
+  #notifications { visibility: hidden; }
+
+  .application.sheet.user-config {
+    display: none;
+  }
+}
+
 .vtt.game.system-kult4th {
 
-  background: var(--K4-GREY1);
+  background: var(--K4-GREY3);
   background-image: none;
   box-shadow: none;
 
@@ -103,27 +120,29 @@ $assetPath: '/assets';
     }
 	}
 
-  #interface.gm-user {
-    #ui-left {
-      #dev-mode-button {
-        left: 0;
-        top: 0;
-        background: none;
-        filter: brightness(0.5);
-        transition: filter 0.2s;
+  #interface {
+    &.gm-user {
+      #ui-left {
+        #dev-mode-button {
+          left: 0;
+          top: 0;
+          background: none;
+          filter: brightness(0.5);
+          transition: filter 0.2s;
 
-        &:hover {
-          filter: brightness(1);
+          &:hover {
+            filter: brightness(1);
+          }
         }
       }
-    }
-    #ui-right {
-      #sidebar {
-        #chat {
-          #chat-controls {
-            pointer-events: auto;
-            &:hover {
-              opacity: 1;
+      #ui-right {
+        #sidebar {
+          #chat {
+            #chat-controls {
+              pointer-events: auto;
+              &:hover {
+                opacity: 1;
+              }
             }
           }
         }

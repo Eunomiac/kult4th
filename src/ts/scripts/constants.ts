@@ -85,10 +85,12 @@ export enum K4ActorType {
   npc = "npc"
 }
 export enum K4GamePhase {
+  uninitialized = "uninitialized",
+  initialized = "initialized",
   chargen = "chargen",
-  onboarding = "onboarding",
-  game = "game",
-  wrapup = "wrapup"
+  preSession = "preSession",
+  session = "session",
+  postSession = "postSession"
 }
 export enum K4CharGenPhase {
   archetype = "archetype",
@@ -1143,50 +1145,50 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
 
 export const Colors = {
   // GOLD5
-  GOLD1: Color.fromRGB([58, 54, 41]),
-  GOLD2: Color.fromRGB([81, 76, 58]),
-  GOLD3: Color.fromRGB([104, 97, 74]),
-  GOLD4: Color.fromRGB([127, 119, 90]),
-  GOLD5: Color.fromRGB([150, 140, 106]),
-  GOLD6: Color.fromRGB([177, 164, 125]),
-  GOLD7: Color.fromRGB([203, 189, 143]),
-  GOLD8: Color.fromRGB([229, 213, 162]),
-  GOLD9: Color.fromRGB([255, 243, 204]),
+  GOLD1: "rgb(58, 54, 41)",
+  GOLD2: "rgb(81, 76, 58)",
+  GOLD3: "rgb(104, 97, 74)",
+  GOLD4: "rgb(127, 119, 90)",
+  GOLD5: "rgb(150, 140, 106)",
+  GOLD6: "rgb(177, 164, 125)",
+  GOLD7: "rgb(203, 189, 143)",
+  GOLD8: "rgb(229, 213, 162)",
+  GOLD9: "rgb(255, 243, 204)",
 
   // RED5
-  RED1: Color.fromRGB([38, 8, 8]),
-  RED2: Color.fromRGB([68, 14, 14]),
-  RED3: Color.fromRGB([97, 20, 20]),
-  RED4: Color.fromRGB([126, 26, 26]),
-  RED5: Color.fromRGB([155, 33, 33]),
-  RED6: Color.fromRGB([180, 38, 38]),
-  RED7: Color.fromRGB([205, 47, 43]),
-  RED8: Color.fromRGB([230, 57, 48]),
-  RED9: Color.fromRGB([255, 124, 114]),
+  RED1: "rgb(38, 8, 8)",
+  RED2: "rgb(68, 14, 14)",
+  RED3: "rgb(97, 20, 20)",
+  RED4: "rgb(126, 26, 26)",
+  RED5: "rgb(155, 33, 33)",
+  RED6: "rgb(180, 38, 38)",
+  RED7: "rgb(205, 47, 43)",
+  RED8: "rgb(230, 57, 48)",
+  RED9: "rgb(255, 124, 114)",
 
   // BLUE5
-  BLUE1: Color.fromRGB([9, 18, 29]),
-  BLUE2: Color.fromRGB([18, 34, 57]),
-  BLUE3: Color.fromRGB([26, 51, 84]),
-  BLUE4: Color.fromRGB([34, 68, 112]),
-  BLUE5: Color.fromRGB([43, 85, 139]),
-  BLUE6: Color.fromRGB([52, 103, 168]),
-  BLUE7: Color.fromRGB([61, 121, 197]),
-  BLUE8: Color.fromRGB([70, 139, 226]),
-  BLUE9: Color.fromRGB([119, 179, 255]),
+  BLUE1: "rgb(9, 18, 29)",
+  BLUE2: "rgb(18, 34, 57)",
+  BLUE3: "rgb(26, 51, 84)",
+  BLUE4: "rgb(34, 68, 112)",
+  BLUE5: "rgb(43, 85, 139)",
+  BLUE6: "rgb(52, 103, 168)",
+  BLUE7: "rgb(61, 121, 197)",
+  BLUE8: "rgb(70, 139, 226)",
+  BLUE9: "rgb(119, 179, 255)",
 
   // GREYS
-  GREY0: Color.fromRGB([0, 0, 0]),
-  GREY1: Color.fromRGB([20, 20, 20]),
-  GREY2: Color.fromRGB([47, 47, 47]),
-  GREY3: Color.fromRGB([74, 74, 74]),
-  GREY4: Color.fromRGB([100, 100, 100]),
-  GREY5: Color.fromRGB([127, 127, 127]),
-  GREY6: Color.fromRGB([154, 154, 154]),
-  GREY7: Color.fromRGB([181, 181, 181]),
-  GREY8: Color.fromRGB([208, 208, 208]),
-  GREY9: Color.fromRGB([235, 235, 235]),
-  GREY10: Color.fromRGB([255, 255, 255])
+  GREY0: "rgb(0, 0, 0)",
+  GREY1: "rgb(20, 20, 20)",
+  GREY2: "rgb(47, 47, 47)",
+  GREY3: "rgb(74, 74, 74)",
+  GREY4: "rgb(100, 100, 100)",
+  GREY5: "rgb(127, 127, 127)",
+  GREY6: "rgb(154, 154, 154)",
+  GREY7: "rgb(181, 181, 181)",
+  GREY8: "rgb(208, 208, 208)",
+  GREY9: "rgb(235, 235, 235)",
+  GREY10: "rgb(255, 255, 255)"
 }
 
 export const ColorFilters = {

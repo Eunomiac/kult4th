@@ -66,7 +66,7 @@ interface ChargenContext {
 
 
 const PIXELS_PER_ROTATION = 1000;
-const VALID_ARCHETYPE_TIERS: ArchetypeTier[] = [ArchetypeTier.aware];
+const VALID_ARCHETYPE_TIERS: ArchetypeTier[] = ["aware" as ArchetypeTier];
 
 function getValidArchetypes() {
   return Object.fromEntries(
@@ -237,17 +237,17 @@ class K4CharGen {
 
 
   private static _introOverlay$: Maybe<JQuery> = undefined;
-  static async PreInitialize() {
+  static PreInitialize() {
     // Create chargen intro overlay via JQuery and append it to the DOM
-    const content = await renderTemplate(U.getTemplatePath("chargen", "chargen-intro-overlay"), {});
-    this._introOverlay$ = $(content).appendTo("body");
+    // const content = await renderTemplate(U.getTemplatePath("chargen", "chargen-intro-overlay"), {});
+    // this._introOverlay$ = $("<div style='position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 10000;'></div>").appendTo("body");
 
-    // Immediately animate it in
-    U.gsap.to(this._introOverlay$, {
-      autoAlpha: 1,
-      duration: 1,
-      ease: "power2.inOut"
-    });
+    // // Immediately animate it in
+    // U.gsap.to(this._introOverlay$, {
+    //   autoAlpha: 1,
+    //   duration: 1,
+    //   ease: "power2.inOut"
+    // });
 
     // Preload video/webm element "cloud-bg.webm"
   }
@@ -261,8 +261,9 @@ class K4CharGen {
 
 
   static PostInitialize() {
+    if (!K4GMTracker.instance) { return; }
     const gmTracker = K4GMTracker.Get();
-    if (gmTracker.system.gamephase !== K4GamePhase.chargen) {
+    if (gmTracker.system.gamePhase !== K4GamePhase.chargen) {
       this._introOverlay$?.remove();
       return;
     }
