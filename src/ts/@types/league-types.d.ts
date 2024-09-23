@@ -41,11 +41,19 @@ declare global {
   function getUser(): User;
 
   /**
+   * Retrieves the PC actor owned by the current user.
+   * @returns The current Actor instance.
+   * @throws Error if the Actor is not ready.
+   */
+  function getActor(): K4Actor<K4ActorType.pc>;
+  /**
    * Retrieves the current I18n instance.
    * @returns The current I18n instance.
    * @throws Error if the I18n is not ready.
    */
   function getI18n(): I18n;
+
+
 
   export type EmbeddedCollection<
     ContainedDocumentConstructor extends foundry.abstract.DocumentConstructor,

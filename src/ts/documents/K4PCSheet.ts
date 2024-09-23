@@ -13,694 +13,167 @@ import K4DebugDisplay from "./K4DebugDisplay.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
+const GSAPEFFECTS: Record<string, GSAPEffectDefinition> = {
+  gearGeburahRotate: {
+    name: "gearGeburahRotate",
+    effect: (target, config) => {
+      const {duration} = config as {duration: number};
+      const outerGear$ = $(target as HTMLElement).find(".svg-gear-geburah");
+      const centerSaw$ = $(target as HTMLElement).find(".svg-gear-geburah-center-saw");
+      const centerSawRotate = gsap.timeline({repeat: -1})
+        .to(centerSaw$, {
+          rotation: "-=360",
+          duration,
+          ease:     "none"
+        });
 
+      const tl = U.gsap.timeline({repeat: -1});
 
-// function getValidArchetypes() {
-//   return Object.fromEntries(
-//     Object.entries(Archetypes)
-//       .filter(([_, archetype]) => VALID_ARCHETYPE_TIERS.includes(archetype.tier))
-//   );
-// }
-// function getArchetypeCount() {
-//   return Object.keys(getValidArchetypes()).length;
-// }
-// function getArchetypeFromIndex(index: number) {
-//   return Object.keys(getValidArchetypes())[index] as K4Archetype;
-// }
-// function getIndexOfArchetype(archetype: K4Archetype) {
-//   return Object.keys(getValidArchetypes())
-//     .findIndex((arch) => arch as K4Archetype === archetype);
-// }
-// function wrapIndex(index: number) {
-//   const total = getArchetypeCount();
-//   return ((index % total) + total) % total;
-// }
+      const fifthDuration = duration / 5;
+      const pulseDuration = fifthDuration / 5;
+      const pulseDelay = pulseDuration * 4;
+      tl
+        .to(outerGear$, {
+          rotation:      "-=20",
+          duration:      pulseDuration,
+          repeatRefresh: true,
+          repeatDelay:   pulseDelay,
+          ease:          "back",
+          repeat:        -1
+        }, 0);
 
-// function wrapRotation(rotation: number) {
-//   return (((rotation) % 360) + 360) % 360;
-// }
+      const warpDelay = fifthDuration / 20;
+      const warpDuration = warpDelay * 19;
+      tl
+        .fromTo(centerSawRotate, {
+          timeScale: 8
+        }, {
+          timeScale:   0.5,
+          duration:    warpDuration,
+          ease:        "power2",
+          repeatDelay: warpDelay,
+          // delay:       0.1,
+          repeat:      -1
+        }, 0);
 
-// function wrapXPos(x: number) {
-//   const totalWidth = PIXELS_PER_ROTATION;
-//   const minX = -totalWidth / 2;
-//   const maxX = totalWidth / 2;
-//   return U.gsap.utils.wrap(minX, maxX)(x);
-// }
+      return tl;
+    },
+    defaults: {
+      duration: 10
+    },
+    extendTimeline: false
+  },
+  gearBinahRotate: {
+    name: "gearBinahRotate",
+    effect: (target) => {
+      const binahTeeth$ = $(target as HTMLElement).find(".svg-gear-binah-outer-teeth");
+      const binahInner$ = $(target as HTMLElement).find(".svg-gear-binah-inner-full");
+      gsap.set(binahTeeth$, {scale: 0.97});
+      return gsap.timeline({repeat: -1})
+        .to(binahTeeth$, {
+          rotation: "-=360",
+          duration: 5,
+          repeat:   -1,
+          ease:     "none"
+        }, 0)
+        .to(binahInner$, {
+          rotation:      "+=10",
+          duration:      0.4,
+          repeatRefresh: true,
+          repeatDelay:   0.85,
+          ease:          "back.out(14)",
+          repeat:        -1
+        }, 0);
+    },
+    defaults: {},
+    extendTimeline: false
+  },
+  gearHugeRotate: {
+    name: "gearHugeRotate",
+    effect: (target, config) => {
+      const {duration} = config as {duration: number};
+      return gsap.to(target, {
+        rotation: "+=360",
+        duration,
+        ease:     "none",
+        repeat:   -1
+      });
+    },
+    defaults: {
+      duration: 50
+    },
+    extendTimeline: false
+  },
+  breakShard: {
+    name:   "breakShard",
+    effect: (target, config) => {
+      const {stability} = config as {stability: number};
+      const target$ = $(target as HTMLElement);
+      const shardsMap = {
+        7: [
+          [13, 4],
+          [12, 2, 3, 5, 1]
+        ],
+        6: [[1, 11], [10]],
+        5: [[5], [6]],
+        4: [
+          [8, 6],
+          [9, 7]
+        ],
+        3: [[10], [0]],
+        2: [[3, 12, 2], [0]],
+        1: [[7, 9], [0]]
+      };
+      const getFadingShards = (stabilityNum: number) => {
+        const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][0] ?? [];
+        return target$.find(shardNums.map((num) => `#shard-${num}`).join(", "));
+      };
+      const getShrinkingShards = (stabilityNum: number) => {
+        const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][1] ?? [];
+        return target$.find(shardNums.map((num) => `#shard-${num}`).join(", "));
+      };
+      const fullDuration = 0.5;
+      const fadingShardsScaleFullDuration = fullDuration / 5;
+      const fadingShardsShiftFullDuration = fullDuration - fadingShardsScaleFullDuration;
 
-// function getNormalizedRotation(rotation: number, offset = 0): number {
-//   return wrapRotation(rotation + offset) / 360;
-// }
-// function getNormalizedXPos(x: number, offset = 500): number {
-//   return wrapXPos(x + offset) / PIXELS_PER_ROTATION;
-// }
+      const fadingShards$ = getFadingShards(stability);
+      const fadingShardsNum = Array.from(fadingShards$).length;
+      const fadingShardsScaleStagger = fadingShardsNum <= 1
+        ? 0
+        : (0.5 * fadingShardsScaleFullDuration) / (fadingShardsNum - 1);
+      const fadingShardsShiftStagger = fadingShardsNum <= 1
+        ? 0
+        : (0.5 * fadingShardsShiftFullDuration) / (fadingShardsNum - 1);
+      const fadingShardsScaleDur = fadingShardsScaleFullDuration - (fadingShardsScaleStagger * (fadingShardsNum - 1));
+      const fadingShardsShiftDur = fadingShardsShiftFullDuration - (fadingShardsShiftStagger * (fadingShardsNum - 1));
+      const fadingShardsAnimDuration = fadingShardsScaleDur
+            + fadingShardsShiftDur
+            + (fadingShardsScaleStagger * (fadingShardsNum - 1))
+            + (fadingShardsShiftStagger * (fadingShardsNum - 1));
 
-// function revealAndReturn(elem$: JQuery) {
-//   elem$.css({
-//     opacity: 0,
-//     visibility: "visible"
-//   });
-//   return elem$;
-// }
-
-// function hideAndReturn(elem$: JQuery) {
-//   elem$.css({
-//     opacity: 0,
-//     visibility: "hidden"
-//   });
-//   return elem$;
-// }
-
-// Object.assign(globalThis, {wrapIndex, wrapRotation, wrapXPos,
-//   getArchetypeCount,
-//   getArchetypeFromIndex,
-//   getIndexFromYRot,
-//   getYRotFromXPos,
-//   getXPosFromYRot,
-//   getXPosFromIndex,
-//   getIndexFromXPos,
-//   getNormalizedDistanceFromSelected,
-//   revealAndReturn,
-//   hideAndReturn
-// });
-
-// export function getYRotFromIndex(index: number) {
-//   const boundIndex = wrapIndex(index);
-//   return U.gsap.utils.mapRange(0, getArchetypeCount(), 0, 360, boundIndex);
-// }
-
-// export function getIndexFromYRot(rotationY: number) {
-//   const total = getArchetypeCount();
-//   return U.pInt(U.gsap.utils.mapRange(0, 360, 0, total, wrapRotation(rotationY)));
-// }
-
-// export function getYRotFromXPos(x: number) {
-//   const max = PIXELS_PER_ROTATION / 2;
-//   return U.gsap.utils.mapRange(-max, max, 0, 360, wrapXPos(x));
-// }
-
-// export function getXPosFromYRot(rotationY: number) {
-//   const max = PIXELS_PER_ROTATION / 2;
-//   return U.gsap.utils.mapRange(0, 360, -max, max, wrapRotation(rotationY));
-// }
-
-// export function getXPosFromIndex(index: number) {
-//   const max = PIXELS_PER_ROTATION / 2;
-//   const boundIndex = wrapIndex(index);
-//   return U.gsap.utils.mapRange(0, getArchetypeCount(), -max, max, boundIndex);
-// }
-
-// export function getIndexFromXPos(x: number) {
-//   const total = getArchetypeCount();
-//   const max = PIXELS_PER_ROTATION / 2;
-//   return U.pInt(U.gsap.utils.mapRange(-max, max, 0, total, wrapXPos(x)));
-// }
-
-// export function getNormalizedDistanceFromSelected(index: number, selected: number) {
-//   const boundIndex = wrapIndex(index);
-//   const boundSelected = wrapIndex(selected);
-//   const total = getArchetypeCount();
-//   // Distance is symmetrical, so we halve the number of items to get the maximum distance.
-//   const halfTotal = total / 2;
-
-//   // Calculate the distance between the given index and the selected index
-//   const rawDistance = Math.abs(boundIndex - boundSelected);
-//   // If the raw distance is greater than half the total, we "count from the opposite direction"
-//   // by subtracting the raw distance from the total.
-//   const distance = rawDistance > halfTotal
-//     ? total - rawDistance
-//     : rawDistance;
-
-//   // Normalize the distance
-//   const normalizedDistance = distance / halfTotal;
-//   return U.clampNum(normalizedDistance, [0, 1]);
-// }
-
-// function getDistanceStyles(index: number, selected: number): Record<Key, string|number> {
-//   const scaleFactor = getNormalizedDistanceFromSelected(index, selected);
-
-//   const maxBlur = 5; const minBlur = 0;
-//   const maxBright = 0.8; const minBright = 0.5;
-//   const maxOpacity = 1; const minOpacity = 1;
-//   const maxScale = 1; const minScale = 1;
-//   const maxSaturate = 0.8; const minSaturate = 0.25;
-
-//   const blur = U.gsap.utils.mapRange(0, 1, minBlur, maxBlur, scaleFactor);
-//   const brightness = U.gsap.utils.mapRange(0, 1, minBright, maxBright, scaleFactor);
-//   const opacity = U.gsap.utils.mapRange(0, 1, minOpacity, maxOpacity, scaleFactor);
-//   const scale = U.gsap.utils.mapRange(0, 1, minScale, maxScale, scaleFactor);
-//   const saturate = U.gsap.utils.mapRange(0, 1,minSaturate, maxSaturate, scaleFactor);
-
-//   return {
-//     filter: `blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
-//     opacity: U.pFloat(opacity, 2),
-//     scale: U.pFloat(scale, 2)
-//   };
-// }
-
-// function getElementFromArchetype(context$: JQuery, archetype: K4Archetype) {
-//   return context$.find(`[data-archetype=${archetype}]`);
-// }
-
-// function getElementFromIndex(context$: JQuery, index: number) {
-//   const archetype = getArchetypeFromIndex(index);
-//   return getElementFromArchetype(context$, archetype);
-// }
-
-// const updateDebugInfo = (carousel$: JQuery, x: number) => {
-//   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-//   if (!K4DebugDisplay.IS_DEBUGGING) { return; }
-//   const newIndex = getIndexFromXPos(x);
-//   const archetype = getArchetypeFromIndex(newIndex);
-//   const elementIndex = carousel$.find(`[data-archetype=${archetype}]`).data("index") as number;
-//   const selArchetypeIndex = getIndexOfArchetype(archetype);
-
-//   K4DebugDisplay.updateArchetypeInfo(archetype, selArchetypeIndex, newIndex, elementIndex);
-// };
-
+      return gsap.timeline({})
+        .to(getShrinkingShards(stability), {transformOrigin: "center center", scale: 1, duration: 0.25, ease: "none"}, 0)
+        .set(fadingShards$, {transformOrigin: "right center"}, 0)
+        .to(fadingShards$, {
+          scaleX:   -1,
+          duration: 0.5,
+          ease:     "rough({ strength: 2, points: 10, template: power4.in, taper: out, randomize: true, clamp: false })", // "power2.inOut",
+          stagger:  0.1
+        })
+        .to(fadingShards$, {
+          xPercent: 700,
+          duration: 0.4,
+          ease:     "power2.in",
+          stagger:  0.1
+        });
+        // ">-0.75")
+    },
+    defaults:       {},
+    extendTimeline: true
+  }
+};
 
 const ANIMATIONS = {
-  // async revealBackground(carouselScene$: JQuery, revealCarouselTimeline?: gsap.core.Timeline) {
-
-  //   const sheet$ = carouselScene$.closest(".k4-actor-sheet");
-  //   const container$ = carouselScene$.closest(".pc-initialization");
-  //   const bgContainer$ = sheet$.find(".pc-initialization-bg");
-  //   const mid$ = bgContainer$.find(".cityscape-mid");
-  //   const clouds$ = bgContainer$.find(".cloud-bg");
-  //   const fore$ = bgContainer$.find(".cityscape-fore");
-
-  //   // For immediate user feedback, fade in the bg container and the sheet immediately.
-  //   U.gsap.to([sheet$, bgContainer$], {
-  //     autoAlpha: 1,
-  //     duration: revealCarouselTimeline ? 0.25 : 0,
-  //     ease: "power2.in"
-  //   });
-
-  //   const cloudVideo = clouds$[0] as HTMLVideoElement;
-
-  //   return new Promise<boolean>((resolve) => {
-
-  //     // Build the timeline, including a resolve step near the end so the next animation can blend in nicely.
-  //     const tl = U.gsap.timeline({paused: true, defaults: {ease: "power2.inOut"}})
-  //     .fromTo(clouds$, {autoAlpha: 0}, {autoAlpha: 0.75, duration: 2}, 0)
-  //     .fromTo(fore$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 1)
-  //     .fromTo(mid$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 2)
-  //     .fromTo(fore$, {filter: "blur(20px) brightness(0)"}, {filter: "blur(1px) brightness(0.8)", duration: 6}, 0)
-  //     .fromTo(fore$, {y: 250, scale: 1}, {y: 150, scale: 1.15, ease: "expoScale(1, 1.15, power2.inOut)", duration: 6}, "<")
-  //     .fromTo(mid$, {y: 200, scale: 0.85}, {y: 150, scale: 1, ease: "expoScale(0.85, 1, power2.inOut)", duration: 6}, "<")
-  //     .fromTo(mid$, {filter: "blur(40px) brightness(0)"}, {filter: "blur(2px) brightness(1)", duration: 6}, "<");
-
-  //     if (revealCarouselTimeline) {
-  //       tl.add(revealCarouselTimeline, "<25%");
-  //     }
-
-  //     tl.call(() => { resolve(true) }, [], ">");
-
-  //     // Function to start the animation
-  //     const startAnimation = () => {
-  //       void cloudVideo.play();
-  //       if (!revealCarouselTimeline) {
-  //         tl.progress(1);
-  //         resolve(true);
-  //         return;
-  //       }
-  //       tl.play();
-  //     };
-
-  //     // Check if video is already loaded
-  //     if (cloudVideo.readyState >= 3) {
-  //       startAnimation();
-  //     } else {
-  //       // Wait for the video to be ready
-  //       cloudVideo.addEventListener('canplay', startAnimation, { once: true });
-  //       // Fallback in case the video fails to load
-  //       cloudVideo.addEventListener('error', startAnimation, { once: true });
-  //     }
-  //   });
-  // },
-  // // async revealCarousel(carouselScene$: JQuery) {
-
-  // //   const container$ = carouselScene$.closest(".pc-initialization");
-  // //   const sheet$ = container$.closest(".k4-actor-sheet");
-  // //   const [_a, _b, actorID] = sheet$.attr("id")!.split("-");
-  // //   const actor = getGame().actors.get(actorID) as K4Actor<K4ActorType.pc>;
-  // //   const selArchetype = actor.archetype ?? K4Archetype.academic;
-  // //   const selIndex = getIndexOfArchetype(selArchetype);
-  // //   const farthestIndex = wrapIndex(selIndex + getArchetypeCount() / 2);
-  // //   const sheetHeader$ = sheet$.find(".window-header");
-  // //   const sheetResizeHandle$ = sheet$.find(".window-resizable-handle");
-  // //   const attributesPanel$ = container$.find(".archetype-panel.attributes");
-  // //   const descriptionPanel$ = container$.find(".archetype-panel.description");
-  // //   const archetypeExamples$ = container$.find(".archetype-example-list");
-  // //   const namePanel$ = container$.find(".archetype-panel.actor-name");
-  // //   const items$ = carouselScene$.find(".archetype-carousel-item");
-
-  // //   kLog.log(`selArchetype: ${selArchetype}, selIndex: ${selIndex}, farthestIndex: ${farthestIndex}`);
-
-  // //   sheetHeader$.css("display", "none");
-  // //   sheetResizeHandle$.css("display", "none");
-
-  // //   if (CONFIG.K4.isCharGenInitialized) {
-  // //     $([
-  // //       sheet$,
-  // //       container$,
-  // //       carouselScene$,
-  // //       archetypeExamples$,
-  // //       items$,
-  // //       attributesPanel$,
-  // //       namePanel$,
-  // //       descriptionPanel$
-  // //     ]).css("visibility", "visible");
-  // //     void ANIMATIONS.revealBackground(carouselScene$);
-  // //     actor.sheet.updateArchetypeExamples(container$);
-  // //     return;
-  // //   }
-
-  // //   const tl = U.gsap.timeline()
-  // //     .from(carouselScene$, {
-  // //       autoAlpha: 0,
-  // //       y: 0,
-  // //       scale: 0.7,
-  // //       filter: "blur(100px)",
-  // //       ease: "power3.in",
-  // //       duration: 1
-  // //     }, 0)
-  // //     .from(container$, {
-  // //       autoAlpha: 0,
-  // //       filter: "blur(10px)",
-  // //       backgroundPosition: "50% 620px, 50% 630px",
-  // //       duration: 0.5,
-  // //       ease: "none"
-  // //     }, 0)
-  // //     .from(items$, {
-  // //       autoAlpha: 0,
-  // //       y: 0,
-  // //       scale: 1,
-  // //       ease: "power2",
-  // //       duration: 1,
-  // //       delay(this: gsap.core.Timeline, index: number) {
-  // //         const MAX_DELAY = this.duration();
-  // //         const STAGGER_SHIFT = MAX_DELAY / getArchetypeCount() / 2;
-  // //         const nextDistRatio = 1 - getNormalizedDistanceFromSelected(wrapIndex(index + 1), selIndex);
-  // //         const thisDistRatio = 1 - getNormalizedDistanceFromSelected(index, selIndex);
-  // //         const distRatio = thisDistRatio + (nextDistRatio > thisDistRatio ? STAGGER_SHIFT : 0);
-  // //         const delay = U.gsap.utils.mapRange(0, 1, 0, MAX_DELAY, distRatio);
-  // //         kLog.log(`[K4PCSheet] Delay (MAX: ${MAX_DELAY}): index '${index}' -> ${nextDistRatio > thisDistRatio ? `[STAGGER: '${STAGGER_SHIFT}']` : ""} distRatio '${distRatio}' -> delay '${delay}'`);
-  // //         return delay;
-  // //       }
-  // //     })
-  // //     .from([
-  // //       attributesPanel$,
-  // //       namePanel$,
-  // //       descriptionPanel$
-  // //     ], {
-  // //       autoAlpha: 0,
-  // //       y: 200,
-  // //       ease: "power2",
-  // //       duration: 1,
-  // //       stagger: 0.2
-  // //     }, 0)
-  // //     .call(() => { resolve(true) }, [], "<75%");
-
-  // //     ANIMATIONS.revealBackground(carouselScene$, tl).then(() => {
-  // //       tl.play();
-  // //     }).catch(() => {
-  // //       resolve(false);
-  // //     });
-  // //   // })
-  // // },
-  // archetypeStyleTimeline(archetype$: JQuery, actor: K4Actor<K4ActorType.pc>) {
-  //   const container$ = archetype$.closest(".pc-initialization");
-  //   const actorSheet$ = container$.closest(".k4-actor-sheet");
-  //   const archetypeImg$ = archetype$.find(".archetype-carousel-img");
-  //   const archetypeThe$ = archetype$.find(".archetype-carousel-the");
-  //   const archetypeName$ = archetype$.find(".archetype-carousel-name");
-  //   const archetypeDescription$ = archetype$.find(".archetype-description");
-
-  //   const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
-  //   // <div class="archetype-panels" data-archetype="{{case "lower" archetype}}">
-  //   const archetypePanels$ = container$.find(`.archetype-panels[data-archetype="${archetype}"]`);
-  //   const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
-  //   const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
-  //   const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
-  //   const archetypeNotes$ = archetypePanels$.find(".archetype-panel-notes");
-  //   const archetypeExamples$ = container$.find(".archetype-example-list");
-
-  //   // Split the description into individual lines
-  //   const splitDescription = new SplitText(archetypeDescription$, { type: "lines" });
-  //   archetypeThe$.css("visibility", "visible");
-  //   archetypeName$.css("visibility", "visible");
-  //   archetypePanels$.css("visibility", "visible");
-  //   archetypeDescription$.css("visibility", "visible");
-  //   archetypeAdvantages$.css("visibility", "visible");
-  //   archetypeDisadvantages$.css("visibility", "visible");
-  //   archetypeDarkSecrets$.css("visibility", "visible");
-
-  //   // Prepare the example strings for when this archetype is selected
-  //   const archData = Archetypes[archetype ?? K4Archetype.academic];
-
-  //   // Assign listeners to each of the trait elements
-  //   [
-  //     archetypeAdvantages$,
-  //     archetypeDisadvantages$,
-  //     archetypeDarkSecrets$
-  //   ].forEach((container) => {
-  //     container.find(".archetype-trait-container").each((_i, cont) => {
-  //       const cont$ = $(cont);
-  //       const overlay$ = cont$.next(".overlay");
-  //       const trait = cont$.attr("data-trait")!;
-  //       const isSelected = cont$.attr("data-is-selected") === "true";
-  //       const isMandatory = cont$.attr("data-is-mandatory") === "true";
-
-  //       const overlayTl = U.gsap.timeline({paused: true});
-
-  //       overlayTl
-  //         .addLabel("unselected")
-  //         .fromTo(overlay$, {width: 0}, {
-  //           width: 300,
-  //           duration: 2,
-  //           ease: "slow",
-  //           onComplete(this: gsap.core.Timeline) {
-  //             if (!isSelected) {
-  //               void actor.charGenSelect(trait);
-  //             }
-  //             overlayTl.seek("selected");
-  //           },
-  //           onReverseComplete(this: gsap.core.Timeline) {
-  //             if (isSelected) {
-  //               void actor.charGenDeselect(trait);
-  //             }
-  //             overlayTl.seek("unselected");
-  //           }
-  //         }, 0.5)
-  //         .to(overlay$, {
-  //           width: 300,
-  //           duration: 0.5,
-  //           ease: "none"
-  //         })
-  //         .addLabel("selected");
-
-  //       if (isSelected || isMandatory) {
-  //         overlayTl.seek("selected");
-  //       }
-
-  //       let clickTimer: NodeJS.Timeout | null = null;
-  //       let longPressTriggered = false;
-
-  //       cont$.on({
-  //         mousedown: () => {
-  //           if (isMandatory) { return; }
-  //           longPressTriggered = false;
-  //           clickTimer = setTimeout(() => {
-  //             longPressTriggered = true;
-  //           }, 500);
-  //           if (isSelected) {
-  //             overlayTl.reverse();
-  //           } else {
-  //             overlayTl.play();
-  //           }
-  //         },
-  //         mouseup: () => {
-  //           if (isMandatory) { return; }
-  //           if (clickTimer) {
-  //             clearTimeout(clickTimer);
-  //             clickTimer = null;
-  //           }
-  //           if (overlayTl.isActive()) {
-  //             if (overlayTl.reversed()) {
-  //               overlayTl.play();
-  //             } else {
-  //               overlayTl.reverse();
-  //             }
-  //           }
-  //         },
-  //         // click: () => {
-  //         //   if (isMandatory) { return; }
-  //         //   if (isSelected) {
-  //         //     void actor.charGenDeselect(trait);
-  //         //     kLog.log("[K4PCSheet] deselect", {container: cont, trait$});
-  //         //   } else {
-  //         //     kLog.log("[K4PCSheet] select", {container: cont, trait$});
-  //         //   }
-  //         // },
-  //         click: async () => {
-  //           if (longPressTriggered) { return; }
-  //           const traitItem = getGame().items.getName(trait) as Maybe<K4Item>;
-  //           if (!traitItem) { return; }
-  //           // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
-  //           const highestZIndex = Math.max(...$("body").find(".k4-item-sheet").map((_i, sheet) =>
-  //             U.pInt($(sheet).css("z-index"))
-  //           ).toArray());
-  //           actorSheet$.css("z-index", 100);
-  //           if (!traitItem.sheet.rendered) {
-  //             traitItem.sheet.render(true);
-  //             await U.sleep(150);
-  //           }
-  //           traitItem.sheet.element.css("z-index", highestZIndex + 1);
-  //           actorSheet$.css("z-index", 100);
-  //         }
-  //       })
-  //       const trait$ = $(cont).find(".archetype-trait");
-  //       trait$.on("click", () => {
-  //         kLog.log("[K4PCSheet] archetypeAdvantages$", {container: cont, trait$});
-  //       });
-  //     });
-  //   });
-
-  //   // Determine minimum and maximum values for distance-based styles
-  //   const minDistanceStyles = getDistanceStyles(0, 0);
-  //   const maxDistanceStyles = getDistanceStyles(0, Math.floor(getArchetypeCount() / 2));
-
-  //   return U.gsap.timeline({paused: true})
-  //     .addLabel("dark")
-  //     .fromTo(archetype$, {
-  //       opacity: maxDistanceStyles.opacity,
-  //       filter: maxDistanceStyles.filter,
-  //     }, {
-  //       opacity: minDistanceStyles.opacity,
-  //       filter: minDistanceStyles.filter,
-  //       duration: 1,
-  //       ease: "power2"
-  //     })
-  //     .addLabel("light")
-  //     .set(archetype$, {filter: "none"})
-  //     .set(archetypeImg$, {filter: "brightness(1) contrast(1)"})
-  //     .fromTo(archetype$, {
-  //       scale: 1,
-  //       opacity: 1
-  //     }, {
-  //       scale: 1.15,
-  //       opacity: 1,
-  //       duration: 2,
-  //       ease: "power2"
-  //     })
-  //     .fromTo(archetypeImg$, {
-  //     }, {
-  //       filter: "brightness(1.25) saturate(1)",
-  //       duration: 2,
-  //       ease: "power2"
-  //     }, "<")
-  //     .fromTo([
-  //       archetypeThe$,
-  //       archetypeName$,
-  //       ...splitDescription.lines
-  //     ], {
-  //       autoAlpha: 0,
-  //       skewX: -65,
-  //       filter: "blur(15px)"
-  //     }, {
-  //       autoAlpha: 1,
-  //       skewX: 0,
-  //       filter: "blur(0px)",
-  //       ease: "power2",
-  //       duration: 2,
-  //       stagger: {
-  //         each: 0.25
-  //       },
-  //       onStart() {
-  //         CONFIG.K4.charGenIsShowing = archetype ?? null;
-  //         kLog.log("[K4PCSheet] archetypeExamples$", {archetypeExamples$, archData});
-  //         archetypeExamples$.each((_i, elem) => {
-  //           const target = $(elem).attr("data-target") as Maybe<string>;
-  //           kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, archData});
-  //           if (target) {
-  //             const example = U.getProp<string[]>(archData, target);
-  //             kLog.log("[K4PCSheet] archetypeExamples$", {elem, target, example});
-  //             if (example) {
-  //               $(elem).text(example.join(", "));
-  //             }
-  //           }
-  //         });
-  //       }
-  //     }, "<")
-  //     .fromTo([
-  //       archetypeAdvantages$,
-  //       archetypeDisadvantages$,
-  //       archetypeDarkSecrets$,
-  //       archetypeNotes$
-  //     ], {
-  //       autoAlpha: 0,
-  //       y: 200
-  //     }, {
-  //       autoAlpha: 1,
-  //       y: 0,
-  //       ease: "power2",
-  //       duration: 2,
-  //       stagger: {
-  //         amount: 0.25
-  //       }
-  //     }, "<")
-  //     .addLabel("selected");
-  // },
-  // async archetypeCarouselTimeline(carouselScene$: JQuery, itemWidth: number, actor: K4Actor): Promise<gsap.core.Timeline> {
-
-  //   const container$ = carouselScene$.closest(".pc-initialization");
-  //   const carousel$ = carouselScene$.find(".archetype-carousel");
-  //   const items$ = carousel$.find(".archetype-carousel-item");
-  //   const draggerContainer$ = container$.find(".archetype-carousel-dragger");
-  //   const dragger$ = draggerContainer$.find(".archetype-carousel-drag-handle");
-
-  //   const totalItems = getArchetypeCount();
-  //   const radius = Math.round((itemWidth / 2) / Math.tan(Math.PI / totalItems));
-  //   let selArchetypeIndex = actor.archetype
-  //     ? getIndexOfArchetype(actor.archetype)
-  //     : 0;
-
-  //   await U.gsap.set(carouselScene$, {opacity: 0, visibility: "visible"});
-
-  //   await U.gsap.set(carousel$, {z: -1 * radius});
-  //   await Promise.all(items$.map((i, item) => {
-  //     const item$ = $(item);
-  //     const archTimeline = ANIMATIONS.archetypeStyleTimeline($(item), actor as K4Actor<K4ActorType.pc>);
-  //     const distFromSelected = getNormalizedDistanceFromSelected(i, selArchetypeIndex);
-  //     archTimeline.seek(1 - distFromSelected, true);
-  //     item$.data("archetypeStyleTimeline", archTimeline);
-  //     return U.gsap.set(item, {
-  //       transform: `rotateY(${-1 * getYRotFromIndex(i)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i)}deg)`
-  //     });
-  //   }));
-
-  //   await U.gsap.set(carouselScene$, { opacity: 1, visibility: "visible" });
-
-
-
-
-  // const updateCarousel = async (x: number, isTweening = false) => {
-  //   const wrappedX = wrapXPos(x);
-  //   const rotation = getYRotFromXPos(wrappedX);
-  //   let tl: gsap.core.Tween;
-  //   if (isTweening) {
-  //     tl = U.gsap.to(carousel$, {rotationY: rotation, duration: 0.5, ease: "back.inOut"});
-  //   } else {
-  //     tl = U.gsap.set(carousel$, { rotationY: rotation });
-  //   }
-  //   items$.each((_i, item) => {
-  //     const item$ = $(item);
-  //     gsap.set(item, { rotationY: -rotation });
-  //     const thisTimeline = item$.data("archetypeStyleTimeline") as gsap.core.Timeline;
-  //     const thisIndex = U.pInt(item$.attr("data-index"));
-  //     if (thisIndex !== selArchetypeIndex) {
-  //       if (isTweening) {
-  //         void thisTimeline.tweenTo(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), {duration: 0.5, ease: "back"});
-  //       } else {
-  //         void thisTimeline.seek(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true);
-  //       }
-  //     }
-  //   });
-  //   U.gsap.set(dragger$, { x: wrappedX, duration: 0 });
-  //   await tl;
-  // };
-
-
-  // const getSnappedXPos = (x: number) => {
-  //   const newIndex = getIndexFromXPos(wrapXPos(x));
-  //   return getXPosFromIndex(newIndex);
-  // }
-
-
-  // const snapToNearestArchetype = async (x: number, isCompleting = false, isUpdating = true) => {
-  //   const newIndex = getIndexFromXPos(wrapXPos(x));
-  //   actor.archetype = getArchetypeFromIndex(newIndex);
-  //   selArchetypeIndex = newIndex;
-  //   if (isUpdating) {
-  //     await updateCarousel(getXPosFromIndex(newIndex), isCompleting);
-  //   }
-  //   K4DebugDisplay.updateArchetypeInfo(actor.archetype, selArchetypeIndex, newIndex, newIndex);
-  //   if (isCompleting) {
-  //     focusOn();
-  //   }
-  //   return getXPosFromIndex(newIndex);
-  // };
-
-  // const focusOn = (index = selArchetypeIndex) => {
-  //   const selectedArchetype = getElementFromIndex(carousel$, index);
-  //   const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeStyleTimeline") as gsap.core.Timeline);
-  //   void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
-  // }
-  // const focusOff = (index = selArchetypeIndex) => {
-  //   const selectedArchetype = getElementFromIndex(carousel$, index);
-  //   const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeStyleTimeline") as gsap.core.Timeline);
-  //   void selectedArchetypeTimeline.tweenTo("light", {duration: 0.5});
-  // }
-
-  // const dragger = Dragger.create(dragger$, {
-  //   type: "x",
-  //   // inertia: true,
-  //   dragResistance: 0.5,
-  //   maxDuration: 0.25,
-  //   snap: {
-  //     x: function(this: Dragger, value: number) {
-  //       if (!this.isThrowing) { return value; }
-  //       return getSnappedXPos(value);
-  //     }
-  //   },
-  //   onDragStart: function(this: Dragger) {
-  //     focusOff();
-  //   },
-  //   onDrag: function(this: Dragger) {
-  //     void updateCarousel(this.x);
-  //     K4DebugDisplay.updateDraggerInfo(this, actor);
-  //   },
-  //   onDragEnd: function(this: Dragger) {
-  //     if (this.isThrowing) { return; }
-  //     void snapToNearestArchetype(this.x, true);
-  //   },
-  //   onThrowUpdate: function(this: Dragger) {
-  //     void updateCarousel(this.x);
-  //   },
-  //   onThrowComplete: function(this: Dragger) {
-  //     void snapToNearestArchetype(this.x, true);
-  //   }
-  // });
-
-
-
-  //   // // Update rotation on window resize
-  //   // window.addEventListener("resize", () => {
-  //   //   const newMaxDistance = window.innerWidth / 2;
-  //   //   const currentRotation = gsap.getProperty(carousel$[0], "rotationY") as number;
-  //   //   const newX = (currentRotation / 180) * newMaxDistance;
-  //   //   gsap.set(dragger$, { x: newX });
-  //   //   updateRotation(newX);
-  //   // });
-
-  //   void updateCarousel(getXPosFromIndex(selArchetypeIndex));
-
-  //   await ANIMATIONS.revealCarousel(carouselScene$);
-
-  //   // get currently selected archetype element, retrieve its timeline, and set it to "selected"
-  //   // const tl = gsap.timeline({ paused: true });
-  //   const selectedArchetype = getElementFromIndex(carousel$, selArchetypeIndex);
-  //   const selectedArchetypeTimeline = ($(selectedArchetype).data("archetypeStyleTimeline") as gsap.core.Timeline);
-
-  //   // If the selected archetype is the same as the one we're already showing, skip the tween
-  //   if (CONFIG.K4.charGenIsShowing === actor.archetype) {
-  //     selectedArchetypeTimeline.seek("selected");
-  //   } else {
-  //     void selectedArchetypeTimeline.tweenTo("selected", {duration: 2});
-  //   }
-
-  //   return U.gsap.timeline();
-  // },
   _glitchText(_target: HTMLElement, startingGlitchScale = 1): GsapAnimation {
 
     const tl = gsap.timeline({
@@ -741,63 +214,6 @@ const ANIMATIONS = {
       .to(".glitch", {duration() { return 0.04; }, scaleY: 1, ease: "power4.inOut"});
 
     return tl;
-  },
-  gearGeburahRotate(target: HTMLElement): GsapAnimation {
-    const outerGear$ = $(target).find(".svg-gear-geburah");
-    const centerSaw$ = $(target).find(".svg-gear-geburah-center-saw");
-    const centerSawRotate = gsap.timeline({repeat: -1})
-      .to(centerSaw$, {
-        rotation: "-=360",
-        duration: 10,
-        ease:     "none"
-      });
-    return gsap.timeline({delay: 0.2, repeat: -1})
-      .to(outerGear$, {
-        rotation:      "-=20",
-        duration:      0.4,
-        repeatRefresh: true,
-        repeatDelay:   1.6,
-        ease:          "back",
-        repeat:        -1
-      }, 0)
-      .fromTo(centerSawRotate, {
-        timeScale: 8
-      }, {
-        timeScale:   0.5,
-        duration:    1.9,
-        ease:        "power2",
-        repeatDelay: 0,
-        delay:       0.1,
-        repeat:      -1
-      }, 0);
-  },
-  gearBinahRotate(target: HTMLElement): GsapAnimation {
-    const binahTeeth$ = $(target).find(".svg-gear-binah-outer-teeth");
-    const binahInner$ = $(target).find(".svg-gear-binah-inner-full");
-    gsap.set(binahTeeth$, {scale: 0.97});
-    return gsap.timeline({repeat: -1})
-      .to(binahTeeth$, {
-        rotation: "-=360",
-        duration: 5,
-        repeat:   -1,
-        ease:     "none"
-      }, 0)
-      .to(binahInner$, {
-        rotation:      "+=10",
-        duration:      0.4,
-        repeatRefresh: true,
-        repeatDelay:   0.85,
-        ease:          "back.out(14)",
-        repeat:        -1
-      }, 0);
-  },
-  gearHugeRotate(target: HTMLElement): GsapAnimation {
-    return gsap.to(target, {
-      rotation: "+=360",
-      duration: 50,
-      ease:     "none",
-      repeat:   -1
-    });
   },
   hoverNav(target: HTMLElement): GsapAnimation {
     // const navGhostGears$ = $(target).find(".gear-container.gear-ghost-nav");
@@ -1194,71 +610,8 @@ class K4PCSheet extends ActorSheet {
     gsap.registerPlugin(Dragger, InertiaPlugin);
 
     // Register GSAP Effects
-    gsap.registerEffect({
-      name:   "breakShard",
-      effect: (stabilityContainer$: JQuery, config: {stability: number}) => {
-        stabilityContainer$ = $(stabilityContainer$);
-        const shardsMap = {
-          7: [
-            [13, 4],
-            [12, 2, 3, 5, 1]
-          ],
-          6: [[1, 11], [10]],
-          5: [[5], [6]],
-          4: [
-            [8, 6],
-            [9, 7]
-          ],
-          3: [[10], [0]],
-          2: [[3, 12, 2], [0]],
-          1: [[7, 9], [0]]
-        };
-        const getFadingShards = (stabilityNum: number) => {
-          const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][0] ?? [];
-          return stabilityContainer$.find(shardNums.map((num) => `#shard-${num}`).join(", "));
-        };
-        const getShrinkingShards = (stabilityNum: number) => {
-          const shardNums = shardsMap[stabilityNum as keyof typeof shardsMap][1] ?? [];
-          return stabilityContainer$.find(shardNums.map((num) => `#shard-${num}`).join(", "));
-        };
-        const fullDuration = 0.5;
-        const fadingShardsScaleFullDuration = fullDuration / 5;
-        const fadingShardsShiftFullDuration = fullDuration - fadingShardsScaleFullDuration;
-
-        const fadingShards$ = getFadingShards(config.stability);
-        const fadingShardsNum = Array.from(fadingShards$).length;
-        const fadingShardsScaleStagger = fadingShardsNum <= 1
-          ? 0
-          : (0.5 * fadingShardsScaleFullDuration) / (fadingShardsNum - 1);
-        const fadingShardsShiftStagger = fadingShardsNum <= 1
-          ? 0
-          : (0.5 * fadingShardsShiftFullDuration) / (fadingShardsNum - 1);
-        const fadingShardsScaleDur = fadingShardsScaleFullDuration - (fadingShardsScaleStagger * (fadingShardsNum - 1));
-        const fadingShardsShiftDur = fadingShardsShiftFullDuration - (fadingShardsShiftStagger * (fadingShardsNum - 1));
-        const fadingShardsAnimDuration = fadingShardsScaleDur
-              + fadingShardsShiftDur
-              + (fadingShardsScaleStagger * (fadingShardsNum - 1))
-              + (fadingShardsShiftStagger * (fadingShardsNum - 1));
-
-        return gsap.timeline({})
-          .to(getShrinkingShards(config.stability), {transformOrigin: "center center", scale: 1, duration: 0.25, ease: "none"}, 0)
-          .set(fadingShards$, {transformOrigin: "right center"}, 0)
-          .to(fadingShards$, {
-            scaleX:   -1,
-            duration: 0.5,
-            ease:     "rough({ strength: 2, points: 10, template: power4.in, taper: out, randomize: true, clamp: false })", // "power2.inOut",
-            stagger:  0.1
-          })
-          .to(fadingShards$, {
-            xPercent: 700,
-            duration: 0.4,
-            ease:     "power2.in",
-            stagger:  0.1
-          });
-          // ">-0.75")
-      },
-      defaults:       {duration: 0.5},
-      extendTimeline: true
+    Object.values(GSAPEFFECTS).forEach((effect) => {
+      U.gsap.registerEffect(effect);
     });
   }
 
@@ -1663,17 +1016,17 @@ class K4PCSheet extends ActorSheet {
       // Rotate huge gears
       html.find(".gear-container.gear-huge")
         .each(function() {
-          ANIMATIONS.gearHugeRotate(this);
+          U.gsap.effects.gearHugeRotate(this);
         });
       // Rotate Geburah gears
       html.find(".gear-container.gear-geburah")
         .each(function() {
-          ANIMATIONS.gearGeburahRotate(this);
+          U.gsap.effects.gearGeburahRotate(this);
         });
       // Rotate Binah gears
       html.find(".gear-container.gear-binah")
         .each(function() {
-          ANIMATIONS.gearBinahRotate(this);
+          U.gsap.effects.gearBinahRotate(this);
         });
     } else {
       // Remove all gear containers if the setting is disabled
@@ -2000,7 +1353,7 @@ class K4PCSheet extends ActorSheet {
           if (U.isUndefined(type)) {
             return;
           }
-          switch (type) {
+          switch (type as K4ConditionType) {
             case K4ConditionType.stability: {
               const label: string|false = await K4Dialog.GetUserInput(
                 {
@@ -2044,7 +1397,7 @@ class K4PCSheet extends ActorSheet {
                   }));
               }
               self.actor.addCondition({
-                type,
+                type: type as K4ConditionType,
                 label,
                 description,
                 modDef

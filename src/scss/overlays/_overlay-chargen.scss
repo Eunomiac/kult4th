@@ -1,8 +1,12 @@
 $isDebug: false;
 
 & { // Equivalent to window content
+
+  @import "../globals/text-styles";
+  @import "../globals/icon-styles";
   background-color: var(--K4-BLACK);
   visibility: hidden;
+  position: absolute;
 
   .pc-initialization-bg {
     position: absolute;
@@ -45,6 +49,7 @@ $isDebug: false;
   }
 
   .pc-initialization {
+    --K4-sheet-header-height: 60px;
     --panel-width: 300px;
     --panel-horiz-padding: 10px;
     --panel-total-width: calc(var(--panel-width) + var(--panel-horiz-padding) * 2);
@@ -54,22 +59,6 @@ $isDebug: false;
     left: 0%;
     width: 100vw;
     height: 100vh;
-    // background:
-    //     radial-gradient(
-    //       at 50% 50%,
-    //       #2b2b2b var(--gradient-center-stop),
-    //       var(--K4-BLACK) var(--gradient-middle-stop),
-    //       var(--K4-dBLACK) var(--gradient-border-stop),
-    //       transparent var(--gradient-outer-stop)
-    //     ),
-    //     radial-gradient(
-    //       at 50% 50%,
-    //       var(--K4-dBLACK) var(--gradient-border-stop),
-    //       transparent var(--gradient-outer-stop)
-    //     );
-    // background-size: 100% 35%, 100% 35%;
-    // background-position: 50% 490px, 50% 500px;
-    // background-repeat: no-repeat, no-repeat;
     visibility: hidden;
     box-shadow:
       inset 0px 0px 100px 50px var(--K4-dBLACK);
@@ -99,6 +88,10 @@ $isDebug: false;
       left: 246px;
       width: 600px;
       transform-origin: left center;
+      .actor-name-spacer,
+      .actor-name-border {
+        display: none;
+      }
 
       .actor-name-container {
         $actor-name-margin-horiz: 100px;
@@ -218,9 +211,12 @@ $isDebug: false;
           position: relative;
           width: 100%;
           top: 125px;
-          font-size: $rem-10;
+          font-size: $rem-12;
           text-align: center;
           font-weight: $font-weight-bold;
+          color: var(--K4-GOLD);
+          text-transform: lowercase;
+          font-family: var(--font-primary-smallcaps);
         }
 
         .attribute-value {
@@ -240,7 +236,9 @@ $isDebug: false;
           box-shadow: none !important;
 
           option {
-            text-align: center
+            text-align: center;
+            background: var(--K4-BLACK);
+            box-shadow: none !important;
           }
 
           &[value="7"],
@@ -329,29 +327,61 @@ $isDebug: false;
           left: 72px;
         }
 
+
+        &[data-attribute="willpower"] {
+          top: -40px;
+        }
+
+        &[data-attribute="fortitude"],
+        &[data-attribute="reflexes"] {
+          top: 3px;
+        }
+
+        &[data-attribute="reason"],
+        &[data-attribute="intuition"] {
+          top: 87px;
+        }
+
+        &[data-attribute="perception"] {
+          top: 127px;
+        }
+
+        &[data-attribute="coolness"],
+        &[data-attribute="violence"] {
+          top: 167px;
+        }
+
+        &[data-attribute="charisma"] {
+          top: 207px;
+        }
+
+        &[data-attribute="soul"] {
+          top: 287px;
+        }
+
         .attribute-value, .attribute-title {
           margin-left: 20px;
         }
 
-        .attribute-box[data-attribute="reason"] .attribute-value,
-        .attribute-box[data-attribute="intuition"] .attribute-value {
+        &[data-attribute="reason"] .attribute-value,
+        &[data-attribute="intuition"] .attribute-value {
           top: 79px;
         }
 
-        .attribute-box[data-attribute="perception"] .attribute-value {
+        &[data-attribute="perception"] .attribute-value {
           top: 80px;
         }
 
-        .attribute-box[data-attribute="coolness"] .attribute-value,
-        .attribute-box[data-attribute="violence"] .attribute-value {
+        &[data-attribute="coolness"] .attribute-value,
+        &[data-attribute="violence"] .attribute-value {
           top: 81px;
         }
 
-        .attribute-box[data-attribute="charisma"] .attribute-value {
+        &[data-attribute="charisma"] .attribute-value {
           top: 80px;
         }
 
-        .attribute-box[data-attribute="soul"] .attribute-value {
+        &[data-attribute="soul"] .attribute-value {
           top: 82px;
         }
       }

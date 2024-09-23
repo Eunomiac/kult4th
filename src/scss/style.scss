@@ -1,60 +1,9 @@
 $assetPath: '/assets';
+$baseOverlayIndex: 99;
 
 @import 'globals/functions';
 @import 'globals/typography';
 @import 'globals/root';
-
-body,
-body.vtt.game.system-kult4th {
-  &::after {
-    content: "Loading ...";
-    display: block;
-    position: absolute;
-    z-index: 20000;
-    background-color: var(--K4-dBLACK);
-    bottom: 0px;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    color: white;
-    font-size: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding-bottom: 100px;
-    @include neon-glow-soft(rgb(244, 238, 228), rgba(255, 189, 65, 0.35));
-    transition: 2s;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  &:not(.interface-visible) {
-    @keyframes pulse-load-message {
-      0% {
-        color: change-alpha(rgb(244, 238, 228), 0.5)
-      }
-      50% {
-        color: change-alpha(rgb(244, 238, 228), 1)
-      }
-      100% {
-        color: change-alpha(rgb(244, 238, 228), 0.5)
-      }
-    }
-
-    &::after {
-      animation: pulse-load-message 2s linear infinite;
-      opacity: 1;
-    }
-    #interface {
-      background: var(--K4-dBLACK);
-      > * {
-        visibility: hidden;
-      }
-    }
-    #pause { visibility: hidden; }
-    #notifications { visibility: hidden; }
-  }
-}
 
 .vtt.game.system-kult4th {
 

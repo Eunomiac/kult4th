@@ -1,6 +1,7 @@
 & {
 
   .overlay-content {
+
     .gear-container {
       position: absolute;
       z-index: 1;
@@ -8,36 +9,12 @@
       width: var(--gear-size, 100%);
       top: var(--gear-top, 0px);
       left: var(--gear-left, 0px);
-      transform: translate(-50%, -50%);
-
-      @keyframes rotate-gear {
-        0% {
-          rotate: 0deg;
-          opacity: 0.95;
-          scale: 1;
-          filter: blur(1px);
-        }
-        50% {
-          rotate: 180deg;
-          opacity: 0.55;
-          // scale: 0.5;
-          filter: blur(10px);
-        }
-        100% {
-          rotate: 360deg;
-          opacity: 0.95;
-          scale: 1;
-          filter: blur(1px);
-        }
-      }
+      visibility: hidden;
 
       .svg-container {
         height: 100%;
         width: 100%;
         position: absolute;
-        animation: rotate-gear var(--gear-rotation-speed, 60s) linear infinite;
-        animation-direction: var(--gear-rotation-direction, normal);
-        animation-delay: var(--gear-rotation-stagger, 0s);
 
         .svg-def {
           position: absolute;
@@ -54,7 +31,7 @@
         --gear-rotation-speed: 120s;
         --gear-rotation-direction: normal;
         --gear-rotation-stagger: 0s;
-        --gear-color: var(--K4-BLACK);
+        --gear-color: var(--K4-GOLD0);
       }
       &.gear-top-right {
         --gear-size: 600px;
@@ -63,7 +40,7 @@
         --gear-rotation-speed: 60s;
         --gear-rotation-direction: reverse;
         --gear-rotation-stagger: -30s;
-        --gear-color: var(--K4-RED0);
+        --gear-color: var(--K4-GOLD0);
       }
       &.gear-bottom-right {
         --gear-size: 1200px;
@@ -83,14 +60,12 @@
       width: 100vw;
       bottom: 10px;
       overflow: hidden;
-      transform: translate(0%, 50%);
-      rotate: 10deg;
-      scale: 1.25;
+      // transform-origin: center top;
 
       &.inverted {
         bottom: unset;
         top: 0px;
-        scale: -1.25;
+        // transform-origin: center bottom;
       }
 
       .rolling-fog {
@@ -103,7 +78,6 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
       text-align: center;
       width: 100%;
       z-index: 2;

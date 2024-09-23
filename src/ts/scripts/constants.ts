@@ -7,6 +7,20 @@ import {InfluenceKeys} from "./svgdata.js";
 // #endregion
 
 
+interface SVGGradientStopParams {
+  offset: number,
+  color: string,
+  opacity: number;
+}
+type SVGGradientStop = SVGGradientStopParams & Record<string, number | string>;
+interface SVGGradientDef {
+  id: string,
+  x: [number, number],
+  y: [number, number],
+  stops: Array<SVGGradientStop | string>;
+}
+interface GradientDef {fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>;}
+
 export enum K4Attribute {
   ask = "ask",
   zero = "zero",
@@ -1095,6 +1109,7 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
   return attrButtons;
 };
 
+
 // export const Colors = {
 //   // GOLD5
 //   GOLD1: "rgb(58, 54, 41)",
@@ -1144,6 +1159,172 @@ export const AttributeButtons = (resolve: (value: {attribute: K4Roll.RollableAtt
 // }
 
 export const Colors = {
+  // COLOR DEFINITION DATA
+  get Defs() {
+    return {
+      linearGradients: Object.values(U.objMap(
+        {
+          bgold: {
+            fill: {
+              stops: [C.Colors.GOLD9, C.Colors.GOLD8]
+            },
+            stroke: {
+              stops: [C.Colors.GREY3, C.Colors.GREY0]
+            }
+          },
+          gold: {
+            fill: {
+              stops: [C.Colors.GOLD8, C.Colors.GOLD5]
+            },
+            stroke: {
+              stops: [C.Colors.GREY3, C.Colors.GREY0]
+            }
+          },
+          red: {
+            fill: {
+              stops: [C.Colors.RED8, C.Colors.RED1]
+            },
+            stroke: {
+              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
+            }
+          },
+          grey: {
+            fill: {
+              stops: [C.Colors.GREY7, C.Colors.GREY3]
+            },
+            stroke: {
+              stops: [C.Colors.GREY0, C.Colors.GREY0]
+            }
+          },
+          blue: {
+            fill: {
+              stops: [C.Colors.BLUE8, C.Colors.BLUE1]
+            },
+            stroke: {
+              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
+            }
+          },
+          black: {
+            fill: {
+              stops: [C.Colors.GREY0, C.Colors.GREY0],
+            },
+            stroke: {
+              stops: [C.Colors.GREY1, C.Colors.GREY1]
+            }
+          },
+          white: {
+            fill: {
+              stops: [C.Colors.GREY10, C.Colors.GREY9],
+            },
+            stroke: {
+              stops: [C.Colors.GREY1, C.Colors.GREY0]
+            }
+          },
+          [K4ItemType.advantage]: {
+            fill: {
+              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
+            },
+            stroke: {
+              stops: [C.Colors.GOLD5, C.Colors.GOLD1]
+            }
+          },
+          [K4ItemType.darksecret]: {
+            fill: {
+              stops: [C.Colors.RED1, C.Colors.RED1]
+            },
+            stroke: {
+              stops: [C.Colors.RED8, C.Colors.RED5]
+            }
+          },
+          [K4ItemType.disadvantage]: {
+            fill: {
+              stops: [C.Colors.GREY5, C.Colors.GREY1]
+            },
+            stroke: {
+              stops: [C.Colors.GREY9, C.Colors.GREY7]
+            }
+          },
+          // [K4ItemType.gear]: {
+          //   fill: {
+          //     stops: [C.Colors["GOLD8"], C.Colors["GOLD1"]]
+          //   },
+          //   stroke: {
+          //     stops: [C.Colors.GOLD5, C.Colors["GOLD1"]]
+          //   }
+          // },
+          [K4ItemType.move]: {
+            fill: {
+              stops: [C.Colors.GOLD5, C.Colors.GOLD1]
+            },
+            stroke: {
+              stops: [C.Colors.GOLD8, C.Colors.GOLD8]
+            }
+          },
+          // [K4ItemType.relation]: {
+          //   fill: {
+          //     stops: [C.Colors["GOLD8"], C.Colors["GOLD1"]]
+          //   },
+          //   stroke: {
+          //     stops: [C.Colors.GOLD5, C.Colors["GOLD1"]]
+          //   }
+          // },
+          [K4ItemType.weapon]: {
+            fill: {
+              stops: [C.Colors.RED8, C.Colors.RED1]
+            },
+            stroke: {
+              stops: [C.Colors.RED5, C.Colors.RED1]
+            }
+          }
+        },
+        (({fill, stroke}: GradientDef, iType: K4ItemType) => {
+          return {
+            fill: {
+              id: `fill-${iType}`,
+              x: [0, 1],
+              y: [0, 1],
+              ...fill,
+              stops: (fill.stops ?? []).map((stop, i, stops) => {
+                return ({
+                  offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                  color: typeof stop === "string" ? stop : stop.color,
+                  opacity: 1,
+                  ...(typeof stop === "string" ? {} : stop)
+                });
+              }),
+              ...(typeof fill.stops === "string"
+                ? {}
+                : fill.stops)
+            },
+            stroke: {
+              id: `stroke-${iType}`,
+              x: [0, 1],
+              y: [0, 1],
+              ...stroke,
+              stops: (stroke.stops ?? []).map((stop, i, stops) => {
+                return {
+                  offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
+                  color: typeof stop === "string" ? stop : stop.color,
+                  opacity: 1,
+                  ...(typeof stop === "string" ? {} : stop)
+                };
+              }),
+              ...(typeof stroke.stops === "string"
+                ? {}
+                : stroke.stops)
+            }
+          };
+        }) as mapFunc<valFunc<unknown, GradientDef>, unknown, GradientDef>
+      ) as Record<
+        K4ItemType,
+        {
+          fill: Partial<SVGGradientDef>,
+          stroke: Partial<SVGGradientDef>;
+        }
+      >).map((defs) => Object.values(defs)).flat()
+    }
+  },
+
   // GOLD5
   GOLD0: "rgb(29, 27, 20)",
   GOLD1: "rgb(58, 54, 41)",

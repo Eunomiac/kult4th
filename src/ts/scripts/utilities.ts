@@ -1914,6 +1914,24 @@ function compareComputedStyles(savedStyles: string|List<string>, newElement: Ele
   return differences;
 }
 
+/**
+ * Finds the maximum z-index value among the selected elements.
+ * @param {JQuery} elements - The jQuery object containing the elements to check.
+ * @returns {number} The maximum z-index value found, or 0 if no z-index is set.
+ */
+function getMaxZIndex(elements: JQuery): number {
+  let maxZIndex = 0;
+
+  elements.each(function() {
+    const zIndex = parseInt($(this).css("z-index"), 10);
+    if (!isNaN(zIndex) && zIndex > maxZIndex) {
+      maxZIndex = zIndex;
+    }
+  });
+
+  return maxZIndex;
+}
+
 // #region ████████ PERFORMANCE: Performance Testing & Metrics ████████
 /**
  * Test the performance of a function (synchronous or asynchronous).
@@ -2441,6 +2459,8 @@ export default {
   escapeHTML,
 
   extractComputedStyles, compareComputedStyles,
+
+  getMaxZIndex,
 
   // ████████ PERFORMANCE & DEBUG: Debugging Functions, Performance Testing & Metrics ████████
   testFuncPerformance,

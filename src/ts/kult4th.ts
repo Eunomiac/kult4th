@@ -3,13 +3,13 @@ import "../scss/style.scss";
 
 import LogRocket from 'logrocket';
 import K4Config from "./scripts/config.js";
-import K4Actor from "./documents/K4Actor.js";
+import K4Actor, {K4ActorType} from "./documents/K4Actor.js";
 import K4Item, {K4ItemType} from "./documents/K4Item.js";
 import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
-import C, {K4GamePhase} from "./scripts/constants.js";
+import C, {Colors, K4GamePhase} from "./scripts/constants.js";
 import InitializePopovers from "./scripts/popovers.js";
 import U from "./scripts/utilities.js";
 import {formatForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers.js";
@@ -51,19 +51,7 @@ const InitializableClasses = {
 // #endregion
 
 // #region === TYPES === ~
-interface SVGGradientStopParams {
-  offset: number,
-  color: string,
-  opacity: number;
-}
-type SVGGradientStop = SVGGradientStopParams & Record<string, number | string>;
-interface SVGGradientDef {
-  id: string,
-  x: [number, number],
-  y: [number, number],
-  stops: Array<SVGGradientStop | string>;
-}
-interface GradientDef {fill: Partial<SVGGradientDef>; stroke: Partial<SVGGradientDef>;}
+
 // #endregion
 
 Object.assign(globalThis, {
@@ -79,6 +67,15 @@ Object.assign(globalThis, {
       throw new Error("User is not ready");
     }
     return user;
+  },
+  getActor: function getActor(): K4Actor<K4ActorType.pc> {
+    const userID: IDString = getUser().id as IDString;
+    const pcs: Array<K4Actor<K4ActorType.pc>> = getGame().actors.filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.is(K4ActorType.pc));
+    const userPC = pcs.find((pc: K4Actor<K4ActorType.pc>) => pc.ownership[userID] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
+    if (!userPC) {
+      throw new Error(`User ${getUser().name} has no PC associated with them.`);
+    }
+    return userPC;
   },
   getI18n: function getI18n(): Localization {
     const i18n = getGame().i18n;
@@ -321,168 +318,7 @@ async function GenerateColorDefs() {
 async function GenerateSVGDefs() {
   $(".vtt.game.system-kult4th").prepend(await renderTemplate(
     U.getTemplatePath("globals", "svg-defs"),
-    {
-      linearGradients: Object.values(U.objMap(
-        {
-          bgold: {
-            fill: {
-              stops: [C.Colors.GOLD9, C.Colors.GOLD8]
-            },
-            stroke: {
-              stops: [C.Colors.GREY3, C.Colors.GREY0]
-            }
-          },
-          gold: {
-            fill: {
-              stops: [C.Colors.GOLD8, C.Colors.GOLD5]
-            },
-            stroke: {
-              stops: [C.Colors.GREY3, C.Colors.GREY0]
-            }
-          },
-          red: {
-            fill: {
-              stops: [C.Colors.RED8, C.Colors.RED1]
-            },
-            stroke: {
-              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
-            }
-          },
-          grey: {
-            fill: {
-              stops: [C.Colors.GREY7, C.Colors.GREY3]
-            },
-            stroke: {
-              stops: [C.Colors.GREY0, C.Colors.GREY0]
-            }
-          },
-          blue: {
-            fill: {
-              stops: [C.Colors.BLUE8, C.Colors.BLUE1]
-            },
-            stroke: {
-              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
-            }
-          },
-          black: {
-            fill: {
-              stops: [C.Colors.GREY0, C.Colors.GREY0],
-            },
-            stroke: {
-              stops: [C.Colors.GREY1, C.Colors.GREY1]
-            }
-          },
-          white: {
-            fill: {
-              stops: [C.Colors.GREY10, C.Colors.GREY9],
-            },
-            stroke: {
-              stops: [C.Colors.GREY1, C.Colors.GREY0]
-            }
-          },
-          [K4ItemType.advantage]: {
-            fill: {
-              stops: [C.Colors.GOLD8, C.Colors.GOLD1]
-            },
-            stroke: {
-              stops: [C.Colors.GOLD5, C.Colors.GOLD1]
-            }
-          },
-          [K4ItemType.darksecret]: {
-            fill: {
-              stops: [C.Colors.RED1, C.Colors.RED1]
-            },
-            stroke: {
-              stops: [C.Colors.RED8, C.Colors.RED5]
-            }
-          },
-          [K4ItemType.disadvantage]: {
-            fill: {
-              stops: [C.Colors.GREY5, C.Colors.GREY1]
-            },
-            stroke: {
-              stops: [C.Colors.GREY9, C.Colors.GREY7]
-            }
-          },
-          // [K4ItemType.gear]: {
-          //   fill: {
-          //     stops: [C.Colors["GOLD8"], C.Colors["GOLD1"]]
-          //   },
-          //   stroke: {
-          //     stops: [C.Colors.GOLD5, C.Colors["GOLD1"]]
-          //   }
-          // },
-          [K4ItemType.move]: {
-            fill: {
-              stops: [C.Colors.GOLD5, C.Colors.GOLD1]
-            },
-            stroke: {
-              stops: [C.Colors.GOLD8, C.Colors.GOLD8]
-            }
-          },
-          // [K4ItemType.relation]: {
-          //   fill: {
-          //     stops: [C.Colors["GOLD8"], C.Colors["GOLD1"]]
-          //   },
-          //   stroke: {
-          //     stops: [C.Colors.GOLD5, C.Colors["GOLD1"]]
-          //   }
-          // },
-          [K4ItemType.weapon]: {
-            fill: {
-              stops: [C.Colors.RED8, C.Colors.RED1]
-            },
-            stroke: {
-              stops: [C.Colors.RED5, C.Colors.RED1]
-            }
-          }
-        },
-        (({fill, stroke}: GradientDef, iType: K4ItemType) => {
-          return {
-            fill: {
-              id: `fill-${iType}`,
-              x: [0, 1],
-              y: [0, 1],
-              ...fill,
-              stops: (fill.stops ?? []).map((stop, i, stops) => {
-                return ({
-                  offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
-                  color: typeof stop === "string" ? stop : stop.color,
-                  opacity: 1,
-                  ...(typeof stop === "string" ? {} : stop)
-                });
-              }),
-              ...(typeof fill.stops === "string"
-                ? {}
-                : fill.stops)
-            },
-            stroke: {
-              id: `stroke-${iType}`,
-              x: [0, 1],
-              y: [0, 1],
-              ...stroke,
-              stops: (stroke.stops ?? []).map((stop, i, stops) => {
-                return {
-                  offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
-                  color: typeof stop === "string" ? stop : stop.color,
-                  opacity: 1,
-                  ...(typeof stop === "string" ? {} : stop)
-                };
-              }),
-              ...(typeof stroke.stops === "string"
-                ? {}
-                : stroke.stops)
-            }
-          };
-        }) as mapFunc<valFunc<unknown, GradientDef>, unknown, GradientDef>
-      ) as Record<
-        K4ItemType,
-        {
-          fill: Partial<SVGGradientDef>,
-          stroke: Partial<SVGGradientDef>;
-        }
-      >).map((defs) => Object.values(defs)).flat()
-    }
+    Colors.Defs
   ));
 }
 
@@ -565,30 +401,6 @@ async function DisableClientCanvas() {
   kLog.log("Canvas has been disabled for all clients.");
 }
 
-// Hooks.on("renderUserConfig", (config: UserConfig, html: HTMLFormElement) => {
-
-//   const body$ = $(html).closest("body");
-//   const interface$ = body$.find("#interface");
-//   const pauseIcon$ = body$.find("#pause");
-//   const notifications$ = body$.find("#notifications");
-
-//   $(html).remove();
-
-//   interface$.children().css("display", "none");
-//   pauseIcon$.css("display", "none");
-//   notifications$.css("display", "none");
-
-//   U.gsap.to(interface$, {
-//     backgroundColor: C.Colors.GREY0,
-//     duration: 1,
-//     ease: "power2.out"
-//   });
-
-//   return false;
-// });
-
-
-
 Hooks.on("init", async () => {
 
   // Register logging function and announce initialization to console.
@@ -636,13 +448,11 @@ Hooks.on("init", async () => {
   await Promise.all(parallelAsyncFunctions);
 });
 
-Hooks.on("i18nReady", () => {
-  void DisableClientCanvas()
-});
-
 Hooks.on("ready", async () => {
   // Call Initialize on all relevant classes
   await RunInitializer(InitializerMethod.Initialize);
+
+  // Disable client canvas
   void DisableClientCanvas();
 
   // Initialize collection objects
@@ -651,16 +461,26 @@ Hooks.on("ready", async () => {
   // Call PostInitialize on all relevant classes
   await RunInitializer(InitializerMethod.PostInitialize);
 
-  // Further actions only trigger for GM users
-  if (!getUser().isGM) { return; }
-
-  // If user is GM, add "gm-user" class to #interface
-  $("#interface").addClass("gm-user");
-
+  // Get GM Tracker instance
   const tracker = await K4GMTracker.Get();
 
-  // Re-initialize interface with user and proper game phase
-  await K4Socket.Call("ChangePhase", UserTargetRef.players, tracker.phase);
+  // Actions for player (non-GM) users -- overlays
+  if (!getUser().isGM) {
+
+    // Initialize appropriate overlay given tracker phase
+    await tracker.preloadOverlay();
+    tracker.displayOverlay();
+
+    // Further actions only trigger for GM users
+    return;
+  }
+
+  // Render GM Tracker sheet for GM
+  tracker.render(true);
+
+  // Add "gm-user" class to #interface, and "interface-visible" to body
+  $("body").addClass("interface-visible");
+  $("#interface").addClass("gm-user");
 });
 
 
