@@ -133,7 +133,8 @@ declare global {
           selDisadvantages: string[],
           selDarkSecrets: string[],
           extraDisadvantages: string[],
-          extraDarkSecrets: string[]
+          extraDarkSecrets: string[],
+          isFinished: Maybe<boolean>
         },
         dramaticHooks: [
           {
@@ -944,16 +945,22 @@ class K4Actor extends Actor {
 
   _chargenSheet: Maybe<K4CharGen>;
   get chargenSheet(): K4CharGen {
+    if (!this._chargenSheet) {
+      throw new Error(`Cannot retrieve chargen sheet for actor ${this.id}: Sheet has not been initialized.`);
+    }
+    return this._chargenSheet;
+  }
+
+  preInitializeCharGen() {
     if (!this.user) {
       throw new Error(`Cannot initialize chargen sheet for actor ${this.id}: Actor has no user.`)
     }
     if (!this.is(K4ActorType.pc)) {
       throw new Error(`Cannot initialize chargen sheet for actor ${this.id}: Actor is not a PC.`)
     }
-    if (!this._chargenSheet) {
-      this._chargenSheet = new K4CharGen(this.user, this);
-    }
-    return this._chargenSheet;
+    this._chargenSheet = new K4CharGen(this.user, this);
+    this._chargenSheet.precomputeAllArchetypeTraitData();
+    this._chargenSheet.precomputeArchetypeData();
   }
 
   async charGenSelect(traitName: string, isArchetype = true) {

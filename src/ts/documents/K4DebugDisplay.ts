@@ -1,5 +1,5 @@
 import { Dragger, InertiaPlugin } from "../libraries.js";
-import { getNormalizedDistanceFromSelected as getNormalizedDistanceFromSelected, getXPosFromIndex,getYRotFromIndex, getIndexFromYRot, getYRotFromXPos, getXPosFromYRot,getIndexFromXPos } from "./K4CharGen.js";
+import K4CharGen from "./K4CharGen.js";
 import U from "../scripts/utilities.js";
 import K4Actor from "./K4Actor.js";
 
@@ -61,7 +61,7 @@ class K4DebugDisplay {
     }
   }
 
-  static updateDraggerInfo(dragger: Maybe<Dragger>, actor: K4Actor): void {
+  static updateDraggerInfo(dragger: Maybe<Dragger>, actor: K4Actor, charGen: K4CharGen): void {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!K4DebugDisplay.IS_DEBUGGING) { return };
     if (!dragger) { return; }
@@ -80,22 +80,22 @@ class K4DebugDisplay {
     const yRot = U.pFloat(U.get(carousel$[0], "rotationY"), 0);
     const chosenArchetype = actor.archetype;
     const chosenArchetypeIndex = U.pInt(carousel$.find(`[data-archetype="${chosenArchetype}"]`).attr("data-index"));
-    const usingArchetypeIndex = getIndexFromYRot(yRot);
+    const usingArchetypeIndex = charGen.getIndexFromYRot(yRot);
     const usingArchetype = carousel$.find(`[data-index="${usingArchetypeIndex}"]`).attr("data-archetype")!;
     const lines: string[] = [
       `XPOS: ${U.padNum(xPos, 2)} (min: ${xMin}, max: ${xMax})`,
       `YROT: ${U.padNum(yRot, 0)}`,
       `INDEX - CHOSEN: ${chosenArchetypeIndex} (${chosenArchetype})`,
       `INDEX - USING: ${usingArchetypeIndex} (${usingArchetype})`,
-      `DISTANCE: ${U.pFloat(getNormalizedDistanceFromSelected(usingArchetypeIndex, chosenArchetypeIndex), 2)}`,
+      `DISTANCE: ${U.pFloat(charGen.getNormalizedDistanceFromSelected(usingArchetypeIndex, chosenArchetypeIndex), 2)}`,
       `TOTAL: ${items$.length}`,
       " ",
-      `getYRotFromIndex: ${U.pInt(getYRotFromIndex(usingArchetypeIndex))}`,
-      `getIndexFromYRot: ${getIndexFromYRot(yRot)}`,
-      `getYRotFromXPos: ${U.pInt(getYRotFromXPos(xPos))}`,
-      `getXPosFromYRot: ${U.pFloat(getXPosFromYRot(yRot), 2)}`,
-      `getIndexFromXPos: ${getIndexFromXPos(xPos)}`,
-      `getXPosFromIndex: ${U.pFloat(getXPosFromIndex(usingArchetypeIndex), 2)}`,
+      `getYRotFromIndex: ${U.pInt(charGen.getYRotFromIndex(usingArchetypeIndex))}`,
+      `getIndexFromYRot: ${charGen.getIndexFromYRot(yRot)}`,
+      `getYRotFromXPos: ${U.pInt(charGen.getYRotFromXPos(xPos))}`,
+      `getXPosFromYRot: ${U.pFloat(charGen.getXPosFromYRot(yRot), 2)}`,
+      `getIndexFromXPos: ${charGen.getIndexFromXPos(xPos)}`,
+      `getXPosFromIndex: ${U.pFloat(charGen.getXPosFromIndex(usingArchetypeIndex), 2)}`,
       `Velocity: ${InertiaPlugin.getVelocity(dragger.target, "x").toFixed(2)}`,
       `Is Dragging: ${dragger.isDragging}`,
       `Is Pressed: ${dragger.isPressed}`

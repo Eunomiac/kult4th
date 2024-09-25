@@ -176,6 +176,7 @@ function InitCharGenToggleButton() {
   document.body.appendChild(toggleButton);
 }
 function SetDevelopmentConfig() {
+  if (!getUser().isGM) { return; }
   // Disable Compatibility Warnings
   if (DEV_DEBUG_CONFIG.isDisablingCompatibilityWarnings) {
     CONFIG.compatibility.mode = CONST.COMPATIBILITY_MODES.SILENT;

@@ -17,7 +17,31 @@ import {UserTargetRef} from "./K4Socket.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
+// #region CONFIGURATION ~
+const PIXELS_PER_ROTATION = 1000;
+const CAROUSEL_ITEM_WIDTH = 200;
+const VALID_ARCHETYPE_TIERS: ArchetypeTier[] = ["aware" as ArchetypeTier];
+// #endregion
+
+// #region DEBUG: METHOD DECORATOR ~
+function methodLoggingDecorator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  const timeStamp = U.getTimeStamp();
+  const originalMethod = descriptor.value;
+  descriptor.value = function (...args: any[]) {
+    kLog.log(`[${propertyKey}] CALLED with arguments:`, {args});
+    const result = originalMethod.apply(this, args);
+    kLog.log(`[${propertyKey}] RETURNED after ${timeStamp()}`, {result});
+    return result;
+  };
+  return descriptor;
+}
+// #endregion
+
+// #REGION === TYPES === ~
+// #region -- TYPES ~
 namespace Archetype {
+  export type TraitType = K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret;
+
   export interface TraitData {
     name: string,
     img: string,
@@ -64,39 +88,199 @@ interface ChargenContext {
   },
   otherPlayerData: Record<IDString, K4Actor["summaryData"]>;
 }
+// #endregion
+// #endregion
+
+// #region === CONSTANTS === ~
+const TOTAL_WIDTH = PIXELS_PER_ROTATION;
+const MIN_X = -TOTAL_WIDTH / 2;
+const MAX_X = TOTAL_WIDTH / 2;
+// #endregion
+
+/**
+ * Top-level flow of control class that conducts the character generation process.
+ */
+class K4CharGen {
+
+  static _ValidArchetypes: Maybe<K4Archetype[]>;
+  static get ValidArchetypes() {
+    return this._ValidArchetypes ?? (this._ValidArchetypes = Object.entries(Archetypes)
+    .filter(([_, archetype]) => VALID_ARCHETYPE_TIERS.includes(archetype.tier))
+    .map(([k4Archetype, _]) => k4Archetype as K4Archetype));
+  }
+
+  static _NumValidArchetypes: Maybe<number>;
+  static get NumValidArchetypes() {
+    return this._NumValidArchetypes ?? (this._NumValidArchetypes = this.ValidArchetypes.length);
+  }
+
+  static _ArchetypeIndexMap: Maybe<Map<K4Archetype, number>>;
+  static get ArchetypeIndexMap() {
+    return this._ArchetypeIndexMap ?? (this._ArchetypeIndexMap = new Map(
+      this.ValidArchetypes
+        .map((archetype, index) => [archetype, index])
+    ));
+  }
+
+  static _NormalizedDistanceMap: Maybe<Map<number, number>>;
+  static get NormalizedDistanceMap() {
+    if (this._NormalizedDistanceMap) {return this._NormalizedDistanceMap;}
+
+    const halfTotal = this.NumValidArchetypes / 2;
+    // A map of all possible values of 'boundIndex - selected', and corresponding normalized distance
+    const normalizedDistanceMap = new Map<number, number>();
+
+    // Precompute normalized distances for all possible raw distances
+    for (let i = 0; i < this.NumValidArchetypes; i++) {
+      // Calculate the raw distance as the absolute value of the index
+      const rawDistance = Math.abs(i);
+
+      // Adjust the distance to account for wrapping around the circle
+      // If the raw distance is greater than half the total, we "count from the opposite direction"
+      const distance = rawDistance > halfTotal
+        ? this.NumValidArchetypes - rawDistance
+        : rawDistance;
+
+      // Normalize the distance by dividing by half the total number of valid archetypes
+      const normalizedDistance = distance / halfTotal;
+
+      // Clamp the normalized distance between 0 and 1 and store it in the map
+      normalizedDistanceMap.set(i, U.clampNum(normalizedDistance, [0, 1]));
+    }
+
+    this._NormalizedDistanceMap = normalizedDistanceMap;
+    return this._NormalizedDistanceMap;
+  }
+
+  static _StyleMap: Maybe<Map<number, Record<Key, string | number>>>;
+  static get StyleMap() {
+    if (this._StyleMap) {return this._StyleMap;}
+
+    const styleMap = new Map<number, Record<Key, string | number>>();
+
+    const maxBlur = 5; const minBlur = 0;
+    const maxBright = 0.8; const minBright = 0.5;
+    const maxOpacity = 1; const minOpacity = 1;
+    const maxScale = 1; const minScale = 1;
+    const maxSaturate = 0.8; const minSaturate = 0.25;
+
+    for (let i = 0; i < this.NumValidArchetypes; i++) {
+      const scaleFactor = this.NormalizedDistanceMap.get(i) ?? 0;
+
+      const blur = U.gsap.utils.mapRange(0, 1, minBlur, maxBlur, scaleFactor);
+      const brightness = U.gsap.utils.mapRange(0, 1, minBright, maxBright, scaleFactor);
+      const opacity = U.gsap.utils.mapRange(0, 1, minOpacity, maxOpacity, scaleFactor);
+      const scale = U.gsap.utils.mapRange(0, 1, minScale, maxScale, scaleFactor);
+      const saturate = U.gsap.utils.mapRange(0, 1, minSaturate, maxSaturate, scaleFactor);
+
+      styleMap.set(i, {
+        filter: `blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
+        opacity: U.pFloat(opacity, 2),
+        scale: U.pFloat(scale, 2)
+      });
+    }
+
+    // Set default style values as fallback
+    styleMap.set(-1, {
+      filter: `blur(${minBlur}px) brightness(${minBright}) saturate(${minSaturate})`,
+      opacity: U.pFloat(minOpacity, 2),
+      scale: U.pFloat(minScale, 2)
+    });
+
+    this._StyleMap = styleMap;
+    return this._StyleMap;
+  }
+
+  static _CarouselRadius: Maybe<number>;
+  static get CarouselRadius() {
+    if (this._CarouselRadius) {return this._CarouselRadius;}
+
+    const radius = Math.round((CAROUSEL_ITEM_WIDTH / 2) / Math.tan(Math.PI / K4CharGen.NumValidArchetypes));
+    this._CarouselRadius = radius;
+    return this._CarouselRadius;
+  }
+
+  static PreInitialize() {
 
 
-const PIXELS_PER_ROTATION = 1000;
-const VALID_ARCHETYPE_TIERS: ArchetypeTier[] = ["aware" as ArchetypeTier];
+
+    // Create chargen intro overlay via JQuery and append it to the DOM
+    // const content = await renderTemplate(U.getTemplatePath("chargen", "chargen-intro-overlay"), {});
+    // this._introOverlay$ = $("<div style='position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 10000;'></div>").appendTo("body");
+
+    // // Immediately animate it in
+    // U.gsap.to(this._introOverlay$, {
+    //   autoAlpha: 1,
+    //   duration: 1,
+    //   ease: "power2.inOut"
+    // });
+
+    // Preload video/webm element "cloud-bg.webm"
+  }
+
+  static async PostInitialize() {
+    if (getUser().isGM) { return; }
+    // Preload getters
+    this.ValidArchetypes;
+    this.NumValidArchetypes;
+    this.ArchetypeIndexMap;
+    this.NormalizedDistanceMap;
+    this.StyleMap;
+    this.CarouselRadius;
+
+    const gmTracker = await K4GMTracker.Get();
+    const user = getUser();
+    const userPC = getActor();
+
+    if (!userPC) {
+      void K4Alert.Alert({
+        type: AlertType.simple,
+        target: UserTargetRef.gm,
+        skipQueue: false,
+        header: `User ${user.name} Owns No Character!`,
+        body: "You must create a template PC character, and set this user as its owner before character generation can begin."
+      });
+      return;
+    }
+
+    if (gmTracker.isCharGenFinishedFor(userPC)) {
+      return;
+    }
+
+    await userPC.preInitializeCharGen();
+  }
+
+  // archetypeData: Map<K4Archetype, Archetype.Data> = new Map<K4Archetype, Archetype.Data>();
+  _user: User;
+  _userPC: K4Actor<K4ActorType.pc>;
+  constructor(user: User, userPC: K4Actor<K4ActorType.pc>) {
+    this._user = user;
+    this._userPC = userPC;
+  }
+
+  get actor(): K4Actor<K4ActorType.pc> {
+    return this._userPC;
+  }
+
+  get user(): User {
+    return this._user;
+  }
 
 
-const totalWidth = PIXELS_PER_ROTATION;
-const minX = -totalWidth / 2;
-const maxX = totalWidth / 2;
 
-const validArchetypes = Object.entries(Archetypes)
-  .filter(([_, archetype]) => VALID_ARCHETYPE_TIERS.includes(archetype.tier))
-  .map(([k4Archetype, _]) => k4Archetype as K4Archetype);
-const numValidArchetypes = validArchetypes.length;
-const archetypeIndexMap = new Map(
-  validArchetypes
-    .map((archetype, index) => [archetype, index])
-);
+  wrapIndex(index: number) {
+    return ((index % K4CharGen.NumValidArchetypes) + K4CharGen.NumValidArchetypes) % K4CharGen.NumValidArchetypes;
+  }
 
+  wrapRotation(rotation: number) {
+    return (((rotation) % 360) + 360) % 360;
+  }
 
-function wrapIndex(index: number) {
-  return ((index % numValidArchetypes) + numValidArchetypes) % numValidArchetypes;
-}
+  wrapXPos(x: number) {
+    return U.gsap.utils.wrap(MIN_X, MAX_X)(x);
+  }
 
-function wrapRotation(rotation: number) {
-  return (((rotation) % 360) + 360) % 360;
-}
-
-function wrapXPos(x: number) {
-  return U.gsap.utils.wrap(minX, maxX)(x);
-}
-
-// function revealAndReturn(elem$: JQuery) {
+  // function revealAndReturn(elem$: JQuery) {
 //   elem$.css({
 //     opacity: 0,
 //     visibility: "visible"
@@ -112,220 +296,84 @@ function wrapXPos(x: number) {
 //   return elem$;
 // }
 
-Object.assign(globalThis, {
-  wrapIndex, wrapRotation, wrapXPos,
-  getIndexFromYRot,
-  getYRotFromXPos,
-  getXPosFromYRot,
-  getXPosFromIndex,
-  getIndexFromXPos,
-  getNormalizedDistanceFromSelected
-});
-
-export function getYRotFromIndex(index: number) {
-  const boundIndex = wrapIndex(index);
-  return U.gsap.utils.mapRange(0, numValidArchetypes, 0, 360, boundIndex);
-}
-
-export function getIndexFromYRot(rotationY: number) {
-  const total = numValidArchetypes;
-  return U.pInt(U.gsap.utils.mapRange(0, 360, 0, total, wrapRotation(rotationY)));
-}
-
-export function getYRotFromXPos(x: number) {
-  const max = PIXELS_PER_ROTATION / 2;
-  return U.gsap.utils.mapRange(-max, max, 0, 360, wrapXPos(x));
-}
-
-export function getXPosFromYRot(rotationY: number) {
-  const max = PIXELS_PER_ROTATION / 2;
-  return U.gsap.utils.mapRange(0, 360, -max, max, wrapRotation(rotationY));
-}
-
-export function getXPosFromIndex(index: number) {
-  const max = PIXELS_PER_ROTATION / 2;
-  const boundIndex = wrapIndex(index);
-  return U.gsap.utils.mapRange(0, numValidArchetypes, -max, max, boundIndex);
-}
-
-export function getIndexFromXPos(x: number) {
-  const total = numValidArchetypes;
-  const max = PIXELS_PER_ROTATION / 2;
-  return U.pInt(U.gsap.utils.mapRange(-max, max, 0, total, wrapXPos(x)));
-}
-
-const halfTotal = numValidArchetypes / 2;
-// A map of all possible values of 'boundIndex - selected', and corresponding normalized distance
-const normalizedDistanceMap = new Map<number, number>();
-
-// Precompute normalized distances for all possible raw distances
-for (let i = 0; i < numValidArchetypes; i++) {
-  // Calculate the raw distance as the absolute value of the index
-  const rawDistance = Math.abs(i);
-
-  // Adjust the distance to account for wrapping around the circle
-  // If the raw distance is greater than half the total, we "count from the opposite direction"
-  const distance = rawDistance > halfTotal
-    ? numValidArchetypes - rawDistance
-    : rawDistance;
-
-  // Normalize the distance by dividing by half the total number of valid archetypes
-  const normalizedDistance = distance / halfTotal;
-
-  // Clamp the normalized distance between 0 and 1 and store it in the map
-  normalizedDistanceMap.set(i, U.clampNum(normalizedDistance, [0, 1]));
-}
-
-export function getDistanceFromSelected(index: number, selected: number) {
-  const boundIndex = wrapIndex(index);
-  return Math.abs(boundIndex - selected);
-}
-
-/**
- * Get the normalized distance from the selected index.
- * This function uses precomputed values for efficiency.
- *
- * @param {number} index - The index to calculate the distance for.
- * @returns {number} - The normalized distance from the selected index.
- */
-export function getNormalizedDistanceFromSelected(index: number, selected: number) {
-  // Look up the precomputed normalized distance from the map
-  // If the raw distance is not found in the map, return 0 as a fallback
-  return normalizedDistanceMap.get(getDistanceFromSelected(index, selected)) ?? 0;
-}
-
-// Precompute style values for all possible normalized distances
-const styleMap = new Map<number, Record<Key, string | number>>();
-
-const maxBlur = 5; const minBlur = 0;
-const maxBright = 0.8; const minBright = 0.5;
-const maxOpacity = 1; const minOpacity = 1;
-const maxScale = 1; const minScale = 1;
-const maxSaturate = 0.8; const minSaturate = 0.25;
-
-for (let i = 0; i < numValidArchetypes; i++) {
-  const scaleFactor = normalizedDistanceMap.get(i) ?? 0;
-
-  const blur = U.gsap.utils.mapRange(0, 1, minBlur, maxBlur, scaleFactor);
-  const brightness = U.gsap.utils.mapRange(0, 1, minBright, maxBright, scaleFactor);
-  const opacity = U.gsap.utils.mapRange(0, 1, minOpacity, maxOpacity, scaleFactor);
-  const scale = U.gsap.utils.mapRange(0, 1, minScale, maxScale, scaleFactor);
-  const saturate = U.gsap.utils.mapRange(0, 1, minSaturate, maxSaturate, scaleFactor);
-
-  styleMap.set(i, {
-    filter: `blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
-    opacity: U.pFloat(opacity, 2),
-    scale: U.pFloat(scale, 2)
-  });
-}
-
-/**
- * Get the style values for a given index and selected index.
- * This function uses precomputed values for efficiency.
- *
- * @param {number} index - The index to calculate the styles for.
- * @param {number} selected - The selected index.
- * @returns {Record<Key, string|number>} - The style values.
- */
-function getDistanceStyles(index: number, selected: number): Record<Key, string | number> {
-  // Look up the precomputed style values from the map
-  // If the raw distance is not found in the map, return default styles as a fallback
-  return styleMap.get(getDistanceFromSelected(index, selected)) ?? {
-    filter: `blur(${minBlur}px) brightness(${minBright}) saturate(${minSaturate})`,
-    opacity: U.pFloat(minOpacity, 2),
-    scale: U.pFloat(minScale, 2)
-  };
-}
-
-function getElementFromArchetype(context$: JQuery, archetype: K4Archetype) {
-  return context$.find(`[data-archetype=${archetype}]`);
-}
-
-function getElementFromIndex(context$: JQuery, index: number) {
-  const archetype = validArchetypes[index];
-  return getElementFromArchetype(context$, archetype);
-}
-
-const updateDebugInfo = (carousel$: JQuery, x: number) => {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!K4DebugDisplay.IS_DEBUGGING) {return;}
-  const newIndex = getIndexFromXPos(x);
-  const archetype = validArchetypes[newIndex];
-  const elementIndex = carousel$.find(`[data-archetype=${archetype}]`).data("index") as number;
-  const selArchetypeIndex = archetypeIndexMap.get(archetype)!;
-
-  K4DebugDisplay.updateArchetypeInfo(archetype, selArchetypeIndex, newIndex, elementIndex);
-};
-
-/**
- * Top-level flow of control class that conducts the character generation process.
- */
-class K4CharGen {
-
-
-  static PreInitialize() {
-    // Create chargen intro overlay via JQuery and append it to the DOM
-    // const content = await renderTemplate(U.getTemplatePath("chargen", "chargen-intro-overlay"), {});
-    // this._introOverlay$ = $("<div style='position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 10000;'></div>").appendTo("body");
-
-    // // Immediately animate it in
-    // U.gsap.to(this._introOverlay$, {
-    //   autoAlpha: 1,
-    //   duration: 1,
-    //   ease: "power2.inOut"
-    // });
-
-    // Preload video/webm element "cloud-bg.webm"
+  getYRotFromIndex(index: number) {
+    const boundIndex = this.wrapIndex(index);
+    return U.gsap.utils.mapRange(0, K4CharGen.NumValidArchetypes, 0, 360, boundIndex);
   }
 
-
-
-
-  static async PostInitialize() {
-    const gmTracker = await K4GMTracker.Get();
-    if (gmTracker.phase !== K4GamePhase.chargen) {
-      return;
-    }
-    const user = getUser();
-    const userPC = getActor();
-    if (!userPC) {
-      void K4Alert.Alert({
-        type: AlertType.simple,
-        target: UserTargetRef.gm,
-        skipQueue: false,
-        header: `User ${user.name} Owns No Character!`,
-        body: "You must create a template PC character, and set this user as its owner before character generation can begin."
-      });
-      return;
-    }
-
-    const charGenHandler = new K4CharGen(user, userPC);
-
-    return charGenHandler;
+  getIndexFromYRot(rotationY: number) {
+    const total = K4CharGen.NumValidArchetypes;
+    return U.pInt(U.gsap.utils.mapRange(0, 360, 0, total, this.wrapRotation(rotationY)));
   }
 
-  // archetypeData: Map<K4Archetype, Archetype.Data> = new Map<K4Archetype, Archetype.Data>();
-  _user: User;
-  _userPC: K4Actor<K4ActorType.pc>;
-  constructor(user: User, userPC: K4Actor<K4ActorType.pc>) {
-    this._user = user;
-    this._userPC = userPC;
-    this.precomputeAllArchetypeTraitData();
-    this.precomputeArchetypeData();
+  getYRotFromXPos(x: number) {
+    const max = PIXELS_PER_ROTATION / 2;
+    return U.gsap.utils.mapRange(-max, max, 0, 360, this.wrapXPos(x));
   }
 
-  get actor(): K4Actor<K4ActorType.pc> {
-    return this._userPC;
+  getXPosFromYRot(rotationY: number) {
+    const max = PIXELS_PER_ROTATION / 2;
+    return U.gsap.utils.mapRange(0, 360, -max, max, this.wrapRotation(rotationY));
   }
 
-  get user(): User {
-    return this._user;
+  getXPosFromIndex(index: number) {
+    const max = PIXELS_PER_ROTATION / 2;
+    const boundIndex = this.wrapIndex(index);
+    return U.gsap.utils.mapRange(0, K4CharGen.NumValidArchetypes, -max, max, boundIndex);
   }
 
-  getTraitData(traitName: string, traitType: K4ItemType, archetype?: K4Archetype | false): Maybe<Archetype.TraitData> {
+  getIndexFromXPos(x: number) {
+    const total = K4CharGen.NumValidArchetypes;
+    const max = PIXELS_PER_ROTATION / 2;
+    return U.pInt(U.gsap.utils.mapRange(-max, max, 0, total, this.wrapXPos(x)));
+  }
+
+  getDistanceFromSelected(index: number, selected: number) {
+    const boundIndex = this.wrapIndex(index);
+    return Math.abs(boundIndex - selected);
+  }
+
+  /**
+   * Get the normalized distance from the selected index.
+   * This function uses precomputed values for efficiency.
+   *
+   * @param {number} index - The index to calculate the distance for.
+   * @returns {number} - The normalized distance from the selected index.
+   */
+  getNormalizedDistanceFromSelected(index: number, selected: number) {
+    // Look up the precomputed normalized distance from the map
+    // If the raw distance is not found in the map, return 0 as a fallback
+    return K4CharGen.NormalizedDistanceMap.get(this.getDistanceFromSelected(index, selected)) ?? 0;
+  }
+
+  /**
+   * Get the style values for a given index and selected index.
+   * This function uses precomputed values for efficiency.
+   *
+   * @param {number} index - The index to calculate the styles for.
+   * @param {number} selected - The selected index.
+   * @returns {Record<Key, string|number>} - The style values.
+   */
+  getDistanceStyles(index: number, selected: number): Record<Key, string | number> {
+    // Look up the precomputed style values from the map
+    // If the raw distance is not found in the map, return default styles as a fallback
+    return K4CharGen.StyleMap.get(this.getDistanceFromSelected(index, selected)) ?? K4CharGen.StyleMap.get(-1 /* default */)!;
+  }
+
+  getElementFromArchetype(context$: JQuery, archetype: K4Archetype) {
+    return context$.find(`[data-archetype=${archetype}]`);
+  }
+
+  getElementFromIndex(context$: JQuery, index: number) {
+    const archetype = K4CharGen.ValidArchetypes[index];
+    return this.getElementFromArchetype(context$, archetype);
+  }
+
+  // @methodLoggingDecorator
+  #precomputeTraitData(traitName: string, traitType: Archetype.TraitType, archetype: K4Archetype | false): Archetype.TraitData {
     // kLog.log("getTraitData", traitName, traitType, archetype);
     // Strip "!" prefix (marking mandatory trait) so traitName can retrieve item
-    const {actor} = this;
+    // const {actor} = this;
     traitName = traitName.replace(/^!/g, "");
     const traitItem = getGame().items.getName(traitName);
     if (!traitItem) {
@@ -336,15 +384,13 @@ class K4CharGen {
       name: traitName,
       img: (traitItem.img ?? "").replace(/\(|\)/g, ""),
       tooltip: traitItem.shortDesc,
-      get isSelected() {
-        return actor.isCharGenSelected(traitName);
+      get isSelected(): boolean {
+        return this.isMandatory || getActor().isCharGenSelected(traitName);
       },
       isMandatory: false
     };
 
     if (archetype !== false) {
-      archetype = archetype ?? this.actor.archetype;
-      if (!archetype) {return undefined;}
 
       const archetypeData = Archetypes[archetype];
 
@@ -359,14 +405,13 @@ class K4CharGen {
 
       if (archetypeTraits.includes(nameIfMandatory)) {
         tData.isMandatory = true;
-        tData.isSelected = true;
       }
     }
 
     return tData;
   }
 
-  #precomputeTraitData(archetype: K4Archetype, traitType: K4ItemType & KeyOf<typeof Archetypes[K4Archetype]>) {
+  #precomputeAllTraitData(archetype: K4Archetype, traitType: Archetype.TraitType) {
     if (![
       K4ItemType.advantage,
       K4ItemType.disadvantage,
@@ -376,39 +421,45 @@ class K4CharGen {
     }
     const archetypeTData = Archetypes[archetype][traitType];
 
-    // If an attribute was passed, group the trait data by that attribute in form Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>
+    // For advantages, group the trait data by attribute in form Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>
     if (traitType === K4ItemType.advantage) {
-      return Object.fromEntries(
-        (Object.keys(K4Attribute))
-        .filter((attr: string) => ![K4Attribute.zero, K4Attribute.ask].includes(attr))
-        .map((attrName: string): [string, Record<string, Archetype.TraitData>] => [attrName, this.getArchetypeTraitData(traitType, archetype, attrName as K4CharAttribute)] as [K4CharAttribute & string, Record<string, Archetype.TraitData>])
-        .filter(([_, data]) => !U.isEmpty(data))) as Partial<Record<K4CharAttribute & string, Record<string, Archetype.TraitData>>>
+      const tDataByAttribute: Partial<Record<K4CharAttribute|"none", Record<string, Archetype.TraitData>>> = {};
+      for (const traitName of archetypeTData) {
+        const tData = this.#precomputeTraitData(traitName, traitType, archetype);
+        const attr = this.getTraitAttribute(traitName) as K4CharAttribute|"none";
+        if (!(attr in tDataByAttribute)) {
+          tDataByAttribute[attr] = {};
+        }
+        tDataByAttribute[attr]![traitName] = tData;
+      }
+
+      return tDataByAttribute;
     }
 
     // Otherwise, we just return the Record<string, TraitData> object
     return Object.fromEntries([
       ...archetypeTData
-        .map((traitName) => [traitName.replace(/^!/g, ""), this.getTraitData(traitName, traitType, archetype)]),
+        .map((traitName) => [traitName.replace(/^!/g, ""), this.#precomputeTraitData(traitName, traitType, archetype)]),
       // For disadvantages and dark secrets, we need to append any off-archetype selections made via the more menu
       ...this.actor.system.charGen[
         traitType === K4ItemType.disadvantage ? "extraDisadvantages" : "extraDarkSecrets"
-      ].map((traitName) => [traitName, this.getTraitData(traitName, traitType, false)])
+      ].map((traitName) => [traitName, this.#precomputeTraitData(traitName, traitType, false)])
     ]) as Record<string, Archetype.TraitData>;
   }
 
   archetypeTraitDataMap = new Map<K4Archetype, {
     [K4ItemType.advantage]: Partial<Record<K4CharAttribute, Record<string, Archetype.TraitData>>>,
     [K4ItemType.disadvantage]: Record<string, Archetype.TraitData>,
-    [K4ItemType.darksecret]: Record<string, Archetype.TraitData>
+    [K4ItemType.darksecret]: Record<string, Archetype.TraitData>;
   }>();
 
   // Method to precompute the trait data for each archetype
   precomputeAllArchetypeTraitData() {
-    for (const archetype of validArchetypes) {
+    for (const archetype of K4CharGen.ValidArchetypes) {
       const archetypeTraitData = {
-        [K4ItemType.advantage]: this.#precomputeTraitData(archetype, K4ItemType.advantage) as Partial<Record<K4CharAttribute, Record<string, Archetype.TraitData>>>,
-        [K4ItemType.disadvantage]: this.#precomputeTraitData(archetype, K4ItemType.disadvantage) as Record<string, Archetype.TraitData>,
-        [K4ItemType.darksecret]: this.#precomputeTraitData(archetype, K4ItemType.darksecret) as Record<string, Archetype.TraitData>
+        [K4ItemType.advantage]: this.#precomputeAllTraitData(archetype, K4ItemType.advantage) as Partial<Record<K4CharAttribute, Record<string, Archetype.TraitData>>>,
+        [K4ItemType.disadvantage]: this.#precomputeAllTraitData(archetype, K4ItemType.disadvantage) as Record<string, Archetype.TraitData>,
+        [K4ItemType.darksecret]: this.#precomputeAllTraitData(archetype, K4ItemType.darksecret) as Record<string, Archetype.TraitData>
       };
       this.archetypeTraitDataMap.set(archetype, archetypeTraitData);
     }
@@ -418,12 +469,12 @@ class K4CharGen {
    * Get the trait data for a given archetype and trait type.
    * This function uses precomputed values for efficiency.
    *
-   * @param {K4ItemType & KeyOf<typeof Archetypes[K4Archetype]>} traitType - The type of trait to get data for.
+   * @param {Archetype.TraitType} traitType - The type of trait to get data for.
    * @param {K4Archetype} archetype - The archetype to get data for.
    * @param {K4Attribute} [attribute] - The attribute to filter by (optional).
    * @returns {Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>> | Record<string, Archetype.TraitData>} - The trait data.
    */
-  getArchetypeTraitData(traitType: K4ItemType & KeyOf<typeof Archetypes[K4Archetype]>, archetype: K4Archetype, attribute?: K4Attribute) {
+  getArchetypeTraitData(traitType: Archetype.TraitType, archetype: K4Archetype, attribute?: K4Attribute) {
     if (![
       K4ItemType.advantage,
       K4ItemType.disadvantage,
@@ -478,7 +529,7 @@ class K4CharGen {
 
 
   // Precompute archetype data for all valid archetypes
-  archetypeDataMap: Map<K4Archetype, Omit<Archetype.ArchetypeData, 'isSelected'>> = new Map<K4Archetype, Omit<Archetype.ArchetypeData, 'isSelected'>>();
+  archetypeDataMap: Map<K4Archetype, Partial<ValOf<typeof Archetypes[keyof typeof Archetypes]>>> = new Map<K4Archetype, Partial<ValOf<typeof Archetypes[keyof typeof Archetypes]>>>();
 
   precomputeArchetypeData() {
     for (const [archetype, data] of Object.entries(Archetypes) as Array<Tuple<K4Archetype, ValOf<typeof Archetypes>>>) {
@@ -487,14 +538,14 @@ class K4CharGen {
       }
 
       this.archetypeDataMap.set(archetype, {
-        label: data.label as K4Archetype,
+        label: data.label,
         tier: data.tier,
         img: `systems/kult4th/assets/archetypes/${archetype}.png`,
-        [K4ItemType.advantage]: this.archetypeTraitDataMap.get(archetype)![K4ItemType.advantage]!,
+        [K4ItemType.advantage]: this.archetypeTraitDataMap.get(archetype)![K4ItemType.advantage],
         selStringAdvantage: undefined, // Will be computed dynamically
-        [K4ItemType.disadvantage]: this.archetypeTraitDataMap.get(archetype)![K4ItemType.disadvantage]!,
+        [K4ItemType.disadvantage]: this.archetypeTraitDataMap.get(archetype)![K4ItemType.disadvantage],
         selStringDisadvantage: undefined, // Will be computed dynamically
-        [K4ItemType.darksecret]: this.archetypeTraitDataMap.get(archetype)![K4ItemType.darksecret]!,
+        [K4ItemType.darksecret]: this.archetypeTraitDataMap.get(archetype)![K4ItemType.darksecret],
         selStringDarkSecret: undefined, // Will be computed dynamically
         description: data.description,
         occupation: this.getStringData("occupation", archetype),
@@ -503,7 +554,7 @@ class K4CharGen {
           face: this.getStringData("looks.face", archetype),
           eyes: this.getStringData("looks.eyes", archetype),
           body: this.getStringData("looks.body", archetype)
-        }
+        },
       });
     }
   }
@@ -587,76 +638,76 @@ class K4CharGen {
     );
   }
 
-  getArchetypeCarouselData(): Archetype.Data {
-    // First filter Archetypes for those tiers allowed in settings
-    /**
-     * @todo Implement settings to allow multiple Archetype Tiers
-     * (currently defaulting to "aware" only)
-     */
-    return Object.fromEntries(
-      (Object.entries(Archetypes) as Array<Tuple<K4Archetype, ValOf<typeof Archetypes>>>)
-        .filter(([_archetype, {tier}]) => VALID_ARCHETYPE_TIERS.includes(tier))
-        // Map data to match Archetype.Data
-        .map(([archetype, data]: [K4Archetype, ValOf<typeof Archetypes>]) => {
-          const advTraitData = this.getArchetypeTraitData(K4ItemType.advantage, archetype) as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>;
-          const advTraitDataArray = Object.values(advTraitData).flatMap(Object.values) as Archetype.TraitData[];
-          const advSelected = advTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-          let selStringAdvantage: Maybe<string> = undefined;
-          if (advSelected.length > 3) {
-            selStringAdvantage = "<span class='neon-glow-animated-red'>Too Many Advantages!</span> <br> (max: #>text-keyword>THREE<#)";
-          } else if (advSelected.length === 0) {
-            selStringAdvantage = "Choose #>text-keyword>THREE<# from the list below:";
-          } else if (advSelected.length < 3) {
-            selStringAdvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(3 - advSelected.length))}<# more:`;
-          }
+  // getArchetypeCarouselData(): Archetype.Data {
+  //   // First filter Archetypes for those tiers allowed in settings
+  //   /**
+  //    * @todo Implement settings to allow multiple Archetype Tiers
+  //    * (currently defaulting to "aware" only)
+  //    */
+  //   return Object.fromEntries(
+  //     (Object.entries(Archetypes) as Array<Tuple<K4Archetype, ValOf<typeof Archetypes>>>)
+  //       .filter(([_archetype, {tier}]) => VALID_ARCHETYPE_TIERS.includes(tier))
+  //       // Map data to match Archetype.Data
+  //       .map(([archetype, data]: [K4Archetype, ValOf<typeof Archetypes>]) => {
+  //         const advTraitData = this.getArchetypeTraitData(K4ItemType.advantage, archetype) as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>;
+  //         const advTraitDataArray = Object.values(advTraitData).flatMap(Object.values) as Archetype.TraitData[];
+  //         const advSelected = advTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
+  //         let selStringAdvantage: Maybe<string> = undefined;
+  //         if (advSelected.length > 3) {
+  //           selStringAdvantage = "<span class='neon-glow-animated-red'>Too Many Advantages!</span> <br> (max: #>text-keyword>THREE<#)";
+  //         } else if (advSelected.length === 0) {
+  //           selStringAdvantage = "Choose #>text-keyword>THREE<# from the list below:";
+  //         } else if (advSelected.length < 3) {
+  //           selStringAdvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(3 - advSelected.length))}<# more:`;
+  //         }
 
-          const disTraitData = this.getArchetypeTraitData(K4ItemType.disadvantage, archetype) as Record<string, Archetype.TraitData>;
-          const disTraitDataArray: Archetype.TraitData[] = Object.values(disTraitData);
-          const disSelected = disTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-          let selStringDisadvantage: Maybe<string> = undefined;
-          if (disSelected.length > 2) {
-            selStringDisadvantage = "<span class='neon-glow-animated-red'>Too Many Disadvantages!</span> <br> (max: #>text-keyword>TWO<#)";
-          } else if (disSelected.length === 0) {
-            selStringDisadvantage = "Choose #>text-keyword>TWO<#. Suggestions:";
-          } else if (disSelected.length < 2) {
-            selStringDisadvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(2 - disSelected.length))}<# more. Suggestions:`;
-          }
+  //         const disTraitData = this.getArchetypeTraitData(K4ItemType.disadvantage, archetype) as Record<string, Archetype.TraitData>;
+  //         const disTraitDataArray: Archetype.TraitData[] = Object.values(disTraitData);
+  //         const disSelected = disTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
+  //         let selStringDisadvantage: Maybe<string> = undefined;
+  //         if (disSelected.length > 2) {
+  //           selStringDisadvantage = "<span class='neon-glow-animated-red'>Too Many Disadvantages!</span> <br> (max: #>text-keyword>TWO<#)";
+  //         } else if (disSelected.length === 0) {
+  //           selStringDisadvantage = "Choose #>text-keyword>TWO<#. Suggestions:";
+  //         } else if (disSelected.length < 2) {
+  //           selStringDisadvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(2 - disSelected.length))}<# more. Suggestions:`;
+  //         }
 
-          const darkSecretTraitData = this.getArchetypeTraitData(K4ItemType.darksecret, archetype) as Record<string, Archetype.TraitData>;
-          const darkSecretTraitDataArray: Archetype.TraitData[] = Object.values(darkSecretTraitData);
-          const darkSecretSelected = darkSecretTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-          let selStringDarkSecret: Maybe<string> = undefined;
-          if (darkSecretSelected.length === 0) {
-            selStringDarkSecret = "Choose #>text-keyword>AT LEAST ONE<#. Suggestions:";
-          } else {
-            selStringDarkSecret = "(You #>text-keyword>MAY<# choose more.)";
-          }
-          return [
-            archetype,
-            {
-              label: data.label,
-              tier: data.tier,
-              img: `systems/kult4th/assets/archetypes/${archetype}.png`,
-              [K4ItemType.advantage]: this.getArchetypeTraitData(K4ItemType.advantage, archetype),
-              selStringAdvantage,
-              [K4ItemType.disadvantage]: this.getArchetypeTraitData(K4ItemType.disadvantage, archetype),
-              selStringDisadvantage,
-              [K4ItemType.darksecret]: this.getArchetypeTraitData(K4ItemType.darksecret, archetype),
-              selStringDarkSecret,
-              description: data.description,
-              occupation: this.getStringData("occupation", archetype),
-              looks: {
-                clothes: this.getStringData("looks.clothes", archetype),
-                face: this.getStringData("looks.face", archetype),
-                eyes: this.getStringData("looks.eyes", archetype),
-                body: this.getStringData("looks.body", archetype)
-              },
-              isSelected: this.actor.archetype === archetype
-            }
-          ];
-        })
-    );
-  }
+  //         const darkSecretTraitData = this.getArchetypeTraitData(K4ItemType.darksecret, archetype) as Record<string, Archetype.TraitData>;
+  //         const darkSecretTraitDataArray: Archetype.TraitData[] = Object.values(darkSecretTraitData);
+  //         const darkSecretSelected = darkSecretTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
+  //         let selStringDarkSecret: Maybe<string> = undefined;
+  //         if (darkSecretSelected.length === 0) {
+  //           selStringDarkSecret = "Choose #>text-keyword>AT LEAST ONE<#. Suggestions:";
+  //         } else {
+  //           selStringDarkSecret = "(You #>text-keyword>MAY<# choose more.)";
+  //         }
+  //         return [
+  //           archetype,
+  //           {
+  //             label: data.label,
+  //             tier: data.tier,
+  //             img: `systems/kult4th/assets/archetypes/${archetype}.png`,
+  //             [K4ItemType.advantage]: this.getArchetypeTraitData(K4ItemType.advantage, archetype),
+  //             selStringAdvantage,
+  //             [K4ItemType.disadvantage]: this.getArchetypeTraitData(K4ItemType.disadvantage, archetype),
+  //             selStringDisadvantage,
+  //             [K4ItemType.darksecret]: this.getArchetypeTraitData(K4ItemType.darksecret, archetype),
+  //             selStringDarkSecret,
+  //             description: data.description,
+  //             occupation: this.getStringData("occupation", archetype),
+  //             looks: {
+  //               clothes: this.getStringData("looks.clothes", archetype),
+  //               face: this.getStringData("looks.face", archetype),
+  //               eyes: this.getStringData("looks.eyes", archetype),
+  //               body: this.getStringData("looks.body", archetype)
+  //             },
+  //             isSelected: this.actor.archetype === archetype
+  //           }
+  //         ];
+  //       })
+  //   );
+  // }
 
   chargenContext(): ChargenContext {
 
@@ -750,20 +801,20 @@ class K4CharGen {
 
   get minDistanceStyles(): Record<Key, string | number> {
     if (!this._minDistanceStyles) {
-      this._minDistanceStyles = getDistanceStyles(0, 0);
+      this._minDistanceStyles = this.getDistanceStyles(0, 0);
     }
     return this._minDistanceStyles;
   }
   get maxDistanceStyles(): Record<Key, string | number> {
     if (!this._maxDistanceStyles) {
-      this._maxDistanceStyles = getDistanceStyles(0, Math.floor(numValidArchetypes / 2));
+      this._maxDistanceStyles = this.getDistanceStyles(0, Math.floor(K4CharGen.NumValidArchetypes / 2));
     }
     return this._maxDistanceStyles;
   }
 
   _element: Maybe<JQuery>;
   get element(): JQuery {
-    if (!this._element) {
+    if (!this._element || this._element.length === 0) {
       this._element = $("#gamephase-overlay.chargen");
     }
     if (!this._element.length) {
@@ -773,16 +824,16 @@ class K4CharGen {
   }
 
   // For immediate user feedback, fade in the bg container and the sheet immediately.
-  #getTimeline_revealCarouselBaseBackground(): gsap.core.Timeline {
-    const bgContainer$ = this.element.find(".pc-initialization-bg");
+  // #getTimeline_revealCarouselBaseBackground(): gsap.core.Timeline {
+  //   const bgContainer$ = this.element.find(".pc-initialization-bg");
 
-    return U.gsap.timeline()
-      .to([this.element, bgContainer$], {
-        autoAlpha: 1,
-        duration: 0.25,
-        ease: "power2.out"
-      });
-  }
+  //   return U.gsap.timeline()
+  //     .to([this.element, bgContainer$], {
+  //       autoAlpha: 1,
+  //       duration: 0.25,
+  //       ease: "power2.out"
+  //     });
+  // }
 
   #getTimeline_revealCarouselBackground(): gsap.core.Timeline {
     const container$ = this.element.find(".pc-initialization-bg");
@@ -790,8 +841,15 @@ class K4CharGen {
     const clouds$ = container$.find(".cloud-bg");
     const fore$ = container$.find(".cityscape-fore");
 
+    // kLog.log("[K4PCSheet] #getTimeline_revealCarouselBackground", {container$, mid$, clouds$, fore$});
+
     // Construct timeline for revealing the background buildings & clouds.
-    return U.gsap.timeline({defaults: {ease: "power2.inOut"}})
+    const tl = U.gsap.timeline({defaults: {ease: "power2.inOut"}})
+      .to([this.element, container$], {
+        autoAlpha: 1,
+        duration: 0.25,
+        ease: "power2.out"
+      })
       .to(clouds$, {opacity: 0.75, ease: "power2.in", duration: 1}, 0)
       .fromTo(fore$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 1)
       .fromTo(mid$, {autoAlpha: 0}, {autoAlpha: 1, duration: 2}, 2)
@@ -799,6 +857,10 @@ class K4CharGen {
       .fromTo(fore$, {y: 250, scale: 1}, {y: 150, scale: 1.15, ease: "expoScale(1, 1.15, power2.inOut)", duration: 6}, 0)
       .fromTo(mid$, {y: 200, scale: 0.85}, {y: 150, scale: 1, ease: "expoScale(0.85, 1, power2.inOut)", duration: 6}, 0)
       .fromTo(mid$, {filter: "blur(40px) brightness(0)"}, {filter: "blur(2px) brightness(1)", duration: 6}, 0);
+
+    kLog.log("[K4PCSheet] #getTimeline_revealCarouselBackground", {tl});
+
+    return tl;
   }
 
   #getTimeline_revealCarouselScene(carouselStaggerDuration = 1): gsap.core.Timeline {
@@ -806,7 +868,7 @@ class K4CharGen {
     const carouselScene$ = this.element.find(".archetype-staging");
 
     const selArchetype = this.actor.archetype ?? K4Archetype.academic;
-    const selIndex = archetypeIndexMap.get(selArchetype)!;
+    const selIndex = K4CharGen.ArchetypeIndexMap.get(selArchetype)!;
 
     const attributesPanel$ = container$.find(".archetype-panel.attributes");
     const notesPanel$ = container$.find(".archetype-panel.notes");
@@ -814,10 +876,11 @@ class K4CharGen {
     const items$ = carouselScene$.find(".archetype-carousel-item");
 
     const MAX_DELAY = carouselStaggerDuration;
-    const STAGGER_SHIFT = MAX_DELAY / numValidArchetypes / 2;
-    function getDelayFromIndex(index: number) {
-      const nextDistRatio = 1 - getNormalizedDistanceFromSelected(wrapIndex(index + 1), selIndex);
-      const thisDistRatio = 1 - getNormalizedDistanceFromSelected(index, selIndex);
+    const STAGGER_SHIFT = MAX_DELAY / K4CharGen.NumValidArchetypes / 2;
+
+    const getDelayFromIndex = (index: number) => {
+      const nextDistRatio = 1 - this.getNormalizedDistanceFromSelected(this.wrapIndex(index + 1), selIndex);
+      const thisDistRatio = 1 - this.getNormalizedDistanceFromSelected(index, selIndex);
       const distRatio = thisDistRatio + (nextDistRatio > thisDistRatio ? STAGGER_SHIFT : 0);
       const delay = U.gsap.utils.mapRange(0, 1, 0, MAX_DELAY, distRatio);
       // kLog.log(`[K4PCSheet] Delay (MAX: ${MAX_DELAY}): index '${index}' -> ${nextDistRatio > thisDistRatio ? `[STAGGER: '${STAGGER_SHIFT}']` : ""} distRatio '${distRatio}' -> delay '${delay}'`);
@@ -828,41 +891,56 @@ class K4CharGen {
       .call(() => {
         this.updateArchetypeExamples(container$);
       })
-      .from(carouselScene$, {
+      .fromTo(carouselScene$, {
         autoAlpha: 0,
         y: 0,
         scale: 0.7,
-        filter: "blur(100px)",
-        ease: "power3.in",
+        filter: "blur(100px)"
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        ease: "power3.out",
         duration: 1
       }, 0)
-      .from(container$, {
+      .fromTo(container$, {
         autoAlpha: 0,
         filter: "blur(10px)",
+        backgroundPosition: "50% 620px, 50% 630px"
+      }, {
+        autoAlpha: 1,
+        filter: "blur(0px)",
         backgroundPosition: "50% 620px, 50% 630px",
         duration: 0.5,
         ease: "none"
       }, 0)
-      .from(items$, {
+      .fromTo(items$, {
         autoAlpha: 0,
+        y: 0,
+        scale: 1
+      }, {
+        autoAlpha: 1,
         y: 0,
         scale: 1,
         ease: "power2",
         duration: 1,
         delay: getDelayFromIndex
       })
-      .from([
+      .fromTo([
         attributesPanel$,
         namePanel$,
         notesPanel$
       ], {
         autoAlpha: 0,
-        y: 200,
+        y: 200
+      }, {
+        autoAlpha: 1,
+        y: 0,
         ease: "power2",
         duration: 1,
         stagger: 0.2
       }, 0);
-
   }
 
   #getTimeline_archetypeStyle(archetype$: JQuery): gsap.core.Timeline {
@@ -1154,7 +1232,7 @@ class K4CharGen {
     const trait = traitContainer$.attr("data-trait");
     let clickTimer: NodeJS.Timeout | null = null;
     let longPressTriggered = false;
-    const glowColors: Partial<Record<K4ItemType, string>> = {
+    const glowColors: Partial<Record<Archetype.TraitType, string>> = {
       [K4ItemType.advantage]: "neon-glow-animated-gold",
       [K4ItemType.disadvantage]: "neon-glow-animated-red",
       [K4ItemType.darksecret]: "neon-glow-animated-white"
@@ -1408,25 +1486,71 @@ class K4CharGen {
     });
   }
 
+  /**
+   * Attaches listeners to attribute selector elements.
+   * @param {JQuery} html - The jQuery object representing the HTML to search within.
+   */
+  #attachListeners_attributeSelectors(html: JQuery): void {
+    // Find all select elements with class 'attribute-value'
+    const attributeSelectors = html.find("select.attribute-value");
+
+    // Attach change event listener to each select element
+    attributeSelectors.each((_index: number, element: HTMLElement) => {
+      const $select = $(element);
+      const dotTarget = $select.attr("name")!;
+
+      $select.off("change").on("change", (event: JQuery.ChangeEvent) => {
+        const newValue = $(event.currentTarget).val();
+
+        // Ensure newValue is a string
+        if (typeof newValue === "string") {
+          // Update the select element's value
+          $select.attr("value", newValue);
+
+          // Update the selected attribute of the appropriate option
+          $select.find("option").each((_i, option) => {
+            if ($(option).val() === newValue) {
+              $(option).attr("selected", "selected");
+            } else {
+              $(option).removeAttr("selected");
+            }
+          });
+
+          // Log the change for debugging purposes
+          console.log(`Attribute value changed to: ${newValue}`);
+
+          getActor().update({[dotTarget]: newValue}, {render: false}).catch((err: unknown) => {
+            kLog.error(`Failed to update attribute: ${String(err)}`);
+          });
+
+          // Here you can add any additional logic needed when an attribute value changes
+          // For example, updating the actor's data or triggering other UI updates
+        } else {
+          console.error("Invalid attribute value selected");
+        }
+      });
+    });
+  }
+
   updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
-    const selArchetypeIndex = selIndex ?? getIndexFromYRot(rotation);
+    const selArchetypeIndex = selIndex ?? this.getIndexFromYRot(rotation);
     const thisIndex = U.pInt(item$.attr("data-index"));
     U.gsap.set(item$[0], {rotationY: -rotation});
     if (thisIndex === selArchetypeIndex) {return;}
     const thisTimeline = this.#getTimeline_archetypeStyle(item$);
     // kLog.log(`Updating Seeking Archetype Item '${item$.attr("data-archetype")}' ($${thisIndex}) to ${1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex)}`);
-    thisTimeline.seek(1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true).pause();
+    thisTimeline.seek(1 - this.getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true).pause();
   }
 
   async #updateCarouselFromDragger(x: number, isTweening = false) {
     const carousel$ = this.element.find(".archetype-carousel");
     const dragger$ = this.element.find(".archetype-carousel-drag-handle");
     const items$ = carousel$.find(".archetype-carousel-item");
-    const wrappedX = wrapXPos(x);
-    const thisIndex = getIndexFromXPos(wrappedX);
+    const wrappedX = this.wrapXPos(x);
+    const thisIndex = this.getIndexFromXPos(wrappedX);
     const rotation = isTweening
-      ? getYRotFromIndex(thisIndex)
-      : getYRotFromXPos(wrappedX);
+      ? this.getYRotFromIndex(thisIndex)
+      : this.getYRotFromXPos(wrappedX);
     let tl: gsap.core.Tween;
     if (isTweening) {
       tl = U.gsap.to(carousel$, {rotationY: rotation, duration: 0.5, ease: "back.inOut"});
@@ -1445,7 +1569,7 @@ class K4CharGen {
     if (typeof this._selArchetypeIndex === "number" && this._selArchetypeIndex >= 0) {
       return this._selArchetypeIndex;
     }
-    this._selArchetypeIndex = archetypeIndexMap.get(this.actor.archetype ?? K4Archetype.academic);
+    this._selArchetypeIndex = K4CharGen.ArchetypeIndexMap.get(this.actor.archetype ?? K4Archetype.academic);
     if (typeof this._selArchetypeIndex !== "number") {
       throw new Error(`Invalid archetype index: ${String(this._selArchetypeIndex)}`);
     }
@@ -1462,28 +1586,28 @@ class K4CharGen {
     const self = this;
 
     const getSnappedXPos = (x: number) => {
-      const newIndex = getIndexFromXPos(wrapXPos(x));
-      return getXPosFromIndex(newIndex);
+      const newIndex = this.getIndexFromXPos(this.wrapXPos(x));
+      return this.getXPosFromIndex(newIndex);
     };
 
     const snapToNearestArchetype = async (x: number, isCompleting = false, isUpdating = true) => {
-      const newIndex = getIndexFromXPos(wrapXPos(x));
-      this.actor.archetype = validArchetypes[newIndex];
+      const newIndex = this.getIndexFromXPos(this.wrapXPos(x));
+      this.actor.archetype = K4CharGen.ValidArchetypes[newIndex];
       this.selArchetypeIndex = newIndex;
       if (isUpdating) {
-        await this.#updateCarouselFromDragger(getXPosFromIndex(newIndex), isCompleting);
+        await this.#updateCarouselFromDragger(this.getXPosFromIndex(newIndex), isCompleting);
       }
       K4DebugDisplay.updateArchetypeInfo(this.actor.archetype, this.selArchetypeIndex, newIndex, newIndex);
       if (isCompleting) {
         focusOn();
       }
-      return getXPosFromIndex(newIndex);
+      return this.getXPosFromIndex(newIndex);
     };
 
     const focusOn = (index = this.selArchetypeIndex) => {
       dragger$.css("pointer-events", "none");
-      const selectedArchetype = getElementFromIndex(carousel$, index);
-      const archetype = validArchetypes[index];
+      const selectedArchetype = this.getElementFromIndex(carousel$, index);
+      const archetype = K4CharGen.ValidArchetypes[index];
       const selectedArchetypeTimeline = this.#getTimeline_archetypeStyle($(selectedArchetype));
       U.gsap.timeline()
         .add(selectedArchetypeTimeline.tweenTo("selected", {duration: 2}))
@@ -1491,7 +1615,7 @@ class K4CharGen {
         .add(() => {dragger$.css("pointer-events", "auto");});
     };
     const focusOff = (index = this.selArchetypeIndex) => {
-      const selectedArchetype = getElementFromIndex(carousel$, index);
+      const selectedArchetype = this.getElementFromIndex(carousel$, index);
       const selectedArchetypeTimeline = this.#getTimeline_archetypeStyle($(selectedArchetype));
       void selectedArchetypeTimeline.seek("light", true).pause();
     };
@@ -1513,7 +1637,7 @@ class K4CharGen {
       },
       onDrag: function (this: Dragger) {
         void self.#updateCarouselFromDragger(this.x, false);
-        K4DebugDisplay.updateDraggerInfo(this, self.actor);
+        // K4DebugDisplay.updateDraggerInfo(this, self.actor, self);
       },
       onDragEnd: function (this: Dragger) {
         if (this.isThrowing) {return;}
@@ -1522,7 +1646,7 @@ class K4CharGen {
       },
       onThrowUpdate: function (this: Dragger) {
         void self.#updateCarouselFromDragger(this.x, false);
-        K4DebugDisplay.updateDraggerInfo(this, self.actor);
+        // K4DebugDisplay.updateDraggerInfo(this, self.actor, self);
       },
       onThrowComplete: function (this: Dragger) {
         // void self.#updateCarouselFromDragger(this.x, false);
@@ -1539,39 +1663,37 @@ class K4CharGen {
       // Update debug info on each frame
       gsap.ticker.add(() => {
         const x = gsap.getProperty(dragger$[0], "x") as number;
-        updateDebugInfo(carousel$, x);
-        K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), this.actor);
+        // updateDebugInfo(carousel$, x);
+        // K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), this.actor, self);
       });
     }
   }
 
-  itemWidth = 200;
-  #constructCarousel(carouselScene$: JQuery) {
+
+  async #constructCarousel(carouselScene$: JQuery) {
     const carousel$ = carouselScene$.find(".archetype-carousel");
     const items$ = carousel$.find(".archetype-carousel-item");
 
-    const totalItems = numValidArchetypes;
-    const radius = Math.round((this.itemWidth / 2) / Math.tan(Math.PI / totalItems));
-
     // [carouselScene$, carousel$, items$].forEach(revealAndReturn);
 
-    void U.gsap.set(carousel$, {z: -1 * radius});
+    void U.gsap.set(carousel$, {z: -1 * K4CharGen.CarouselRadius});
 
-    void Promise.all(items$.map((i, item) => {
+    await Promise.all(items$.map(async (i, item) => {
       const item$ = $(item);
       const archTimeline = this.#getTimeline_archetypeStyle(item$);
-      const distFromSelected = getNormalizedDistanceFromSelected(i, this.selArchetypeIndex);
+      const distFromSelected = this.getNormalizedDistanceFromSelected(i, this.selArchetypeIndex);
       archTimeline.seek(1 - distFromSelected, true);
-      return U.gsap.set(item, {
-        transform: `rotateY(${-1 * getYRotFromIndex(i)}deg) translateZ(${radius}px) rotateY(${getYRotFromIndex(i)}deg)`
+      const archYRot = this.getYRotFromIndex(i);
+      await U.gsap.set(item, {
+        transform: `rotateY(${-1 * archYRot}deg) translateZ(${K4CharGen.CarouselRadius}px) rotateY(${archYRot}deg)`
       });
     }));
 
     // hideAndReturn(items$);
 
-    U.gsap.set([carouselScene$, carousel$], {opacity: 1, visibility: "visible"});
+    // U.gsap.set([carouselScene$, carousel$], {opacity: 1, visibility: "visible"});
 
-    this.#constructCarouselDragger(carouselScene$);
+    // this.#constructCarouselDragger(carouselScene$);
   }
 
   async #reRenderTraitPanel(archetype$: JQuery, panelData: Archetype.ArchetypeData) {
@@ -1617,16 +1739,20 @@ class K4CharGen {
     });
   }
 
+
+  _isCarouselSceneLoaded = false;
   async preloadCarouselScene() {
+    if (this._isCarouselSceneLoaded) {return true;}
     const timeStamp = U.getTimeStamp();
 
-    kLog.log(`${timeStamp()} - Initializing Carousel Scene`);
 
-    void this.#getTimeline_revealCarouselBaseBackground().play();
+    // kLog.log(`${timeStamp()} - Playing Reveal Carousel Base Background`);
+    // void this.#getTimeline_revealCarouselBaseBackground().play();
+    kLog.log(`${timeStamp()} - Initializing Carousel Scene`);
 
     // Construct the carousel by positioning and rotating all elements
     const carouselScene$ = this.element.find(".archetype-staging");
-    this.#constructCarousel(carouselScene$);
+    await this.#constructCarousel(carouselScene$);
     kLog.log(`${timeStamp()} - Carousel Scene Constructed`);
 
     // Add the carousel drag controller
@@ -1639,18 +1765,30 @@ class K4CharGen {
       this.#attachListeners_archetypePanels(archetype$);
     });
     this.#attachListeners_contentEditable(this.element);
+    this.#attachListeners_attributeSelectors(this.element);
     kLog.log(`${timeStamp()} - Archetype Timelines Attached`);
 
     // Update the carousel to match the selected archetype
-    await this.#updateCarouselFromDragger(getXPosFromIndex(this.selArchetypeIndex), false);
+    await this.#updateCarouselFromDragger(this.getXPosFromIndex(this.selArchetypeIndex), false);
     kLog.log(`${timeStamp()} - Carousel Updated to Selected Archetype`);
 
     kLog.log(`${timeStamp()} - Carousel Rendered, Returning true`);
+
+    U.gsap.set([
+      this.element[0],
+      this.element.find(".pc-initialization-bg")[0],
+      this.element.find(".pc-initialization")[0]
+    ], {
+      autoAlpha: 1,
+      opacity: 1
+    });
+    this._isCarouselSceneLoaded = true;
 
     return true;
   }
 
   async revealCarouselScene() {
+    kLog.log("Revealing Carousel Scene");
     CONFIG.K4.isCharGenInitialized = true;
     return this.#getTimeline_revealCarousel().play();
   }
