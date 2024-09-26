@@ -60,6 +60,20 @@
       "problemMatcher": []
     },
     {
+      "label": "Run 3x Vite Dev Server",
+      "type": "shell",
+      "command": "$env:NUM_CHROME_PROFILES='3'; $env:NODE_OPTIONS='--max-old-space-size=8192'; npx vite",
+      "group": "build",
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "LINTING FIX: Fix Indentation",
       "type": "shell",
       "command": "cmd.exe",

@@ -13,7 +13,7 @@ import {gsap} from "../libraries.js";
 import K4GMTracker from "./K4GMTracker.js";
 import K4Alert, {AlertType} from "./K4Alert.js";
 import K4DebugDisplay from "./K4DebugDisplay.js";
-import {UserTargetRef} from "./K4Socket.js";
+import K4Socket, {UserTargetRef} from "./K4Socket.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
 
@@ -24,23 +24,31 @@ const VALID_ARCHETYPE_TIERS: ArchetypeTier[] = ["aware" as ArchetypeTier];
 // #endregion
 
 // #region DEBUG: METHOD DECORATOR ~
-function methodLoggingDecorator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-  const timeStamp = U.getTimeStamp();
-  const originalMethod = descriptor.value;
-  descriptor.value = function (...args: any[]) {
-    kLog.log(`[${propertyKey}] CALLED with arguments:`, {args});
-    const result = originalMethod.apply(this, args);
-    kLog.log(`[${propertyKey}] RETURNED after ${timeStamp()}`, {result});
-    return result;
-  };
-  return descriptor;
+function methodLoggingDecorator(
+	target: unknown,
+	propertyKey: string,
+	descriptor: PropertyDescriptor
+): PropertyDescriptor {
+	const originalMethod = descriptor.value!;
+	descriptor.value = function (this: any, ...args: any[]): any {
+    const timeStamp = U.getTimeStamp();
+    timeStamp();
+		kLog.log(`[${propertyKey}] CALLED with arguments:`, { args });
+		const result = originalMethod.apply(this, args);
+		kLog.log(`[${propertyKey}] RETURNED after ${timeStamp()}s`, { result });
+		return result;
+	};
+	return descriptor;
 }
 // #endregion
 
 // #REGION === TYPES === ~
 // #region -- TYPES ~
+
+declare global {
+  type K4TraitType = K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret;
+}
 namespace Archetype {
-  export type TraitType = K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret;
 
   export interface TraitData {
     name: string,
@@ -86,6 +94,10 @@ interface ChargenContext {
     eyes: Archetype.StringData,
     body: Archetype.StringData;
   },
+  traitNotes: Record<string, {
+    traitType: K4TraitType,
+    value: string;
+  }>,
   otherPlayerData: Record<IDString, K4Actor["summaryData"]>;
 }
 // #endregion
@@ -228,6 +240,8 @@ class K4CharGen {
     this.StyleMap;
     this.CarouselRadius;
 
+    Object.assign(globalThis, {Archetypes});
+
     const gmTracker = await K4GMTracker.Get();
     const user = getUser();
     const userPC = getActor();
@@ -369,8 +383,7 @@ class K4CharGen {
     return this.getElementFromArchetype(context$, archetype);
   }
 
-  // @methodLoggingDecorator
-  #precomputeTraitData(traitName: string, traitType: Archetype.TraitType, archetype: K4Archetype | false): Archetype.TraitData {
+  precomputeTraitData(traitName: string, traitType: K4TraitType, archetype: K4Archetype | false): Archetype.TraitData {
     // kLog.log("getTraitData", traitName, traitType, archetype);
     // Strip "!" prefix (marking mandatory trait) so traitName can retrieve item
     // const {actor} = this;
@@ -392,13 +405,13 @@ class K4CharGen {
 
     if (archetype !== false) {
 
-      const archetypeData = Archetypes[archetype];
+      const archetypeData = {...Archetypes[archetype]};
 
       if (!(traitType in archetypeData)) {
         throw new Error(`Archetype ${archetype} does not have a ${traitType} section`);
       }
 
-      const archetypeTraits = archetypeData[traitType as KeyOf<typeof archetypeData>] as string[];
+      const archetypeTraits = archetypeData[traitType as keyof typeof archetypeData] as string[];
 
       // Check whether trait is mandatory for this archetype. If so, set isMandatory.
       const nameIfMandatory = `!${traitName}`;
@@ -411,7 +424,7 @@ class K4CharGen {
     return tData;
   }
 
-  #precomputeAllTraitData(archetype: K4Archetype, traitType: Archetype.TraitType) {
+  #precomputeAllTraitData(archetype: K4Archetype, traitType: K4TraitType) {
     if (![
       K4ItemType.advantage,
       K4ItemType.disadvantage,
@@ -419,13 +432,13 @@ class K4CharGen {
     ].includes(traitType)) {
       throw new Error(`Invalid trait type ${traitType} for getArchetypeTraitData`);
     }
-    const archetypeTData = Archetypes[archetype][traitType];
+    const archetypeTData = [...Archetypes[archetype][traitType]];
 
     // For advantages, group the trait data by attribute in form Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>
     if (traitType === K4ItemType.advantage) {
       const tDataByAttribute: Partial<Record<K4CharAttribute|"none", Record<string, Archetype.TraitData>>> = {};
       for (const traitName of archetypeTData) {
-        const tData = this.#precomputeTraitData(traitName, traitType, archetype);
+        const tData = this.precomputeTraitData(traitName, traitType, archetype);
         const attr = this.getTraitAttribute(traitName) as K4CharAttribute|"none";
         if (!(attr in tDataByAttribute)) {
           tDataByAttribute[attr] = {};
@@ -439,11 +452,7 @@ class K4CharGen {
     // Otherwise, we just return the Record<string, TraitData> object
     return Object.fromEntries([
       ...archetypeTData
-        .map((traitName) => [traitName.replace(/^!/g, ""), this.#precomputeTraitData(traitName, traitType, archetype)]),
-      // For disadvantages and dark secrets, we need to append any off-archetype selections made via the more menu
-      ...this.actor.system.charGen[
-        traitType === K4ItemType.disadvantage ? "extraDisadvantages" : "extraDarkSecrets"
-      ].map((traitName) => [traitName, this.#precomputeTraitData(traitName, traitType, false)])
+        .map((traitName) => [traitName.replace(/^!/g, ""), this.precomputeTraitData(traitName, traitType, archetype)])
     ]) as Record<string, Archetype.TraitData>;
   }
 
@@ -469,12 +478,12 @@ class K4CharGen {
    * Get the trait data for a given archetype and trait type.
    * This function uses precomputed values for efficiency.
    *
-   * @param {Archetype.TraitType} traitType - The type of trait to get data for.
+   * @param {K4TraitType} traitType - The type of trait to get data for.
    * @param {K4Archetype} archetype - The archetype to get data for.
    * @param {K4Attribute} [attribute] - The attribute to filter by (optional).
    * @returns {Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>> | Record<string, Archetype.TraitData>} - The trait data.
    */
-  getArchetypeTraitData(traitType: Archetype.TraitType, archetype: K4Archetype, attribute?: K4Attribute) {
+  getArchetypeTraitData(traitType: K4TraitType, archetype: K4Archetype, attribute?: K4Attribute) {
     if (![
       K4ItemType.advantage,
       K4ItemType.disadvantage,
@@ -485,11 +494,20 @@ class K4CharGen {
 
     const traitData = this.archetypeTraitDataMap.get(archetype)?.[traitType];
 
-    if (traitType === K4ItemType.advantage && attribute) {
-      return (traitData as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>)[attribute] ?? {};
+    if (traitType === K4ItemType.advantage) {
+      if (attribute) {
+        return (traitData as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>)[attribute] ?? {};
+      }
+      return traitData ?? {};
+    } else {
+      // For disadvantages and dark secrets, we need to append any off-archetype selections made via the more menu
+      const offArchetypeSelections = Object.fromEntries([
+        ...this.actor.system.charGen[
+          traitType === K4ItemType.disadvantage ? "extraDisadvantages" : "extraDarkSecrets"
+        ].map((traitName) => [traitName, this.precomputeTraitData(traitName, traitType, false)])
+      ]);
+      return {...traitData, ...offArchetypeSelections};
     }
-
-    return traitData ?? {};
   }
 
   getStringData(dotKey: string, archetype?: K4Archetype): Archetype.StringData {
@@ -770,10 +788,36 @@ class K4CharGen {
       .map((user) => [user.id, (user.character as Maybe<K4Actor<K4ActorType.pc>>)?.summaryData])
       .filter(Boolean));
 
+    const archetypeCarousel = this.getArchetypeCarouselData();
+    const selTraits: Array<{traitType: K4TraitType, traitName: string}> = [];
+    const traitNotes: Record<string, {traitType: K4TraitType, value: string}> = {};
+    if (selectedArchetype) {
+      const selArchetypeData = archetypeCarousel[selectedArchetype]!;
+      [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.darksecret].forEach((traitType) => {
+        const traitData = selArchetypeData[traitType as K4TraitType];
+        const traitKeys = Object.keys(traitData);
+        const selectedTraits = traitKeys.filter((key) => this.actor.isCharGenSelected(key, selectedArchetype));
+        selTraits.push(...selectedTraits.map((key) => ({
+          traitType: traitType as K4TraitType,
+          traitName: key
+        })));
+      });
+      kLog.log("[K4CharGen] selTraits Filtered", {selTraits: [...selTraits], selArchetypeData, selectedArchetype});
+      for (const {traitType, traitName} of selTraits) {
+        if (traitType === K4ItemType.darksecret) {
+          traitNotes[traitName] = {
+            traitType,
+            value: this.actor.system.charGen.traitNotes[traitName] ?? ""
+          };
+        }
+      }
+    }
+
     return {
       archetypeCarousel: this.getArchetypeCarouselData(),
       selectedArchetype,
       attributes: this.actor.attributeData,
+      traitNotes,
       // archetypeAdvantages: selectedArchetype
       //   ? this.getArchetypeTraitData(K4ItemType.advantage, selectedArchetype)
       //   : undefined,
@@ -1196,6 +1240,7 @@ class K4CharGen {
         paused: true,
         onReverseComplete() {
           void actor.charGenDeselect(trait);
+          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, getUser().id, actor.id, traitType, trait, false);
           traitContainer$.attr("data-is-selected", "false");
           traitContainer$.removeClass(glowClass);
         }
@@ -1232,7 +1277,7 @@ class K4CharGen {
     const trait = traitContainer$.attr("data-trait");
     let clickTimer: NodeJS.Timeout | null = null;
     let longPressTriggered = false;
-    const glowColors: Partial<Record<Archetype.TraitType, string>> = {
+    const glowColors: Partial<Record<K4TraitType, string>> = {
       [K4ItemType.advantage]: "neon-glow-animated-gold",
       [K4ItemType.disadvantage]: "neon-glow-animated-red",
       [K4ItemType.darksecret]: "neon-glow-animated-white"
@@ -1328,9 +1373,14 @@ class K4CharGen {
 
           if (elem$.hasClass("simple-editor")) {
             // For simple-editor, preserve HTML content
-            elemContent = elem$.html().replace(/<br\s*\/?>/gi, "\n");
+            elemContent = elem$.html();
+            console.log("\n\nRaw HTML content on click (before replacement):", JSON.stringify(elemContent));
+            elemContent = elemContent.replace(/<div><br\s*\/?><\/div>/gi, "\n");
+            elemContent = elemContent.replace(/<br\s*\/?>/gi, "\n");
+            elemContent = elemContent.replace(/<div>/gi, "\n");
             // Remove any other HTML tags
             elemContent = elemContent.replace(/<[^>]*>/g, "");
+            console.log("Processed content on click (after replacement):", JSON.stringify(elemContent));
             // Set content using html() to preserve line breaks
             elem$.html(elemContent || "&nbsp;");
           } else {
@@ -1370,9 +1420,13 @@ class K4CharGen {
           if (elem$.hasClass("simple-editor")) {
             // Convert <br> tags to newlines for editing
             let content = elem$.html();
+            console.log("\n\nRaw HTML content on focus (before replacement):", JSON.stringify(content));
+            content = content.replace(/<div><br\s*\/?><\/div>/gi, "\n");
             content = content.replace(/<br\s*\/?>/gi, "\n");
+            content = content.replace(/<div>/gi, "\n");
             // Remove any HTML tags that might have been introduced
             content = content.replace(/<[^>]*>/g, "");
+            console.log("Processed content on focus (after replacement):", JSON.stringify(content));
             // Use html() to set content, preserving line breaks
             elem$.html(content);
           }
@@ -1393,12 +1447,18 @@ class K4CharGen {
 
           let elemHtml = elem$.html();
 
+          // Log the raw HTML content for debugging
+          console.log("\n\nRaw HTML content on blur:", JSON.stringify(elemHtml));
+
           if (elem$.hasClass("simple-editor")) {
             // Preserve line breaks by replacing them with <br> tags
             elemHtml = elemHtml
               .replace(/\r?\n/g, "<br>")
               .replace(/(<br>)+$/g, ""); // Remove trailing <br> tags
           }
+
+          // Log the processed HTML content for debugging
+          console.log("Processed HTML content on blur:", JSON.stringify(elemHtml));
 
           // Set placeholder text where content is blank
           if (!elemHtml.trim() && elem$.data("placeholder")) {
@@ -1419,6 +1479,7 @@ class K4CharGen {
           const dataField = elem$.data("field") as string;
           const curData = U.getProp(self.actor, dataField);
           if (curData !== elemHtml) {
+            void K4Socket.Call("CharChange_Text", UserTargetRef.other, getUser().id, getActor().id, dataField, elemHtml);
             self.actor.update({[dataField]: elemHtml}).catch((err: unknown) => {
               kLog.error(`Failed to update ${dataField}: ${String(err)}`);
             });
@@ -1519,6 +1580,7 @@ class K4CharGen {
           // Log the change for debugging purposes
           console.log(`Attribute value changed to: ${newValue}`);
 
+          void K4Socket.Call("CharChange_Attribute", UserTargetRef.other, getUser().id, getActor().id, dotTarget, newValue);
           getActor().update({[dotTarget]: newValue}, {render: false}).catch((err: unknown) => {
             kLog.error(`Failed to update attribute: ${String(err)}`);
           });

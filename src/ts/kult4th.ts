@@ -245,6 +245,9 @@ async function PreloadHBSTemplates() {
       "overlay-session",
       "overlay-postSession"
     ]),
+    ...U.getTemplatePath("gamephase/parts", [
+      "chargen-trait-editor"
+    ]),
     ...U.getTemplatePath("globals", [
       "svg-defs",
       "color-defs"
@@ -470,7 +473,7 @@ Hooks.on("ready", async () => {
 
     // Initialize appropriate overlay given tracker phase
     await tracker.preloadOverlay();
-    tracker.displayOverlay();
+    await tracker.displayOverlay();
 
     // Further actions only trigger for GM users
     return;

@@ -1,4 +1,4 @@
-{{log "ACTOR INITIALIZATION" this}}
+{{log "OVERLAY-CHARGEN.HBS" this}}
 
 <div id="gamephase-overlay" class="gamephase-overlay chargen">
 
@@ -123,6 +123,10 @@
         </div>
           <div class="archetype-editor history-editor simple-editor content-editable clamp-text" data-placeholder="As the group develops their characters, backstories will inevitably emerge: Record any important details (especially relationships) here." data-field="system.history">{{{actor.system.history}}}</div>
       </div>
+
+      {{#each traitNotes as |traitData traitName|}}
+      {{> "systems/kult4th/templates/gamephase/parts/chargen-trait-editor.hbs" traitType=traitData.traitType trait=traitName note=traitData.value}}
+      {{/each}}
     </div>
 
     <div class="archetype-panel character-summary-panel">

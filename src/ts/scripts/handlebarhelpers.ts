@@ -121,7 +121,7 @@ const handlebarHelpers: Record<string,Handlebars.HelperDelegate> = {
   "getRestCaps"(content: string): string {
     return content.slice(1);
   },
-  "dbLog"(...args: Tuple<string|number>) {
+  "kLog"(...args: Tuple<string|number>) {
     args.pop();
     let dbLevel = 5;
     if ([0,1,2,3,4,5].includes(args[0] as number)) {

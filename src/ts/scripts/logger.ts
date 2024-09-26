@@ -10,7 +10,7 @@ const DEFAULT_DB_LEVEL: DebugLevel = 3;
 const DEFAULT_MAX_DB_LEVEL: DebugLevel = 3;
 const STACK_TRACE_EXCLUSION_FILTERS: Record<"all", RegExp[]> & Partial<Record<DebugMode, RegExp[]>> = {
   all: [
-    /at (getStackTrace|k4Logger|dbLog|openReport|report|postReport)/,
+    /at (getStackTrace|k4Logger|kLog|openReport|report|postReport)/,
     /at Object\.(log|display|hbsLog|error|openReport|report|postReport)/,
     /^Error/
   ],

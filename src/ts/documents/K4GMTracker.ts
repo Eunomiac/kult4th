@@ -1,6 +1,6 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import C, {K4Attribute, K4GamePhase} from "../scripts/constants.js";
+import C, {K4Attribute, K4GamePhase, K4Archetype} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
@@ -24,12 +24,12 @@ class K4GMTracker {
 
   public static readonly SocketFunctions: Record<string, SocketFunction> = {
     "EndPhase": async (phase: K4GamePhase) => {
-      kLog.log(`User ${getUser().name} received Socket Call to End '${phase}' Phase`);
+      kLog.log(`{{EndPhase}} User ${getUser().name} received Socket Call to End '${phase}' Phase`);
       await this.END_PHASE_FUNCS[phase]();
       return true;
     },
     "PreloadPhase": async (phase: K4GamePhase) => {
-      kLog.log(`User ${getUser().name} received Socket Call to Preload '${phase}' Phase`);
+      kLog.log(`{{PreloadPhase}} User ${getUser().name} received Socket Call to Preload '${phase}' Phase`);
       const tracker = await K4GMTracker.Get();
       kLog.log("... tracker received, preloading assets...");
       await tracker.preloadOverlay(phase);
@@ -37,23 +37,82 @@ class K4GMTracker {
       return true;
     },
     "StartPhase": async (phase: K4GamePhase) => {
-
-
-
-      /**
-       * @todo Implement phase-changing logic.
-       * 	- Switch statement in response function calls two functions:
-       *    - await "end<Phase>" - handles logic to end current phase
-       *    - "init<Phase>" - handles logic to start new phase
-       */
-      kLog.log(`User ${getUser().name} received Socket Call to Start ${phase} Phase`);
+      kLog.log(`{{StartPhase}} User ${getUser().name} received Socket Call to Start ${phase} Phase`);
       const tracker = await K4GMTracker.Get();
 
-      tracker.displayOverlay(phase);
+      void tracker.displayOverlay(phase);
 
       await this.START_PHASE_FUNCS[phase]();
+    },
+    "CharChange_Name": async (
+      userID: IDString,
+      actorID: IDString,
+      value: string
+    ) => {
+      const user = getGame().users.get(userID);
+      const actor = getGame().actors.get(actorID);
+      kLog.log(`{{CharChange_Name}} User ${user.name} changed the name of actor ${actor.name} to ${value}`);
+      const tracker = await K4GMTracker.Get();
+      // tracker.updateCharPanel_Name(user, value);
+    },
+    "CharChange_Archetype": async (
+      userID: IDString,
+      actorID: IDString,
+      value: K4Archetype
+    ) => {
+      const user = getGame().users.get(userID);
+      const actor = getGame().actors.get(actorID);
+      kLog.log(`{{CharChange_Archetype}} User ${user.name} changed the archetype of actor ${actor.name} to ${value}`);
+      const tracker = await K4GMTracker.Get();
+      // tracker.updateCharPanel_Archetype(user, value);
+    },
+    "CharChange_Attribute": async (
+      userID: IDString,
+      actorID: IDString,
+      attribute: K4CharAttribute,
+      value: string
+    ) => {
+      const user = getGame().users.get(userID);
+      const actor = getGame().actors.get(actorID);
+      kLog.log(`{{CharChange_Attributes}} User ${user.name} changed the value of attribute '${attribute}' of actor ${actor.name} to ${value}`);
+      const tracker = await K4GMTracker.Get();
+      // tracker.updateCharPanel_Attribute(user, attribute, value);
+    },
+    "CharChange_Trait": async (
+      userID: IDString,
+      actorID: IDString,
+      traitType: K4TraitType,
+      value: string,
+      isAdding: boolean,
+      isArchetype?: boolean
+    ) => {
+      const user = getGame().users.get(userID);
+      const actor = getGame().actors.get(actorID);
+      if (isAdding) {
+        kLog.log(`{{CharChange_Advantage}} User ${user.name} added the ${traitType} '${value}' ${
+          isArchetype ? `to archetype ${actor.archetype}` : "to extra traits"
+        } of actor ${actor.name}`);
+      } else {
+        kLog.log(`{{CharChange_Advantage}} User ${user.name} removed the ${traitType} '${value}' from actor ${actor.name}`);
+      }
+      const tracker = await K4GMTracker.Get();
+      // tracker.updateCharPanel_Trait(user, traitType, value, isAdding, isArchetype);
+    },
+    "CharChange_Text": async (
+      userID: IDString,
+      actorID: IDString,
+      textBlock: string,
+      value: string
+    ) => {
+      const user = getGame().users.get(userID);
+      const actor = getGame().actors.get(actorID);
+      kLog.log(`{{CharChange_Text}} User ${user.name} changed '${textBlock}' of actor ${actor.name} to ${value}`);
+      const tracker = await K4GMTracker.Get();
+      // tracker.updateCharPanel_Text(user, textBlock, value);
     }
+
   };
+  // changeType: "name" | "archetype" | "attributes" | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.darksecret | "text",
 
   private static get OVERLAY_ANIMATIONS() {
 
@@ -72,7 +131,7 @@ class K4GMTracker {
         const geburahGear$ = overlay$.find(".gear-geburah");
 
         // Lower ambient volume
-        ambientAudio$[0].volume = 0.5;
+        ambientAudio$[0].volume = 1;
 
         // Set initial styles for animated elements
         U.gsap.set(gearContainers$, {
@@ -90,23 +149,27 @@ class K4GMTracker {
         U.gsap.effects.gearBinahRotate(binahGear$);
         U.gsap.effects.gearHugeRotate(hugeGear$);
 
-        const DISPLAY_DURATION = 15;
+        const OVERLAY_FADE_IN_AT = 2;
+        const TITLE_BANG_AT = 6;
+
+        const timeTillTitleBang = TITLE_BANG_AT + OVERLAY_FADE_IN_AT; // Total time from ambient music start to title bang.
+        const fogDuration = TITLE_BANG_AT * 2; // Ensures title bang happens in the middle of the fog rotation, when it's roughly horizontal.
 
         const tl = U.gsap.timeline()
           .call(() => { void ambientAudio$[0].play(); })
-          .to(overlay$, {autoAlpha: 1, duration: DISPLAY_DURATION / 10})
+          .to(overlay$, {autoAlpha: 1, duration: 0.5}, OVERLAY_FADE_IN_AT)
           .fromTo(topFog$, {
             yPercent: -175,
             rotate: -10,
             scale: -4
-          }, {yPercent: -50, rotate: 10, scale: -1.25, duration: DISPLAY_DURATION, ease: "power2.inOut"}, "<")
+          }, {yPercent: -50, rotate: 10, scale: -1.25, duration: fogDuration, ease: "power2.inOut"}, "<")
           .fromTo(bottomFog$, {
             yPercent: 175,
             rotate: -10,
             scale: 4
-          }, {yPercent: 50, rotate: 10, scale: 1.25, duration: DISPLAY_DURATION, ease: "power2.inOut"}, "<")
-          .call(() => { void titleBang$[0].play(); }, [], DISPLAY_DURATION / 2)
-          .set([title$, geburahGear$, binahGear$, hugeGear$], {autoAlpha: 1}, DISPLAY_DURATION / 2);
+          }, {yPercent: 50, rotate: 10, scale: 1.25, duration: fogDuration, ease: "power2.inOut"}, "<")
+          .call(() => { void titleBang$[0].play(); }, [], timeTillTitleBang)
+          .set([title$, geburahGear$, binahGear$, hugeGear$], {autoAlpha: 1}, timeTillTitleBang);
 
         return tl;
       },
@@ -166,7 +229,7 @@ class K4GMTracker {
         console.log("Initializing 'initialized' Game Phase.");
         const tracker = await K4GMTracker.Get();
         if (getUser().isGM) {return;}
-        void tracker.preloadOverlay(K4GamePhase.chargen);
+        // void tracker.preloadOverlay(K4GamePhase.chargen);
       },
       [K4GamePhase.chargen]: async () => {
         console.log("Initializing 'chargen' Game Phase.");
@@ -242,18 +305,7 @@ class K4GMTracker {
 
   private overlays: Partial<Record<K4GamePhase, JQuery>> = {};
 
-  stageOverlay(gamePhase: K4GamePhase) {
-    const overlay$ = $(`#gamephase-overlay.${gamePhase}`);
-    if (!overlay$.length) {
-      throw new Error(`Must preload overlay for gamePhase ${gamePhase} before displaying it.`);
-    }
-
-    // Set the z-index of the overlay to be higher than any existing element
-    const maxZIndex = U.getMaxZIndex($("body::after, .gamephase-overlay"));
-    overlay$.css("z-index", maxZIndex + 1);
-  }
-
-  displayOverlay(gamePhase = this.phase) {
+  async displayOverlay(gamePhase = this.phase) {
     kLog.log(`Displaying overlay for gamePhase ${gamePhase}`);
     const overlay$ = $(`#gamephase-overlay.${gamePhase}`);
     if (!overlay$.length) {
@@ -267,14 +319,21 @@ class K4GMTracker {
     overlay$.addClass("is-displaying");
 
     // Run animation
-    void K4GMTracker.OVERLAY_ANIMATIONS[gamePhase]();
+    const animation = (await K4GMTracker.OVERLAY_ANIMATIONS[gamePhase]()).play()
+      .then(() => {
+        if (gamePhase === K4GamePhase.initialized) {
+          void this.preloadOverlay(K4GamePhase.chargen);
+        }
+      });
+
+    return animation;
   }
 
 
   _overlayPreloadStatus: Partial<Record<K4GamePhase, boolean>> = {};
-  async preloadOverlay(gamePhase = this.phase): Promise<void> {
+  async preloadOverlay(gamePhase = this.phase): Promise<JQuery> {
     // If already loaded, do nothing
-    if (this._overlayPreloadStatus[gamePhase]) {return;}
+    if (this._overlayPreloadStatus[gamePhase]) {return $(`#gamephase-overlay.${gamePhase}`);}
     // If already exists, remove it
     $(`#gamephase-overlay.${gamePhase}`).remove();
 
@@ -339,6 +398,8 @@ class K4GMTracker {
     }
 
     this._overlayPreloadStatus[gamePhase] = true;
+
+    return overlay$;
   }
 
 
