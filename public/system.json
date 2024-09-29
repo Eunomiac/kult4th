@@ -20,6 +20,7 @@
 		"scripts/clamp.min.js"
 	],
   "esmodules": [
+    "greensock/esm/all.js",
     "index.js"
 	],
   "socket": true,

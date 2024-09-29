@@ -526,6 +526,7 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/artifact.svg",
       "system": {
         "shortDesc": "You have an artifact with mystical powers.",
+        "traitNotesTarget": "LIST.powers",
         "lists": {
           "powers": {
             "name": "Powers",
@@ -2050,7 +2051,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/observant.svg",
       "system": {
-        "shortDesc": "You are good at judging someone’s character.",
+        "shortDesc": "You are good at judging someone's character.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -2095,6 +2096,7 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/expert.svg",
       "system": {
         "shortDesc": "You get to ask an additonal question about whatever you want when you %insert.docLink.Investigate% things in your fields of knowledge.",
+        "traitNotesTarget": "FLAGS.field_1|FLAGS.field_2",
         "lists": {
           "expertise": {
             "name": "Fields of Expertise",
@@ -2696,6 +2698,7 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/boss.svg",
       "system": {
         "shortDesc": "You have a gang of criminal henchmen.",
+        "traitNotesTarget": "NOTE:Describe Your Henchmen",
         "lists": {
           "gmoptions": {
             "name": "GM Options",
@@ -4132,7 +4135,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
       "system": {
-        "shortDesc": "You have contacts in the world’s social elite.",
+        "shortDesc": "You have contacts in the world's social elite.",
         "lists": {
           "options": {
             "name": "Options",
@@ -4151,7 +4154,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/elite-education.svg",
             "system": {
-              "shortDesc": "You have contacts in the world’s social elite.",
+              "shortDesc": "You have contacts in the world's social elite.",
               "parentItem": {
                 "name": "Elite Education",
                 "type": K4ItemType.advantage
@@ -4894,6 +4897,7 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/gang-leader.svg",
       "system": {
         "shortDesc": "You have a gang of criminals.",
+        "traitNotesTarget": "NOTE:Describe Your Gang",
         "lists": {
           "complications": {
             "name": "Complications",
@@ -5804,6 +5808,7 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/cult-leader.svg",
       "system": {
         "shortDesc": "You can perform rituals with your followers.",
+        "traitNotesTarget": "NOTE:Describe Your Cult",
         "lists": {
           "visions": {
             "name": "Visions",
@@ -6363,7 +6368,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/keen-eyed.svg",
       "system": {
-        "shortDesc": "You are skilled at determing enemies’ strengths and weaknesses.",
+        "shortDesc": "You are skilled at determing enemies' strengths and weaknesses.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6808,7 +6813,8 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
       "system": {
-        "shortDesc": "You get stronger when you fight against your deity’s enemies or protect a sacred object.",
+        "shortDesc": "You get stronger when you fight against your deity's enemies or protect a sacred object.",
+        "traitNotesTarget": "NOTE:Describe Your Deity",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -6817,7 +6823,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/divine-champion.svg",
             "system": {
-              "shortDesc": "You get stronger when you fight against your deity’s enemies or protect a sacred object.",
+              "shortDesc": "You get stronger when you fight against your deity's enemies or protect a sacred object.",
               "chatName": "Champions the Divine",
               "parentItem": {
                 "name": "Divine Champion",
@@ -8114,7 +8120,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/enforcer.svg",
       "system": {
-        "shortDesc": "You can threat people to do what you want.",
+        "shortDesc": "You can threaten people to do what you want.",
         "lists": {
           "options": {
             "name": "Options",
@@ -8318,6 +8324,7 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/advantage/notorious.svg",
       "system": {
         "shortDesc": "You can use your fame to influence others.",
+        "traitNotesTarget": "NOTE:Describe Your Notoriety",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8504,7 +8511,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intimidating.svg",
       "system": {
-        "shortDesc": "You can scare others to submit.",
+        "shortDesc": "You can scare others into submission.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8747,6 +8754,7 @@ const ITEM_DATA: {
       "img": "systems/kult4th/assets/icons/disadvantage/competitor.svg",
       "system": {
         "shortDesc": "You have a competitor in the criminal underworld.",
+        "traitNotesTarget": "NOTE:Describe Your Competitor",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -8802,6 +8810,7 @@ const ITEM_DATA: {
         "lists": {
           "options": {
             "name": "Options",
+            "overrideField": "FLAGS.field_1",
             "items": [
               "Cleaning",
               "Counting",
@@ -9616,7 +9625,7 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
       "system": {
-        "shortDesc": "You want someone else’s life for yourself.",
+        "shortDesc": "You want someone else's life for yourself.",
         "lists": {},
         "subType": K4ItemSubType.activeRolled,
         "subItems": [
@@ -9625,7 +9634,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/disadvantage/jealousy.svg",
             "system": {
-              "shortDesc": "You want someone else’s life for yourself.",
+              "shortDesc": "You want someone else's life for yourself.",
               "parentItem": {
                 "name": "Jealousy",
                 "type": K4ItemType.disadvantage

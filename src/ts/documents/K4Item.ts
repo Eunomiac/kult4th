@@ -44,12 +44,9 @@ declare global {
     export type SubTypes = K4ItemSubType.activeRolled | K4ItemSubType.activeStatic;
 
     export namespace Components {
+
       export interface Base {
-        lists?: Record<string, {
-          name: string,
-          items: string[],
-          intro?: string
-        }>,
+        lists?: Record<string, K4Item.Components.ListData>,
         isEdge?: boolean,
         subType: K4ItemSubType;
         shortDesc: string;
@@ -115,15 +112,18 @@ declare global {
       export type HaveMainEffects = K4ItemType.move | K4ItemType.advantage | K4ItemType.disadvantage | K4ItemType.weapon | K4ItemType.gear;
     }
     export namespace Components {
+      export interface ListData {
+        name: string,
+        items: string[],
+        intro?: string,
+        overrideField?: string
+      }
       export interface Base {
-        lists: Record<string, {
-          name: string,
-          items: string[],
-          intro?: string
-        }>,
+        lists: Record<string, ListData>,
         subType: K4ItemSubType;
         gmNotes?: string;
         shortDesc?: string;
+        traitNotesTarget?: string;
       }
 
       export interface HasSubItems {

@@ -9,7 +9,7 @@ import K4ItemSheet from "./documents/K4ItemSheet.js";
 import K4PCSheet from "./documents/K4PCSheet.js";
 import K4NPCSheet from "./documents/K4NPCSheet.js";
 import K4ActiveEffect from "./documents/K4ActiveEffect.js";
-import C, {Colors, K4GamePhase} from "./scripts/constants.js";
+import C, {Colors, K4GamePhase, Archetypes, K4Archetype} from "./scripts/constants.js";
 import InitializePopovers from "./scripts/popovers.js";
 import U from "./scripts/utilities.js";
 import {formatForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers.js";
@@ -106,6 +106,22 @@ function GlobalAssignment() {
     // Dynamically import data.js for initializing and building Item documents during development (will become packs for production)
     const {BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys} = await import("./scripts/data.js");
 
+    const whichArchetypesHave = (traitName: string) => {
+      return Object.values(Archetypes)
+          .filter(({advantage, disadvantage, darksecret}) =>
+              [...advantage, ...disadvantage, ...darksecret]
+                  .map((tName) => tName.replace(/^!/,""))
+                  .includes(traitName))
+          .map(({label}) => label);
+    }
+    const isTraitUnique = (traitName: string, archetype: K4Archetype) => {
+      const archetypesThatHaveTrait = whichArchetypesHave(traitName);
+      return archetypesThatHaveTrait.length === 1;
+    }
+    const getArchetypeReport = () => {
+      return Object.fromEntries([K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.darksecret].map((tType: K4ItemType) => [tType, Object.fromEntries((getGame().items as Collection<K4Item>).filter((item) => item.type === tType).map((item) => [item.name, whichArchetypesHave(item.name)]))]));
+    }
+
     Object.assign(globalThis, {
       gsap,
       U,
@@ -123,7 +139,10 @@ function GlobalAssignment() {
       findRepresentativeSubset,
       checkSubsetCoverage,
       findUniqueKeys,
-      BUILD_ITEMS_FROM_DATA
+      BUILD_ITEMS_FROM_DATA,
+      whichArchetypesHave,
+      isTraitUnique,
+      getArchetypeReport
     });
   });
 

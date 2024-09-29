@@ -19,6 +19,14 @@ declare global {
   }
 }
 // #ENDREGION
+// #region -- ENUMS ~
+export enum K4LoadStatus {
+  blank = "",
+  loading = "loading",
+  loaded = "loaded",
+  error = "error"
+}
+// #endregion
 
 class K4GMTracker {
 
@@ -35,21 +43,21 @@ class K4GMTracker {
       const user = getGame().users.get(userID);
       kLog.log(`{{AnnouncePreloadStart}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Start for '${U.uCase(phase)}' Phase`);
       const tracker = await K4GMTracker.Get();
-      tracker._overlayPreloadStatus[phase] = true;
+      tracker.setUserLoadStatus(userID, phase, K4LoadStatus.loading);
       return true;
     },
     "AnnouncePreloadComplete": async (userID: IDString, phase: K4GamePhase, isAlreadyLoaded = false) => {
       const user = getGame().users.get(userID);
       kLog.log(`{{AnnouncePreloadComplete}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Complete for '${U.uCase(phase)}' Phase`);
       const tracker = await K4GMTracker.Get();
-      tracker._overlayPreloadStatus[phase] = false;
+      tracker.setUserLoadStatus(userID, phase, K4LoadStatus.loaded);
       return true;
     },
     "AnnouncePreloadError": async (userID: IDString, phase: K4GamePhase, error: string) => {
       const user = getGame().users.get(userID);
       kLog.log(`{{AnnouncePreloadError}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Error for '${U.uCase(phase)}' Phase: ${error}`);
       const tracker = await K4GMTracker.Get();
-      tracker._overlayPreloadStatus[phase] = false;
+      tracker.setUserLoadStatus(userID, phase, K4LoadStatus.error);
       return true;
     },
     "StartPhase": async (phase: K4GamePhase) => {
@@ -153,7 +161,7 @@ class K4GMTracker {
         const geburahGear$ = overlay$.find(".gear-geburah");
 
         // Lower ambient volume
-        ambientAudio$[0].volume = 1;
+        ambientAudio$[0].volume = 0.05;
 
         // Set initial styles for animated elements
         U.gsap.set(gearContainers$, {
@@ -344,83 +352,6 @@ class K4GMTracker {
     await Promise.all([...videoPromises, ...audioPromises]);
   }
 
-  async displayOverlay(gamePhase = this.phase) {
-    kLog.log(`Displaying overlay for gamePhase ${gamePhase}`);
-    const overlay$ = $(`#gamephase-overlay .overlay-${gamePhase}`);
-    if (!overlay$.length) {
-      throw new Error(`Must preload overlay for gamePhase ${gamePhase} before displaying it.`);
-    }
-    if (!overlay$.hasClass("is-loaded")) {
-      throw new Error(`Overlay for gamePhase ${gamePhase} is not loaded.`);
-    }
-
-    // Add class to set visibility to hidden and bring to front.
-    overlay$.addClass("is-displaying");
-
-    // Run animation
-    const animation = (await K4GMTracker.OVERLAY_ANIMATIONS[gamePhase]()).play()
-      .then(async () => {
-        $("body").addClass("is-initialized");
-        if (gamePhase === K4GamePhase.intro) {
-          const tracker = await K4GMTracker.Get();
-          if (tracker.isConfigured) {
-            if (tracker.isChargenComplete) {
-              void this.preloadOverlay(K4GamePhase.preSession);
-            } else {
-              void this.preloadOverlay(K4GamePhase.chargen);
-            }
-          }
-        }
-      });
-
-    return animation;
-  }
-
-
-  _overlayPreloadStatus: Partial<Record<K4GamePhase, boolean>> = {};
-  async preloadOverlay(gamePhase = this.phase, isForcing = false): Promise<JQuery> {
-    void K4Socket.Call("AnnouncePreloadStart", UserTargetRef.gm, getUser().id, gamePhase);
-    // If already loaded, do nothing
-    if (!isForcing && this._overlayPreloadStatus[gamePhase]) {
-      void K4Socket.Call("AnnouncePreloadComplete", UserTargetRef.gm, getUser().id, gamePhase, true);
-      return $(`#gamephase-overlay .overlay-${gamePhase}`);
-    }
-    // If already exists, remove it
-    $(`#gamephase-overlay .overlay-${gamePhase}`).remove();
-
-    // Render the overlay to the DOM
-    const overlayHtml = await renderTemplate(
-      U.getTemplatePath("gamephase", `overlay-${gamePhase}`),
-      {
-        ...(await (getActor().sheet as Maybe<FormApplication>)?.getData()) ?? {},
-        ...(gamePhase === K4GamePhase.chargen ? (getActor() as K4Actor).chargenSheet.chargenContext() : {})
-      }
-    );
-    const overlay$ = $(overlayHtml).prependTo("#gamephase-overlay");
-
-    // Preload media
-    try {
-      await K4GMTracker.AwaitMediaLoaded(overlay$);
-      console.log(`All assets for ${gamePhase} overlay loaded successfully`);
-      overlay$.addClass("is-loaded");
-    } catch (error) {
-      console.error("Error loading overlay assets.", error);
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      void K4Socket.Call("AnnouncePreloadError", UserTargetRef.gm, getUser().id, gamePhase, errorMessage);
-      return overlay$;
-    }
-
-    // If this is the chargen phase, preload the carousel
-    if (gamePhase === K4GamePhase.chargen) {
-      await getActor().chargenSheet.preloadCarouselScene();
-    }
-
-    this._overlayPreloadStatus[gamePhase] = true;
-
-    void K4Socket.Call("AnnouncePreloadComplete", UserTargetRef.gm, getUser().id, gamePhase);
-    return overlay$;
-  }
-
 
   private static _instance: Maybe<K4GMTracker>;
   private static _instancePromise: Promise<K4GMTracker> | null = null;
@@ -462,6 +393,7 @@ class K4GMTracker {
     await K4GMTracker.AwaitMediaLoaded($(overlayHtml));
   }
 
+
   /**
    * Initializes the K4GMTracker, ensuring a single instance of the GMTracker item exists.
    * @returns {Promise<void>}.
@@ -485,18 +417,37 @@ class K4GMTracker {
       }, { renderSheet: false }) as Maybe<K4Item<K4ItemType.gmtracker>>;
     }
 
+    // Create User connection listener to update the GM Tracker
+    Hooks.on("userConnected", async (user: User, connectionStatus: boolean) => {
+      kLog.log(`User ${user.id} connected: ${connectionStatus}`);
+      const instance = await this.Get();
+      if (instance.isRendered) {
+        kLog.log(`User ${user.id} online status updated: ${connectionStatus}`);
+        instance.elem$!.find(`.user-online-status[data-user-id="${user.id}"]`).toggleClass("online", connectionStatus);
+        instance.setUserLoadStatus(user.id as IDString, "", K4LoadStatus.blank);
+      }
+    });
+
     // Use AsyncGet to create and initialize the instance
-    const instance = await this.Get();
-    instance.render(true);
+    await this.Get();
+  }
+
+  /**
+   * Initializes the K4GMTracker, ensuring a single instance of the GMTracker item exists.
+   * @returns {Promise<void>}.
+   */
+  public static async PostInitialize(): Promise<void> {
+
+    if (!getUser().isGM) {
+      return;
+    }
+
+    // Use AsyncGet to retrieve the tracker instance and render its sheet to the GM
+    (await this.Get()).render(true);
 
     $("body").addClass("interface-visible");
+    $("body").addClass("gm-user");
 
-    // Create User connection listener to update the GM Tracker
-    Hooks.on("UserConnected", (user: User, connectionStatus: boolean) => {
-      if (instance.isRendered) {
-        instance.elem$!.find(`.user-online-status[data-user-id="${user.id}"]`).toggleClass("online", connectionStatus);
-      }
-    })
   }
 
   private _trackerItem: K4Item<K4ItemType.gmtracker> & {system: K4GMTracker.System;};
@@ -558,6 +509,98 @@ class K4GMTracker {
     })();
   }
 
+
+  setUserLoadStatus(userID: IDString, phase: K4GamePhase|"", status: K4LoadStatus) {
+    if (!this.isRendered) { return; }
+    const elem$ = this.elem$!;
+    const row$ = elem$.find(`.actor-assignment-row[data-user-id="${userID}"]`);
+    row$.attr("data-load-status", status);
+    row$.attr("data-load-phase", phase);
+    if (phase) {
+      if (status === K4LoadStatus.loading) {
+        this._overlayPreloadStatus[phase] = true;
+      } else {
+        this._overlayPreloadStatus[phase] = false;
+      }
+    }
+  }
+
+  async displayOverlay(gamePhase = this.phase) {
+    kLog.log(`Displaying overlay for gamePhase ${gamePhase}`);
+    const overlay$ = $(`#gamephase-overlay .overlay-${gamePhase}`);
+    if (!overlay$.length) {
+      throw new Error(`Must preload overlay for gamePhase ${gamePhase} before displaying it.`);
+    }
+    if (!overlay$.hasClass("is-loaded")) {
+      throw new Error(`Overlay for gamePhase ${gamePhase} is not loaded.`);
+    }
+
+    // Add class to set visibility to hidden and bring to front.
+    overlay$.addClass("is-displaying");
+
+    // Run animation
+    const animation = (await K4GMTracker.OVERLAY_ANIMATIONS[gamePhase]()).play()
+      .then(async () => {
+        $("body").addClass("is-initialized");
+        if (gamePhase === K4GamePhase.intro) {
+          const tracker = await K4GMTracker.Get();
+          if (tracker.isConfigured) {
+            if (tracker.isChargenComplete) {
+              void this.preloadOverlay(K4GamePhase.preSession);
+            } else {
+              void this.preloadOverlay(K4GamePhase.chargen);
+            }
+          }
+        }
+      });
+
+    return animation;
+  }
+
+  _overlayPreloadStatus: Partial<Record<K4GamePhase, boolean>> = {};
+  async preloadOverlay(gamePhase = this.phase, isForcing = false): Promise<JQuery> {
+    void K4Socket.Call("AnnouncePreloadStart", UserTargetRef.gm, getUser().id, gamePhase);
+    // If already loaded, do nothing
+    if (!isForcing && this._overlayPreloadStatus[gamePhase]) {
+      void K4Socket.Call("AnnouncePreloadComplete", UserTargetRef.gm, getUser().id, gamePhase, true);
+      return $(`#gamephase-overlay .overlay-${gamePhase}`);
+    }
+    // If already exists, remove it
+    $(`#gamephase-overlay .overlay-${gamePhase}`).remove();
+
+    // Render the overlay to the DOM
+    const overlayHtml = await renderTemplate(
+      U.getTemplatePath("gamephase", `overlay-${gamePhase}`),
+      {
+        ...(await (getActor().sheet as Maybe<FormApplication>)?.getData()) ?? {},
+        ...(gamePhase === K4GamePhase.chargen ? (getActor() as K4Actor).chargenSheet.chargenContext() : {})
+      }
+    );
+    const overlay$ = $(overlayHtml).prependTo("#gamephase-overlay");
+
+    // Preload media
+    try {
+      await K4GMTracker.AwaitMediaLoaded(overlay$);
+      console.log(`All assets for ${gamePhase} overlay loaded successfully`);
+      overlay$.addClass("is-loaded");
+    } catch (error) {
+      console.error("Error loading overlay assets.", error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      void K4Socket.Call("AnnouncePreloadError", UserTargetRef.gm, getUser().id, gamePhase, errorMessage);
+      return overlay$;
+    }
+
+    // If this is the chargen phase, preload the carousel
+    if (gamePhase === K4GamePhase.chargen) {
+      await getActor().chargenSheet.preloadCarouselScene();
+    }
+
+    this._overlayPreloadStatus[gamePhase] = true;
+
+    void K4Socket.Call("AnnouncePreloadComplete", UserTargetRef.gm, getUser().id, gamePhase);
+    return overlay$;
+  }
+
   isCharGenFinishedFor(actor: K4Actor<K4ActorType.pc>) {
     return actor.system.charGen.isFinished ?? false;
   }
@@ -568,7 +611,8 @@ class K4GMTracker {
         .filter((actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc)
         .map((actor) => [actor.id, {
           actor,
-          owner: actor.user
+          owner: actor.user,
+          isOwnerOnline: actor.user?.active ?? false
         }])
     );
   }

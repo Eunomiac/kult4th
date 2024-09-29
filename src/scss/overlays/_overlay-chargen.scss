@@ -67,6 +67,7 @@ $isDebug: false;
       position: absolute;
       z-index: 10000;
 
+
       &:not(.actor-name) {
         border-radius: 25px;
         box-shadow:
@@ -81,6 +82,10 @@ $isDebug: false;
           inset 0px 0px 30px var(--K4-dBLACK),
           0px 0px 15px var(--K4-dBLACK);
       }
+
+      // &:not(.actor-name):not(.attributes):not(.archetype-panel-notes):not(.character-summary-panel) {
+      //   visibility: hidden;
+      // }
     }
 
     .archetype-panel.actor-name {
@@ -551,6 +556,20 @@ $isDebug: false;
             }
           }
 
+          .archetype-carousel-title {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 115%;
+            left: 50%;
+            font-size: $rem-24;
+            font-family: var(--font-primary-smallcaps);
+            text-transform: lowercase;
+            color: var(--K4-bGOLD);
+            text-shadow: build-text-shadow(4px, var(--K4-dBLACK), 8);
+            z-index: 2;
+            text-align: center;
+          }
+
           img {
             max-height: 50vh;
             object-fit: contain; // Maintain aspect ratio
@@ -618,15 +637,16 @@ $isDebug: false;
         &.archetype-panel-name {
           display: flex;
           flex-direction: row;
-          justify-content: center;
+          justify-content: flex-start;
           align-items: center;
           gap: 10px;
           position: absolute;
           left: 246px;
           width: 550px;
-          top: 100px;
+          top: 120px;
           background: transparent;
           box-shadow: none;
+
 
           .archetype-carousel-the {
             visibility: hidden;
@@ -668,10 +688,10 @@ $isDebug: false;
           visibility: hidden;
           position: absolute;
           // transform: translate(-50%, 0%);
-          top: 150px;
+          top: 180px;
           left: 246px;
           // right: calc(100% + 85px);
-          width: 500px;
+          width: 600px;
           transform-origin: center center;
           background: transparent;
           box-shadow: none;
@@ -679,10 +699,11 @@ $isDebug: false;
           gap: 0px;
 
           &, * {
-            font-size: $rem-14;
-            line-height: $rem-18;
+            font-size: $rem-16;
+            line-height: $rem-20;
             color: var(--K4-bGOLD);
             text-shadow: build-text-shadow(5px, var(--K4-dBLACK), 8);
+            hyphens: none;
           }
         }
 

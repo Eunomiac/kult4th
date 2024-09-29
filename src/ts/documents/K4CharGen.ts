@@ -25,20 +25,20 @@ const VALID_ARCHETYPE_TIERS: ArchetypeTier[] = ["aware" as ArchetypeTier];
 
 // #region DEBUG: METHOD DECORATOR ~
 function methodLoggingDecorator(
-	target: unknown,
-	propertyKey: string,
-	descriptor: PropertyDescriptor
+  target: unknown,
+  propertyKey: string,
+  descriptor: PropertyDescriptor
 ): PropertyDescriptor {
-	const originalMethod = descriptor.value!;
-	descriptor.value = function (this: any, ...args: any[]): any {
+  const originalMethod = descriptor.value!;
+  descriptor.value = function (this: any, ...args: any[]): any {
     const timeStamp = U.getTimeStamp();
     timeStamp();
-		kLog.log(`[${propertyKey}] CALLED with arguments:`, { args });
-		const result = originalMethod.apply(this, args);
-		kLog.log(`[${propertyKey}] RETURNED after ${timeStamp()}s`, { result });
-		return result;
-	};
-	return descriptor;
+    kLog.log(`[${propertyKey}] CALLED with arguments:`, {args});
+    const result = originalMethod.apply(this, args);
+    kLog.log(`[${propertyKey}] RETURNED after ${timeStamp()}s`, {result});
+    return result;
+  };
+  return descriptor;
 }
 // #endregion
 
@@ -100,6 +100,25 @@ interface ChargenContext {
   }>,
   otherPlayerData: Record<IDString, K4Actor["summaryData"]>;
 }
+
+interface ChargenSummary {
+  name: string,
+  img: string,
+  archetype: K4Archetype,
+  attributes: Partial<Record<K4Attribute, string>>,
+  advantages: K4Item[],
+  disadvantages: K4Item[],
+  darkSecrets: K4Item[],
+  description: string,
+  occupation: string,
+  looks: {
+    clothes: string,
+    face: string,
+    eyes: string,
+    body: string;
+  },
+  traitNotes: Record<string, string>;
+}
 // #endregion
 // #endregion
 
@@ -117,8 +136,8 @@ class K4CharGen {
   static _ValidArchetypes: Maybe<K4Archetype[]>;
   static get ValidArchetypes() {
     return this._ValidArchetypes ?? (this._ValidArchetypes = Object.entries(Archetypes)
-    .filter(([_, archetype]) => VALID_ARCHETYPE_TIERS.includes(archetype.tier))
-    .map(([k4Archetype, _]) => k4Archetype as K4Archetype));
+      .filter(([_, archetype]) => VALID_ARCHETYPE_TIERS.includes(archetype.tier))
+      .map(([k4Archetype, _]) => k4Archetype as K4Archetype));
   }
 
   static _NumValidArchetypes: Maybe<number>;
@@ -164,44 +183,44 @@ class K4CharGen {
     return this._NormalizedDistanceMap;
   }
 
-  static _StyleMap: Maybe<Map<number, Record<Key, string | number>>>;
-  static get StyleMap() {
-    if (this._StyleMap) {return this._StyleMap;}
+  // static _StyleMap: Maybe<Map<number, Record<Key, string | number>>>;
+  // static get StyleMap() {
+  //   if (this._StyleMap) {return this._StyleMap;}
 
-    const styleMap = new Map<number, Record<Key, string | number>>();
+  //   const styleMap = new Map<number, Record<Key, string | number>>();
 
-    const maxBlur = 5; const minBlur = 0;
-    const maxBright = 0.8; const minBright = 0.5;
-    const maxOpacity = 1; const minOpacity = 1;
-    const maxScale = 1; const minScale = 1;
-    const maxSaturate = 0.8; const minSaturate = 0.25;
+  //   const maxBlur = 5; const minBlur = 0;
+  //   const maxBright = 0.8; const minBright = 0.5;
+  //   const maxOpacity = 1; const minOpacity = 1;
+  //   const maxScale = 1; const minScale = 1;
+  //   const maxSaturate = 0.8; const minSaturate = 0.25;
 
-    for (let i = 0; i < this.NumValidArchetypes; i++) {
-      const scaleFactor = this.NormalizedDistanceMap.get(i) ?? 0;
+  //   for (let i = 0; i < this.NumValidArchetypes; i++) {
+  //     const scaleFactor = this.NormalizedDistanceMap.get(i) ?? 0;
 
-      const blur = U.gsap.utils.mapRange(0, 1, minBlur, maxBlur, scaleFactor);
-      const brightness = U.gsap.utils.mapRange(0, 1, minBright, maxBright, scaleFactor);
-      const opacity = U.gsap.utils.mapRange(0, 1, minOpacity, maxOpacity, scaleFactor);
-      const scale = U.gsap.utils.mapRange(0, 1, minScale, maxScale, scaleFactor);
-      const saturate = U.gsap.utils.mapRange(0, 1, minSaturate, maxSaturate, scaleFactor);
+  //     const blur = U.gsap.utils.mapRange(0, 1, minBlur, maxBlur, scaleFactor);
+  //     const brightness = U.gsap.utils.mapRange(0, 1, minBright, maxBright, scaleFactor);
+  //     const opacity = U.gsap.utils.mapRange(0, 1, minOpacity, maxOpacity, scaleFactor);
+  //     const scale = U.gsap.utils.mapRange(0, 1, minScale, maxScale, scaleFactor);
+  //     const saturate = U.gsap.utils.mapRange(0, 1, minSaturate, maxSaturate, scaleFactor);
 
-      styleMap.set(i, {
-        filter: `blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
-        opacity: U.pFloat(opacity, 2),
-        scale: U.pFloat(scale, 2)
-      });
-    }
+  //     styleMap.set(i, {
+  //       filter: `blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
+  //       opacity: U.pFloat(opacity, 2),
+  //       scale: U.pFloat(scale, 2)
+  //     });
+  //   }
 
-    // Set default style values as fallback
-    styleMap.set(-1, {
-      filter: `blur(${minBlur}px) brightness(${minBright}) saturate(${minSaturate})`,
-      opacity: U.pFloat(minOpacity, 2),
-      scale: U.pFloat(minScale, 2)
-    });
+  //   // Set default style values as fallback
+  //   styleMap.set(-1, {
+  //     filter: `blur(${minBlur}px) brightness(${minBright}) saturate(${minSaturate})`,
+  //     opacity: U.pFloat(minOpacity, 2),
+  //     scale: U.pFloat(minScale, 2)
+  //   });
 
-    this._StyleMap = styleMap;
-    return this._StyleMap;
-  }
+  //   this._StyleMap = styleMap;
+  //   return this._StyleMap;
+  // }
 
   static _CarouselRadius: Maybe<number>;
   static get CarouselRadius() {
@@ -213,13 +232,13 @@ class K4CharGen {
   }
 
   static async PostInitialize() {
-    if (getUser().isGM) { return; }
+    if (getUser().isGM) {return;}
     // Preload getters
     this.ValidArchetypes;
     this.NumValidArchetypes;
     this.ArchetypeIndexMap;
-    this.NormalizedDistanceMap;
-    this.StyleMap;
+    // this.NormalizedDistanceMap;
+    // this.StyleMap;
     this.CarouselRadius;
 
     Object.assign(globalThis, {Archetypes});
@@ -277,20 +296,20 @@ class K4CharGen {
   }
 
   // function revealAndReturn(elem$: JQuery) {
-//   elem$.css({
-//     opacity: 0,
-//     visibility: "visible"
-//   });
-//   return elem$;
-// }
+  //   elem$.css({
+  //     opacity: 0,
+  //     visibility: "visible"
+  //   });
+  //   return elem$;
+  // }
 
-// function hideAndReturn(elem$: JQuery) {
-//   elem$.css({
-//     opacity: 0,
-//     visibility: "hidden"
-//   });
-//   return elem$;
-// }
+  // function hideAndReturn(elem$: JQuery) {
+  //   elem$.css({
+  //     opacity: 0,
+  //     visibility: "hidden"
+  //   });
+  //   return elem$;
+  // }
 
   getYRotFromIndex(index: number) {
     const boundIndex = this.wrapIndex(index);
@@ -342,19 +361,19 @@ class K4CharGen {
     return K4CharGen.NormalizedDistanceMap.get(this.getDistanceFromSelected(index, selected)) ?? 0;
   }
 
-  /**
-   * Get the style values for a given index and selected index.
-   * This function uses precomputed values for efficiency.
-   *
-   * @param {number} index - The index to calculate the styles for.
-   * @param {number} selected - The selected index.
-   * @returns {Record<Key, string|number>} - The style values.
-   */
-  getDistanceStyles(index: number, selected: number): Record<Key, string | number> {
-    // Look up the precomputed style values from the map
-    // If the raw distance is not found in the map, return default styles as a fallback
-    return K4CharGen.StyleMap.get(this.getDistanceFromSelected(index, selected)) ?? K4CharGen.StyleMap.get(-1 /* default */)!;
-  }
+  // /**
+  //  * Get the style values for a given index and selected index.
+  //  * This function uses precomputed values for efficiency.
+  //  *
+  //  * @param {number} index - The index to calculate the styles for.
+  //  * @param {number} selected - The selected index.
+  //  * @returns {Record<Key, string|number>} - The style values.
+  //  */
+  // getDistanceStyles(index: number, selected: number): Record<Key, string | number> {
+  //   // Look up the precomputed style values from the map
+  //   // If the raw distance is not found in the map, return default styles as a fallback
+  //   return K4CharGen.StyleMap.get(this.getDistanceFromSelected(index, selected)) ?? K4CharGen.StyleMap.get(-1 /* default */)!;
+  // }
 
   getElementFromArchetype(context$: JQuery, archetype: K4Archetype) {
     return context$.find(`[data-archetype=${archetype}]`);
@@ -418,10 +437,10 @@ class K4CharGen {
 
     // For advantages, group the trait data by attribute in form Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>
     if (traitType === K4ItemType.advantage) {
-      const tDataByAttribute: Partial<Record<K4CharAttribute|"none", Record<string, Archetype.TraitData>>> = {};
+      const tDataByAttribute: Partial<Record<K4CharAttribute | "none", Record<string, Archetype.TraitData>>> = {};
       for (const traitName of archetypeTData) {
         const tData = this.precomputeTraitData(traitName, traitType, archetype);
-        const attr = this.getTraitAttribute(traitName) as K4CharAttribute|"none";
+        const attr = this.getTraitAttribute(traitName) as K4CharAttribute | "none";
         if (!(attr in tDataByAttribute)) {
           tDataByAttribute[attr] = {};
         }
@@ -796,13 +815,77 @@ class K4CharGen {
     };
   }
 
-  get traitNotes(): Record<string, {traitType: K4TraitType, value: string}> {
+  get chargenSummary(): Partial<ChargenSummary> {
+
+    return {
+      //   name: this.actor.name,
+      //   img: this.actor.img,
+      //   archetype: this.actor.archetype,
+      //   attributes: this.actor.attributeData,
+      //   advantages: this.actor.system.charGen.advantages,
+      //   disadvantages: this.actor.system.charGen.disadvantages,
+      //   darkSecrets: this.actor.system.charGen.darkSecrets,
+      //   description: this.actor.system.charGen.description,
+      //   occupation: this.actor.system.charGen.occupation,
+      //   looks: this.actor.system.charGen.looks,
+      //   traitNotes: this.actor.system.charGen.traitNotes
+    };
+  }
+
+  _chargenSummaries: Record<IDString, ChargenSummary> = {};
+  updateSummaryOf(actorID: IDString): void {
+    const actor = getGame().actors.get(actorID) as Maybe<K4Actor<K4ActorType.pc>>;
+    if (!actor) {
+      throw new Error(`[K4CharGen] updateSummaryOf: Actor not found: ${actorID}`);
+    }
+    const charGenSheet = actor.chargenSheet;
+    const prevSummary = this._chargenSummaries[actorID] ?? {};
+    const newSummary = charGenSheet.chargenSummary;
+    const delta = U.diffObject(prevSummary, newSummary) as Partial<ChargenSummary>;
+    if (U.isEmpty(delta)) {return;}
+
+    // if (delta.name) {
+
+    // }
+    // if (delta.img) {
+
+    // }
+    // if (delta.archetype) {
+
+    // }
+    // if (delta.attributes) {
+
+    // }
+    // if (delta.advantages) {
+
+    // }
+    // if (delta.disadvantages) {
+
+    // }
+    // if (delta.darkSecrets) {
+
+    // }
+    // if (delta.description) {
+
+    // }
+    // if (delta.occupation) {
+
+    // }
+    // if (delta.looks) {
+
+    // }
+    // if (delta.traitNotes) {
+
+    // }
+  }
+
+  get traitNotes(): Record<string, {traitType: K4TraitType, value: string;}> {
     const selectedArchetype = this.actor.archetype;
 
     const archetypeCarousel = this.getArchetypeCarouselData();
-    const selTraits: Array<{traitType: K4TraitType, traitName: string}> = [];
+    const selTraits: Array<{traitType: K4TraitType, traitName: string;}> = [];
 
-    const traitNotes: Record<string, {traitType: K4TraitType, value: string}> = {};
+    const traitNotes: Record<string, {traitType: K4TraitType, value: string;}> = {};
     if (selectedArchetype) {
       const selArchetypeData = archetypeCarousel[selectedArchetype]!;
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.darksecret].forEach((traitType) => {
@@ -827,21 +910,21 @@ class K4CharGen {
     return traitNotes;
   }
 
-  _minDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
-  _maxDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
+  // _minDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
+  // _maxDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
 
-  get minDistanceStyles(): Record<Key, string | number> {
-    if (!this._minDistanceStyles) {
-      this._minDistanceStyles = this.getDistanceStyles(0, 0);
-    }
-    return this._minDistanceStyles;
-  }
-  get maxDistanceStyles(): Record<Key, string | number> {
-    if (!this._maxDistanceStyles) {
-      this._maxDistanceStyles = this.getDistanceStyles(0, Math.floor(K4CharGen.NumValidArchetypes / 2));
-    }
-    return this._maxDistanceStyles;
-  }
+  // get minDistanceStyles(): Record<Key, string | number> {
+  //   if (!this._minDistanceStyles) {
+  //     this._minDistanceStyles = this.getDistanceStyles(0, 0);
+  //   }
+  //   return this._minDistanceStyles;
+  // }
+  // get maxDistanceStyles(): Record<Key, string | number> {
+  //   if (!this._maxDistanceStyles) {
+  //     this._maxDistanceStyles = this.getDistanceStyles(0, Math.floor(K4CharGen.NumValidArchetypes / 2));
+  //   }
+  //   return this._maxDistanceStyles;
+  // }
 
   _element: Maybe<JQuery>;
   get element(): JQuery {
@@ -908,15 +991,16 @@ class K4CharGen {
 
     const MAX_DELAY = carouselStaggerDuration;
     const STAGGER_SHIFT = MAX_DELAY / K4CharGen.NumValidArchetypes / 2;
+    const delayFunc = U.gsap.utils.mapRange(0, 1, 0, MAX_DELAY);
 
     const getDelayFromIndex = (index: number) => {
       const nextDistRatio = 1 - this.getNormalizedDistanceFromSelected(this.wrapIndex(index + 1), selIndex);
       const thisDistRatio = 1 - this.getNormalizedDistanceFromSelected(index, selIndex);
       const distRatio = thisDistRatio + (nextDistRatio > thisDistRatio ? STAGGER_SHIFT : 0);
-      const delay = U.gsap.utils.mapRange(0, 1, 0, MAX_DELAY, distRatio);
+      // const delay = U.gsap.utils.mapRange(0, 1, 0, MAX_DELAY);
       // kLog.log(`[K4PCSheet] Delay (MAX: ${MAX_DELAY}): index '${index}' -> ${nextDistRatio > thisDistRatio ? `[STAGGER: '${STAGGER_SHIFT}']` : ""} distRatio '${distRatio}' -> delay '${delay}'`);
-      return delay;
-    }
+      return delayFunc(distRatio);
+    };
 
     return U.gsap.timeline()
       .call(() => {
@@ -974,9 +1058,141 @@ class K4CharGen {
       }, 0);
   }
 
-  #getTimeline_archetypeStyle(archetype$: JQuery): gsap.core.Timeline {
+  // #getTimeline_archetypeStyle_OLD(archetype$: JQuery): gsap.core.Timeline {
 
+  //   if (archetype$.data("archetypeStyleTimeline")) {
+  //     return archetype$.data("archetypeStyleTimeline");
+  //   }
+
+  //   const archetype = archetype$.attr("data-archetype") as Maybe<K4Archetype>;
+  //   if (!archetype) {
+  //     throw new Error(`No archetype found for K4PCSheet: ${String(archetype$)}`);
+  //   }
+
+  //   const self = this;
+
+  //   const archetypeGreyscaleImg$ = archetype$.find(".archetype-carousel-img.greyscale");
+
+  //   const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
+  //   const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
+  //   const archetypeThe$ = archetypeNamePanel$.find(".archetype-carousel-the");
+  //   const archetypeName$ = archetypeNamePanel$.find(".archetype-carousel-name");
+  //   const archetypeDescription$ = archetypePanels$.find(".archetype-panel-description");
+  //   const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
+  //   const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
+  //   const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
+
+  //   // If not done already, split the description into individual lines
+  //   let splitDescription = archetype$.data("splitDescription");
+  //   if (!splitDescription) {
+  //     // revealAndReturn(archetypeDescription$);
+  //     splitDescription = new SplitText(archetypeDescription$, {type: "lines"});
+  //     archetype$.data("splitDescription", splitDescription);
+  //     // hideAndReturn(archetypeDescription$);
+  //   }
+
+
+  //   const tl = U.gsap.timeline({
+  //     paused: true
+  //   })
+  //     .addLabel("dark")
+  //     // .fromTo(archetypeGreyscaleImg$, {
+  //     //   // opacity: this.maxDistanceStyles.opacity,
+  //     //   // filter: this.maxDistanceStyles.filter,
+  //     //   autoAlpha: 1
+  //     // }, {
+  //     //   // opacity: this.minDistanceStyles.opacity,
+  //     //   // filter: this.minDistanceStyles.filter,
+  //     //   autoAlpha: 1,
+  //     //   duration: 1,
+  //     //   ease: "none"
+  //     // })
+  //     .addLabel("light", 1)
+  //     // .set(archetype$, {filter: "none"})
+  //     .set(archetypeGreyscaleImg$, {autoAlpha: 0}, 1)
+  //     .call(() => {
+  //       CONFIG.K4.charGenIsShowing = archetype;
+  //       self.updateArchetypeExamples(undefined, archetype);
+  //     }, [], "<")
+  //     .fromTo(archetype$, {
+  //       scale: 1,
+  //       // opacity: 1,
+  //       autoAlpha: 1
+  //     }, {
+  //       scale: 1.15,
+  //       // opacity: 1,
+  //       autoAlpha: 1,
+  //       duration: 2,
+  //       ease: "power2"
+  //     }, 1)
+  //     // .fromTo(archetypeImg$, {
+  //     // }, {
+  //     //   filter: "brightness(1.25) saturate(1)",
+  //     //   duration: 2,
+  //     //   ease: "power2"
+  //     // }, "<")
+  //     .set([archetypeNamePanel$, archetypeDescription$], {
+  //       visibility: "visible",
+  //       opacity: 1
+  //     }, 1)
+  //     .fromTo([
+  //       archetypeThe$,
+  //       archetypeName$,
+  //       ...splitDescription.lines
+  //     ], {
+  //       autoAlpha: 0,
+  //       x: -100,
+  //       // skewX: -65,
+  //       // filter: "blur(15px)"
+  //     }, {
+  //       autoAlpha: 1,
+  //       // skewX: 0,
+  //       x(this: gsap.core.Timeline, index: number) {
+  //         // index = Math.max(0, index - 2);
+  //         return gsap.utils.random(0, index * 5);
+  //         // return index * 5 + gsap.utils.random(-10, 10);
+  //       },
+  //       // filter: "blur(0px)",
+  //       ease: "power2",
+  //       duration: 2,
+  //       stagger: {
+  //         each: 0.25
+  //       }
+  //     }, "<")
+  //     .fromTo([
+  //       archetypeAdvantages$,
+  //       archetypeDisadvantages$,
+  //       archetypeDarkSecrets$
+  //     ], {
+  //       autoAlpha: 0,
+  //       y: 200
+  //     }, {
+  //       autoAlpha: 1,
+  //       y: 0,
+  //       ease: "power2",
+  //       onStart() {
+  //         const archetypeData = self.getArchetypeCarouselData()[archetype];
+  //         if (!archetypeData) {
+  //           throw new Error(`No archetype data found for archetype: ${archetype}`);
+  //         }
+  //         void self.#reRenderTraitPanel(archetype$, archetypeData);
+  //       },
+  //       duration: 2,
+  //       stagger: {
+  //         amount: 0.25
+  //       }
+  //     }, "<")
+  //     .addLabel("selected");
+
+  //   // tl.seek("light");
+
+  //   return tl;
+  // }
+
+  #getTimeline_archetypeStyle(archetype$: JQuery): gsap.core.Timeline {
+  // #getTimeline_archetypeStyle(archetype$: JQuery): Promise<{ timeline: gsap.core.Timeline }> {
     if (archetype$.data("archetypeStyleTimeline")) {
+      // return Promise.resolve({timeline: archetype$.data("archetypeStyleTimeline")});
       return archetype$.data("archetypeStyleTimeline");
     }
 
@@ -984,29 +1200,63 @@ class K4CharGen {
     if (!archetype) {
       throw new Error(`No archetype found for K4PCSheet: ${String(archetype$)}`);
     }
-
+    kLog.log(`Starting timeline creation for archetype: ${archetype}`);
     const self = this;
 
-    const archetypeGreyscaleImg$ = archetype$.find(".archetype-carousel-img.greyscale");
+    // Pre-select all elements at once to reduce DOM queries
+    // const elements = {
+    //   archetypeGreyscaleImg: archetype$.find(".archetype-carousel-img.greyscale"),
+    //   archetypePanels: archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`),
+    //   archetypeNamePanel: null as JQuery | null,
+    //   archetypeThe: null as JQuery | null,
+    //   archetypeName: null as JQuery | null,
+    //   archetypeDescription: null as JQuery | null,
+    //   archetypeAdvantages: null as JQuery | null,
+    //   archetypeDisadvantages: null as JQuery | null,
+    //   archetypeDarkSecrets: null as JQuery | null
+    // };
 
-    const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
-    const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
-    const archetypeThe$ = archetypeNamePanel$.find(".archetype-carousel-the");
-    const archetypeName$ = archetypeNamePanel$.find(".archetype-carousel-name");
-    const archetypeDescription$ = archetypePanels$.find(".archetype-panel-description");
-    const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
-    const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
-    const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
+    // Defer some element selections until they're needed
+    // const getElement = (key: keyof typeof elements) => {
+    //   if (!elements[key]) {
+    //     switch (key) {
+    //       case 'archetypeNamePanel':
+    //         elements[key] = elements.archetypePanels.find(".archetype-panel-name");
+    //         break;
+    //       case 'archetypeThe':
+    //         elements[key] = elements.archetypeNamePanel!.find(".archetype-carousel-the");
+    //         break;
+    //       case 'archetypeName':
+    //         elements[key] = elements.archetypeNamePanel!.find(".archetype-carousel-name");
+    //         break;
+    //       case 'archetypeDescription':
+    //         elements[key] = elements.archetypePanels.find(".archetype-panel-description");
+    //         break;
+    //       case 'archetypeAdvantages':
+    //         elements[key] = elements.archetypePanels.find(".archetype-panel-advantages");
+    //         break;
+    //       case 'archetypeDisadvantages':
+    //         elements[key] = elements.archetypePanels.find(".archetype-panel-disadvantages");
+    //         break;
+    //       case 'archetypeDarkSecrets':
+    //         elements[key] = elements.archetypePanels.find(".archetype-panel-darksecrets");
+    //         break;
+    //     }
+    //   }
+    //   return elements[key]!;
+    // };
 
-    // If not done already, split the description into individual lines
-    let splitDescription = archetype$.data("splitDescription");
-    if (!splitDescription) {
-      // revealAndReturn(archetypeDescription$);
-      splitDescription = new SplitText(archetypeDescription$, {type: "lines"});
-      archetype$.data("splitDescription", splitDescription);
-      // hideAndReturn(archetypeDescription$);
-    }
+    // return new Promise<{ timeline: gsap.core.Timeline }>((resolve) => {
+      const archetypeGreyscaleImg$ = archetype$.find(".archetype-carousel-img.greyscale");
 
+      const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
+      const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
+      const archetypeThe$ = archetypeNamePanel$.find(".archetype-carousel-the");
+      const archetypeName$ = archetypeNamePanel$.find(".archetype-carousel-name");
+      const archetypeDescription$ = archetypePanels$.find(".archetype-panel-description");
+      const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
+      const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
+      const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
 
     const tl = U.gsap.timeline({
       paused: true
@@ -1047,14 +1297,15 @@ class K4CharGen {
       //   duration: 2,
       //   ease: "power2"
       // }, "<")
-      .set([archetypeNamePanel$, archetypeDescription$], {
+      .set([archetypeNamePanel$], {
         visibility: "visible",
         opacity: 1
       })
       .fromTo([
         archetypeThe$,
         archetypeName$,
-        ...splitDescription.lines
+        archetypeDescription$
+        // ...splitDescription.lines
       ], {
         autoAlpha: 0,
         x: -100,
@@ -1093,7 +1344,7 @@ class K4CharGen {
           }
           void self.#reRenderTraitPanel(archetype$, archetypeData);
         },
-        duration: 2,
+        duration: 3,
         stagger: {
           amount: 0.25
         }
@@ -1102,11 +1353,16 @@ class K4CharGen {
 
     // tl.seek("light");
 
+    // archetype$.data("archetypeStyleTimeline", tl);
+
     return tl;
   }
 
   #getTimeline_revealCarousel(): gsap.core.Timeline {
+  // async #getTimeline_revealCarousel(): Promise<{timeline: gsap.core.Timeline}> {
+    // const {timeline: selectedArchetypeTimeline} = await this.#getTimeline_archetypeStyle(this.element.find(`.archetype-carousel-item[data-archetype="${this.actor.archetype ?? K4Archetype.academic}"]`));
     const selectedArchetypeTimeline = this.#getTimeline_archetypeStyle(this.element.find(`.archetype-carousel-item[data-archetype="${this.actor.archetype ?? K4Archetype.academic}"]`));
+    // return {timeline: U.gsap.timeline({paused: true})
     return U.gsap.timeline({paused: true})
       .add(this.#getTimeline_revealCarouselBackground())
       .add(this.#getTimeline_revealCarouselScene())
@@ -1312,10 +1568,10 @@ class K4CharGen {
         }
         if (tl.isActive()) {
           if (tl.reversed()) {
-            tl.timeScale(3).play();
+            tl.timeScale(1).play();
           } else {
             // traitContainer$.removeClass(glowClass);
-            tl.timeScale(3).reverse();
+            tl.timeScale(1).reverse();
           }
         }
       },
@@ -1592,10 +1848,12 @@ class K4CharGen {
   }
 
   updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
+  // async updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
     const selArchetypeIndex = selIndex ?? this.getIndexFromYRot(rotation);
     const thisIndex = U.pInt(item$.attr("data-index"));
     U.gsap.set(item$[0], {rotationY: -rotation});
     if (thisIndex === selArchetypeIndex) {return;}
+    // const {timeline: thisTimeline} = await this.#getTimeline_archetypeStyle(item$);
     const thisTimeline = this.#getTimeline_archetypeStyle(item$);
     // kLog.log(`Updating Seeking Archetype Item '${item$.attr("data-archetype")}' ($${thisIndex}) to ${1 - getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex)}`);
     thisTimeline.seek(1 - this.getNormalizedDistanceFromSelected(thisIndex, selArchetypeIndex), true).pause();
@@ -1729,32 +1987,79 @@ class K4CharGen {
   }
 
 
-  async #constructCarousel(carouselScene$: JQuery) {
+  // async #constructCarousel_OLD(carouselScene$: JQuery, timeStamp: () => number) {
+  //   kLog.log(`${timeStamp()} - ... Gathering JQuery Items`);
+  //   const carousel$ = carouselScene$.find(".archetype-carousel");
+  //   const items$ = carousel$.find(".archetype-carousel-item");
+
+  //   kLog.log(`${timeStamp()} - ... Setting carousel z-index`);
+  //   void U.gsap.set(carousel$, {z: -1 * K4CharGen.CarouselRadius});
+
+  //   kLog.log(`${timeStamp()} - ... Starting Promise.all for items`);
+  //   await Promise.all(items$.map(async (i, item) => {
+  //     kLog.log(`${timeStamp()} - ... Starting item ${i} processing`);
+  //     const item$ = $(item);
+  //     kLog.log(`${timeStamp()} - ... Getting timeline for item ${i}`);
+  //     const archTimeline = this.#getTimeline_archetypeStyle(item$);
+  //     kLog.log(`${timeStamp()} - ... Calculating distance for item ${i}`);
+  //     const distFromSelected = this.getNormalizedDistanceFromSelected(i, this.selArchetypeIndex);
+  //     kLog.log(`${timeStamp()} - ... Seeking timeline for item ${i}`);
+  //     archTimeline.seek(1 - distFromSelected, true);
+  //     kLog.log(`${timeStamp()} - ... Calculating rotation for item ${i}`);
+  //     const archYRot = this.getYRotFromIndex(i);
+  //     kLog.log(`${timeStamp()} - ... Setting transform for item ${i}`);
+  //     void U.gsap.set(item, {
+  //       transform: `rotateY(${-1 * archYRot}deg) translateZ(${K4CharGen.CarouselRadius}px) rotateY(${archYRot}deg)`
+  //     });
+  //     kLog.log(`${timeStamp()} - ... Finished item ${i} processing`);
+  //   }));
+  //   kLog.log(`${timeStamp()} - ... Finished`);
+  // }
+
+  async #constructCarousel(carouselScene$: JQuery, timeStamp: () => number) {
+    kLog.log(`${timeStamp()} - ... Gathering JQuery Items`);
     const carousel$ = carouselScene$.find(".archetype-carousel");
     const items$ = carousel$.find(".archetype-carousel-item");
 
-    // [carouselScene$, carousel$, items$].forEach(revealAndReturn);
-
+    kLog.log(`${timeStamp()} - ... Setting carousel z-index`);
     void U.gsap.set(carousel$, {z: -1 * K4CharGen.CarouselRadius});
 
-    await Promise.all(items$.map(async (i, item) => {
-      const item$ = $(item);
-      const archTimeline = this.#getTimeline_archetypeStyle(item$);
-      const distFromSelected = this.getNormalizedDistanceFromSelected(i, this.selArchetypeIndex);
-      archTimeline.seek(1 - distFromSelected, true);
-      const archYRot = this.getYRotFromIndex(i);
-      await U.gsap.set(item, {
-        transform: `rotateY(${-1 * archYRot}deg) translateZ(${K4CharGen.CarouselRadius}px) rotateY(${archYRot}deg)`
+    kLog.log(`${timeStamp()} - ... Starting Promise.all for items`);
+    const itemPromises = items$.map((i, item) => {
+      try {
+        kLog.log(`${timeStamp()} - Starting processing for item ${i}`);
+        const item$ = $(item);
+        kLog.log(`${timeStamp()} - Getting timeline for item ${i}`);
+        const archTimeline = this.#getTimeline_archetypeStyle(item$);
+        kLog.log(`${timeStamp()} - Got timeline for item ${i}`);
+        const distFromSelected = this.getNormalizedDistanceFromSelected(i, this.selArchetypeIndex);
+        const archYRot = this.getYRotFromIndex(i);
+
+        kLog.log(`${timeStamp()} - Finished processing for item ${i}`);
+        return {item, archTimeline, distFromSelected, archYRot};
+      } catch (error) {
+        kLog.error(`Error processing item ${i}:`, error);
+        throw error; // Re-throw the error to be caught by Promise.all
+      }
+    });
+
+    try {
+      kLog.log(`${timeStamp()} - Waiting for all items to be processed`);
+      const processedItems = await Promise.all(itemPromises);
+      kLog.log(`${timeStamp()} - All items processed`);
+
+      processedItems.forEach(({item, archTimeline, distFromSelected, archYRot}) => {
+        archTimeline.seek(1 - distFromSelected, true);
+        void U.gsap.set(item, {
+          transform: `rotateY(${-1 * archYRot}deg) translateZ(${K4CharGen.CarouselRadius}px) rotateY(${archYRot}deg)`
+        });
       });
-    }));
-
-    // hideAndReturn(items$);
-
-    // U.gsap.set([carouselScene$, carousel$], {opacity: 1, visibility: "visible"});
-
-    // this.#constructCarouselDragger(carouselScene$);
+    } catch (error) {
+      kLog.error("Error processing items:", error);
+      throw new Error(`Error processing items: ${String(error)}`);
+    }
+    kLog.log(`${timeStamp()} - ... Finished`);
   }
-
   async #reRenderTraitPanel(archetype$: JQuery, panelData: Archetype.ArchetypeData) {
     const htmlContent = await renderTemplate("systems/kult4th/templates/sheets/pc-initialization-archetype-trait-panels.hbs", {data: panelData});
     archetype$.find(".archetype-trait-panels-wrapper").html(htmlContent);
@@ -1817,7 +2122,7 @@ class K4CharGen {
 
     // Construct the carousel by positioning and rotating all elements
     const carouselScene$ = this.element.find(".archetype-staging");
-    await this.#constructCarousel(carouselScene$);
+    await this.#constructCarousel(carouselScene$, timeStamp);
     kLog.log(`${timeStamp()} - Carousel Scene Constructed`);
 
     // Add the carousel drag controller
@@ -1855,7 +2160,8 @@ class K4CharGen {
   async revealCarouselScene() {
     kLog.log("Revealing Carousel Scene");
     CONFIG.K4.isCharGenInitialized = true;
-    return this.#getTimeline_revealCarousel().play();
+    const tl = this.#getTimeline_revealCarousel();
+    return tl.play();
   }
 
 }
