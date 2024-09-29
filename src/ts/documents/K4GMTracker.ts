@@ -23,11 +23,6 @@ declare global {
 class K4GMTracker {
 
   public static readonly SocketFunctions: Record<string, SocketFunction> = {
-    "EndPhase": async (phase: K4GamePhase) => {
-      kLog.log(`{{EndPhase}} User ${getUser().name} received Socket Call to End '${phase}' Phase`);
-      await this.END_PHASE_FUNCS[phase]();
-      return true;
-    },
     "PreloadPhase": async (phase: K4GamePhase) => {
       kLog.log(`{{PreloadPhase}} User ${getUser().name} received Socket Call to Preload '${phase}' Phase`);
       const tracker = await K4GMTracker.Get();
@@ -36,13 +31,39 @@ class K4GMTracker {
       kLog.log("... assets preloaded, returning true");
       return true;
     },
+    "AnnouncePreloadStart": async (userID: IDString, phase: K4GamePhase) => {
+      const user = getGame().users.get(userID);
+      kLog.log(`{{AnnouncePreloadStart}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Start for '${U.uCase(phase)}' Phase`);
+      const tracker = await K4GMTracker.Get();
+      tracker._overlayPreloadStatus[phase] = true;
+      return true;
+    },
+    "AnnouncePreloadComplete": async (userID: IDString, phase: K4GamePhase, isAlreadyLoaded = false) => {
+      const user = getGame().users.get(userID);
+      kLog.log(`{{AnnouncePreloadComplete}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Complete for '${U.uCase(phase)}' Phase`);
+      const tracker = await K4GMTracker.Get();
+      tracker._overlayPreloadStatus[phase] = false;
+      return true;
+    },
+    "AnnouncePreloadError": async (userID: IDString, phase: K4GamePhase, error: string) => {
+      const user = getGame().users.get(userID);
+      kLog.log(`{{AnnouncePreloadError}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Error for '${U.uCase(phase)}' Phase: ${error}`);
+      const tracker = await K4GMTracker.Get();
+      tracker._overlayPreloadStatus[phase] = false;
+      return true;
+    },
     "StartPhase": async (phase: K4GamePhase) => {
-      kLog.log(`{{StartPhase}} User ${getUser().name} received Socket Call to Start ${phase} Phase`);
+      kLog.log(`{{StartPhase}} User ${getUser().name} received Socket Call to Start '${U.uCase(phase)}' Phase`);
       const tracker = await K4GMTracker.Get();
 
       void tracker.displayOverlay(phase);
 
       await this.START_PHASE_FUNCS[phase]();
+    },
+    "EndPhase": async (phase: K4GamePhase) => {
+      kLog.log(`{{EndPhase}} User ${getUser().name} received Socket Call to End '${U.uCase(phase)}' Phase`);
+      await this.END_PHASE_FUNCS[phase]();
+      return true;
     },
     "CharChange_Name": async (
       userID: IDString,
@@ -117,13 +138,14 @@ class K4GMTracker {
   private static get OVERLAY_ANIMATIONS() {
 
     return {
-      [K4GamePhase.uninitialized]: () => {
+      [K4GamePhase.intro]: () => {
 
-        const overlay$ = $("#gamephase-overlay.uninitialized");
+        const masterOverlay$ = $("#gamephase-overlay");
+        const overlay$ = masterOverlay$.find(".overlay-intro");
         const topFog$ = overlay$.find(".rolling-fog-container.inverted");
         const bottomFog$ = overlay$.find(".rolling-fog-container:not(.inverted)");
         const title$ = overlay$.find(".overlay-title");
-        const ambientAudio$ = overlay$.find(".ambient-audio") as JQuery<HTMLAudioElement>;
+        const ambientAudio$ = masterOverlay$.find(".ambient-audio") as JQuery<HTMLAudioElement>;
         const titleBang$ = overlay$.find(".title-bang") as JQuery<HTMLAudioElement>;
         const gearContainers$ = overlay$.find(".gear-container");
         const hugeGear$ = overlay$.find(".gear-huge");
@@ -173,18 +195,8 @@ class K4GMTracker {
 
         return tl;
       },
-      [K4GamePhase.initialized]: () => {
-        const overlay$ = $("#gamephase-overlay.initialized");
-
-        const DISPLAY_DURATION = 5;
-
-        const tl = U.gsap.timeline()
-          .to(overlay$, {autoAlpha: 1, duration: DISPLAY_DURATION});
-
-        return tl;
-      },
       [K4GamePhase.chargen]: async () => {
-        const overlay$ = $("#gamephase-overlay.chargen");
+        const overlay$ = $("#gamephase-overlay .overlay-chargen");
 
         const tl = U.gsap.timeline()
           .to(overlay$, {autoAlpha: 1, duration: 1});
@@ -220,16 +232,10 @@ class K4GMTracker {
   private static get START_PHASE_FUNCS() {
 
     return {
-      [K4GamePhase.uninitialized]: async () => {
-        console.log("Initializing 'uninitialized' Game Phase.");
+      [K4GamePhase.intro]: async () => {
+        console.log("Initializing 'intro' Game Phase.");
         const tracker = await K4GMTracker.Get();
-        void tracker.preloadOverlay(K4GamePhase.initialized);
-      },
-      [K4GamePhase.initialized]: async () => {
-        console.log("Initializing 'initialized' Game Phase.");
-        const tracker = await K4GMTracker.Get();
-        if (getUser().isGM) {return;}
-        // void tracker.preloadOverlay(K4GamePhase.chargen);
+        void tracker.preloadOverlay(K4GamePhase.intro);
       },
       [K4GamePhase.chargen]: async () => {
         console.log("Initializing 'chargen' Game Phase.");
@@ -252,25 +258,17 @@ class K4GMTracker {
 
   private static get END_PHASE_FUNCS() {
     return {
-      [K4GamePhase.uninitialized]: async () => {
-        console.log("Ending 'uninitialized' Game Phase.");
-        const overlay$ = $("#gamephase-overlay.uninitialized");
+      [K4GamePhase.intro]: async () => {
+        console.log("Ending 'intro' Game Phase.");
+        const overlay$ = $("#gamephase-overlay .overlay-intro");
         await gsap.to(overlay$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"});
         const tracker = await K4GMTracker.Get();
-        tracker._overlayPreloadStatus[K4GamePhase.uninitialized] = false;
-        overlay$.remove();
-      },
-      [K4GamePhase.initialized]: async () => {
-        console.log("Ending 'initialized' Game Phase.");
-        const overlay$ = $("#gamephase-overlay.initialized");
-        await gsap.to(overlay$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"});
-        const tracker = await K4GMTracker.Get();
-        tracker._overlayPreloadStatus[K4GamePhase.initialized] = false;
+        tracker._overlayPreloadStatus[K4GamePhase.intro] = false;
         overlay$.remove();
       },
       [K4GamePhase.chargen]: async () => {
         console.log("Ending 'chargen' Game Phase.");
-        const overlay$ = $("#gamephase-overlay.chargen");
+        const overlay$ = $("#gamephase-overlay .overlay-chargen");
         await gsap.to(overlay$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"});
         const tracker = await K4GMTracker.Get();
         tracker._overlayPreloadStatus[K4GamePhase.chargen] = false;
@@ -278,7 +276,7 @@ class K4GMTracker {
       },
       [K4GamePhase.preSession]: async () => {
         console.log("Ending 'preSession' Game Phase.");
-        const overlay$ = $("#gamephase-overlay.preSession");
+        const overlay$ = $("#gamephase-overlay .overlay-preSession");
         await gsap.to(overlay$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"});
         const tracker = await K4GMTracker.Get();
         tracker._overlayPreloadStatus[K4GamePhase.preSession] = false;
@@ -286,7 +284,7 @@ class K4GMTracker {
       },
       [K4GamePhase.session]: async () => {
         console.log("Ending 'session' Game Phase.");
-        const overlay$ = $("#gamephase-overlay.session");
+        const overlay$ = $("#gamephase-overlay .overlay-session");
         await gsap.to(overlay$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"});
         const tracker = await K4GMTracker.Get();
         tracker._overlayPreloadStatus[K4GamePhase.session] = false;
@@ -294,7 +292,7 @@ class K4GMTracker {
       },
       [K4GamePhase.postSession]: async () => {
         console.log("Ending 'postSession' Game Phase.");
-        const overlay$ = $("#gamephase-overlay.postSession");
+        const overlay$ = $("#gamephase-overlay .overlay-postSession");
         await gsap.to(overlay$, {autoAlpha: 0, duration: 1, ease: "power2.inOut"});
         const tracker = await K4GMTracker.Get();
         tracker._overlayPreloadStatus[K4GamePhase.postSession] = false;
@@ -303,11 +301,52 @@ class K4GMTracker {
     } as Record<K4GamePhase, AsyncFunc>;
   }
 
-  private overlays: Partial<Record<K4GamePhase, JQuery>> = {};
+  static async AwaitMediaLoaded(html$: JQuery): Promise<void> {
+
+    // Get all video and audio elements in the overlay
+    const videos$ = html$.find("video");
+    kLog.log("Videos: ", videos$.toArray());
+    const audios$ = html$.find("audio");
+    kLog.log("Audios: ", audios$.toArray());
+
+    // Create array of promises to check if videos and audios are ready
+    const videoPromises = videos$.toArray().map((video: HTMLVideoElement) => {
+      return new Promise<void>((resolve) => {
+        const checkVideoStatus = () => {
+          // Check if the video is ready to play (HAVE_FUTURE_DATA) or is fully loaded (HAVE_ENOUGH_DATA)
+          if (video.readyState >= 3) { // HAVE_FUTURE_DATA or higher
+            console.log(`Video ready to play or playing: ${video.src}`);
+            resolve();
+          } else {
+            setTimeout(checkVideoStatus, 100);
+          }
+        };
+        checkVideoStatus();
+      });
+    });
+
+    const audioPromises = audios$.toArray().map((audio: HTMLAudioElement) => {
+      return new Promise<void>((resolve) => {
+        const checkAudioStatus = () => {
+          // Check if the audio is ready to play (HAVE_FUTURE_DATA) or is fully loaded (HAVE_ENOUGH_DATA)
+          if (audio.readyState >= 3) { // HAVE_FUTURE_DATA or higher
+            console.log(`Audio ready to play or playing: ${audio.src}`);
+            resolve();
+          } else {
+            setTimeout(checkAudioStatus, 100);
+          }
+        };
+        checkAudioStatus();
+      });
+    });
+
+    // Wait for all videos and audios to load
+    await Promise.all([...videoPromises, ...audioPromises]);
+  }
 
   async displayOverlay(gamePhase = this.phase) {
     kLog.log(`Displaying overlay for gamePhase ${gamePhase}`);
-    const overlay$ = $(`#gamephase-overlay.${gamePhase}`);
+    const overlay$ = $(`#gamephase-overlay .overlay-${gamePhase}`);
     if (!overlay$.length) {
       throw new Error(`Must preload overlay for gamePhase ${gamePhase} before displaying it.`);
     }
@@ -320,9 +359,17 @@ class K4GMTracker {
 
     // Run animation
     const animation = (await K4GMTracker.OVERLAY_ANIMATIONS[gamePhase]()).play()
-      .then(() => {
-        if (gamePhase === K4GamePhase.initialized) {
-          void this.preloadOverlay(K4GamePhase.chargen);
+      .then(async () => {
+        $("body").addClass("is-initialized");
+        if (gamePhase === K4GamePhase.intro) {
+          const tracker = await K4GMTracker.Get();
+          if (tracker.isConfigured) {
+            if (tracker.isChargenComplete) {
+              void this.preloadOverlay(K4GamePhase.preSession);
+            } else {
+              void this.preloadOverlay(K4GamePhase.chargen);
+            }
+          }
         }
       });
 
@@ -331,11 +378,15 @@ class K4GMTracker {
 
 
   _overlayPreloadStatus: Partial<Record<K4GamePhase, boolean>> = {};
-  async preloadOverlay(gamePhase = this.phase): Promise<JQuery> {
+  async preloadOverlay(gamePhase = this.phase, isForcing = false): Promise<JQuery> {
+    void K4Socket.Call("AnnouncePreloadStart", UserTargetRef.gm, getUser().id, gamePhase);
     // If already loaded, do nothing
-    if (this._overlayPreloadStatus[gamePhase]) {return $(`#gamephase-overlay.${gamePhase}`);}
+    if (!isForcing && this._overlayPreloadStatus[gamePhase]) {
+      void K4Socket.Call("AnnouncePreloadComplete", UserTargetRef.gm, getUser().id, gamePhase, true);
+      return $(`#gamephase-overlay .overlay-${gamePhase}`);
+    }
     // If already exists, remove it
-    $(`#gamephase-overlay.${gamePhase}`).remove();
+    $(`#gamephase-overlay .overlay-${gamePhase}`).remove();
 
     // Render the overlay to the DOM
     const overlayHtml = await renderTemplate(
@@ -345,51 +396,18 @@ class K4GMTracker {
         ...(gamePhase === K4GamePhase.chargen ? (getActor() as K4Actor).chargenSheet.chargenContext() : {})
       }
     );
-    const overlay$ = $(overlayHtml).prependTo("body");
+    const overlay$ = $(overlayHtml).prependTo("#gamephase-overlay");
 
-    // Get all video and audio elements in the overlay
-    const videos$ = overlay$.find("video");
-    kLog.log("Videos: ", videos$.toArray());
-    const audios$ = overlay$.find("audio");
-    kLog.log("Audios: ", audios$.toArray());
-
-    // Create array of promises to check if videos and audios are ready
-    const videoPromises = videos$.toArray().map((video: HTMLVideoElement) => {
-      return new Promise<void>((resolve) => {
-        const checkVideoStatus = () => {
-          if (video.readyState >= 4 && !video.paused && video.currentTime > 0) {
-            console.log(`Video playing successfully: ${video.src}`);
-            resolve();
-          } else {
-            setTimeout(checkVideoStatus, 100);
-          }
-        };
-        checkVideoStatus();
-      });
-    });
-
-    const audioPromises = audios$.toArray().map((audio: HTMLAudioElement) => {
-      return new Promise<void>((resolve, reject) => {
-        const checkAudioStatus = () => {
-          if (audio.readyState >= 4) {
-            console.log(`Audio playing successfully: ${audio.src}`);
-            resolve();
-          } else {
-            setTimeout(checkAudioStatus, 100);
-          }
-        };
-        checkAudioStatus();
-      });
-    });
-
-    // Wait for all videos and audios to load
+    // Preload media
     try {
-      await Promise.all([...videoPromises, ...audioPromises]);
+      await K4GMTracker.AwaitMediaLoaded(overlay$);
       console.log(`All assets for ${gamePhase} overlay loaded successfully`);
       overlay$.addClass("is-loaded");
     } catch (error) {
-      console.error(`Error loading assets for ${gamePhase} overlay:`, error);
-      throw error;
+      console.error("Error loading overlay assets.", error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      void K4Socket.Call("AnnouncePreloadError", UserTargetRef.gm, getUser().id, gamePhase, errorMessage);
+      return overlay$;
     }
 
     // If this is the chargen phase, preload the carousel
@@ -399,29 +417,30 @@ class K4GMTracker {
 
     this._overlayPreloadStatus[gamePhase] = true;
 
+    void K4Socket.Call("AnnouncePreloadComplete", UserTargetRef.gm, getUser().id, gamePhase);
     return overlay$;
   }
 
 
-  static instance: K4GMTracker | null = null;
-  static instancePromise: Promise<K4GMTracker> | null = null;
+  private static _instance: Maybe<K4GMTracker>;
+  private static _instancePromise: Promise<K4GMTracker> | null = null;
 
   /**
    * Asynchronously gets the K4GMTracker instance, waiting for its creation if necessary.
    * @returns {Promise<K4GMTracker>} A promise that resolves to the K4GMTracker instance.
    */
   public static async Get(): Promise<K4GMTracker> {
-    if (this.instance) {
-      return this.instance;
+    if (this._instance) {
+      return this._instance;
     }
 
-    if (!this.instancePromise) {
-      this.instancePromise = new Promise((resolve) => {
+    if (!this._instancePromise) {
+      this._instancePromise = new Promise((resolve) => {
         const checkTrackerItem = () => {
           const trackerItem: Maybe<K4Item<K4ItemType.gmtracker>> = getGame().items.find((item: K4Item): item is K4Item<K4ItemType.gmtracker> => item.type === K4ItemType.gmtracker);
           if (trackerItem) {
-            this.instance = new K4GMTracker(trackerItem);
-            resolve(this.instance);
+            this._instance = new K4GMTracker(trackerItem);
+            resolve(this._instance);
           } else {
             setTimeout(checkTrackerItem, 100); // Check again after 100ms
           }
@@ -430,7 +449,17 @@ class K4GMTracker {
       });
     }
 
-    return this.instancePromise;
+    return this._instancePromise;
+  }
+
+  public static async PreInitialize(): Promise<void> {
+    // Render the master overlay container to the DOM
+    const overlayHtml = await renderTemplate(
+      U.getTemplatePath("gamephase", "overlay-master"),
+      {}
+    );
+    $(overlayHtml).prependTo("body");
+    await K4GMTracker.AwaitMediaLoaded($(overlayHtml));
   }
 
   /**
@@ -444,7 +473,6 @@ class K4GMTracker {
       return;
     }
 
-
     // For GM users, check if the tracker already exists
     let trackerItem: Maybe<K4Item<K4ItemType.gmtracker>> = getGame().items.find((item: K4Item): item is K4Item<K4ItemType.gmtracker> => item.type === K4ItemType.gmtracker);
 
@@ -457,19 +485,40 @@ class K4GMTracker {
       }, { renderSheet: false }) as Maybe<K4Item<K4ItemType.gmtracker>>;
     }
 
-    // Create the instance
-    K4GMTracker.instance = new K4GMTracker(trackerItem!);
-
-    // Use AsyncGet to ensure the instance is fully initialized
-    (await this.Get()).render(true);
+    // Use AsyncGet to create and initialize the instance
+    const instance = await this.Get();
+    instance.render(true);
 
     $("body").addClass("interface-visible");
+
+    // Create User connection listener to update the GM Tracker
+    Hooks.on("UserConnected", (user: User, connectionStatus: boolean) => {
+      if (instance.isRendered) {
+        instance.elem$!.find(`.user-online-status[data-user-id="${user.id}"]`).toggleClass("online", connectionStatus);
+      }
+    })
   }
 
   private _trackerItem: K4Item<K4ItemType.gmtracker> & {system: K4GMTracker.System;};
   private constructor(private trackerItem: K4Item<K4ItemType.gmtracker>) {
     // Private constructor to prevent direct instantiation
     this._trackerItem = trackerItem as K4Item<K4ItemType.gmtracker> & {system: K4GMTracker.System;};
+  }
+
+  get isConfigured(): boolean {
+    return this.allActorsAssigned;
+  }
+
+  get isChargenComplete(): boolean {
+    return this.isConfigured && this.allActorsAssigned && (Object.values(this.playerCharacters)
+      .every(({actor}) => this.isCharGenFinishedFor(actor)));
+  }
+
+  get isRendered(): boolean {
+    if (!K4GMTracker._instance) {
+      return false;
+    }
+    return K4GMTracker._instance.sheet.rendered;
   }
 
   get item(): K4Item<K4ItemType.gmtracker> & {system: K4GMTracker.System;} {
@@ -513,26 +562,38 @@ class K4GMTracker {
     return actor.system.charGen.isFinished ?? false;
   }
 
-  render(force = false) {
-    this.sheet.render(force);
-  }
-
-  getData() {
-    const playerCharacters = Object.fromEntries(
+  get playerCharacters(): Record<string, {actor: K4Actor<K4ActorType.pc>; owner: Maybe<User>}> {
+    return Object.fromEntries(
       Array.from(getGame().actors as Collection<K4Actor>)
-        .filter((actor) => actor.type === K4ActorType.pc)
+        .filter((actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc)
         .map((actor) => [actor.id, {
           actor,
           owner: actor.user
         }])
     );
+  }
+
+  get playerUsers(): User[] {
+    return getGame().users
+      .filter((user: User) => [CONST.USER_ROLES.PLAYER, CONST.USER_ROLES.TRUSTED].includes(user.role));
+  }
+
+  get allActorsAssigned(): boolean {
+    return new Set(Object.values(this.playerCharacters)
+    .map(pc => pc.owner?.id)
+    .filter(Boolean)).size === Object.keys(this.playerCharacters).length
+  }
+
+  render(force = false) {
+    this.sheet.render(force);
+  }
+
+  getData() {
     return {
-      playerCharacters,
-      playerUsers: getGame().users
-        .filter((user: User) => [CONST.USER_ROLES.PLAYER, CONST.USER_ROLES.TRUSTED].includes(user.role)),
-      allActorsAssigned: new Set(Object.values(playerCharacters)
-        .map(pc => pc.owner?.id)
-        .filter(Boolean)).size === Object.keys(playerCharacters).length
+      playerCharacters: this.playerCharacters,
+      playerUsers: this.playerUsers,
+      allActorsAssigned: this.allActorsAssigned,
+      isChargenComplete: this.isChargenComplete
     };
   }
 

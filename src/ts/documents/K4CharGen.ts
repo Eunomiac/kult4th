@@ -212,24 +212,6 @@ class K4CharGen {
     return this._CarouselRadius;
   }
 
-  static PreInitialize() {
-
-
-
-    // Create chargen intro overlay via JQuery and append it to the DOM
-    // const content = await renderTemplate(U.getTemplatePath("chargen", "chargen-intro-overlay"), {});
-    // this._introOverlay$ = $("<div style='position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 10000;'></div>").appendTo("body");
-
-    // // Immediately animate it in
-    // U.gsap.to(this._introOverlay$, {
-    //   autoAlpha: 1,
-    //   duration: 1,
-    //   ease: "power2.inOut"
-    // });
-
-    // Preload video/webm element "cloud-bg.webm"
-  }
-
   static async PostInitialize() {
     if (getUser().isGM) { return; }
     // Preload getters
@@ -788,8 +770,38 @@ class K4CharGen {
       .map((user) => [user.id, (user.character as Maybe<K4Actor<K4ActorType.pc>>)?.summaryData])
       .filter(Boolean));
 
+    return {
+      archetypeCarousel: this.getArchetypeCarouselData(),
+      selectedArchetype,
+      attributes: this.actor.attributeData,
+      traitNotes: this.traitNotes,
+      // archetypeAdvantages: selectedArchetype
+      //   ? this.getArchetypeTraitData(K4ItemType.advantage, selectedArchetype)
+      //   : undefined,
+      // archetypeDisadvantages: (selectedArchetype
+      //   ? this.getArchetypeTraitData(K4ItemType.disadvantage, selectedArchetype)
+      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
+      // archetypeDarkSecrets: (selectedArchetype
+      //   ? this.getArchetypeTraitData(K4ItemType.darksecret, selectedArchetype)
+      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
+      description: this.getStringData("description"),
+      occupation: this.getStringData("occupation"),
+      looks: {
+        clothes: this.getStringData("looks.clothes", selectedArchetype),
+        face: this.getStringData("looks.face", selectedArchetype),
+        eyes: this.getStringData("looks.eyes", selectedArchetype),
+        body: this.getStringData("looks.body", selectedArchetype)
+      },
+      otherPlayerData
+    };
+  }
+
+  get traitNotes(): Record<string, {traitType: K4TraitType, value: string}> {
+    const selectedArchetype = this.actor.archetype;
+
     const archetypeCarousel = this.getArchetypeCarouselData();
     const selTraits: Array<{traitType: K4TraitType, traitName: string}> = [];
+
     const traitNotes: Record<string, {traitType: K4TraitType, value: string}> = {};
     if (selectedArchetype) {
       const selArchetypeData = archetypeCarousel[selectedArchetype]!;
@@ -812,33 +824,8 @@ class K4CharGen {
         }
       }
     }
-
-    return {
-      archetypeCarousel: this.getArchetypeCarouselData(),
-      selectedArchetype,
-      attributes: this.actor.attributeData,
-      traitNotes,
-      // archetypeAdvantages: selectedArchetype
-      //   ? this.getArchetypeTraitData(K4ItemType.advantage, selectedArchetype)
-      //   : undefined,
-      // archetypeDisadvantages: (selectedArchetype
-      //   ? this.getArchetypeTraitData(K4ItemType.disadvantage, selectedArchetype)
-      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
-      // archetypeDarkSecrets: (selectedArchetype
-      //   ? this.getArchetypeTraitData(K4ItemType.darksecret, selectedArchetype)
-      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
-      description: this.getStringData("description"),
-      occupation: this.getStringData("occupation"),
-      looks: {
-        clothes: this.getStringData("looks.clothes", selectedArchetype),
-        face: this.getStringData("looks.face", selectedArchetype),
-        eyes: this.getStringData("looks.eyes", selectedArchetype),
-        body: this.getStringData("looks.body", selectedArchetype)
-      },
-      otherPlayerData
-    };
+    return traitNotes;
   }
-
 
   _minDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
   _maxDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
@@ -859,7 +846,7 @@ class K4CharGen {
   _element: Maybe<JQuery>;
   get element(): JQuery {
     if (!this._element || this._element.length === 0) {
-      this._element = $("#gamephase-overlay.chargen");
+      this._element = $("#gamephase-overlay .overlay-chargen");
     }
     if (!this._element.length) {
       throw new Error("Cannot find element for K4CharGen. Chargen overlay not found.");
@@ -1000,7 +987,7 @@ class K4CharGen {
 
     const self = this;
 
-    const archetypeImg$ = archetype$.find(".archetype-carousel-img");
+    const archetypeGreyscaleImg$ = archetype$.find(".archetype-carousel-img.greyscale");
 
     const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
     const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
@@ -1025,37 +1012,41 @@ class K4CharGen {
       paused: true
     })
       .addLabel("dark")
-      .fromTo(archetype$, {
-        opacity: this.maxDistanceStyles.opacity,
-        filter: this.maxDistanceStyles.filter,
+      .fromTo(archetypeGreyscaleImg$, {
+        // opacity: this.maxDistanceStyles.opacity,
+        // filter: this.maxDistanceStyles.filter,
+        autoAlpha: 1
       }, {
-        opacity: this.minDistanceStyles.opacity,
-        filter: this.minDistanceStyles.filter,
+        // opacity: this.minDistanceStyles.opacity,
+        // filter: this.minDistanceStyles.filter,
+        autoAlpha: 1,
         duration: 1,
         ease: "none"
       })
       .addLabel("light")
-      .set(archetype$, {filter: "none"})
-      .set(archetypeImg$, {filter: "brightness(1) contrast(1)"})
+      // .set(archetype$, {filter: "none"})
+      .set(archetypeGreyscaleImg$, {autoAlpha: 0})
       .call(() => {
         CONFIG.K4.charGenIsShowing = archetype;
         self.updateArchetypeExamples(undefined, archetype);
       })
       .fromTo(archetype$, {
         scale: 1,
-        opacity: 1
+        // opacity: 1,
+        autoAlpha: 1
       }, {
         scale: 1.15,
-        opacity: 1,
+        // opacity: 1,
+        autoAlpha: 1,
         duration: 2,
         ease: "power2"
       })
-      .fromTo(archetypeImg$, {
-      }, {
-        filter: "brightness(1.25) saturate(1)",
-        duration: 2,
-        ease: "power2"
-      }, "<")
+      // .fromTo(archetypeImg$, {
+      // }, {
+      //   filter: "brightness(1.25) saturate(1)",
+      //   duration: 2,
+      //   ease: "power2"
+      // }, "<")
       .set([archetypeNamePanel$, archetypeDescription$], {
         visibility: "visible",
         opacity: 1
@@ -1068,7 +1059,7 @@ class K4CharGen {
         autoAlpha: 0,
         x: -100,
         // skewX: -65,
-        filter: "blur(15px)"
+        // filter: "blur(15px)"
       }, {
         autoAlpha: 1,
         // skewX: 0,
@@ -1077,7 +1068,7 @@ class K4CharGen {
           return gsap.utils.random(0, index * 5);
           // return index * 5 + gsap.utils.random(-10, 10);
         },
-        filter: "blur(0px)",
+        // filter: "blur(0px)",
         ease: "power2",
         duration: 2,
         stagger: {
@@ -1123,6 +1114,8 @@ class K4CharGen {
   }
 
   #getTimeline_traitSelection(traitContainer$: JQuery): gsap.core.Timeline {
+
+    const self = this;
 
     // Extracts path data string for an ease curve, converting into a simple list of x,y points
     function getEaseSVGData(easeCurve: gsap.EaseFunction) {
@@ -1243,6 +1236,7 @@ class K4CharGen {
           void K4Socket.Call("CharChange_Trait", UserTargetRef.other, getUser().id, actor.id, traitType, trait, false);
           traitContainer$.attr("data-is-selected", "false");
           traitContainer$.removeClass(glowClass);
+          void self.reRenderTraitNotesPanels();
         }
       });
       tl
@@ -1264,6 +1258,7 @@ class K4CharGen {
             void actor.charGenSelect(trait);
             traitContainer$.attr("data-is-selected", "true");
             traitContainer$.addClass(glowClass);
+            void self.reRenderTraitNotesPanels();
           }
         })
         .addLabel("selected");
@@ -1529,6 +1524,7 @@ class K4CharGen {
         });
         if (item) {
           await this.actor.charGenSelect(item.name, false);
+          await this.reRenderTraitNotesPanels();
         }
       })();
     });
@@ -1542,6 +1538,7 @@ class K4CharGen {
         });
         if (item) {
           await this.actor.charGenSelect(item.name, false);
+          await this.reRenderTraitNotesPanels();
         }
       })();
     });
@@ -1775,6 +1772,12 @@ class K4CharGen {
     }
     const archetype$ = this.element.find(`.archetype-panels[data-archetype="${archetype}"]`);
     await this.#reRenderTraitPanel(archetype$, archetypeData);
+  }
+
+  async reRenderTraitNotesPanels(html = this.element) {
+    const htmlContent = await renderTemplate("systems/kult4th/templates/gamephase/parts/chargen-trait-notes-editor.hbs", {traitNotes: this.traitNotes});
+    html.find(".archetype-sub-panel-wrapper.chargen-trait-notes-editor").html(htmlContent);
+    this.#attachListeners_contentEditable(html);
   }
 
   updateArchetypeExamples(html?: JQuery, archetype?: K4Archetype) {

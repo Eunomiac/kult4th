@@ -423,7 +423,7 @@ $isDebug: false;
 
           &.description-editor,
           &.history-editor,
-          &.dark-secret-editor,
+          &.trait-notes-editor,
           &.relations-editor {
             min-height: 120px;
           }
@@ -435,7 +435,7 @@ $isDebug: false;
 
           .archetype-sub-panel-title {
             .k4-title.section-title {
-              margin: 0 0 0 -5px;
+              margin: 0;
               line-height: 30px;
             }
           }
@@ -443,6 +443,7 @@ $isDebug: false;
             line-height: 30px;
             padding: 0 5px;
             min-height: 30px;
+            max-height: 30px;
           }
         }
       }
@@ -560,6 +561,13 @@ $isDebug: false;
             transform: translate(-50%, -50%);
             top: 50%;
             left: 50%;
+
+            &.greyscale {
+              filter: grayscale(100%) brightness(0.5) blur(2px);
+              scale: 1.001;
+              transform-origin: center center;
+              z-index: 1;
+            }
 
           }
         }

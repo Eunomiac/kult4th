@@ -99,8 +99,7 @@ export enum K4ActorType {
   npc = "npc"
 }
 export enum K4GamePhase {
-  uninitialized = "uninitialized",
-  initialized = "initialized",
+  intro = "intro",
   chargen = "chargen",
   preSession = "preSession",
   session = "session",

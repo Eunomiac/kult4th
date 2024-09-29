@@ -3,20 +3,16 @@
 
   {{> (concat "systems/kult4th/templates/sheets/gmtracker-phases/" item.system.gamePhase ".hbs")}}
 
-
-
   <footer class="phase-select-container phase-{{item.system.gamePhase}}">
-    <span class="phase-container phase-uninitialized">
-      <span class="phase-label">SCENARIO CONFIGURATION</span>
+    <span class="phase-container phase-intro">
+      <span class="phase-label">PREPARATION</span>
     </span>
-    <span class="phase-container phase-initialized">
-      <button class="phase-select-button" data-phase="initialized"></button>
-      <span class="phase-label">WAITING FOR PLAYERS</span>
-    </span>
+    {{#unless isChargenComplete}}
     <span class="phase-container phase-chargen">
       <button class="phase-select-button" data-phase="chargen"></button>
       <span class="phase-label">CHARACTER CREATION</span>
     </span>
+    {{else}}
     <span class="phase-container phase-preSession">
       <button class="phase-select-button" data-phase="preSession"></button>
       <span class="phase-label">PRE-SESSION</span>
@@ -29,6 +25,7 @@
       <button class="phase-select-button" data-phase="postSession"></button>
       <span class="phase-label">POST-SESSION</span>
     </span>
+    {{/unless}}
   </footer>
 
 </form>

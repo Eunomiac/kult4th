@@ -279,7 +279,7 @@
       /* #endregion */
 
       /* #region Uninitialized */
-      &.phase-uninitialized {
+      &.phase-intro {
         main {
           padding: 20px;
           .actor-assignment {
@@ -331,6 +331,7 @@
             border-radius: 0;
             background: transparent;
             box-shadow: none !important;
+            pointer-events: none;
 
             &::before {
               content: ">>>";
@@ -351,14 +352,6 @@
           }
 
 
-        }
-
-        &.phase-initialized,
-        &.phase-chargen,
-        &.phase-preSession,
-        &.phase-session,
-        &.phase-postSession {
-          .phase-container.phase-initialized .phase-select-button::before { content: "<<<";}
         }
 
         &.phase-chargen,
@@ -383,44 +376,18 @@
           .phase-container.phase-postSession .phase-select-button::before { content: "<<<";}
         }
 
-        &.phase-uninitialized {
-          .phase-container.phase-uninitialized {
+        &.phase-intro {
+          .phase-container.phase-intro {
             .phase-label {
               background: var(--K4-bbGOLD);
             }
           }
 
-          .phase-container.phase-initialized {
+          .phase-container.phase-chargen,
+          .phase-container.phase-preSession {
             .phase-select-button {
               background: var(--K4-BLACK);
-              &::before {
-                background: var(--K4-BLACK);
-                @include neon-glow-animated(lime, lime, white);
-                color: var(--K4-bWHITE);
-              }
-            }
-          }
-        }
-
-        &.phase-initialized {
-
-          .phase-container.phase-initialized {
-            .phase-select-button {
-              background: var(--K4-BLACK);
-              &::before {
-                background: var(--K4-BLACK);
-                @include neon-glow-animated(red, var(--K4-bbRED), white);
-                color: var(--K4-bWHITE);
-              }
-            }
-            .phase-label {
-              background: var(--K4-bbGOLD);
-            }
-          }
-
-          .phase-container.phase-chargen {
-            .phase-select-button {
-              background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
@@ -435,6 +402,7 @@
           .phase-container.phase-chargen {
             .phase-select-button {
               background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(red, var(--K4-bbRED), white);
@@ -449,6 +417,7 @@
           .phase-container.phase-preSession {
             .phase-select-button {
               background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
@@ -463,6 +432,7 @@
           .phase-container.phase-preSession {
             .phase-select-button {
               background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(red, var(--K4-bbRED), white);
@@ -477,6 +447,7 @@
           .phase-container.phase-session {
             .phase-select-button {
               background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
@@ -491,6 +462,7 @@
           .phase-container.phase-session {
             .phase-select-button {
               background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(red, var(--K4-bbRED), white);
@@ -505,6 +477,7 @@
           .phase-container.phase-postSession {
             .phase-select-button {
               background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(lime, lime, white);
@@ -519,6 +492,7 @@
           .phase-container.phase-postSession {
             .phase-select-button {
               background: var(--K4-BLACK);
+              pointer-events: auto;
               &::before {
                 background: var(--K4-BLACK);
                 @include neon-glow-animated(red, var(--K4-bbRED), white);
@@ -527,6 +501,7 @@
             }
             .phase-label {
               background: var(--K4-bbGOLD);
+              pointer-events: auto;
             }
           }
         }

@@ -227,8 +227,7 @@ async function RunInitializer<T extends InitializerMethod>(methodName: T) {
 async function PreloadHBSTemplates() {
   const templatePaths = [
     ...U.getTemplatePath("sheets/gmtracker-phases", [
-      "uninitialized",
-      "initialized",
+      "intro",
       "chargen",
       "preSession",
       "session",
@@ -238,15 +237,16 @@ async function PreloadHBSTemplates() {
       "player-column"
     ]),
     ...U.getTemplatePath("gamephase", [
-      "overlay-uninitialized",
-      "overlay-initialized",
+      "overlay-master",
+      "overlay-intro",
       "overlay-chargen",
       "overlay-preSession",
       "overlay-session",
       "overlay-postSession"
     ]),
     ...U.getTemplatePath("gamephase/parts", [
-      "chargen-trait-editor"
+      "chargen-trait-editor",
+      "chargen-trait-notes-editor"
     ]),
     ...U.getTemplatePath("globals", [
       "svg-defs",

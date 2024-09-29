@@ -443,7 +443,9 @@ class K4Actor extends Actor {
     if (!this.is(K4ActorType.pc)) {return;}
     void this.update({
       "system.archetype": archetype
-    }, {render: false});
+    }, {render: false}).then(() => {
+      void this.chargenSheet.reRenderTraitNotesPanels();
+    });
   }
   get summaryData(): K4Actor.SummaryData {
     if (this.is(K4ActorType.pc)) {
@@ -973,7 +975,7 @@ class K4Actor extends Actor {
     this._chargenSheet.precomputeArchetypeData();
   }
 
-  async charGenSelect(traitName: string, isArchetype = true) {
+  async charGenSelect(traitName: string, isArchetype = true, isSilent = false) {
     if (!this.is(K4ActorType.pc)) {return;}
     const pcData = this.system;
     let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
@@ -983,24 +985,30 @@ class K4Actor extends Actor {
       case K4ItemType.advantage: {
         if (selAdvantages.includes(traitName)) { break; }
         selAdvantages = U.unique([...selAdvantages, traitName]);
-        void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.advantage, traitName, true, true);
         await this.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
-        await this.chargenSheet.reRenderTraitPanels();
+        if (!isSilent) {
+          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.advantage, traitName, true, true);
+          await this.chargenSheet.reRenderTraitPanels();
+        }
         break;
       }
       case K4ItemType.disadvantage: {
         if (isArchetype) {
           if (selDisadvantages.includes(traitName)) { break; }
           selDisadvantages = U.unique([...selDisadvantages, traitName]);
-          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, true);
           await this.update({"system.charGen.selDisadvantages": selDisadvantages}, {render: false});
-          await this.chargenSheet.reRenderTraitPanels();
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, true);
+            await this.chargenSheet.reRenderTraitPanels();
+          }
         } else {
           if (extraDisadvantages.includes(traitName)) { break; }
           extraDisadvantages = U.unique([...extraDisadvantages, traitName]);
-          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, false);
           await this.update({"system.charGen.extraDisadvantages": extraDisadvantages}, {render: false});
-          await this.chargenSheet.reRenderTraitPanels();
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, false);
+            await this.chargenSheet.reRenderTraitPanels();
+          }
         }
         break;
       }
@@ -1008,15 +1016,19 @@ class K4Actor extends Actor {
         if (isArchetype) {
           if (selDarkSecrets.includes(traitName)) { break; }
           selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
-          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, true);
           await this.update({"system.charGen.selDarkSecrets": selDarkSecrets}, {render: false});
-          await this.chargenSheet.reRenderTraitPanels();
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, true);
+            await this.chargenSheet.reRenderTraitPanels();
+          }
         } else {
           if (extraDarkSecrets.includes(traitName)) { break; }
           extraDarkSecrets = U.unique([...extraDarkSecrets, traitName]);
-          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, false);
           await this.update({"system.charGen.extraDarkSecrets": extraDarkSecrets}, {render: false});
-          await this.chargenSheet.reRenderTraitPanels();
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, false);
+            await this.chargenSheet.reRenderTraitPanels();
+          }
         }
         break;
       }
