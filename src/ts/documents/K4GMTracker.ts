@@ -6,6 +6,7 @@ import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType} from "./K4Item.js";
 import K4ItemSheet from "./K4ItemSheet.js";
 import K4Socket, {UserTargetRef} from "./K4Socket.js";
+import {ChargenSummary} from "./K4CharGen.js";
 import {ExpoScaleEase} from "../libraries.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion
@@ -82,6 +83,8 @@ class K4GMTracker {
       const actor = getGame().actors.get(actorID);
       kLog.log(`{{CharChange_Name}} User ${user.name} changed the name of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
+      void tracker.updateSummaryOf(actorID);
+      // const tracker = await K4GMTracker.Get();
       // tracker.updateCharPanel_Name(user, value);
     },
     "CharChange_Archetype": async (
@@ -93,6 +96,8 @@ class K4GMTracker {
       const actor = getGame().actors.get(actorID);
       kLog.log(`{{CharChange_Archetype}} User ${user.name} changed the archetype of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
+      void tracker.updateSummaryOf(actorID);
+      // const tracker = await K4GMTracker.Get();
       // tracker.updateCharPanel_Archetype(user, value);
     },
     "CharChange_Attribute": async (
@@ -102,9 +107,11 @@ class K4GMTracker {
       value: string
     ) => {
       const user = getGame().users.get(userID);
-      const actor = getGame().actors.get(actorID);
+      const actor = getGame().actors.get(actorID) as K4Actor<K4ActorType.pc>;
       kLog.log(`{{CharChange_Attributes}} User ${user.name} changed the value of attribute '${attribute}' of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
+      void tracker.updateSummaryOf(actorID);
+      // const tracker = await K4GMTracker.Get();
       // tracker.updateCharPanel_Attribute(user, attribute, value);
     },
     "CharChange_Trait": async (
@@ -125,6 +132,8 @@ class K4GMTracker {
         kLog.log(`{{CharChange_Advantage}} User ${user.name} removed the ${traitType} '${value}' from actor ${actor.name}`);
       }
       const tracker = await K4GMTracker.Get();
+      void tracker.updateSummaryOf(actorID);
+      // const tracker = await K4GMTracker.Get();
       // tracker.updateCharPanel_Trait(user, traitType, value, isAdding, isArchetype);
     },
     "CharChange_Text": async (
@@ -137,6 +146,8 @@ class K4GMTracker {
       const actor = getGame().actors.get(actorID);
       kLog.log(`{{CharChange_Text}} User ${user.name} changed '${textBlock}' of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
+      void tracker.updateSummaryOf(actorID);
+      // const tracker = await K4GMTracker.Get();
       // tracker.updateCharPanel_Text(user, textBlock, value);
     }
 
@@ -605,16 +616,76 @@ class K4GMTracker {
     return actor.system.charGen.isFinished ?? false;
   }
 
-  get playerCharacters(): Record<string, {actor: K4Actor<K4ActorType.pc>; owner: Maybe<User>}> {
+  get playerCharacters(): Record<string, {actor: K4Actor<K4ActorType.pc>; owner: Maybe<User>; data: ChargenSummary; isOwnerOnline: boolean}> {
     return Object.fromEntries(
       Array.from(getGame().actors as Collection<K4Actor>)
         .filter((actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc)
         .map((actor) => [actor.id, {
           actor,
           owner: actor.user,
+          data: actor.chargenSheet.chargenSummary,
           isOwnerOnline: actor.user?.active ?? false
         }])
     );
+  }
+
+  async updateSummaryOf(actorID: IDString): Promise<void> {
+    const actor = getGame().actors.get(actorID) as Maybe<K4Actor<K4ActorType.pc>>;
+    if (!actor) {
+      throw new Error(`[K4GMTracker] updateSummaryOf: Actor not found: ${actorID}`);
+    }
+    const charGenSheet = actor.chargenSheet;
+    // const prevSummary = this._chargenSummaries[actorID] ?? {};
+    const data = charGenSheet.chargenSummary;
+
+    if (getUser().isGM) {
+      const tracker = await K4GMTracker.Get();
+      if (!tracker.isRendered) { return; }
+      const content = await renderTemplate(
+        "systems/kult4th/templates/partials/player-block.hbs",
+        data
+      );
+      const html$ = tracker.elem$!.find(`.player-block-content[data-actor-id="${actorID}"]`);
+      html$.html(content);
+      kLog.log(`[K4CharGen] updateSummaryOf: ${actor.name}`, {html$, data, actorID});
+    }
+
+    // const delta = U.diffObject(prevSummary, newSummary) as Partial<ChargenSummary>;
+    // if (U.isEmpty(delta)) {return;}
+
+    // if (delta.name) {
+
+    // }
+    // if (delta.img) {
+
+    // }
+    // if (delta.archetype) {
+
+    // }
+    // if (delta.attributes) {
+
+    // }
+    // if (delta.advantages) {
+
+    // }
+    // if (delta.disadvantages) {
+
+    // }
+    // if (delta.darkSecrets) {
+
+    // }
+    // if (delta.description) {
+
+    // }
+    // if (delta.occupation) {
+
+    // }
+    // if (delta.looks) {
+
+    // }
+    // if (delta.traitNotes) {
+
+    // }
   }
 
   get playerUsers(): User[] {

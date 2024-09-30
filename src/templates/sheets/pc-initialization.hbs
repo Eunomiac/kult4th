@@ -3,15 +3,7 @@
 <form class="actor-sheet kult4th-form {{cssClass}} actor-pc pc-initialization" autocomplete="off">
 
 
-  {{#if (eq charGenPhase "archetype")}}
-  {{> "systems/kult4th/templates/sheets/pc-initialization-archetype.hbs" }}
-  {{else if (eq charGenPhase "attributesAndTraits")}}
-  {{> "systems/kult4th/templates/sheets/pc-initialization-attributes-and-traits.hbs" }}
-  {{else if (eq charGenPhase "details")}}
-  {{> "systems/kult4th/templates/sheets/pc-initialization-details.hbs" }}
-  {{else if (eq charGenPhase "relationships")}}
-  {{> "systems/kult4th/templates/sheets/pc-initialization-relations.hbs" }}
-  {{/if}}
+
 
 
   <div class="archetype-panel archetype-panel-notes">

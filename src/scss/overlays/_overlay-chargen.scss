@@ -454,6 +454,47 @@ $isDebug: false;
       }
     }
 
+    .archetype-panel.character-summary-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 30000;
+      width: 300px;
+      min-height: 100px;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      transform: none;
+      padding: 10px;
+      overflow: auto;
+
+      .character-summary {
+        position: relative;
+        min-height: 75px;
+        border-bottom: 4px double var(--K4-bbGOLD);
+        &:last-child {
+          border-bottom: none;
+        }
+        > img {
+          position: absolute;
+          top: 5px;
+          width: 50px;
+          z-index: -1;
+          opacity: 0.5;
+          border-radius-top-left: 10px;
+          border-radius-bottom-right: 10px;
+        }
+        > h3 {
+          position: absolute;
+          top: -10px;
+          color: var(--K4-bbGOLD);
+          text-shadow: build-text-shadow(3px, var(--K4-dBLACK), 8);
+        }
+      }
+      img {
+
+      }
+
+    }
 
 
     .archetype-carousel-dragger {

@@ -279,10 +279,7 @@ async function PreloadHBSTemplates() {
       "gmtracker-sheet",
       "pc-initialization",
       "pc-initialization-archetype",
-      "pc-initialization-archetype-trait-panels",
-      "pc-initialization-attributes-and-traits",
-      "pc-initialization-details",
-      "pc-initialization-relations"
+      "pc-initialization-archetype-trait-panels"
     ]),
     ...U.getTemplatePath("components", [
       "hover-strip",

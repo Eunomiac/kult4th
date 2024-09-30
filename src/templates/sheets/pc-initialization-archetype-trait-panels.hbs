@@ -21,11 +21,13 @@
             </div>
             <span class="archetype-trait-name">{{name}}</span>
           </div>
+          {{#if tooltip}}
           <div id="{{popoverID}}"
               style="position-anchor: --{{anchorName}};"
               popover>
             {{{formatForKult tooltip}}}
           </div>
+          {{/if}}
           {{/let}}
           {{/each}}
         </div>
@@ -51,11 +53,13 @@
             </div>
             <span class="archetype-trait-name">{{name}}</span>
           </div>
+          {{#if tooltip}}
           <div id="{{popoverID}}"
               style="position-anchor: --{{anchorName}};"
               popover>
             {{{formatForKult tooltip}}}
           </div>
+          {{/if}}
           {{/let}}
         {{/each}}
         </div>
@@ -83,11 +87,13 @@
             </div>
             <span class="archetype-trait-name">{{name}}</span>
           </div>
+          {{#if tooltip}}
           <div id="{{popoverID}}"
               style="position-anchor: --{{anchorName}};"
               popover>
             {{{formatForKult tooltip}}}
           </div>
+          {{/if}}
           {{/let}}
         {{/each}}
         </div>

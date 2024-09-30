@@ -98,14 +98,14 @@ interface ChargenContext {
     traitType: K4TraitType,
     value: string;
   }>,
-  otherPlayerData: Record<IDString, K4Actor["summaryData"]>;
+  otherPlayerData: Record<IDString, ChargenSummary>;
 }
 
-interface ChargenSummary {
+export interface ChargenSummary {
   name: string,
   img: string,
-  archetype: K4Archetype,
-  attributes: Partial<Record<K4Attribute, string>>,
+  archetype: K4Archetype|"",
+  attributes: Partial<Record<K4Attribute, number>>,
   advantages: K4Item[],
   disadvantages: K4Item[],
   darkSecrets: K4Item[],
@@ -636,11 +636,11 @@ class K4CharGen {
               label: data.label,
               tier: data.tier,
               img: `systems/kult4th/assets/archetypes/${archetype}.png`,
-              [K4ItemType.advantage]: this.getArchetypeTraitData(K4ItemType.advantage, archetype),
+              [K4ItemType.advantage]: advTraitData,
               selStringAdvantage,
-              [K4ItemType.disadvantage]: this.getArchetypeTraitData(K4ItemType.disadvantage, archetype),
+              [K4ItemType.disadvantage]: disTraitData,
               selStringDisadvantage,
-              [K4ItemType.darksecret]: this.getArchetypeTraitData(K4ItemType.darksecret, archetype),
+              [K4ItemType.darksecret]: darkSecretTraitData,
               selStringDarkSecret,
               description: data.description,
               occupation: this.getStringData("occupation", archetype),
@@ -785,9 +785,16 @@ class K4CharGen {
       _gmUsers,
       otherPlayerUsers
     ] = U.partition<User>(otherUsers, (user) => (user as User).isGM);
+
     const otherPlayerData = Object.fromEntries(otherPlayerUsers
-      .map((user) => [user.id, (user.character as Maybe<K4Actor<K4ActorType.pc>>)?.summaryData])
-      .filter(Boolean));
+      .map((user) => {
+        const actor = K4Actor.GetCharacter(user);
+        if (actor) {
+          return [actor.id, actor.chargenSheet.chargenSummary];
+        }
+        return false;
+      })
+      .filter(Boolean) as Array<[IDString, ChargenSummary]>);
 
     return {
       archetypeCarousel: this.getArchetypeCarouselData(),
@@ -815,69 +822,23 @@ class K4CharGen {
     };
   }
 
-  get chargenSummary(): Partial<ChargenSummary> {
+  get chargenSummary(): ChargenSummary {
 
     return {
-      //   name: this.actor.name,
-      //   img: this.actor.img,
-      //   archetype: this.actor.archetype,
-      //   attributes: this.actor.attributeData,
-      //   advantages: this.actor.system.charGen.advantages,
-      //   disadvantages: this.actor.system.charGen.disadvantages,
-      //   darkSecrets: this.actor.system.charGen.darkSecrets,
-      //   description: this.actor.system.charGen.description,
-      //   occupation: this.actor.system.charGen.occupation,
-      //   looks: this.actor.system.charGen.looks,
-      //   traitNotes: this.actor.system.charGen.traitNotes
+        name: this.actor.name,
+        img: this.actor.img,
+        archetype: this.actor.archetype ?? "",
+        attributes: this.actor.attributes,
+        ...this.actor.getCharGenSelected(),
+        description: this.actor.system.description,
+        occupation: this.actor.system.occupation,
+        looks: this.actor.system.looks,
+        traitNotes: this.actor.system.charGen.traitNotes
     };
   }
 
-  _chargenSummaries: Record<IDString, ChargenSummary> = {};
-  updateSummaryOf(actorID: IDString): void {
-    const actor = getGame().actors.get(actorID) as Maybe<K4Actor<K4ActorType.pc>>;
-    if (!actor) {
-      throw new Error(`[K4CharGen] updateSummaryOf: Actor not found: ${actorID}`);
-    }
-    const charGenSheet = actor.chargenSheet;
-    const prevSummary = this._chargenSummaries[actorID] ?? {};
-    const newSummary = charGenSheet.chargenSummary;
-    const delta = U.diffObject(prevSummary, newSummary) as Partial<ChargenSummary>;
-    if (U.isEmpty(delta)) {return;}
+  // _chargenSummaries: Record<IDString, ChargenSummary> = {};
 
-    // if (delta.name) {
-
-    // }
-    // if (delta.img) {
-
-    // }
-    // if (delta.archetype) {
-
-    // }
-    // if (delta.attributes) {
-
-    // }
-    // if (delta.advantages) {
-
-    // }
-    // if (delta.disadvantages) {
-
-    // }
-    // if (delta.darkSecrets) {
-
-    // }
-    // if (delta.description) {
-
-    // }
-    // if (delta.occupation) {
-
-    // }
-    // if (delta.looks) {
-
-    // }
-    // if (delta.traitNotes) {
-
-    // }
-  }
 
   get traitNotes(): Record<string, {traitType: K4TraitType, value: string;}> {
     const selectedArchetype = this.actor.archetype;
@@ -1488,8 +1449,11 @@ class K4CharGen {
       tl = U.gsap.timeline({
         paused: true,
         onReverseComplete() {
-          void actor.charGenDeselect(trait);
-          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, getUser().id, actor.id, traitType, trait, false);
+          actor.charGenDeselect(trait).then(() => {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, getUser().id, actor.id, traitType, trait, false);
+          }).catch((err: unknown) => {
+            kLog.error(`[K4CharGen] #attachListeners_trait: Error deselecting trait: ${String(err)}`);
+          });
           traitContainer$.attr("data-is-selected", "false");
           traitContainer$.removeClass(glowClass);
           void self.reRenderTraitNotesPanels();
@@ -1833,8 +1797,11 @@ class K4CharGen {
           // Log the change for debugging purposes
           console.log(`Attribute value changed to: ${newValue}`);
 
-          void K4Socket.Call("CharChange_Attribute", UserTargetRef.other, getUser().id, getActor().id, dotTarget, newValue);
           getActor().update({[dotTarget]: newValue}, {render: false}).catch((err: unknown) => {
+            kLog.error(`Failed to update attribute: ${String(err)}`);
+          }).then(() => {
+            void K4Socket.Call("CharChange_Attribute", UserTargetRef.other, getUser().id, getActor().id, dotTarget, newValue);
+          }).catch((err: unknown) => {
             kLog.error(`Failed to update attribute: ${String(err)}`);
           });
 
@@ -2167,3 +2134,4 @@ class K4CharGen {
 }
 
 export default K4CharGen;
+// export type {ChargenSummary};

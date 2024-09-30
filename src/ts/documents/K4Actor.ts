@@ -441,35 +441,39 @@ class K4Actor extends Actor {
   }
   set archetype(archetype: K4Archetype) {
     if (!this.is(K4ActorType.pc)) {return;}
-    void this.update({
+
+    this.update({
       "system.archetype": archetype
     }, {render: false}).then(() => {
+      void K4Socket.Call("CharChange_Archetype", UserTargetRef.other, getUser().id, getActor().id, this.id, archetype);
       void this.chargenSheet.reRenderTraitNotesPanels();
+    }).catch((err: unknown) => {
+      kLog.error(`Failed to update archetype: ${String(err)}`);
     });
   }
-  get summaryData(): K4Actor.SummaryData {
-    if (this.is(K4ActorType.pc)) {
-      return {
-        name: this.name,
-        img: this.img,
-        archetype: this.archetype,
-        attributes: this.attributes,
-        advantages: [],
-        disadvantages: [],
-        darkSecrets: [],
-        occupation: this.system.occupation,
-        description: this.system.description,
-        notes: this.system.notes
-      }
-    } else {
-      return {
-        name: this.name,
-        img: this.img,
-        description: this.system.description,
-        notes: this.system.notes
-      }
-    }
-  }
+  // get summaryData(): K4Actor.SummaryData {
+  //   if (this.is(K4ActorType.pc)) {
+  //     return {
+  //       name: this.name,
+  //       img: this.img,
+  //       archetype: this.archetype,
+  //       attributes: this.attributes,
+  //       advantages: [],
+  //       disadvantages: [],
+  //       darkSecrets: [],
+  //       occupation: this.system.occupation,
+  //       description: this.system.description,
+  //       notes: this.system.notes
+  //     }
+  //   } else {
+  //     return {
+  //       name: this.name,
+  //       img: this.img,
+  //       description: this.system.description,
+  //       notes: this.system.notes
+  //     }
+  //   }
+  // }
   // #region -- Embedded Item Search & Retrieval Methods ~
 
   /**
@@ -929,6 +933,54 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region CHARGEN ~
+  getCharGenSelected(archetype?: K4Archetype) {
+    if (this.type !== K4ActorType.pc) {return {advantages: [], disadvantages: [], darkSecrets: []};}
+    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
+    archetype = (archetype ?? pcData.archetype) || K4Archetype.academic;
+    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
+
+    selAdvantages = selAdvantages.map((adv) => adv.replace(/^!?/, ""));
+    selDisadvantages = selDisadvantages.map((dis) => dis.replace(/^!?/, ""));
+    selDarkSecrets = selDarkSecrets.map((ds) => ds.replace(/^!?/, ""));
+
+    const archetypeData = {...Archetypes[archetype]};
+    const archAdvantages = archetypeData[K4ItemType.advantage] as unknown as string[];
+
+    const archDisadvantages = archetypeData[K4ItemType.disadvantage] as unknown as string[];
+    const mandatoryArchDisadvantages = archDisadvantages
+      .filter((dis) => dis.startsWith("!"))
+      .map((dis) => dis.replace(/^!?/, ""));
+    const archDarkSecrets = archetypeData[K4ItemType.darksecret] as unknown as string[];
+
+    selAdvantages = selAdvantages.filter((adv) => archAdvantages.includes(adv));
+    selDisadvantages = U.unique([
+      ...mandatoryArchDisadvantages,
+      ...selDisadvantages.filter((dis) => archDisadvantages.includes(dis))
+    ]);
+    selDarkSecrets = selDarkSecrets.filter((ds) => archDarkSecrets.includes(ds));
+
+    const allAdvantages = selAdvantages
+      .map((adv) => adv.replace(/^!?/, ""))
+      .map((adv) => (getGame().items as Collection<K4Item<K4ItemType.advantage>>).getName(adv)!);
+    const allDisadvantages = U.unique([
+      ...selDisadvantages,
+      ...extraDisadvantages
+    ])
+      .map((dis) => dis.replace(/^!?/, ""))
+      .map((dis) => (getGame().items as Collection<K4Item<K4ItemType.disadvantage>>).getName(dis)!);
+    const allDarkSecrets = U.unique([
+      ...selDarkSecrets,
+      ...extraDarkSecrets
+    ])
+      .map((ds) => ds.replace(/^!?/, ""))
+      .map((ds) => (getGame().items as Collection<K4Item<K4ItemType.darksecret>>).getName(ds)!);
+
+    return {
+      advantages: allAdvantages,
+      disadvantages: allDisadvantages,
+      darkSecrets: allDarkSecrets
+    }
+  }
   isCharGenSelected(traitName: string, archetype?: K4Archetype) {
     if (this.type !== K4ActorType.pc) {return false;}
     const pcData = this.system as K4Actor.System<K4ActorType.pc>;
@@ -957,8 +1009,14 @@ class K4Actor extends Actor {
 
   _chargenSheet: Maybe<K4CharGen>;
   get chargenSheet(): K4CharGen {
+    if (!this.user) {
+      throw new Error(`Cannot initialize chargen sheet for actor ${this.id}: Actor has no user.`)
+    }
+    if (!this.is(K4ActorType.pc)) {
+      throw new Error(`Cannot initialize chargen sheet for actor ${this.id}: Actor is not a PC.`)
+    }
     if (!this._chargenSheet) {
-      throw new Error(`Cannot retrieve chargen sheet for actor ${this.id}: Sheet has not been initialized.`);
+      this._chargenSheet = new K4CharGen(this.user, this);
     }
     return this._chargenSheet;
   }
@@ -970,9 +1028,8 @@ class K4Actor extends Actor {
     if (!this.is(K4ActorType.pc)) {
       throw new Error(`Cannot initialize chargen sheet for actor ${this.id}: Actor is not a PC.`)
     }
-    this._chargenSheet = new K4CharGen(this.user, this);
-    this._chargenSheet.precomputeAllArchetypeTraitData();
-    this._chargenSheet.precomputeArchetypeData();
+    this.chargenSheet.precomputeAllArchetypeTraitData();
+    this.chargenSheet.precomputeArchetypeData();
   }
 
   async charGenSelect(traitName: string, isArchetype = true, isSilent = false) {
